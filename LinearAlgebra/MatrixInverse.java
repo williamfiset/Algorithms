@@ -1,13 +1,30 @@
 /**
- * Solve a system of linear equations using Gaussian elimination.
- * To work with this code the linear equations must be specified 
- * as a matrix augmented with the constants as the right-most column.
+ * Use Gaussian elimination on an augmented matrix to
+ * find the inverse of a matrix.
  **/
 
-class GaussianElimination {
+class MatrixInverse {
   
   // Define a small value of epsilon to compare double values
   static final double EPS = 0.00000001;
+
+  // Invert the specified matrix. Assumes invertibility. Time Complexity: O(r²c)
+  static double[][] inverse(double[][] matrix) {
+    if (matrix.length != matrix[0].length) return null;
+    int n = matrix.length;
+    double[][] augmented = new double[n][n * 2];
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++)
+        augmented[i][j] = matrix[i][j];
+      augmented[i][i + n] = 1;
+    }
+    solve(augmented);
+    double[][] inv = new double[n][n];
+    for (int i = 0; i < n; i++)
+      for (int j = 0; j < n; j++)
+        inv[i][j] = augmented[i][j + n];
+    return inv;
+  }
 
   // Solves a system of linear equations as an augmented matrix
   // with the rightmost column containing the constants. The answers
@@ -67,29 +84,15 @@ class GaussianElimination {
 
   public static void main(String[] args) {
     
-    // Suppose we want to solve the following system for
-    // the variables x, y, z:
-    // 
-    // 2x - 3y + 5z = 10
-    // x  + 2y - z  = 18
-    // 6x -  y + 0  = 12
-    // Then we would setup the following augment matrix:
-
-    double[][] augmentedMatrix = {
-      {2, -3,  5, 10},
-      {1,  2, -1, 18},
-      {6, -1,  0, 12}
+    // Check this matrix is invertable
+    double[][] matrix = {
+      {2, -4,  0},
+      {0,  6,  0},
+      {2,  2, -2}
     };
 
-    if (!hasMultipleSolutions(augmentedMatrix) && !isInconsistent(augmentedMatrix)) {
-
-      solve(augmentedMatrix);
-      double x = augmentedMatrix[0][3];
-      double y = augmentedMatrix[1][3];
-      double z = augmentedMatrix[2][3];
-      System.out.printf("x = %.3f, y = %.3f, z = %.3f\n", x, y, z);
-      
-    }
+    double[][] inv = inverse(matrix);
+    for (double[] row : inv) System.out.println(java.util.Arrays.toString(row));
 
   }
 
