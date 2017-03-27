@@ -32,7 +32,7 @@ public class MatrixPower {
   // Raise a matrix to the nth power. If n is negative 
   // return null and if n is zero return the identity.
   // NOTE: Make sure the matrix is a square matrix and
-  // also watch out for overflow the number climb quickly
+  // also watch out for overflow as the numbers climb quickly
   static long[][] matrixPower(long[][] matrix, long n) {
 
     if (n < 0) return null;
