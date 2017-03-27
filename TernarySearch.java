@@ -1,11 +1,18 @@
 /**
- * Similar to binary search, except it works on a function which
- * decreases and then increases. This method returns the input value
- * corresponding with the minimum output value of the function. 
- * Time Complexity: O(log(high - low)). NOTE: To work with a function which 
- * increases and then decreases, simply negate your function.
+ *
+ * Ternary search is similar to binary search except that it 
+ * works on a function which decreases and then increases. 
+ * This implementation of ternary search returns the input value
+ * corresponding with the minimum output value of the 
+ * function you're searching on.
+ * 
+ * Time Complexity: O(log(high - low)). 
+ *
+ * NOTE: You can also work with a function which increases
+ * and then decreases, simply negate your function :)
  *
  * @author Micah Stairs
+ *
  **/
 
 public class TernarySearch {
@@ -15,8 +22,7 @@ public class TernarySearch {
 
   // Define your own function on whatever you're attempting to ternary
   // search. Remember that your function must be a continuous unimodal
-  // function, meaning a function which decreases then increases (U shape)
-  // or a function which increases and then decreases.
+  // function, this means a function which decreases then increases (U shape)
   static double f(double x) { return x*x + 3*x + 5; }
 
   static double ternarySearch(double low, double high) {
