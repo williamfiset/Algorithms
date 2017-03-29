@@ -43,6 +43,7 @@ public class BinarySearch {
 
   public static void main(String[] args) {
     
+    // EXAMPLE #1
     // Suppose we want to know what the square root of 875 is and
     // we have no knowledge of the wonderful Math.sqrt() function.
     // One approach is to use a binary search because we know that
@@ -61,6 +62,22 @@ public class BinarySearch {
 
     double sqrtVal = binarySearch(lo, hi, target, function );
     System.out.printf("sqrt(%.2f) = %.5f, x^2 = %.5f\n", target, sqrtVal, (sqrtVal*sqrtVal) );
+
+
+    // EXAMPLE #2
+    // Suppose we want to find the radius of a sphere with
+    // volume 100m^3 using a binary search. We know that 
+    // for a sphere the volume is given by V = (4/3)*pi*r^3,
+    // so all we have to do is binary search on the radius
+
+    double radiusLowerBound = 0;
+    double radiusUpperBound = 1000;
+    double volume = 100.0;
+    DoubleFunction <Double> sphereVolumeFunction = (r) -> ( (4.0/3.0) * Math.PI * r*r*r );
+
+    double sphereRadius = binarySearch(radiusLowerBound, radiusUpperBound, volume, sphereVolumeFunction);
+
+    System.out.printf("Sphere radius = %.5fm\n", sphereRadius );
 
   }
 
