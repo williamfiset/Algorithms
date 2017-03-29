@@ -8,6 +8,7 @@
  * In this file I present some code to solve a general linear recurrence of the form:
  * f(n) = k + c_1*f(n-1) + c_2*f(n-2) + c_3*f(n-3) + ...
  * where k is a constant, c_i is a constant and all the initial values are known
+ * Look at the examples given in the main method to see how to use this code
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
@@ -121,31 +122,11 @@ class LinearRecurrenceSolver {
 
   }
 
-  // You can use this method to find the initial values
-  // of the recurrence if you do not know them but you know
-  // that f(n) = 0 when n < 0 and f(n) = 1 when n = 0
-  // I use simple dynamic programming to brute force the first 
-  // couple initial values of the recurrence relation. 
-  // 
-  static long[] findInitialValues(int [] values, final int N) {
-
-    long[] DP = new long[N];
-    DP[0] = 1L;
-
-    for (int i = 1; i < N; i++) 
-      for (int v : values)
-        if (i - v >= 0)
-          DP[i] = DP[i] + DP[i-v];
-    
-    return DP;
-
-  }
-
   public static void main(String[] args) {
     
     // Setup the Fibonacci recurrence
-    long[] initialValues = {1, 1};
-    long[] coefficients  = {1, 1};
+    long[] initialValues = {0, 1}; // f(0) = 0 and f(1) = 1
+    long[] coefficients  = {1, 1}; // f(n) = 1*f(n-1) + 1*f(n-2) + 0
     long k = 0;
 
     for (int i = 0; i <= 10; i++) {
@@ -154,13 +135,35 @@ class LinearRecurrenceSolver {
     }
 
     // Suppose we have the following recurrence:
-    // f(n) = 3 - 3f(n-1) + f(n-2) - 2f(n-3)
+    // f(n) = 2 + 2f(n-1) + f(n-3) with f(0) = 2 and f(n) = 0 if n < 0
     // and we want to know what f(25) is here is what we would do:
+    // We need to find f(1), f(2) to invoke the recurrence solver:
+    // 
+    // f(n) = 0 if n < 0
+    // f(0) = 2
+    // f(1) = 2 + 2f(0) + f(-2) = 2 + 2*2 = 6
+    // f(2) = 2 + 2f(1) + f(-1) = 2 + 2*6 = 14
 
-    int[] coefficients2 = {-3, 1, -2};
-    long[] initialValues2 = findInitialValues(coefficients2);
+    long[] coefficients2  = {2, 0, 1};
+    long[] initialValues2 = {2, 6, 14};
     k = 2;
-    System.out.println(java.util.Arrays.toString(initialValues2));
+    
+    final int N = 25;
+    long[] DP = new long[N+1];
+
+    for (int n = 0; n <= N; n++) {
+
+      // Compute the answers for the recurrence using dynamic programming (DP)
+      // then use these generated answers to verify we got the right answer
+      if (n - 1 >= 0) DP[n] += 2*DP[n-1];
+      if (n - 3 >= 0) DP[n] += DP[n-3];
+      DP[n] += k;
+
+      long answer = solveRecurrence(initialValues2, coefficients2, k, n);
+      if (DP[n] != answer) throw new RuntimeException("Wrong answer!");
+      System.out.printf("f(%d) = %d\n", n, answer);
+
+    }
 
   }
   
