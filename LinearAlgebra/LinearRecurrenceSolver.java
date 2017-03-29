@@ -87,24 +87,36 @@ class LinearRecurrenceSolver {
 
   }
 
-  // Solves for the nth term in a linear recurrence of the following form:
-  // f(n) = k + c_1*f(n-1) + c_2*f(n-2) + c_3*f(n-3) + ...
-  // initialValues contains the first N initial values for [f(0), f(1), f(2), ...] 
-  // coeffs contains the coefficients for the recurrence, so [c_1, c_2, c_3, ...]
-  // Make sure the dimensions of coeffs and initialValues are no bigger than they need to be!
-  // For instance, do not add an additional term to the recurrence with a zero coefficient.
-  static long solveRecurrence(long [] coeffs, long f_0, long k, long n) {
+  /** 
+   * Solve for the nth term in a linear recurrence of the following form:
+   * f(n) = k + c_1*f(n-1) + c_2*f(n-2) + c_3*f(n-3) + ... + c_m*f(n-m)
+   * @param coefficients - contains the coefficients for the recurrence, so [c_1, c_2, c_3, ... , c_m]
+   * @param f_0          - The value of the function at f(0). This is usually 1 or k.
+   * @param k            - The constant k added to the recurrence
+   * @param n            - The nth term of the recurrence you wish to find
+   * 
+   * NOTE1: Make sure the dimension of coefficients array is no bigger than it needs to be. 
+   * For instance do not add any additional zero coefficient terms at the end of 
+   * the coefficients array as this is throw off the recurrence.
+   *
+   * NOTE2: The numbers produced by this method can get VERY LARGE quickly so watch
+   * out for overflow because there is a very high probability it will occur.
+   * 
+   * EXAMPLE: If your recurrence is f(n) = 2 + 3*f(n-1) + 5f(n-4) with f(0) = 2
+   * and you want to find f(100) call the function like: solveRecurrence([3, 0, 0, 5], 2, 2, 100)
+   **/
+  static long solveRecurrence(long [] coefficients, long f_0, long k, long n) {
 
     if (n < 0) throw new IllegalArgumentException("n should probably be >= 0");
-    long[] initialValues = computeInitialValues(coeffs, f_0, k);
+    long[] initialValues = computeInitialValues(coefficients, f_0, k);
 
     // We already know the value
     if (n < initialValues.length) return initialValues[ (int) n ];
 
-    // Account for the extra constant 'k' in the recurrence: f(n) = k + c_1*f(n-1) + ...
+    // Add 1 to account for the extra constant 'k' in the recurrence: f(n) = k + c_1*f(n-1) + ...
     final int size = initialValues.length + 1;
 
-    long[][] T = createTransformationMatrix(coeffs, size);
+    long[][] T = createTransformationMatrix(coefficients, size);
     long[][] result = matrixPower(T, n);
 
     // Find answer by multiplying resultant matrix with multiplication
@@ -173,19 +185,17 @@ class LinearRecurrenceSolver {
     final int N = 25;
     long[] DP = new long[N+1];
 
+    // Compute the answers for the recurrence using dynamic programming (DP)
+    // then use these generated answers to verify we got the right answer
     for (int n = 0; n <= N; n++) {
-
-      // Compute the answers for the recurrence using dynamic programming (DP)
-      // then use these generated answers to verify we got the right answer
       if (n - 1 >= 0) DP[n] += 2*DP[n-1];
       if (n - 3 >= 0) DP[n] += DP[n-3];
       DP[n] += k;
-
-      long answer = solveRecurrence(coefficients2, k, k, n);
-      if (DP[n] != answer) throw new RuntimeException("Wrong answer!");
-      System.out.printf("f(%d) = %d\n", n, answer);
-
     }
+
+    long answer = solveRecurrence(coefficients2, k, k, N);
+    if (DP[N] != answer) throw new RuntimeException("Wrong answer!");
+    System.out.printf("f(%d) = %d\n", N, answer);
 
   }
   
