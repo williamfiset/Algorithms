@@ -1,6 +1,6 @@
 /**
- * Here I show how you can generate all the combinations of size r
- * which are repeated at most k amount of times.
+ * Here I show how you can generate all the combinations of a sequence
+ * of size r which are repeated at most k times.
  * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
