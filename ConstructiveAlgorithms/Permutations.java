@@ -5,7 +5,7 @@
  * @author William Fiset, Micah Stairs
  **/
 
-public class Permutation {
+public class Permutations {
   
   // Generates all the permutations of a sequence of objects
   public static void generatePermutations(Object [] sequence) {
