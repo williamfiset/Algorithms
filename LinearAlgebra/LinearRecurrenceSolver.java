@@ -6,9 +6,10 @@
  * is a classic example of such a recurrence.
  *
  * In this file I present some code to solve a general linear recurrence of the form:
- * f(n) = k + c_1*f(n-1) + c_2*f(n-2) + c_3*f(n-3) + ...
- * where k is a constant, c_i is a constant and all the initial values are known
- * Look at the examples given in the main method to see how to use this code
+ * f(n) = k + c_1*f(n-1) + c_2*f(n-2) + c_3*f(n-3) + ... c_m*f(n-m) in O(m^3log(n)) time
+ * where k is a constant, c_i is a constant.
+ *
+ * Look at the examples given in the main method to see how to use this code.
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
@@ -23,7 +24,7 @@ class LinearRecurrenceSolver {
     return newMatrix;
   }
 
-  // Perform matrix multiplication whilst modding the values, O(n^3)
+  // Perform matrix multiplication, O(n^3)
   static long[][] squareMatrixMult(long[][] m1, long[][] m2) {
 
     final int N = m1.length;
@@ -88,19 +89,19 @@ class LinearRecurrenceSolver {
   }
 
   /** 
-   * Solve for the nth term in a linear recurrence of the following form:
-   * f(n) = k + c_1*f(n-1) + c_2*f(n-2) + c_3*f(n-3) + ... + c_m*f(n-m)
+   * Solve for the nth term in a linear recurrence of the following form 
+   * f(n) = k + c_1*f(n-1) + c_2*f(n-2) + ... + c_m*f(n-m) in O(m^3log(n)) time
    * @param coefficients - contains the coefficients for the recurrence, so [c_1, c_2, c_3, ... , c_m]
    * @param f_0          - The value of the function at f(0). This is usually 1 or k.
    * @param k            - The constant k added to the recurrence
    * @param n            - The nth term of the recurrence you wish to find
    * 
-   * NOTE1: Make sure the dimension of coefficients array is no bigger than it needs to be. 
+   * NOTE1: The numbers produced by this method can get VERY LARGE quickly so watch
+   * out for overflow because there is a very high probability it will occur.
+   *
+   * NOTE2: Make sure the dimension of coefficients array is no bigger than it needs to be. 
    * For instance do not add any additional zero coefficient terms at the end of 
    * the coefficients array as this is throw off the recurrence.
-   *
-   * NOTE2: The numbers produced by this method can get VERY LARGE quickly so watch
-   * out for overflow because there is a very high probability it will occur.
    * 
    * EXAMPLE: If your recurrence is f(n) = 2 + 3*f(n-1) + 5f(n-4) with f(0) = 2
    * and you want to find f(100) call the function like: solveRecurrence([3, 0, 0, 5], 2, 2, 100)
@@ -139,7 +140,7 @@ class LinearRecurrenceSolver {
    * are, so sometimes it's useful to brute force them using dynamic programming.
    *
    * Given the constants [c_1, c_2, c_3, ...] and the constant 'k' in the recurrence
-   * f(n) = k + c_1*f(n-1) + c_2*f(n-2) + ... this function computes and returns 
+   * f(n) = k + c_1*f(n-1) + c_2*f(n-2) + ... + c_m*f(n-m) this function computes and returns 
    * the initial values of the function: [f(0), f(1), f(2), ...]
    *
    * @param coeffs - The coefficients on your linear recurrence
@@ -166,8 +167,8 @@ class LinearRecurrenceSolver {
 
   public static void main(String[] args) {
     
-    // Setup the Fibonacci recurrence
-    long[] coefficients  = {1, 1}; // f(n) = 0 + 1*f(n-1) + 1*f(n-2)
+    // Setup the Fibonacci recurrence: f(n) = 0 + 1*f(n-1) + 1*f(n-2)
+    long[] coefficients  = {1, 1};
     long k = 0;
 
     for (int i = 0; i <= 10; i++) {
@@ -178,7 +179,6 @@ class LinearRecurrenceSolver {
     // Suppose we have the following recurrence:
     // f(n) = 2 + 2f(n-1) + f(n-3) with f(0) = 2 and f(n) = 0 if n < 0
     // and we want to know what f(25) is here is what we would do:
-
     long[] coefficients2  = {2, 0, 1};
     k = 2;
     
