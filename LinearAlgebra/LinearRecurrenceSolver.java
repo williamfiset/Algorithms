@@ -93,10 +93,10 @@ class LinearRecurrenceSolver {
   // coeffs contains the coefficients for the recurrence, so [c_1, c_2, c_3, ...]
   // Make sure the dimensions of coeffs and initialValues are no bigger than they need to be!
   // For instance, do not add an additional term to the recurrence with a zero coefficient.
-  static long solveRecurrence(long[] initialValues, long [] coeffs, long k, long n) {
+  static long solveRecurrence(long [] coeffs, long f_0, long k, long n) {
 
-    if (n < 0) throw new IllegalArgumentException();
-    if (initialValues.length != coeffs.length) throw new IllegalArgumentException();
+    if (n < 0) throw new IllegalArgumentException("n should probably be >= 0");
+    long[] initialValues = computeInitialValues(coeffs, f_0, k);
 
     // We already know the value
     if (n < initialValues.length) return initialValues[ (int) n ];
@@ -122,30 +122,52 @@ class LinearRecurrenceSolver {
 
   }
 
+  /**
+   * You may not always know what the initial values for your recurrence relation
+   * are, so sometimes it's useful to brute force them using dynamic programming.
+   *
+   * Given the constants [c_1, c_2, c_3, ...] and the constant 'k' in the recurrence
+   * f(n) = k + c_1*f(n-1) + c_2*f(n-2) + ... this function computes and returns 
+   * the initial values of the function: [f(0), f(1), f(2), ...]
+   *
+   * @param coeffs - The coefficients on your linear recurrence
+   * @param f_0    - The value of the function at f(0), this is usually 1 or k
+   * @param k      - The constant value in the linear recurrence
+   *
+   * NOTE: This method assumes that f(n) = 0 when n < 0
+   **/
+  static long[] computeInitialValues(long[] coeffs, long f_0, long k) {
+
+    final int N = coeffs.length;
+    long[] DP = new long[N];
+    DP[0] = f_0;
+
+    for (int n = 1; n < N; n++) {
+      for (int i = 1; i <= n; i++)
+        DP[n] += DP[n-i]*coeffs[i-1];
+      DP[n] += k;
+    }
+
+    return DP;
+
+  }
+
   public static void main(String[] args) {
     
     // Setup the Fibonacci recurrence
-    long[] initialValues = {0, 1}; // f(0) = 0 and f(1) = 1
-    long[] coefficients  = {1, 1}; // f(n) = 1*f(n-1) + 1*f(n-2) + 0
+    long[] coefficients  = {1, 1}; // f(n) = 0 + 1*f(n-1) + 1*f(n-2)
     long k = 0;
 
     for (int i = 0; i <= 10; i++) {
-      long fib  = solveRecurrence( initialValues, coefficients, k, i );
+      long fib  = solveRecurrence( coefficients, 1, k, i );
       System.out.println(fib);
     }
 
     // Suppose we have the following recurrence:
     // f(n) = 2 + 2f(n-1) + f(n-3) with f(0) = 2 and f(n) = 0 if n < 0
     // and we want to know what f(25) is here is what we would do:
-    // We need to find f(1), f(2) to invoke the recurrence solver:
-    // 
-    // f(n) = 0 if n < 0
-    // f(0) = 2
-    // f(1) = 2 + 2f(0) + f(-2) = 2 + 2*2 = 6
-    // f(2) = 2 + 2f(1) + f(-1) = 2 + 2*6 = 14
 
     long[] coefficients2  = {2, 0, 1};
-    long[] initialValues2 = {2, 6, 14};
     k = 2;
     
     final int N = 25;
@@ -159,7 +181,7 @@ class LinearRecurrenceSolver {
       if (n - 3 >= 0) DP[n] += DP[n-3];
       DP[n] += k;
 
-      long answer = solveRecurrence(initialValues2, coefficients2, k, n);
+      long answer = solveRecurrence(coefficients2, k, k, n);
       if (DP[n] != answer) throw new RuntimeException("Wrong answer!");
       System.out.printf("f(%d) = %d\n", n, answer);
 
