@@ -14,7 +14,7 @@ public class CombinationsWithRepitition {
    * @param usedCount  - Tracks how many of each element we currently have selected
    * @param at         - The current position we're at in the sequence
    * @param r          - The number of elements we're choosing
-   * @param k          - The meximum number of times each element is allowed to be picked
+   * @param k          - The maximum number of times each element is allowed to be picked
    **/
   private static void combinationsWithRepetition(int[] sequence, int[] usedCount, int at, int r, int k) {
 
