@@ -46,29 +46,34 @@ public class RabinKarp {
 
   }
 
+  // Example usage of the Rabin-Karp string matching algorithm
   public static void main(String[] args) {
 
-    String s = "dsf923dajiosdjfhg392fhh20f3hef23abaaabaghikababbbabaghikaabbabaghikababbabdsf923dajiosdjfhg392fhh20f3hef23aghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaadsf923dajiosdjfhg392fhh20f3hef23abaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabagdsf923dajiosdjfhg392fhh20f3hef23hikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghidsf923dajiosdjfhg392fhh20f3hef23kababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghdsf923dajiosdjfhg392fhh20f3hef23ikababbbabaghikaabbabaghikababbabaghikabadsf923dajiosdjfhg392fhh20f3hef23";
-    String p = "dsf923dajiosdjfhg392fhh20f3hef23";
+    String str = "P@TTerNabcdefP@TTerNP@TTerNabcdefabcdefabcdefabcdefP@TTerN";
+    String pat = "P@TTerN";
 
-    System.out.println(rabinKarp(s, p));
-    List <Integer> lst = rabinKarpBackwards(s,p);
+    System.out.println(rabinKarp(str, pat));
+    List <Integer> lst = rabinKarpBackwards(str,pat);
     Collections.sort(lst);
     System.out.println(lst);
 
   }
 
+  // Given a text and a pattern Rabin-Karp finds all occurences
+  // of the pattern in the text in O(n+m) time.
   public static List <Integer> rabinKarp(String text, String pattern) {
 
+    List <Integer> matches = new ArrayList<>();
+
+    // Find pattern length (PL) and text length (TL)
     final int PL = pattern.length(), TL = text.length();
 
+    // Compute the initial hash values
     long[] patternHash = computeHash(pattern);
     long[] rollingHash = computeHash(text.substring(0, PL));
 
+    // Compute the 
     expandPowers(PL);
-    List <Integer> matches = new ArrayList<>();
-
-    // System.out.println(powers);
 
     for (int i = PL-1;;) {
 
