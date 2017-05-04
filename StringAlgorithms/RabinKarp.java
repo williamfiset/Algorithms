@@ -4,18 +4,22 @@
  * @author William Alexandre Fiset, william.alexandre.fiset@gmail.com
  **/
 
+import java.util.*;
+
 public class RabinKarp {
 
   public static void main(String[] args) {
     
-    String s = "abaaabaghikababbbabaghikaabbabaghikababbabdsf923dajiosdjfhg392fhh20f3hef23aghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaadsf923dajiosdjfhg392fhh20f3hef23abaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabagdsf923dajiosdjfhg392fhh20f3hef23hikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghidsf923dajiosdjfhg392fhh20f3hef23kababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghdsf923dajiosdjfhg392fhh20f3hef23ikababbbabaghikaabbabaghikababbabaghikabadsf923dajiosdjfhg392fhh20f3hef23";
+    String s = "dsf923dajiosdjfhg392fhh20f3hef23abaaabaghikababbbabaghikaabbabaghikababbabdsf923dajiosdjfhg392fhh20f3hef23aghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaadsf923dajiosdjfhg392fhh20f3hef23abaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabagdsf923dajiosdjfhg392fhh20f3hef23hikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghidsf923dajiosdjfhg392fhh20f3hef23kababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghikababbbabaghikaabbabaghikababbabaghikabaabaaabaghdsf923dajiosdjfhg392fhh20f3hef23ikababbbabaghikaabbabaghikababbabaghikabadsf923dajiosdjfhg392fhh20f3hef23";
     String p = "dsf923dajiosdjfhg392fhh20f3hef23";
-    // String s = "fsdlfsdabcdef";
+    // String s = "rabcdef";
     // String p = "abc";
 
-    rabinKarp(s, p);
-    System.out.println();
-    rabinKarpBackwards(s,p);
+    
+    System.out.println(rabinKarp(s, p));
+    List <Integer> lst = rabinKarpBackwards(s,p);
+    Collections.sort(lst);
+    System.out.println(lst);
 
     // StringSet set = new StringSet(1000000);
 
@@ -45,36 +49,23 @@ public class RabinKarp {
 
   }
 
-  static void rabinKarp(String text, String pattern) {
+  static List <Integer> rabinKarp(String text, String pattern) {
 
-    StringSet set = new StringSet(1000000);
+    List <Integer> matches = new ArrayList<>();
+
     final int PL = pattern.length(), TL = text.length();
+    StringSet set = new StringSet(PL);
 
     long[] patternHash = set.computeHash(pattern).clone();
     long[] rollingHash = set.computeHash(text.substring(0, PL)).clone();
 
-    // for(int k=0;k<rollingHash.length;k++)System.out.print(rollingHash[k] + " "); System.out.println();
+    for (int i = PL-1;;) {
 
-    for (int i = PL; i <= TL; i++) {
-      
-      // for(int k=0;k<rollingHash.length;k++)System.out.print(rollingHash[k] + " "); System.out.println();
-      boolean match = true;
-      for(int j = 0; j < patternHash.length; j++) {
-        if (patternHash[j] != rollingHash[j]) {
-          match = false;
-          break;
-        }
-      }
-
-      // Found a match!
-      if (match) {
-        System.out.printf("Match at: [%d %d)\n", i-PL, i);
-      }
-
-      if (i == TL) break;
+      if (Arrays.equals(patternHash, rollingHash)) { matches.add(i-PL+1); }
+      if (++i == TL) return matches;
 
       char firstValue = text.charAt(i-PL);
-      char lastValue = text.charAt(i);
+      char lastValue  = text.charAt(i);
 
       // Update rolling hash
       for (int j = 0; j < patternHash.length; j++) {
@@ -83,64 +74,33 @@ public class RabinKarp {
       }
 
     }
-    
+
   }
 
-  static void rabinKarpBackwards(String text, String pattern) {
+  static List <Integer> rabinKarpBackwards(String text, String pattern) {
     
-    StringSet set = new StringSet(1000000);
-    final int PL = pattern.length(), TL = text.length();
+    List <Integer> matches = new ArrayList<>();
 
-    // System.out.println(pattern);
-    // System.out.println(text.substring(TL-PL, TL));
+    final int PL = pattern.length(), TL = text.length();
+    StringSet set = new StringSet(PL+1);
 
     long[] patternHash = set.computeHash(pattern).clone();
     long[] rollingHash = set.computeHash(text.substring(TL-PL, TL)).clone();
 
-    for(int k=0;k<rollingHash.length;k++)System.out.print(rollingHash[k] + " "); System.out.println();
+    for (int i = TL-PL;;) {
 
-    boolean match = true;
-
-    for (int i = TL-PL-1; i >= 0; i--) {
-      
-      // for(int k=0;k<rollingHash.length;k++)System.out.print(rollingHash[k] + " "); System.out.println();
-      match = true;
-
-      // Compare rolling hash to patternHash
-      for (int j = 0; j < patternHash.length; j++) {
-        if (patternHash[j] != rollingHash[j]) {
-          match = false; break;
-        }
-      }
-
-      if (match) {
-        System.out.printf("Match at: [%d %d)\n", i+1, i+PL+1);
-      }
+      if (Arrays.equals(patternHash, rollingHash)) { matches.add(i); }
+      if (--i < 0) return matches; 
 
       char firstValue = text.charAt(i);
-      char lastValue = text.charAt(i+PL);
-      // System.out.println(firstValue + " " + lastValue);
+      char lastValue  = text.charAt(i+PL);
 
       // Update rolling hash
       for (int j = 0; j < patternHash.length; j++) {
-        rollingHash[j] = set.addLeft(rollingHash[j], firstValue, j, PL); // long rollingHash, int firstValue, int modIndex, int len
-        rollingHash[j] = set.removeRight(rollingHash[j], lastValue, j);  // long rollingHash, int lastValue, int modIndex
+        rollingHash[j] = set.addLeft(rollingHash[j], firstValue, j, PL);
+        rollingHash[j] = set.removeRight(rollingHash[j], lastValue, j); 
       }
 
-    }
-
-    for(int k=0;k<rollingHash.length;k++)System.out.print(rollingHash[k] + " "); System.out.println();
-
-    match = true;
-    // Compare rolling hash to patternHash
-    for (int j = 0; j < patternHash.length; j++) {
-      if (patternHash[j] != rollingHash[j]) {
-        match = false; break;
-      }
-    }
-
-    if (match) {
-      System.out.printf("Match at: [0 %d)\n", PL);
     }
 
   }  
