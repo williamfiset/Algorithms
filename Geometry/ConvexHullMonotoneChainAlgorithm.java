@@ -21,6 +21,8 @@ import java.awt.geom.*;
 
 public class ConvexHullMonotoneChainAlgorithm {
 
+  // Use the monotone chain algorithm to find the 
+  // convex hull of a set of points in O(nlogn) time.
   static Point2D[] convexHull(Point2D[] pts) {
     
     int n = pts.length, k = 0, count = 0;
