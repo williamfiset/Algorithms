@@ -14,7 +14,7 @@ public class ModPow {
   private final static long MAX = (long) Math.sqrt(Long.MAX_VALUE);
   private final static long MIN = -MAX;
 
-  // Computed the Greatest Common Divisor (GCD) of a & b
+  // Computes the Greatest Common Divisor (GCD) of a & b
   private static long gcd(long a, long b) { return b == 0 ? (a < 0 ? -a : a) : gcd(b, a % b); }
 
   // This function performs the extended euclidean algorithm on two numbers a and b.
@@ -125,8 +125,6 @@ public class ModPow {
     System.out.println(r1 + " " + r2);
 
   }
-
-
 
 }
 

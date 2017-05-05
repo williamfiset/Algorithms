@@ -1,3 +1,5 @@
+
+
 public class ModularInverse {
   
   // This function performs the extended euclidean algorithm on two numbers a and b.
