@@ -22,26 +22,19 @@ public class RabinKarp {
   // 10000019, 10000079, 10000103, 100000007, 100000009, 100000023, 1000000007, 1000000009, 1000000021, 1000000033
   private static final long[] MODS = { 10_000_019, 10_000_079, 10_000_103 };
   private static final int N_HASHES = MODS.length;
+  private static final BigInteger[] BIG_MODS = new BigInteger[N_HASHES];
   private static final long[] MOD_INVERSES = new long[N_HASHES];
-
-  // Caches the values of the powers of ALPHABET_BASE for each mod value
-  private static List <List <Long>> powers = new ArrayList<>();
 
   static {
 
     // Assign a mapping from the printable ASCII characters to the natural numbers
     for (int i = 32, n = 1; i < ALPHABET.length; i++, n++) ALPHABET[i] = n;
 
+    // Compute modular inverses for chosen mod values
     for (int i = 0; i < N_HASHES; i++ ) {
-      
-      // Compute the modular inverse values
       java.math.BigInteger mod = new java.math.BigInteger(String.valueOf(MODS[i]));
       MOD_INVERSES[i] = BIG_ALPHA.modInverse(mod).longValue();
-
-      List <Long> modPowers = new ArrayList<>();
-      modPowers.add(1L); // ALPHABET_BASE ^ 0 = 1
-      powers.add(modPowers);
-
+      BIG_MODS[i] = mod;
     }
 
   }
@@ -52,28 +45,43 @@ public class RabinKarp {
     String str = "P@TTerNabcdefP@TTerNP@TTerNabcdefabcdefabcdefabcdefP@TTerN";
     String pat = "P@TTerN";
 
-    System.out.println(rabinKarp(str, pat));
-    List <Integer> lst = rabinKarpBackwards(str,pat);
-    Collections.sort(lst);
-    System.out.println(lst);
+    System.out.println(rabinKarp(str, pat)); // [0, 13, 20, 51]
+
+    str = "ababababa";
+    pat  = "a";
+
+    System.out.println(rabinKarp(str, pat)); // [0, 2, 4, 6, 8]
+
+    str = "123";
+    pat  = "123456";
+
+    System.out.println(rabinKarp(str, pat)); // []
+
+    str = "123456";
+    pat  = "123456";
+
+    System.out.println(rabinKarp(str, pat)); // [0]
 
   }
 
-  // Given a text and a pattern Rabin-Karp finds all occurences
+  // Given a text and a pattern Rabin-Karp finds all occurrences
   // of the pattern in the text in O(n+m) time.
   public static List <Integer> rabinKarp(String text, String pattern) {
 
     List <Integer> matches = new ArrayList<>();
+    if (text == null || pattern == null) return matches;
 
     // Find pattern length (PL) and text length (TL)
     final int PL = pattern.length(), TL = text.length();
+    if (PL > TL) return matches;
 
     // Compute the initial hash values
     long[] patternHash = computeHash(pattern);
     long[] rollingHash = computeHash(text.substring(0, PL));
 
-    // Compute the 
-    expandPowers(PL);
+    final BigInteger BIG_PL = new BigInteger(String.valueOf(PL));
+    final long[] POWERS = new long[N_HASHES];
+    for(int i = 0; i < N_HASHES; i++) POWERS[i] = BIG_ALPHA.modPow(BIG_PL, BIG_MODS[i]).longValue();
 
     for (int i = PL-1;;) {
 
@@ -85,22 +93,32 @@ public class RabinKarp {
 
       // Update rolling hash
       for (int j = 0; j < patternHash.length; j++) {
-        rollingHash[j] = removeLeft(rollingHash[j], firstValue, j, PL);
         rollingHash[j] = addRight(rollingHash[j], lastValue, j);
+        rollingHash[j] = removeLeft(rollingHash[j], POWERS[j], firstValue, j);
       }
 
     }
 
   }
 
+  // This method performs Rabin-Karp backwards by starting at the end and
+  // doing the rolling hashes in the other direction. This method has no true
+  // advantage over the other rabinKarp method, it is simply for proof of concept.
   public static List <Integer> rabinKarpBackwards(String text, String pattern) {
     
     List <Integer> matches = new ArrayList<>();
+    if (text == null || pattern == null) return matches;
 
+    // Find pattern length (PL) and text length (TL)
     final int PL = pattern.length(), TL = text.length();
+    if (PL > TL) return matches;
 
     long[] patternHash = computeHash(pattern);
     long[] rollingHash = computeHash(text.substring(TL-PL, TL));
+
+    final BigInteger BIG_PL = new BigInteger(String.valueOf(PL));
+    final long[] POWERS = new long[N_HASHES];
+    for(int i = 0; i < N_HASHES; i++) POWERS[i] = BIG_ALPHA.modPow(BIG_PL, BIG_MODS[i]).longValue();
 
     for (int i = TL-PL;;) {
 
@@ -112,7 +130,7 @@ public class RabinKarp {
 
       // Update rolling hash
       for (int j = 0; j < patternHash.length; j++) {
-        rollingHash[j] = addLeft(rollingHash[j], firstValue, j, PL);
+        rollingHash[j] = addLeft(rollingHash[j], POWERS[j], firstValue, j);
         rollingHash[j] = removeRight(rollingHash[j], lastValue, j); 
       }
 
@@ -126,40 +144,37 @@ public class RabinKarp {
     return (rollingHash + MODS[modIndex]) % MODS[modIndex];
   }
   
-  // This function adds a character to the beginning of the rolling hash
-  private static long addLeft(long rollingHash, char firstValue, int modIndex, int len) {
-    long alphabetBasePower = powers.get(modIndex).get(len);
-    rollingHash = (ALPHABET[firstValue] * alphabetBasePower + rollingHash) % MODS[modIndex];
-    return (rollingHash + MODS[modIndex]) % MODS[modIndex];
-  }
-
   // Given a rolling hash x_n*A^n + x_n-1*A^(n-1) + ... + x_2*A^2 + x_1*A^1 + x_0*A^0
-  // where x_i is a string character value and 'A' is the alphabet size we
-  // want to remove the first term 'x_n*A^n' from our rolling hash.
-  //
-  // firstValue - This is x_n, the first character of this string
-  private static long removeLeft(long rollingHash, char firstValue, int modIndex, int len) {
-    long alphabetBasePower = powers.get(modIndex).get(len-1);
-    rollingHash = (rollingHash - ALPHABET[firstValue] * alphabetBasePower) % MODS[modIndex];
-    return (rollingHash + MODS[modIndex]) % MODS[modIndex];
-  }
-
+  // where x_i is a character value and 'A' is the alphabet size this method removes
+  // the x_0*A^0 term and divides by A (multiplies by modular inverse)
   private static long removeRight(long rollingHash, char lastValue, int modIndex) {
     rollingHash = (((rollingHash-ALPHABET[lastValue])%MODS[modIndex])+MODS[modIndex]) % MODS[modIndex];
     return (rollingHash * MOD_INVERSES[modIndex]) % MODS[modIndex];
   }
 
-  private static void expandPowers(int n) {
-    for (int i = 0; i < N_HASHES; i++) {
-      List <Long> modPowers = powers.get(i);
-      int len = modPowers.size();
-      long mod = MODS[i];
-      for (int j = 0; j <= n - len + 1; j++ ) {
-        modPowers.add( (modPowers.get(modPowers.size()-1) * ALPHABET_BASE) % mod );
-      }
-    }
+  // Given a rolling hash x_n*A^n + x_n-1*A^(n-1) + ... + x_2*A^2 + x_1*A^1 + x_0*A^0
+  // where x_i is a character value and 'A' is the alphabet size this method adds 
+  // an additional term 'x_n+1*A^(n+1)' to the rolling hash.
+  //
+  // firstValue - This is x_n+1, the first character of this string
+  // alphabetBasePower - A^(n+1)
+  private static long addLeft(long rollingHash, long alphabetBasePower, char firstValue, int modIndex) {
+    rollingHash = (ALPHABET[firstValue] * alphabetBasePower + rollingHash) % MODS[modIndex];
+    return (rollingHash + MODS[modIndex]) % MODS[modIndex];
   }
 
+  // Given a rolling hash x_n*A^n + x_n-1*A^(n-1) + ... + x_2*A^2 + x_1*A^1 + x_0*A^0
+  // where x_i is a character value and 'A' is the alphabet size this method removes
+  // the first term 'x_n*A^n' from the rolling hash.
+  //
+  // firstValue - This is x_n, the first character of this string
+  // alphabetBasePower - A^n
+  private static long removeLeft(long rollingHash, long alphabetBasePower, char firstValue, int modIndex) {
+    rollingHash = (rollingHash - ALPHABET[firstValue] * alphabetBasePower) % MODS[modIndex];
+    return (rollingHash + MODS[modIndex]) % MODS[modIndex];
+  }
+
+  // Computes the hashes for a particular string
   public static long[] computeHash(String str) {
 
     long[] rollingHashes = new long[N_HASHES];
