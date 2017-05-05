@@ -1,8 +1,7 @@
 /**
  * An implementation of Manacher's algorithm which can be used
  * to find/count palindromic strings in linear time. In particular,
- * it finds the length of the maximal palindrome centered at each 
- * index. Seen main method for an example.
+ * it finds the length of the maximal palindrome centered at each index.
  **/
 
 public class ManachersAlgorithm {
