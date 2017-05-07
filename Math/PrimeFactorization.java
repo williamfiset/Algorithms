@@ -1,13 +1,14 @@
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 public class PrimeFactorization {
 
-  static ArrayList<Long> primeFactorization(long n) {
-    ArrayList<Long> factors = new ArrayList<Long>();
+  static ArrayList <Long> primeFactorization(long n) {
+    ArrayList <Long> factors = new ArrayList<>();
     if (n <= 0) throw new IllegalArgumentException();
     else if (n == 1) return factors;
-    PriorityQueue<Long> divisorQueue = new PriorityQueue<Long>();
+    PriorityQueue <Long> divisorQueue = new PriorityQueue<>();
     divisorQueue.add(n);
     while (!divisorQueue.isEmpty()) {
       long divisor = divisorQueue.remove();
@@ -28,7 +29,6 @@ public class PrimeFactorization {
 
   static long pollardRho(long n) {
     if (n % 2 == 0) return 2;
-    // Get a number in the range [2, 10^6]
     long x = 2 + (long)(999999 * Math.random());
     long c = 2 + (long)(999999 * Math.random());
     long y = x;
@@ -43,27 +43,19 @@ public class PrimeFactorization {
     return d;
   }
 
-  static long gcf(long a, long b) {
-    return b == 0 ? a : gcf(b, a % b);
+  static long gcd(long a, long b) {
+    return b == 0 ? (a < 0 ? -a : a) : gcd(b, a % b);
   }
 
-  static boolean isPrime(long n) {
-
-    if (n < 2)
-      return false;
-    if (n == 2 || n == 3)
-      return true;
-    if (n % 2 == 0 || n % 3 == 0)
-      return false;
-
-    int limit = (int) Math.sqrt(n);
-
-    for (int i = 5; i <= limit; i += 6)
+  static boolean isPrime(final long n) {
+    if (n < 2) return false;
+    if (n == 2 || n == 3) return true;
+    if (n % 2 == 0 || n % 3 == 0) return false;
+    long limit = (long) Math.sqrt(n);
+    for (long i = 5; i <= limit; i += 6)
       if (n % i == 0 || n % (i + 2) == 0)
         return false;
-
     return true;
-
   }
 
   public static void main(String[] args) {
