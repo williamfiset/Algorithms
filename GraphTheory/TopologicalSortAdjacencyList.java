@@ -1,5 +1,5 @@
 /**
- * Topological sort takes an adjacency matrix of an acyclic graph and returns
+ * This topological sort implementation takes an adjacency list of an acyclic graph and returns
  * an array with the indexes of the nodes in a (non unique) topological order
  * which tells you how to process the nodes in the graph. More precisely from wiki:
  * A topological ordering is a linear ordering of its vertices such that for 
@@ -10,7 +10,7 @@
 
 import java.util.*;
 
-// Helper Edge class to describe Edges
+// Helper Edge class to describe edges in the graph
 class Edge {
   int from, to, weight;
   public Edge (int f, int t, int w) {
@@ -101,22 +101,18 @@ public class TopologicalSortAdjacencyList {
   // Example usage of topological sort
   public static void main(String[] args) {
     
+    // Graph setup    
     final int N = 7;
     Map<Integer, List<Edge>> adjList = new HashMap<>();
     for (int i = 0; i < N; i++) adjList.put(i, new ArrayList<>());
-
     adjList.get(0).add(new Edge(0,1,3));
     adjList.get(0).add(new Edge(0,2,2));
     adjList.get(0).add(new Edge(0,5,3));
-
     adjList.get(1).add(new Edge(1,3,1));
     adjList.get(1).add(new Edge(1,2,6));
-
     adjList.get(2).add(new Edge(2,3,1));
     adjList.get(2).add(new Edge(2,4,10));
-
     adjList.get(3).add(new Edge(3,4,5));
-
     adjList.get(5).add(new Edge(5,4,7));
 
     int[] ordering = topologicalSort(adjList, N);
