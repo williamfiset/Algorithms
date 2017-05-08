@@ -10,7 +10,7 @@ public class ModPow {
 
   // The values placed into the modPow function cannot be greater
   // than MAX or less than MIN otherwise long overflow will
-  // happen since when the values gets squared they will exceed 2^63-1
+  // happen when the values get squared (they will exceed 2^63-1)
   private final static long MAX = (long) Math.sqrt(Long.MAX_VALUE);
   private final static long MIN = -MAX;
 

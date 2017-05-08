@@ -47,6 +47,11 @@ class TarjanAdjacencyList {
     System.out.println("Strong connected component count: " + sccs.getStronglyConnectedComponentsCount());
     System.out.println("Strong connected components:\n" + Arrays.toString(sccs.getStronglyConnectedComponents()) );
 
+    // Output:
+    // Strong connected component count: 4
+    // Strong connected components:
+    // [2, 2, 2, 1, 1, 1, 1, 0, 0, 3]
+
   }
 }
 
