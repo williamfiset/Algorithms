@@ -48,8 +48,9 @@ public class TopologicalSortAdjacencyMatrix {
   
   // A useful application of the topological sort is to find the shortest path 
   // between two nodes in a Directed Acyclic Graph (DAG). Given an adjacency matrix
-  // with double valued edge weights this method finds the shortest path between start and end
-  public static double shortestPathDAG(Double[][] adj, int start, int end) {
+  // with double valued edge weights this method finds the shortest path from 
+  // a start node to all other nodes in the graph.
+  public static double[] dagShortestPath(Double[][] adj, int start) {
 
     // Set up array used to maintain minimum distances from start
     int n = adj.length;
@@ -68,14 +69,14 @@ public class TopologicalSortAdjacencyMatrix {
       }
 
     // Return minimum distance
-    return dist[end];
+    return dist;
 
   }
 
   // Example usage of topological sort
   public static void main(String[] args) {
     
-    final int N = 6;
+    final int N = 7;
     Double[][] adjMatrix = new Double[N][N];
 
     adjMatrix[0][1] = 3.0;
@@ -94,14 +95,18 @@ public class TopologicalSortAdjacencyMatrix {
 
     int[] ordering = topologicalSort(adjMatrix);
 
-    // Prints: [0, 5, 1, 2, 3, 4]
+    // Prints: [6, 0, 5, 1, 2, 3, 4]
     System.out.println(java.util.Arrays.toString(ordering));
 
-    // Find the shortest path from 0 to 4
-    double dist = shortestPathDAG(adjMatrix, 0, 4);
+    // Find the shortest path from 0 to all other nodes
+    double [] dists = dagShortestPath(adjMatrix, 0);
 
-    // Prints 8.0 
-    System.out.println(dist);
+    // Find the distance from 0 to 4 which is 8.0 
+    System.out.println(dists[4]);
+
+    // Finds the shortest path from 0 to 6
+    // prints Infinity (6 is not reachable!)
+    System.out.println(dists[6]);
 
   }
   
