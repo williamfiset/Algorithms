@@ -1,6 +1,6 @@
 /**
- * An implementation of the lazy Prim's algorithm which upon
- * visiting a new node adds all the edges to the min priority
+ * An implementation of the lazy Prim's algorithm with an adjacency list
+ * which upon visiting a new node adds all the edges to the min priority
  * queue and also removes already seen edges when polling.
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
@@ -29,30 +29,29 @@ public class LazyPrimsAdjacencyList {
     
     long sum = 0, nodesVisited = 1;
     boolean[] visited = new boolean[n];
-    PriorityQueue <Edge> frontier = new PriorityQueue<>();
+    PriorityQueue <Edge> pq = new PriorityQueue<>();
     
-    // Add initial set of edges to the frontier
+    // Add initial set of edges to the pq
     List <Edge> edges = graph.get(0);
     if (edges == null || edges.size() == 0) return null;
-    for(Edge edge : edges) frontier.offer(edge);
+    for(Edge edge : edges) pq.offer(edge);
     visited[0] = true;
 
     // Loop while the MST is not complete
-    while ( nodesVisited != n && !frontier.isEmpty() ) {
-      Edge edge = frontier.poll();
+    while ( nodesVisited != n && !pq.isEmpty() ) {
+      Edge edge = pq.poll();
       if (!visited[edge.to]) {
-        
-        nodesVisited++;
-        sum += edge.cost;
         
         // Add edges to nodes we have not yet visited
         edges = graph.get(edge.to);
         if (edges == null || edges.size() == 0) return null;
         for (Edge e : edges) 
           if (!visited[e.to])
-            frontier.offer(e);
+            pq.offer(e);
 
         visited[edge.to] = true;
+        sum += edge.cost;
+        nodesVisited++;
 
       }
     }
@@ -98,7 +97,7 @@ public class LazyPrimsAdjacencyList {
 
     };
 
-    final int NUM_NODES = 11;
+    final int NUM_NODES = 10;
 
     // Setup graph as adjacency list
     Map <Integer, List<Edge>> graph = new HashMap<>();
@@ -123,7 +122,15 @@ public class LazyPrimsAdjacencyList {
 
 
 
-
+// 1
+// 1
+// 2
+// 2
+// 2
+// 1
+// 4
+// 1
+// 0
 
 
 
