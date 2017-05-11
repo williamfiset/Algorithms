@@ -1,6 +1,6 @@
 /**
- * An implementation of the lazy implementation of Prims algorithm
- * which upon visiting a new node adds all the edges to the min priority
+ * An implementation of the lazy Prim's algorithm which upon
+ * visiting a new node adds all the edges to the min priority
  * queue and also removes already seen edges when polling.
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
@@ -22,6 +22,7 @@ class Edge implements Comparable <Edge> {
 
 public class LazyPrimsAdjacencyList {
   
+  // Graph must be undirected!
   public static Long prims(Map <Integer, List<Edge>> graph, int n) {
     
     if (graph == null) return null;
@@ -62,6 +63,7 @@ public class LazyPrimsAdjacencyList {
 
   }
 
+  // Example usage
   public static void main(String[] args) {
     
     // Contains tuples of (from, to, weight)
