@@ -1,5 +1,5 @@
 /**
- * An implementation of a recursive approach to DFS
+ * An implementation of a iterative DFS with an adjacency list
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
@@ -14,24 +14,36 @@ class Edge {
   }
 }
 
-public class DepthFirstSearchAdjacencyListRecursive {
+public class DepthFirstSearchAdjacencyListIterative {
   
-  // Perform a depth first search on the graph counting
-  // the number of nodes traversed starting at some position
-  static long dfs(int at, boolean[] visited, Map <Integer,List<Edge>> graph) {
+  // Perform a depth first search on a graph with n nodes 
+  // from a starting point to count the number of nodes
+  // in a given component.
+  static int dfs(Map <Integer, List<Edge>> graph, int start, int n) {
+
+    int count = 0;
+    boolean[] visited = new boolean[n];
+    Stack <Integer> stack = new Stack<>();
     
-    // We have already visited this node
-    if (visited[at]) return 0L;
-    
-    // Visit this node
-    visited[at] = true;
-    long count = 1;
-    
-    // Visit all edges adjacent to where we're at
-    List <Edge> edges = graph.get(at);
-    if (edges != null) {
-      for (Edge edge : edges) {
-        count += dfs(edge.to, visited, graph);
+    // Start by visiting the starting node
+    stack.push(start);
+
+    while(!stack.isEmpty()) {
+      int node = stack.pop();
+      if (!visited[node]) {
+        
+        count++;
+        visited[node] = true;
+        List <Edge> edges = graph.get(node);
+        
+        if (edges != null) {
+          for(Edge edge : edges) {
+            if (!visited[edge.to]) {
+              stack.push(edge.to);
+            }
+          }
+        }
+
       }
     }
     
@@ -52,11 +64,11 @@ public class DepthFirstSearchAdjacencyListRecursive {
     addDirectedEdge(graph, 2, 3, 1);
     addDirectedEdge(graph, 2, 2, 10); // Self loop
 
-    long nodeCount = dfs(0, new boolean[numNodes], graph);
+    long nodeCount = dfs(graph, 0, numNodes);
     System.out.println("DFS node count starting at node 0: " + nodeCount);
     if (nodeCount != 4) System.err.println("Error with DFS");
 
-    nodeCount = dfs(4, new boolean[numNodes], graph);
+    nodeCount = dfs(graph, 4, numNodes);
     System.out.println("DFS node count starting at node 4: " + nodeCount);
     if (nodeCount != 1) System.err.println("Error with DFS");
 
