@@ -3,6 +3,8 @@
  * @author Micah Stairs
  **/
 
+import static java.lang.Math.*;
+
 public class LongitudeLatitudeGeographicDistance {
   
   // Compute the distance between geographic coordinates in units
