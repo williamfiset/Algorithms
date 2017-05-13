@@ -41,6 +41,7 @@ public class Line {
     return new Line(pt, p2);
   }
 
+  // Normalize the line in general form
   public void normalise() {
     if (abs(b) < EPS) {
       c /= a; 
@@ -61,7 +62,7 @@ public class Line {
     // Find middle point of segment
     Point2D middle = new Point2D.Double((x1 + x2) / 2.0, (y1 + y2) / 2.0); 
 
-    // To slope perpendicular to (y2-y1)/(x2-x1) is the negative
+    // The slope perpendicular to (y2-y1)/(x2-x1) is the negative
     // reciprocal or -(x2-x1)/(y2-y1) = (x1-x2)/(y2-y1)
     double perpSlope = (x1 - x2) / (y2 - y1);
 
