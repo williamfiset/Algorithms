@@ -15,8 +15,8 @@ public class CollinearPoints {
 
   // Suppose a != b and the points a & b form an infinite line and we want
   // to determine if c is a point on that line. This method returns 0 if 
-  // it is on the line, -1 if c is to the left of the line and +1 if it's
-  // on the right from the frame of reference of standing at point a
+  // it is on the line, -1 if c is to the right of the line and +1 if it's
+  // to the left from the frame of reference of standing at point a
   // and facing point b.
   public static int collinear(Point2D a, Point2D b, Point2D c) {
 
@@ -46,11 +46,19 @@ public class CollinearPoints {
     // The points a, b, c are collinear
     if (abs(determinant) < EPS) return 0;
     
-    // Return -1 for left and +1 for right
-    return (determinant > 0 ? -1 : +1);
+    // Return -1 for right and +1 for left
+    return (determinant < 0 ? -1 : +1);
 
   }
   
+  // Compressed version of collinear code above
+  public static int collinear2(Point2D a, Point2D b, Point2D c) {
+    double area = (b.getX() - a.getX()) * (c.getY() - a.getY())
+                - (b.getY() - a.getY()) * (c.getX() - a.getX());
+    if (abs(area) < EPS) return 0;
+    return (int) signum(area);
+  }
+
   // Example of collinear points
   public static void main(String[] args) {
     
@@ -61,15 +69,15 @@ public class CollinearPoints {
     // Returns 0 means that yes these points are collinear
     System.out.println(collinear(a,b,c));
     
-    // Returns -1 meaning that in some sense c is 
-    // to the left of the line formed by a & b
+    // Returns +1 meaning that c is to the left of the line
     c = new Point2D.Double(2, 7);
     System.out.println(collinear(a,b,c));
-    
-    // Returns +1 meaning that in some sense c is
-    // now to the right of the line formed by a & b
+
+    // Returns -1 meaning that c is to the right of the line
     c = new Point2D.Double(2, -7);
     System.out.println(collinear(a,b,c));
+
+    System.out.println(collinear2(a,b,c));
 
   }
 
