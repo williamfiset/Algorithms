@@ -7,6 +7,7 @@
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
+import static java.lang.Math.*;
 import java.awt.geom.Point2D;
 
 public class PointCircleTangent {
@@ -24,21 +25,21 @@ public class PointCircleTangent {
     // Compute the distance to the circle center
     double dx = cx - px;
     double dy = cy - py;
-    double dist = Math.sqrt(dx*dx+dy*dy);
+    double dist = sqrt(dx*dx+dy*dy);
     
     // Point is strictly contained within the circle
     if (dist < radius) return new Point2D[]{ };
 
     double angle, angle1, angle2;
     
-    angle1 = Math.asin(radius/dist);
-    angle2 = Math.atan2(dy, dx);
+    angle1 = asin(radius/dist);
+    angle2 = atan2(dy, dx);
 
     angle = angle2 - angle1;
-    Point2D p1 = new Point2D.Double(cx + radius * Math.sin(angle), cy + radius * -Math.cos(angle));
+    Point2D p1 = new Point2D.Double(cx + radius * sin(angle), cy + radius * -cos(angle));
 
     angle = angle1 + angle2;
-    Point2D p2 = new Point2D.Double(cx + radius * -Math.sin(angle), cy + radius * Math.cos(angle));
+    Point2D p2 = new Point2D.Double(cx + radius * -sin(angle), cy + radius * cos(angle));
 
     // Points are sufficiently close to be considered the same point 
     // (i.e the original point is on the circle circumference) 
