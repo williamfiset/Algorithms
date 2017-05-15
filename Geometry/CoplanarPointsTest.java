@@ -1,6 +1,7 @@
 /**
- * This file shows you how to determine if fours 3D points 
+ * This file shows you how to determine if four 3D points 
  * lie in the same plane as each other.
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
@@ -26,12 +27,13 @@ public class CoplanarPointsTest {
     return new Vector(v3x, v3y, v3z);
   }
 
-  // 3D Vector dot product
+  // 3D vector dot product
   static double dot(Vector v1, Vector v2) {
     return (v1.x*v2.x) + (v1.y*v2.y) + (v1.z*v2.z);
   }
 
-  // 
+  // Determine is four points (ax,ay,az), (bx,by,bz), (cx,cy,cz),
+  // (dx,dy,dz) all lie in the same plane in 3D space
   public static boolean coplanar(double ax, double ay, double az,
                                  double bx, double by, double bz,
                                  double cx, double cy, double cz,
@@ -52,6 +54,7 @@ public class CoplanarPointsTest {
     Vector v2 = new Vector(cx - ax, cy - ay, cz - az);
     Vector v3 = new Vector(dx - ax, dy - ay, dz - az);
 
+    // Find the vector normal (perpendicular) to v1 and v2
     Vector v4 = cross(v1, v2);
 
     // Check whether to dot product of v3 and v4 is zero
