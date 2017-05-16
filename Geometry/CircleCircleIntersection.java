@@ -35,8 +35,9 @@ public class CircleCircleIntersection {
     
     double dist = c1.distance(c2);
 
+    // There are an infinite number of solutions
     if (dist < EPS && abs(r-R) < EPS)
-      throw new IllegalStateException("Cannot intersect same circle");
+      throw new IllegalStateException("Infinite number of solutions (circles are equal)");
 
     // No intersection (circles are disjoint)
     if (r+R < dist) return new Point2D[]{};
@@ -44,6 +45,8 @@ public class CircleCircleIntersection {
     // No intersection (small circle contained within big circle)
     if (r+dist < R) return new Point2D[]{};
     
+    // Let (cx, cy) be the center of the small circle
+    // Let (Cx, Cy) be the center of the larger circle
     double cx = c.getX(); double Cx = C.getX();
     double cy = c.getY(); double Cy = C.getY();
 
@@ -51,14 +54,13 @@ public class CircleCircleIntersection {
     double vx = cx - Cx;
     double vy = cy - Cy;
 
-    // Scale by R and offset the vector point so that it is positioned
-    // on the circumference of the big circle ready to be rotated
+    // Scale the vector by R and offset the vector so that the head of the vector 
+    // is positioned on the circumference of the big circle ready to be rotated
     double x = ( vx / dist) * R + Cx;
     double y = ( vy / dist) * R + Cy;
     Point2D point = new Point2D.Double(x, y);
 
     // Unique intersection point on circumference of both circles
-    // where the small circle is not contained within the big circle
     if ( abs(r+R - dist) < EPS || abs(R-(r+dist)) < EPS )
       return new Point2D[]{point};
 
