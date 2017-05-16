@@ -11,6 +11,15 @@ public class CircleCircleIntersection {
 
   private static final double EPS = 1e-6;
 
+  // Due to double rounding precision the value passed into the acos
+  // function may be outside its domain of [-1, +1] which would return
+  // the value Double.NaN which we do not want.
+  static double arccosSafe(double x) {
+    if (x >= +1.0) return 0;
+    if (x <= -1.0) return PI;
+    return acos(x);
+  }
+
   public static Point2D[] circleCircleIntersection(Point2D c1, double r1, Point2D c2, double r2) {
     
     // r is the smaller radius and R is bigger radius
@@ -35,10 +44,8 @@ public class CircleCircleIntersection {
     // No intersection (small circle contained within big circle)
     if (r+dist < R) return new Point2D[]{};
     
-    double cx = c.getX();
-    double cy = c.getY();
-    double Cx = C.getX();
-    double Cy = C.getY();
+    double cx = c.getX(); double Cx = C.getX();
+    double cy = c.getY(); double Cy = C.getY();
 
     // Compute the vector from the big circle to the little circle
     double vx = cx - Cx;
@@ -55,10 +62,10 @@ public class CircleCircleIntersection {
     if ( abs(r+R - dist) < EPS || abs(R-(r+dist)) < EPS )
       return new Point2D[]{point};
 
-    // Two unique intersection points      
-    double aa = dist, bb = R, cc = r;
-    double angle = acos((cc*cc-aa*aa-bb*bb)/(-2*aa*bb));
+    // Find the angle via cos law
+    double angle = arccosSafe((r*r-dist*dist-R*R)/(-2*dist*R));
 
+    // Two unique intersection points      
     Point2D pt1 = rotatePoint( C, point,  angle );
     Point2D pt2 = rotatePoint( C, point, -angle );
 

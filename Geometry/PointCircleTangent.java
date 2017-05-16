@@ -15,6 +15,15 @@ public class PointCircleTangent {
   // A very same epsilon value used as a threshold 
   public static final double EPS = 0.0000001;
 
+  // Due to double rounding precision the value passed into the asin
+  // function may be outside its domain of [-1, +1] which would return
+  // the value Double.NaN which we do not want.
+  public static double arcsinSafe(double x) {
+    if (x <= -1.0) return -PI/2.0;
+    if (x >= +1.0) return +PI/2.0;
+    return asin(x);
+  }
+
   // Finds the point(s) of intersection of the lines tangent to the circle centered
   // at 'center' from the point 'point'.
   public static Point2D[] pointCircleTangentPoints(Point2D center, double radius, Point2D pt) {
@@ -32,7 +41,7 @@ public class PointCircleTangent {
 
     double angle, angle1, angle2;
     
-    angle1 = asin(radius/dist);
+    angle1 = arcsinSafe(radius/dist);
     angle2 = atan2(dy, dx);
 
     angle = angle2 - angle1;
@@ -51,7 +60,7 @@ public class PointCircleTangent {
 
   // Example usage
   public static void main(String[] args) {
-    
+
     // Suppose there's a circle centered at (5, 0) with a radius
     // of two and a point at the origin (0,0) and we wish to determine
     // the intersection of the tangents when draw two lines extending from
