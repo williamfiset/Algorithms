@@ -97,10 +97,22 @@ public class BipartiteGraphCheckAdjacencyList {
     addUndirectedEdge(graph,0,0);
     displayGraph(graph, 1);
 
+    // Prints:
+    // Graph has 1 node(s) and the following edges:
+    // 0 -> 0
+    // 0 -> 0
+    // This graph is bipartite: false
+
     // Two nodes one edge between them (bipartite)
     graph.clear();
     addUndirectedEdge(graph, 0, 1);
     displayGraph(graph, 2);
+
+    // Prints:
+    // Graph has 2 node(s) and the following edges:
+    // 0 -> 1
+    // 1 -> 0
+    // This graph is bipartite: true
 
     // Triangle graph (not bipartite)
     graph.clear();
@@ -109,11 +121,29 @@ public class BipartiteGraphCheckAdjacencyList {
     addUndirectedEdge(graph, 2, 0);
     displayGraph(graph, 3);
 
+    // Prints:
+    // Graph has 3 node(s) and the following edges:
+    // 0 -> 1
+    // 0 -> 2
+    // 1 -> 0
+    // 1 -> 2
+    // 2 -> 1
+    // 2 -> 0
+    // This graph is bipartite: false
+
     // Disjoint graph is bipartite connected components (altogether not bipartite)
     graph.clear();
     addUndirectedEdge(graph, 0, 1);
     addUndirectedEdge(graph, 2, 3);
     displayGraph(graph, 4);
+
+    // Prints:
+    // Graph has 4 node(s) and the following edges:
+    // 0 -> 1
+    // 1 -> 0
+    // 2 -> 3
+    // 3 -> 2
+    // This graph is bipartite: false
 
     // Square graph (bipartite)
     graph.clear();
@@ -123,6 +153,18 @@ public class BipartiteGraphCheckAdjacencyList {
     addUndirectedEdge(graph,3,0);
     displayGraph(graph, 4);
 
+    // Prints:
+    // Graph has 4 node(s) and the following edges:
+    // 0 -> 1
+    // 0 -> 3
+    // 1 -> 0
+    // 1 -> 2
+    // 2 -> 1
+    // 2 -> 3
+    // 3 -> 2
+    // 3 -> 0
+    // This graph is bipartite: true
+
     // Square graph with additional edge (not bipartite)
     graph.clear();
     addUndirectedEdge(graph,0,1);
@@ -131,6 +173,20 @@ public class BipartiteGraphCheckAdjacencyList {
     addUndirectedEdge(graph,3,0);
     addUndirectedEdge(graph,0,2);
     displayGraph(graph, 4);
+
+    // Prints:
+    // Graph has 4 node(s) and the following edges:
+    // 0 -> 1
+    // 0 -> 3
+    // 0 -> 2
+    // 1 -> 0
+    // 1 -> 2
+    // 2 -> 1
+    // 2 -> 3
+    // 2 -> 0
+    // 3 -> 2
+    // 3 -> 0
+    // This graph is bipartite: false
 
   }
 

@@ -1,5 +1,5 @@
 /**
- * An implementation of Kruskal's MST algorithm using Edge list
+ * An implementation of Kruskal's MST algorithm using an edge list
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

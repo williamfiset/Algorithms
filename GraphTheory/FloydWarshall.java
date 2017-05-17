@@ -68,6 +68,24 @@ public class FloydWarshall {
           System.out.printf("Cost from node %d -> %d is %.2f\n", i,j,matrix[i][j]);
     System.out.println();
 
+    // Prints:
+    // Regular graph: 
+    // Cost from node 0 -> 0 is 0.00
+    // Cost from node 1 -> 0 is 1.00
+    // Cost from node 1 -> 1 is 0.00
+    // Cost from node 1 -> 2 is 7.00
+    // Cost from node 2 -> 0 is 4.00
+    // Cost from node 2 -> 1 is 3.00
+    // Cost from node 2 -> 2 is 0.00
+    // Cost from node 3 -> 0 is 8.00
+    // Cost from node 3 -> 1 is 7.00
+    // Cost from node 3 -> 2 is 4.00
+    // Cost from node 3 -> 3 is 0.00
+    // Cost from node 4 -> 0 is 7.00
+    // Cost from node 4 -> 1 is 6.00
+    // Cost from node 4 -> 2 is 3.00
+    // Cost from node 4 -> 3 is 0.00
+    // Cost from node 4 -> 4 is 0.00
 
     // The following is an example of a graph with a strongly connected 
     // component which contains a negative cycle. Anywhere this cycle 
@@ -98,6 +116,29 @@ public class FloydWarshall {
         if (matrix[i][j] != Double.POSITIVE_INFINITY)
           System.out.printf("Cost from node %d -> %d is %.2f\n", i,j,matrix[i][j]);
     System.out.println();
+
+    // Prints: 
+    // Graph with negative cycle: 
+    // Cost from node 0 -> 0 is 0.00
+    // Cost from node 0 -> 1 is 3.00
+    // Cost from node 0 -> 2 is -Infinity
+    // Cost from node 0 -> 3 is -Infinity
+    // Cost from node 0 -> 4 is -Infinity
+    // Cost from node 1 -> 0 is 2.00
+    // Cost from node 1 -> 1 is 0.00
+    // Cost from node 1 -> 2 is -Infinity
+    // Cost from node 1 -> 3 is -Infinity
+    // Cost from node 1 -> 4 is -Infinity
+    // Cost from node 2 -> 2 is -Infinity
+    // Cost from node 2 -> 3 is -Infinity
+    // Cost from node 2 -> 4 is -Infinity
+    // Cost from node 3 -> 2 is -Infinity
+    // Cost from node 3 -> 3 is -Infinity
+    // Cost from node 3 -> 4 is -Infinity
+    // Cost from node 4 -> 2 is -Infinity
+    // Cost from node 4 -> 3 is -Infinity
+    // Cost from node 4 -> 4 is -Infinity
+
 
   }
 
