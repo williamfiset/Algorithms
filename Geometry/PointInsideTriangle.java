@@ -1,6 +1,6 @@
 /**
- * This file shows you how to determine if a point is inside and on the
- * boundary of a triangle formed by three points.
+ * This file shows you how to determine if a point is inside or 
+ * on the boundary of a triangle formed by three points.
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
@@ -13,7 +13,7 @@ public class PointInsideTriangle {
   private static final double EPS = 1e-8;
 
   // Determine if the point 'p' lies inside or exactly on the border of the 
-  // triangle formed by the three points a,b,c. If you do not want to exclude
+  // triangle formed by the three points a,b,c. If you do want to exclude
   // the border modify this method so that instead of checking against '<=' and
   // '>=' it checks against strictly less than and strictly greater than.
   public static boolean pointInsideTriangle(Point2D a, Point2D b, Point2D c, Point2D p) {
@@ -84,7 +84,7 @@ public class PointInsideTriangle {
           System.out.printf("(%.3f,%.3f) is inside the triangle\n", p.getX(), p.getY());
         }
       }
-    }    
+    }
 
   }
 
