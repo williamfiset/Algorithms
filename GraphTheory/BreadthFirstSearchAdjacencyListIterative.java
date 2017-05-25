@@ -30,9 +30,10 @@ public class BreadthFirstSearchAdjacencyListIterative {
     // to easily augment this method for additional functionality
     int DEPTH_TOKEN = -1;
 
-    // Start by visiting the starting node
+    // Start by visiting the starting node and adding it to the queue.
     queue.offer(start);
     queue.offer(DEPTH_TOKEN);
+    visited[start] = true;
     
     // Continue until the BFS is done
     while(true) {
@@ -51,16 +52,24 @@ public class BreadthFirstSearchAdjacencyListIterative {
         // Add another DEPTH_TOKEN
         queue.offer(DEPTH_TOKEN);
 
-      } else if (!visited[node]) {
+      } else {
         
         count++;
-        visited[node] = true;
 
         List <Edge> edges = graph.get(node);
-        if (edges != null)
-          for(Edge edge : edges)
-            if (!visited[edge.to])
+        if (edges != null) {
+
+          // Loop through all edges attached to this node. Mark nodes as 
+          // visited once they're in the queue. This will prevent having
+          // duplicate nodes in the queue and speedup the BFS.
+          for(Edge edge : edges) {
+            if (!visited[edge.to]) {
+              visited[edge.to] = true;
               queue.offer(edge.to);
+            }
+          }
+
+        }
 
       }
 
@@ -84,12 +93,23 @@ public class BreadthFirstSearchAdjacencyListIterative {
     addDirectedEdge(graph, 2, 2, 10); // Self loop
 
     long nodeCount = bfs(graph, 0, numNodes);
-    System.out.println("DFS node count starting at node 0: " + nodeCount);
-    if (nodeCount != 4) System.err.println("Error with DFS");
+    System.out.println("BFS node count starting at node 0: " + nodeCount);
+    if (nodeCount != 4) System.err.println("Error with BFS");
 
     nodeCount = bfs(graph, 4, numNodes);
-    System.out.println("DFS node count starting at node 4: " + nodeCount);
-    if (nodeCount != 1) System.err.println("Error with DFS");
+    System.out.println("BFS node count starting at node 4: " + nodeCount);
+    if (nodeCount != 1) System.err.println("Error with BFS");
+
+    // Complete graph with self loops
+    graph.clear();
+    numNodes = 100;
+    for (int i = 0; i < numNodes; i++)
+      for (int j = 0; j < numNodes; j++)
+        addDirectedEdge(graph,i,j,1);
+
+    nodeCount = bfs(graph, 6, numNodes);
+    System.out.println("BFS node count starting at node 6: " + nodeCount);
+    if (nodeCount != 100) System.err.println("Error with BFS");    
 
   }
 
