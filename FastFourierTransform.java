@@ -1,73 +1,105 @@
 /** 
- * This snippet multiplies 2 polynomials with NON NEGATIVE coefficients
+ * This snippet multiplies 2 polynomials with possibly negative coefficients
  * very efficiently using the Fast Fourier Transform. NOTE: This code only 
- * works for polynomials with coefficients in the range [0, 2013265920].
+ * works for polynomials with coefficients in the range of a signed integer.
  * 
- * Copyright 2014 David Eisenstat <eisenstatdavid@gmail.com>
- * Released under http://opensource.org/licenses/MIT
- * simplertimes August 2014 version
+ * @author David Brink
  **/
 
 class FFT {
 
-  public static final int LOG_MAX_LENGTH = 27;
-  public static final int MODULUS = 2013265921;
-  private static final int PRIMITIVE_ROOT = 137;
-  private static final int PRIMITIVE_ROOT_INVERSE = 749463956;
+  // p is a prime number set to be larger than 2^31-1
+  static long p = 4300210177L;
 
-  static int addMultiply(int x, int y, int z) {
-    return (int)((x + y * (long) z) % MODULUS);
+  // q is 2^64 mod p used to compute x*y mod p
+  // Note: If x*y mod p is negative it is because 2^64 
+  // has been subtracted and so it must be added again.
+  static long q = 857728777;
+
+  // A number that has order 2^20 modulo p
+  static long zeta = 3273;
+
+  static int exp = 20;
+  static long[] powers;
+
+  static {
+    powers = new long[(1 << exp) + 1];
+    powers[0] = 1;
+    for(int i = 1; i < powers.length; i++)
+      powers[i] = mult(zeta, powers[i - 1]);
   }
 
-  private static int[] transform(int[] a, int logN, int primitiveRoot) {
-    int[] tA = new int[1 << logN];
-    for (int j = 0; j < a.length; j++) {
-      int k = j << (32 - logN);
-      k = ((k >>> 1) & 0x55555555) | ((k & 0x55555555) << 1);
-      k = ((k >>> 2) & 0x33333333) | ((k & 0x33333333) << 2);
-      k = ((k >>> 4) & 0x0f0f0f0f) | ((k & 0x0f0f0f0f) << 4);
-      k = ((k >>> 8) & 0x00ff00ff) | ((k & 0x00ff00ff) << 8);
-      tA[(k >>> 16) | (k << 16)] = a[j];
+  static long mult(long x, long y) {
+    long z = x * y;
+    if(z < 0) {
+      z = z % p + q;
+      return z < 0 ? z + p : z;
     }
-    int[] root = new int[LOG_MAX_LENGTH];
-    root[root.length - 1] = primitiveRoot;
-    for (int i = root.length - 1; i > 0; i--) {
-      root[i - 1] = addMultiply(0, root[i], root[i]);
+    if(z < (1L << 56) && x > (1 << 28) && y > (1 << 28)) {
+      z = z % p + q;
+      return z < p ? z : z - p;
     }
-    for (int i = 0; i < logN; i++) {
-      int twiddle = 1;
-      for (int j = 0; j < (1 << i); j++) {
-        for (int k = j; k < tA.length; k += 2 << i) {
-          int x = tA[k];
-          int y = tA[k + (1 << i)];
-          tA[k] = addMultiply(x, twiddle, y);
-          tA[k + (1 << i)] = addMultiply(x, MODULUS - twiddle, y);
+    return z % p;
+  }
+
+  // Computes the polynomial product modulo p
+  static long[] multiply(long[] x, long[] y) {
+    
+    // If the coefficients are negative place them in the range of [0, p)
+    for(int i = 0; i < x.length; i++) if (x[i] < 0) x[i] += p;
+    for(int i = 0; i < y.length; i++) if (y[i] < 0) y[i] += p;
+
+    int zLength = x.length + y.length - 1;
+    int logN = 32 - Integer.numberOfLeadingZeros(zLength - 1);
+    long[] xx = transform(x, logN, false);
+    long[] yy = transform(y, logN, false);
+    long[] zz = new long[1 << logN];
+    for(int i = 0; i < zz.length; i++)
+      zz[i] = mult(xx[i], yy[i]);
+    long[] nZ = transform(zz, logN, true);
+    long[] z = new long[zLength]; 
+    long nInverse = p - ((p - 1) >>> logN);
+    for(int i = 0; i < z.length; i++) {
+
+      z[i] = mult(nInverse, nZ[i]);
+
+      // Allow for negative coefficients. If you know the answer cannot be
+      // greater than 2^31-1 subtract p to obtain the negative coefficient.
+      if (z[i] >= Integer.MAX_VALUE) z[i] -= p;
+
+    }
+    return z;
+  }
+
+  static long[] transform(long[] v, int logN, boolean inverse) {
+    int n = 1 << logN;
+    long[] w = new long[n];
+    for(int i = 0; i < v.length; i++)
+      w[Integer.reverse(i) >>> 32 - logN] = v[i];
+    for(int i = 0; i < logN; i++) {
+      int jMax = 1 << i;
+      int kStep = 2 << i;
+      int index = 0;
+      int step = 1 << exp - i - 1;
+      if(inverse) {
+        index = 1 << exp;
+        step = -step;
+      }
+      for(int j = 0; j < jMax; j++) {
+        long zeta = powers[index];
+        index += step;
+        for(int k = j; k < n; k += kStep) {
+          int kk = jMax | k;
+          long x = w[k];
+          long y = mult(zeta, w[kk]);
+          long z = x + y;
+          w[k] = z < p ? z : z - p;
+          z = x - y;
+          w[kk] = z < 0 ? z + p : z;
         }
-        twiddle = addMultiply(0, root[i], twiddle);
       }
     }
-    return tA;
-  }
-
-  public static int[] multiply(int[] a, int[] b) {
-    int minN = a.length - 1 + b.length;
-    int logN = 0;
-    while ((1 << logN) < minN) {
-      logN++;
-    }
-    int[] tA = transform(a, logN, PRIMITIVE_ROOT);
-    int[] tB = transform(b, logN, PRIMITIVE_ROOT);
-    int[] tC = tA;
-    for (int j = 0; j < tC.length; j++) {
-      tC[j] = addMultiply(0, tA[j], tB[j]);
-    }
-    int[] nC = transform(tC, logN, PRIMITIVE_ROOT_INVERSE);
-    int[] c = new int[minN];
-    int nInverse = MODULUS - ((MODULUS - 1) >>> logN);
-    for (int j = 0; j < c.length; j++) {
-      c[j] = addMultiply(0, nInverse, nC[j]);
-    }
-    return c;
+    return w;
   }
 
 }
@@ -77,13 +109,13 @@ public class FastFourierTransform {
   public static void main(String[] args) {
     
     // 1*x^0 + 5*x^1 + 3*x^2 + 2*x^3
-    int[] polynomial1 = { 1, 5, 3, 2 };
+    long[] polynomial1 = { 1, 5, 3, 2 };
 
     // 0*x^0 + 0*x^1 + 6*x^2 + 2*x^3 + 5*x^4
-    int[] polynomial2 = { 0, 0, 6, 2, 5};
+    long[] polynomial2 = { 0, 0, 6, 2, 5};
 
     // Multiply the polynomials using the FFT algorithm
-    int[] result = FFT.multiply(polynomial1, polynomial2);
+    long[] result = FFT.multiply(polynomial1, polynomial2);
 
     // Prints [0, 0, 6, 32, 33, 43, 19, 10] or equivalently
     // 6*x^2 + 32*x^3 + 33*x^4 + 43*x^5 + 19*x^6 + 10*x^7
