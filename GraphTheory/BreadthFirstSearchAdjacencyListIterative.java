@@ -26,9 +26,9 @@ public class BreadthFirstSearchAdjacencyListIterative {
     boolean[] visited = new boolean[n];
     ArrayDeque <Integer> queue = new ArrayDeque<>();
     
-    // For each breadth first search layer gets separated by a DEPTH_TOKEN
+    // Each breadth first search layer gets separated by a DEPTH_TOKEN
     // to easily augment this method for additional functionality
-    int DEPTH_TOKEN = -1;
+    final int DEPTH_TOKEN = -1;
 
     // Start by visiting the starting node and adding it to the queue.
     queue.offer(start);

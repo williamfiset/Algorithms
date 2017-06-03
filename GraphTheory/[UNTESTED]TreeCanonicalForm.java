@@ -31,6 +31,8 @@ class TreeNode {
 
 public class TreeCanonicalForm {
 
+  // Encodes a tree in a canonized manner in O(V^2) time
+  // A faster variant without using strings can do O(V) time
   public static String canonizeTree(TreeNode node) {
     
     if (node == null) return "";
