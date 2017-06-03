@@ -3,6 +3,8 @@
  * wish to find place(s) of intersection of the lines from
  * the point which are tangent to the circle. For an animation
  * see here: http://jsfiddle.net/zxqCw/1/
+ * 
+ * Time Complexity: O(1)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/

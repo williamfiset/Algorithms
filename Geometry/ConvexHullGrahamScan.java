@@ -1,5 +1,8 @@
 /**
  * A working implementation of the GrahamScan convex hull algorithm
+ *
+ * Time Complexity: O(nlogn)
+ *  
  * @author Micah Stairs, William Fiset
  **/
 

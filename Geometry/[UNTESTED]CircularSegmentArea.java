@@ -1,6 +1,9 @@
 /**
  * This file shows you how to find the area of a circular segment
  * which lies on the circumference of a circle of radius r.
+ *
+ * Time Complexity: O(1)
+ * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 import static java.lang.Math.*;

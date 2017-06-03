@@ -1,7 +1,9 @@
 /**
- * Here we present two methods (recursive and iterative) of 
- * generating all the permutations of a list of elements
+ * Here we present two methods (recursive and iterative) of
+ * generating all the permutations of a list of elements.
  * 
+ * Time Complexity: O(n!)
+ *
  * @author William Fiset, Micah Stairs
  **/
 

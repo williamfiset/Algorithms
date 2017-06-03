@@ -3,7 +3,10 @@
  * General formula for line:
  * ax + by = c, a != 0
  * y = (c - ax)/b
- *  
+ *
+ * Time Complexity: O(1)
+ * 
+ * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
 import java.awt.geom.Point2D;
@@ -23,17 +26,10 @@ public class LineCircleIntersection {
     double B = 2*a*b*y - 2*a*c - 2*b*b*x;
     double C = b*b*x*x + b*b*y*y - 2*b*c*y + c*c - b*b*r*r;
 
-    //System.out.printf("%.3f %.3f %.3f\n", a,b,c);
-    //System.out.printf("%.3f %.3f %.3f\n", A,B,C);
-
     // Use quadratic formula X = -b +- sqrt(a^2 - 4ac)/2a to find the 
     // roots of the equation (if they exist).
       
     double D = B*B - 4*A*C;
-
-   //System.out.printf("D = %.3f\n", D);
-   //System.out.println( D < EPS );
-
     double x1,y1,x2,y2;
 
     // Line is tangent to circle
@@ -70,7 +66,6 @@ public class LineCircleIntersection {
 
   public static void main(String[] args) {
 
-    
     // Vertical Line on passing through (1,0)
     display(lineCircleIntersection(1,0,1, 0,0,1));
     
@@ -88,8 +83,7 @@ public class LineCircleIntersection {
     if (pts == null) System.out.println("null");
     else {
       if (pts.length == 0) System.out.println("[]");
-      else 
-        for(Point2D p : pts) System.out.println(p);
+      else for(Point2D p : pts) System.out.println(p);
     }
   }
 

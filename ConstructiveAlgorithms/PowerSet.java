@@ -1,9 +1,10 @@
-
 /**
  * This code snippet shows how to generate the powerset of a set which is the 
  * set of all subsets of a set. There are two common ways of doing this which
  * are to use the binary representation of numbers on a computer or to 
  * do it recursively. Both methods are shown here, pick your flavor! 
+ * 
+ * Time Complexity: O( 2^n )
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/

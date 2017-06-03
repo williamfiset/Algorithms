@@ -13,6 +13,8 @@
  *  This code is a modification of the monotone chain algorithm found on wikibooks.
  *  https://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain
  *
+ * Time Complexity: O(nlogn)
+ * 
  * @author A. M. Andrew, Dan Sunday, William Fiset
  **/
 

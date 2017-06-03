@@ -1,6 +1,8 @@
 /**
  * This file shows you how to rotate a point clockwise relative
  * to a fixed point a certain number of radians.
+ * 
+ * Time Complexity: O(1)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/

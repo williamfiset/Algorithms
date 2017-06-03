@@ -1,7 +1,7 @@
 /**
  * Here I show how you can generate all the combinations of a sequence
  * of size r which are repeated at most k times.
- * 
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
@@ -51,7 +51,7 @@ public class CombinationsWithRepitition {
   }
 
   // Given a sequence this method prints all the combinations of size
-  // 'r' in a given sequence which was each element repeated at most 'k' times
+  // 'r' in a given sequence which has each element repeated at most 'k' times
   public static void printCombinationsWithRepetition(int[] sequence, int r, int k) {
 
     if (sequence == null) return;

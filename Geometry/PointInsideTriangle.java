@@ -1,6 +1,8 @@
 /**
  * This file shows you how to determine if a point is inside or 
  * on the boundary of a triangle formed by three points.
+ * 
+ * Time Complexity: O(1)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/

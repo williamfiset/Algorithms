@@ -4,6 +4,9 @@
  * determines in O(kn^2) whether the matrices are equal for a chosen k value
  * with a probability of failure less than 2^-k.
  * 
+ * 
+ * Time Complexity: O( kn^2 )
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

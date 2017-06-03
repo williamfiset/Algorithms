@@ -1,6 +1,8 @@
 /**
  * There is more than one way to take the area of a triangle, some 
  * are faster or more convenient in some situations.
+ * 
+ * Time Complexity: O(1)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/

@@ -2,6 +2,8 @@
  * This file shows you how to determine if four 3D points 
  * lie in the same plane as each other.
  *
+ * Time Complexity: O(1)
+ * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

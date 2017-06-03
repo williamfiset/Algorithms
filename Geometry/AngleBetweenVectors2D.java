@@ -2,6 +2,8 @@
  * This file shows you how to find the smaller of the two
  * angles between two vectors in R2
  *
+ * Time Complexity: O(1)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

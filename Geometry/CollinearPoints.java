@@ -2,6 +2,8 @@
  * In this file I show you how to determine if three points are
  * collinear to each other (on the same line).
  *
+ * Time Complexity: O(1)
+ * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

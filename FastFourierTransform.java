@@ -3,6 +3,8 @@
  * very efficiently using the Fast Fourier Transform. NOTE: This code only 
  * works for polynomials with coefficients in the range of a signed integer.
  * 
+ * Time Complexity: O( nlogn )
+ *
  * @author David Brink
  **/
 

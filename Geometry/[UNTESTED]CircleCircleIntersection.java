@@ -1,12 +1,15 @@
 /**
- * This file shows you how to find the area of intersection of two circles
+ * This file shows you how to find the intersection of two circles.
+ *
+ * Time Complexity: O(1)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
-import java.awt.geom.*;
 import static java.lang.Math.*;
+import java.awt.geom.Point2D;
 
-public class CircleCircleIntersectionArea {
+public class CircleCircleIntersection {
 
   private static final double EPS = 1e-6;
 
@@ -19,56 +22,6 @@ public class CircleCircleIntersectionArea {
     return acos(x);
   }
 
-  public static double circleCircleIntersectionArea(Point2D c1, double r1, Point2D c2, double r2) {
-    
-    double  r = r1, R = r2;
-    Point2D c = c1, C = c2;
-
-    if (r1 > r2) {
-      r = r2; R = r1;
-      c = c2; C = c1;
-    }
-
-    double dist = c1.distance(c2);
-    Point2D[] intersections = circleCircleIntersection(c1, r1, c2, r2);
-    
-    // Smaller circle is contained within larger circle
-    if (intersections == null) {
-      return PI*r*r;
-
-    // Circles do not intersect
-    } else if (intersections.length == 0) {
-      return 0;
-
-    // One intersection point
-    } else if (intersections.length == 1) {
-      
-      // Check if the smaller circle is inside larger circle
-      if (dist < R) {
-        return PI*r*r;
-      } else {
-        return 0;
-      }
-    
-    // Circles intersect at two distinct points
-    } else {
-
-      // http://stackoverflow.com/questions/4247889/area-of-intersection-between-two-circles
-      double d = dist;
-      Double part1 = r*r*arccosSafe((d*d + r*r - R*R)/(2*d*r));
-      Double part2 = R*R*arccosSafe((d*d + R*R - r*r)/(2*d*R));
-      Double part3 = 0.5*sqrt((-d+r+R)*(d+r-R)*(d-r+R)*(d+r+R));
-
-      return part1 + part2 - part3;
-
-    }
-
-  }
-  
-  // Finds the intersection points of two circles. If the smaller circle is contained
-  // within the larger one this method returns null. If there is no intersection point
-  // an empty array is returned. If there is a unique intersection point that point alone
-  // is returned, otherwise two distinct points are returned where the intersection is.
   public static Point2D[] circleCircleIntersection(Point2D c1, double r1, Point2D c2, double r2) {
     
     // r is the smaller radius and R is bigger radius
@@ -85,13 +38,14 @@ public class CircleCircleIntersectionArea {
     double dist = c1.distance(c2);
 
     // There are an infinite number of solutions
-    if (dist < EPS && abs(r-R) < EPS) return null;
-
-    // No intersection (small circle contained within big circle)
-    if (r+dist < R) return null;
+    if (dist < EPS && abs(r-R) < EPS)
+      throw new IllegalStateException("Infinite number of solutions (circles are equal)");
 
     // No intersection (circles are disjoint)
     if (r+R < dist) return new Point2D[]{};
+    
+    // No intersection (small circle contained within big circle)
+    if (r+dist < R) return new Point2D[]{};
     
     // Let (cx, cy) be the center of the small circle
     // Let (Cx, Cy) be the center of the larger circle
@@ -113,7 +67,7 @@ public class CircleCircleIntersectionArea {
       return new Point2D[]{point};
 
     // Find the angle via cos law
-    double angle = arccosSafe((r*r-dist*dist-R*R)/(-2.0*dist*R));
+    double angle = arccosSafe((r*r-dist*dist-R*R)/(-2*dist*R));
 
     // Two unique intersection points      
     Point2D pt1 = rotatePoint( C, point,  angle );
@@ -139,8 +93,8 @@ public class CircleCircleIntersectionArea {
     double y = pty - fpy;
 
     // Apply the clockwise rotation matrix to the vector <x, y>
-    // |  cos(theta) sin(theta) ||x|   |  xcos(theta) + ysin(theta) |
-    // | -sin(theta) cos(theta) ||y| = | -xsin(theta) + ycos(theta) |
+    // |  cosθ sinθ ||x|   |  xcosθ + ysinθ |
+    // | -sinθ cosθ ||y| = | -xsinθ + ycosθ |
     double xRotated = x*cos(angle) + y*sin(angle);
     double yRotated = y*cos(angle) - x*sin(angle);
 
@@ -150,4 +104,64 @@ public class CircleCircleIntersectionArea {
 
   }
 
+  public static void main(String[] args) {
+
+    Point2D center1 = new Point2D.Double(3,-5);
+    Point2D center2 = new Point2D.Double(2,-5);
+    Point2D center3 = new Point2D.Double(6,-5);
+    Point2D center4 = new Point2D.Double(3,-7);
+    Point2D center5 = new Point2D.Double(3,-10);
+    
+    double radius1 = 2;
+    double radius2 = 1;
+    double radius3 = 1;
+    double radius4 = 1;
+    double radius5 = 0.5;
+
+    Point2D[] pts = circleCircleIntersection(center1,radius1,center2,radius2);
+    displayIntersectionPoints(pts);
+
+    pts = circleCircleIntersection(center1,radius1,center3,radius3);
+    displayIntersectionPoints(pts);
+
+    pts = circleCircleIntersection(center1,radius1,center4,radius4);
+    displayIntersectionPoints(pts);
+
+    pts = circleCircleIntersection(center1,radius1,center5,radius5);
+    displayIntersectionPoints(pts);
+
+    Point2D center6 = new Point2D.Double(3,1);
+    Point2D center7 = new Point2D.Double(4,1);
+
+    double radius6 = 2.0;
+    double radius7 = sqrt(2);
+
+    pts = circleCircleIntersection(center6,radius6,center7,radius7);
+    displayIntersectionPoints(pts);
+
+    Point2D center8 = new Point2D.Double(9,1);
+    Point2D center9 = new Point2D.Double(12,1);
+    Point2D center10 = new Point2D.Double(9,1);
+
+    double radius8 = 2;
+    double radius9 = sqrt(1.1);
+    double radius10 = 0.25;
+    
+    pts = circleCircleIntersection(center8,radius8,center9,radius9);
+    displayIntersectionPoints(pts);
+
+    pts = circleCircleIntersection(center8,radius8,center10,radius10);
+    displayIntersectionPoints(pts);
+
+  }
+
+  private static void displayIntersectionPoints(Point2D[] pts) {
+    System.out.println("Circle intersections: ");
+    for (Point2D p: pts) System.out.println(p);
+  }
+
 }
+
+
+
+
