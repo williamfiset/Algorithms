@@ -181,6 +181,30 @@ public class TreeCanonicalForm {
     String canonicalForm = canonizeTree(tree[0]);
     System.out.println(canonicalForm);
 
+    runTests();
+
+  }
+
+  private static void runTests() {
+
+    TreeNode[] tree = new TreeNode[5];
+    
+    for ( int i = 0; i < tree.length; i++) tree[i] = new TreeNode();
+    tree[2].connect(tree[0]);
+    tree[2].connect(tree[1]);
+    tree[2].connect(tree[3]);
+    tree[3].connect(tree[4]);
+    String encoding1 = canonizeTree(tree[0]);
+
+    for ( int i = 0; i < tree.length; i++) tree[i] = new TreeNode();
+    tree[1].connect(tree[3]);
+    tree[1].connect(tree[0]);
+    tree[1].connect(tree[2]);
+    tree[2].connect(tree[4]);
+    String encoding2 = canonizeTree(tree[2]);
+
+    if(!encoding1.equals(encoding2)) System.out.println("ERROR");
+
   }
 
 }
