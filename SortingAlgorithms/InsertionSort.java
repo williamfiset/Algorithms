@@ -1,36 +1,26 @@
 /**
- * Bubble sort implementation
+ * Insertion sort implementation
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
 import java.util.Random;
 
-public class BubbleSort {
+public class InsertionSort {
 
-  // Sort the array using bubble sort. The idea behind
-  // bubble sort is to look for adjacent indexes which 
-  // are out of place and interchange their elements 
-  // until the entire array is sorted.
-  public static void bubbleSort(int [] ar) {
+  // Sort the given array using insertion sort. The idea behind
+  // insertion sort is that at the array is already sorted from
+  // [0, i] and you want to add the element at position i+1, so
+  // you 'insert' it at the appropriate location.
+  public static void insertionSort(int[] ar) {
 
     if (ar == null) return;
     
     final int N = ar.length;
-    boolean sorted;
 
-    do {
-      
-      sorted = true;
-
-      for(int i = 1; i < N; i++) {
-        if (ar[i] < ar[i-1]) {
-          swap(ar, i-1, i);
-          sorted = false;
-        }
-      }
-
-    } while(!sorted);
+    for (int i = 1; i < N; i++)
+      for (int j = i; j > 0 && ar[j] < ar[j-1]; j--)
+        swap(ar, j-1, j);
 
   }
 
@@ -43,7 +33,7 @@ public class BubbleSort {
   public static void main(String[] args) {
   
     int[] array = {10, 4, 6, 8, 13, 2, 3};
-    bubbleSort(array);
+    insertionSort(array);
     System.out.println(java.util.Arrays.toString(array));
 
     runTests();
@@ -60,7 +50,7 @@ public class BubbleSort {
       for(int j = 0; j < i; j++) array[j] = randInt(-1000000, +1000000);
       int[] arrayCopy = array.clone();
 
-      bubbleSort(array);
+      insertionSort(array);
       java.util.Arrays.sort(arrayCopy);
 
       if (!java.util.Arrays.equals(array, arrayCopy))
@@ -73,26 +63,5 @@ public class BubbleSort {
     return RANDOM.nextInt((max - min) + 1) + min;
   }
 
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

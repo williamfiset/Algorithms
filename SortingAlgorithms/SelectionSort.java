@@ -1,36 +1,29 @@
 /**
- * Bubble sort implementation
+ * Selection sort implementation
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
 import java.util.Random;
 
-public class BubbleSort {
+public class SelectionSort {
 
-  // Sort the array using bubble sort. The idea behind
-  // bubble sort is to look for adjacent indexes which 
-  // are out of place and interchange their elements 
-  // until the entire array is sorted.
-  public static void bubbleSort(int [] ar) {
-
-    if (ar == null) return;
+  public static void selectionSort(int[] array) {
     
-    final int N = ar.length;
-    boolean sorted;
+    if (array == null) return;
+    final int N = array.length;
 
-    do {
+    for (int i = 0; i < N; i++) {
       
-      sorted = true;
+      // Find the index beyond i with a lower value than i
+      int swapIndex = i;
+      for (int j = i + 1; j < N; j++)
+        if (array[j] < array[swapIndex])
+          swapIndex = j;
 
-      for(int i = 1; i < N; i++) {
-        if (ar[i] < ar[i-1]) {
-          swap(ar, i-1, i);
-          sorted = false;
-        }
-      }
+      swap(array, i, swapIndex);
 
-    } while(!sorted);
+    }
 
   }
 
@@ -41,9 +34,9 @@ public class BubbleSort {
   }
 
   public static void main(String[] args) {
-  
+    
     int[] array = {10, 4, 6, 8, 13, 2, 3};
-    bubbleSort(array);
+    selectionSort(array);
     System.out.println(java.util.Arrays.toString(array));
 
     runTests();
@@ -60,12 +53,12 @@ public class BubbleSort {
       for(int j = 0; j < i; j++) array[j] = randInt(-1000000, +1000000);
       int[] arrayCopy = array.clone();
 
-      bubbleSort(array);
+      selectionSort(array);
       java.util.Arrays.sort(arrayCopy);
 
       if (!java.util.Arrays.equals(array, arrayCopy))
         System.out.println("ERROR");
-      
+
     }
   }
 
@@ -74,15 +67,6 @@ public class BubbleSort {
   }
 
 }
-
-
-
-
-
-
-
-
-
 
 
 
