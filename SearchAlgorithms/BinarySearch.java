@@ -4,6 +4,8 @@
  * However, in the event that you need to do a binary search on the real 
  * numbers you can resort to this implementation.
  *
+ * Time Complexity: O(log(high-low))
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

@@ -5,7 +5,7 @@
  * with a probability of failure less than 2^-k.
  * 
  * 
- * Time Complexity: O( kn^2 )
+ * Time Complexity: O(kn^2)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/

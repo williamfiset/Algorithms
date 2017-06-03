@@ -1,3 +1,8 @@
+/**
+ * An implementation of interpolation search
+ *
+ * Time Complexity: O(log(log(n))) if data is uniform O(n) in worst case
+ **/
 
 public class InterpolationSearch {
 

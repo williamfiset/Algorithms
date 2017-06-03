@@ -1,6 +1,9 @@
 /**
  * Rotate the entries of a square matrix 90 degrees clockwise.
- * @author William Fiset
+ *
+ * Time Complexity: O(n^2)
+ * 
+ * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
 public class RotateSquareMatrixInplace {

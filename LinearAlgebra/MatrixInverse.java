@@ -1,6 +1,9 @@
 /**
  * Use Gaussian elimination on an augmented matrix to
  * find the inverse of a matrix.
+ *
+ * Time Complexity: O(n^3)
+ *  
  **/
 
 class MatrixInverse {

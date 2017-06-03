@@ -2,6 +2,9 @@
  * Solve a system of linear equations using Gaussian elimination.
  * To work with this code the linear equations must be specified 
  * as a matrix augmented with the constants as the right-most column.
+ *
+ * Time Complexity: O(c*r^2)
+ * 
  **/
 
 class GaussianElimination {

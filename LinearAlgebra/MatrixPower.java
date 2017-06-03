@@ -1,6 +1,8 @@
 /**
- * Raise a matrix to a certain power in O(log(n)*m³) time
- * where n is the power and m is the size of the matrix.
+ * Raise an nxn square matrix to a certain power p.
+ *
+ * Time Complexity: O(n^3log(p))
+ * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
@@ -14,7 +16,7 @@ public class MatrixPower {
     return newMatrix;
   }
 
-  // Perform matrix multiplication whilst modding the values, O(n^3)
+  // Perform matrix multiplication, O(n^3)
   static long[][] squareMatrixMult(long[][] m1, long[][] m2) {
 
     final int N = m1.length;
@@ -23,24 +25,26 @@ public class MatrixPower {
     for (int i = 0; i < N; i++)
       for (int j = 0; j < N; j++)
         for (int k = 0; k < N; k++ )
-          newMatrix[i][j] = newMatrix[i][j] + m1[i][k]*m2[k][j]; // Overflow can happen here, watch out!
+          // Overflow can happen here, watch out!
+          newMatrix[i][j] = newMatrix[i][j] + m1[i][k]*m2[k][j];
 
     return newMatrix;
 
   }
 
-  // Raise a matrix to the nth power. If n is negative 
-  // return null and if n is zero return the identity.
+  // Raise a matrix to the pth power. If p is negative 
+  // return null and if p is zero return the identity.
   // NOTE: Make sure the matrix is a square matrix and
-  // also watch out for overflow as the numbers climb quickly
-  static long[][] matrixPower(long[][] matrix, long n) {
+  // also watch out for overflow as the numbers climb quickly!
+  static long[][] matrixPower(long[][] matrix, long p) {
 
-    if (n < 0) return null;
+    if (p < 0) return null;
 
     final int N = matrix.length;
     long[][] newMatrix = null;
 
-    if (n == 0) {
+    // Return identity matrix
+    if (p == 0) {
       newMatrix = new long[N][N];
       for(int i = 0; i < N; i++)
         newMatrix[i][i] = 1L;
@@ -48,16 +52,16 @@ public class MatrixPower {
 
       long[][] P = matrixDeepCopy(matrix);
 
-      while(n > 0) {
+      while(p > 0) {
 
-        if ( (n & 1L) == 1L ) {
+        if ( (p & 1L) == 1L ) {
           if (newMatrix == null) newMatrix = matrixDeepCopy(P);
           else newMatrix = squareMatrixMult(newMatrix, P);
         }
 
-        // Repeatedly square P every loop, O(m³)
+        // Repeatedly square P every loop, O(n^3)
         P = squareMatrixMult(P, P);
-        n >>= 1L;
+        p >>= 1L;
 
       }
     }

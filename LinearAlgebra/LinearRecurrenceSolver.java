@@ -1,15 +1,17 @@
 /**
  *
- * Homogeneous linear recurrence relations with constant coefficients 
- * are some of the most common types of recurrences. The recurrence for 
- * the Fibonacci numbers: f(n) = f(n-1) + f(n-2) with f(0) = f(1) = 1
- * is a classic example of such a recurrence.
- *
  * In this file I present some code to solve a general linear recurrence of the form:
  * f(n) = k + c_1*f(n-1) + c_2*f(n-2) + c_3*f(n-3) + ... c_m*f(n-m) in O(m^3log(n)) time
  * where k is a constant, c_i is a constant.
  *
- * Look at the examples given in the main method to see how to use this code.
+ * Homogeneous linear recurrence relations with constant coefficients (like above)
+ * are some of the most common types of recurrences. The recurrence for 
+ * the Fibonacci numbers: f(n) = f(n-1) + f(n-2) with f(0) = f(1) = 1
+ * is a classic example of such a recurrence.
+ *
+ * To understand how to use this code look at the examples given in the main method
+ *
+ * Time Complexity: O(m^3log(n))
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
@@ -33,24 +35,26 @@ class LinearRecurrenceSolver {
     for (int i = 0; i < N; i++)
       for (int j = 0; j < N; j++)
         for (int k = 0; k < N; k++ )
-          newMatrix[i][j] = newMatrix[i][j] + m1[i][k]*m2[k][j]; // Overflow can happen here, watch out!
+          // Overflow can happen here, watch out!
+          newMatrix[i][j] = newMatrix[i][j] + m1[i][k]*m2[k][j];
 
     return newMatrix;
 
   }
 
-  // Raise a matrix to the nth power. If n is negative 
-  // return null and if n is zero return the identity.
+  // Raise a matrix to the pth power. If p is negative 
+  // return null and if p is zero return the identity.
   // NOTE: Make sure the matrix is a square matrix and
-  // also watch out for overflow as the numbers climb quickly
-  static long[][] matrixPower(long[][] matrix, long n) {
+  // also watch out for overflow as the numbers climb quickly!
+  static long[][] matrixPower(long[][] matrix, long p) {
 
-    if (n < 0) return null;
+    if (p < 0) return null;
 
     final int N = matrix.length;
     long[][] newMatrix = null;
 
-    if (n == 0) {
+    // Return identity matrix
+    if (p == 0) {
       newMatrix = new long[N][N];
       for(int i = 0; i < N; i++)
         newMatrix[i][i] = 1L;
@@ -58,16 +62,16 @@ class LinearRecurrenceSolver {
 
       long[][] P = matrixDeepCopy(matrix);
 
-      while(n > 0) {
+      while(p > 0) {
 
-        if ( (n & 1L) == 1L ) {
+        if ( (p & 1L) == 1L ) {
           if (newMatrix == null) newMatrix = matrixDeepCopy(P);
           else newMatrix = squareMatrixMult(newMatrix, P);
         }
 
-        // Repeatedly square P every loop, O(m³)
+        // Repeatedly square P every loop, O(n^3)
         P = squareMatrixMult(P, P);
-        n >>= 1L;
+        p >>= 1L;
 
       }
     }

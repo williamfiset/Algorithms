@@ -1,5 +1,8 @@
 /**
  * Multiply two matrices together and get their product
+ *
+ * Time Complexity: O(n^3)
+ *  
  * @author Micah Stairs
  **/
 
