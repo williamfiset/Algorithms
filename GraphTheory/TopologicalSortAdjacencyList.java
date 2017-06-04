@@ -5,6 +5,8 @@
  * A topological ordering is a linear ordering of its vertices such that for 
  * every directed edge uv from vertex u to vertex v, u comes before v in the ordering.
  *
+ * Time Complexity: O(V + E)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

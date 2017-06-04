@@ -1,5 +1,6 @@
 /**
  * An implementation of Tarjan's SCC algorithm for a directed graph.
+ * Time Complexity: O(V + E)
  * @author Micah Stairs, William Fiset
  **/
 import java.util.*;

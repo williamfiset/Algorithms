@@ -1,5 +1,6 @@
 /**
  * An implementation of Tarjan's SCC algorithm for a directed graph.
+ * Time Complexity: O(V^2)
  * @author Micah Stairs
  **/
 import java.util.*;
@@ -41,7 +42,7 @@ class TarjanAdjacencyMatrix {
 
     Tarjan sccs = new Tarjan(adjMatrix);
 
-    System.out.println("Strong connected component count: " + sccs.getStronglyConnectedComponentsCount());
+    System.out.println("Strong connected component count: " + sccs.countStronglyConnectedComponents());
     System.out.println("Strong connected components:\n" + Arrays.toString(sccs.getStronglyConnectedComponents()) );
 
     // Output:
@@ -97,7 +98,7 @@ class Tarjan {
   }  
 
   // Returns the number of strongly connected components in this graph
-  public int getStronglyConnectedComponentsCount() {
+  public int countStronglyConnectedComponents() {
     return count;
   }
 

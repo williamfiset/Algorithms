@@ -1,5 +1,7 @@
 /**
  * An implementation of a iterative DFS with an adjacency list
+ * Time Complexity: O(V + E)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

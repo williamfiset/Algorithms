@@ -1,5 +1,7 @@
 /**
  * An implementation of a recursive approach to DFS
+ * Time Complexity: O(V + E)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

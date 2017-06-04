@@ -2,6 +2,8 @@
  * An implementation of the eager Prim's algorithm which relies on 
  * an IndexMinPQ data structure to query the next best edge.
  *
+ *  Time Complexity: O(ElogV)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

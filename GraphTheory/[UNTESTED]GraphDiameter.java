@@ -2,6 +2,8 @@
  * Given a graph as a adjacency list this file shows you how
  * to find the diameter/radius of the graph.
  *
+ * Time Complexity: O(V(V + E)) = O(V^2 + VE))= O(VE)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

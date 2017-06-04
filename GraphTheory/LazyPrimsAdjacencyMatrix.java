@@ -3,6 +3,8 @@
  * which upon visiting a new node adds all the edges to the min priority
  * queue and also removes already seen edges when polling.
  *
+ *  Time Complexity: O(V^2)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

@@ -1,6 +1,8 @@
 /**
  * Determining the diameter of a tree is a special case of the
  * graph diameter problem which can be solved in linear time :)
+ *
+ * Time Complexity: O(V + E)
  * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/

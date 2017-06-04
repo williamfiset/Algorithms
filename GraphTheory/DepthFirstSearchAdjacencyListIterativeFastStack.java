@@ -1,6 +1,7 @@
 /**
  * An implementation of a iterative DFS with an adjacency list
  * using a custom stack for extra speed.
+ * Time Complexity: O(V + E)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/

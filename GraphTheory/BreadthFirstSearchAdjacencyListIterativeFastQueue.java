@@ -1,6 +1,7 @@
 /**
  * An implementation of an iterative BFS with an adjacency list
- *
+ * Time Complexity: O(V + E)
+ * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

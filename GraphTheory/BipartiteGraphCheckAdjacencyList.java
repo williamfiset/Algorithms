@@ -1,6 +1,9 @@
 /**
  * This file shows you how to determine if a graph is bipartite or not.
  * This can be achieved in linear time by coloring the visited nodes.
+ *
+ * Time Complexity: O(V + E)
+ * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

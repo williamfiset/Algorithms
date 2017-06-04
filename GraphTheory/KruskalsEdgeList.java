@@ -1,5 +1,6 @@
 /**
  * An implementation of Kruskal's MST algorithm using an edge list
+ * Time Complexity: O(ElogE)
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

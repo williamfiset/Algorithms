@@ -5,6 +5,8 @@
  *
  * http://webhome.cs.uvic.ca/~wendym/courses/582/16/notes/582_12_tree_can_form.pdf
  *
+ * Time Complexity: O(V^2)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

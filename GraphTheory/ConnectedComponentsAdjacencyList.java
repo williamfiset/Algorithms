@@ -8,7 +8,7 @@
  * by an edge. An alternative approach would be to do a breadth first search
  * from each node (except the ones already visited of course) to determine
  * the individual components.
- *
+ * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
