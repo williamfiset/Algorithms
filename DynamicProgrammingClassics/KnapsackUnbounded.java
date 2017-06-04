@@ -87,7 +87,7 @@ public class KnapsackUnbounded {
       }
       
     }
-
+    
     // Return the best value achievable
     return DP[maxWeight];
     
