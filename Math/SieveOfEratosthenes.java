@@ -1,6 +1,9 @@
 /**
  * Use the sieve of eratosthenes to find all the prime
  * numbers up to a certain limit.
+ *
+ * Time Complexity: O(nloglogn)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

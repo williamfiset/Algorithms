@@ -1,4 +1,6 @@
-
+/**
+ * Time Complexity ~O(log(a + b))
+ **/
 
 public class ModularInverse {
   

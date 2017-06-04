@@ -3,6 +3,8 @@
  * This implementation is substantially faster than Java's
  * BigInteger class because it only uses primitive types.
  *
+ * Time Complexity O(lg(n))
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
@@ -78,8 +80,8 @@ public class ModPow {
   // Example usage
   public static void main(String[] args) {
 
-    long a, n, m, r2;
     java.math.BigInteger A, N, M, r1;
+    long a, n, m, r2;
 
     A = new java.math.BigInteger("3");
     N = new java.math.BigInteger("4");
@@ -90,7 +92,6 @@ public class ModPow {
     r1 = A.modPow(N, M);  // 81
     r2 = modPow(a, n, m); // 81
     System.out.println(r1 + " " + r2);
-
 
     A = new java.math.BigInteger("-45");
     N = new java.math.BigInteger("12345");
@@ -124,6 +125,34 @@ public class ModPow {
     r2 = modPow(a, n, m); // 675
     System.out.println(r1 + " " + r2);
 
+    for (int i = 0; i < 1000; i++) {
+      A = new java.math.BigInteger(a+"");
+      N = new java.math.BigInteger(n+"");
+      M = new java.math.BigInteger(m+"");
+      a = Math.random() < 0.5 ? randLong(MAX) : -randLong(MAX);
+      n = randLong();
+      m = randLong(MAX);
+      try {
+        r1 = A.modPow(N, M);
+        r2 = modPow(a,n,m);
+        if (r1.longValue() != r2)
+          System.out.printf("Broke with: a = %d, n = %d, m = %d\n",a,n,m);
+      } catch (ArithmeticException e) { }
+    }
+
+  }
+
+    /* TESTING RELATED METHODS */
+
+  final static java.util.Random RANDOM = new java.util.Random();
+
+  // Returns long between [1, bound]
+  public static long randLong(long bound) {
+    return java.util.concurrent.ThreadLocalRandom.current().nextLong(1, bound+1);
+  }
+
+  public static long randLong() {
+    return RANDOM.nextLong();
   }
 
 }

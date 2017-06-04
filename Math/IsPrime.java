@@ -1,5 +1,6 @@
 /**
  * Tests whether a number is a prime number or not
+ * Time Complexity: O(sqrt(n))
  * @author Micah Stairs, William Fiset
  **/
 

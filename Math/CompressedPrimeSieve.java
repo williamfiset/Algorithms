@@ -7,6 +7,8 @@
  * (even numbers are omitted because they are not prime, with the exception of 
  * 2 which is handled as a special case).
  *
+ * Time Complexity: ~O(nloglogn)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

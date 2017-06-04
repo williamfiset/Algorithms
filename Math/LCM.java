@@ -1,5 +1,8 @@
 /**
  * An implementation of finding the LCM of two numbers
+ *
+ * Time Complexity ~O(log(a + b))
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
