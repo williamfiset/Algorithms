@@ -1,6 +1,8 @@
-
 /**
  * An implementation of the edit distance algorithm
+ * 
+ * Time Complexity: O(nm)
+ *
  * @author Micah Stairs
  **/
 

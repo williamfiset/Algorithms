@@ -1,6 +1,8 @@
 /**
  * This file contains an implementation of finding the Longest Common
- * Subsequence (LCS) between two strings using dynamic programming in O(nm)
+ * Subsequence (LCS) between two strings using dynamic programming.
+ *
+ * Time Complexity: O(nm)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
