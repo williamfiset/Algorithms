@@ -1,14 +1,15 @@
-// Create random population
-// Create objective (fitness) function
-// Generate next generation
-//     pick k (two in this case) parents using roulette
-//     perform cross over
-//     apply mutation
+/**
+ * An implementation of a genetic algorithm which attempts to
+ * construct a given sentence using algorithmic evolution.
+ *
+ * @author William Fiset, william.alexandre.fiset@gmail.com
+ **/
 
 import java.util.*;
 
 public class GeneticAlgorithm_textSearch {
   
+  // Target sentence
   final static String TARGET = "to be or not to be that is the question";
   final static char[] ALPHA = " abcdefghijklmnopqrstuvwxyz".toCharArray();;
   final static int TL = TARGET.length();
@@ -20,9 +21,13 @@ public class GeneticAlgorithm_textSearch {
   final static int MAX_EPOCH = 1000000;
   final static double MUTATION_RATE = 0.0125;
 
+  // The power variable tweaks the weight of the fitness function 
+  // to emphasize better individuals. The power slowly increments 
+  // over time to help get out of local minimums in later epochs.
   static double power;
-  static final double POWER_INC = 0.0001;
+  static final double POWER_INC = 0.00001;
 
+  // Runs a single simulation
   static void run() {
 
     power = 1.0;
@@ -52,7 +57,7 @@ public class GeneticAlgorithm_textSearch {
       Individual fittest = null;
       double maxFitness = 0;
 
-      // Setup roulette
+      // Setup selection roulette
       for (int i = 1; i <= N; i++) {
 
         Individual in = generation[i];
@@ -75,9 +80,10 @@ public class GeneticAlgorithm_textSearch {
         // Perform individual selection and crossover 
         Individual parent1 = selectIndividual(generation, lo, hi);
         Individual parent2 = selectIndividual(generation, lo, hi);
-        Individual child = crossover(parent1, parent2);
+        Individual child   = crossover(parent1, parent2);
         
-        // Try and mutate all parts of the DNA
+        // Apply mutations to all parts of the DNA 
+        // according to a predefined mutation rate
         for(int j = 0; j < TL; j++)
           if (Math.random() < MUTATION_RATE)
             child = mutate(child, j);
