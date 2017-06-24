@@ -18,14 +18,14 @@ public class GeneticAlgorithm_textSearch {
 
   // Genetic algorithm parameters
   final static int N = 250;
-  final static int MAX_EPOCH = 1000000;
+  final static int MAX_EPOCH = 100000;
   final static double MUTATION_RATE = 0.0125;
 
   // The power variable tweaks the weight of the fitness function 
   // to emphasize better individuals. The power slowly increments 
   // over time to help get out of local minimums in later epochs.
   static double power;
-  static final double POWER_INC = 0.00001;
+  static final double POWER_INC = 0.0001;
 
   // Runs a single simulation
   static void run() {
@@ -105,29 +105,6 @@ public class GeneticAlgorithm_textSearch {
 
   }
 
-  public static void benchmark() {
-
-    int runs = 250;
-   
-    long start = System.nanoTime();
-
-    for (int i = 1; i <= runs; i++ ) {
-      System.out.println("RUN #" + i);
-      run();
-    }
-    
-    long end = System.nanoTime();
-    System.out.println( "Average run time:" + (end-start)/(1e9*runs) );
-
-  }
-
-  public static void main(String[] args) {
-    
-    run();
-    // benchmark();    
-
-  }
-
   static class Individual {
     
     char[] dna;
@@ -194,7 +171,11 @@ public class GeneticAlgorithm_textSearch {
     String newDNA = p1.str.substring(0,splitPoint) + p2.str.substring(splitPoint, TL);
     return new Individual(newDNA);
   }
-  
+
+  public static void main(String[] args) {    
+    run();
+  }
+
 }
 
 
