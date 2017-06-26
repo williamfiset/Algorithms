@@ -56,7 +56,7 @@ public class Quicksort {
   static Random RANDOM = new Random();
 
   public static void runTests() {
-    final int NUM_TESTS = 5000;
+    final int NUM_TESTS = 1000;
     for(int i = 1; i <= NUM_TESTS; i++) {
       
       int[] array = new int[i];
