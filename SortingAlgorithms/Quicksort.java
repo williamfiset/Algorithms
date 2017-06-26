@@ -12,6 +12,7 @@ public class Quicksort {
     quicksort(ar, 0, ar.length-1);
   }
   
+  // Sort interval [lo, hi] inplace recursively 
   private static void quicksort(int[] ar, int lo, int hi) {
     if (lo < hi) {
       int splitPoint = partition(ar, lo, hi);
@@ -33,11 +34,14 @@ public class Quicksort {
 
   }
   
+  // Swap two elements
   private static void swap(int[] ar, int i, int j) {
     int tmp = ar[i];
     ar[i] = ar[j];
     ar[j] = tmp;
   }
+
+    /* TESTING BELOW */
 
   public static void main(String[] args) {
   
