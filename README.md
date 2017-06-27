@@ -42,70 +42,72 @@ Below is a collection of algorithms from various domains in computer science and
 * [[UNTESTED] Line-Circle intersection](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DLineCircleIntersection.java)
 
 ### Graph theory
-* Bipartite graph verification
-* Breadth first search (adjacency list)
-* Breadth first search (adjacency list, fast queue)
-* Find connected components (adjacency list, union find)
-* Depth first search (adjacency list, iterative)
-* Depth first search (adjacency list, iterative, fast stack)
-* Depth first search (adjacency list, recursive)
-* Dijkstra's shortest path (adjacency list)
-* Dijkstra's shortest path to all nodes (adjacency list)
-* Floyd Warshall algorithm (adjacency matrix, negative cycle check)
-* Kruskal's min spanning tree algorithm (edge list, union find)
-* Prim's min spanning tree  algorithm (lazy version, adjacency list)
-* Prim's min spanning tree  algorithm (lazy version, adjacency matrix)
-* Prim's min spanning tree  algorithm (eager version, adjacency list)
-* Tarjan's strongly connected components algorithm (adjacency list) 
-* Tarjan's strongly connected components algorithm (adjacency matrix) 
-* Topological sort (acyclic graph, adjacency list)
-* Topological sort (acyclic graph, adjacency matrix)
-* Tree diameter
+* [Bipartite graph verification](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BipartiteGraphCheckAdjacencyList.java)
+* [Breadth first search (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterative.java)
+* [Breadth first search (adjacency list, fast queue)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterativeFastQueue.java)
+* [Find connected components (adjacency list, union find)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/ConnectedComponentsAdjacencyList.java)
+* [Depth first search (adjacency list, iterative)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListIterative.java)
+* [Depth first search (adjacency list, iterative, fast stack)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListIterativeFastStack.java)
+* [Depth first search (adjacency list, recursive)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListRecursive.java)
+* [Dijkstra's shortest path (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DijkstrasShortestPathAdjacencyList.java)
+* [Dijkstra's shortest path to all nodes (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DijkstrasShortestPathAllNodesAdjacencyList.java)
+* [Floyd Warshall algorithm (adjacency matrix, negative cycle check)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/FloydWarshall.java)
+* [Kruskal's min spanning tree algorithm (edge list, union find)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/KruskalsEdgeList.java)
+* [Prim's min spanning tree algorithm (lazy version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/LazyPrimsAdjacencyList.java)
+* [Prim's min spanning tree  algorithm (lazy version, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/LazyPrimsAdjacencyList.java)
+* [Prim's min spanning tree  algorithm (eager version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/EagerPrimsAdjacencyList.java)
+* [Tarjan's strongly connected components algorithm (adjacency list) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyList.java)
+* [Tarjan's strongly connected components algorithm (adjacency matrix) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyMatrix.java)
+* [Topological sort (acyclic graph, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyList.java)
+* [Topological sort (acyclic graph, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyMatrix.java)
+* [Tree diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeDiameter.java)
+* [[UNTESTED] Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/%5BUNTESTED%5DGraphDiameter.java)
+* [[UNTESTED] Tree canonical form](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/%5BUNTESTED%5DTreeCanonicalForm.java)
 
 ### Linear algebra
-* Freivald's algorithm (matrix multiplication verification)
-* Gaussian elimination
-* Linear recurrence solver
-* Matrix inverse
-* Matrix multiplication
-* Matrix power
-* Square matrix rotation
+* [Freivald's algorithm (matrix multiplication verification)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/FreivaldsAlgorithm.java)
+* [Gaussian elimination](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/GaussianElimination.java)
+* [Linear recurrence solver](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/LinearRecurrenceSolver.java)
+* [Matrix inverse](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixInverse.java)
+* [Matrix multiplication](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixMultiplication.java)
+* [Matrix power](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixPower.java)
+* [Square matrix rotation](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/RotateSquareMatrixInplace.java)
 
 ### Mathematics
-* Chinese remainder theorem
-* Prime number sieve (sieve of Eratosthenes)
-* Prime number sieve (sieve of Eratosthenes, compressed)
-* Euler totient function (phi function, relatively prime number count)
-* Extended euclidean algorithm
-* Greatest Common Divisor (GCD)
-* Primality check
-* Primality check (Rabin-Miller)
-* Least Common Multiple (LCM)
-* Modular inverse
-* Prime factorization (pollard rho)
-* Relatively prime check (coprimality check)
-* Fast Fourier transform (quick polynomial multiplication)
+* [Chinese remainder theorem](https://github.com/williamfiset/Algorithms/blob/master/Math/ChineseRemainderTheorem.java)
+* [Prime number sieve (sieve of Eratosthenes)](https://github.com/williamfiset/Algorithms/blob/master/Math/SieveOfEratosthenes.java)
+* [Prime number sieve (sieve of Eratosthenes, compressed)](https://github.com/williamfiset/Algorithms/blob/master/Math/CompressedPrimeSieve.java)
+* [Euler totient function (phi function, relatively prime number count)](https://github.com/williamfiset/Algorithms/blob/master/Math/EulerTotientFunction.java)
+* [Extended euclidean algorithm](https://github.com/williamfiset/Algorithms/blob/master/Math/ExtendedEuclideanAlgorithm.java)
+* [Greatest Common Divisor (GCD)](https://github.com/williamfiset/Algorithms/blob/master/Math/GCD.java)
+* [Primality check](https://github.com/williamfiset/Algorithms/blob/master/Math/IsPrime.java)
+* [Primality check (Rabin-Miller)](RabinMillerPrimalityTest.py)
+* [Least Common Multiple (LCM)](https://github.com/williamfiset/Algorithms/blob/master/Math/LCM.java)
+* [Modular inverse](https://github.com/williamfiset/Algorithms/blob/master/Math/ModularInverse.java)
+* [Prime factorization (pollard rho)](https://github.com/williamfiset/Algorithms/blob/master/Math/PrimeFactorization.java)
+* [Relatively prime check (coprimality check)](https://github.com/williamfiset/Algorithms/blob/master/Math/RelativelyPrime.java)
+* [Fast Fourier transform (quick polynomial multiplication)](https://github.com/williamfiset/Algorithms/blob/master/Math/FastFourierTransform.java)
 
 ### Search algorithms
-* Binary search (real numbers)
-* Interpolation search (discrete discrete)
-* Ternary search (real numbers)
-* Ternary search (discrete numbers)
+* [Binary search (real numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/BinarySearch.java)
+* [Interpolation search (discrete discrete)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/InterpolationSearch.java)
+* [Ternary search (real numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/TernarySearch.java)
+* [Ternary search (discrete numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/TernarySearchDiscrete.java)
 
 ### Sorting algorithms
-* Bubble sort
-* Counting sort
-* Heapsort
-* Insertion sort
-* Mergesort
-* Quicksort
-* Selection sort
+* [Bubble sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/BubbleSort.java)
+* [Counting sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/CountingSort.java)
+* [Heapsort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/Heapsort.java)
+* [Insertion sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/InsertionSort.java)
+* [Mergesort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/Mergesort.java)
+* [Quicksort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/Quicksort.java)
+* [Selection sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/SelectionSort.java)
 
 ### String algorithms
-* Booth's algorithm (finds lexicographically smallest string rotation)
-* Knuth-Morris-Pratt algorithm (finds pattern matches in text)
-* Manacher's algorithm (finds all palindromes in text)
-* Rabin-Karp algorithm (finds pattern matches in text)
+* [Booth's algorithm (finds lexicographically smallest string rotation)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/BoothsAlgorithm.java)
+* [Knuth-Morris-Pratt algorithm (finds pattern matches in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/KMP.java)
+* [Manacher's algorithm (finds all palindromes in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/ManachersAlgorithm.java)
+* [Rabin-Karp algorithm (finds pattern matches in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/RabinKarp.java)
 
 # License
 
