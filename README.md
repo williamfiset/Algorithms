@@ -17,7 +17,9 @@
 * [Edit distance](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/EditDistance.java)
 * [Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/Knapsack_01.java)
 * [Knapsack unbounded (0/∞)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/KnapsackUnbounded.java)
+* [Maximum subarray](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/MaximumSubarray.java)
 * [Longest Common Subsequence (LCS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestCommonSubsequence.java)
+* [Longest Increasing Subsequence (LIS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestIncreasingSubsequence.java)
 
 ### Geometry
 * [Angle between 2D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors2D.java)
