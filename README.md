@@ -80,6 +80,7 @@ Below is a collection of algorithms from various domains in computer science and
 * Modular inverse
 * Prime factorization (pollard rho)
 * Relatively prime check (coprimality check)
+* Fast Fourier transform (quick polynomial multiplication)
 
 ### Search algorithms
 * Binary search (real numbers)
