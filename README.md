@@ -15,27 +15,31 @@ Below is a collection of algorithms from various domains in computer science and
 * [Power set (set of all subsets)](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/PowerSet.java)
 
 ### Dynamic Programming
-* Coin change
-* Edit distance
-* Knapsack 0/1
-* Knapsack unbounded (0/∞)
-* Longest Common Subsequence (LCS)
+* [Coin change](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/CoinChange.java)
+* [Edit distance](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/EditDistance.java)
+* [Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/Knapsack_01.java)
+* [Knapsack unbounded (0/∞)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/KnapsackUnbounded.java)
+* [Longest Common Subsequence (LCS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestCommonSubsequence.java)
 
 ### Geometry
-* Angle between 2D vectors
-* Angle between 3D vectors
-* Collinear points test
-* Convex hull (Graham Scan algorithm)
-* Convex hull (Monotone chain algorithm)
-* Convex polygon area
-* Coplanar points test
-* Line class
-* Line segment to general form
-* Longitude-Latitude geographic distance
-* Point-circle tangent(s)
-* Point is inside triangle check
-* Point rotation about point
-* Triangle area algorithms
+* [Angle between 2D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors2D.java)
+* [Angle between 3D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors3D.java)
+* [Collinear points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CollinearPoints.java)
+* [Convex hull (Graham Scan algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullGrahamScan.java)
+* [Convex hull (Monotone chain algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullMonotoneChainAlgorithm.java)
+* [Convex polygon area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonArea.java)
+* [Coplanar points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CoplanarPointsTest.java)
+* [Line class](https://github.com/williamfiset/Algorithms/blob/master/Geometry/Line.java)
+* [Line segment to general form](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentToGeneralForm.java)
+* [Longitude-Latitude geographic distance](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LongitudeLatitudeGeographicDistance.java)
+* [Point-circle tangent(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointCircleTangent.java)
+* [Point is inside triangle check](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointInsideTriangle.java)
+* [Point rotation about point](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointRotation.java)
+* [Triangle area algorithms](https://github.com/williamfiset/Algorithms/blob/master/Geometry/TriangleArea.java)
+* [[UNTESTED] Circle-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircleCircleIntersection.java)
+* [[UNTESTED] Circle-circle intersection area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircleCircleIntersectionArea.java)
+* [[UNTESTED] Circular segment area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircularSegmentArea.java)
+* [[UNTESTED] Line-Circle intersection](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DLineCircleIntersection.java)
 
 ### Graph theory
 * Bipartite graph verification
