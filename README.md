@@ -98,6 +98,7 @@
 
 ## Sorting algorithms
 * [Bubble sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/BubbleSort.java)
+* [Bucket sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/BucketSort.java)
 * [Counting sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/CountingSort.java)
 * [Heapsort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/Heapsort.java)
 * [Insertion sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/InsertionSort.java)
