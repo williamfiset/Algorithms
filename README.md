@@ -78,13 +78,14 @@
 * [Euler totient function (phi function, relatively prime number count)](https://github.com/williamfiset/Algorithms/blob/master/Math/EulerTotientFunction.java)
 * [Extended euclidean algorithm](https://github.com/williamfiset/Algorithms/blob/master/Math/ExtendedEuclideanAlgorithm.java)
 * [Greatest Common Divisor (GCD)](https://github.com/williamfiset/Algorithms/blob/master/Math/GCD.java)
+* [Fast Fourier transform (quick polynomial multiplication)](https://github.com/williamfiset/Algorithms/blob/master/Math/FastFourierTransform.java)
+* [Fast Fourier transform (quick polynomial multiplication, complex numbers)](https://github.com/williamfiset/Algorithms/blob/master/Math/FastFourierTransformComplexNumbers.java)
 * [Primality check](https://github.com/williamfiset/Algorithms/blob/master/Math/IsPrime.java)
 * [Primality check (Rabin-Miller)](RabinMillerPrimalityTest.py)
 * [Least Common Multiple (LCM)](https://github.com/williamfiset/Algorithms/blob/master/Math/LCM.java)
 * [Modular inverse](https://github.com/williamfiset/Algorithms/blob/master/Math/ModularInverse.java)
 * [Prime factorization (pollard rho)](https://github.com/williamfiset/Algorithms/blob/master/Math/PrimeFactorization.java)
 * [Relatively prime check (coprimality check)](https://github.com/williamfiset/Algorithms/blob/master/Math/RelativelyPrime.java)
-* [Fast Fourier transform (quick polynomial multiplication)](https://github.com/williamfiset/Algorithms/blob/master/Math/FastFourierTransform.java)
 
 ### Search algorithms
 * [Binary search (real numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/BinarySearch.java)
@@ -104,8 +105,12 @@
 ### String algorithms
 * [Booth's algorithm (finds lexicographically smallest string rotation)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/BoothsAlgorithm.java)
 * [Knuth-Morris-Pratt algorithm (finds pattern matches in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/KMP.java)
+* [Longest Common Prefix (LCP) array](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestCommonPrefixArray.java)
+* [Longest Common Substring (LCS)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestCommonSubstring.java)
+* [Longest Repeated Substring (LRS)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestRepeatedSubstring.java)
 * [Manacher's algorithm (finds all palindromes in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/ManachersAlgorithm.java)
 * [Rabin-Karp algorithm (finds pattern matches in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/RabinKarp.java)
+* [Substring verification with suffix array](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/SubstringVerificationSuffixArray.java)
 
 # License
 
