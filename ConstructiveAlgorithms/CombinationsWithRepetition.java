@@ -5,7 +5,7 @@
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
-public class CombinationsWithRepitition {
+public class CombinationsWithRepetition {
   
   /** 
    * Computes all combinations of elements of 'r' elements which 
