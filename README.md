@@ -9,10 +9,10 @@ Below is a collection of algorithms from various domains in computer science and
 * [Genetic algorithm text searching](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_textSearch.java)
 
 ### Constructive algorithms
-* Combinations
-* Combinations with Repetition
-* Permutations
-* Power set (set of all subsets)
+* [Combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Combinations.java)
+* [Combinations with Repetition](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/CombinationsWithRepetition.java)
+* [Permutations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Permutations.java)
+* [Power set (set of all subsets)](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/PowerSet.java)
 
 ### Dynamic Programming
 * Coin change
