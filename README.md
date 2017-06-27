@@ -5,8 +5,8 @@
 Below is a collection of algorithms from various domains in computer science and mathematics:
 
 ### Artificial Intelligence (AI) 
-* Genetic algorithm Knapsack 0/1
-* Genetic algorithm text searching
+* [Genetic algorithm Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java)
+* [Genetic algorithm text searching](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_textSearch.java)
 
 ### Constructive algorithms
 * Combinations
