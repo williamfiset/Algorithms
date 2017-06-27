@@ -1,8 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# The algorithms
-
-Below is a collection of algorithms from various domains in computer science and mathematics:
+# Algorithms
 
 ### Artificial Intelligence (AI) 
 * [Genetic algorithm Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java)
