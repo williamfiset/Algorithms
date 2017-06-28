@@ -15,11 +15,12 @@
 public class CompressedPrimeSieve {
 
   static final int NUM_BITS = 128;
+  static final int NUM_BITS_SHIFT = 7; // 2^7 = 128
 
   // Sets the bit repesenting n to 1 indicating this number is not prime
   static void setBit(long[] arr, int n) {
     if ((n & 1) == 0) return; // n is even
-    arr[n / NUM_BITS] |= 1L << (n - 1) / 2;
+    arr[n >> NUM_BITS_SHIFT] |= 1L << ((n - 1) >> 1);
   }
 
   // Returns true if a bit if turned on for the number n (AKA n is a prime)
@@ -27,8 +28,8 @@ public class CompressedPrimeSieve {
   static boolean isSet(long[] arr, int n) {
     if (n == 2) return true; // two is prime
     if ((n & 1) == 0) return false; // n is even
-    long chunk = arr[n / NUM_BITS];
-    long mask = 1L << (n - 1) / 2;
+    long chunk = arr[n >> NUM_BITS_SHIFT];
+    long mask = 1L << ((n - 1) >> 1);
     return (chunk & mask) != mask;
   }
 
