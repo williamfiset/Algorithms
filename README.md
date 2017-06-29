@@ -1,18 +1,16 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# Algorithms
-
-## Artificial Intelligence (AI) 
+# Artificial Intelligence (AI) 
 * [Genetic algorithm Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java)
 * [Genetic algorithm text searching](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_textSearch.java)
 
-## Constructive algorithms
+# Constructive algorithms
 * [Combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Combinations.java)
 * [Combinations with Repetition](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/CombinationsWithRepetition.java)
 * [Permutations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Permutations.java)
 * [Power set (set of all subsets)](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/PowerSet.java)
 
-## Dynamic Programming
+# Dynamic Programming
 * [Coin change](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/CoinChange.java)
 * [Edit distance](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/EditDistance.java)
 * [Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/Knapsack_01.java)
@@ -22,7 +20,7 @@
 * [Longest Increasing Subsequence (LIS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestIncreasingSubsequence.java)
 * [Longest Palindrome Subsequence (LPS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestPalindromeSubsequence.java)
 
-## Geometry
+# Geometry
 * [Angle between 2D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors2D.java)
 * [Angle between 3D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors3D.java)
 * [Collinear points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CollinearPoints.java)
@@ -42,15 +40,15 @@
 * [[UNTESTED] Circular segment area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircularSegmentArea.java)
 * [[UNTESTED] Line-Circle intersection](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DLineCircleIntersection.java)
 
-## Graph theory
+# Graph theory
 
 ### Tree algorithms
 * [Tree diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/TreeDiameter.java)
-* [[UNTESTED] Tree canonical form](https://github.com/williamfiset/Algorithms/blob/master/TreeAlgorithms/GraphTheory/%5BUNTESTED%5DTreeCanonicalForm.java)
+* [[UNTESTED] Tree canonical form](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/%5BUNTESTED%5DTreeCanonicalForm.java)
 
 ### Network flow
 * [Bipartite graph verification (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/BipartiteGraphCheckAdjacencyList.java)
-* [Maximum Cardinality Bipartite Matching (augmenting path, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList.java)
+* [Maximum Cardinality Bipartite Matching (augmenting path algorithm, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList.java)
 
 ### Other graph theory
 * [Breadth first search (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterative.java)
@@ -72,7 +70,7 @@
 * [Topological sort (acyclic graph, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyMatrix.java)
 * [[UNTESTED] Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/%5BUNTESTED%5DGraphDiameter.java)
 
-## Linear algebra
+# Linear algebra
 * [Freivald's algorithm (matrix multiplication verification)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/FreivaldsAlgorithm.java)
 * [Gaussian elimination](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/GaussianElimination.java)
 * [Linear recurrence solver](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/LinearRecurrenceSolver.java)
@@ -81,7 +79,7 @@
 * [Matrix power](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixPower.java)
 * [Square matrix rotation](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/RotateSquareMatrixInplace.java)
 
-## Mathematics
+# Mathematics
 * [Chinese remainder theorem](https://github.com/williamfiset/Algorithms/blob/master/Math/ChineseRemainderTheorem.java)
 * [Prime number sieve (sieve of Eratosthenes)](https://github.com/williamfiset/Algorithms/blob/master/Math/SieveOfEratosthenes.java)
 * [Prime number sieve (sieve of Eratosthenes, compressed)](https://github.com/williamfiset/Algorithms/blob/master/Math/CompressedPrimeSieve.java)
@@ -91,19 +89,19 @@
 * [Fast Fourier transform (quick polynomial multiplication)](https://github.com/williamfiset/Algorithms/blob/master/Math/FastFourierTransform.java)
 * [Fast Fourier transform (quick polynomial multiplication, complex numbers)](https://github.com/williamfiset/Algorithms/blob/master/Math/FastFourierTransformComplexNumbers.java)
 * [Primality check](https://github.com/williamfiset/Algorithms/blob/master/Math/IsPrime.java)
-* [Primality check (Rabin-Miller)](RabinMillerPrimalityTest.py)
+* [Primality check (Rabin-Miller)](https://github.com/williamfiset/Algorithms/blob/master/Math/RabinMillerPrimalityTest.py)
 * [Least Common Multiple (LCM)](https://github.com/williamfiset/Algorithms/blob/master/Math/LCM.java)
 * [Modular inverse](https://github.com/williamfiset/Algorithms/blob/master/Math/ModularInverse.java)
 * [Prime factorization (pollard rho)](https://github.com/williamfiset/Algorithms/blob/master/Math/PrimeFactorization.java)
 * [Relatively prime check (coprimality check)](https://github.com/williamfiset/Algorithms/blob/master/Math/RelativelyPrime.java)
 
-## Search algorithms
+# Search algorithms
 * [Binary search (real numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/BinarySearch.java)
 * [Interpolation search (discrete discrete)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/InterpolationSearch.java)
 * [Ternary search (real numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/TernarySearch.java)
 * [Ternary search (discrete numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/TernarySearchDiscrete.java)
 
-## Sorting algorithms
+# Sorting algorithms
 * [Bubble sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/BubbleSort.java)
 * [Bucket sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/BucketSort.java)
 * [Counting sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/CountingSort.java)
@@ -113,7 +111,7 @@
 * [Quicksort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/Quicksort.java)
 * [Selection sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/SelectionSort.java)
 
-## String algorithms
+# String algorithms
 * [Booth's algorithm (finds lexicographically smallest string rotation)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/BoothsAlgorithm.java)
 * [Knuth-Morris-Pratt algorithm (finds pattern matches in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/KMP.java)
 * [Longest Common Prefix (LCP) array (kasai algorithm)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestCommonPrefixArray.java)
