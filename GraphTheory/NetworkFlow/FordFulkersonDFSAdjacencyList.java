@@ -15,7 +15,7 @@ public class FordFulkersonDFSAdjacencyList {
 
   private static int visitedToken = 1;
 
-  static class Edge {
+  private static class Edge {
     Edge residual;
     int to, capacity;
     public Edge(int to, int capacity) {
@@ -34,7 +34,7 @@ public class FordFulkersonDFSAdjacencyList {
 
   // Adds a directed edge to the flow graph. This method also
   // adds the residual edge for when Ford-Fulkerson is run.
-  static void addEdge(List<Edge>[] graph, int from, int to, int capacity) {
+  public static void addEdge(List<Edge>[] graph, int from, int to, int capacity) {
     Edge e1 = new Edge(to, capacity);
     Edge e2 = new Edge(from, 0);
     e1.residual = e2;
