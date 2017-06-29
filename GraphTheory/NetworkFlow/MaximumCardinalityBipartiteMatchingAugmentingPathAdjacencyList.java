@@ -19,9 +19,12 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
   static final int FREE = -1;
   static int visitToken = 1;
 
-  // This function performs Maximum Cardinality Bipartite
-  // Matching (MCBM) on a bipartite graph where the nodes 
-  // [0,n) are in the left set and [n, n+m) in right set
+  /** 
+   * This function performs Maximum Cardinality Bipartite
+   * Matching (MCBM) on a bipartite graph where the nodes 
+   * [0,n) are in the left set and [n, n+m) in right set
+   * @param graph - An adjacency list representing an undirected bipartite graph.
+   **/
   public static int mcbm(List<List<Integer>> graph, int n, int m) {
     
     int N = n + m, matches = 0;
@@ -88,11 +91,11 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
     List<List<Integer>> graph = new ArrayList<>();
     for (int i = 0; i < 8; i++) graph.add(new ArrayList<>());
     
+    // Left set includes {0,1,2,3} and right set {4,5,6,7}
     addEdge(graph, 0, 4);
     addEdge(graph, 1, 5);
     addEdge(graph, 2, 7);
     addEdge(graph, 3, 6);
-
     addEdge(graph, 4, 1);
     addEdge(graph, 5, 1);
     addEdge(graph, 6, 1);

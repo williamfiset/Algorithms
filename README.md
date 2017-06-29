@@ -43,7 +43,16 @@
 * [[UNTESTED] Line-Circle intersection](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DLineCircleIntersection.java)
 
 ## Graph theory
-* [Bipartite graph verification](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BipartiteGraphCheckAdjacencyList.java)
+
+### Tree algorithms
+* [Tree diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/TreeDiameter.java)
+* [[UNTESTED] Tree canonical form](https://github.com/williamfiset/Algorithms/blob/master/TreeAlgorithms/GraphTheory/%5BUNTESTED%5DTreeCanonicalForm.java)
+
+### Network flow
+* [Bipartite graph verification (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/BipartiteGraphCheckAdjacencyList.java)
+* [Maximum Cardinality Bipartite Matching (augmenting path, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList.java)
+
+### Other graph theory
 * [Breadth first search (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterative.java)
 * [Breadth first search (adjacency list, fast queue)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterativeFastQueue.java)
 * [Find connected components (adjacency list, union find)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/ConnectedComponentsAdjacencyList.java)
@@ -61,9 +70,7 @@
 * [Tarjan's strongly connected components algorithm (adjacency matrix) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyMatrix.java)
 * [Topological sort (acyclic graph, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyList.java)
 * [Topological sort (acyclic graph, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyMatrix.java)
-* [Tree diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeDiameter.java)
 * [[UNTESTED] Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/%5BUNTESTED%5DGraphDiameter.java)
-* [[UNTESTED] Tree canonical form](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/%5BUNTESTED%5DTreeCanonicalForm.java)
 
 ## Linear algebra
 * [Freivald's algorithm (matrix multiplication verification)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/FreivaldsAlgorithm.java)
