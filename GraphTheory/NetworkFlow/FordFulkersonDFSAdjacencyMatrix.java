@@ -1,4 +1,13 @@
-
+/**
+ * An implementation of the Ford-Fulkerson (FF) method with a DFS
+ * as a method of finding augmenting paths. FF allows you to find
+ * the max flow through a certain graph as well as the min cut as
+ * a byproduct.
+ *
+ * Time Complexity: O(fE), where f is the max flow
+ * 
+ * @author William Fiset, william.alexandre.fiset@gmail.com
+ **/
 
 public class FordFulkersonDFSAdjacencyMatrix {
 
@@ -21,16 +30,14 @@ public class FordFulkersonDFSAdjacencyMatrix {
 
         return maxFlow;
 
-        // Uncomment for min-cut. This finds all the edges found in
-        // the last augmenting path in the DFS phase.
+        // Uncomment to find all nodes in the min-cut. This finds all the 
+        // nodes which participated in the last augmenting path in the DFS phase.
         // for(int i = 0; i < n; i++)
-        //   if (visited[i] == visitedToken)
+        //   if (visited[i] == visitedToken-1)
         //     minCut[i] = true;
         // return minCut;
 
       }
-
-
     }
   }
 
