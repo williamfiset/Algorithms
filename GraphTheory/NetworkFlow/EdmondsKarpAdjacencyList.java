@@ -13,8 +13,6 @@ import java.util.*;
 
 public class EdmondsKarpAdjacencyList {
 
-  private static int visitedToken = 1;
-
   private static class Edge {
     Edge residual;
     int to, from, capacity;
@@ -56,9 +54,8 @@ public class EdmondsKarpAdjacencyList {
     for (int maxFlow = 0;;) {
 
       // Try to find an augmenting path from source to sink
-      int flow = bfs(graph, visited, source, sink);
       Arrays.fill(visited, false);
-      visitedToken++;
+      int flow = bfs(graph, visited, source, sink);
 
       maxFlow += flow;
       if (flow == 0) {
@@ -71,7 +68,7 @@ public class EdmondsKarpAdjacencyList {
         // last (failed) attempt to find an augmenting path from the source to 
         // the sink in the BFS phase.
         // for(int i = 0; i < n; i++)
-        //   if (visited[i] == visitedToken-1)
+        //   if (visited[i])
         //     minCut[i] = true;
         // return minCut;
 

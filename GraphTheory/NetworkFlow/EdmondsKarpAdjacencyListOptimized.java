@@ -93,7 +93,7 @@ public class EdmondsKarpAdjacencyListOptimized {
     // Perform BFS from source to sink
     while(front != end) {
 
-      int node = queue[front--];
+      int node = queue[front++];
       if (node == sink) break;
 
       for (Edge edge : graph[node]) {
