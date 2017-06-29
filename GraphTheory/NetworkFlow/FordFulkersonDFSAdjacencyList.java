@@ -1,8 +1,7 @@
 /**
  * An implementation of the Ford-Fulkerson (FF) method with a DFS
  * as a method of finding augmenting paths. FF allows you to find
- * the max flow through a directed graph as well as the min cut as
- * a byproduct.
+ * the max flow through a directed graph and the min cut as a byproduct.
  *
  * Time Complexity: O(fE), where f is the max flow and E is the number of edges
  * 

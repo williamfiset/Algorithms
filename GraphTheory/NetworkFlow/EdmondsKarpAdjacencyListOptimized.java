@@ -11,7 +11,7 @@
 
 import java.util.*;
 
-public class EdmondsKarpAdjacencyList {
+public class EdmondsKarpAdjacencyListOptimized {
 
   private static int visitedToken = 1;
 
@@ -46,18 +46,20 @@ public class EdmondsKarpAdjacencyList {
 
   // Run Edmonds-Karp and return the max flow from the source to the 
   // sink node. You can modify this algorithm to return the min cut.
-  public static int edmondsKarp(List<Edge>[] graph, int source, int sink) {
+  public static int edmondsKarp(List<Edge>[] graph, int edgeCount, int source, int sink) {
 
     int n = graph.length;
 
+    // Allocate required memory only once
+    Edge [] prev = new Edge[n];
+    int [] visited = new int[n];
     boolean [] minCut = new boolean[n];
-    boolean [] visited = new boolean[n];
+    int [] queue = new int[edgeCount*2+1];
 
     for (int maxFlow = 0;;) {
 
       // Try to find an augmenting path from source to sink
-      int flow = bfs(graph, visited, source, sink);
-      Arrays.fill(visited, false);
+      int flow = bfs(graph, queue, prev, visited, source, sink);
       visitedToken++;
 
       maxFlow += flow;
@@ -80,27 +82,25 @@ public class EdmondsKarpAdjacencyList {
     }
   }
 
-  private static int bfs(List<Edge>[] graph, boolean[] visited, int source, int sink) {
+  private static int bfs(List<Edge>[] graph, int[] queue, Edge[] prev, int[] visited, int source, int sink) {
 
     int n = graph.length;
-    Edge [] prev = new Edge[n];
 
-    // The queue can be optimized to use a faster queue
-    Queue <Integer> q = new ArrayDeque<>(n);
-    visited[source] = true;
-    q.offer(source);
+    int front = 0, end = 0;
+    queue[end++] = source;
+    visited[source] = visitedToken;
 
     // Perform BFS from source to sink
-    while(!q.isEmpty()) {
+    while(front != end) {
 
-      int node = q.poll();
+      int node = queue[front--];
       if (node == sink) break;
 
       for (Edge edge : graph[node]) {
-        if (!visited[edge.to] && edge.capacity > 0) {
-          visited[edge.to] = true;
+        if (visited[edge.to] != visitedToken && edge.capacity > 0) {
+          visited[edge.to] = visitedToken;
           prev[edge.to] = edge;
-          q.offer(edge.to);
+          queue[end++] = edge.to;
         }
       }
 
@@ -113,7 +113,8 @@ public class EdmondsKarpAdjacencyList {
 
     // Find augmented path and bottle neck
     for(Edge edge = prev[sink]; edge != null; edge = prev[edge.from])
-      bottleNeck = Math.min(bottleNeck, edge.capacity);
+      if (edge.capacity < bottleNeck)
+        bottleNeck = edge.capacity;
 
     // Retrace augmented path and update edges
     for(Edge edge = prev[sink]; edge != null; edge = prev[edge.from]) {
