@@ -50,6 +50,8 @@
 * [Bipartite graph verification (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/BipartiteGraphCheckAdjacencyList.java)
 * [Ford-Fulkerson method with DFS (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/FordFulkersonDFSAdjacencyList.java)
 * [Ford-Fulkerson method with DFS (max flow, min cut, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/FordFulkersonDFSAdjacencyMatrix.java)
+* [Edmonds-Karp Algorithm (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/EdmondsKarpAdjacencyList.java)
+* [Edmonds-Karp Algorithm optimized (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/EdmondsKarpAdjacencyListOptimized.java)
 * [Maximum Cardinality Bipartite Matching (augmenting path algorithm, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList.java)
 
 ### Other graph theory
