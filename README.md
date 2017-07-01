@@ -76,56 +76,57 @@
 * [[UNTESTED] Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/%5BUNTESTED%5DGraphDiameter.java) **- O(VE)**
 
 # Linear algebra
-* [Freivald's algorithm (matrix multiplication verification)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/FreivaldsAlgorithm.java)
-* [Gaussian elimination (solve system of linear equations)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/GaussianElimination.java)
-* [Linear recurrence solver (finds nth term in a recurrence relation)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/LinearRecurrenceSolver.java)
-* [Matrix determinant (Laplace/cofactor expansion)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixDeterminantLaplaceExpansion.java)
-* [Matrix inverse](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixInverse.java)
-* [Matrix multiplication](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixMultiplication.java)
-* [Matrix power](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixPower.java)
-* [Square matrix rotation](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/RotateSquareMatrixInplace.java)
+* [Freivald's algorithm (matrix multiplication verification)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/FreivaldsAlgorithm.java) **- O(kn<sup>2</sup>)**
+* [Gaussian elimination (solve system of linear equations)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/GaussianElimination.java) **- O(cr<sup>2</sup>)**
+* [Linear recurrence solver (finds nth term in a recurrence relation)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/LinearRecurrenceSolver.java) **- m<sup>3</sup>log(n)**
+* [Matrix determinant (Laplace/cofactor expansion)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixDeterminantLaplaceExpansion.java) **- O((n+2)!)**
+* [Matrix inverse](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixInverse.java) **- O(n<sup>3</sup>)**
+* [Matrix multiplication](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixMultiplication.java) **- O(n<sup>3</sup>)**
+* [Matrix power](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixPower.java) **- O(n<sup>3</sup>log(p))**
+* [Square matrix rotation](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/RotateSquareMatrixInplace.java) **- O(n<sup>2</sup>)**
 
 # Mathematics
 * [Chinese remainder theorem](https://github.com/williamfiset/Algorithms/blob/master/Math/ChineseRemainderTheorem.java)
-* [Prime number sieve (sieve of Eratosthenes)](https://github.com/williamfiset/Algorithms/blob/master/Math/SieveOfEratosthenes.java)
-* [Prime number sieve (sieve of Eratosthenes, compressed)](https://github.com/williamfiset/Algorithms/blob/master/Math/CompressedPrimeSieve.java)
-* [Euler totient function (phi function, relatively prime number count)](https://github.com/williamfiset/Algorithms/blob/master/Math/EulerTotientFunction.java)
-* [Extended euclidean algorithm](https://github.com/williamfiset/Algorithms/blob/master/Math/ExtendedEuclideanAlgorithm.java)
-* [Greatest Common Divisor (GCD)](https://github.com/williamfiset/Algorithms/blob/master/Math/GCD.java)
-* [Fast Fourier transform (quick polynomial multiplication)](https://github.com/williamfiset/Algorithms/blob/master/Math/FastFourierTransform.java)
-* [Fast Fourier transform (quick polynomial multiplication, complex numbers)](https://github.com/williamfiset/Algorithms/blob/master/Math/FastFourierTransformComplexNumbers.java)
-* [Primality check](https://github.com/williamfiset/Algorithms/blob/master/Math/IsPrime.java)
-* [Primality check (Rabin-Miller)](https://github.com/williamfiset/Algorithms/blob/master/Math/RabinMillerPrimalityTest.py)
-* [Least Common Multiple (LCM)](https://github.com/williamfiset/Algorithms/blob/master/Math/LCM.java)
-* [Modular inverse](https://github.com/williamfiset/Algorithms/blob/master/Math/ModularInverse.java)
-* [Prime factorization (pollard rho)](https://github.com/williamfiset/Algorithms/blob/master/Math/PrimeFactorization.java)
-* [Relatively prime check (coprimality check)](https://github.com/williamfiset/Algorithms/blob/master/Math/RelativelyPrime.java)
+* [Prime number sieve (sieve of Eratosthenes)](https://github.com/williamfiset/Algorithms/blob/master/Math/SieveOfEratosthenes.java) **- O(nlog(log(n)))**
+* [Prime number sieve (sieve of Eratosthenes, compressed)](https://github.com/williamfiset/Algorithms/blob/master/Math/CompressedPrimeSieve.java) **- O(nlog(log(n)))**
+* [Totient function (phi function, relatively prime number count)](https://github.com/williamfiset/Algorithms/blob/master/Math/EulerTotientFunction.java) **- O(n<sup>1/4</sup>)**
+* [Totient function using sieve (phi function, relatively prime number count)](https://github.com/williamfiset/Algorithms/blob/master/Math/EulerTotientFunctionWithSieve.java) **- O(nlog(log(n)))**
+* [Extended euclidean algorithm](https://github.com/williamfiset/Algorithms/blob/master/Math/ExtendedEuclideanAlgorithm.java) **- ~O(log(a + b))**
+* [Greatest Common Divisor (GCD)](https://github.com/williamfiset/Algorithms/blob/master/Math/GCD.java) **- ~O(log(a + b))**
+* [Fast Fourier transform (quick polynomial multiplication)](https://github.com/williamfiset/Algorithms/blob/master/Math/FastFourierTransform.java) **- O(nlog(n))**
+* [Fast Fourier transform (quick polynomial multiplication, complex numbers)](https://github.com/williamfiset/Algorithms/blob/master/Math/FastFourierTransformComplexNumbers.java) **- O(nlog(n))**
+* [Primality check](https://github.com/williamfiset/Algorithms/blob/master/Math/IsPrime.java) **- O(√n)**
+* [Primality check (Rabin-Miller)](https://github.com/williamfiset/Algorithms/blob/master/Math/RabinMillerPrimalityTest.py) **- O(k)**
+* [Least Common Multiple (LCM)](https://github.com/williamfiset/Algorithms/blob/master/Math/LCM.java) **- ~O(log(a + b))**
+* [Modular inverse](https://github.com/williamfiset/Algorithms/blob/master/Math/ModularInverse.java) **- ~O(log(a + b))**
+* [Prime factorization (pollard rho)](https://github.com/williamfiset/Algorithms/blob/master/Math/PrimeFactorization.java) **- O(n<sup>1/4</sup>)**
+* [Relatively prime check (coprimality check)](https://github.com/williamfiset/Algorithms/blob/master/Math/RelativelyPrime.java) **- ~O(log(a + b))**
 
 # Search algorithms
-* [Binary search (real numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/BinarySearch.java)
-* [Interpolation search (discrete discrete)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/InterpolationSearch.java)
-* [Ternary search (real numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/TernarySearch.java)
-* [Ternary search (discrete numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/TernarySearchDiscrete.java)
+* [Binary search (real numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/BinarySearch.java) **- O(log(n))**
+* [Interpolation search (discrete discrete)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/InterpolationSearch.java) **- O(n) or O(log(log(n)) when uniform input**
+* [Ternary search (real numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/TernarySearch.java) **- O(log(n))**
+* [Ternary search (discrete numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/TernarySearchDiscrete.java) **- O(log(n))**
 
 # Sorting algorithms
-* [Bubble sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/BubbleSort.java)
-* [Bucket sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/BucketSort.java)
-* [Counting sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/CountingSort.java)
-* [Heapsort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/Heapsort.java)
-* [Insertion sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/InsertionSort.java)
-* [Mergesort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/Mergesort.java)
-* [Quicksort (in-place, Hoare partitioning)](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/Quicksort.java)
-* [Selection sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/SelectionSort.java)
+* [Bubble sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/BubbleSort.java) **- O(n<sup>2</sup>)**
+* [Bucket sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/BucketSort.java) **- Θ(n + k)**
+* [Counting sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/CountingSort.java) **- O(n + k)**
+* [Heapsort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/Heapsort.java) **- O(nlog(n))**
+* [Insertion sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/InsertionSort.java) **- O(n<sup>2</sup>)**
+* [Mergesort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/Mergesort.java) **- O(nlog(n))**
+* [Quicksort (in-place, Hoare partitioning)](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/Quicksort.java) **- Θ(nlog(n))**
+* [Selection sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/SelectionSort.java) **- O(n<sup>2</sup>)**
 
 # String algorithms
-* [Booth's algorithm (finds lexicographically smallest string rotation)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/BoothsAlgorithm.java)
-* [Knuth-Morris-Pratt algorithm (finds pattern matches in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/KMP.java)
-* [Longest Common Prefix (LCP) array (kasai algorithm)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestCommonPrefixArray.java)
-* [Longest Common Substring (LCS)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestCommonSubstring.java)
-* [Longest Repeated Substring (LRS)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestRepeatedSubstring.java)
-* [Manacher's algorithm (finds all palindromes in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/ManachersAlgorithm.java)
-* [Rabin-Karp algorithm (finds pattern matches in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/RabinKarp.java)
-* [Substring verification with suffix array](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/SubstringVerificationSuffixArray.java)
+* [Booth's algorithm (finds lexicographically smallest string rotation)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/BoothsAlgorithm.java) **- O(n)**
+* [Knuth-Morris-Pratt algorithm (finds pattern matches in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/KMP.java) **- O(n+m)**
+* [Longest Common Prefix (LCP) array (kasai algorithm)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestCommonPrefixArray.java) **- O(n) without SA construction**
+* [Longest Common Substring (LCS)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestCommonSubstring.java) **- O(nlog(n))**
+* [Longest Repeated Substring (LRS)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestRepeatedSubstring.java) **- O(nlog(n))**
+* [Manacher's algorithm (finds all palindromes in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/ManachersAlgorithm.java) **- O(n)**
+* [Rabin-Karp algorithm (finds pattern matches in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/RabinKarp.java) **- O(n+m)**
+* [Substring verification with suffix array](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/SubstringVerificationSuffixArray.java) **- O(mlog(n)) per query**
 
 # License
 
