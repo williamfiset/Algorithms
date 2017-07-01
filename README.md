@@ -26,7 +26,7 @@
 * [Collinear points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CollinearPoints.java) **- O(1)**
 * [Convex hull (Graham Scan algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullGrahamScan.java) **- O(nlog(n))**
 * [Convex hull (Monotone chain algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullMonotoneChainAlgorithm.java) **- O(nlog(n))**
-* [Convex polygon area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonArea.java) **- O(1)**
+* [Convex polygon area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonArea.java) **- O(n)**
 * [Convex polygon contains points](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonContainsPoint.java) **- O(log(n))**
 * [Coplanar points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CoplanarPointsTest.java) **- O(1)**
 * [Line class](https://github.com/williamfiset/Algorithms/blob/master/Geometry/Line.java) **- O(1)**
@@ -78,7 +78,7 @@
 # Linear algebra
 * [Freivald's algorithm (matrix multiplication verification)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/FreivaldsAlgorithm.java) **- O(kn<sup>2</sup>)**
 * [Gaussian elimination (solve system of linear equations)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/GaussianElimination.java) **- O(cr<sup>2</sup>)**
-* [Linear recurrence solver (finds nth term in a recurrence relation)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/LinearRecurrenceSolver.java) **- m<sup>3</sup>log(n)**
+* [Linear recurrence solver (finds nth term in a recurrence relation)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/LinearRecurrenceSolver.java) **- O(m<sup>3</sup>log(n))**
 * [Matrix determinant (Laplace/cofactor expansion)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixDeterminantLaplaceExpansion.java) **- O((n+2)!)**
 * [Matrix inverse](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixInverse.java) **- O(n<sup>3</sup>)**
 * [Matrix multiplication](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixMultiplication.java) **- O(n<sup>3</sup>)**
@@ -104,7 +104,7 @@
 
 # Search algorithms
 * [Binary search (real numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/BinarySearch.java) **- O(log(n))**
-* [Interpolation search (discrete discrete)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/InterpolationSearch.java) **- O(n) or O(log(log(n)) when uniform input**
+* [Interpolation search (discrete discrete)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/InterpolationSearch.java) **- O(n) or O(log(log(n)) with uniform input**
 * [Ternary search (real numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/TernarySearch.java) **- O(log(n))**
 * [Ternary search (discrete numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/TernarySearchDiscrete.java) **- O(log(n))**
 
@@ -121,12 +121,12 @@
 # String algorithms
 * [Booth's algorithm (finds lexicographically smallest string rotation)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/BoothsAlgorithm.java) **- O(n)**
 * [Knuth-Morris-Pratt algorithm (finds pattern matches in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/KMP.java) **- O(n+m)**
-* [Longest Common Prefix (LCP) array (kasai algorithm)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestCommonPrefixArray.java) **- O(n) without SA construction**
-* [Longest Common Substring (LCS)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestCommonSubstring.java) **- O(nlog(n))**
+* [Longest Common Prefix (LCP) array (kasai algorithm)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestCommonPrefixArray.java) **- O(nlog(n)) bounded by SA construction, otherwise O(n)**
+* [Longest Common Substring (LCS)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestCommonSubstring.java) **- O(nlog(n)) bounded by SA construction, otherwise O(n)**
 * [Longest Repeated Substring (LRS)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestRepeatedSubstring.java) **- O(nlog(n))**
 * [Manacher's algorithm (finds all palindromes in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/ManachersAlgorithm.java) **- O(n)**
 * [Rabin-Karp algorithm (finds pattern matches in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/RabinKarp.java) **- O(n+m)**
-* [Substring verification with suffix array](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/SubstringVerificationSuffixArray.java) **- O(mlog(n)) per query**
+* [Substring verification with suffix array](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/SubstringVerificationSuffixArray.java) **- O(nlog(n)) SA construction and O(mlog(n)) per query**
 
 # License
 
