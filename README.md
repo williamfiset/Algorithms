@@ -8,38 +8,38 @@
 * [Combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Combinations.java)
 * [Combinations with Repetition](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/CombinationsWithRepetition.java)
 * [Permutations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Permutations.java) **- O(n!)**
-* [Power set (set of all subsets)](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/PowerSet.java)
+* [Power set (set of all subsets)](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/PowerSet.java) **- O(2<sup>n</sup>)**
 
 # Dynamic Programming
-* [Coin change](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/CoinChange.java)
-* [Edit distance](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/EditDistance.java)
-* [Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/Knapsack_01.java)
-* [Knapsack unbounded (0/∞)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/KnapsackUnbounded.java)
-* [Maximum subarray](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/MaximumSubarray.java)
-* [Longest Common Subsequence (LCS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestCommonSubsequence.java)
-* [Longest Increasing Subsequence (LIS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestIncreasingSubsequence.java)
-* [Longest Palindrome Subsequence (LPS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestPalindromeSubsequence.java)
+* [Coin change](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/CoinChange.java) **- O(nW)**
+* [Edit distance](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/EditDistance.java) **- O(nm)**
+* [Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/Knapsack_01.java) **- O(nW)**
+* [Knapsack unbounded (0/∞)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/KnapsackUnbounded.java) **- O(nW)**
+* [Maximum subarray](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/MaximumSubarray.java) **- O(n)**
+* [Longest Common Subsequence (LCS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestCommonSubsequence.java) **- O(nm)**
+* [Longest Increasing Subsequence (LIS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestIncreasingSubsequence.java) **- O(n<sup>2</sup>)**
+* [Longest Palindrome Subsequence (LPS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestPalindromeSubsequence.java) **- O(n<sup>2</sup>)**
 
 # Geometry
-* [Angle between 2D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors2D.java)
-* [Angle between 3D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors3D.java)
-* [Collinear points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CollinearPoints.java)
-* [Convex hull (Graham Scan algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullGrahamScan.java)
-* [Convex hull (Monotone chain algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullMonotoneChainAlgorithm.java)
-* [Convex polygon area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonArea.java)
-* [Convex polygon contains points](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonContainsPoint.java)
-* [Coplanar points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CoplanarPointsTest.java)
-* [Line class](https://github.com/williamfiset/Algorithms/blob/master/Geometry/Line.java)
-* [Line segment to general form](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentToGeneralForm.java)
-* [Longitude-Latitude geographic distance](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LongitudeLatitudeGeographicDistance.java)
-* [Point-circle tangent(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointCircleTangent.java)
-* [Point is inside triangle check](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointInsideTriangle.java)
-* [Point rotation about point](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointRotation.java)
-* [Triangle area algorithms](https://github.com/williamfiset/Algorithms/blob/master/Geometry/TriangleArea.java)
-* [[UNTESTED] Circle-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircleCircleIntersection.java)
-* [[UNTESTED] Circle-circle intersection area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircleCircleIntersectionArea.java)
-* [[UNTESTED] Circular segment area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircularSegmentArea.java)
-* [[UNTESTED] Line-Circle intersection](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DLineCircleIntersection.java)
+* [Angle between 2D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors2D.java) **- O(1)**
+* [Angle between 3D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors3D.java) **- O(1)**
+* [Collinear points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CollinearPoints.java) **- O(1)**
+* [Convex hull (Graham Scan algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullGrahamScan.java) **- O(nlog(n))**
+* [Convex hull (Monotone chain algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullMonotoneChainAlgorithm.java) **- O(nlog(n))**
+* [Convex polygon area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonArea.java) **- O(1)**
+* [Convex polygon contains points](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonContainsPoint.java) **- O(log(n))**
+* [Coplanar points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CoplanarPointsTest.java) **- O(1)**
+* [Line class](https://github.com/williamfiset/Algorithms/blob/master/Geometry/Line.java) **- O(1)**
+* [Line segment to general form](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentToGeneralForm.java) **- O(1)**
+* [Longitude-Latitude geographic distance](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LongitudeLatitudeGeographicDistance.java) **- O(1)**
+* [Point-circle tangent(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointCircleTangent.java) **- O(1)**
+* [Point is inside triangle check](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointInsideTriangle.java) **- O(1)**
+* [Point rotation about point](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointRotation.java) **- O(1)**
+* [Triangle area algorithms](https://github.com/williamfiset/Algorithms/blob/master/Geometry/TriangleArea.java) **- O(1)**
+* [[UNTESTED] Circle-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircleCircleIntersection.java) **- O(1)**
+* [[UNTESTED] Circle-circle intersection area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircleCircleIntersectionArea.java) **- O(1)**
+* [[UNTESTED] Circular segment area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircularSegmentArea.java) **- O(1)**
+* [[UNTESTED] Line-Circle intersection](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DLineCircleIntersection.java) **- O(1)**
 
 # Graph theory
 
