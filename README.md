@@ -44,36 +44,36 @@
 # Graph theory
 
 ### Tree algorithms
-* [Tree diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/TreeDiameter.java)
-* [[UNTESTED] Tree canonical form](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/%5BUNTESTED%5DTreeCanonicalForm.java)
+* [Tree diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/TreeDiameter.java) **- O(V+E)**
+* [[UNTESTED] Tree canonical form](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/%5BUNTESTED%5DTreeCanonicalForm.java) **- O(V<sup>2</sup>)**
 
 ### Network flow
-* [Bipartite graph verification (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/BipartiteGraphCheckAdjacencyList.java)
-* [Ford-Fulkerson method with DFS (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/FordFulkersonDFSAdjacencyList.java)
-* [Ford-Fulkerson method with DFS (max flow, min cut, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/FordFulkersonDFSAdjacencyMatrix.java)
-* [Edmonds-Karp Algorithm (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/EdmondsKarpAdjacencyList.java)
-* [Edmonds-Karp Algorithm optimized (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/EdmondsKarpAdjacencyListOptimized.java)
-* [Maximum Cardinality Bipartite Matching (augmenting path algorithm, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList.java)
+* [Bipartite graph verification (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/BipartiteGraphCheckAdjacencyList.java) **- O(V+E)**
+* [Ford-Fulkerson method with DFS (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/FordFulkersonDFSAdjacencyList.java) **- O(fE)**
+* [Ford-Fulkerson method with DFS (max flow, min cut, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/FordFulkersonDFSAdjacencyMatrix.java) **- O(fV<sup>2</sup>)**
+* [Edmonds-Karp Algorithm (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/EdmondsKarpAdjacencyList.java) **- O(VE<sup>2</sup>)**
+* [Edmonds-Karp Algorithm optimized (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/EdmondsKarpAdjacencyListOptimized.java) **- O(VE<sup>2</sup>)**
+* [Maximum Cardinality Bipartite Matching (augmenting path algorithm, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList.java) **- O(VE)**
 
 ### Other graph theory
-* [Breadth first search (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterative.java)
-* [Breadth first search (adjacency list, fast queue)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterativeFastQueue.java)
-* [Find connected components (adjacency list, union find)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/ConnectedComponentsAdjacencyList.java)
-* [Depth first search (adjacency list, iterative)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListIterative.java)
-* [Depth first search (adjacency list, iterative, fast stack)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListIterativeFastStack.java)
-* [Depth first search (adjacency list, recursive)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListRecursive.java)
+* [Breadth first search (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterative.java) **- O(V+E)**
+* [Breadth first search (adjacency list, fast queue)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterativeFastQueue.java) **- O(V+E)**
+* [Find connected components (adjacency list, union find)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/ConnectedComponentsAdjacencyList.java) **- O(Elog(E))**
+* [Depth first search (adjacency list, iterative)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListIterative.java) **- O(V+E)**
+* [Depth first search (adjacency list, iterative, fast stack)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListIterativeFastStack.java) **- O(V+E)**
+* [Depth first search (adjacency list, recursive)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListRecursive.java) **- O(V+E)**
 * [Dijkstra's shortest path (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DijkstrasShortestPathAdjacencyList.java)
 * [Dijkstra's shortest path to all nodes (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DijkstrasShortestPathAllNodesAdjacencyList.java)
-* [Floyd Warshall algorithm (adjacency matrix, negative cycle check)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/FloydWarshall.java)
-* [Kruskal's min spanning tree algorithm (edge list, union find)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/KruskalsEdgeList.java)
-* [Prim's min spanning tree algorithm (lazy version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/LazyPrimsAdjacencyList.java)
-* [Prim's min spanning tree  algorithm (lazy version, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/LazyPrimsAdjacencyList.java)
-* [Prim's min spanning tree  algorithm (eager version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/EagerPrimsAdjacencyList.java)
-* [Tarjan's strongly connected components algorithm (adjacency list) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyList.java)
-* [Tarjan's strongly connected components algorithm (adjacency matrix) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyMatrix.java)
-* [Topological sort (acyclic graph, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyList.java)
-* [Topological sort (acyclic graph, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyMatrix.java)
-* [[UNTESTED] Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/%5BUNTESTED%5DGraphDiameter.java)
+* [Floyd Warshall algorithm (adjacency matrix, negative cycle check)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/FloydWarshall.java) **- O(V<sup>3</sup>)**
+* [Kruskal's min spanning tree algorithm (edge list, union find)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/KruskalsEdgeList.java) **- O(Elog(E))**
+* [Prim's min spanning tree algorithm (lazy version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/LazyPrimsAdjacencyList.java) **- O(Elog(E))**
+* [Prim's min spanning tree  algorithm (lazy version, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/LazyPrimsAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
+* [Prim's min spanning tree  algorithm (eager version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/EagerPrimsAdjacencyList.java) **- O(Elog(V))**
+* [Tarjan's strongly connected components algorithm (adjacency list) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyList.java) **- O(V+E)**
+* [Tarjan's strongly connected components algorithm (adjacency matrix) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
+* [Topological sort (acyclic graph, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyList.java) **- O(V+E)**
+* [Topological sort (acyclic graph, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
+* [[UNTESTED] Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/%5BUNTESTED%5DGraphDiameter.java) **- O(VE)**
 
 # Linear algebra
 * [Freivald's algorithm (matrix multiplication verification)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/FreivaldsAlgorithm.java)
