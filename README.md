@@ -62,8 +62,8 @@
 * [Depth first search (adjacency list, iterative)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListIterative.java) **- O(V+E)**
 * [Depth first search (adjacency list, iterative, fast stack)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListIterativeFastStack.java) **- O(V+E)**
 * [Depth first search (adjacency list, recursive)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListRecursive.java) **- O(V+E)**
-* [Dijkstra's shortest path (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DijkstrasShortestPathAdjacencyList.java)
-* [Dijkstra's shortest path to all nodes (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DijkstrasShortestPathAllNodesAdjacencyList.java)
+* [Dijkstra's shortest path (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DijkstrasShortestPathAdjacencyList.java) **- O(Elog(V))**
+* [Dijkstra's shortest path to all nodes (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DijkstrasShortestPathAllNodesAdjacencyList.java) **- O(Elog(V))**
 * [Floyd Warshall algorithm (adjacency matrix, negative cycle check)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/FloydWarshall.java) **- O(V<sup>3</sup>)**
 * [Kruskal's min spanning tree algorithm (edge list, union find)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/KruskalsEdgeList.java) **- O(Elog(E))**
 * [Prim's min spanning tree algorithm (lazy version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/LazyPrimsAdjacencyList.java) **- O(Elog(E))**
@@ -104,7 +104,7 @@
 
 # Search algorithms
 * [Binary search (real numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/BinarySearch.java) **- O(log(n))**
-* [Interpolation search (discrete discrete)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/InterpolationSearch.java) **- O(n) or O(log(log(n)) with uniform input**
+* [Interpolation search (discrete discrete)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/InterpolationSearch.java) **- O(n) or O(log(log(n))) with uniform input**
 * [Ternary search (real numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/TernarySearch.java) **- O(log(n))**
 * [Ternary search (discrete numbers)](https://github.com/williamfiset/Algorithms/blob/master/SearchAlgorithms/TernarySearchDiscrete.java) **- O(log(n))**
 
