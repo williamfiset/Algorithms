@@ -37,14 +37,14 @@ public class PrimeFactorization {
       x = (x * x + c) % n;
       y = (y * y + c) % n;
       y = (y * y + c) % n;
-      d = gcf(Math.abs(x - y), n);
+      d = gcd(Math.abs(x - y), n);
       if (d == n) break;
     }
     return d;
   }
 
   static long gcd(long a, long b) {
-    return b == 0 ? (a < 0 ? -a : a) : gcd(b, a % b);
+    return b == 0 ? a : gcd(b, a % b);
   }
 
   static boolean isPrime(final long n) {
