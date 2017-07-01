@@ -7,7 +7,7 @@
 # Constructive algorithms
 * [Combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Combinations.java)
 * [Combinations with Repetition](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/CombinationsWithRepetition.java)
-* [Permutations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Permutations.java)
+* [Permutations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Permutations.java) *- O(n!)*
 * [Power set (set of all subsets)](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/PowerSet.java)
 
 # Dynamic Programming
@@ -77,9 +77,9 @@
 
 # Linear algebra
 * [Freivald's algorithm (matrix multiplication verification)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/FreivaldsAlgorithm.java)
-* [Gaussian elimination](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/GaussianElimination.java)
-* [Linear recurrence solver](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/LinearRecurrenceSolver.java)
-* [Matrix determinant](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixDeterminantLaplaceExpansion.java)
+* [Gaussian elimination (solve system of linear equations)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/GaussianElimination.java)
+* [Linear recurrence solver (finds nth term in a recurrence relation)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/LinearRecurrenceSolver.java)
+* [Matrix determinant (Laplace/cofactor expansion)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixDeterminantLaplaceExpansion.java)
 * [Matrix inverse](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixInverse.java)
 * [Matrix multiplication](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixMultiplication.java)
 * [Matrix power](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixPower.java)
@@ -114,7 +114,7 @@
 * [Heapsort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/Heapsort.java)
 * [Insertion sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/InsertionSort.java)
 * [Mergesort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/Mergesort.java)
-* [Quicksort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/Quicksort.java)
+* [Quicksort (in-place, Hoare partitioning)](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/Quicksort.java)
 * [Selection sort](https://github.com/williamfiset/Algorithms/blob/master/SortingAlgorithms/SelectionSort.java)
 
 # String algorithms
