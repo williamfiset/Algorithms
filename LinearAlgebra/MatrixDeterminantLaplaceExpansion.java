@@ -9,7 +9,7 @@
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
-public class DeterminantLaplaceExpansion {
+public class MatrixDeterminantLaplaceExpansion {
 
   // Define a small value of epsilon to compare double values
   static final double EPS = 0.00000001;
