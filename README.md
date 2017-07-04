@@ -23,6 +23,7 @@
 # Geometry
 * [Angle between 2D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors2D.java) **- O(1)**
 * [Angle between 3D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors3D.java) **- O(1)**
+* [Circle-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CircleCircleIntersection.java) **- O(1)**
 * [Collinear points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CollinearPoints.java) **- O(1)**
 * [Convex hull (Graham Scan algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullGrahamScan.java) **- O(nlog(n))**
 * [Convex hull (Monotone chain algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullMonotoneChainAlgorithm.java) **- O(nlog(n))**
@@ -36,7 +37,6 @@
 * [Point is inside triangle check](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointInsideTriangle.java) **- O(1)**
 * [Point rotation about point](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointRotation.java) **- O(1)**
 * [Triangle area algorithms](https://github.com/williamfiset/Algorithms/blob/master/Geometry/TriangleArea.java) **- O(1)**
-* [[UNTESTED] Circle-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircleCircleIntersection.java) **- O(1)**
 * [[UNTESTED] Circle-circle intersection area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircleCircleIntersectionArea.java) **- O(1)**
 * [[UNTESTED] Circular segment area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircularSegmentArea.java) **- O(1)**
 * [[UNTESTED] Line-Circle intersection](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DLineCircleIntersection.java) **- O(1)**
