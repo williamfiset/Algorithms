@@ -1,8 +1,6 @@
 /**
- *
- * General formula for line:
- * ax + by = c, a != 0
- * y = (c - ax)/b
+ * Find the intersection of a line in general form with a circle
+ * See live demo: http://www.williamfiset.com/circlelineintersection
  *
  * Time Complexity: O(1)
  * 
@@ -21,17 +19,20 @@ public class LineCircleIntersection {
   // This method finds the intersection of this line and this circle
   public static Point2D[] lineCircleIntersection(double a, double b, double c, double x, double y, double r) {
     
+    // Set ax + by = c equal to (x - X)^2 + (y - Y)^2 = r^2 and expand:
     // (a^2 + b^2)x^2 + (2abY - 2ac + - 2b^2X)x + b^2X^2 + b^2Y^2 - 2bcY + c^2 - b^2r^2 = 0
+    // Then use quadratic formula X = (-b +- sqrt(a^2 - 4ac))/2a to find the 
+    // roots of the equation (if they exist).
+
+    // Ax^2 + Bx + C = 0;    
     double A = a*a + b*b;
     double B = 2*a*b*y - 2*a*c - 2*b*b*x;
     double C = b*b*x*x + b*b*y*y - 2*b*c*y + c*c - b*b*r*r;
-
-    // Use quadratic formula X = (-b +- sqrt(a^2 - 4ac))/2a to find the 
-    // roots of the equation (if they exist).
       
     double D = B*B - 4*A*C;
     double x1,y1,x2,y2;
 
+    // Vertical line case :0
     if (abs(b) < EPS) {
 
       // ax + by = c, but b = 0, so x = c/a
@@ -91,8 +92,6 @@ public class LineCircleIntersection {
 
     // Vertical line passing through (-1,0)
     display(lineCircleIntersection(1,0,-1, 0,0,1));
-
-    
 
   }
 
