@@ -26,20 +26,37 @@ public class LineCircleIntersection {
     double B = 2*a*b*y - 2*a*c - 2*b*b*x;
     double C = b*b*x*x + b*b*y*y - 2*b*c*y + c*c - b*b*r*r;
 
-    // Use quadratic formula X = -b +- sqrt(a^2 - 4ac)/2a to find the 
+    // Use quadratic formula X = (-b +- sqrt(a^2 - 4ac))/2a to find the 
     // roots of the equation (if they exist).
       
     double D = B*B - 4*A*C;
     double x1,y1,x2,y2;
 
+    if (abs(b) < EPS) {
+
+      // ax + by = c, but b = 0, so x = c/a
+      double vx = c/a;
+    
+      // No intersection
+      if (abs(x-vx) > r) return new Point2D[]{ };
+      
+      // Vertical line is tangent to circle
+      if (abs((vx-r)-x) < EPS || abs((vx+r)-x) < EPS)
+        return new Point2D[]{ new Point2D.Double(vx, y) };
+      
+      double dx = abs(vx - x);
+      double dy = sqrt(r*r-dx*dx);
+      
+      return new Point2D[] {
+        new Point2D.Double(vx, y+dy),
+        new Point2D.Double(vx, y-dy)
+      };
+
     // Line is tangent to circle
-    if (abs(D) < EPS) {
+    } else if (abs(D) < EPS) {
       
       x1 = -B/(2*A);
-      
-      // Vertical tangent line has y coordinate equal to that of y coordinate of circle
-      if (b == 0) y1 = y; 
-      else y1 = (c - a*x1)/b;
+      y1 = (c - a*x1)/b;
 
       return new Point2D[]{ new Point2D.Double(x1,y1) };
 

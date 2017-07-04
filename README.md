@@ -31,6 +31,7 @@
 * [Convex polygon contains points](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonContainsPoint.java) **- O(log(n))**
 * [Coplanar points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CoplanarPointsTest.java) **- O(1)**
 * [Line class](https://github.com/williamfiset/Algorithms/blob/master/Geometry/Line.java) **- O(1)**
+* [Line circle intersection](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineCircleIntersection.java) **- O(1)**
 * [Line segment to general form](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentToGeneralForm.java) **- O(1)**
 * [Longitude-Latitude geographic distance](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LongitudeLatitudeGeographicDistance.java) **- O(1)**
 * [Point-circle tangent(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointCircleTangent.java) **- O(1)**
@@ -39,7 +40,6 @@
 * [Triangle area algorithms](https://github.com/williamfiset/Algorithms/blob/master/Geometry/TriangleArea.java) **- O(1)**
 * [[UNTESTED] Circle-circle intersection area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircleCircleIntersectionArea.java) **- O(1)**
 * [[UNTESTED] Circular segment area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircularSegmentArea.java) **- O(1)**
-* [[UNTESTED] Line-Circle intersection](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DLineCircleIntersection.java) **- O(1)**
 
 # Graph theory
 
