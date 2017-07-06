@@ -1,5 +1,6 @@
 /**
  * This file shows you how to find the intersection of two circles.
+ * See live demo: http://www.williamfiset.com/circlecircleintersection
  *
  * Time Complexity: O(1)
  *
@@ -35,17 +36,16 @@ public class CircleCircleIntersection {
     if (r1 < r2) { r = r1; R = r2; c = c1; C = c2; } 
     else         { r = r2; R = r1; c = c2; C = c1; }
     
-    double dist = c1.distance(c2);
+    double d = c1.distance(c2);
 
     // There are an infinite number of solutions
-    if (dist < EPS && abs(r-R) < EPS)
-      throw new IllegalStateException("Infinite number of solutions (circles are equal)");
-
-    // No intersection (circles are disjoint)
-    if (r+R < dist) return new Point2D[]{};
+    // make sure to handle this however appropriate...
+    if (d < EPS && abs(r-R) < EPS)
+      return new Point2D[]{};
+      // throw new IllegalStateException("Infinite number of solutions (circles are equal)");
     
-    // No intersection (small circle contained within big circle)
-    if (r+dist < R) return new Point2D[]{};
+    // No intersection (circles centered at same place with different size)
+    else if (d < EPS) return new Point2D[]{};
     
     // Let (cx, cy) be the center of the small circle
     // Let (Cx, Cy) be the center of the larger circle
@@ -58,18 +58,23 @@ public class CircleCircleIntersection {
 
     // Scale the vector by R and offset the vector so that the head of the vector 
     // is positioned on the circumference of the big circle ready to be rotated
-    double x = ( vx / dist) * R + Cx;
-    double y = ( vy / dist) * R + Cy;
+    double x = ( vx / d) * R + Cx;
+    double y = ( vy / d) * R + Cy;
     Point2D point = new Point2D.Double(x, y);
 
-    // Unique intersection point on circumference of both circles
-    if ( abs(r+R - dist) < EPS || abs(R-(r+dist)) < EPS )
-      return new Point2D[]{point};
+    // Single intersection (kissing circles)
+    if (abs((R+r)-d) < EPS || abs(R-(r+d)) < EPS) {
+      return new Point2D[]{ point };
+    
+    // No intersection. Either the small circle contained within 
+    // big circle or circles are simply disjoint.
+    } else if (abs((d+r)-R) < EPS || (R+r < d))
+      return new Point2D[]{};
 
-    // Find the angle via cos law
-    double angle = arccosSafe((r*r-dist*dist-R*R)/(-2*dist*R));
+    // Find the angle of rotation via cos law
+    double angle = arccosSafe((r*r-d*d-R*R)/(-2*d*R));
 
-    // Two unique intersection points      
+    // Find the two unique intersection points      
     Point2D pt1 = rotatePoint( C, point,  angle );
     Point2D pt2 = rotatePoint( C, point, -angle );
 
@@ -82,10 +87,8 @@ public class CircleCircleIntersection {
   // should be specified in radians, not degrees.
   public static Point2D rotatePoint(Point2D fp, Point2D pt, double angle) {
     
-    double fpx = fp.getX();
-    double fpy = fp.getY();
-    double ptx = pt.getX();
-    double pty = pt.getY();
+    double fpx = fp.getX(); double fpy = fp.getY();
+    double ptx = pt.getX(); double pty = pt.getY();
     
     // Compute the vector <x, y> from the fixed point
     // to the point of rotation.
@@ -152,6 +155,35 @@ public class CircleCircleIntersection {
 
     pts = circleCircleIntersection(center8,radius8,center10,radius10);
     displayIntersectionPoints(pts);
+    
+    int n = 2000;
+    int multiplier = 10000;
+    double  R[] = new double[n];
+    Point2D C[] = new Point2D[n];
+    for (int i = 0; i < n; i++) {
+      double r = (Math.random()) * multiplier;
+      double x = (Math.random()) * multiplier;
+      double y = (Math.random()) * multiplier;
+      R[i] = r; C[i] = new Point2D.Double(x, y);
+    }
+    
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        pts = circleCircleIntersection(C[i], R[i], C[j], R[j]);
+        for (Point2D p : pts) {
+          if (Double.isNaN(p.getX())) System.out.println("ERR");
+          if (Double.isNaN(p.getY())) System.out.println("ERR");
+        }
+      }
+    }
+
+    Point2D c1 = new Point2D.Double(3, 0);
+    double r1 = 2.5;
+    Point2D c2 = new Point2D.Double(5, 0);
+    double r2 = 1.5;
+    Point2D[] intersectionPoints = circleCircleIntersection(c1, r1, c2, r2);
+    System.out.println(intersectionPoints[0]);    
+    System.out.println(intersectionPoints[1]);    
 
   }
 
