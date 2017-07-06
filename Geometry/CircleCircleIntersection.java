@@ -63,12 +63,12 @@ public class CircleCircleIntersection {
     Point2D point = new Point2D.Double(x, y);
 
     // Single intersection (kissing circles)
-    if (abs((R+r)-d) < EPS || abs(R-(r+d)) < EPS) {
+    if (abs((R+r)-d) < EPS || abs(R-(r+d)) < EPS)
       return new Point2D[]{ point };
     
     // No intersection. Either the small circle contained within 
     // big circle or circles are simply disjoint.
-    } else if (abs((d+r)-R) < EPS || (R+r < d))
+    if (d + r < R || R + r < d)
       return new Point2D[]{};
 
     // Find the angle of rotation via cos law
