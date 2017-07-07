@@ -77,7 +77,7 @@ function circleLineIntersection(circle, line) {
     ];
     
   // Line is tangent to circle
-} else if (Math.abs(D) < EPS) {
+  } else if (Math.abs(D) < EPS) {
     
     x1 = -B/(2*A);
     y1 = (c - a*x1)/b;
