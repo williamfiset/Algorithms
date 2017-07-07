@@ -24,7 +24,7 @@
 * [Angle between 2D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors2D.java) **- O(1)**
 * [Angle between 3D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors3D.java) **- O(1)**
 * [Circle-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CircleCircleIntersection.java) **- O(1)**
-* [Circle-line intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineCircleIntersection.java) **- O(1)**
+* [Circle-line intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineCircleIntersection.js) **- O(1)**
 * [Circle-line segment intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentCircleIntersection.js) **- O(1)**
 * [Circle-point tangent line(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointCircleTangent.java) **- O(1)**
 * [Collinear points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CollinearPoints.java) **- O(1)**
@@ -34,7 +34,7 @@
 * [Convex polygon contains points](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonContainsPoint.java) **- O(log(n))**
 * [Coplanar points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CoplanarPointsTest.java) **- O(1)**
 * [Line class](https://github.com/williamfiset/Algorithms/blob/master/Geometry/Line.java) **- O(1)**
-* [Line-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineCircleIntersection.java) **- O(1)**
+* [Line-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineCircleIntersection.js) **- O(1)**
 * [Line segment-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentCircleIntersection.js) **- O(1)**
 * [Line segment to general form](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentToGeneralForm.java) **- O(1)**
 * [Longitude-Latitude geographic distance](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LongitudeLatitudeGeographicDistance.java) **- O(1)**
