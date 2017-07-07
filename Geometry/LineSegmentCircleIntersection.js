@@ -1,3 +1,6 @@
+// See live demo:
+// http://www.williamfiset.com/linesegmentcircleintersection
+
 // Small epsilon value
 var EPS = 0.0000001;
 

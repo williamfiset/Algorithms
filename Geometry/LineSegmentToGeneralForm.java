@@ -11,6 +11,7 @@ public class LineSegmentToGeneralForm {
   
   // Given a line segment as (x1,y1), (x2,y2) this method 
   // returns the general form of a line ax + by + c = 0
+  // NOTE: this is not the same as: ax + by = c
   public static double[] segmentToGeneralForm(double x1, double y1, double x2, double y2) {
   
     // Starting with y = mx we can replace y with (y-y1), m with (y2-y1)/(x2-x1)
@@ -23,7 +24,7 @@ public class LineSegmentToGeneralForm {
 
     abc[0] = y1 - y2;
     abc[1] = x2 - x1;
-    abc[2] = x1 * y2 - y1 * x2;
+    abc[2] = x1 * y2 - y1 * x2; // or y1*x2 - x1*y2; for ax + by = c
 
     return abc;
 
