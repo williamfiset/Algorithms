@@ -27,6 +27,7 @@
 * [Circle-line intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineCircleIntersection.js) **- O(1)**
 * [Circle-line segment intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentCircleIntersection.js) **- O(1)**
 * [Circle-point tangent line(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointCircleTangent.java) **- O(1)**
+* [Closest pair of points (line sweep)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ClosestPairOfPoints.java) **- O(nlog(n))**
 * [Collinear points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CollinearPoints.java) **- O(1)**
 * [Convex hull (Graham Scan algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullGrahamScan.java) **- O(nlog(n))**
 * [Convex hull (Monotone chain algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullMonotoneChainAlgorithm.java) **- O(nlog(n))**
