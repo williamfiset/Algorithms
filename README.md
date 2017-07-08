@@ -28,17 +28,17 @@
 * [Circle-line intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineCircleIntersection.js) **- O(1)**
 * [Circle-line segment intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentCircleIntersection.js) **- O(1)**
 * [Circle-point tangent line(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointCircleTangent.java) **- O(1)**
-* [Closest pair of points (line sweep)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ClosestPairOfPoints.java) **- O(nlog(n))**
-* [Collinear points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CollinearPoints.java) **- O(1)**
+* [Closest pair of points (line sweeping algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ClosestPairOfPoints.java) **- O(nlog(n))**
+* [Collinear points test (are three 2D points on the same line)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CollinearPoints.java) **- O(1)**
 * [Convex hull (Graham Scan algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullGrahamScan.java) **- O(nlog(n))**
 * [Convex hull (Monotone chain algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullMonotoneChainAlgorithm.java) **- O(nlog(n))**
 * [Convex polygon area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonArea.java) **- O(n)**
 * [Convex polygon contains points](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonContainsPoint.java) **- O(log(n))**
-* [Coplanar points test](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CoplanarPointsTest.java) **- O(1)**
-* [Line class](https://github.com/williamfiset/Algorithms/blob/master/Geometry/Line.java) **- O(1)**
+* [Coplanar points test (are four 3D points on the same plane)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CoplanarPointsTest.java) **- O(1)**
+* [Line class (handy infinite line class)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/Line.java) **- O(1)**
 * [Line-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineCircleIntersection.js) **- O(1)**
 * [Line segment-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentCircleIntersection.js) **- O(1)**
-* [Line segment to general form](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentToGeneralForm.java) **- O(1)**
+* [Line segment to general form (ax + by = c)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentToGeneralForm.java) **- O(1)**
 * [Longitude-Latitude geographic distance](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LongitudeLatitudeGeographicDistance.java) **- O(1)**
 * [Point-circle tangent line(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointCircleTangent.java) **- O(1)**
 * [Point is inside triangle check](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointInsideTriangle.java) **- O(1)**
