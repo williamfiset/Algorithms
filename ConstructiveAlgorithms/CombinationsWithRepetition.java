@@ -2,13 +2,13 @@
  * Here I show how you can generate all the combinations of a sequence
  * of size r which are repeated at most k times.
  *
- * Time Complexity: O((n+r-1)!/(r!(n-1)!)) 
+ * Time Complexity: O(n+r-1 choose r) = O((n+r-1)!/(r!(n-1)!)) 
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
 public class CombinationsWithRepetition {
-  static int c = 0;
+  
   /** 
    * Computes all combinations of elements of 'r' elements which 
    * can be repeated at most 'k' times each.
@@ -27,7 +27,7 @@ public class CombinationsWithRepetition {
 
       // We selected 'r' elements in total
       if (r == 0) {
-c++;
+
         // Print combination
         System.out.print("{ ");
         for (int i = 0; i < N; i++)
@@ -71,9 +71,7 @@ c++;
     // Prints all combinations of size 3 where 
     // each element is repeated at most twice
     int[] seq = {1,2,3,4};
-    // printCombinationsWithRepetition(seq, 3, 2);
-    printCombinationsWithRepetition(seq, 4, 4);
-    System.out.println(c);
+    printCombinationsWithRepetition(seq, 3, 2);
     // prints:
     // { 3 4 4 }
     // { 3 3 4 }
