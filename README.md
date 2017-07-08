@@ -24,7 +24,7 @@
 # Geometry
 * [Angle between 2D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors2D.java) **- O(1)**
 * [Angle between 3D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors3D.java) **- O(1)**
-* [Circle-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CircleCircleIntersection.java) **- O(1)**
+* [Circle-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CircleCircleIntersectionPoints.js) **- O(1)**
 * [Circle-line intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineCircleIntersection.js) **- O(1)**
 * [Circle-line segment intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentCircleIntersection.js) **- O(1)**
 * [Circle-point tangent line(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointCircleTangent.java) **- O(1)**
