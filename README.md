@@ -1,4 +1,5 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[![Travis](https://img.shields.io/travis/williamfiset/algorithms.svg)](https://travis-ci.org/williamfiset/algorithms) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Artificial Intelligence (AI) 
 * [Genetic algorithm Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java)
