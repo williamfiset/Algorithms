@@ -8,7 +8,7 @@
 
 import java.util.*;
 
-public class GeneticAlgorithm_travellingSalesman {
+public class GeneticAlgorithm_travelingSalesman {
   
   final static Random RANDOM = new Random();
 

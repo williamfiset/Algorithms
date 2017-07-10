@@ -2,8 +2,9 @@
 [![Travis](https://img.shields.io/travis/williamfiset/Algorithms.svg)](https://travis-ci.org/williamfiset/Algorithms) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Artificial Intelligence (AI) 
-* [Genetic algorithm Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java)
+* [Genetic algorithm 0/1 knapsack](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java)
 * [Genetic algorithm text searching](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_textSearch.java)
+* [Genetic algorithm traveling salesman](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_travelingSalesman.java)
 
 # Constructive algorithms
 * [Combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Combinations.java) **- O(n choose r)**
