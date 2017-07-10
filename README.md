@@ -4,7 +4,7 @@
 # Artificial Intelligence (AI) 
 * [Genetic algorithm 0/1 knapsack](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java) **-O(epochs \* population \* |items|)**
 * [Genetic algorithm text searching](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_textSearch.java) **-O(epochs \* population \* text length)**
-* [Genetic algorithm traveling salesman](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_travelingSalesman.java) **-O(epochs \* population \* nodes)**
+* [Genetic algorithm traveling salesman](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_travelingSalesman.java) **-O(epochs \* population \* vertices)**
 
 # Constructive algorithms
 * [Combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Combinations.java) **- O(n choose r)**
@@ -83,8 +83,8 @@
 * [Tarjan's strongly connected components algorithm (adjacency matrix) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
 * [Topological sort (acyclic graph, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyList.java) **- O(V+E)**
 * [Topological sort (acyclic graph, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
-* [Traveling salesman (brute force, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TravelingSalesmanProblemBruteForce.java) **- O(n!)**
-* [Traveling salesman (genetic algorithm)](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_travelingSalesman.java) **-O(epochs \* population \* nodes)**
+* [Traveling salesman (brute force, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TravelingSalesmanProblemBruteForce.java) **- O(V!)**
+* [Traveling salesman (genetic algorithm)](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_travelingSalesman.java) **-O(epochs \* population \* vertices)**
 * [[UNTESTED] Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/%5BUNTESTED%5DGraphDiameter.java) **- O(VE)**
 
 # Linear algebra
