@@ -82,6 +82,7 @@
 * [Tarjan's strongly connected components algorithm (adjacency matrix) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
 * [Topological sort (acyclic graph, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyList.java) **- O(V+E)**
 * [Topological sort (acyclic graph, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
+* [Traveling salesman (brute force, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TravelingSalesmanProblemBruteForce.java) **- O(n!)**
 * [[UNTESTED] Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/%5BUNTESTED%5DGraphDiameter.java) **- O(VE)**
 
 # Linear algebra

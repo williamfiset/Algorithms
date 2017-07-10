@@ -9,6 +9,8 @@
 
 public class Permutations {
   
+    /* RECURSIVE APPROACH */
+
   // Generates all the permutations of a sequence of objects
   public static void generatePermutations(Object [] sequence) {
     if (sequence == null) return;
@@ -58,6 +60,8 @@ public class Permutations {
 
     }
   }
+
+    /* ITERATIVE APPROACH */
 
   // Generates the next ordered permutation in-place (skips repeated permutations).
   // Calling this when the array is already at the highest permutation returns false.
@@ -146,8 +150,7 @@ public class Permutations {
     // [D, B, A, C]
     // [D, B, C, A]
     // [D, C, A, B]
-    // [D, C, B, A]    
-
+    // [D, C, B, A]
 
   }
 
