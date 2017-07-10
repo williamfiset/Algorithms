@@ -17,8 +17,8 @@ public class GeneticAlgorithm_textSearch {
   final static Random RANDOM = new Random();
 
   // Genetic algorithm parameters
-  final static int N = 250;
   final static int MAX_EPOCH = 100000;
+  final static int POPULATION_SZ = 250;
   final static double MUTATION_RATE = 0.0125;
 
   // The power variable tweaks the weight of the fitness function 
@@ -33,13 +33,13 @@ public class GeneticAlgorithm_textSearch {
     power = 1.0;
 
     // Create initial population
-    Individual[] generation = new Individual[N+1];
-    Individual[] nextGeneration = new Individual[N+1];
-    for(int i = 1; i <= N; i++) generation[i] = new Individual();
+    Individual[] generation = new Individual[POPULATION_SZ+1];
+    Individual[] nextGeneration = new Individual[POPULATION_SZ+1];
+    for(int i = 1; i <= POPULATION_SZ; i++) generation[i] = new Individual();
 
     // Stores the ranges of individuals in the selection roulette
-    double [] lo = new double[N+1];
-    double [] hi = new double[N+1];
+    double [] lo = new double[POPULATION_SZ+1];
+    double [] hi = new double[POPULATION_SZ+1];
 
     for(int epoch = 1; epoch <= MAX_EPOCH; epoch++, power += POWER_INC) {
 
@@ -47,7 +47,7 @@ public class GeneticAlgorithm_textSearch {
       // to be able to normalize and assign importance percentages
       double fitnessSum = 0;
 
-      for(int i = 1; i <= N; i++) {
+      for(int i = 1; i <= POPULATION_SZ; i++) {
         Individual in = generation[i];
         fitnessSum += in.fitness;
         lo[i] = hi[i] = 0;
@@ -58,7 +58,7 @@ public class GeneticAlgorithm_textSearch {
       double maxFitness = 0;
 
       // Setup selection roulette
-      for (int i = 1; i <= N; i++) {
+      for (int i = 1; i <= POPULATION_SZ; i++) {
 
         Individual in = generation[i];
         double norm = in.fitness / fitnessSum;
@@ -75,7 +75,7 @@ public class GeneticAlgorithm_textSearch {
       if (epoch % 50 == 0) System.out.printf("Epoch: %d,       %s\n", epoch, fittest );
 
       // Selection process
-      for (int i = 1; i <= N; i++) {
+      for (int i = 1; i <= POPULATION_SZ; i++) {
         
         // Perform individual selection and crossover 
         Individual parent1 = selectIndividual(generation, lo, hi);
@@ -153,7 +153,7 @@ public class GeneticAlgorithm_textSearch {
     double r = Math.random();
     
     // Binary search to find individual
-    int mid, l = 0, h = N-1;
+    int mid, l = 0, h = POPULATION_SZ-1;
     while (true) {
       mid = (l + h) >>> 1;
       if (lo[mid] <= r && r < hi[mid])
