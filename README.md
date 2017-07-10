@@ -2,9 +2,9 @@
 [![Travis](https://img.shields.io/travis/williamfiset/Algorithms.svg)](https://travis-ci.org/williamfiset/Algorithms) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Artificial Intelligence (AI) 
-* [Genetic algorithm 0/1 knapsack](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java) - O(epochs \* population \* |items|)
-* [Genetic algorithm text searching](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_textSearch.java) - O(epochs \* population \* text length)
-* [Genetic algorithm traveling salesman](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_travelingSalesman.java) - O(epochs \* population \* |items|)
+* [Genetic algorithm 0/1 knapsack](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java) **-O(epochs \* population \* |items|)**
+* [Genetic algorithm text searching](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_textSearch.java) **-O(epochs \* population \* text length)**
+* [Genetic algorithm traveling salesman](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_travelingSalesman.java) **-O(epochs \* population \* nodes)**
 
 # Constructive algorithms
 * [Combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Combinations.java) **- O(n choose r)**
@@ -16,7 +16,7 @@
 * [Coin change](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/CoinChange.java) **- O(nW)**
 * [Edit distance](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/EditDistance.java) **- O(nm)**
 * [Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/Knapsack_01.java) **- O(nW)**
-* [Knapsack 0/1 (genetic algorithm)](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java) - O(epochs \* population \* |items|)
+* [Knapsack 0/1 (genetic algorithm)](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java) **- O(epochs \* population \* |items|)**
 * [Knapsack unbounded (0/∞)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/KnapsackUnbounded.java) **- O(nW)**
 * [Maximum subarray](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/MaximumSubarray.java) **- O(n)**
 * [Longest Common Subsequence (LCS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestCommonSubsequence.java) **- O(nm)**
@@ -84,7 +84,7 @@
 * [Topological sort (acyclic graph, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyList.java) **- O(V+E)**
 * [Topological sort (acyclic graph, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
 * [Traveling salesman (brute force, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TravelingSalesmanProblemBruteForce.java) **- O(n!)**
-* [Traveling salesman (genetic algorithm)](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_travelingSalesman.java) - O(epochs \* population \* |nodes|)
+* [Traveling salesman (genetic algorithm)](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_travelingSalesman.java) **-O(epochs \* population \* nodes)**
 * [[UNTESTED] Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/%5BUNTESTED%5DGraphDiameter.java) **- O(VE)**
 
 # Linear algebra
