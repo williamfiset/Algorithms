@@ -144,6 +144,7 @@
 
 # Other
 
+* [Bit manipulations](https://github.com/williamfiset/Algorithms/blob/master/Other/BitManipulations.java) **- O(1)**
 * [Square root decomposition](https://github.com/williamfiset/Algorithms/blob/master/Other/SquareRootDecomposition.java) **- O(√n) per query**
 
 # License
