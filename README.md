@@ -36,8 +36,8 @@
 * [Convex hull (Monotone chain algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullMonotoneChainAlgorithm.java) **- O(nlog(n))**
 * [Convex polygon area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonArea.java) **- O(n)**
 * [Convex polygon contains points](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonContainsPoint.java) **- O(log(n))**
-* [Cut convex polygon with line](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonCut.java) **- O(n)**
 * [Coplanar points test (are four 3D points on the same plane)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CoplanarPointsTest.java) **- O(1)**
+* [Cut convex polygon with line](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonCut.java) **- O(n)**
 * [Line class (handy infinite line class)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/Line.java) **- O(1)**
 * [Line-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineCircleIntersection.js) **- O(1)**
 * [Line segment-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentCircleIntersection.js) **- O(1)**
@@ -96,6 +96,7 @@
 * [Matrix inverse](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixInverse.java) **- O(n<sup>3</sup>)**
 * [Matrix multiplication](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixMultiplication.java) **- O(n<sup>3</sup>)**
 * [Matrix power](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixPower.java) **- O(n<sup>3</sup>log(p))**
+* [Simplex (maximize expression subject to constraints)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/Simplex.java) **- O(n<sup>3</sup>)**
 * [Square matrix rotation](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/RotateSquareMatrixInplace.java) **- O(n<sup>2</sup>)**
 
 # Mathematics

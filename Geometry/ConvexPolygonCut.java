@@ -2,6 +2,8 @@
 * This file shows you how to cut a polygon by a specific line (infinite line).
 * Both polygons resulting from the cut can be found by running the cut method twice.
 *
+* Time Complexity: O(n)
+*
 * @author Thomas Finn Lidbetter
 **/
 import java.util.*;
