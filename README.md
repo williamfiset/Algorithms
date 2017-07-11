@@ -142,6 +142,10 @@
 * [Rabin-Karp algorithm (finds pattern matches in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/RabinKarp.java) **- O(n+m)**
 * [Substring verification with suffix array](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/SubstringVerificationSuffixArray.java) **- O(nlog(n)) SA construction and O(mlog(n)) per query**
 
+# Other
+
+* [Square root decomposition](https://github.com/williamfiset/Algorithms/blob/master/Other/SquareRootDecomposition.java) **- O(√n) per query**
+
 # License
 
 This repository is released under the [MIT license](https://opensource.org/licenses/MIT). In short, this means you are free to use this software in any personal, open-source or commercial projects. Attribution is optional but appreciated.
