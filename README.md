@@ -36,6 +36,7 @@
 * [Convex hull (Monotone chain algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullMonotoneChainAlgorithm.java) **- O(nlog(n))**
 * [Convex polygon area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonArea.java) **- O(n)**
 * [Convex polygon contains points](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonContainsPoint.java) **- O(log(n))**
+* [Cut convex polygon with line](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonCut.java) **- O(n)**
 * [Coplanar points test (are four 3D points on the same plane)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CoplanarPointsTest.java) **- O(1)**
 * [Line class (handy infinite line class)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/Line.java) **- O(1)**
 * [Line-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineCircleIntersection.js) **- O(1)**
