@@ -55,6 +55,7 @@
 
 ### Tree algorithms
 * [Tree diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/TreeDiameter.java) **- O(V+E)**
+* [Rooting tree algorithm](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/RootingTree.java) **- O(V+E)**
 * [[UNTESTED] Tree canonical form](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/%5BUNTESTED%5DTreeCanonicalForm.java) **- O(V<sup>2</sup>)**
 
 ### Network flow
