@@ -15,6 +15,7 @@
 # Dynamic Programming
 * [Coin change](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/CoinChange.java) **- O(nW)**
 * [Edit distance](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/EditDistance.java) **- O(nm)**
+* [Josephus problem](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/JosephusProblem.java) **- O(n)**
 * [Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/Knapsack_01.java) **- O(nW)**
 * [Knapsack 0/1 (genetic algorithm)](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java) **- O(epochs \* population \* |items|)**
 * [Knapsack unbounded (0/∞)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/KnapsackUnbounded.java) **- O(nW)**
@@ -64,7 +65,7 @@
 * [Edmonds-Karp Algorithm optimized (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/EdmondsKarpAdjacencyListOptimized.java) **- O(VE<sup>2</sup>)**
 * [Maximum Cardinality Bipartite Matching (augmenting path algorithm, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList.java) **- O(VE)**
 
-### Other graph theory
+### General graph theory
 * [Bellman-Ford (edge list, shortest path, negative cycles)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BellmanFordEdgeList.java) **- O(VE)**
 * [Bellman-Ford (adjacency list, shortest path, negative cycles)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BellmanFordAdjacencyList.java) **- O(VE)**
 * [Breadth first search (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterative.java) **- O(V+E)**
@@ -142,9 +143,9 @@
 * [Rabin-Karp algorithm (finds pattern matches in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/RabinKarp.java) **- O(n+m)**
 * [Substring verification with suffix array](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/SubstringVerificationSuffixArray.java) **- O(nlog(n)) SA construction and O(mlog(n)) per query**
 
-# Other
+#  Supplementary/Other algorithms
 
-* [Bit manipulations](https://github.com/williamfiset/Algorithms/blob/master/Other/BitManipulations.java) **- O(1)**
+* [Bit manipulation operations](https://github.com/williamfiset/Algorithms/blob/master/Other/BitManipulations.java) **- O(1)**
 * [Square root decomposition](https://github.com/williamfiset/Algorithms/blob/master/Other/SquareRootDecomposition.java) **- O(√n) per query**
 
 # License
