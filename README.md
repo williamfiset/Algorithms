@@ -54,6 +54,7 @@
 # Graph theory
 
 ### Tree algorithms
+* [Tree canonization (tree isomorphism)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/TreeCanonicalFormAdjacencyList.java) **- O(V+E)**
 * [Tree diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/TreeDiameter.java) **- O(V+E)**
 * [[UNTESTED] Rooting tree algorithm](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/%5BUNTESTED%5DRootingTree.java) **- O(V+E)**
 * [[UNTESTED] Tree center(s)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/%5BUNTESTED%5DTreeCenter.java) **- O(V+E)**
