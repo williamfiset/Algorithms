@@ -57,7 +57,6 @@
 * [Tree diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/TreeDiameter.java) **- O(V+E)**
 * [[UNTESTED] Rooting tree algorithm](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/%5BUNTESTED%5DRootingTree.java) **- O(V+E)**
 * [[UNTESTED] Tree center(s)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/%5BUNTESTED%5DTreeCenter.java) **- O(V+E)**
-* [[UNTESTED] Tree canonical form (tree isomorphism)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/%5BUNTESTED%5DTreeCanonicalForm.java) **- O(V<sup>2</sup>)**
 
 ### Network flow
 * [Bipartite graph verification (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/BipartiteGraphCheckAdjacencyList.java) **- O(V+E)**
