@@ -134,10 +134,10 @@ class ModularLinearAlgebra {
       {1,  5,  2, 4}
     };
     // Note that negative values have been changed to their
-    // corrseponding values in Z_p
+    // corresponding values in Z_p
 
     // Compute the multiplicative inverse for each element in Z_p
-		int[] inv = new int[p];
+    int[] inv = new int[p];
     for (int i=1; i<p; i++) {
       inv[i] = modInv(i,p);
     }
@@ -146,11 +146,15 @@ class ModularLinearAlgebra {
     rref(augmentedMatrix, p, inv);
 
     if (!isInconsistent(augmentedMatrix) && !hasMultipleSolutions(augmentedMatrix)) {
+      
       int x = augmentedMatrix[0][3];
       int y = augmentedMatrix[1][3];
       int z = augmentedMatrix[2][3];
-      
+
+      // Prints: x = 1, y = 5, z = 3
       System.out.printf("x = %d, y = %d, z = %d\n", x, y, z);
+
     } 
   }
 }
+

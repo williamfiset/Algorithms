@@ -46,17 +46,20 @@ public class RabinKarp {
     String pat = "P@TTerN";
 
     System.out.println(rabinKarp(str, pat)); // [0, 13, 20, 51]
-
+    
+    // Pattern is a substring of the text multiple times
     str = "ababababa";
     pat  = "a";
 
     System.out.println(rabinKarp(str, pat)); // [0, 2, 4, 6, 8]
-
+    
+    // String is smaller than pattern
     str = "123";
     pat  = "123456";
 
     System.out.println(rabinKarp(str, pat)); // []
-
+    
+    // String and pattern are the same
     str = "123456";
     pat  = "123456";
 
