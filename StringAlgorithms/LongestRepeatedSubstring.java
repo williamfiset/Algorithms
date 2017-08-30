@@ -1,7 +1,7 @@
 /**
  * Finds the longest repeated substring(s) of a string.
  * 
- * Time complexity: O(nlogn), bounded by suffix are construction
+ * Time complexity: O(nlogn), bounded by suffix array construction
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
