@@ -84,6 +84,7 @@
 # Linear algebra
 * [Freivald's algorithm (matrix multiplication verification)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/FreivaldsAlgorithm.java) **- O(kn<sup>2</sup>)**
 * [Gaussian elimination (solve system of linear equations)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/GaussianElimination.java) **- O(cr<sup>2</sup>)**
+* [Gaussian elimination (modular version, prime finite field)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/ModularLinearAlgebra.java) **- O(cr<sup>2</sup>)**
 * [Linear recurrence solver (finds nth term in a recurrence relation)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/LinearRecurrenceSolver.java) **- O(m<sup>3</sup>log(n))**
 * [Matrix determinant (Laplace/cofactor expansion)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixDeterminantLaplaceExpansion.java) **- O((n+2)!)**
 * [Matrix inverse](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixInverse.java) **- O(n<sup>3</sup>)**

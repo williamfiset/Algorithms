@@ -1,7 +1,7 @@
 /**
  * Finds the longest repeated substring(s) of a string.
  * 
- * Time complexity: O(nlogn), bounded by suffix are construction
+ * Time complexity: O(nlogn), bounded by suffix array construction
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
@@ -31,8 +31,7 @@ public class LongestRepeatedSubstring {
 
 class SuffixArray {
 
-  // ALPHABET_SZ is the default alphabet size, this may need to be much
-  // larger if you're using the LCS method with multiple sentinels
+  // ALPHABET_SZ is the default alphabet size, this may need to be much larger
   int ALPHABET_SZ = 256, N;
   int[] T, lcp, sa, sa2, rank, tmp, c;
 
@@ -97,7 +96,7 @@ class SuffixArray {
 
   // Finds the LRS(s) (Longest Repeated Substring) that occurs in a string.
   // Traditionally we are only interested in substrings that appear at
-  // least twice, so this method returns an empty set if this is the case.
+  // least twice, so this method returns an empty set if this is not the case.
   // @return an ordered set of longest repeated substrings
   public TreeSet <String> lrs() {
 

@@ -16,7 +16,7 @@ class GaussianElimination {
   // with the rightmost column containing the constants. The answers
   // will be stored on the rightmost column after the algorithm is done.
   // NOTE: make sure your matrix is consistent and does not have multiple
-  // solutions before you solve the system if you want a unique valid answer.
+  // solutions when you solve the system if you want a unique valid answer.
   // Time Complexity: O(r²c)
   static void solve(double[][] augmentedMatrix) {
     int nRows = augmentedMatrix.length, nCols = augmentedMatrix[0].length, lead = 0;
@@ -84,12 +84,15 @@ class GaussianElimination {
       {6, -1,  0, 12}
     };
 
+    solve(augmentedMatrix);
+    
     if (!hasMultipleSolutions(augmentedMatrix) && !isInconsistent(augmentedMatrix)) {
 
-      solve(augmentedMatrix);
       double x = augmentedMatrix[0][3];
       double y = augmentedMatrix[1][3];
       double z = augmentedMatrix[2][3];
+
+      // x ~ 3.755, y ~ 10.531, z ~ 6.816
       System.out.printf("x = %.3f, y = %.3f, z = %.3f\n", x, y, z);
       
     }
