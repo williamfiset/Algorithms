@@ -1,23 +1,20 @@
 
-[![Travis](https://img.shields.io/travis/williamfiset/Algorithms.svg)](https://travis-ci.org/williamfiset/Algorithms) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Travis](https://img.shields.io/travis/williamfiset/algorithms.svg)](https://travis-ci.org/williamfiset/algorithms) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Artificial Intelligence (AI) 
-* [Genetic algorithm 0/1 knapsack](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java) **-O(epochs \* population \* |items|)**
-* [Genetic algorithm text searching](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_textSearch.java) **-O(epochs \* population \* text length)**
-* [Genetic algorithm traveling salesman](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_travelingSalesman.java) **-O(epochs \* population \* vertices)**
+* [Genetic algorithm Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java)
+* [Genetic algorithm text searching](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_textSearch.java)
 
 # Constructive algorithms
 * [Combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Combinations.java) **- O(n choose r)**
-* [Combinations with Repetition](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/CombinationsWithRepetition.java) **- O(n+r-1 choose r)**
+* [Combinations with Repetition](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/CombinationsWithRepetition.java) **- O(???)**
 * [Permutations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Permutations.java) **- O(n!)**
 * [Power set (set of all subsets)](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/PowerSet.java) **- O(2<sup>n</sup>)**
 
 # Dynamic Programming
 * [Coin change](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/CoinChange.java) **- O(nW)**
 * [Edit distance](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/EditDistance.java) **- O(nm)**
-* [Josephus problem](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/JosephusProblem.java) **- O(n)**
 * [Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/Knapsack_01.java) **- O(nW)**
-* [Knapsack 0/1 (genetic algorithm)](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java) **- O(epochs \* population \* |items|)**
 * [Knapsack unbounded (0/∞)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/KnapsackUnbounded.java) **- O(nW)**
 * [Maximum subarray](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/MaximumSubarray.java) **- O(n)**
 * [Longest Common Subsequence (LCS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestCommonSubsequence.java) **- O(nm)**
@@ -38,7 +35,6 @@
 * [Convex polygon area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonArea.java) **- O(n)**
 * [Convex polygon contains points](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonContainsPoint.java) **- O(log(n))**
 * [Coplanar points test (are four 3D points on the same plane)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CoplanarPointsTest.java) **- O(1)**
-* [Cut convex polygon with line](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonCut.java) **- O(n)**
 * [Line class (handy infinite line class)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/Line.java) **- O(1)**
 * [Line-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineCircleIntersection.js) **- O(1)**
 * [Line segment-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentCircleIntersection.js) **- O(1)**
@@ -54,10 +50,8 @@
 # Graph theory
 
 ### Tree algorithms
-* [Tree canonization (tree isomorphism)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/TreeCanonicalFormAdjacencyList.java) **- O(V+E)**
 * [Tree diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/TreeDiameter.java) **- O(V+E)**
-* [[UNTESTED] Rooting tree algorithm](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/%5BUNTESTED%5DRootingTree.java) **- O(V+E)**
-* [[UNTESTED] Tree center(s)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/%5BUNTESTED%5DTreeCenter.java) **- O(V+E)**
+* [[UNTESTED] Tree canonical form](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/%5BUNTESTED%5DTreeCanonicalForm.java) **- O(V<sup>2</sup>)**
 
 ### Network flow
 * [Bipartite graph verification (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/BipartiteGraphCheckAdjacencyList.java) **- O(V+E)**
@@ -67,9 +61,7 @@
 * [Edmonds-Karp Algorithm optimized (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/EdmondsKarpAdjacencyListOptimized.java) **- O(VE<sup>2</sup>)**
 * [Maximum Cardinality Bipartite Matching (augmenting path algorithm, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList.java) **- O(VE)**
 
-### General graph theory
-* [Bellman-Ford (edge list, shortest path, negative cycles)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BellmanFordEdgeList.java) **- O(VE)**
-* [Bellman-Ford (adjacency list, shortest path, negative cycles)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BellmanFordAdjacencyList.java) **- O(VE)**
+### Other graph theory
 * [Breadth first search (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterative.java) **- O(V+E)**
 * [Breadth first search (adjacency list, fast queue)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterativeFastQueue.java) **- O(V+E)**
 * [Find connected components (adjacency list, union find)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/ConnectedComponentsAdjacencyList.java) **- O(Elog(E))**
@@ -87,8 +79,6 @@
 * [Tarjan's strongly connected components algorithm (adjacency matrix) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
 * [Topological sort (acyclic graph, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyList.java) **- O(V+E)**
 * [Topological sort (acyclic graph, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
-* [Traveling salesman (brute force, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TravelingSalesmanProblemBruteForce.java) **- O(V!)**
-* [Traveling salesman (genetic algorithm)](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_travelingSalesman.java) **-O(epochs \* population \* vertices)**
 * [[UNTESTED] Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/%5BUNTESTED%5DGraphDiameter.java) **- O(VE)**
 
 # Linear algebra
@@ -99,7 +89,6 @@
 * [Matrix inverse](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixInverse.java) **- O(n<sup>3</sup>)**
 * [Matrix multiplication](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixMultiplication.java) **- O(n<sup>3</sup>)**
 * [Matrix power](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/MatrixPower.java) **- O(n<sup>3</sup>log(p))**
-* [Simplex (maximize expression subject to constraints)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/Simplex.java) **- O(n<sup>3</sup>)**
 * [Square matrix rotation](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/RotateSquareMatrixInplace.java) **- O(n<sup>2</sup>)**
 
 # Mathematics
@@ -144,11 +133,6 @@
 * [Manacher's algorithm (finds all palindromes in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/ManachersAlgorithm.java) **- O(n)**
 * [Rabin-Karp algorithm (finds pattern matches in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/RabinKarp.java) **- O(n+m)**
 * [Substring verification with suffix array](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/SubstringVerificationSuffixArray.java) **- O(nlog(n)) SA construction and O(mlog(n)) per query**
-
-#  Supplementary/Other algorithms
-
-* [Bit manipulation operations](https://github.com/williamfiset/Algorithms/blob/master/Other/BitManipulations.java) **- O(1)**
-* [Square root decomposition](https://github.com/williamfiset/Algorithms/blob/master/Other/SquareRootDecomposition.java) **- O(√n) per query**
 
 # License
 
