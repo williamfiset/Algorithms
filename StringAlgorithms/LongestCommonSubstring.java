@@ -17,17 +17,20 @@ public class LongestCommonSubstring {
     String[] strs = { "abcde", "habcab", "ghabcdf" };
     Set <String> set = SuffixArray.lcs(strs, k);
     System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
-    
+    // LCS(s) of [abcde, habcab, ghabcdf] with k = 2 equals = [abcd, habc]
+
     k = 3;
     strs = new String[]{ "AAGAAGC", "AGAAGT", "CGAAGC" };
     set = SuffixArray.lcs(strs, k);
     System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
-  
+    // LCS(s) of [AAGAAGC, AGAAGT, CGAAGC] with k = 3 equals = [GAAG]
+
     k = 2;
     strs = new String[]{ "AABC", "BCDC", "BCDE", "CDED", "CDCABC" };
     set = SuffixArray.lcs(strs, k);
     System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
-    
+    // LCS(s) of [AABC, BCDC, BCDE, CDED, CDCABC] with k = 2 equals = [ABC, BCD, CDC, CDE]
+
   }
 }
 
@@ -97,38 +100,24 @@ class SuffixArray {
     }
   }
 
-  /**
-   * Finds the Longest Common Substring (LCS) between a group of strings.
-   * The current implementation takes O(nlog(n)) bounded by the suffix array construction.
-   * @param strs - The strings you wish to find the longest common substring(s) between
-   * @param K - The minimum number of strings to find the LCS between. K must be at least 2.
-   **/
-  public static TreeSet <String> lcs(String [] strs, final int K) {
-
-    if (K <= 1) throw new IllegalArgumentException("K must be greater than or equal to 2!");
-
-    TreeSet <String> lcss = new TreeSet<>();
-    if (strs == null || strs.length <= 1) return lcss;
-
-    // L is the concatenated length of all the strings and the sentinels
-    int L = 0;
-
-    final int NUM_SENTINELS = strs.length, N = strs.length;
-    for(int i = 0; i < N; i++) L += strs[i].length() + 1;
-
-    int[] indexMap = new int[L];
-    int LOWEST_ASCII = Integer.MAX_VALUE;
+  // Fill inverse lookup index map to map which original string a particular
+  // suffix came from. While constructing the index map also keep track of
+  // the lowest ascii value and return this value.
+  private static int fillIndexMap(String[] strings, int[] indexMap) {
+    
+    int lowestAsciiValue = Integer.MAX_VALUE;
 
     // Find the lowest ASCII value within the strings.
     // Also construct the index map to know which original 
     // string a given suffix belongs to.
-    for (int i = 0, k = 0; i < strs.length; i++) {
+    for (int i = 0, k = 0; i < strings.length; i++) {
       
-      String str = strs[i];
+      String str = strings[i];
       
       for (int j = 0; j < str.length(); j++) {
         int asciiVal = str.charAt(j);
-        if (asciiVal < LOWEST_ASCII) LOWEST_ASCII = asciiVal;
+        if (asciiVal < lowestAsciiValue) 
+          lowestAsciiValue = asciiVal;
         indexMap[k++] = i;
       }
 
@@ -136,71 +125,118 @@ class SuffixArray {
       indexMap[k++] = i;
 
     }
+    return lowestAsciiValue;
 
-    final int SHIFT = LOWEST_ASCII + NUM_SENTINELS + 1;
+  }
 
+  private static int[] constructText(String[] strings, final int TEXT_LENGTH, final int SHIFT) {
+    
     int sentinel = 0;
-    int[] T = new int[L];
+    int[] T = new int[TEXT_LENGTH];
 
     // Construct the new text with the shifted values and the sentinels
-    for(int i = 0, k = 0; i < N; i++) {
-      String str = strs[i];
+    for(int i = 0, k = 0; i < strings.length; i++) {
+      String str = strings[i];
       for (int j = 0; j < str.length(); j++)
         T[k++] = ((int)str.charAt(j)) + SHIFT;
       T[k++] = sentinel++;
     }
 
-    SuffixArray sa = new SuffixArray(T);
+    return T;
+
+  }
+
+  private static int computeTextLength(String[] strings) {
+    int textLength = 0;
+    for(String str : strings) 
+      textLength += str.length();
+    return textLength;
+  }
+
+  /**
+   * Finds the Longest Common Substring (LCS) between a group of strings.
+   * The current implementation takes O(nlog(n)) bounded by the suffix array construction.
+   * @param strs - The strings you wish to find the longest common substring(s) between
+   * @param K - The minimum number of strings to find the LCS between. K must be at least 2.
+   **/
+  public static TreeSet <String> lcs(String [] strings, final int K) {
+
+    if (K <= 1) throw new IllegalArgumentException("K must be greater than or equal to 2!");
+
+    TreeSet <String> lcss = new TreeSet<>();
+    if (strings == null || strings.length <= 1) return lcss;
+
+    // TEXT_LENGTH is the concatenated length of all the strings and the sentinels
+    final int NUM_SENTINELS = strings.length;
+    final int TEXT_LENGTH = computeTextLength(strings) + NUM_SENTINELS;
+
+    int[] indexMap = new int[TEXT_LENGTH];
+
+    final int LOWEST_ASCII = fillIndexMap(strings, indexMap);
+    final int SHIFT = LOWEST_ASCII + NUM_SENTINELS + 1;
+
+    int[] T = constructText(strings, TEXT_LENGTH, SHIFT);
+
+    // Build suffix array and get sorted suffix indexes and lcp array
+    SuffixArray suffixArray = new SuffixArray(T);
+    int[] sa  = suffixArray.sa;
+    int[] lcp = suffixArray.lcp;
+
+    // Maintain a deque of the indeces with the highest LCP values in our current window
     Deque <Integer> deque = new ArrayDeque<>();
 
     // Assign each string a color and maintain the color count within the window
-    Map <Integer, Integer> windowColorCount = new HashMap<>();
-    Set <Integer> windowColors = new HashSet<>();
+    Map<Integer, Integer> windowColorCountMap = new HashMap<>();
 
     // Start the sliding window at the number of sentinels because those
     // all get sorted first and we want to ignore them
-    int lo = NUM_SENTINELS, hi = NUM_SENTINELS, bestLCSLength = 0;
+    int lo = NUM_SENTINELS, hi = NUM_SENTINELS;
+
+    int bestLCSLength = 0;
 
     // Add the first color
-    int firstColor = indexMap[sa.sa[hi]];
-    windowColors.add(firstColor);
-    windowColorCount.put(firstColor, 1);
+    int firstColor = indexMap[sa[hi]];
+    int windowColorCount = 1;
+    windowColorCountMap.put(firstColor, 1);
 
     // Maintain a sliding window between lo and hi
-    while(hi < L) {
+    while(hi < TEXT_LENGTH) {
 
-      int uniqueColors = windowColors.size();
+      // Attempt to update the LCS if we have the 
+      // right amount of colors in our window
+      if (windowColorCount >= K) {
 
-      // Attempt to update the LCS
-      if (uniqueColors >= K) {
+        int windowLCP = lcp[deque.peekFirst()];
 
-        int windowLCP = sa.lcp[deque.peekFirst()];
+        if (windowLCP > 0) {
+          
+          if (bestLCSLength < windowLCP) {
+            bestLCSLength = windowLCP;
+            lcss.clear();
+          }
 
-        if (windowLCP > 0 && bestLCSLength < windowLCP) {
-          bestLCSLength = windowLCP;
-          lcss.clear();
+          if (bestLCSLength == windowLCP) {
+
+            // Construct the current LCS within the window interval
+            int pos = sa[lo];
+            char[] lcs = new char[windowLCP];
+            for (int i = 0; i < windowLCP; i++) lcs[i] = (char)(T[pos+i] - SHIFT);
+
+            lcss.add(new String(lcs));
+
+            // If you wish to find the original strings to which this longest 
+            // common substring belongs to the indexes of those strings can be
+            // found in the windowColorCount map, so just use those indexes 
+            // on the 'strings' array
+
+          }
+
         }
 
-        if (windowLCP > 0 && bestLCSLength == windowLCP) {
-
-          // Construct the current LCS within the window interval
-          int pos = sa.sa[lo];
-          char[] lcs = new char[windowLCP];
-          for (int i = 0; i < windowLCP; i++) lcs[i] = (char)(T[pos+i] - SHIFT);
-
-          lcss.add(new String(lcs));
-
-          // If you wish to find the original strings to which this longest 
-          // common substring belongs to the indexes of those strings can be
-          // found in the windowColors set, so just use those indexes on the 'strs' array
-
-        }
 
         // Update the colors in our window
-        int lastColor = indexMap[sa.sa[lo]];
-        Integer colorCount = windowColorCount.get(lastColor);
-        if (colorCount == 1) windowColors.remove(lastColor);
-        windowColorCount.put(lastColor, colorCount - 1);
+        int lastColor = indexMap[sa[lo]];
+        windowColorCount = removeColor(windowColorCountMap, windowColorCount, lastColor);
 
         // Remove the head if it's outside the new range: [lo+1, hi)
         while (!deque.isEmpty() && deque.peekFirst() <= lo)
@@ -210,18 +246,14 @@ class SuffixArray {
         lo++;
 
       // Increase the window size because we don't have enough colors
-      } else if(++hi < L) {
-
-        int nextColor = indexMap[sa.sa[hi]];
+      } else if(++hi < TEXT_LENGTH) {
 
         // Update the colors in our window
-        windowColors.add(nextColor);
-        Integer colorCount = windowColorCount.get(nextColor);
-        if (colorCount == null) colorCount = 0;
-        windowColorCount.put(nextColor, colorCount + 1);
-          
+        int nextColor = indexMap[sa[hi]];
+        windowColorCount = addColor(windowColorCountMap, windowColorCount, nextColor);
+        
         // Remove all the worse values in the back of the deque
-        while(!deque.isEmpty() && sa.lcp[deque.peekLast()] > sa.lcp[hi-1])
+        while(!deque.isEmpty() && lcp[deque.peekLast()] > lcp[hi-1])
           deque.removeLast();
         deque.addLast(hi-1);
 
@@ -231,6 +263,23 @@ class SuffixArray {
 
     return lcss;
 
+  }
+
+  private static int removeColor(Map<Integer,Integer> windowColorCountMap, int windowColorCount, int lastColor) {
+    boolean removedAColor = false;
+    Integer colorCount = windowColorCountMap.get(lastColor);
+    if (colorCount == 1) removedAColor = true;
+    windowColorCountMap.put(lastColor, colorCount - 1);
+    return removedAColor ? windowColorCount - 1 : windowColorCount;
+  }
+
+  private static int addColor(Map<Integer,Integer> windowColorCountMap, int windowColorCount, int nextColor) {
+    boolean addedNewColor = false;
+    Integer colorCount = windowColorCountMap.get(nextColor);
+    if (colorCount == null) colorCount = 0;
+    if (colorCount == 0) addedNewColor = true;
+    windowColorCountMap.put(nextColor, colorCount + 1);
+    return addedNewColor ? windowColorCount + 1 : windowColorCount;
   }
 
   public void display() {
