@@ -20,16 +20,16 @@ public class LongestCommonSubstring {
     System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
     // LCS(s) of [abcde, habcab, ghabcdf] with k = 2 equals = [abcd, habc]
 
-    k = 3;
-    strs = new String[]{ "AAGAAGC", "AGAAGT", "CGAAGC" };
-    set = lcs(strs, k);
-    System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
+    // k = 3;
+    // strs = new String[]{ "AAGAAGC", "AGAAGT", "CGAAGC" };
+    // set = lcs(strs, k);
+    // System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
     // LCS(s) of [AAGAAGC, AGAAGT, CGAAGC] with k = 3 equals = [GAAG]
 
-    k = 2;
-    strs = new String[]{ "AABC", "BCDC", "BCDE", "CDED", "CDCABC" };
-    set = lcs(strs, k);
-    System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
+    // k = 2;
+    // strs = new String[]{ "AABC", "BCDC", "BCDE", "CDED", "CDCABC" };
+    // set = lcs(strs, k);
+    // System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
     // LCS(s) of [AABC, BCDC, BCDE, CDED, CDCABC] with k = 2 equals = [ABC, BCD, CDC, CDE]
 
   }
@@ -153,12 +153,13 @@ public class LongestCommonSubstring {
     int windowColorCount = 1;
     windowColorCountMap.put(firstColor, 1);
 
-
+    // suffixArray.display(SHIFT);
     window.advance();
 
-
     // Maintain a sliding window between lo and hi
-    while(window.hi-1 < TEXT_LENGTH) { // change <= ?
+    while(window.hi < TEXT_LENGTH) { // change <= ?
+
+      // System.out.printf("%d %d %d\n", window.lo, window.hi, TEXT_LENGTH );
 
       // Attempt to update the LCS if we have the 
       // right amount of colors in our window
@@ -269,18 +270,28 @@ public class LongestCommonSubstring {
         if (inv[i] > 0) {
           int k = sa[inv[i]-1];
           while( (i + len < N) && (k + len < N) && T[i+len] == T[k+len] ) len++;
-          lcp[inv[i]-1] = len;
+          lcp[inv[i]] = len;
           if (len > 0) len--;
         }
       }
     }
 
     public void display() {
+      display(0);
+    }
+
+    public void display(int shift) {
       System.out.printf("-----i-----SA-----LCP---Suffix\n");
       for(int i = 0; i < N; i++) {
+
         int suffixLen = N - sa[i];
-        String suffix = new String(T, sa[i], suffixLen);
-        System.out.printf("% 7d % 7d % 7d %s\n", i, sa[i],lcp[i], suffix );
+        char[] suffixArray = new char[suffixLen];
+        for (int j = sa[i], k = 0; j < N; j++, k++) 
+          suffixArray[k] = (char)(T[j] - shift);
+
+        String suffix = new String(suffixArray);
+        System.out.printf("% 7d % 7d % 7d %s\n", i, sa[i], lcp[i], suffix );
+
       }
     }
 
