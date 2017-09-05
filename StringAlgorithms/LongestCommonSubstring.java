@@ -9,95 +9,29 @@
  
 import java.util.*;
 
-// Example usages
 public class LongestCommonSubstring {
+
+  // Example usages
   public static void main(String[] args) {
-    
+
     int k = 2;
     String[] strs = { "abcde", "habcab", "ghabcdf" };
-    Set <String> set = SuffixArray.lcs(strs, k);
+    Set <String> set = lcs(strs, k);
     System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
     // LCS(s) of [abcde, habcab, ghabcdf] with k = 2 equals = [abcd, habc]
 
     k = 3;
     strs = new String[]{ "AAGAAGC", "AGAAGT", "CGAAGC" };
-    set = SuffixArray.lcs(strs, k);
+    set = lcs(strs, k);
     System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
     // LCS(s) of [AAGAAGC, AGAAGT, CGAAGC] with k = 3 equals = [GAAG]
 
     k = 2;
     strs = new String[]{ "AABC", "BCDC", "BCDE", "CDED", "CDCABC" };
-    set = SuffixArray.lcs(strs, k);
+    set = lcs(strs, k);
     System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
     // LCS(s) of [AABC, BCDC, BCDE, CDED, CDCABC] with k = 2 equals = [ABC, BCD, CDC, CDE]
 
-  }
-}
-
-class SuffixArray {
-
-  // ALPHABET_SZ is the default alphabet size, this may need to be much
-  // larger if you're using the LCS method with multiple sentinels
-  int ALPHABET_SZ = 256, N;
-  int[] T, lcp, sa, sa2, rank, tmp, c;
-
-  public SuffixArray(String str) {    
-    this(toIntArray(str));    
-  }
-   
-  private static int[] toIntArray(String s) {   
-    int[] text = new int[s.length()];   
-    for(int i=0;i<s.length();i++)text[i] = s.charAt(i);   
-    return text;    
-  }
-
-  // Designated constructor
-  public SuffixArray(int[] text) {
-    T = text;
-    N = text.length;
-    sa = new int[N];
-    sa2 = new int[N];
-    rank = new int[N];
-    c = new int[Math.max(ALPHABET_SZ, N)];
-    construct();
-    kasai();
-  }
-
-  private void construct() {
-    int i, p, r;
-    for (i=0; i<N; ++i) c[rank[i] = T[i]]++;
-    for (i=1; i<ALPHABET_SZ; ++i) c[i] += c[i-1];
-    for (i=N-1; i>=0; --i) sa[--c[T[i]]] = i;
-    for (p=1; p<N; p <<= 1) {
-      for (r=0, i=N-p; i<N; ++i) sa2[r++] = i;
-      for (i=0; i<N; ++i) if (sa[i] >= p) sa2[r++] = sa[i] - p;
-      Arrays.fill(c, 0, ALPHABET_SZ, 0);
-      for (i=0; i<N; ++i) c[rank[i]]++;
-      for (i=1; i<ALPHABET_SZ; ++i) c[i] += c[i-1];
-      for (i=N-1; i>=0; --i) sa[--c[rank[sa2[i]]]] = sa2[i];
-      for (sa2[sa[0]] = r = 0, i=1; i<N; ++i) {
-          if (!(rank[sa[i-1]] == rank[sa[i]] &&
-              sa[i-1]+p < N && sa[i]+p < N &&
-              rank[sa[i-1]+p] == rank[sa[i]+p])) r++;
-          sa2[sa[i]] = r;
-      } tmp = rank; rank = sa2; sa2 = tmp;
-      if (r == N-1) break; ALPHABET_SZ = r + 1;
-    }
-  }
-
-  // Use Kasai algorithm to build LCP array
-  private void kasai() {
-    lcp = new int[N];
-    int [] inv = new int[N];
-    for (int i = 0; i < N; i++) inv[sa[i]] = i;
-    for (int i = 0, len = 0; i < N; i++) {
-      if (inv[i] > 0) {
-        int k = sa[inv[i]-1];
-        while( (i + len < N) && (k + len < N) && T[i+len] == T[k+len] ) len++;
-        lcp[inv[i]-1] = len;
-        if (len > 0) len--;
-      }
-    }
   }
 
   // Fill inverse lookup index map to map which original string a particular
@@ -182,31 +116,36 @@ class SuffixArray {
     int[] sa  = suffixArray.sa;
     int[] lcp = suffixArray.lcp;
 
+    // int lo = NUM_SENTINELS, hi = NUM_SENTINELS;
     // Maintain a deque of the indeces with the highest LCP values in our current window
-    Deque <Integer> deque = new ArrayDeque<>();
+    // Deque <Integer> deque = new ArrayDeque<>();
+    SlidingWindowMinimum window = new SlidingWindowMinimum(lcp);
+    window.lo = NUM_SENTINELS;
+    window.hi = NUM_SENTINELS;
+    window.advance();
 
     // Assign each string a color and maintain the color count within the window
     Map<Integer, Integer> windowColorCountMap = new HashMap<>();
 
     // Start the sliding window at the number of sentinels because those
     // all get sorted first and we want to ignore them
-    int lo = NUM_SENTINELS, hi = NUM_SENTINELS;
+
 
     int bestLCSLength = 0;
 
     // Add the first color
-    int firstColor = indexMap[sa[hi]];
+    int firstColor = indexMap[sa[window.hi-1]];
     int windowColorCount = 1;
     windowColorCountMap.put(firstColor, 1);
 
     // Maintain a sliding window between lo and hi
-    while(hi < TEXT_LENGTH) {
+    while(window.hi-1 < TEXT_LENGTH) {
 
       // Attempt to update the LCS if we have the 
       // right amount of colors in our window
       if (windowColorCount >= K) {
 
-        int windowLCP = lcp[deque.peekFirst()];
+        int windowLCP = window.getMin(); // lcp[deque.peekFirst()];
 
         if (windowLCP > 0) {
           
@@ -218,7 +157,7 @@ class SuffixArray {
           if (bestLCSLength == windowLCP) {
 
             // Construct the current LCS within the window interval
-            int pos = sa[lo];
+            int pos = sa[window.lo];
             char[] lcs = new char[windowLCP];
             for (int i = 0; i < windowLCP; i++) lcs[i] = (char)(T[pos+i] - SHIFT);
 
@@ -230,27 +169,30 @@ class SuffixArray {
 
 
         // Update the colors in our window
-        int lastColor = indexMap[sa[lo]];
+        int lastColor = indexMap[sa[window.lo]];
         windowColorCount = removeColor(windowColorCountMap, windowColorCount, lastColor);
 
         // Remove the head if it's outside the new range: [lo+1, hi)
-        while (!deque.isEmpty() && deque.peekFirst() <= lo)
-          deque.removeFirst();
+        // while (!deque.isEmpty() && deque.peekFirst() <= lo)
+        //   deque.removeFirst();
+
+        window.shrink();
 
         // Decrease the window size
-        lo++;
+        // lo++;
 
       // Increase the window size because we don't have enough colors
-      } else if(++hi < TEXT_LENGTH) {
-
+      } else if (window.hi-1 < TEXT_LENGTH) {
+        System.out.println(window.hi-1 + " " + sa.length + " " + TEXT_LENGTH);
         // Update the colors in our window
-        int nextColor = indexMap[sa[hi]];
+        int nextColor = indexMap[sa[window.hi-1]];
         windowColorCount = addColor(windowColorCountMap, windowColorCount, nextColor);
         
         // Remove all the worse values in the back of the deque
-        while(!deque.isEmpty() && lcp[deque.peekLast()] > lcp[hi-1])
-          deque.removeLast();
-        deque.addLast(hi-1);
+        // while(!deque.isEmpty() && lcp[deque.peekLast()] > lcp[hi-1])
+        //   deque.removeLast();
+        // deque.addLast(hi-1);
+        window.advance();
 
       }
 
@@ -275,25 +217,136 @@ class SuffixArray {
     if (colorCount == 0) addedNewColor = true;
     windowColorCountMap.put(nextColor, colorCount + 1);
     return addedNewColor ? windowColorCount + 1 : windowColorCount;
+  }  
+
+  static class SuffixArray {
+
+    // ALPHABET_SZ is the default alphabet size, this may need to be much
+    // larger if you're using the LCS method with multiple sentinels
+    int ALPHABET_SZ = 256, N;
+    int[] T, lcp, sa, sa2, rank, tmp, c;
+
+    public SuffixArray(String str) {    
+      this(toIntArray(str));    
+    }
+     
+    private static int[] toIntArray(String s) {   
+      int[] text = new int[s.length()];   
+      for(int i=0;i<s.length();i++)text[i] = s.charAt(i);   
+      return text;    
+    }
+
+    // Designated constructor
+    public SuffixArray(int[] text) {
+      T = text;
+      N = text.length;
+      sa = new int[N];
+      sa2 = new int[N];
+      rank = new int[N];
+      c = new int[Math.max(ALPHABET_SZ, N)];
+      construct();
+      kasai();
+    }
+
+    private void construct() {
+      int i, p, r;
+      for (i=0; i<N; ++i) c[rank[i] = T[i]]++;
+      for (i=1; i<ALPHABET_SZ; ++i) c[i] += c[i-1];
+      for (i=N-1; i>=0; --i) sa[--c[T[i]]] = i;
+      for (p=1; p<N; p <<= 1) {
+        for (r=0, i=N-p; i<N; ++i) sa2[r++] = i;
+        for (i=0; i<N; ++i) if (sa[i] >= p) sa2[r++] = sa[i] - p;
+        Arrays.fill(c, 0, ALPHABET_SZ, 0);
+        for (i=0; i<N; ++i) c[rank[i]]++;
+        for (i=1; i<ALPHABET_SZ; ++i) c[i] += c[i-1];
+        for (i=N-1; i>=0; --i) sa[--c[rank[sa2[i]]]] = sa2[i];
+        for (sa2[sa[0]] = r = 0, i=1; i<N; ++i) {
+            if (!(rank[sa[i-1]] == rank[sa[i]] &&
+                sa[i-1]+p < N && sa[i]+p < N &&
+                rank[sa[i-1]+p] == rank[sa[i]+p])) r++;
+            sa2[sa[i]] = r;
+        } tmp = rank; rank = sa2; sa2 = tmp;
+        if (r == N-1) break; ALPHABET_SZ = r + 1;
+      }
+    }
+
+    // Use Kasai algorithm to build LCP array
+    private void kasai() {
+      lcp = new int[N];
+      int [] inv = new int[N];
+      for (int i = 0; i < N; i++) inv[sa[i]] = i;
+      for (int i = 0, len = 0; i < N; i++) {
+        if (inv[i] > 0) {
+          int k = sa[inv[i]-1];
+          while( (i + len < N) && (k + len < N) && T[i+len] == T[k+len] ) len++;
+          lcp[inv[i]-1] = len;
+          if (len > 0) len--;
+        }
+      }
+    }
+
+    public void display() {
+      System.out.printf("-----i-----SA-----LCP---Suffix\n");
+      for(int i = 0; i < N; i++) {
+        int suffixLen = N - sa[i];
+        String suffix = new String(T, sa[i], suffixLen);
+        System.out.printf("% 7d % 7d % 7d %s\n", i, sa[i],lcp[i], suffix );
+      }
+    }
+
   }
 
-  public void display() {
-    System.out.printf("-----i-----SA-----LCP---Suffix\n");
-    for(int i = 0; i < N; i++) {
-      int suffixLen = N - sa[i];
-      String suffix = new String(T, sa[i], suffixLen);
-      System.out.printf("% 7d % 7d % 7d %s\n", i, sa[i],lcp[i], suffix );
+  private static class SlidingWindowMinimum {
+
+    int[] values;
+    int N, lo, hi;
+
+    Deque<Integer> deque = new ArrayDeque<>();
+
+    public SlidingWindowMinimum(int[] values) {
+      if (values == null) throw new IllegalArgumentException();
+      this.values = values;
+      N = values.length;
     }
+
+    // Advances the front of the window by one unit
+    public void advance() {
+
+      // Remove all the worse values in the back of the deque
+      while(!deque.isEmpty() && values[deque.peekLast()] > values[hi])
+        deque.removeLast();
+
+      // Add the next index to the back of the deque
+      deque.addLast(hi);
+
+      // Increase the window size
+      hi++;
+
+    }
+
+    // Retracks the back of the window by one unit
+    public void shrink() {
+
+      // Decrease window size by pushing it forward
+      lo++;
+
+      // Remove elements in the front of the queue whom are no longer
+      // valid in the reduced window.
+      while(!deque.isEmpty() && deque.peekFirst() < lo)
+        deque.removeFirst();
+
+    }
+
+    // Query the current minimum value in the window
+    public int getMin() {
+      if (lo >= hi) throw new IllegalStateException("Make sure lo < hi");
+      return values[deque.peekFirst()];
+    }
+
   }
+
 
 }
-
-
-
-
-
-
-
 
 
 
