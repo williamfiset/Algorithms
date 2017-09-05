@@ -87,6 +87,24 @@ public class LongestCommonSubstring {
     return textLength;
   }
 
+
+  private static int removeColor(Map<Integer,Integer> windowColorCountMap, int windowColorCount, int lastColor) {
+    boolean removedAColor = false;
+    Integer colorCount = windowColorCountMap.get(lastColor);
+    if (colorCount == 1) removedAColor = true;
+    windowColorCountMap.put(lastColor, colorCount - 1);
+    return removedAColor ? windowColorCount - 1 : windowColorCount;
+  }
+
+  private static int addColor(Map<Integer,Integer> windowColorCountMap, int windowColorCount, int nextColor) {
+    boolean addedNewColor = false;
+    Integer colorCount = windowColorCountMap.get(nextColor);
+    if (colorCount == null) colorCount = 0;
+    if (colorCount == 0) addedNewColor = true;
+    windowColorCountMap.put(nextColor, colorCount + 1);
+    return addedNewColor ? windowColorCount + 1 : windowColorCount;
+  }
+
   /**
    * Finds the Longest Common Substring (LCS) between a group of strings.
    * The current implementation takes O(nlog(n)) bounded by the suffix array construction.
@@ -116,20 +134,17 @@ public class LongestCommonSubstring {
     int[] sa  = suffixArray.sa;
     int[] lcp = suffixArray.lcp;
 
-    // int lo = NUM_SENTINELS, hi = NUM_SENTINELS;
-    // Maintain a deque of the indeces with the highest LCP values in our current window
-    // Deque <Integer> deque = new ArrayDeque<>();
     SlidingWindowMinimum window = new SlidingWindowMinimum(lcp);
-    window.lo = NUM_SENTINELS;
-    window.hi = NUM_SENTINELS;
-    window.advance();
-
-    // Assign each string a color and maintain the color count within the window
-    Map<Integer, Integer> windowColorCountMap = new HashMap<>();
 
     // Start the sliding window at the number of sentinels because those
     // all get sorted first and we want to ignore them
 
+    // start at the baseline for the LCP values. Add +1 because one based 
+    window.lo = NUM_SENTINELS + 1;
+    window.hi = NUM_SENTINELS + 1;
+
+    // Assign each string a color and maintain the color count within the window
+    Map<Integer, Integer> windowColorCountMap = new HashMap<>();
 
     int bestLCSLength = 0;
 
@@ -138,17 +153,21 @@ public class LongestCommonSubstring {
     int windowColorCount = 1;
     windowColorCountMap.put(firstColor, 1);
 
+
+    window.advance();
+
+
     // Maintain a sliding window between lo and hi
-    while(window.hi-1 < TEXT_LENGTH) {
+    while(window.hi-1 < TEXT_LENGTH) { // change <= ?
 
       // Attempt to update the LCS if we have the 
       // right amount of colors in our window
       if (windowColorCount >= K) {
 
-        int windowLCP = window.getMin(); // lcp[deque.peekFirst()];
+        int windowLCP = window.getMin();
 
         if (windowLCP > 0) {
-          
+
           if (bestLCSLength < windowLCP) {
             bestLCSLength = windowLCP;
             lcss.clear();
@@ -159,39 +178,27 @@ public class LongestCommonSubstring {
             // Construct the current LCS within the window interval
             int pos = sa[window.lo];
             char[] lcs = new char[windowLCP];
-            for (int i = 0; i < windowLCP; i++) lcs[i] = (char)(T[pos+i] - SHIFT);
+            for (int i = 0; i < windowLCP; i++) 
+              lcs[i] = (char)(T[pos+i] - SHIFT);
 
             lcss.add(new String(lcs));
-
           }
-
         }
 
 
         // Update the colors in our window
-        int lastColor = indexMap[sa[window.lo]];
+        int lastColor = indexMap[sa[window.lo-1]];
         windowColorCount = removeColor(windowColorCountMap, windowColorCount, lastColor);
-
-        // Remove the head if it's outside the new range: [lo+1, hi)
-        // while (!deque.isEmpty() && deque.peekFirst() <= lo)
-        //   deque.removeFirst();
 
         window.shrink();
 
-        // Decrease the window size
-        // lo++;
-
       // Increase the window size because we don't have enough colors
-      } else if (window.hi-1 < TEXT_LENGTH) {
-        System.out.println(window.hi-1 + " " + sa.length + " " + TEXT_LENGTH);
+      } else {
+        
         // Update the colors in our window
         int nextColor = indexMap[sa[window.hi-1]];
         windowColorCount = addColor(windowColorCountMap, windowColorCount, nextColor);
-        
-        // Remove all the worse values in the back of the deque
-        // while(!deque.isEmpty() && lcp[deque.peekLast()] > lcp[hi-1])
-        //   deque.removeLast();
-        // deque.addLast(hi-1);
+
         window.advance();
 
       }
@@ -201,23 +208,6 @@ public class LongestCommonSubstring {
     return lcss;
 
   }
-
-  private static int removeColor(Map<Integer,Integer> windowColorCountMap, int windowColorCount, int lastColor) {
-    boolean removedAColor = false;
-    Integer colorCount = windowColorCountMap.get(lastColor);
-    if (colorCount == 1) removedAColor = true;
-    windowColorCountMap.put(lastColor, colorCount - 1);
-    return removedAColor ? windowColorCount - 1 : windowColorCount;
-  }
-
-  private static int addColor(Map<Integer,Integer> windowColorCountMap, int windowColorCount, int nextColor) {
-    boolean addedNewColor = false;
-    Integer colorCount = windowColorCountMap.get(nextColor);
-    if (colorCount == null) colorCount = 0;
-    if (colorCount == 0) addedNewColor = true;
-    windowColorCountMap.put(nextColor, colorCount + 1);
-    return addedNewColor ? windowColorCount + 1 : windowColorCount;
-  }  
 
   static class SuffixArray {
 
