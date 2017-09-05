@@ -224,11 +224,6 @@ class SuffixArray {
 
             lcss.add(new String(lcs));
 
-            // If you wish to find the original strings to which this longest 
-            // common substring belongs to the indexes of those strings can be
-            // found in the windowColorCount map, so just use those indexes 
-            // on the 'strings' array
-
           }
 
         }
