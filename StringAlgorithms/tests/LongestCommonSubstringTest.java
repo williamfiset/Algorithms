@@ -173,10 +173,5 @@ public class LongestCommonSubstringTest {
 
   }
 
-  @Test
-  public void f() {
-    assertTrue(false);
-  }
-
 }
 
