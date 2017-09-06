@@ -14,8 +14,18 @@ public class LongestCommonSubstring {
   // Example usages
   public static void main(String[] args) {
 
-    int k = 2;
-    String[] strs = { "abcde", "habcab", "ghabcdf" };
+    int k = 6;
+    String[] strs = { 
+      "A", "A", "A", "A", "A", "A",
+      "B", "B", "B", "B", "B", "B",
+      "C", "C", "C", "C", "C", "C",
+      "D", "D", "D", "D", "D", "D",
+      "E", "E", "E", "E", "E",
+      "F", "F", "F", "F",
+      "G", "G", "G",
+      "H", "H",
+      "I"
+    };
     System.out.println(lcs(strs, k));
 
     // int k = 2;
@@ -129,12 +139,13 @@ public class LongestCommonSubstring {
     int[] indexMap = new int[TEXT_LENGTH];
 
     final int LOWEST_ASCII = fillIndexMap(strings, indexMap);
+    final int HIGHEST_ASCII = 128;
     final int SHIFT = LOWEST_ASCII + NUM_SENTINELS + 1;
 
     int[] T = constructText(strings, TEXT_LENGTH, SHIFT);
 
     // Build suffix array and get sorted suffix indexes and lcp array
-    SuffixArray suffixArray = new SuffixArray(T);
+    SuffixArray suffixArray = new SuffixArray(T, SHIFT + HIGHEST_ASCII);
     int[] sa  = suffixArray.sa;
     int[] lcp = suffixArray.lcp;
 
@@ -142,10 +153,7 @@ public class LongestCommonSubstring {
 
     // Start the sliding window at the number of sentinels because those
     // all get sorted first and we want to ignore them
-
-    // start at the baseline for the LCP values. Add +1 because one based 
-    w.lo = NUM_SENTINELS + 1;
-    w.hi = NUM_SENTINELS + 1;
+    w.lo = w.hi = NUM_SENTINELS;
 
     // Assign each string a color and maintain the color count within the window
     Map<Integer, Integer> windowColorCountMap = new HashMap<>();
@@ -153,7 +161,7 @@ public class LongestCommonSubstring {
     int bestLCSLength = 0;
     int windowColorCount = 0;
 
-    suffixArray.display(SHIFT);
+    // suffixArray.display(SHIFT);
     boolean done = false;
     boolean exit = false;
 
@@ -217,9 +225,9 @@ public class LongestCommonSubstring {
 
   static class SuffixArray {
 
-    // ALPHABET_SZ is the default alphabet size, this may need to be much
-    // larger if you're using the LCS method with multiple sentinels
-    int ALPHABET_SZ = 256, N;
+    static final int DEFAULT_ALPHABET_SIZE = 256;
+
+    int alphabetSize = DEFAULT_ALPHABET_SIZE, N;
     int[] T, lcp, sa, sa2, rank, tmp, c;
 
     public SuffixArray(String str) {    
@@ -232,14 +240,19 @@ public class LongestCommonSubstring {
       return text;    
     }
 
-    // Designated constructor
     public SuffixArray(int[] text) {
+      this(text, DEFAULT_ALPHABET_SIZE);
+    }
+
+    // Designated constructor
+    public SuffixArray(int[] text, int alphabetSize) {
+      this.alphabetSize = alphabetSize;
       T = text;
       N = text.length;
       sa = new int[N];
       sa2 = new int[N];
       rank = new int[N];
-      c = new int[Math.max(ALPHABET_SZ, N)];
+      c = new int[Math.max(alphabetSize, N)];
       construct();
       kasai();
     }
@@ -247,14 +260,14 @@ public class LongestCommonSubstring {
     private void construct() {
       int i, p, r;
       for (i=0; i<N; ++i) c[rank[i] = T[i]]++;
-      for (i=1; i<ALPHABET_SZ; ++i) c[i] += c[i-1];
+      for (i=1; i<alphabetSize; ++i) c[i] += c[i-1];
       for (i=N-1; i>=0; --i) sa[--c[T[i]]] = i;
       for (p=1; p<N; p <<= 1) {
         for (r=0, i=N-p; i<N; ++i) sa2[r++] = i;
         for (i=0; i<N; ++i) if (sa[i] >= p) sa2[r++] = sa[i] - p;
-        Arrays.fill(c, 0, ALPHABET_SZ, 0);
+        Arrays.fill(c, 0, alphabetSize, 0);
         for (i=0; i<N; ++i) c[rank[i]]++;
-        for (i=1; i<ALPHABET_SZ; ++i) c[i] += c[i-1];
+        for (i=1; i<alphabetSize; ++i) c[i] += c[i-1];
         for (i=N-1; i>=0; --i) sa[--c[rank[sa2[i]]]] = sa2[i];
         for (sa2[sa[0]] = r = 0, i=1; i<N; ++i) {
             if (!(rank[sa[i-1]] == rank[sa[i]] &&
@@ -262,7 +275,7 @@ public class LongestCommonSubstring {
                 rank[sa[i-1]+p] == rank[sa[i]+p])) r++;
             sa2[sa[i]] = r;
         } tmp = rank; rank = sa2; sa2 = tmp;
-        if (r == N-1) break; ALPHABET_SZ = r + 1;
+        if (r == N-1) break; alphabetSize = r + 1;
       }
     }
 

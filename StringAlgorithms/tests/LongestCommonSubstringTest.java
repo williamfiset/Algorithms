@@ -173,5 +173,50 @@ public class LongestCommonSubstringTest {
 
   }
 
+  @Test
+  public void smallStrings() {
+    
+    int k = 6;
+    String[] strs = { 
+      "A", "A", "A", "A", "A", "A",
+      "B", "B", "B", "B", "B", "B",
+      "C", "C", "C", "C", "C", "C",
+      "D", "D", "D", "D", "D", "D",
+      "E", "E", "E", "E", "E",
+      "F", "F", "F", "F",
+      "G", "G", "G",
+      "H", "H",
+      "I"
+    };
+
+    TreeSet<String> ans = new TreeSet<>();
+    ans.add("A");
+    ans.add("B");
+    ans.add("C");
+    ans.add("D");
+
+    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    assertEquals(ans, lcss);
+
+  }
+
+  @Test
+  public void testLargeAlphabet() {
+
+    int k = 500;
+    String[] strs = new String[k];
+
+    for (int i = 0; i < k; i++) {
+      strs[i] = "ABCDE";
+    }
+
+    TreeSet<String> ans = new TreeSet<>();
+    ans.add("ABCDE");
+
+    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    assertEquals(ans, lcss);
+
+  }
+
 }
 
