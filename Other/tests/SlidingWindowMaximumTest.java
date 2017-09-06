@@ -7,6 +7,26 @@ public class SlidingWindowMaximumTest {
   final int TESTS = 1500;
 
   @Test
+  public void smallWindowTest() {
+    
+    int[] values = {1, 2, 1, 3, 0, 4};
+    SlidingWindowMaximum w = new SlidingWindowMaximum(values);
+    
+    w.advance(); assertEquals(1, w.getMax());
+    w.advance(); assertEquals(2, w.getMax());
+    w.advance(); assertEquals(2, w.getMax());
+    w.shrink();  assertEquals(2, w.getMax());
+    w.shrink();  assertEquals(1, w.getMax());
+    w.advance(); assertEquals(3, w.getMax());
+    w.advance(); assertEquals(3, w.getMax());
+    w.advance(); assertEquals(4, w.getMax());
+    w.shrink();  assertEquals(4, w.getMax());
+    w.shrink();  assertEquals(4, w.getMax());
+    w.shrink();  assertEquals(4, w.getMax());
+
+  }
+
+  @Test
   public void randomizedSlidingWindowTest() {
     for(int sz = 1; sz <= TESTS; sz++) {
       randomizedTest(sz);

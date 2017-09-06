@@ -15,9 +15,13 @@ public class LongestCommonSubstring {
   public static void main(String[] args) {
 
     int k = 2;
-    String[] strs = { "abcde", "habcab", "ghabcdf" };
-    Set <String> set = lcs(strs, k);
-    System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
+    String[] strs = { "AABC", "BCDC", "BCDE", "CDED" };
+    System.out.println(lcs(strs, k));
+
+    // int k = 2;
+    // String[] strs = { "abcde", "habcab", "ghabcdf" };
+    // Set <String> set = lcs(strs, k);
+    // System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
     // LCS(s) of [abcde, habcab, ghabcdf] with k = 2 equals = [abcd, habc]
 
     // k = 3;
@@ -134,14 +138,14 @@ public class LongestCommonSubstring {
     int[] sa  = suffixArray.sa;
     int[] lcp = suffixArray.lcp;
 
-    SlidingWindowMinimum window = new SlidingWindowMinimum(lcp);
+    SlidingWindowMinimum w = new SlidingWindowMinimum(lcp);
 
     // Start the sliding window at the number of sentinels because those
     // all get sorted first and we want to ignore them
 
     // start at the baseline for the LCP values. Add +1 because one based 
-    window.lo = NUM_SENTINELS + 1;
-    window.hi = NUM_SENTINELS + 1;
+    w.lo = NUM_SENTINELS + 1;
+    w.hi = NUM_SENTINELS + 1;
 
     // Assign each string a color and maintain the color count within the window
     Map<Integer, Integer> windowColorCountMap = new HashMap<>();
@@ -149,23 +153,28 @@ public class LongestCommonSubstring {
     int bestLCSLength = 0;
 
     // Add the first color
-    int firstColor = indexMap[sa[window.hi-1]];
-    int windowColorCount = 1;
-    windowColorCountMap.put(firstColor, 1);
+    // int firstColor = indexMap[sa[w.hi-1]];
+    int windowColorCount = 0;
+    // windowColorCountMap.put(firstColor, 1);
 
-    // suffixArray.display(SHIFT);
-    window.advance();
+    suffixArray.display(SHIFT);
 
     // Maintain a sliding window between lo and hi
-    while(window.hi < TEXT_LENGTH) { // change <= ?
-
-      // System.out.printf("%d %d %d\n", window.lo, window.hi, TEXT_LENGTH );
+    while(w.hi < TEXT_LENGTH) { // change <= ?
 
       // Attempt to update the LCS if we have the 
       // right amount of colors in our window
       if (windowColorCount >= K) {
 
-        int windowLCP = window.getMin();
+        // Update the colors in our window
+        int lastColor = indexMap[sa[w.lo]];
+        windowColorCount = removeColor(windowColorCountMap, windowColorCount, lastColor);
+
+        // Shrink window interval after color was removed
+        w.shrink();
+
+        int windowLCP = w.getMin();
+        // System.out.printf("Window LCP: %d\n", windowLCP );
 
         if (windowLCP > 0) {
 
@@ -177,7 +186,7 @@ public class LongestCommonSubstring {
           if (bestLCSLength == windowLCP) {
 
             // Construct the current LCS within the window interval
-            int pos = sa[window.lo];
+            int pos = sa[w.lo];
             char[] lcs = new char[windowLCP];
             for (int i = 0; i < windowLCP; i++) 
               lcs[i] = (char)(T[pos+i] - SHIFT);
@@ -187,22 +196,19 @@ public class LongestCommonSubstring {
         }
 
 
-        // Update the colors in our window
-        int lastColor = indexMap[sa[window.lo-1]];
-        windowColorCount = removeColor(windowColorCountMap, windowColorCount, lastColor);
-
-        window.shrink();
-
       // Increase the window size because we don't have enough colors
       } else {
-        
-        // Update the colors in our window
-        int nextColor = indexMap[sa[window.hi-1]];
-        windowColorCount = addColor(windowColorCountMap, windowColorCount, nextColor);
 
-        window.advance();
+        // Update the colors in our window
+        int nextColor = indexMap[sa[w.hi]];
+        windowColorCount = addColor(windowColorCountMap, windowColorCount, nextColor);
+        
+        w.advance();
 
       }
+
+      System.out.printf("D: %d CC: %d Min: %d LO: %d HI: %d\n", (w.hi-w.lo), windowColorCount, w.getMin(), w.lo, w.hi );
+
 
     }
 
@@ -220,7 +226,7 @@ public class LongestCommonSubstring {
     public SuffixArray(String str) {    
       this(toIntArray(str));    
     }
-     
+    
     private static int[] toIntArray(String s) {   
       int[] text = new int[s.length()];   
       for(int i=0;i<s.length();i++)text[i] = s.charAt(i);   
