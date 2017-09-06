@@ -207,13 +207,9 @@ public class LongestCommonSubstring {
 
       }
 
-      System.out.printf("D: %d CC: %d Min: %d LO: %d HI: %d\n", (w.hi-w.lo), windowColorCount, w.getMin(), w.lo, w.hi );
+      // System.out.printf("D: %d CC: %d Min: %d LO: %d HI: %d\n", (w.hi-w.lo), windowColorCount, w.getMin(), w.lo, w.hi );
 
     }
-
-    // System.out.println(w.getMin());
-    // w.shrink();
-    // System.out.println(w.getMin());
 
     return lcss;
 
