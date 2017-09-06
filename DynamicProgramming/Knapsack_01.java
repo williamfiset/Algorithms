@@ -3,9 +3,8 @@
  * knapsack problem where are you are trying to maximize the total profit of
  * items selected without exceeding the capacity of your knapsack.
  * 
- * Version 1:
- * Time Complexity: O(nW)
- * Version 1 Space Complexity: O(nW)
+ * Time Complexity:  O(nW)
+ * Space Complexity: O(nW)
  *
  * Tested code against:
  * https://open.kattis.com/problems/knapsack
