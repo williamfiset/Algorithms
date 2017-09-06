@@ -84,7 +84,7 @@ public class LongestCommonSubstringTest {
   @Test
   public void simple5() {
     
-    int k = 4;
+    int k = 2;
     String[] strs = { "AABC", "BCDC", "BCDE", "CDED" };
     TreeSet<String> ans = new TreeSet<>();
     ans.add("BCD");
@@ -107,7 +107,6 @@ public class LongestCommonSubstringTest {
 
     // The 'A's are not included because we need four of them.
     TreeSet<String> ans = new TreeSet<>();
-    ans.add("BB");
     ans.add("CC");
 
     TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
