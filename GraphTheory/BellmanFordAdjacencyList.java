@@ -10,7 +10,7 @@ import java.util.*;
 
 public class BellmanFordAdjacencyList {
 
-  // A directed edge
+  // A directed edge with a cost
   public static class Edge {
     double cost;
     int from, to;
@@ -19,6 +19,18 @@ public class BellmanFordAdjacencyList {
       this.from = from;
       this.cost = cost;
     }
+  }
+
+  // Create a graph with V vertices 
+  public static List<Edge>[] createGraph(final int V) {
+    List <Edge> [] graph = new List[V];
+    for(int i = 0; i < V; i++) graph[i] = new ArrayList<>();
+    return graph;
+  }
+
+  // Helper function to add an edge to the graph
+  public static void addEdge(List<Edge>[] graph, int from, int to, double cost) {
+    graph[from].add(new Edge(from, to, cost));
   }
 
   /**
@@ -31,15 +43,17 @@ public class BellmanFordAdjacencyList {
    * @param V     - The number of vertices in the graph.
    * @param start - The id of the starting node
    **/
-  public static double[] bellmanFord(List <Edge> [] graph, int V, int start) {
+  public static double[] bellmanFord(List<Edge>[] graph, int V, int start) {
 
+    // Initialize the distance to all nodes to be infinity
+    // except for the start node which is zero.
     double[] dist = new double[V];
     java.util.Arrays.fill(dist, Double.POSITIVE_INFINITY);
     dist[start] = 0;
 
     // For each vertex, apply relaxation for all the edges
     for (int i = 0; i < V-1; i++)
-      for(List <Edge> edges : graph)
+      for(List<Edge> edges : graph)
         for (Edge edge : edges)
           if (dist[edge.from] + edge.cost < dist[edge.to])
             dist[edge.to] = dist[edge.from] + edge.cost;
@@ -48,7 +62,7 @@ public class BellmanFordAdjacencyList {
     // of a negative cycle. A negative cycle has occurred if we 
     // can find a better path beyond the optimal solution.
     for (int i = 0; i < V-1; i++)
-      for(List <Edge> edges : graph)
+      for(List<Edge> edges : graph)
         for (Edge edge : edges)
           if (dist[edge.from] + edge.cost < dist[edge.to])
             dist[edge.to] = Double.NEGATIVE_INFINITY;
@@ -56,16 +70,6 @@ public class BellmanFordAdjacencyList {
     // Return the array containing the shortest distance to every node
     return dist;
 
-  }
-
-  public static List <Edge> [] createGraph(final int V) {
-    List <Edge> [] graph = new List[V];
-    for(int i = 0; i < V; i++) graph[i] = new ArrayList<>();
-    return graph;
-  }
-
-  public static void addEdge(List <Edge> [] graph, int from, int to, double cost) {
-    graph[from].add(new Edge(from, to, cost));
   }
 
   public static void main(String[] args) {
