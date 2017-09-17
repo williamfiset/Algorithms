@@ -62,8 +62,8 @@
 * [Maximum Cardinality Bipartite Matching (augmenting path algorithm, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList.java) **- O(VE)**
 
 ### Other graph theory
-* [Bellman-Ford (edge list, negative cycles)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BellmanFordEdgeList.java)
-* [Bellman-Ford (adjacency list, negative cycles)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BellmanFordAdjacencyList.java)
+* [Bellman-Ford (edge list, negative cycles)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BellmanFordEdgeList.java) **- O(VE)**
+* [Bellman-Ford (adjacency list, negative cycles)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BellmanFordAdjacencyList.java) **- O(VE)**
 * [Breadth first search (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterative.java) **- O(V+E)**
 * [Breadth first search (adjacency list, fast queue)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterativeFastQueue.java) **- O(V+E)**
 * [Find connected components (adjacency list, union find)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/ConnectedComponentsAdjacencyList.java) **- O(Elog(E))**
