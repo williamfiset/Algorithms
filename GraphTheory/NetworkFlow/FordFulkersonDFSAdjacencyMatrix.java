@@ -30,8 +30,8 @@ public class FordFulkersonDFSAdjacencyMatrix {
 
         return maxFlow;
 
-        // Uncomment to return the min-cut in which the nodes on the "LEFT SIDE"
-        // of the cut are marked as true and those on the "RIGHT SIDE" of the cut
+        // Uncomment to return the min-cut. The nodes on the "LEFT SIDE" of the 
+        // cut are marked as true and those on the "RIGHT SIDE" of the cut
         // are marked as false. This finds all the nodes which participated in the
         // last (failed) attempt to find an augmenting path from the source to 
         // the sink in the DFS phase.
