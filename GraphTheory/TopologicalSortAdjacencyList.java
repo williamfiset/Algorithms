@@ -26,11 +26,12 @@ public class TopologicalSortAdjacencyList {
   // us the topological ordering we want. Instead of maintaining a stack 
   // of the nodes we see we simply place them inside the ordering array
   // in reverse order for simplicity.
-  static int topologicalSortDFS(int i, int at, boolean[] visited, int[] ordering, Map <Integer, List<Edge>> adjList) {
+  private static int topologicalSortDFS(int i, int at, boolean[] visited, int[] ordering, Map<Integer, List<Edge>> adjList) {
 
+    if (visited[at]) return i;
     visited[at] = true;
 
-    List <Edge> edges = adjList.get(at);
+    List<Edge> edges = adjList.get(at);
 
     if (edges != null)
       for (Edge edge: edges)
@@ -50,12 +51,13 @@ public class TopologicalSortAdjacencyList {
   // in the adjacency list since you can have singleton nodes with no edges which
   // wouldn't be present in the adjacency list but are still part of the graph!
   //
-  static int [] topologicalSort(Map <Integer, List<Edge>> adjList, int numNodes) {
+  public static int [] topologicalSort(Map<Integer, List<Edge>> adjList, int numNodes) {
 
     int[] ordering = new int[numNodes];
     boolean[] visited = new boolean[numNodes];
     
-    for (int at = 0, i = numNodes-1; at < numNodes; at++)
+    int i = numNodes - 1;
+    for (int at = 0; at < numNodes; at++)
       if (!visited[at])
         i = topologicalSortDFS(i, at, visited, ordering, adjList);
 
@@ -81,7 +83,7 @@ public class TopologicalSortAdjacencyList {
 
       int nodeIndex = topsort[i];
       if (dist[nodeIndex] != null) {
-        List <Edge> adjacentEdges = adjList.get(nodeIndex);
+        List<Edge> adjacentEdges = adjList.get(nodeIndex);
         if (adjacentEdges != null) {
           for (Edge edge : adjacentEdges) {
 
