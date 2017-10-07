@@ -33,7 +33,8 @@ public class TopologicalSortAdjacencyMatrix {
   }
 
   private static int visit(Double[][] adj, boolean[] visited, int[] order, int index, int u) {
-
+    
+    if (visited[u]) return index;
     visited[u] = true;
 
     // Visit all neighbors  
