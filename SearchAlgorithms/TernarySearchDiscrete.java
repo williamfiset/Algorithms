@@ -1,5 +1,4 @@
 /**
- *
  * Ternary search is similar to binary search except that it 
  * works on a function which decreases and then increases. 
  * This implementation of ternary search works on discrete values
@@ -17,9 +16,10 @@
 
 public class TernarySearchDiscrete {
 
-  // Define a very small epsilon value to compare double values
+  // Define a very small epsilon value to compare double values.
   static final double EPS = 0.000000001;
-
+  
+  // A discrete function is just a set of data points.
   static final double [] function = { 16, 12, 10, 3, 6, 7, 9, 10, 11, 12, 13, 17 };
 
   // Define your own function on whatever you're attempting to ternary
