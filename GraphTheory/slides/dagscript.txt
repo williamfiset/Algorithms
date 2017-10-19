@@ -9,4 +9,6 @@ The answer is yes it is!
 
 What about this structure? I'll give u a moment to think about it.
 
-The answer no because this graph has undirected edges not directed edges. The graph may be a tree but directed edges are a requirement on DAG.
+The answer is no because this graph has undirected edges not directed edges. The graph may be a tree but directed edges are a requirement for a DAG.
+
+What's really great about working with a DAG is that the SSSP problem can be solved very efficently in linear time. The next fastest SSSP algorithm is dijkstras algorithm which may not work if there are negative edge weights, this algorithm i'm about to show you doesn't care about  positive or negative edge weights. The essense of the algorithm is that it finds a topological ordering on the graph using the topsort algorithm we saw in the last video and processes each node sequentially to get the shortest path by relaxing each edge as it's seen. Relaxing an edge simply means updating to a better value if a shorter path can be obtained using the current edge.
