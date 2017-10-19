@@ -1,0 +1,12 @@
+
+Related to the topic of topological orderings is the topic of shortest and longest paths on directed acyclic graphs.
+
+Recall that a directed acyclic graph is a graph with directed edges and NO cycles. By definition this means all trees are automitically DAGs since they do not contain any cycles.
+
+Here is a graph, my question to you is: Is this graph a directed a cyclic graph?
+
+The answer is yes it is!
+
+What about this structure? I'll give u a moment to think about it.
+
+The answer no because this graph has undirected edges not directed edges. The graph may be a tree but directed edges are a requirement on DAG.
