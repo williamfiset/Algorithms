@@ -65,7 +65,7 @@ public class TopologicalSortAdjacencyList {
   }
 
   // A useful application of the topological sort is to find the shortest path 
-  // between two nodes in a Directed Acyclic Graph (DAG). Given an adjacency matrix
+  // between two nodes in a Directed Acyclic Graph (DAG). Given an adjacency list
   // this method finds the shortest path to all nodes starting at 'start'
   //
   // NOTE: 'numNodes' is not necessarily the number of nodes currently present
