@@ -1,8 +1,4 @@
-import static org.junit.Assert.*;
 import static com.google.common.truth.Truth.assertThat;
-
-import com.google.common.collect.ImmutableList;
-import java.util.*;
 import org.junit.*;
 
 public class BitManipulationsTest {

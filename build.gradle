@@ -62,3 +62,8 @@ sourceSets {
   }
 }
 
+
+task buildDependenciesFolder(type: Copy) {
+  from configurations.compile
+  into './dependencies'
+}
