@@ -1,5 +1,6 @@
 /**
- * @author William Fiset, william.alexandre.fiset@gmail.com
+ * NOTE: This algorithm is still a work in progress! 
+ * See issue #18 to track progress.
  **/
 
 import java.util.*;

@@ -4,6 +4,8 @@
  *
  * Time Complexity: O(V(V + E)) = O(V^2 + VE))= O(VE)
  *
+ * NOTE: This file could use some tests.
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 

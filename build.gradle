@@ -1,0 +1,49 @@
+
+apply plugin: 'java'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  testCompile 'junit:junit:4.+'
+  compile 'junit:junit:4.+'
+  testCompile "org.mockito:mockito-core:1.+"
+  compile group: 'com.google.guava', name: 'guava', version: '22.0'
+}
+
+sourceSets {
+  main {
+    java {
+      srcDirs = [
+        'AL',
+        'ConstructiveAlgorithms',
+        'DynamicProgramming',
+        'Geometry',
+        'LinearAlgebra',
+        'Math',
+        'Other',
+        'SearchAlgorithms',
+        'SortingAlgorithms',
+        'StringAlgorithms',
+      ]
+    }
+  }
+  test {
+    java {
+      srcDirs = [
+        'AL/tests',
+        'ConstructiveAlgorithms/tests',
+        'DynamicProgramming/tests',
+        'Geometry/tests',
+        'LinearAlgebra/tests',
+        'Math/tests',
+        'Other/tests',
+        'SearchAlgorithms/tests',
+        'SortingAlgorithms/tests',
+        'StringAlgorithms/tests',
+      ]
+    }
+  }
+}
+
