@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="LongestCommonSubstringTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2017-11-18T06:10:20" hostname="the-green-hippo" time="0.061">
+  <properties/>
+  <testcase name="testLargeAlphabet" classname="LongestCommonSubstringTest" time="0.027"/>
+  <testcase name="smallStrings" classname="LongestCommonSubstringTest" time="0.002"/>
+  <testcase name="noLongestCommonSubstringTest" classname="LongestCommonSubstringTest" time="0.0"/>
+  <testcase name="kValueTest2" classname="LongestCommonSubstringTest" time="0.001"/>
+  <testcase name="kValueTest3" classname="LongestCommonSubstringTest" time="0.001"/>
+  <testcase name="kValueTest4" classname="LongestCommonSubstringTest" time="0.002"/>
+  <testcase name="kValueTest" classname="LongestCommonSubstringTest" time="0.001"/>
+  <testcase name="simple1" classname="LongestCommonSubstringTest" time="0.001"/>
+  <testcase name="simple2" classname="LongestCommonSubstringTest" time="0.001"/>
+  <testcase name="simple3" classname="LongestCommonSubstringTest" time="0.002"/>
+  <testcase name="simple4" classname="LongestCommonSubstringTest" time="0.003"/>
+  <testcase name="simple5" classname="LongestCommonSubstringTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

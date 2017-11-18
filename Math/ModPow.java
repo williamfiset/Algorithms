@@ -1,4 +1,8 @@
 /**
+ *
+ * NOTE: An issue was found with this file when dealing with negative
+ * numbers when exponentiating! See bug tracking progress on issue
+ *
  * An implementation of the modPow(a, n, mod) operation.
  * This implementation is substantially faster than Java's
  * BigInteger class because it only uses primitive types.
