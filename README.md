@@ -44,8 +44,8 @@
 * [Point is inside triangle check](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointInsideTriangle.java) **- O(1)**
 * [Point rotation about point](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointRotation.java) **- O(1)**
 * [Triangle area algorithms](https://github.com/williamfiset/Algorithms/blob/master/Geometry/TriangleArea.java) **- O(1)**
-* [[UNTESTED] Circle-circle intersection area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircleCircleIntersectionArea.java) **- O(1)**
-* [[UNTESTED] Circular segment area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/%5BUNTESTED%5DCircularSegmentArea.java) **- O(1)**
+* [[UNTESTED] Circle-circle intersection area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CircleCircleIntersectionArea.java) **- O(1)**
+* [[UNTESTED] Circular segment area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CircularSegmentArea.java) **- O(1)**
 
 # Graph theory
 
@@ -81,7 +81,7 @@
 * [Tarjan's strongly connected components algorithm (adjacency matrix) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
 * [Topological sort (acyclic graph, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyList.java) **- O(V+E)**
 * [Topological sort (acyclic graph, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
-* [[UNTESTED] Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/%5BUNTESTED%5DGraphDiameter.java) **- O(VE)**
+* [[UNTESTED] Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/GraphDiameter.java) **- O(VE)**
 
 # Linear algebra
 * [Freivald's algorithm (matrix multiplication verification)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/FreivaldsAlgorithm.java) **- O(kn<sup>2</sup>)**
