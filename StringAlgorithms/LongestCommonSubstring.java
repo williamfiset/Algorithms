@@ -2,7 +2,7 @@
  * An implementation of finding the longest common 
  * substring(s) between a set of strings. 
  *
- * Time complexity: O(nlogn)
+ * Time complexity: O(nlog(n))
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
@@ -14,37 +14,23 @@ public class LongestCommonSubstring {
   // Example usages
   public static void main(String[] args) {
 
-    int k = 6;
-    String[] strs = { 
-      "A", "A", "A", "A", "A", "A",
-      "B", "B", "B", "B", "B", "B",
-      "C", "C", "C", "C", "C", "C",
-      "D", "D", "D", "D", "D", "D",
-      "E", "E", "E", "E", "E",
-      "F", "F", "F", "F",
-      "G", "G", "G",
-      "H", "H",
-      "I"
-    };
-    System.out.println(lcs(strs, k));
+    int k = 2;
+    String[] strs = { "abcde", "habcab", "ghabcdf" };
+    Set <String> set = lcs(strs, k);
+    System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
+    // OUTPUT: LCS(s) of [abcde, habcab, ghabcdf] with k = 2 equals = [abcd, habc]
 
-    // int k = 2;
-    // String[] strs = { "abcde", "habcab", "ghabcdf" };
-    // Set <String> set = lcs(strs, k);
-    // System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
-    // LCS(s) of [abcde, habcab, ghabcdf] with k = 2 equals = [abcd, habc]
+    k = 3;
+    strs = new String[]{ "AAGAAGC", "AGAAGT", "CGAAGC" };
+    set = lcs(strs, k);
+    System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
+    // OUTPUT: LCS(s) of [AAGAAGC, AGAAGT, CGAAGC] with k = 3 equals = [GAAG]
 
-    // k = 3;
-    // strs = new String[]{ "AAGAAGC", "AGAAGT", "CGAAGC" };
-    // set = lcs(strs, k);
-    // System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
-    // LCS(s) of [AAGAAGC, AGAAGT, CGAAGC] with k = 3 equals = [GAAG]
-
-    // k = 2;
-    // strs = new String[]{ "AABC", "BCDC", "BCDE", "CDED", "CDCABC" };
-    // set = lcs(strs, k);
-    // System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
-    // LCS(s) of [AABC, BCDC, BCDE, CDED, CDCABC] with k = 2 equals = [ABC, BCD, CDC, CDE]
+    k = 2;
+    strs = new String[]{ "AABC", "BCDC", "BCDE", "CDED", "CDCABC" };
+    set = lcs(strs, k);
+    System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
+    // OUTPUT: LCS(s) of [AABC, BCDC, BCDE, CDED, CDCABC] with k = 2 equals = [ABC, BCD, CDC, CDE]
 
   }
 
@@ -101,7 +87,6 @@ public class LongestCommonSubstring {
     return textLength;
   }
 
-
   private static int removeColor(Map<Integer,Integer> windowColorCountMap, int windowColorCount, int lastColor) {
     boolean removedAColor = false;
     Integer colorCount = windowColorCountMap.get(lastColor);
@@ -124,7 +109,7 @@ public class LongestCommonSubstring {
    * The current implementation takes O(nlog(n)) bounded by the suffix array construction.
    * @param strs - The strings you wish to find the longest common substring(s) between
    * @param K - The minimum number of strings to find the LCS between. K must be at least 2.
-   **/
+   */
   public static TreeSet <String> lcs(String [] strings, final int K) {
 
     if (K <= 1) throw new IllegalArgumentException("K must be greater than or equal to 2!");
@@ -138,14 +123,41 @@ public class LongestCommonSubstring {
 
     int[] indexMap = new int[TEXT_LENGTH];
 
-    final int LOWEST_ASCII = fillIndexMap(strings, indexMap);
-    final int HIGHEST_ASCII = 128;
-    final int SHIFT = LOWEST_ASCII + NUM_SENTINELS + 1;
+    int lowestAsciiValue  = Integer.MAX_VALUE;
+    int highestAsciiValue = Integer.MIN_VALUE;
+
+    for (int i = 0, k = 0; i < strings.length; i++) {
+      
+      String str = strings[i];
+      
+      for (int j = 0; j < str.length(); j++) {
+        int asciiVal = str.charAt(j);
+        if (asciiVal < lowestAsciiValue)  lowestAsciiValue  = asciiVal;
+        if (asciiVal > highestAsciiValue) highestAsciiValue = asciiVal;
+        indexMap[k++] = i;
+      }
+
+      // Record that the sentinel belongs to string i
+      indexMap[k++] = i;
+
+    }
+
+    // System.out.println(lowestAsciiValue + " " + highestAsciiValue + " " + NUM_SENTINELS);
+
+     // TODO: Clean this crap up
+    final int SHIFT = 1500; // NUM_SENTINELS + (highestAsciiValue - lowestAsciiValue) + 1;
+
+
+    // In theory the lower bound is around:
+    // final int ALPHABET_SIZE = NUM_SENTINELS + (highestAsciiValue - lowestAsciiValue) + 2;
+
+    // In practice it's much worse:
+    final int ALPHABET_SIZE = highestAsciiValue + NUM_SENTINELS + SHIFT + 1;
 
     int[] T = constructText(strings, TEXT_LENGTH, SHIFT);
 
     // Build suffix array and get sorted suffix indexes and lcp array
-    SuffixArray suffixArray = new SuffixArray(T, SHIFT + HIGHEST_ASCII);
+    SuffixArray suffixArray = new SuffixArray(T, ALPHABET_SIZE);
     int[] sa  = suffixArray.sa;
     int[] lcp = suffixArray.lcp;
 
@@ -162,6 +174,7 @@ public class LongestCommonSubstring {
     int windowColorCount = 0;
 
     // suffixArray.display(SHIFT);
+    // TODO: Gross techique refactor
     boolean done = false;
     boolean exit = false;
 
@@ -181,7 +194,6 @@ public class LongestCommonSubstring {
         if (done && w.hi - w.lo == 0) break;
 
         int windowLCP = w.getMin();
-        // System.out.printf("Window LCP: %d\n", windowLCP );
 
         if (windowLCP > 0) {
 
@@ -215,8 +227,6 @@ public class LongestCommonSubstring {
 
       }
 
-      // System.out.printf("D: %d CC: %d Min: %d LO: %d HI: %d\n", (w.hi-w.lo), windowColorCount, w.getMin(), w.lo, w.hi );
-
     }
 
     return lcss;
@@ -246,7 +256,7 @@ public class LongestCommonSubstring {
 
     // Designated constructor
     public SuffixArray(int[] text, int alphabetSize) {
-      this.alphabetSize = alphabetSize;
+      this.alphabetSize = alphabetSize; // Math.max(alphabetSize, DEFAULT_ALPHABET_SIZE);
       T = text;
       N = text.length;
       sa = new int[N];
@@ -257,6 +267,7 @@ public class LongestCommonSubstring {
       kasai();
     }
 
+    // Construct suffix array, O(nlog(n))
     private void construct() {
       int i, p, r;
       for (i=0; i<N; ++i) c[rank[i] = T[i]]++;
@@ -279,7 +290,7 @@ public class LongestCommonSubstring {
       }
     }
 
-    // Use Kasai algorithm to build LCP array
+    // Use Kasai algorithm to build LCP array, O(n)
     private void kasai() {
       lcp = new int[N];
       int [] inv = new int[N];

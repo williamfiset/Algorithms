@@ -203,20 +203,21 @@ public class LongestCommonSubstringTest {
   @Test
   public void testLargeAlphabet() {
 
-    int k = 500;
-    String[] strs = new String[k];
+    for (int k = 2; k <= 2500; k++ ) {
 
-    for (int i = 0; i < k; i++) {
-      strs[i] = "ABCDE";
+      String[] strs = new String[k];
+      for (int i = 0; i < k; i++) strs[i] = "ABABAB";
+
+      TreeSet<String> ans = new TreeSet<>();
+      ans.add("ABABAB");
+
+      TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+      assertEquals(ans, lcss);
+
     }
 
-    TreeSet<String> ans = new TreeSet<>();
-    ans.add("ABCDE");
-
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
-    assertEquals(ans, lcss);
-
   }
+
 
 }
 
