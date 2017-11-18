@@ -3,6 +3,8 @@
  *
  * Time Complexity: O(1)
  * 
+ * NOTE: This file could use some formal testing.
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
