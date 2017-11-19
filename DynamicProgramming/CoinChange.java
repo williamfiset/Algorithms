@@ -18,9 +18,9 @@ public class CoinChange {
   public static int coinChange(int[] coins, int amount) {
     
     if (coins == null) throw new IllegalArgumentException("Coins array is null");
+    if (coins.length == 0) throw new IllegalArgumentException("No coin values :/");
     
     final int N = coins.length;
-    
     // Initialize table and set first row to be infinity
     int[][] DP = new int[N+1][amount+1];
     java.util.Arrays.fill(DP[0], INF);

@@ -41,6 +41,7 @@ sourceSets {
         'SearchAlgorithms',
         'SortingAlgorithms',
         'StringAlgorithms',
+        'Utils'
       ]
     }
   }
