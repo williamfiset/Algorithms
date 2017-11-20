@@ -7,6 +7,7 @@
 
 # Constructive algorithms
 * [Combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Combinations.java) **- O(n choose r)**
+* [Unique combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/UniqueCombinations.java) **- O(n choose r)**
 * [Combinations with Repetition](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/CombinationsWithRepetition.java) **- O((n+r-1) choose r)**
 * [Permutations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Permutations.java) **- O(n!)**
 * [Power set (set of all subsets)](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/PowerSet.java) **- O(2<sup>n</sup>)**

@@ -28,7 +28,7 @@ public class UniqueCombinations {
 
   private static void combinations(int at, int r, boolean[] used, int[] set) {
     
-    int n = set.length;
+    final int n = set.length;
 
     // If there are more elements left to select than what are available
     // This is a short circuiting optimization we can take advantage of 
@@ -37,7 +37,7 @@ public class UniqueCombinations {
     
     // We select 'r' elements so we found a valid subset!
     if (r == 0) {
-    
+
       List<Integer> subset = new ArrayList<>(r);
       for (int i = 0; i < n; i++)
         if (used[i]) subset.add(set[i]);
@@ -72,20 +72,20 @@ public class UniqueCombinations {
     set = new int[]{1, 2, 2, 2, 3, 3, 4, 4};
     combinations(set, r);
     // Prints:
-		// [1, 2, 2]
-		// [1, 2, 3]
-		// [1, 2, 4]
-		// [1, 3, 3]
-		// [1, 3, 4]
-		// [1, 4, 4]
-		// [2, 2, 2]
-		// [2, 2, 3]
-		// [2, 2, 4]
-		// [2, 3, 3]
-		// [2, 3, 4]
-		// [2, 4, 4]
-		// [3, 3, 4]
-		// [3, 4, 4]
+    // [1, 2, 2]
+    // [1, 2, 3]
+    // [1, 2, 4]
+    // [1, 3, 3]
+    // [1, 3, 4]
+    // [1, 4, 4]
+    // [2, 2, 2]
+    // [2, 2, 3]
+    // [2, 2, 4]
+    // [2, 3, 3]
+    // [2, 3, 4]
+    // [2, 4, 4]
+    // [3, 3, 4]
+    // [3, 4, 4]
   }
 
 }
