@@ -27,8 +27,7 @@ public class Combinations {
 
     final int N = set.length;
 
-    // If there are more elements left to select than what are available
-    // This is a short circuiting optimization we can take advantage of 
+    // Return early if there are more elements left to select than what is available.
     int elementsLeftToPick = N - at;
     if (elementsLeftToPick < r) return;
 
@@ -47,6 +46,7 @@ public class Combinations {
 
         // Try including this element
         used[i] = true;
+
         combinations(set, r - 1, i + 1, used);
 
         // Backtrack and try the instance where we did not include this element
@@ -58,8 +58,8 @@ public class Combinations {
 
   }
 
-  // Use this method in combination with a do while loop to generate all the 
-  // combinations of a set choose r in a iterative fashion. This method returns
+  // Use this method in combination with a do while loop to generate all the combinations 
+  // of a set choosing r elements in a iterative fashion. This method returns
   // false once the last combination has been generated.
   // NOTE: Originally the selection needs to be initialized to {0,1,2,3 ... r-1}
   public static boolean nextCombination(int[] selection, int N, int r) {
