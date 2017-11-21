@@ -52,7 +52,7 @@
 
 ### Tree algorithms
 * [Tree diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/TreeDiameter.java) **- O(V+E)**
-* [[UNTESTED] Tree canonical form](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/TreeCanonicalFormAdjacencyList.java) **- O(V+E)**
+* [Tree canonical form](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TreeAlgorithms/TreeCanonicalFormAdjacencyList.java) **- O(V+E)**
 
 ### Network flow
 * [Bipartite graph verification (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/NetworkFlow/BipartiteGraphCheckAdjacencyList.java) **- O(V+E)**
@@ -82,7 +82,7 @@
 * [Tarjan's strongly connected components algorithm (adjacency matrix) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
 * [Topological sort (acyclic graph, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyList.java) **- O(V+E)**
 * [Topological sort (acyclic graph, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
-* [[UNTESTED] Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/GraphDiameter.java) **- O(VE)**
+* [Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/GraphDiameter.java) **- O(VE)**
 
 # Linear algebra
 * [Freivald's algorithm (matrix multiplication verification)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/FreivaldsAlgorithm.java) **- O(kn<sup>2</sup>)**

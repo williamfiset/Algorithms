@@ -29,11 +29,6 @@ public class UniqueCombinations {
   private static void combinations(int at, int r, boolean[] used, int[] set) {
     
     final int n = set.length;
-
-    // If there are more elements left to select than what are available
-    // This is a short circuiting optimization we can take advantage of 
-    int elementsLeftToPick = n - at;
-    if (elementsLeftToPick < r) return;
     
     // We select 'r' elements so we found a valid subset!
     if (r == 0) {
