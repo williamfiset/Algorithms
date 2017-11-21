@@ -131,7 +131,7 @@
 # String algorithms
 * [Booth's algorithm (finds lexicographically smallest string rotation)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/BoothsAlgorithm.java) **- O(n)**
 * [Knuth-Morris-Pratt algorithm (finds pattern matches in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/KMP.java) **- O(n+m)**
-* [Longest Common Prefix (LCP) array (kasai algorithm)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestCommonPrefixArray.java) **- O(nlog(n)) bounded by SA construction, otherwise O(n)**
+* [Longest Common Prefix (LCP) array](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestCommonPrefixArray.java) **- O(nlog(n)) bounded by SA construction, otherwise O(n)**
 * [Longest Common Substring (LCS)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestCommonSubstring.java) **- O(nlog(n)) bounded by SA construction, otherwise O(n)**
 * [Longest Repeated Substring (LRS)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/LongestRepeatedSubstring.java) **- O(nlog(n))**
 * [Manacher's algorithm (finds all palindromes in text)](https://github.com/williamfiset/Algorithms/blob/master/StringAlgorithms/ManachersAlgorithm.java) **- O(n)**
