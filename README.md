@@ -1,9 +1,13 @@
 
 [![Travis](https://img.shields.io/travis/williamfiset/Algorithms.svg)](https://travis-ci.org/williamfiset/Algorithms) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+<!-- 
+Uncomment when more AI algorithms are done.
+
 # Artificial Intelligence (AI) 
 * [Genetic algorithm Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_knapsack_01.java)
-* [Genetic algorithm text searching](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_textSearch.java)
+* [Genetic algorithm text searching](https://github.com/williamfiset/Algorithms/blob/master/AI/GeneticAlgorithm_textSearch.java) 
+* -->
 
 # Constructive algorithms
 * [Combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Combinations.java) **- O(n choose r)**
@@ -40,6 +44,7 @@
 * [Line-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineCircleIntersection.js) **- O(1)**
 * [Line segment-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentCircleIntersection.js) **- O(1)**
 * [Line segment to general form (ax + by = c)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentToGeneralForm.java) **- O(1)**
+* [Line segment-line segment intersection](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LineSegmentLineSegmentIntersection.java) **- O(1)**
 * [Longitude-Latitude geographic distance](https://github.com/williamfiset/Algorithms/blob/master/Geometry/LongitudeLatitudeGeographicDistance.java) **- O(1)**
 * [Point-circle tangent line(s)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointCircleTangent.java) **- O(1)**
 * [Point is inside triangle check](https://github.com/williamfiset/Algorithms/blob/master/Geometry/PointInsideTriangle.java) **- O(1)**
