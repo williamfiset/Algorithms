@@ -20,8 +20,8 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
   static int visitToken = 1;
 
   /** 
-   * This function performs Maximum Cardinality Bipartite
-   * Matching (MCBM) on a bipartite graph where the nodes 
+   * This function counts what the Maximum Cardinality Bipartite
+   * Matching (MCBM) is a bipartite graph where the nodes 
    * [0,n) are in the left set and [n, n+m) in right set
    * @param graph - An adjacency list representing an undirected bipartite graph.
    **/
@@ -39,7 +39,6 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
     }
 
     return matches;
-
   }
 
   private static int augment(List<List<Integer>> graph, int[] visited, int[] next, int at) {
@@ -48,7 +47,7 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
     if (visited[at] == visitToken) return 0;
     visited[at] = visitToken;
 
-    List <Integer> edges = graph.get(at);
+    List<Integer> edges = graph.get(at);
     if (edges != null) {
       for (int i = 0; i < edges.size(); i++) {
         
@@ -56,8 +55,7 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
 
         // If the value of node is FREE then the node on the right
         // side has not yet been matched, otherwise the value of 
-        // node refers to the index of the left on the left set we
-        // want to visit to finding an alternating path
+        // node refers to the index of the node in the left set.
         int node = next[rightNode];
 
         // If the node on the right side has not been matched
@@ -75,7 +73,6 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
           // 1 to indicate a path was found
           next[rightNode] = at;
           return 1;
-
         }
 
       }
@@ -84,6 +81,10 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
     // No path found :/
     return 0;
 
+  }
+
+  private static void addEdge(List<List<Integer>> graph, int from, int to) {
+    graph.get(from).add(to);
   }
 
   public static void main(String[] args) {
@@ -99,13 +100,10 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
     addEdge(graph, 4, 1);
     addEdge(graph, 5, 1);
     addEdge(graph, 6, 1);
-
+    
+    // Prints '4' because that's the maximum matching.
     System.out.println(mcbm(graph,4,4));
 
-  }
-
-  private static void addEdge(List<List<Integer>> graph, int from, int to) {
-    graph.get(from).add(to);
   }
 
 }
