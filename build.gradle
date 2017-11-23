@@ -31,10 +31,12 @@ sourceSets {
   main {
     java {
       srcDirs = [
-        'AL',
+//        'AI',
         'ConstructiveAlgorithms',
         'DynamicProgramming',
         'Geometry',
+//        'GraphTheory',
+        'GraphTheory2',
         'LinearAlgebra',
         'Math',
         'Other',
@@ -48,16 +50,18 @@ sourceSets {
   test {
     java {
       srcDirs = [
-        'AL/tests',
+//        'AI/tests',
         'ConstructiveAlgorithms/tests',
         'DynamicProgramming/tests',
         'Geometry/tests',
+        'GraphTheory/tests',
         'LinearAlgebra/tests',
         'Math/tests',
         'Other/tests',
         'SearchAlgorithms/tests',
         'SortingAlgorithms/tests',
         'StringAlgorithms/tests',
+        'Utils/tests'
       ]
     }
   }

@@ -80,7 +80,7 @@ public class SteinerTree {
     // Return answer by looking up the mask with all of the bits set (which
     // represents that all terminal nodes are connected)
     return dp[(1 << t) - 1][subsetToConnect[0]];
-  }
+}
 
 
   /**
@@ -114,6 +114,78 @@ public class SteinerTree {
         for (int j = 0; j < n; j++)
           if (distance[i][k] + distance[k][j] < distance[i][j])
             distance[i][j] = Double.NEGATIVE_INFINITY;
+
+  }
+
+  // Examples
+  public static void main(String[] args) {
+    
+    final double INF = Double.POSITIVE_INFINITY;
+
+
+    /**
+     * Visualization of the graph:
+     *  
+     *           [O]
+     *           / \
+     *          3   4
+     *         /     \
+     *       [1]     [2]
+     *        |       |
+     *        5       6
+     *        |       |
+     *       [3]     [4]
+     */
+    double[][] matrix1 = new double[][] {
+      {  0,   3,   4, INF, INF},
+      {  3,   0, INF,   5, INF},
+      {  4, INF,   0, INF,   6},
+      {INF,   5, INF,   0, INF},
+      {INF, INF,   6, INF,   0}
+    };
+
+    System.out.println(minLengthSteinerTree(matrix1, new int[] {})); // Expected answer: 0.0
+    System.out.println(minLengthSteinerTree(matrix1, new int[] {2})); // Expected answer: 0.0
+    System.out.println(minLengthSteinerTree(matrix1, new int[] {2, 4})); // Expected answer: 6.0
+    System.out.println(minLengthSteinerTree(matrix1, new int[] {0, 3})); // Expected answer: 8.0
+    System.out.println(minLengthSteinerTree(matrix1, new int[] {1, 2, 4})); // Expected answer: 13.0
+    System.out.println(minLengthSteinerTree(matrix1, new int[] {4, 1, 2})); // Expected answer: 13.0
+    System.out.println(minLengthSteinerTree(matrix1, new int[] {3, 0, 4})); // Expected answer: 18.0
+    System.out.println(minLengthSteinerTree(matrix1, new int[] {0, 1, 2, 3, 4})); // Expected answer: 18.0
+
+
+    /**
+     * Visualization of the graph:
+     *  
+     *       [0]-3-[1]
+     *        |     |
+     *        5     4
+     *        |     |
+     *       [2]   [3]
+     *        | \   |
+     *        7  8  1
+     *        |   \ |
+     *       [4]-2-[5]
+     */
+    double[][] matrix2 = new double[][] {
+      {  0,   3,   5, INF, INF, INF},
+      {  3,   0, INF,   4, INF, INF},
+      {  5, INF,   0, INF,   7,   8},
+      {INF,   4, INF,   0, INF,   1},
+      {INF, INF,   7, INF,   0,   2},
+      {INF, INF,   8,   1,   2,   0}
+    };
+
+    System.out.println(minLengthSteinerTree(matrix2, new int[] {})); // Expected answer: 0.0
+    System.out.println(minLengthSteinerTree(matrix2, new int[] {4})); // Expected answer: 0.0
+    System.out.println(minLengthSteinerTree(matrix2, new int[] {0, 5})); // Expected answer: 8.0
+    System.out.println(minLengthSteinerTree(matrix2, new int[] {5, 0})); // Expected answer: 8.0
+    System.out.println(minLengthSteinerTree(matrix2, new int[] {4, 0})); // Expected answer: 10.0
+    System.out.println(minLengthSteinerTree(matrix2, new int[] {2, 4, 5})); // Expected answer: 9.0
+    System.out.println(minLengthSteinerTree(matrix2, new int[] {3, 1, 0})); // Expected answer: 7.0
+    System.out.println(minLengthSteinerTree(matrix2, new int[] {3, 0})); // Expected answer: 7.0
+    System.out.println(minLengthSteinerTree(matrix2, new int[] {3, 0, 5})); // Expected answer: 8.0
+    System.out.println(minLengthSteinerTree(matrix2, new int[] {0, 4, 5})); // Expected answer: 10.0
 
   }
 
