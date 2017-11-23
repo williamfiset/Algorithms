@@ -83,6 +83,7 @@
 * [Topological sort (acyclic graph, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyList.java) **- O(V+E)**
 * [Topological sort (acyclic graph, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
 * [Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/GraphDiameter.java) **- O(VE)**
+* [Steiner tree](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/SteinerTree.java)
 
 # Linear algebra
 * [Freivald's algorithm (matrix multiplication verification)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/FreivaldsAlgorithm.java) **- O(kn<sup>2</sup>)**
