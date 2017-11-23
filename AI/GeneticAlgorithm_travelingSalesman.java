@@ -242,63 +242,63 @@ public class GeneticAlgorithm_travelingSalesman {
     System.out.println(tsp(m));
 
   }
-  
-}
 
-// An individual in the TSP is an order in which 
-// the cities are visited.
-class Individual {
-  
-  int[] cities;
-  static Random RANDOM = new Random();
-  
-  // Constructs a random individual
-  public Individual(int n) {
-    cities = new int[n];
-    for(int i = 0; i < n; i++) cities[i] = i;
-    shuffleArray(cities);
-  }
+  // An individual in the TSP is an order in which 
+  // the cities are visited.
+  static class Individual {
+    
+    int[] cities;
+    static Random RANDOM = new Random();
+    
+    // Constructs a random individual
+    public Individual(int n) {
+      cities = new int[n];
+      for(int i = 0; i < n; i++) cities[i] = i;
+      shuffleArray(cities);
+    }
 
-  // Constructs a random individual
-  public Individual(int[] cities) {
-    this.cities = cities;
-  }
+    // Constructs a random individual
+    public Individual(int[] cities) {
+      this.cities = cities;
+    }
 
-  // public boolean ass() {
-  //   int s = 0;
-  //   for (int x : cities) s += x;
-  //   int n = cities.length-1;
-  //   return s == (n*(n-1))/2;
-  // }
+    // public boolean ass() {
+    //   int s = 0;
+    //   for (int x : cities) s += x;
+    //   int n = cities.length-1;
+    //   return s == (n*(n-1))/2;
+    // }
 
-  // Swap the order in which the cities are visited
-  public void mutate() {
-    int i = RANDOM.nextInt(cities.length);
-    int j = RANDOM.nextInt(cities.length);
-    int tmp = cities[i];
-    cities[i] = cities[j];
-    cities[j] = tmp;
-  }
+    // Swap the order in which the cities are visited
+    public void mutate() {
+      int i = RANDOM.nextInt(cities.length);
+      int j = RANDOM.nextInt(cities.length);
+      int tmp = cities[i];
+      cities[i] = cities[j];
+      cities[j] = tmp;
+    }
 
-  // Fisher–Yates shuffle
-  public static void shuffleArray(int[] array) {
-    int index;
-    for (int i = array.length - 1; i > 0; i--) {
-      index = RANDOM.nextInt(i + 1);
-      if (index != i) {
-        array[index] ^= array[i];
-        array[i] ^= array[index];
-        array[index] ^= array[i];
+    // Fisher–Yates shuffle
+    public static void shuffleArray(int[] array) {
+      int index;
+      for (int i = array.length - 1; i > 0; i--) {
+        index = RANDOM.nextInt(i + 1);
+        if (index != i) {
+          array[index] ^= array[i];
+          array[i] ^= array[index];
+          array[index] ^= array[i];
+        }
       }
     }
+
+    @Override public String toString() {
+      return java.util.Arrays.toString(cities);
+    }
+
   }
 
-  @Override public String toString() {
-    return java.util.Arrays.toString(cities);
-  }
-
+  
 }
-
 
 
 

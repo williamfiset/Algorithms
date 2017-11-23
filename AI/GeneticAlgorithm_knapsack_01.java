@@ -175,89 +175,74 @@ public class GeneticAlgorithm_knapsack_01 {
 
   }
   
-}
-
-
-class Individual {
-  
-  BitSet bits;
-  
-  // Constructs a random individual
-  public Individual(int n) {
-    bits = new BitSet(n);
-    for (int i = 0; i < n; i++) {
-      if (Math.random() < 0.5) {
-        bits.flip(i);
+  static class Individual {
+    
+    BitSet bits;
+    
+    // Constructs a random individual
+    public Individual(int n) {
+      bits = new BitSet(n);
+      for (int i = 0; i < n; i++) {
+        if (Math.random() < 0.5) {
+          bits.flip(i);
+        }
       }
     }
+
+    public Individual(BitSet set) {
+      this.bits = set;
+    }
+
+    @Override public String toString() {
+      return bits.toString();
+    }
+
   }
 
-  public Individual(BitSet set) {
-    this.bits = set;
-  }
-
-  @Override public String toString() {
-    return bits.toString();
-  }
-
-}
-
-class Knapsack_01 {
-  
-  /**
-   * @param maxWeight - The maximum weight of the knapsack
-   * @param W - The weights of the items
-   * @param V - The values of the items
-   * @return The maximum achievable profit of selecting a subset of
-   * the elements such that the capacity of the knapsack is not exceeded
-   **/
-  public static int knapsack(int maxWeight, int [] W, int [] V) {
+  static class Knapsack_01 {
     
-    if (W == null || V == null || W.length != V.length || maxWeight < 0) 
-      throw new IllegalArgumentException("Invalid input");
-    
-    final int N = W.length;
-    
-    // Initialize a table where individual rows represent items 
-    // and columns represent the weight of the knapsack
-    int[][] DP = new int[N+1][maxWeight+1];
-    
-    for (int i = 1; i <= N; i++) {
+    /**
+     * @param maxWeight - The maximum weight of the knapsack
+     * @param W - The weights of the items
+     * @param V - The values of the items
+     * @return The maximum achievable profit of selecting a subset of
+     * the elements such that the capacity of the knapsack is not exceeded
+     **/
+    public static int knapsack(int maxWeight, int [] W, int [] V) {
       
-      // Get the value and weight of the item
-      int w = W[i-1], v = V[i-1];
+      if (W == null || V == null || W.length != V.length || maxWeight < 0) 
+        throw new IllegalArgumentException("Invalid input");
       
-      for (int sz = 1; sz <= maxWeight; sz++) {
+      final int N = W.length;
+      
+      // Initialize a table where individual rows represent items 
+      // and columns represent the weight of the knapsack
+      int[][] DP = new int[N+1][maxWeight+1];
+      
+      for (int i = 1; i <= N; i++) {
         
-        // Consider not picking this element
-        DP[i][sz] = DP[i-1][sz];
+        // Get the value and weight of the item
+        int w = W[i-1], v = V[i-1];
         
-        // Consider including the current element and
-        // see if this would be more profitable
-        if (sz >= w && DP[i-1][sz-w] + v > DP[i][sz])
-          DP[i][sz] = DP[i-1][sz-w] + v;
+        for (int sz = 1; sz <= maxWeight; sz++) {
+          
+          // Consider not picking this element
+          DP[i][sz] = DP[i-1][sz];
+          
+          // Consider including the current element and
+          // see if this would be more profitable
+          if (sz >= w && DP[i-1][sz-w] + v > DP[i][sz])
+            DP[i][sz] = DP[i-1][sz-w] + v;
+          
+        }
         
       }
       
+      // Return the maximum profit
+      return DP[N][maxWeight];
+      
     }
     
-    // Return the maximum profit
-    return DP[N][maxWeight];
-    
   }
-  
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
