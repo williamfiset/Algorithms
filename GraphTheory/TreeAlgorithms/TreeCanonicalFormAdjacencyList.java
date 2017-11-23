@@ -14,26 +14,27 @@
 
 import java.util.*;
 
-class TreeNode {
-  
-  static int ID = 0;
-  
-  int id = ID++;
-  String label = "()";
-  List <TreeNode> neighbors = new ArrayList<>();
-
-  // Add an undirected link between two nodes
-  public void connect(TreeNode node) {
-    neighbors.add(node);
-    node.neighbors.add(this);
-  }
-
-  @Override public int hashCode() { return id; }
-  @Override public String toString() { return label; }
-
-}
 
 public class TreeCanonicalFormAdjacencyList {
+  
+  static class TreeNode {
+    
+    static int ID = 0;
+    
+    int id = ID++;
+    String label = "()";
+    List <TreeNode> neighbors = new ArrayList<>();
+
+    // Add an undirected link between two nodes
+    public void connect(TreeNode node) {
+      neighbors.add(node);
+      node.neighbors.add(this);
+    }
+
+    @Override public int hashCode() { return id; }
+    @Override public String toString() { return label; }
+
+  }
 
   // Encodes a tree in a canonized manner
   public static String canonizeTree(TreeNode[] tree) {

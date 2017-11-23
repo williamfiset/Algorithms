@@ -7,15 +7,6 @@
 
 import java.util.*;
 
-class Edge {
-  int from, to, cost;
-  public Edge(int from, int to, int cost) {
-    this.from = from;
-    this.to = to;
-    this.cost = cost;
-  }
-}
-
 // A custom implementation of a circular integer only queue which is
 // extremely quick and lightweight. In terms of performance it can outperform 
 // java.util.ArrayDeque (Java's fastest queue implementation) by a factor of 40+! 
@@ -59,6 +50,15 @@ class IntQueue {
 }
 
 public class BreadthFirstSearchAdjacencyListIterativeFastQueue {
+  
+  static class Edge {
+    int from, to, cost;
+    public Edge(int from, int to, int cost) {
+      this.from = from;
+      this.to = to;
+      this.cost = cost;
+    }
+  }
   
   // Perform a breadth first search on a graph with n nodes 
   // from a starting point to count the number of nodes

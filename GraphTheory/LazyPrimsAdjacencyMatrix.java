@@ -10,19 +10,19 @@
 
 import java.util.*;
 
-class Edge implements Comparable <Edge> {
-  int to, cost;
-  public Edge(int to, int cost) {
-    this.to = to;
-    this.cost = cost;
-  }
-  @Override public int compareTo(Edge other) {
-    return cost - other.cost;
-  }
-}
-
 public class LazyPrimsAdjacencyMatrix {
   
+  static class Edge implements Comparable <Edge> {
+    int to, cost;
+    public Edge(int to, int cost) {
+      this.to = to;
+      this.cost = cost;
+    }
+    @Override public int compareTo(Edge other) {
+      return cost - other.cost;
+    }
+  }
+
   // Given an N*N undirected adjacency matrix, that is a
   // graph with matrix[i][j] = matrix[j][i] for all i,j this method 
   // finds the minimum spanning tree cost using Prim's algorithm

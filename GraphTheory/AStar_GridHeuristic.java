@@ -5,24 +5,25 @@
 
 import java.util.*;
 
-// An edge class to represent a directed edge 
-// between two nodes with a certain non-negative cost. 
-class Edge {
-  double cost;
-  int from, to;
-  public Edge(int from, int to, double cost) {
-    if (cost < 0) throw new IllegalArgumentException("No negative edge weights");
-    this.from = from;
-    this.to = to;
-    this.cost = cost;
-  }
-  @Override public String toString() {
-    return from + ":" + to;
-  }
-}
 
 public class AStar_GridHeuristic {
 
+  // An edge class to represent a directed edge 
+  // between two nodes with a certain non-negative cost. 
+  static class Edge {
+    double cost;
+    int from, to;
+    public Edge(int from, int to, double cost) {
+      if (cost < 0) throw new IllegalArgumentException("No negative edge weights");
+      this.from = from;
+      this.to = to;
+      this.cost = cost;
+    }
+    @Override public String toString() {
+      return from + ":" + to;
+    }
+  }
+  
   // Node class to track the nodes to visit while running A*
   private static class Node implements Comparable <Node> {
     

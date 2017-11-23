@@ -7,16 +7,16 @@
 
 import java.util.*;
 
-class Edge {
-  int from, to, cost;
-  public Edge(int from, int to, int cost) {
-    this.from = from;
-    this.to = to;
-    this.cost = cost;
-  }
-}
-
 public class DepthFirstSearchAdjacencyListIterative {
+  
+  static class Edge {
+    int from, to, cost;
+    public Edge(int from, int to, int cost) {
+      this.from = from;
+      this.to = to;
+      this.cost = cost;
+    }
+  }
   
   // Perform a depth first search on a graph with n nodes 
   // from a starting point to count the number of nodes

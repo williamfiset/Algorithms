@@ -9,15 +9,15 @@
 
 import java.util.*;
 
-class Edge {
-  int from, to;
-  public Edge(int from, int to) {
-    this.from = from;
-    this.to = to;
-  }
-}
-
 public class BipartiteGraphCheckAdjacencyList {
+  
+  static class Edge {
+    int from, to;
+    public Edge(int from, int to) {
+      this.from = from;
+      this.to = to;
+    }
+  }
 
   private static final int BLACK = 0, RED = 1, UNVISITED = 2;
 

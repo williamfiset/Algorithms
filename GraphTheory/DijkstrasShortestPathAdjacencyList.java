@@ -11,20 +11,20 @@
 
 import java.util.*;
 
-// An edge class to represent a directed edge 
-// between two nodes with a certain non-negative cost. 
-class Edge {
-  double cost;
-  int from, to;
-  public Edge(int from, int to, double cost) {
-    if (cost < 0) throw new IllegalArgumentException("Dijkstra's algorithm does not permit negative edge weights");
-    this.from = from;
-    this.to = to;
-    this.cost = cost;
-  }
-}
-
 public class DijkstrasShortestPathAdjacencyList {
+
+  // An edge class to represent a directed edge 
+  // between two nodes with a certain non-negative cost. 
+  static class Edge {
+    double cost;
+    int from, to;
+    public Edge(int from, int to, double cost) {
+      if (cost < 0) throw new IllegalArgumentException("Dijkstra's algorithm does not permit negative edge weights");
+      this.from = from;
+      this.to = to;
+      this.cost = cost;
+    }
+  }
 
   // Node class to track the nodes to visit while running Dijkstra's
   private static class Node implements Comparable <Node> {

@@ -9,19 +9,19 @@
 
 import java.util.*;
 
-class Edge implements Comparable <Edge> {
-  int from, to, cost;
-  public Edge(int from, int to, int cost) {
-    this.from = from;
-    this.to = to;
-    this.cost = cost;
-  }
-  @Override public int compareTo(Edge other) {
-    return cost - other.cost;
-  }
-}
-
 public class EagerPrimsAdjacencyList {
+
+    static class Edge implements Comparable <Edge> {
+      int from, to, cost;
+      public Edge(int from, int to, int cost) {
+        this.from = from;
+        this.to = to;
+        this.cost = cost;
+      }
+      @Override public int compareTo(Edge other) {
+        return cost - other.cost;
+      }
+    }
   
   public static Long prims(Map <Integer, List<Edge>> graph, int n) {
     

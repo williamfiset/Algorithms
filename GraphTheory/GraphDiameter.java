@@ -11,16 +11,16 @@
 
 import java.util.*;
 
-class Edge {
-  int from, to;
-  public Edge(int from, int to) {
-    this.from = from;
-    this.to = to;
-  }
-}
-
 public class GraphDiameter {
 
+  static class Edge {
+    int from, to;
+    public Edge(int from, int to) {
+      this.from = from;
+      this.to = to;
+    }
+  }
+  
   // Separate each breadth first search layer with a DEPTH_TOKEN
   // to easily determine the distance to other nodes
   static final int DEPTH_TOKEN = -1;

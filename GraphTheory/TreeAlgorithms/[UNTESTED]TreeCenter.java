@@ -8,7 +8,7 @@
 
 import java.util.*;
 
-public class TreeCenter {
+class TreeCenter {
 
   public static List <Integer> findTreeCenters(List<List<Integer>> graph) {
     

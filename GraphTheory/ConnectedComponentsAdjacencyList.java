@@ -14,16 +14,16 @@
 
 import java.util.*;
 
-class Edge {
-  int from, to, cost;
-  public Edge(int from, int to, int cost) {
-    this.from = from;
-    this.to = to;
-    this.cost = cost;
-  }
-}
-
 public class ConnectedComponentsAdjacencyList {
+
+  static class Edge {
+    int from, to, cost;
+    public Edge(int from, int to, int cost) {
+      this.from = from;
+      this.to = to;
+      this.cost = cost;
+    }
+  }
   
   static int countConnectedComponents( Map <Integer, List <Edge>> graph, int n ) {
 

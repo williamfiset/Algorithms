@@ -12,16 +12,16 @@
 
 import java.util.*;
 
-// Helper Edge class to describe edges in the graph
-class Edge {
-  int from, to, weight;
-  public Edge (int f, int t, int w) {
-    from = f; to = t; weight = w;
-  }
-}
-
 public class TopologicalSortAdjacencyList {
 
+  // Helper Edge class to describe edges in the graph
+  static class Edge {
+    int from, to, weight;
+    public Edge (int f, int t, int w) {
+      from = f; to = t; weight = w;
+    }
+  }
+  
   // Helper method that performs a depth first search on the graph to give 
   // us the topological ordering we want. Instead of maintaining a stack 
   // of the nodes we see we simply place them inside the ordering array
