@@ -38,7 +38,7 @@ public class TravelingSalesmanProblemBruteForce {
 
   }
 
-  private static double computeTourCost(int[] tour, double[][] matrix) {
+  public static double computeTourCost(int[] tour, double[][] matrix) {
     
     double cost = 0;
     
@@ -89,11 +89,16 @@ public class TravelingSalesmanProblemBruteForce {
     for (double[] row : matrix) java.util.Arrays.fill(row, 100);
 
     // Construct an optimal tour
+    int edgeCost = 5;
     int[] optimalTour = {2,7,6,1,9,8,5,3,4,0,2};
-    for(int i = 1; i < n; i++)
-      matrix[optimalTour[i-1]][optimalTour[i]] = 5;
-
-    System.out.println( java.util.Arrays.toString(tsp(matrix)) );
+    for(int i = 1; i < optimalTour.length; i++)
+      matrix[optimalTour[i-1]][optimalTour[i]] = edgeCost;
+    
+    int[] bestTour = tsp(matrix);
+    System.out.println(java.util.Arrays.toString(bestTour));
+    
+    double tourCost = computeTourCost(bestTour, matrix);
+    System.out.println("Tour cost: " + tourCost);
 
   }
 
