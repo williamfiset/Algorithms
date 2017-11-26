@@ -9,7 +9,7 @@
  * @author William Fiset, Micah Stairs
  **/
 
-public class TravelingSalesmanProblemBruteForce {
+public class TspBruteForce {
 
   // Given an nxn complete graph represented as an adjacency
   // matrix this method finds the best tour that visits all
