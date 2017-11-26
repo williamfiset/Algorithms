@@ -67,10 +67,9 @@ public class TravelingSalesmanProblemTest {
         randomFillDistMatrix(dist);
         
         TspDynamicProgramming dpSolver = new TspDynamicProgramming(dist);
-        List<Integer> dpPath = dpSolver.getTour();
         int[] bfPath = TspBruteForce.tsp(dist);
 
-        double dp = TspDynamicProgramming.tourCost(dpPath, dist);
+        double dp = dpSolver.getTourCost();
         double bf = TspBruteForce.computeTourCost(bfPath, dist);
 
         assertThat(dp).isWithin(EPS).of(bf);
