@@ -8,6 +8,16 @@ public class TravelingSalesmanProblemTest {
   private static final double EPS = 1e-5;
 
   @Test(expected=IllegalArgumentException.class)
+  public void testInvalidStartNode() {
+    double[][] dist = {
+      {1, 2, 3},
+      {4, 5, 6},
+      {7, 8, 9}
+    };    
+    new TspDynamicProgramming(321, dist);
+  }
+
+  @Test(expected=IllegalStateException.class)
   public void testNonSquareMatrix() {
     double[][] dist = {
       {1, 2, 3},
@@ -73,24 +83,50 @@ public class TravelingSalesmanProblemTest {
         double bf = TspBruteForce.computeTourCost(bfPath, dist);
 
         assertThat(dp).isWithin(EPS).of(bf);
+        assertThat(getTourCost(dist, dpSolver.getTour())).isWithin(EPS).of(bf);
       }
     }
   }
+
+  @Test
+  public void testDifferentStartingNodes() {
+    for(int n = 3; n <= 9; n++) {
+
+      double[][] dist = new double[n][n];
+      randomFillDistMatrix(dist);
+      int[] bfPath = TspBruteForce.tsp(dist);
+      double bf = TspBruteForce.computeTourCost(bfPath, dist);
+
+      for (int startNode = 0; startNode < n; startNode++) {
+        TspDynamicProgramming dpSolver = new TspDynamicProgramming(startNode, dist);
+        double dp = dpSolver.getTourCost();
+        assertThat(dp).isWithin(EPS).of(bf);
+        assertThat(getTourCost(dist, dpSolver.getTour())).isWithin(EPS).of(bf);
+      }
+
+    }
+
+  }
   
   // Try slightly larger matrices to make sure they run is a reasonable amount of time.
-  // Uncomment test when DP soln is fixed
-  // @Test public void testPerformance() {
-  //   for(int n = 3; n <= 16; n++) {
-  //     double[][] dist = new double[n][n];
-  //     randomFillDistMatrix(dist);
-  //     new TspDynamicProgramming(dist);
-  //   }
-  // }
+  @Test public void testPerformance() {
+    for(int n = 3; n <= 16; n++) {
+      double[][] dist = new double[n][n];
+      randomFillDistMatrix(dist);
+      new TspDynamicProgramming(dist);
+    }
+  }
 
   public void randomFillDistMatrix(double[][] dist) {
     for (int i = 0; i < dist.length; i++)
       for (int j = i + 1; j < dist.length; j++)
         dist[i][j] = dist[j][i] = (int)(Math.random() * 1000);
+  }
+
+  private double getTourCost(double[][] dist, List<Integer> tour) {
+    double total = 0;
+    for(int i = 1; i < tour.size(); i++) total += dist[tour.get(i-1)][tour.get(i)];
+    return total;
   }
   
 }

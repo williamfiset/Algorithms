@@ -19,29 +19,35 @@ import java.util.*;
 public class TspDynamicProgramming {
   
   private final int N;
+  private final int START_NODE;
   private final int FINISHED_STATE;
 
   private double[][] distance;
   private double minTourCost = Double.POSITIVE_INFINITY;
 
-  private LinkedList<Integer> tour;
+  private List<Integer> tour = new ArrayList<>();
 
   public TspDynamicProgramming(double[][] distance) {
+    this(0, distance);
+  }
+
+  public TspDynamicProgramming(int startNode, double[][] distance) {
     
     this.distance = distance;
     N = distance.length;
+    START_NODE = startNode;
     
-    // Check the dimensions of the adjacency matrix
-    if (N != distance[0].length) throw new IllegalArgumentException("Matrix must be square (N x N)");
+    // Validate inputs.
     if (N <= 2) throw new IllegalStateException("TSP on 0, 1 or 2 nodes doesn't make sense.");
+    if (N != distance[0].length) throw new IllegalArgumentException("Matrix must be square (N x N)");
+    if (START_NODE < 0 || START_NODE >= N) throw new IllegalArgumentException("Starting node must be: 0 <= startNode < N");
 
-    // The finished state is when all bits are set to one (meaning all
-    // the nodes have been visited).
+    // The finished state is when the finished state mask has all bits are set to
+    // one (meaning all the nodes have been visited).
     FINISHED_STATE = (1 << N) - 1;
 
     // Run the algorithm and store the results
-    tsp(distance, 0); // Start at node zero
-
+    solve();
   }
 
   // Returns the optimal tour for the traveling salesman problem.
@@ -54,38 +60,34 @@ public class TspDynamicProgramming {
     return minTourCost;
   }
 
-  // Working TSP problem cost implementation. This implementation does not 
-  // track the optimal path however.
-  private void tsp(double[][] dist, int start) {
+  private void solve() {
 
     // Run the solver    
+    int state = 1 << START_NODE;
     Double[][] memo = new Double[N][1 << N];
-    Integer[][] indexAdded = new Integer[N][1 << N];
-    minTourCost = tsp(start, 1 << start, dist, memo, indexAdded, start);
+    Integer[][] prev = new Integer[N][1 << N];
+    minTourCost = tsp(START_NODE, state, memo, prev);
     
     // Regenerate path
-    int state = 1 << start;
-    int index = start;
-    tour = new LinkedList<Integer>();
+    int index = START_NODE;
     while (true) {
       tour.add(index);
-      Integer nextIndex = indexAdded[index][state];
+      Integer nextIndex = prev[index][state];
       if (nextIndex == null) break;
       int nextState = state | (1 << nextIndex);
-      index = nextIndex;
       state = nextState;
+      index = nextIndex;
     }
-    tour.add(start);
+    tour.add(START_NODE);
     
   }
-  private double tsp(int i, int state, double[][] dist, Double[][] memo, Integer[][] indexAdded, int start) {
-    
-    final int N = dist.length;
+
+  private double tsp(int i, int state, Double[][] memo, Integer[][] prev) {
     
     // Done this tour. Return cost of going back to start node.
-    if (state == FINISHED_STATE) return dist[i][start];
+    if (state == FINISHED_STATE) return distance[i][START_NODE];
     
-    // Return cached answer if already precomputed.
+    // Return cached answer if already computed.
     if (memo[i][state] != null) return memo[i][state];
     
     double minCost = Double.POSITIVE_INFINITY;
@@ -96,14 +98,14 @@ public class TspDynamicProgramming {
       if ((state & (1 << next)) != 0) continue;
       
       int nextState = state | (1 << next);
-      double newCost = dist[i][next] + tsp(next, nextState, dist, memo, indexAdded, start);
+      double newCost = distance[i][next] + tsp(next, nextState, memo, prev);
       if (newCost < minCost) {
         minCost = newCost;
         index = next;
       }
     }
     
-    indexAdded[i][state] = index;
+    prev[i][state] = index;
     return memo[i][state] = minCost;
   }
 
