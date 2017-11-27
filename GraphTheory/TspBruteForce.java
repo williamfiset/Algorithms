@@ -28,10 +28,6 @@ public class TspBruteForce {
 
       double tourCost = computeTourCost(permutation, matrix);
     
-      for(int i = 0; i < n; i++) System.out.print(permutation[i] + " ");
-      System.out.print(" - " + tourCost);
-      System.out.println();
-
       if (tourCost < bestTourCost) {
         bestTourCost = tourCost;
         bestTour = permutation.clone();

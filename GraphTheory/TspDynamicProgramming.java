@@ -80,6 +80,15 @@ public class TspDynamicProgramming {
     }
     tour.add(START_NODE);
     
+    int count = 0;
+    for (int i = 0; i < N; i++) {
+      for (int j = 0; j < 1 << N; j++) {
+        if (memo[i][j] == null) continue;
+        // System.out.println(Integer.toBinaryString(1 << i) + " " + Integer.toBinaryString(j));
+        count++;
+      }
+    }
+    System.out.println(count / ((double)N*(1<<N)) + " COUNT: " + count);
   }
 
   private double tsp(int i, int state, Double[][] memo, Integer[][] prev) {

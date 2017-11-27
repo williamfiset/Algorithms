@@ -79,16 +79,18 @@ Uncomment when more AI algorithms are done.
 * [Dijkstra's shortest path (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DijkstrasShortestPathAdjacencyList.java) **- O(Elog(V))**
 * [Dijkstra's shortest path to all nodes (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DijkstrasShortestPathAllNodesAdjacencyList.java) **- O(Elog(V))**
 * [Floyd Warshall algorithm (adjacency matrix, negative cycle check)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/FloydWarshall.java) **- O(V<sup>3</sup>)**
+* [Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/GraphDiameter.java) **- O(VE)**
 * [Kruskal's min spanning tree algorithm (edge list, union find)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/KruskalsEdgeList.java) **- O(Elog(E))**
 * [Prim's min spanning tree algorithm (lazy version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/LazyPrimsAdjacencyList.java) **- O(Elog(E))**
 * [Prim's min spanning tree  algorithm (lazy version, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/LazyPrimsAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
 * [Prim's min spanning tree  algorithm (eager version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/EagerPrimsAdjacencyList.java) **- O(Elog(V))**
+* [Steiner tree (minimum spanning tree generalization)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/SteinerTree.java) **- O()**
 * [Tarjan's strongly connected components algorithm (adjacency list) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyList.java) **- O(V+E)**
 * [Tarjan's strongly connected components algorithm (adjacency matrix) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
 * [Topological sort (acyclic graph, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyList.java) **- O(V+E)**
 * [Topological sort (acyclic graph, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
-* [Graph diameter](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/GraphDiameter.java) **- O(VE)**
-* [Steiner tree](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/SteinerTree.java)
+* [Traveling Salesman Problem (brute force)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TspBruteForce.java) **- O(n!)**
+* [Traveling Salesman Problem (dynamic programming)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TspDynamicProgramming.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
 
 # Linear algebra
 * [Freivald's algorithm (matrix multiplication verification)](https://github.com/williamfiset/Algorithms/blob/master/LinearAlgebra/FreivaldsAlgorithm.java) **- O(kn<sup>2</sup>)**
