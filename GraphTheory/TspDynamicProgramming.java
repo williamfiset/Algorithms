@@ -79,16 +79,6 @@ public class TspDynamicProgramming {
       index = nextIndex;
     }
     tour.add(START_NODE);
-    
-    int count = 0;
-    for (int i = 0; i < N; i++) {
-      for (int j = 0; j < 1 << N; j++) {
-        if (memo[i][j] == null) continue;
-        // System.out.println(Integer.toBinaryString(1 << i) + " " + Integer.toBinaryString(j));
-        count++;
-      }
-    }
-    System.out.println(count / ((double)N*(1<<N)) + " COUNT: " + count);
   }
 
   private double tsp(int i, int state, Double[][] memo, Integer[][] prev) {
@@ -140,21 +130,6 @@ public class TspDynamicProgramming {
 
     // Print: 42.0
     System.out.println("Tour cost: " + solver.getTourCost());
-
-    test();
-
   }
-
-  static void test() {
-    double[][] dist = {
-      {0, 4, 1, 9},
-      {3, 0, 6, 11},
-      {4, 1, 0, 2},
-      {6, 5,-4, 0}
-    };
-    TspDynamicProgramming solver = new TspDynamicProgramming(dist);
-    System.out.println("Tour: " + solver.getTour());
-    System.out.println("Tour cost: " + solver.getTourCost());    
-  }
-
+  
 }
