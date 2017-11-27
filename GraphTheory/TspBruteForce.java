@@ -27,6 +27,11 @@ public class TspBruteForce {
     do {
 
       double tourCost = computeTourCost(permutation, matrix);
+    
+      for(int i = 0; i < n; i++) System.out.print(permutation[i] + " ");
+      System.out.print(" - " + tourCost);
+      System.out.println();
+
       if (tourCost < bestTourCost) {
         bestTourCost = tourCost;
         bestTour = permutation.clone();
@@ -83,22 +88,32 @@ public class TspBruteForce {
   }
 
   public static void main(String[] args) {
-    
-    int n = 10;
-    double[][] matrix = new double[n][n];
-    for (double[] row : matrix) java.util.Arrays.fill(row, 100);
 
-    // Construct an optimal tour
-    int edgeCost = 5;
-    int[] optimalTour = {2,7,6,1,9,8,5,3,4,0,2};
-    for(int i = 1; i < optimalTour.length; i++)
-      matrix[optimalTour[i-1]][optimalTour[i]] = edgeCost;
-    
-    int[] bestTour = tsp(matrix);
+    double[][] dist = {
+      {0, 4, 1, 9},
+      {3, 0, 6, 11},
+      {4, 1, 0, 2},
+      {6, 5,-4, 0}
+    };
+    int[] bestTour = tsp(dist);
     System.out.println(java.util.Arrays.toString(bestTour));
+
     
-    double tourCost = computeTourCost(bestTour, matrix);
-    System.out.println("Tour cost: " + tourCost);
+    // int n = 10;
+    // double[][] matrix = new double[n][n];
+    // for (double[] row : matrix) java.util.Arrays.fill(row, 100);
+
+    // // Construct an optimal tour
+    // int edgeCost = 5;
+    // int[] optimalTour = {2,7,6,1,9,8,5,3,4,0,2};
+    // for(int i = 1; i < optimalTour.length; i++)
+    //   matrix[optimalTour[i-1]][optimalTour[i]] = edgeCost;
+    
+    // int[] bestTour = tsp(matrix);
+    // System.out.println(java.util.Arrays.toString(bestTour));
+    
+    // double tourCost = computeTourCost(bestTour, matrix);
+    // System.out.println("Tour cost: " + tourCost);
 
   }
 

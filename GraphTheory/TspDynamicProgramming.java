@@ -4,9 +4,9 @@
  * permutations of nodes to find the optimal solution that caching the results 
  * of sub paths can improve performance.
  *
- * For example, if one permutation is: '... D A B C' then later when we need to 
- * compute the value for the permutation '... E A B C' we should already have 
- * cached the answer for the sub path 'B C' starting at A.
+ * For example, if one permutation is: '... D A B C' then later when we need
+ * to compute the value of the permutation '... E B A C' we should already have 
+ * cached the answer for the subgraph containing the nodes {A, B, C}.
  * 
  * Time Complexity: O(n^2 * 2^n)
  * Space Complexity: O(n * 2^n)
