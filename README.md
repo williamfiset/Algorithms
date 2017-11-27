@@ -25,6 +25,7 @@ Uncomment when more AI algorithms are done.
 * [Longest Common Subsequence (LCS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestCommonSubsequence.java) **- O(nm)**
 * [Longest Increasing Subsequence (LIS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestIncreasingSubsequence.java) **- O(n<sup>2</sup>)**
 * [Longest Palindrome Subsequence (LPS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestPalindromeSubsequence.java) **- O(n<sup>2</sup>)**
+* [Traveling Salesman Problem](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TspDynamicProgramming.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
 
 # Geometry
 * [Angle between 2D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors2D.java) **- O(1)**
@@ -84,7 +85,7 @@ Uncomment when more AI algorithms are done.
 * [Prim's min spanning tree algorithm (lazy version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/LazyPrimsAdjacencyList.java) **- O(Elog(E))**
 * [Prim's min spanning tree  algorithm (lazy version, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/LazyPrimsAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
 * [Prim's min spanning tree  algorithm (eager version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/EagerPrimsAdjacencyList.java) **- O(Elog(V))**
-* [Steiner tree (minimum spanning tree generalization)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/SteinerTree.java) **- O()**
+* [Steiner tree (minimum spanning tree generalization)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/SteinerTree.java) **- O(V<sup>3</sup> + V<sup>2</sup> * 2<sup>T</sup> + V * 3<sup>T</sup>)**
 * [Tarjan's strongly connected components algorithm (adjacency list) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyList.java) **- O(V+E)**
 * [Tarjan's strongly connected components algorithm (adjacency matrix) ](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TarjanAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
 * [Topological sort (acyclic graph, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TopologicalSortAdjacencyList.java) **- O(V+E)**
