@@ -132,6 +132,20 @@ public class TspDynamicProgramming {
     // Print: 42.0
     System.out.println("Tour cost: " + solver.getTourCost());
 
+    test();
+
+  }
+
+  static void test() {
+    double[][] dist = {
+      {0, 4, 1, 9},
+      {3, 0, 6, 11},
+      {4, 1, 0, 2},
+      {6, 5,-4, 0}
+    };
+    TspDynamicProgramming solver = new TspDynamicProgramming(dist);
+    System.out.println("Tour: " + solver.getTour());
+    System.out.println("Tour cost: " + solver.getTourCost());    
   }
 
 }

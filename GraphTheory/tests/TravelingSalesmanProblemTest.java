@@ -41,6 +41,7 @@ public class TravelingSalesmanProblemTest {
     double[][] dist = new double[n][n];
     for(double[] row : dist) java.util.Arrays.fill(row, 100);
     
+    // Assume matrix is symmetric for simplicity.
     dist[1][3] = dist[3][1] = 1;
     dist[3][0] = dist[0][3] = 2;
     dist[0][2] = dist[2][0] = 3;
@@ -118,9 +119,16 @@ public class TravelingSalesmanProblemTest {
   }
 
   public void randomFillDistMatrix(double[][] dist) {
-    for (int i = 0; i < dist.length; i++)
-      for (int j = i + 1; j < dist.length; j++)
-        dist[i][j] = dist[j][i] = (int)(Math.random() * 1000);
+    for (int i = 0; i < dist.length; i++) {
+      for (int j = 0; j < dist.length; j++) {
+        if (i == j) continue;
+
+        // Add a random edge value (possibly negative)
+        double val = (int)(Math.random() * 1000);
+        if (Math.random() < 0.8) dist[i][j] = val;
+        else dist[i][j] = -val;
+      }
+    }
   }
 
   private double getTourCost(double[][] dist, List<Integer> tour) {
