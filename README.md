@@ -91,7 +91,8 @@ Uncomment when more AI algorithms are done.
 * [Topological sort (acyclic graph, adjacency list)](GraphTheory/TopologicalSortAdjacencyList.java) **- O(V+E)**
 * [Topological sort (acyclic graph, adjacency matrix)](GraphTheory/TopologicalSortAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
 * [Traveling Salesman Problem (brute force)](GraphTheory/TspBruteForce.java) **- O(n!)**
-* [Traveling Salesman Problem (dynamic programming)](GraphTheory/TspDynamicProgramming.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
+* [Traveling Salesman Problem (dynamic programming, iterative)](GraphTheory/TspDynamicProgrammingIterative.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
+* [Traveling Salesman Problem (dynamic programming, recursive)](GraphTheory/TspDynamicProgrammingRecursive.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
 
 # Linear algebra
 * [Freivald's algorithm (matrix multiplication verification)](LinearAlgebra/FreivaldsAlgorithm.java) **- O(kn<sup>2</sup>)**

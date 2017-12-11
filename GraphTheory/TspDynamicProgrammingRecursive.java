@@ -16,7 +16,7 @@
 
 import java.util.*;
 
-public class TspDynamicProgramming {
+public class TspDynamicProgrammingRecursive {
   
   private final int N;
   private final int START_NODE;
@@ -27,11 +27,11 @@ public class TspDynamicProgramming {
 
   private List<Integer> tour = new ArrayList<>();
 
-  public TspDynamicProgramming(double[][] distance) {
+  public TspDynamicProgrammingRecursive(double[][] distance) {
     this(0, distance);
   }
 
-  public TspDynamicProgramming(int startNode, double[][] distance) {
+  public TspDynamicProgrammingRecursive(int startNode, double[][] distance) {
     
     this.distance = distance;
     N = distance.length;
@@ -123,7 +123,7 @@ public class TspDynamicProgramming {
     distanceMatrix[5][1] = distanceMatrix[1][5] = 12;
 
     // Run the solver
-    TspDynamicProgramming solver = new TspDynamicProgramming(distanceMatrix);
+    TspDynamicProgrammingRecursive solver = new TspDynamicProgrammingRecursive(distanceMatrix);
 
     // Prints: [0, 3, 2, 4, 1, 5, 0]
     System.out.println("Tour: " + solver.getTour());
