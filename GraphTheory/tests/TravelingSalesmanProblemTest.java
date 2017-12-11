@@ -24,7 +24,7 @@ public class TravelingSalesmanProblemTest {
       {4, 5, 6},
       {7, 8, 9}
     };    
-    TspDynamicProgrammingIterative.tsp(321, dist);
+    new TspDynamicProgrammingIterative(321, dist);
   }
 
   @Test(expected=IllegalStateException.class)
@@ -42,7 +42,7 @@ public class TravelingSalesmanProblemTest {
       {1, 2, 3},
       {4, 5, 6}
     };
-    TspDynamicProgrammingIterative.tsp(dist);
+    new TspDynamicProgrammingIterative(dist);
   }
 
   @Test(expected=IllegalStateException.class)
@@ -52,6 +52,15 @@ public class TravelingSalesmanProblemTest {
       {1, 0}
     };
     new TspDynamicProgrammingRecursive(dist);
+  }
+
+  @Test(expected=IllegalStateException.class)
+  public void testTspIterativeSmallGraph() {
+    double[][] dist = {
+      {0, 1},
+      {1, 0}
+    };
+    new TspDynamicProgrammingIterative(dist);
   }
 
   @Test
@@ -69,7 +78,7 @@ public class TravelingSalesmanProblemTest {
     
     double expected = 1+2+3+4+5;
     double tspRecursiveTourCost = new TspDynamicProgrammingRecursive(dist).getTourCost();
-    double tspIterativeTourCost = TspDynamicProgrammingIterative.tsp(dist);
+    double tspIterativeTourCost = new TspDynamicProgrammingIterative(dist).getTourCost();
 
     assertThat(tspRecursiveTourCost).isWithin(EPS).of(expected);
     assertThat(tspIterativeTourCost).isWithin(EPS).of(expected);
@@ -83,9 +92,11 @@ public class TravelingSalesmanProblemTest {
         double[][] dist = new double[n][n];
         randomFillDistMatrix(dist);
         
-        TspDynamicProgrammingRecursive dpSolver = new TspDynamicProgrammingRecursive(dist);
-        double dp1 = dpSolver.getTourCost();
-        double dp2 = TspDynamicProgrammingIterative.tsp(dist);
+        TspDynamicProgrammingRecursive dpRecursiveSolver = new TspDynamicProgrammingRecursive(dist);
+        TspDynamicProgrammingIterative dpIterativeSolver = new TspDynamicProgrammingIterative(dist);
+        
+        double dp1 = dpRecursiveSolver.getTourCost();
+        double dp2 = dpIterativeSolver.getTourCost();
         double bf = TspBruteForce.computeTourCost(TspBruteForce.tsp(dist), dist);
         
         assertThat(dp1).isWithin(EPS).of(bf);
@@ -102,14 +113,19 @@ public class TravelingSalesmanProblemTest {
         double[][] dist = new double[n][n];
         randomFillDistMatrix(dist);
         
-        TspDynamicProgrammingRecursive dpSolver = new TspDynamicProgrammingRecursive(dist);
+        TspDynamicProgrammingRecursive dpRecursiveSolver = new TspDynamicProgrammingRecursive(dist);
+        TspDynamicProgrammingIterative dpIterativeSolver = new TspDynamicProgrammingIterative(dist);
         int[] bfPath = TspBruteForce.tsp(dist);
 
-        double dp = dpSolver.getTourCost();
+        double dp1 = dpRecursiveSolver.getTourCost();
+        double dp2 = dpIterativeSolver.getTourCost();
         double bf = TspBruteForce.computeTourCost(bfPath, dist);
 
-        assertThat(dp).isWithin(EPS).of(bf);
-        assertThat(getTourCost(dist, dpSolver.getTour())).isWithin(EPS).of(bf);
+        assertThat(dp1).isWithin(EPS).of(bf);
+        assertThat(dp2).isWithin(EPS).of(bf);
+        
+        assertThat(getTourCost(dist, dpRecursiveSolver.getTour())).isWithin(EPS).of(bf);
+        assertThat(getTourCost(dist, dpIterativeSolver.getTour())).isWithin(EPS).of(bf);
       }
     }
   }
@@ -124,12 +140,17 @@ public class TravelingSalesmanProblemTest {
       double bf = TspBruteForce.computeTourCost(bfPath, dist);
 
       for (int startNode = 0; startNode < n; startNode++) {
-        TspDynamicProgrammingRecursive dpSolver = new TspDynamicProgrammingRecursive(startNode, dist);
-        double dp1 = dpSolver.getTourCost();
-        double dp2 = TspDynamicProgrammingIterative.tsp(startNode, dist);
+        TspDynamicProgrammingRecursive dpRecursiveSolver = new TspDynamicProgrammingRecursive(startNode, dist);
+        TspDynamicProgrammingIterative dpIterativeSolver = new TspDynamicProgrammingIterative(startNode, dist);
+
+        double dp1 = dpRecursiveSolver.getTourCost();
+        double dp2 = dpIterativeSolver.getTourCost();
+
         assertThat(dp1).isWithin(EPS).of(bf);
         assertThat(dp2).isWithin(EPS).of(bf);
-        assertThat(getTourCost(dist, dpSolver.getTour())).isWithin(EPS).of(bf);
+
+        assertThat(getTourCost(dist, dpRecursiveSolver.getTour())).isWithin(EPS).of(bf);
+        assertThat(getTourCost(dist, dpIterativeSolver.getTour())).isWithin(EPS).of(bf);
       }
 
     }
@@ -141,7 +162,8 @@ public class TravelingSalesmanProblemTest {
     for(int n = 3; n <= 16; n++) {
       double[][] dist = new double[n][n];
       randomFillDistMatrix(dist);
-      new TspDynamicProgrammingRecursive(dist);
+      TspDynamicProgrammingRecursive solver = new TspDynamicProgrammingRecursive(dist);
+      solver.solve();
     }
   }
 
@@ -150,7 +172,8 @@ public class TravelingSalesmanProblemTest {
     for(int n = 3; n <= 16; n++) {
       double[][] dist = new double[n][n];
       randomFillDistMatrix(dist);
-      TspDynamicProgrammingIterative.tsp(dist);
+      TspDynamicProgrammingIterative solver = new TspDynamicProgrammingIterative(dist);
+      solver.solve();
     }
   }
 

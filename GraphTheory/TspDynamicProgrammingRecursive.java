@@ -26,6 +26,7 @@ public class TspDynamicProgrammingRecursive {
   private double minTourCost = Double.POSITIVE_INFINITY;
 
   private List<Integer> tour = new ArrayList<>();
+  private boolean ranSolver = false;
 
   public TspDynamicProgrammingRecursive(double[][] distance) {
     this(0, distance);
@@ -45,22 +46,21 @@ public class TspDynamicProgrammingRecursive {
     // The finished state is when the finished state mask has all bits are set to
     // one (meaning all the nodes have been visited).
     FINISHED_STATE = (1 << N) - 1;
-
-    // Run the algorithm and store the results
-    solve();
   }
 
   // Returns the optimal tour for the traveling salesman problem.
   public List<Integer> getTour() {
+    if (!ranSolver) solve();
     return tour;
   }
 
   // Returns the minimal tour cost.
   public double getTourCost() {
+    if (!ranSolver) solve();
     return minTourCost;
   }
 
-  private void solve() {
+  public void solve() {
 
     // Run the solver    
     int state = 1 << START_NODE;
@@ -79,6 +79,7 @@ public class TspDynamicProgrammingRecursive {
       index = nextIndex;
     }
     tour.add(START_NODE);
+    ranSolver = true;
   }
 
   private double tsp(int i, int state, Double[][] memo, Integer[][] prev) {

@@ -1,64 +1,118 @@
-import java.util.*;
+/**
+ * An implementation of the traveling salesman problem in Java using dynamic 
+ * programming to improve the time complexity from O(n!) to O(n^2 * 2^n).
+ *
+ * Time Complexity: O(n^2 * 2^n)
+ * Space Complexity: O(n * 2^n)
+ *
+ * @author William Fiset, william.alexandre.fiset@gmail.com
+ **/
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class TspDynamicProgrammingIterative {
 
-  public static double tsp(double[][] distance) {
-    return tsp(0, distance);
+  private final int N, start;
+  private final double[][] distance;
+  private List<Integer> tour = new ArrayList<>();
+  private double minTourCost = Double.POSITIVE_INFINITY;
+  private boolean ranSolver = false;
+
+  public TspDynamicProgrammingIterative(double[][] distance) {
+    this(0, distance);
+  } 
+
+  public TspDynamicProgrammingIterative(int start, double[][] distance) {
+    N = distance.length;
+    
+    if (N <= 2) throw new IllegalStateException("N <= 2 not yet supported.");
+    if (N != distance[0].length) throw new IllegalStateException("Matrix must be square (n x n)");
+    if (start < 0 || start >= N) throw new IllegalArgumentException("Invalid start node.");
+
+    this.start = start;
+    this.distance = distance;
   }
 
-  public static double tsp(int start, double[][] distance) {
-    final int n = distance.length;
-    
-    if (n <= 1) return 0;
-    if (n != distance[0].length) throw new IllegalStateException("Matrix must be square (n x n)");
-    if (n == 2) return distance[0][1] + distance[1][0];
-    if (start < 0 || start >= n) throw new IllegalArgumentException("Invalid start node.");
+  // Returns the optimal tour for the traveling salesman problem.
+  public List<Integer> getTour() {
+    if (!ranSolver) solve();
+    return tour;
+  }
 
-    final int END_STATE = (1 << n) - 1;
-    Double[][] memo = new Double[n][1 << n];
+  // Returns the minimal tour cost.
+  public double getTourCost() {
+    if (!ranSolver) solve();
+    return minTourCost;
+  }
+
+  // Solves the traveling salesman problem and caches solution.
+  public void solve() {
+
+    final int END_STATE = (1 << N) - 1;
+    Double[][] memo = new Double[N][1 << N];
+    Integer[][] path = new Integer[N][1 << N];
 
     // Add all outgoing edges from the starting node to memo table.
-    for (int end = 0; end < n; end++) {
+    for (int end = 0; end < N; end++) {
       if (end == start) continue;
+      path[end][(1 << start) | (1 << end)] = start;
       memo[end][(1 << start) | (1 << end)] = distance[start][end];
     }
 
-    for (int r = 3; r <= n; r++) {
-      for (int subset : combinations(r, n)) {
+    for (int r = 3; r <= N; r++) {
+      for (int subset : combinations(r, N)) {
         if (notIn(start, subset)) continue;
-        for (int next = 0; next < n; next++) {
+        for (int next = 0; next < N; next++) {
           if (next == start) continue;
           if (notIn(next, subset)) continue;
+          int index = -1;
           int subsetWithoutNext = subset & ~(1 << next);
           double minDist = Double.POSITIVE_INFINITY;
-          for (int end = 0; end < n; end++) {
+          for (int end = 0; end < N; end++) {
             if (end == start || end == next) continue;
             if (notIn(end, subset)) continue;
             double newDistance = memo[end][subsetWithoutNext] + distance[end][next];
-            if (newDistance < minDist) 
+            if (newDistance < minDist) {
               minDist = newDistance;
+              index = end;
+            }
           }
+          path[next][subset] = index;
           memo[next][subset] = minDist;
         }
       }
     }
 
     // Connect tour back to starting node.
-    double minTourCost = Double.POSITIVE_INFINITY;
-    for (int end = 0; end < n; end++) {
+    int index = -1;
+    for (int end = 0; end < N; end++) {
       if (end == start) continue;
       double tourCost = memo[end][END_STATE] + distance[end][start];
-      if (tourCost < minTourCost) minTourCost = tourCost;
+      if (tourCost < minTourCost) {
+        minTourCost = tourCost;
+        index = end;
+      }
     }
 
-    return minTourCost;
+    // Build tour path.
+    int state = END_STATE;
+    tour.add(start);
+    while(true) {
+      tour.add(index);
+      Integer prevIndex = path[index][state];
+      if (prevIndex == null) break;
+      int nextState = state & ~(1 << index);
+      state = nextState;
+      index = prevIndex;
+    }
+    Collections.reverse(tour);
+    ranSolver = true;
   }
 
-  static boolean in(int elem, int subset) {
-    return ((1 << elem) & subset) != 0;
-  }
-
-  static boolean notIn(int elem, int subset) {
-    return !in(elem, subset);
+  private static boolean notIn(int elem, int subset) {
+    return ((1 << elem) & subset) == 0;
   }
 
   // This method finds all the combinations of {0,1...n-1} of size 'r' 
@@ -107,49 +161,22 @@ public class TspDynamicProgrammingIterative {
     int n = 6;
     double[][] distanceMatrix = new double[n][n];
     for (double[] row : distanceMatrix) java.util.Arrays.fill(row, 10000);
-    distanceMatrix[0][5] = distanceMatrix[5][0] = 10;
-    distanceMatrix[5][1] = distanceMatrix[1][5] = 12;
-    distanceMatrix[1][4] = distanceMatrix[4][1] = 2;
-    distanceMatrix[4][2] = distanceMatrix[2][4] = 4;
-    distanceMatrix[2][3] = distanceMatrix[3][2] = 6;
-    distanceMatrix[3][0] = distanceMatrix[0][3] = 8;
-    System.out.println(tsp(distanceMatrix));
+    distanceMatrix[5][0] = 10;
+    distanceMatrix[1][5] = 12;
+    distanceMatrix[4][1] = 2;
+    distanceMatrix[2][4] = 4;
+    distanceMatrix[3][2] = 6;
+    distanceMatrix[0][3] = 8;
 
-    // int n = 4;
-    // double[][] distanceMatrix = new double[n][n];
-    // for (double[] row : distanceMatrix) java.util.Arrays.fill(row, 10000);
-    // distanceMatrix[0][2] = 1;
-    // distanceMatrix[2][1] = 2;
-    // distanceMatrix[1][3] = 4;
-    // distanceMatrix[3][0] = 8;
-    // System.out.println(tsp(distanceMatrix));
+    int startNode = 0;
+    TspDynamicProgrammingIterative solver = new TspDynamicProgrammingIterative(startNode, distanceMatrix);
+    
+    // Prints: [0, 3, 2, 4, 1, 5, 0]
+    System.out.println("Tour: " + solver.getTour());
 
-    // int n = 4;
-    // double[][] m = {
-    //   {0, 2, 9, 10},
-    //   {1, 0, 6,  4},
-    //   {15, 7, 0, 8},
-    //   {6, 3, 12, 0}
-    // };
-    // System.out.println(tsp(m));
-
-    // printCombs(3, 5);
-
+    // Print: 42.0
+    System.out.println("Tour cost: " + solver.getTourCost());
   }
-
-  static void printCombs(int r, int n) {
-    for (Integer x : combinations(r, n)) {
-      printState(x, n);
-    }
-  }
-
-  static void printState(int state, int n) {
-    for (int i = 0; i < n; i++)
-      if ((state & (1 << i)) != 0)
-        System.out.print(i + " ");
-    System.out.println();
-  }
-
 }
 
 
