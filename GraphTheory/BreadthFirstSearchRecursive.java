@@ -1,13 +1,29 @@
-import java.util.*;
+/**
+ * This is an implementation of doing a breadth first search recursively with 
+ * a slight cheat of passing in a queue as an argument to the function. A 
+ * breadth first search 
+ *
+ * Time Complexity: O(V + E) 
+ *
+ * @author William Fiset, william.alexandre.fiset@gmail.com
+ **/
+
+import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.List;
 
 public class BreadthFirstSearchRecursive {
 
-  // Each breadth first search layer gets separated by a DEPTH_TOKEN
+  // Each breadth first search layer gets separated by a DEPTH_TOKEN.
+  // DEPTH_TOKENs help count the distance from one node to another because
+  // we can increment the depth counter each time a DEPTH_TOKEN is encountered
   public static int DEPTH_TOKEN = -1;
 
+  // Computes the eccentricity (distance to furthest node) from the starting node.
   public static int bfs(List<List<Integer>> graph, int start, int n) {
     boolean[] visited = new boolean[n];
-    Queue<Integer> queue = new ArrayDeque<>();
+    Queue<Integer> queue = new LinkedList<>();
     queue.offer(start);
     queue.offer(DEPTH_TOKEN);
     return bfs(visited, queue, graph);
@@ -38,7 +54,7 @@ public class BreadthFirstSearchRecursive {
     int depth = 0;
 
     while(true) {
-      // Stop when the queue is empty (i.e there's on the depth token remaining)
+      // Stop when the queue is empty (i.e there's only one depth token remaining)
       if (queue.size() == 1 && queue.peek() == DEPTH_TOKEN) break;
 
       // The depth is the sum of all DEPTH_TOKENS encountered.
@@ -46,7 +62,6 @@ public class BreadthFirstSearchRecursive {
     }
 
     return depth;
-
   }
 
   public static void main(String[] args) {
