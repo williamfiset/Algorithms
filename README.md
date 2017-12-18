@@ -25,7 +25,8 @@ Uncomment when more AI algorithms are done.
 * [Longest Common Subsequence (LCS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestCommonSubsequence.java) **- O(nm)**
 * [Longest Increasing Subsequence (LIS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestIncreasingSubsequence.java) **- O(n<sup>2</sup>)**
 * [Longest Palindrome Subsequence (LPS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestPalindromeSubsequence.java) **- O(n<sup>2</sup>)**
-* [Traveling Salesman Problem](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TspDynamicProgramming.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
+* [Traveling Salesman Problem (dynamic programming, iterative)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TspDynamicProgrammingIterative.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
+* [Traveling Salesman Problem (dynamic programming, recursive)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/TspDynamicProgrammingRecursive.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
 
 # Geometry
 * [Angle between 2D vectors](https://github.com/williamfiset/Algorithms/blob/master/Geometry/AngleBetweenVectors2D.java) **- O(1)**
