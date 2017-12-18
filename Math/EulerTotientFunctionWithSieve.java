@@ -16,8 +16,8 @@ public class EulerTotientFunctionWithSieve {
 
     if (limit <= 2) return new int[0];
 
-    // Use the prime number theorem to find an upper 
-    // bound on the number of primes up to the limit
+    // Find an upper bound on the number of primes below our limit.
+    // https://en.wikipedia.org/wiki/Prime-counting_function#Inequalities
     final int numPrimes = (int)(1.25506 * limit / Math.log((double) limit));
     int[] primes = new int[numPrimes];
     int index = 0;
