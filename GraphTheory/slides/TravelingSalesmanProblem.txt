@@ -11,6 +11,24 @@ In this graph below you can see that one optimal tour consists of going from A t
 
 It turns out solving the TSP is extremely hard. In fact the problem has been proven to be NP-Complete meaning it's very difficult to find the optimal solution for large inputs. However, numerous approximation algorithms exist which run very quickly even for large inputs.
 
-The brute force method to solve the TSP is the compute the cost of every possible tour. This means we have to try all permutations of node ordering which takes big O of n factorial time which is very slow. Below I have listed all the permutations of nodes and highlight the ones which yield the optimal solution.
+The brute force method to solve the TSP is to compute the cost of every possible tour. This means we have to try all permutations of node ordering which takes big O of n factorial time which is very slow. Below I have listed all the permutations of nodes and highlighted the ones which yield the optimal solution.
+
+The dynamic programming solution we're going to develop today is able to improve upon this naive approach and reduce the complexity to big O of n squares times 2 to the n.
+At a first glance this may not seem like a substantial improvement, however it now makes graphs with up to ~23 nodes (give or take) feasible for modern home computers.
+
+He's a table of n! verse n^2 2^n. At first you notice that n! is optimal for small numbers but this quickly changes and n^2 2^n offers a significant improvement over n!
+
+Alright time to talk about the DP approach. The main idea behind the DP approach is that to compute the optimal solution for a path of length N we reuse information from a subpath of length N-1.
+
+Before we get too far there's some setup work we need to talk about to solve the TSP problem. The first thing we need to do is select a designated starting node S. It doesn't matter which node is picked just make sure the node's index is between 0 and N non inclusive.
+
+Suppose we have a graph with four nodes and we choose S to equal zero, then zero is the start of the tour.
+
+
+
+
+
+
+
 
 
