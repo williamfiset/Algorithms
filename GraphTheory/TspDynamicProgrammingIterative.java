@@ -127,7 +127,7 @@ public class TspDynamicProgrammingIterative {
   }
 
   // To find all the combinations of size r we need to recurse until we have
-  // selected r elements (aka r = 0), otherwise if r != 0 then we need to select
+  // selected r elements (aka r = 0), otherwise if r != 0 then we still need to select
   // an element which is found after the position of our last selected element
   private static void combinations(int[] set, int r, int at, boolean[] used, List<Integer> subsets) {
     final int N = set.length;
