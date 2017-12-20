@@ -50,6 +50,8 @@ public class TspDynamicProgrammingIterative {
   // Solves the traveling salesman problem and caches solution.
   public void solve() {
 
+    if (ranSolver) return;
+
     final int END_STATE = (1 << N) - 1;
     Double[][] memo = new Double[N][1 << N];
     Integer[][] path = new Integer[N][1 << N];
