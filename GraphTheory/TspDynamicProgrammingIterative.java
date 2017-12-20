@@ -115,55 +115,40 @@ public class TspDynamicProgrammingIterative {
     return ((1 << elem) & subset) == 0;
   }
 
-  // This method finds all the combinations of {0,1...n-1} with r 
-  // bits set returned as a list of integer masks.
+  // This method generates all bit sets of size n where r bits 
+  // are set to one. The result is returned as a list of integer masks.
   public static List<Integer> combinations(int r, int n) {
-    int[] set = new int[n];
-    for(int i = 0; i < n; i++) set[i] = i;
     List<Integer> subsets = new ArrayList<>();
-    boolean [] used = new boolean[set.length];
-    combinations(set, r, 0, used, subsets);
+    combinations(0, 0, r, n, subsets);
     return subsets;
   }
 
   // To find all the combinations of size r we need to recurse until we have
   // selected r elements (aka r = 0), otherwise if r != 0 then we still need to select
   // an element which is found after the position of our last selected element
-  private static void combinations(int[] set, int r, int at, boolean[] used, List<Integer> subsets) {
-    final int N = set.length;
-
+  private static void combinations(int set, int at, int r, int n, List<Integer> subsets) {
+    
     // Return early if there are more elements left to select than what is available.
-    int elementsLeftToPick = N - at;
+    int elementsLeftToPick = n - at;
     if (elementsLeftToPick < r) return;
 
     // We selected 'r' elements so we found a valid subset!
     if (r == 0) {
-      int subset = 0;
-      for (int i = 0; i < N; i++)
-        if (used[i]) subset |= 1 << i;
-      subsets.add(subset);
+      subsets.add(set);
     } else {
-      for (int i = at; i < N; i++) {
-
+      for (int i = at; i < n; i++) {
         // Try including this element
-        used[i] = true;
+        set |= 1 << i;
 
-        combinations(set, r - 1, i + 1, used, subsets);
+        combinations(set, i + 1, r - 1, n, subsets);
 
         // Backtrack and try the instance where we did not include this element
-        used[i] = false;
+        set &= ~(1 << i);
       }
     }
   }
 
-  public static void test() {
-    for(int mask : combinations(3, 4))
-      System.out.println(Integer.toBinaryString(mask));
-  }
-
   public static void main(String[] args) {
-    test();
-    /*
     // Create adjacency matrix
     int n = 6;
     double[][] distanceMatrix = new double[n][n];
@@ -183,7 +168,6 @@ public class TspDynamicProgrammingIterative {
 
     // Print: 42.0
     System.out.println("Tour cost: " + solver.getTourCost());
-    */
   }
 }
 
