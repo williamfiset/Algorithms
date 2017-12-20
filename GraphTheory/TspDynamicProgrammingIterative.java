@@ -129,8 +129,8 @@ public class TspDynamicProgrammingIterative {
   private static void combinations(int set, int at, int r, int n, List<Integer> subsets) {
     
     // Return early if there are more elements left to select than what is available.
-//    int elementsLeftToPick = n - at;
- //   if (elementsLeftToPick < r) return;
+    int elementsLeftToPick = n - at;
+    if (elementsLeftToPick < r) return;
 
     // We selected 'r' elements so we found a valid subset!
     if (r == 0) {
