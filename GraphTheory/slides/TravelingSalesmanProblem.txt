@@ -1,0 +1,16 @@
+TSP slide notes:
+
+Hello and welcome to this tutorial on how to solve the TSP with dynamic programing! Today we're going look at two things, the first is how to find the cost of the best tour and then how to actually find the path itself which we'll look at later on in this video.
+
+So let's get started, what is the TSP? In a nut-shell it's 
+"Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city exactly once and returns to the origin city?"
+
+In some other words we can say the problem is: Given a complete graph with weighted edges, what is the Hamiltonian cycle of minimum cost. A Hamiltonian cycle is simply a path which visits each node exactly once. In practice you will want to represent whatever graph you have as an adjacency matrix for simplicity. If an edge between two node does not exist simply set the edge value to be positive infinity. 
+
+In this graph below you can see that one optimal tour consists of going from A to D to C to B and back to A with a minimum cost of 9. Note that it is entirely possible that there are many possible valid optimal tours but they must all have the same minimum cost.
+
+It turns out solving the TSP is extremely hard. In fact the problem has been proven to be NP-Complete meaning it's very difficult to find the optimal solution for large inputs. However, numerous approximation algorithms exist which run very quickly even for large inputs.
+
+The brute force method to solve the TSP is the compute the cost of every possible tour. This means we have to try all permutations of node ordering which takes big O of n factorial time which is very slow. Below I have listed all the permutations of nodes and highlight the ones which yield the optimal solution.
+
+
