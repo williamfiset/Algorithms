@@ -67,14 +67,12 @@ public class TspDynamicProgrammingIterative {
       for (int subset : combinations(r, N)) {
         if (notIn(start, subset)) continue;
         for (int next = 0; next < N; next++) {
-          if (next == start) continue;
-          if (notIn(next, subset)) continue;
+          if (next == start || notIn(next, subset)) continue;
           int index = -1;
           int subsetWithoutNext = subset & ~(1 << next);
           double minDist = Double.POSITIVE_INFINITY;
           for (int end = 0; end < N; end++) {
-            if (end == start || end == next) continue;
-            if (notIn(end, subset)) continue;
+            if (end == start || end == next || notIn(end, subset)) continue;
             double newDistance = memo[end][subsetWithoutNext] + distance[end][next];
             if (newDistance < minDist) {
               minDist = newDistance;
@@ -117,8 +115,8 @@ public class TspDynamicProgrammingIterative {
     return ((1 << elem) & subset) == 0;
   }
 
-  // This method finds all the combinations of {0,1...n-1} of size 'r' 
-  // returned as a list of integer masks.
+  // This method finds all the combinations of {0,1...n-1} with r 
+  // bits set returned as a list of integer masks.
   public static List<Integer> combinations(int r, int n) {
     int[] set = new int[n];
     for(int i = 0; i < n; i++) set[i] = i;
@@ -158,7 +156,14 @@ public class TspDynamicProgrammingIterative {
     }
   }
 
+  public static void test() {
+    for(int mask : combinations(3, 4))
+      System.out.println(Integer.toBinaryString(mask));
+  }
+
   public static void main(String[] args) {
+    test();
+    /*
     // Create adjacency matrix
     int n = 6;
     double[][] distanceMatrix = new double[n][n];
@@ -178,6 +183,7 @@ public class TspDynamicProgrammingIterative {
 
     // Print: 42.0
     System.out.println("Tour cost: " + solver.getTourCost());
+    */
   }
 }
 
