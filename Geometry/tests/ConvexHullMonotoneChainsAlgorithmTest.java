@@ -30,11 +30,10 @@ public class ConvexHullMonotoneChainsAlgorithmTest {
     pts[11] = new Point2D.Double(1,-1);
     pts[12] = new Point2D.Double(0,-5); // In hull
 
-    // Duplicate point.
+    // Duplicate point on hull.
     pts[13] = new Point2D.Double(-5,0);
-
-    Point2D[] hull = ConvexHullMonotoneChainsAlgorithm.convexHull(pts);
     ImmutableList<Point2D> expected = ImmutableList.of(pts[4], pts[12], pts[0], pts[8]);
+    Point2D[] hull = ConvexHullMonotoneChainsAlgorithm.convexHull(pts);
     assertThat(hull).asList().containsExactlyElementsIn(expected);
   }
   
@@ -47,8 +46,8 @@ public class ConvexHullMonotoneChainsAlgorithmTest {
     pts[3] = new Point2D.Double(4, 5);
     pts[4] = new Point2D.Double(0, 5);
 
-    Point2D[] hull = ConvexHullMonotoneChainsAlgorithm.convexHull(pts);
     ImmutableList<Point2D> expected = ImmutableList.of(pts[1], pts[4], pts[3], pts[2], pts[0]);
+    Point2D[] hull = ConvexHullMonotoneChainsAlgorithm.convexHull(pts);
     assertThat(hull).asList().containsExactlyElementsIn(expected);
   }
 
@@ -59,8 +58,8 @@ public class ConvexHullMonotoneChainsAlgorithmTest {
     pts[2] = new Point2D.Double(5, 0);
     pts[0] = new Point2D.Double(0, 5);
 
-    Point2D[] hull = ConvexHullMonotoneChainsAlgorithm.convexHull(pts);
     ImmutableList<Point2D> expected = ImmutableList.of(pts[0], pts[1], pts[2]);
+    Point2D[] hull = ConvexHullMonotoneChainsAlgorithm.convexHull(pts);
     assertThat(hull).asList().containsExactlyElementsIn(expected);
   }
 
@@ -70,8 +69,8 @@ public class ConvexHullMonotoneChainsAlgorithmTest {
     pts[1] = new Point2D.Double(0, 0);
     pts[0] = new Point2D.Double(0, 5);
 
-    Point2D[] hull = ConvexHullMonotoneChainsAlgorithm.convexHull(pts);
     ImmutableList<Point2D> expected = ImmutableList.of(pts[0], pts[1]);
+    Point2D[] hull = ConvexHullMonotoneChainsAlgorithm.convexHull(pts);
     assertThat(hull).asList().containsExactlyElementsIn(expected);
   }
 
@@ -80,8 +79,8 @@ public class ConvexHullMonotoneChainsAlgorithmTest {
     Point2D[] pts = new Point2D[1];
     pts[0] = new Point2D.Double(0, 5);
 
-    Point2D[] hull = ConvexHullMonotoneChainsAlgorithm.convexHull(pts);
     ImmutableList<Point2D> expected = ImmutableList.of(pts[0]);
+    Point2D[] hull = ConvexHullMonotoneChainsAlgorithm.convexHull(pts);
     assertThat(hull).asList().containsExactlyElementsIn(expected);
   }
 
