@@ -84,4 +84,19 @@ public class ConvexHullMonotoneChainsAlgorithmTest {
     assertThat(hull).asList().containsExactlyElementsIn(expected);
   }
 
+
+  @Test
+  public void repeatedSinglePoint() {
+    Point2D[] pts = new Point2D[5];
+    pts[0] = new Point2D.Double(0, 5);
+    pts[1] = pts[0];
+    pts[2] = pts[0];
+    pts[3] = pts[0];
+    pts[4] = pts[0];
+
+    ImmutableList<Point2D> expected = ImmutableList.of(pts[0]);
+    Point2D[] hull = ConvexHullMonotoneChainsAlgorithm.convexHull(pts);
+    assertThat(hull).asList().containsExactlyElementsIn(expected);
+  }
+
 }

@@ -64,16 +64,17 @@ public class ConvexHullMonotoneChainsAlgorithm {
     }
 
     // Conserve only unique points.
-    int index = 0;
-    for (int i = 1; i < k; i++)
-      if (!hull[i].equals(hull[index]))
-        hull[index++] = hull[i];
+    int index = 1;
+    Point2D lastPt = hull[0];
+    for (int i = 1; i < k - 1; i++)
+      if (!hull[i].equals(lastPt))
+        hull[index++] = lastPt = hull[i];
 
     return Arrays.copyOfRange(hull, 0, index);
   }
 
-  // To find orientation of point 'c' relative to the line segment (a, b). Imagine yourself
-  // standing at point 'a' looking towards points 'b'.
+  // To find orientation of point 'c' relative to the line segment (a, b). 
+  // Imagine yourself standing at point 'a' looking out towards point 'b'.
   // Returns  0 if all three points are collinear.
   // Returns -1 if 'c' is clockwise to segment (a, b), i.e right of line formed by the segment.
   // Returns +1 if 'c' is counter clockwise to segment (a, b), i.e left of line
