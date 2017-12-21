@@ -10,18 +10,18 @@ Uncomment when more AI algorithms are done.
 * -->
 
 # Constructive algorithms
-* [Combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Combinations.java) **- O(n choose r)**
-* [Unique combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/UniqueCombinations.java) **- O(n choose r)**
-* [Combinations with Repetition](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/CombinationsWithRepetition.java) **- O((n+r-1) choose r)**
-* [Permutations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Permutations.java) **- O(n!)**
+* [Set combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Combinations.java) **- O(n choose r)**
+* [Unique set combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/UniqueCombinations.java) **- O(n choose r)**
+* [Set combinations with repetition](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/CombinationsWithRepetition.java) **- O((n+r-1) choose r)**
+* [List permutations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Permutations.java) **- O(n!)**
 * [Power set (set of all subsets)](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/PowerSet.java) **- O(2<sup>n</sup>)**
 
 # Dynamic Programming
-* [Coin change](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/CoinChange.java) **- O(nW)**
+* [Coin change problem](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/CoinChange.java) **- O(nW)**
 * [Edit distance](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/EditDistance.java) **- O(nm)**
 * [Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/Knapsack_01.java) **- O(nW)**
 * [Knapsack unbounded (0/∞)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/KnapsackUnbounded.java) **- O(nW)**
-* [Maximum subarray](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/MaximumSubarray.java) **- O(n)**
+* [Maximum contiguous subarray](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/MaximumSubarray.java) **- O(n)**
 * [Longest Common Subsequence (LCS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestCommonSubsequence.java) **- O(nm)**
 * [Longest Increasing Subsequence (LIS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestIncreasingSubsequence.java) **- O(n<sup>2</sup>)**
 * [Longest Palindrome Subsequence (LPS)](https://github.com/williamfiset/Algorithms/blob/master/DynamicProgramming/LongestPalindromeSubsequence.java) **- O(n<sup>2</sup>)**
