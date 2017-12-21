@@ -38,7 +38,7 @@ Uncomment when more AI algorithms are done.
 * [Closest pair of points (line sweeping algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ClosestPairOfPoints.java) **- O(nlog(n))**
 * [Collinear points test (are three 2D points on the same line)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CollinearPoints.java) **- O(1)**
 * [Convex hull (Graham Scan algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullGrahamScan.java) **- O(nlog(n))**
-* [Convex hull (Monotone chain algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullMonotoneChainAlgorithm.java) **- O(nlog(n))**
+* [Convex hull (Monotone chain algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullMonotoneChainsAlgorithm.java) **- O(nlog(n))**
 * [Convex polygon area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonArea.java) **- O(n)**
 * [Convex polygon contains points](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonContainsPoint.java) **- O(log(n))**
 * [Coplanar points test (are four 3D points on the same plane)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CoplanarPointsTest.java) **- O(1)**
