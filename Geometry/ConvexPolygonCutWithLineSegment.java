@@ -50,6 +50,12 @@ public class ConvexPolygonCutWithLineSegment {
     return new Pt(x, y);
   }
 
+  static int orientation(double ax, double ay, double bx, double by, double cx, double cy) {
+    bx -= ax; by -= ay; cx -= ax; cy -= ay;
+    double cross = bx * cy - by * cx;
+    return cross < -EPS ? -1 : cross > EPS ? 1 : 0;
+  }
+
   // Example usage
   public static void main(String[] args) {
     
