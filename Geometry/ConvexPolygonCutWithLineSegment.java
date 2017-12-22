@@ -9,7 +9,7 @@
 
 import java.util.*;
 
-public class CutConvexPolygonWithLineSegment {
+public class ConvexPolygonCutWithLineSegment {
 
 	private static final double EPS = 1e-9;
 
