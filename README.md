@@ -40,6 +40,7 @@ Uncomment when more AI algorithms are done.
 * [Convex hull (Graham Scan algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullGrahamScan.java) **- O(nlog(n))**
 * [Convex hull (Monotone chain algorithm)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexHullMonotoneChainsAlgorithm.java) **- O(nlog(n))**
 * [Convex polygon area](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonArea.java) **- O(n)**
+* [Convex polygon cut](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonCutWithLineSegment.java) **- O(n)**
 * [Convex polygon contains points](https://github.com/williamfiset/Algorithms/blob/master/Geometry/ConvexPolygonContainsPoint.java) **- O(log(n))**
 * [Coplanar points test (are four 3D points on the same plane)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/CoplanarPointsTest.java) **- O(1)**
 * [Line class (handy infinite line class)](https://github.com/williamfiset/Algorithms/blob/master/Geometry/Line.java) **- O(1)**
