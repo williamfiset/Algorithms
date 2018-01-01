@@ -54,12 +54,10 @@ public class TspDynamicProgrammingIterative {
 
     final int END_STATE = (1 << N) - 1;
     Double[][] memo = new Double[N][1 << N];
-    Integer[][] path = new Integer[N][1 << N];
 
     // Add all outgoing edges from the starting node to memo table.
     for (int end = 0; end < N; end++) {
       if (end == start) continue;
-      path[end][(1 << start) | (1 << end)] = start;
       memo[end][(1 << start) | (1 << end)] = distance[start][end];
     }
 
@@ -68,46 +66,55 @@ public class TspDynamicProgrammingIterative {
         if (notIn(start, subset)) continue;
         for (int next = 0; next < N; next++) {
           if (next == start || notIn(next, subset)) continue;
-          int index = -1;
-          int subsetWithoutNext = subset & ~(1 << next);
+          int subsetWithoutNext = subset ^ (1 << next);
           double minDist = Double.POSITIVE_INFINITY;
           for (int end = 0; end < N; end++) {
             if (end == start || end == next || notIn(end, subset)) continue;
             double newDistance = memo[end][subsetWithoutNext] + distance[end][next];
             if (newDistance < minDist) {
               minDist = newDistance;
-              index = end;
             }
           }
-          path[next][subset] = index;
           memo[next][subset] = minDist;
         }
       }
     }
 
-    // Connect tour back to starting node.
-    int index = -1;
-    for (int end = 0; end < N; end++) {
-      if (end == start) continue;
-      double tourCost = memo[end][END_STATE] + distance[end][start];
+    // Connect tour back to starting node and minimize cost.
+    for (int i = 0; i < N; i++) {
+      if (i == start) continue;
+      double tourCost = memo[i][END_STATE] + distance[i][start];
       if (tourCost < minTourCost) {
         minTourCost = tourCost;
-        index = end;
       }
     }
 
-    // Build tour path.
+    int lastIndex = start;
     int state = END_STATE;
     tour.add(start);
-    while(true) {
+
+    // Reconstruct TSP path from memo table.
+    for (int i = N-1; i >= 1; i--) {
+      
+      int index = -1;
+      for (int j = 0; j < N; j++) {
+        if (j == start || notIn(j, state)) continue;
+        if (index == -1) index = j;
+        double lastDist = memo[index][state] + distance[index][lastIndex];
+        double newDist  = memo[j][state] + distance[j][lastIndex];
+        if (newDist < lastDist) {
+          index = j;
+        }
+      }
+
       tour.add(index);
-      Integer prevIndex = path[index][state];
-      if (prevIndex == null) break;
-      int nextState = state & ~(1 << index);
-      state = nextState;
-      index = prevIndex;
+      state = state ^ (1 << index);
+      lastIndex = index;
     }
+
+    tour.add(start);
     Collections.reverse(tour);
+
     ranSolver = true;
   }
 
