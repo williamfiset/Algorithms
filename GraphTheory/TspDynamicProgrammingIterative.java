@@ -94,15 +94,15 @@ public class TspDynamicProgrammingIterative {
     tour.add(start);
 
     // Reconstruct TSP path from memo table.
-    for (int i = N-1; i >= 1; i--) {
+    for (int i = 1; i < N; i++) {
       
       int index = -1;
       for (int j = 0; j < N; j++) {
         if (j == start || notIn(j, state)) continue;
         if (index == -1) index = j;
-        double lastDist = memo[index][state] + distance[index][lastIndex];
+        double prevDist = memo[index][state] + distance[index][lastIndex];
         double newDist  = memo[j][state] + distance[j][lastIndex];
-        if (newDist < lastDist) {
+        if (newDist < prevDist) {
           index = j;
         }
       }
