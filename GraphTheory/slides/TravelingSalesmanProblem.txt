@@ -1,6 +1,6 @@
 TSP slide notes:
 
-Hello and welcome to this tutorial on how to solve the TSP with dynamic programing! Today we're going look at two things, the first is how to find the cost of the best tour and then how to actually find the path itself which we'll look at in the next video.
+Hello and welcome to this tutorial on how to solve the TSP with dynamic programing! Today we're going look at two things, the first is how to find the cost of the best tour and then how to actually find that path.
 
 So let's get started, what is the TSP? In a nut-shell it's when you're given a list of cities and the distances between each pair of cities, and you want to find the shortest possible route that visits each city exactly once and returns to the origin city.
 
