@@ -15,15 +15,16 @@ public class BridgesAdjacencyList {
     this.n = n;
   }
 
-  // Returns a list of pair of points indicating which nodes form bridges.
-  // The returned list is always of even length and indexes (0, 1) form a pair,
-  // indexes (2, 3) form another pair, and indexes (2*i, 2*i+1) form a pair etc.
-  public List<Integer> findBridges(List<List<Integer>> graph, int N) {
+  // Returns a list of pairs of nodes indicating which nodes form bridges.
+  // The returned list is always of even length and indexes (2*i, 2*i+1) form a 
+  // pair. For example, nodes are indexes (0, 1) are a pair, (2, 3) are another
+  // pair, etc...
+  public List<Integer> findBridges() {
 
     id = 0;
-    low = new int[N]; // Low link values
-    ids = new int[N]; // Nodes ids
-    visited = new boolean[N];
+    low = new int[n]; // Low link values
+    ids = new int[n]; // Nodes ids
+    visited = new boolean[n];
 
     List<Integer> bridges = new ArrayList<>();
     dfs(0, -1, bridges);
@@ -76,11 +77,11 @@ public class BridgesAdjacencyList {
     addEdge(graph, 7, 9);
 
     BridgesAdjacencyList solver = new BridgesAdjacencyList(graph, n);
-    List<Integer> bridges = solver.findBridges(graph, n);
+    List<Integer> bridges = solver.findBridges();
     for (int i = 0; i < bridges.size() / 2; i++) {
       int node1 = bridges.get(2*i);
       int node2 = bridges.get(2*i+1);
-      System.out.printf("BRDIGE between nodes: %d and %d\n", node1, node2);
+      System.out.printf("BRIDGE between nodes: %d and %d\n", node1, node2);
     }
 
   }
