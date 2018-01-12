@@ -1,96 +1,101 @@
+import static java.lang.Math.min;
 import java.util.*;
 
 public class BridgesAdjacencyList {
   
-  static int id = 0;
+  private int n, id;
+  private int[] low, ids;
+  private boolean[] visited;
+  private List<List<Integer>> graph;
 
-  public static class Edge {
-    int from, to;
-    public Edge(int from, int to) {
-      this.from = from;
-      this.to = to;
-    }
-    @Override
-    public String toString() {
-      return from + " -> " + to;
-    }
+  public BridgesAdjacencyList(List<List<Integer>> graph, int n) {
+    if (graph == null || graph.size() != n) 
+      throw new IllegalArgumentException();
+    this.graph = graph;
+    this.n = n;
   }
 
-  public static List<Edge> findBridges(List<List<Edge>> graph, int N) {
+  // Returns a list of pair of points indicating which nodes form bridges.
+  // The returned list is always of even length and indexes (0, 1) form a pair,
+  // indexes (2, 3) form another pair, and indexes (2*i, 2*i+1) form a pair etc.
+  public List<Integer> findBridges(List<List<Integer>> graph, int N) {
 
-    int[] low = new int[N]; // Low link values
-    int[] ids = new int[N]; // Nodes ids
-    boolean[] visited = new boolean[N];
+    id = 0;
+    low = new int[N]; // Low link values
+    ids = new int[N]; // Nodes ids
+    visited = new boolean[N];
 
-    dfs(0, -1, ids, low, visited, graph);
+    List<Integer> bridges = new ArrayList<>();
+    dfs(0, -1, bridges);
 
-    for (int i = 0; i < N; i++) {
-      System.out.printf("%2d %2d %2d\n", i, ids[i], low[i]);
-    }
-
-    return null;
+    return bridges;
   }
 
-  private static void dfs(int at, int parent, int[] ids, int[] low, boolean[] visited, List<List<Edge>> graph) {
+  private void dfs(int at, int parent, List<Integer> bridges) {
 
     visited[at] = true;
-    low[at] = ids[at] = id++; // <-- Better way? Use stack?
+    low[at] = ids[at] = id++;
 
-    List<Edge> edges = graph.get(at);
-    if (edges != null) {
-      for (Edge edge : edges) {
-        int to = edge.to;
-        if (to == parent) continue;
-        if (!visited[to]) {
-          dfs(to, at, ids, low, visited, graph);
-          low[at] = Math.min(low[at], low[to]); // <-- Witchcraft?
-          if (ids[at] < low[to]) {
-            System.out.printf("BRDIGE: %d <-> %d\n", at, to);
-          }
-        } else {
-          low[at] = Math.min(low[at], ids[to]);
+    List<Integer> edges = graph.get(at);
+    for (Integer to : edges) {
+      if (to == parent) continue;
+      if (!visited[to]) {
+        dfs(to, at, bridges);
+        low[at] = min(low[at], low[to]);
+        if (ids[at] < low[to]) {
+          bridges.add(at);
+          bridges.add(to);
         }
+      } else {
+        low[at] = min(low[at], ids[to]);
       }
     }
 
   }
 
+
+  /* Example usage: */
+
+
   public static void main(String[] args) {
-    int N = 10;
-    List<List<Edge>> graph = new ArrayList<>();
-    for(int i = 0; i < N; i++) graph.add(new ArrayList<>());
-    addEdge(graph, 1-1,  2-1);
-    addEdge(graph, 1-1,  3-1);
-    addEdge(graph, 2-1,  3-1);
-    addEdge(graph, 2-1,  4-1);
-    addEdge(graph, 3-1,  4-1);
-    addEdge(graph, 2-1,  5-1);
-    addEdge(graph, 3-1,  8-1);
-    addEdge(graph, 5-1,  7-1);
-    addEdge(graph, 5-1,  6-1);
-    addEdge(graph, 6-1,  7-1);
-    addEdge(graph, 8-1,  9-1);
-    addEdge(graph, 8-1, 10-1);
+    
+    int n = 10;
+    List<List<Integer>> graph = createGraph(n);
 
-    findBridges(graph, N);
+    addEdge(graph, 0, 1);
+    addEdge(graph, 0, 2);
+    addEdge(graph, 1, 2);
+    addEdge(graph, 1, 3);
+    addEdge(graph, 2, 3);
+    addEdge(graph, 1, 4);
+    addEdge(graph, 2, 7);
+    addEdge(graph, 4, 6);
+    addEdge(graph, 4, 5);
+    addEdge(graph, 5, 6);
+    addEdge(graph, 7, 8);
+    addEdge(graph, 7, 9);
 
-    // int N = 5;
-    // List<List<Edge>> graph = new ArrayList<>();
-    // for(int i = 0; i < N; i++) graph.add(new ArrayList<>());
-    // addEdge(graph, 1, 2);
-    // addEdge(graph, 2, 3);
-    // addEdge(graph, 3, 4);
-    // addEdge(graph, 4, 5);
-    // addEdge(graph, 5, 3);
-    // findBridges(graph, N);
+    BridgesAdjacencyList solver = new BridgesAdjacencyList(graph, n);
+    List<Integer> bridges = solver.findBridges(graph, n);
+    for (int i = 0; i < bridges.size() / 2; i++) {
+      int node1 = bridges.get(2*i);
+      int node2 = bridges.get(2*i+1);
+      System.out.printf("BRDIGE between nodes: %d and %d\n", node1, node2);
+    }
 
   }
 
-  static void addEdge(List<List<Edge>> graph, int from, int to) {
-    List<Edge> edges = graph.get(from);
-    edges.add(new Edge(from, to));
-    edges = graph.get(to);
-    edges.add(new Edge(to, from));
+  // Initialize graph with 'n' nodes.
+  public static List<List<Integer>> createGraph(int n) {
+    List<List<Integer>> graph = new ArrayList<>();
+    for(int i = 0; i < n; i++) graph.add(new ArrayList<>());
+    return graph;
+  }
+
+  // Add undirected edge to graph.
+  public static void addEdge(List<List<Integer>> graph, int from, int to) {
+    graph.get(from).add(to);
+    graph.get(to).add(from);
   }
 
 }
