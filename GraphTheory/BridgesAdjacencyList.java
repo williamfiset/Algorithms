@@ -9,7 +9,7 @@ public class BridgesAdjacencyList {
   private List<List<Integer>> graph;
 
   public BridgesAdjacencyList(List<List<Integer>> graph, int n) {
-    if (graph == null || graph.size() != n) 
+    if (graph == null || n <= 0 || graph.size() != n) 
       throw new IllegalArgumentException();
     this.graph = graph;
     this.n = n;
