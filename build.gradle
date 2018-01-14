@@ -20,6 +20,11 @@ dependencies {
 
   // Google truth API
   compile "com.google.truth:truth:0.36"
+
+  // Apache commons lang
+  compile 'org.apache.commons:commons-lang3:3.6'
+
+  
 }
 
 test {
