@@ -1,3 +1,12 @@
+/**
+ * Finds all the bridges on an undirected graph.
+ *
+ * Test against HackerEarth online judge at:
+ * https://www.hackerearth.com/practice/algorithms/graphs/articulation-points-and-bridges/tutorial
+ * 
+ * @author William Fiset, william.alexandre.fiset@gmail.com
+ **/
+
 import static java.lang.Math.min;
 import java.util.*;
 

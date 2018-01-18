@@ -1,3 +1,12 @@
+/**
+ * Finds all articulation points on an undirected graph.
+ *
+ * Test against HackerEarth online judge at:
+ * https://www.hackerearth.com/practice/algorithms/graphs/articulation-points-and-bridges/tutorial
+ * 
+ * @author William Fiset, william.alexandre.fiset@gmail.com
+ **/
+
 import static java.lang.Math.min;
 import java.util.*;
 
@@ -19,7 +28,7 @@ public class ArticulationPointsAdjacencyList {
 
   public boolean[] findArticulationPoints() {
 
-    id = 0;
+    id = rootNodeChildren = 0;
     low = new int[n]; // Low link values
     ids = new int[n]; // Nodes ids
     visited = new boolean[n];
@@ -34,7 +43,7 @@ public class ArticulationPointsAdjacencyList {
   private void dfs(int at, int parent) {
 
     if (parent == ROOT) rootNodeChildren++;
-
+    
     visited[at] = true;
     low[at] = ids[at] = id++;
 
@@ -44,7 +53,7 @@ public class ArticulationPointsAdjacencyList {
       if (!visited[to]) {
         dfs(to, at);
         low[at] = min(low[at], low[to]);
-        if (low[to] >= ids[at]) {
+        if (ids[at] <= low[to]) {
           isArticulationPoint[at] = true;
         }
       } else {

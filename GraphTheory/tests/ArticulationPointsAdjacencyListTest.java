@@ -118,4 +118,54 @@ public class ArticulationPointsAdjacencyListTest {
     assertThat(actual).isEqualTo(expected);
   }
 
+  @Test
+  public void testButterflyGraph() {
+    int n = 5;
+    List<List<Integer>> graph = createGraph(n);
+    addEdge(graph, 1, 0);
+    addEdge(graph, 0, 2);
+    addEdge(graph, 1, 2);
+    addEdge(graph, 2, 3);
+    addEdge(graph, 4, 3);
+    addEdge(graph, 4, 2);
+
+    ArticulationPointsAdjacencyList solver = new ArticulationPointsAdjacencyList(graph, n);
+    boolean[] actual = solver.findArticulationPoints();
+    boolean[] expected = new boolean[n];
+    expected[2] = true;
+
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  public void testButterflyGraphWithThreeWings() {
+    int n = 7;
+    List<List<Integer>> graph = createGraph(n);
+    addEdge(graph, 0, 2);
+    addEdge(graph, 2, 4);
+    addEdge(graph, 4, 3);
+    addEdge(graph, 3, 2);
+    addEdge(graph, 2, 5);
+    addEdge(graph, 6, 5);
+    addEdge(graph, 6, 2);
+    addEdge(graph, 1, 2);
+    addEdge(graph, 1, 0);
+
+    ArticulationPointsAdjacencyList solver = new ArticulationPointsAdjacencyList(graph, n);
+    boolean[] actual = solver.findArticulationPoints();
+    boolean[] expected = new boolean[n];
+    expected[2] = true;
+
+    assertThat(actual).isEqualTo(expected);
+  }
+
 }
+
+
+
+
+
+
+
+
+

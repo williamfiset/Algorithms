@@ -7,7 +7,7 @@ Uncomment when more AI algorithms are done.
 # Artificial Intelligence (AI) 
 * [Genetic algorithm Knapsack 0/1](AI/GeneticAlgorithm_knapsack_01.java)
 * [Genetic algorithm text searching](AI/GeneticAlgorithm_textSearch.java) 
-* -->
+-->
 
 # Constructive algorithms
 * [Set combinations](https://github.com/williamfiset/Algorithms/blob/master/ConstructiveAlgorithms/Combinations.java) **- O(n choose r)**
