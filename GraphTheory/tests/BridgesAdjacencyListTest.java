@@ -117,4 +117,62 @@ public class BridgesAdjacencyListTest {
     assertThat(actual).containsExactlyElementsIn(expected);
   }
 
+  @Test
+  public void testGraphInSlides() {
+    int n = 9;
+    List<List<Integer>> graph = createGraph(n);
+    addEdge(graph, 0, 1);
+    addEdge(graph, 1, 2);
+    addEdge(graph, 2, 3);
+    addEdge(graph, 2, 5);
+    addEdge(graph, 2, 0);
+    addEdge(graph, 3, 4);
+    addEdge(graph, 5, 6);
+    addEdge(graph, 6, 7);
+    addEdge(graph, 7, 8);
+    addEdge(graph, 8, 5);
+
+    BridgesAdjacencyList solver = new BridgesAdjacencyList(graph, n);
+    List<Integer> bridges = solver.findBridges();
+    List<Pair> actual = new ArrayList<>();
+
+    for (int i = 0; i < bridges.size(); i += 2) {
+      int node1 = bridges.get(i);
+      int node2 = bridges.get(i+1);
+      Pair pair;
+      if (node1 < node2) {
+        pair = Pair.of(node1, node2);
+      } else {
+        pair = Pair.of(node2, node1);
+      }
+      actual.add(pair);
+    }
+
+    List<Pair> expected = ImmutableList.of(
+      Pair.of(2, 3),
+      Pair.of(3, 4),
+      Pair.of(2, 5)
+    );
+
+    assertThat(actual).containsExactlyElementsIn(expected);
+  }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
