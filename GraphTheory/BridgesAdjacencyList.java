@@ -26,7 +26,7 @@ public class BridgesAdjacencyList {
 
   // Returns a list of pairs of nodes indicating which nodes form bridges.
   // The returned list is always of even length and indexes (2*i, 2*i+1) form a 
-  // pair. For example, nodes are indexes (0, 1) are a pair, (2, 3) are another
+  // pair. For example, nodes at indexes (0, 1) are a pair, (2, 3) are another
   // pair, etc...
   public List<Integer> findBridges() {
 
@@ -36,7 +36,11 @@ public class BridgesAdjacencyList {
     visited = new boolean[n];
 
     List<Integer> bridges = new ArrayList<>();
-    dfs(0, -1, bridges);
+
+    // Finds all bridges even if the graph is not one single connected component.
+    for (int i = 0; i < n; i++)
+      if (!visited[i])
+        dfs(i, -1, bridges);
 
     return bridges;
   }

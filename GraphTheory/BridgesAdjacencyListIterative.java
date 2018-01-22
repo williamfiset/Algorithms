@@ -17,8 +17,6 @@ public class BridgesAdjacencyListIterative {
   private boolean[] visited;
   private List<List<Integer>> graph;
 
-  private static int ROOT = 0;
-  private static int INITIAL_PARENT_VAL = -1;
   private static int CALLBACK_TOKEN = -2;
 
   public BridgesAdjacencyListIterative(List<List<Integer>> graph, int n) {
@@ -41,46 +39,52 @@ public class BridgesAdjacencyListIterative {
 
     List<Integer> bridges = new ArrayList<>();
 
-    Deque<Integer> stack = new ArrayDeque<>();
-    Deque<Integer> parentStack = new ArrayDeque<>();
-    stack.push(ROOT);
-    parentStack.push(INITIAL_PARENT_VAL);
+    // Finds all bridges even if the graph is not one single connected component.
+    for (int i = 0; i < n; i++) {
+      if (visited[i]) continue;
+      
+      Deque<Integer> stack = new ArrayDeque<>();
+      Deque<Integer> parentStack = new ArrayDeque<>();
+      stack.push(i);
+      parentStack.push(-1);
 
-    while(!stack.isEmpty()) {
-      int at = stack.pop();
+      while(!stack.isEmpty()) {
+        int at = stack.pop();
 
-      if (at == CALLBACK_TOKEN) {
-        at = stack.pop();
-        int to = stack.pop();
-        low[at] = min(low[at], low[to]);
-        if (ids[at] < low[to]) {
-          bridges.add(at);
-          bridges.add(to);
+        if (at == CALLBACK_TOKEN) {
+          at = stack.pop();
+          int to = stack.pop();
+          low[at] = min(low[at], low[to]);
+          if (ids[at] < low[to]) {
+            bridges.add(at);
+            bridges.add(to);
+          }
+          continue;
         }
-        continue;
-      }
 
-      int parent = parentStack.pop();
-      if (!visited[at]) {
-        low[at] = ids[at] = ++id;
-        visited[at] = true;
+        int parent = parentStack.pop();
+        if (!visited[at]) {
+          low[at] = ids[at] = ++id;
+          visited[at] = true;
 
-        List<Integer> edges = graph.get(at);
-        for (Integer to : edges) {
-          if (to == parent) continue;
-          if (!visited[to]) {
-            stack.push(to);
-            stack.push(at);
-            stack.push(CALLBACK_TOKEN);
-            stack.push(to);
-            parentStack.push(at);
-          } else {
-            low[at] = min(low[at], ids[to]);
+          List<Integer> edges = graph.get(at);
+          for (Integer to : edges) {
+            if (to == parent) continue;
+            if (!visited[to]) {
+              stack.push(to);
+              stack.push(at);
+              stack.push(CALLBACK_TOKEN);
+              stack.push(to);
+              parentStack.push(at);
+            } else {
+              low[at] = min(low[at], ids[to]);
+            }
           }
         }
-      }
 
+      }      
     }
+
     return bridges;
   }
 
