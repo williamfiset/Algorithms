@@ -159,6 +159,31 @@ public class ArticulationPointsAdjacencyListTest {
     assertThat(actual).isEqualTo(expected);
   }
 
+  @Test
+  public void testDisconnectedGraph() {
+    int n = 11;
+    List<List<Integer>> graph = createGraph(n);
+    addEdge(graph, 0, 1);
+    addEdge(graph, 2, 1);
+
+    addEdge(graph, 3, 4);
+
+    addEdge(graph, 5, 7);
+    addEdge(graph, 6, 7);
+    addEdge(graph, 8, 7);
+    addEdge(graph, 8, 9);
+    addEdge(graph, 8, 10);
+
+    ArticulationPointsAdjacencyList solver = new ArticulationPointsAdjacencyList(graph, n);
+    boolean[] actual = solver.findArticulationPoints();
+    boolean[] expected = new boolean[n];
+    expected[1] = true;
+    expected[7] = true;
+    expected[8] = true;
+
+    assertThat(actual).isEqualTo(expected);
+  }
+
 }
 
 

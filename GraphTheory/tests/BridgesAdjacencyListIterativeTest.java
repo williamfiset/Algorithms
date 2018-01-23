@@ -7,6 +7,7 @@ import org.junit.*;
 
 public class BridgesAdjacencyListIterativeTest {
 
+
   // Initialize graph with 'n' nodes.
   public static List<List<Integer>> createGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>();
@@ -38,21 +39,8 @@ public class BridgesAdjacencyListIterativeTest {
     addEdge(graph, 7, 8);
     addEdge(graph, 7, 9);
 
-    BridgesAdjacencyListIterative solver = new BridgesAdjacencyListIterative(graph, n);
-    List<Integer> bridges = solver.findBridges();
-    List<Pair> actual = new ArrayList<>();
-
-    for (int i = 0; i < bridges.size(); i += 2) {
-      int node1 = bridges.get(i);
-      int node2 = bridges.get(i+1);
-      Pair pair;
-      if (node1 < node2) {
-        pair = Pair.of(node1, node2);
-      } else {
-        pair = Pair.of(node2, node1);
-      }
-      actual.add(pair);
-    }
+    BridgesAdjacencyList solver = new BridgesAdjacencyList(graph, n);
+    List<Pair<Integer, Integer>> sortedBridges = getSortedBridges(solver.findBridges());
 
     List<Pair> expected = ImmutableList.of(
       Pair.of(0, 1),
@@ -68,7 +56,7 @@ public class BridgesAdjacencyListIterativeTest {
       Pair.of(7, 9)
     );
 
-    assertThat(actual).containsExactlyElementsIn(expected);
+    assertThat(sortedBridges).containsExactlyElementsIn(expected);
   }
 
   // Every edge should be a bridge if the input a tree
@@ -91,21 +79,10 @@ public class BridgesAdjacencyListIterativeTest {
     addEdge(graph, 7, 9);
     addEdge(graph, 11, 6);
 
-    BridgesAdjacencyListIterative solver = new BridgesAdjacencyListIterative(graph, n);
+    BridgesAdjacencyList solver = new BridgesAdjacencyList(graph, n);
     List<Integer> bridges = solver.findBridges();
-    List<Pair> actual = new ArrayList<>();
+    List<Pair<Integer, Integer>> sortedBridges = getSortedBridges(solver.findBridges());
 
-    for (int i = 0; i < bridges.size(); i += 2) {
-      int node1 = bridges.get(i);
-      int node2 = bridges.get(i+1);
-      Pair pair;
-      if (node1 < node2) {
-        pair = Pair.of(node1, node2);
-      } else {
-        pair = Pair.of(node2, node1);
-      }
-      actual.add(pair);
-    }
 
     List<Pair> expected = ImmutableList.of(
       Pair.of(3, 7),
@@ -114,7 +91,7 @@ public class BridgesAdjacencyListIterativeTest {
       Pair.of(4, 10)
     );
 
-    assertThat(actual).containsExactlyElementsIn(expected);
+    assertThat(sortedBridges).containsExactlyElementsIn(expected);
   }
 
   @Test
@@ -132,21 +109,9 @@ public class BridgesAdjacencyListIterativeTest {
     addEdge(graph, 7, 8);
     addEdge(graph, 8, 5);
 
-    BridgesAdjacencyListIterative solver = new BridgesAdjacencyListIterative(graph, n);
+    BridgesAdjacencyList solver = new BridgesAdjacencyList(graph, n);
     List<Integer> bridges = solver.findBridges();
-    List<Pair> actual = new ArrayList<>();
-
-    for (int i = 0; i < bridges.size(); i += 2) {
-      int node1 = bridges.get(i);
-      int node2 = bridges.get(i+1);
-      Pair pair;
-      if (node1 < node2) {
-        pair = Pair.of(node1, node2);
-      } else {
-        pair = Pair.of(node2, node1);
-      }
-      actual.add(pair);
-    }
+    List<Pair<Integer, Integer>> sortedBridges = getSortedBridges(solver.findBridges());
 
     List<Pair> expected = ImmutableList.of(
       Pair.of(2, 3),
@@ -154,7 +119,54 @@ public class BridgesAdjacencyListIterativeTest {
       Pair.of(2, 5)
     );
 
-    assertThat(actual).containsExactlyElementsIn(expected);
+    assertThat(sortedBridges).containsExactlyElementsIn(expected);
+  }
+
+  @Test
+  public void testDisconnectedGraph() {
+    int n = 11;
+    List<List<Integer>> graph = createGraph(n);
+    addEdge(graph, 0, 1);
+    addEdge(graph, 2, 1);
+
+    addEdge(graph, 3, 4);
+
+    addEdge(graph, 5, 7);
+    addEdge(graph, 5, 6);
+    addEdge(graph, 6, 7);
+    addEdge(graph, 8, 7);
+    addEdge(graph, 8, 9);
+    addEdge(graph, 8, 10);
+
+    BridgesAdjacencyList solver = new BridgesAdjacencyList(graph, n);
+    List<Pair<Integer, Integer>> sortedBridges = getSortedBridges(solver.findBridges());
+
+    List<Pair> expected = ImmutableList.of(
+      Pair.of(0, 1),
+      Pair.of(1, 2),
+      Pair.of(3, 4),
+      Pair.of(7, 8),
+      Pair.of(8, 9),
+      Pair.of(8, 10)
+    );
+
+    assertThat(sortedBridges).containsExactlyElementsIn(expected);
+  }
+
+  private static List<Pair<Integer, Integer>> getSortedBridges(List<Integer> bridgeNodes) {
+    List<Pair<Integer, Integer>> bridges = new ArrayList<>();
+    for (int i = 0; i < bridgeNodes.size(); i += 2) {
+      int node1 = bridgeNodes.get(i);
+      int node2 = bridgeNodes.get(i+1);
+      Pair pair;
+      if (node1 < node2) {
+        pair = Pair.of(node1, node2);
+      } else {
+        pair = Pair.of(node2, node1);
+      }
+      bridges.add(pair);
+    }
+    return bridges;
   }
 
 }

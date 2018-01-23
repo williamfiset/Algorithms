@@ -12,9 +12,7 @@ import java.util.*;
 
 public class ArticulationPointsAdjacencyList {
 
-  private static final int ROOT = 0;
-
-  private int n, id, rootNodeChildren;
+  private int n, id, rootNumChildren;
   private int[] low, ids;
   private boolean[] visited, isArticulationPoint;
   private List<List<Integer>> graph;
@@ -26,23 +24,30 @@ public class ArticulationPointsAdjacencyList {
     this.n = n;
   }
 
+  // Returns the indexes for all articulation points in the graph even if the
+  // graph is not fully connected.
   public boolean[] findArticulationPoints() {
 
-    id = rootNodeChildren = 0;
+    id = 0;
     low = new int[n]; // Low link values
     ids = new int[n]; // Nodes ids
     visited = new boolean[n];
     isArticulationPoint = new boolean[n];
 
-    dfs(ROOT, -1);
-    isArticulationPoint[ROOT] = (rootNodeChildren > 1);
+    for (int i = 0; i < n; i++) {
+      if (!visited[i]) {
+        rootNumChildren = 0;
+        dfs(i, i, -1);
+        isArticulationPoint[i] = (rootNumChildren > 1);
+      }
+    }
 
     return isArticulationPoint;
   }
 
-  private void dfs(int at, int parent) {
+  private void dfs(int root, int at, int parent) {
 
-    if (parent == ROOT) rootNodeChildren++;
+    if (parent == root) rootNumChildren++;
     
     visited[at] = true;
     low[at] = ids[at] = id++;
@@ -51,7 +56,7 @@ public class ArticulationPointsAdjacencyList {
     for (Integer to : edges) {
       if (to == parent) continue;
       if (!visited[to]) {
-        dfs(to, at);
+        dfs(root, to, at);
         low[at] = min(low[at], low[to]);
         if (ids[at] <= low[to]) {
           isArticulationPoint[at] = true;
