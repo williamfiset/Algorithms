@@ -37,7 +37,7 @@ public class BridgesAdjacencyList {
 
     List<Integer> bridges = new ArrayList<>();
 
-    // Finds all bridges even if the graph is not one single connected component.
+    // Finds all bridges in the graph across various connected components.
     for (int i = 0; i < n; i++)
       if (!visited[i])
         dfs(i, -1, bridges);
@@ -48,10 +48,9 @@ public class BridgesAdjacencyList {
   private void dfs(int at, int parent, List<Integer> bridges) {
 
     visited[at] = true;
-    low[at] = ids[at] = id++;
+    low[at] = ids[at] = ++id;
 
-    List<Integer> edges = graph.get(at);
-    for (Integer to : edges) {
+    for (Integer to : graph.get(at)) {
       if (to == parent) continue;
       if (!visited[to]) {
         dfs(to, at, bridges);
