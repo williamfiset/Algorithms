@@ -1,0 +1,16 @@
+Welcome back,
+
+My name is William, today we're going to talk about how to develop an algorithm to find bridges and articulation points in an undirected graph from a computer science perspective. The two topics are actually very closely related so it makes sense to make one video for both.
+
+For starters, let's talk about what a bridge is in a graph. Bridges are also sometimes called cut edges. Essentially, if you have a graph which is a connected component a bridge is an edge which if removed increases the number of connected components in the graph. The name bridge makes sense because if you think of the connected components as islands, then a bridge is what separates them.
+
+So for example, in this graph below there would be three possible bridges which are those edges in pink because if you remove any of them the graph is divided into two components.
+
+An articulation point, also called a cut vertex is very similar to a bridge in that the criteria for being an articulation point is that it needs to be any node whose removal increases the number of connected components.
+
+As an example, on this graph there are three articulation points since removing any of these vertices will divide the graph in two.
+
+As we start to think more about bridges and articulation points we begin to realize how important they can be in Graph Theory. In real world situations bridges and articulation points often hint at weak points, bottlenecks or even vulnerabilities in a graph. Therefore, it’s important to be able to quickly find/detect when and where these occur. We'll begin by investigating how to find bridges in a graph and then modify this algorithm to find articulation points.
+
+In the most way I can explain it this is the algorithm we'll be following to find bridges in an undirected graph, don't worry there'll be an example soon enough. First start at any node in the graph and begin doing a depth first search traversal. During the traversal, for each node keep track of two variables, the first is the node's id and the other is the node's smallest low link value. During the DFS, bridges will be found where the id of the node your edge is coming from is less then the low link value of the node your edge is going to.
+As a side note the low link value of a node is defined to be the smallest node id reachable from that node when doing a dfs including the id of the node itself.

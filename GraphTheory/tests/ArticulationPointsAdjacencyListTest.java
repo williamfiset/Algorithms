@@ -184,6 +184,56 @@ public class ArticulationPointsAdjacencyListTest {
     assertThat(actual).isEqualTo(expected);
   }
 
+  @Test
+  public void testSingleNodeGraph() {
+    int n = 1;
+    List<List<Integer>> graph = createGraph(n);
+
+    ArticulationPointsAdjacencyList solver = new ArticulationPointsAdjacencyList(graph, n);
+    boolean[] actual = solver.findArticulationPoints();
+    
+    boolean[] expected = new boolean[n];
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  public void testTwoNodeGraph() {
+    int n = 2;
+    List<List<Integer>> graph = createGraph(n);
+    addEdge(graph, 0, 1);
+
+    ArticulationPointsAdjacencyList solver = new ArticulationPointsAdjacencyList(graph, n);
+    boolean[] actual = solver.findArticulationPoints();
+    
+    boolean[] expected = new boolean[n];
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  public void testMultiCycleGraph() {
+    int n = 7;
+    List<List<Integer>> graph = createGraph(n);
+    addEdge(graph, 0, 1);
+    addEdge(graph, 2, 1);
+    addEdge(graph, 2, 0);
+
+    addEdge(graph, 2, 3);
+    addEdge(graph, 2, 5);
+    addEdge(graph, 5, 3);
+
+    addEdge(graph, 3, 4);
+    addEdge(graph, 4, 6);
+    addEdge(graph, 6, 3);
+
+    ArticulationPointsAdjacencyList solver = new ArticulationPointsAdjacencyList(graph, n);
+    boolean[] actual = solver.findArticulationPoints();
+
+    boolean[] expected = new boolean[n];
+    expected[2] = true;
+    expected[3] = true;
+    assertThat(actual).isEqualTo(expected);
+  }
+
 }
 
 
