@@ -14,3 +14,63 @@ As we start to think more about bridges and articulation points we begin to real
 
 In the most way I can explain it this is the algorithm we'll be following to find bridges in an undirected graph, don't worry there'll be an example soon enough. First start at any node in the graph and begin doing a depth first search traversal. During the traversal, for each node keep track of two variables, the first is the node's id and the other is the node's smallest low link value. During the DFS, bridges will be found where the id of the node your edge is coming from is less then the low link value of the node your edge is going to.
 As a side note the low link value of a node is defined to be the smallest node id reachable from that node when doing a dfs including the id of the node itself.
+
+Let's see an example, suppose we have the following graph we've been looking at. Suppose we start our DFS on the node at the top left corner.
+
+As we go we're doing our DFS we're going to label each node with a unique id which I will place inside the node. 
+
+So just randomly do a DFS and label all the nodes for now.
+
+<action>
+Explore all node until node 8.
+</action>
+
+So that would conclude our DFS. Those dotted arrows you see are edges which tried to explore already visited nodes. They end up playing a crucial role in finding bridges and articulation points. I want to take a moment to think about what all the low link values of these nodes would be. As a reminder the low-link value of a node is defined as the smallest id reachable from that node using forward and backward edges.
+
+For now initialize all low-link values to be equal to each node's id.
+
+If you inspect node 1 we can see that there's a path of edges we can take from node 1 to node 0 which has an id 0 zero. Therefore node 1 should really have a low-link value of 0.
+
+That path to reach node 0 would start at node 1
+
+take to edge to node 2
+</press>
+
+and then take the back edge to node 0
+</press>
+
+Similarly for node 2.
+</press>
+</press>
+</press>
+
+You'll notice that there's no way to update the low-link values for nodes 3, 4, 5 because there is no node with a lower id they can reach by following a sequence of edges.
+
+However, if we look at node 6 we can update it's low link value to 5 since node 5 is reachable from node 6.
+
+Start at node 6
+</press>
+
+take the to edge to 7
+</press>
+
+take the to edge to 8
+</press>
+
+and we've made it to node 5 so we know it's possible to reach.
+</press>
+
+Similarly we can update nodes 7 and 8 to have a low link value of 5 by the same logic.
+
+... Say something about ((E+V)²) algorithm?
+
+Justification why 
+
+
+
+
+
+
+
+
+
