@@ -62,9 +62,12 @@ and we've made it to node 5 so we know it's possible to reach.
 
 Similarly we can update nodes 7 and 8 to have a low link value of 5 by the same logic.
 
-... Say something about ((E+V)²) algorithm?
 
-Justification why 
+TODO: Justification why formula works.
+
+
+
+
 
 
 
