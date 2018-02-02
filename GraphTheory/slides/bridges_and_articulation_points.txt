@@ -62,14 +62,12 @@ and we've made it to node 5 so we know it's possible to reach.
 
 Similarly we can update nodes 7 and 8 to have a low link value of 5 by the same logic.
 
+So in general when we look at all the directed edges we have traversed, the ones which form bridges in our undirected graph are the ones where the id of the node you started at is less than the low link of the node you're going to. Take a moment to think about why this is true. </pause>. Let's look where these bridges actually occur. In each instance the id of the node where the directed edge started at is less than the low link value of the node it's going to. Rephrasing that in another way it means there was no back edge connecting back to the starting component which is really the definition of what a bridge is. Otherwise, if there was a back edge connecting backwards to the starting component the low link value of where the edge is pointing to would at least as low as the id of the node you started at.
 
-TODO: Justification why formula works.
+For example, if I add a back edge from node 8 to node 2 suddenly the edge from node 2 to node 5 is no longer a bridge because the low link value on node five got updated to 2 and our bridge property highlighted in teal no longer holds.
 
-
-
-
-
-
+Let's take an aside and think of the time complexity of the algorithm I just presented. Right now we're doing a DFS to label all the nodes plus V more depth first searches to find all the low link values for roughly big O of V times V plus E in the worst case if we're being really pessimistic and stupid with our programming.
+Luckily, however we can do much better than this and instead update all low-link values in one pass for a linear time complexity.
 
 
 
