@@ -69,9 +69,86 @@ For example, if I add a back edge from node 8 to node 2 suddenly the edge from n
 Let's take an aside and think of the time complexity of the algorithm I just presented. Right now we're doing a DFS to label all the nodes plus V more depth first searches to find all the low link values for roughly big O of V times V plus E in the worst case if we're being really pessimistic and stupid with our programming.
 Luckily, however we can do much better than this and instead update all low-link values in one pass for a linear time complexity.
 
+Let's look at some pseudo code to find bridges in linear time. I'll show some actual code in the video that follows, so let's get started.
+In the global or class scope I define three variables. The first is id which is used to label each node with a unique id number. Then I have the undirected graph in a variable called g. Note that 'g' needs to be undirected for the following algorithm to work. And last in n which is the number of nodes in the graph.
+Following the top level variables are three arrays which track information about each node in the graph. Index i in each of these arrays represents node i in the graph. So the first array tracks the id of node i, the second array tracks the low link value of node i and the visited array keeps track of whether or not we have visited node i.
+Moving on, the find bridges function is what actually finds our bridges. Instead this method I iterate over all the nodes which have not yet been visited by our DFS. This is to ensure that we find bridges in our graph even if our graph consists of multiple connected components.
 
+Now let's dive into the DFS method which is where the work is really happening. The first argument is the current node you're at which is i, then is the parent node which I set to -1 because there is no previous node and last is the bridges array we're populating.
 
+So here in the DFS method. The arguments to the method are just as I described them to you: 'at' is the current node, 'parent' is the previous node and 'bridges' stores pairs of nodes which form bridges in a flat array.
+In the first three lines of the method is just some house keeping stuff which is to mark the current node as visited, increment the unique id value and assign the current node to have a default id and low link value.
+Then we get into the actual DFS traversal bit. So we iterate over each edge from the node we're 'at' and attempt to go to each node i've labeled 'to'. 
+Since this is an undirected graph there is bound to be an edge that directly returns to the node we were at previously which is the parent node which we want to avoid so we continue.
+If the next node we're going to is not visited then we recursively call the DFS method.
 
+Alright, we've made it this far and I promise I'll show an example soon, but the two key lines in this method are the min functions which differ slightly. The first on happens on the callback and is what propagates the low-link values, while the second one is when you try to visit an already visited node which has a chance of being a back edge.
 
+Then the last bit just checks for our bridge condition and appends the pair of nodes to the bridge array.
 
+Now let's look at an example of all this crazyness in action. Suppose we have the following graph and we start our DFS somewhere.
 
+Suppose we start on node 0 and explore from there.
+
+</press>
+
+</press>
+
+</press>
+
+</press>
+
+So now is the first instance of something interesting happening. We're trying to visit an already visited node via a back edge. Since node 2 is able to reach node 0 from where it is we can update node 2's low link value.
+
+</press>
+
+And this is what the second min statement does.
+
+continuing on our path takes us downwards.
+
+</press>
+
+</press>
+
+</press>
+
+</press>
+
+</press>
+
+</press>
+
+And now we explore the other branch we have not visited.
+
+</press>
+
+</press>
+</press>
+
+</press>
+</press>
+
+</press>
+</press>
+
+Again we have this back edge that reaches out to find a node with a lower id so we need to update our low link value.
+</press>
+
+But now, we updated node 7's low link value to 5 on the callback of the DFS method. This is an instance of the first min function actually doing something.
+
+Just to put everything in context the red box is highlighting the line that was jsut invoked.
+
+And now that last statement is called all the way back to the root node.
+
+</press>
+</press>
+</press>
+</press>
+</press>
+
+And now we have the same result as before but we did it with one pass. So here are all the bridge we found again.
+</press>
+</press>
+</press>
+
+Articulation points...
