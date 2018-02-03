@@ -160,12 +160,42 @@ For example, consider the following graph. You will notice that there is a bridg
 
 There also exists graphs where both nodes the bridge connects are articulation points.
 
-Unfortunately, this condition alone is not sufficient to capture all articulations points. There exist cases where there is an articulation point but not bridge nearby. For example in the following graph node 2 is an articulation point because its removal would cause the graph to split into two components. So the new question is when to these edge cases occur?
+Unfortunately, this condition alone is not sufficient to capture all articulations points. There exist cases where there is an articulation point but not bridge nearby. For example in the following graph node 2 is an articulation point because its removal would cause the graph to split into two components. So the new question is when to these cases occur?
 
+The short answer is that is has to do with cycles. To understand why let's look at an example. Suppose you're traversing your graph and eventually you arrive at node 0.Initially suppose node zero has a low link value of zero. Like in any DFS you continue to explore the graph...
 
+</press>
+</press>
+</press>
+</press>
+</press>
 
+And eventually, if you ever re encounter the node that started the cycle via a back edge its id value gets propagated throughout the cycle during the callbacks of the DFS. This is the case because we're assigning the new lowlink value to equal the min of the current lowlink value and the id of the node we just visited.
 
+</press>
+So you see that now node 5 has a low link value of 0 acquired form the id of node 0. This gets spread throughout the cycle.
 
+</press>
+</press>
+</press>
+</press>
+</press>
 
+Now what you'll notice is that the id of the node you started at is equal to the lowlink value which indicates that there is a cycle. What's key here is that the indication of a cycle back to the original node implies that the node is an articulation point. This is because a cycle in a graph corresponds to a strongly connected component and removing the node which started the cycle who is also connected to another component will severe the graph in two.
+
+However, there is just one exception to this. And this is when the starting node you chose to begin your DFS at is part of a cycle but only has 1 outgoing edge. To be an articulation point you need more than one outgoing edge. For example, the graph on the right we start at node zero in green but that starting node is not an articulation point despite our condition being met.
+
+However, as soon as we add another edge to our starting node it becomes an articulation point, so this is something to watch and is unique to the starting node.
+
+Let's now take a quick look at the changes we need to do to our finding bridges algorithm to find articulation points. 
+To begin with we'll need a way to track the number of outcoming edges from the starting node so I define a variable called 'outEdgeCount'.
+As a return value I will be returning a boolean array which has true or false depending on whether or not node i is an articulation point.
+In the body of the findArtPoints method I reset the outEdgeCount variable for every connected compoenent and after the DFS mark the starting node i as either an articulation point or not based on how many outcoming edge were found.
+
+Inside the DFS method all I added was an if statment to increment the number of outcoing edges.
+Besides that I added the equals case to track articulation points and kept the < case from the find bridges algorithm. In a real implmentation I would merge the two if statments into a single clause however I wanted to distingush between articulation points found via bridges vs those found via cycles.
+
+That is all for now, in the next video we'll be looking at some actual source code for this and not just some pseduocode. If you enjoyed this video please like this video and subscribe for more 
+computer science and mathematics videos. 
 
 
