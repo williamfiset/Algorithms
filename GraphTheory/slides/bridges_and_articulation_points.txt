@@ -151,4 +151,13 @@ And now we have the same result as before but we did it with one pass. So here a
 </press>
 </press>
 
-Articulation points...
+Let's move away from bridges and discuss how we can modify our algorithm for finding bridges to find articulation points.
+
+A simple observation we can make about articulation points is that:
+On a connected component with three or more vertices if an edge (u, v) is a bridge then either u or v is an articulation point. This is a good starting point because it allows us to easily find where articulation points occur.
+
+For example, consider the following graph. You will notice that there is a bridge between nodes 0 and 1, meaning that either node 0 or node 1 is an articulation point.
+
+There also exists graphs where both nodes the bridge connects are articulation points.
+
+Unfortunately, this condition alone is not sufficient to capture all articulations points. There exist cases where there is an articulation point but not bridge nearby. For example in the following graph node 2 is an articulation point because its removal would cause the graph to split into two components.

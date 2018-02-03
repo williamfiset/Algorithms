@@ -41,8 +41,6 @@ public class ArticulationPointsAdjacencyList {
         isArticulationPoint[i] = (rootNumChildren > 1);
       }
     }
-    System.out.println(java.util.Arrays.toString(ids));
-    System.out.println(java.util.Arrays.toString(low));
     return isArticulationPoint;
   }
 
@@ -59,13 +57,8 @@ public class ArticulationPointsAdjacencyList {
       if (!visited[to]) {
         dfs(root, to, at);
         low[at] = min(low[at], low[to]);
-        if (ids[at] < low[to]) {
+        if (ids[at] <= low[to]) {
           isArticulationPoint[at] = true;
-          System.out.printf("FROM: %d TO: %d <\n", at, to);
-        }
-        if (ids[at] == low[to]) {
-          isArticulationPoint[at] = true;
-          System.out.printf("FROM: %d TO: %d =\n", at, to);
         }
       } else {
         low[at] = min(low[at], ids[to]);
