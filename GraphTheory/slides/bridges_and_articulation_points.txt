@@ -160,4 +160,12 @@ For example, consider the following graph. You will notice that there is a bridg
 
 There also exists graphs where both nodes the bridge connects are articulation points.
 
-Unfortunately, this condition alone is not sufficient to capture all articulations points. There exist cases where there is an articulation point but not bridge nearby. For example in the following graph node 2 is an articulation point because its removal would cause the graph to split into two components.
+Unfortunately, this condition alone is not sufficient to capture all articulations points. There exist cases where there is an articulation point but not bridge nearby. For example in the following graph node 2 is an articulation point because its removal would cause the graph to split into two components. So the new question is when to these edge cases occur?
+
+
+
+
+
+
+
+
