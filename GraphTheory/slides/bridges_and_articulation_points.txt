@@ -142,56 +142,50 @@ If the next node we're going to is not visited then we recursively call the DFS 
 83) </press>
 84) </press>
 
-And now we have the same result as before but we did it with one pass. So here are all the bridge we found again.
-</press>
-</press>
-</press>
+85) And now we have the same result as before but we did it with one pass. So here are all the bridge we found again.
+86) </slow press>
+87) </slow press>
+88) </slow press>
 
-Let's move away from bridges and discuss how we can modify our algorithm for finding bridges to find articulation points.
+89) Let's move away from bridges and discuss how we can modify our algorithm for finding bridges to find articulation points.
 
-A simple observation we can make about articulation points is that:
+90) A simple observation we can make about articulation points is that:
 On a connected component with three or more vertices if an edge (u, v) is a bridge then either u or v is an articulation point. This is a good starting point because it allows us to easily find where articulation points occur.
 
-For example, consider the following graph. You will notice that there is a bridge between nodes 0 and 1, meaning that either node 0 or node 1 is an articulation point.
+91) For example, consider the following graph. You will notice that there is a bridge between nodes 0 and 1, meaning that either node 0 or node 1 is an articulation point.
 
-There also exists graphs where both nodes the bridge connects are articulation points.
+92) Unfortunately, this condition alone is not sufficient to capture all articulations points. There exist cases where there is an articulation point but no bridge nearby. For example, in the following graph node 2 is an articulation point because its removal would cause the graph to split into two components. So the new question is when to these cases occur? The short answer is that it has to do with cycles. To understand why let's look at an example. 
 
-Unfortunately, this condition alone is not sufficient to capture all articulations points. There exist cases where there is an articulation point but not bridge nearby. For example in the following graph node 2 is an articulation point because its removal would cause the graph to split into two components. So the new question is when to these cases occur?
+93) Suppose you're traversing your graph and eventually you arrive at node 0. Initially suppose node zero has a low link value of zero. Like in any DFS you continue to explore the graph...
 
-The short answer is that is has to do with cycles. To understand why let's look at an example. Suppose you're traversing your graph and eventually you arrive at node 0.Initially suppose node zero has a low link value of zero. Like in any DFS you continue to explore the graph...
+94) </press>
+95) </press>
+96) </press>
+97) </press>
+98) And eventually, if you ever re encounter the node that started the cycle via a back edge its id value gets propagated throughout the cycle during the callbacks of the DFS. This is the case because we're assigning the new lowlink value to equal the min of the current lowlink value and the id of the node we just visited.
 
-</press>
-</press>
-</press>
-</press>
-</press>
+99) So you see that now node 5 has a low link value of 0 acquired form the id of node 0. This gets spread (or propagated as I like to say) throughout the cycle.
 
-And eventually, if you ever re encounter the node that started the cycle via a back edge its id value gets propagated throughout the cycle during the callbacks of the DFS. This is the case because we're assigning the new lowlink value to equal the min of the current lowlink value and the id of the node we just visited.
+100) </press>
+101) </press>
+102) </press>
+103) </press>
+104) </press>
 
-</press>
-So you see that now node 5 has a low link value of 0 acquired form the id of node 0. This gets spread throughout the cycle.
+105) Now what you'll notice is that the id of the node you started at is equal to the lowlink value, this indicates that there is a cycle. What's key here is that the presense of a cycle implies that the node is an articulation point. This is because a cycle in a graph corresponds to a strongly connected component and removing the node which started the cycle who is also connected to another component will severe the graph in two.
 
-</press>
-</press>
-</press>
-</press>
-</press>
+106) However, there is just one exception to this. And this is when the starting node you chose to begin your DFS at is part of a cycle and only has 1 outgoing edge. To be an articulation point you need more than one outgoing edge. For example, in the graph on the right we start at node zero (the green node) but that starting node is not an articulation point despite our condition being met.
 
-Now what you'll notice is that the id of the node you started at is equal to the lowlink value which indicates that there is a cycle. What's key here is that the indication of a cycle back to the original node implies that the node is an articulation point. This is because a cycle in a graph corresponds to a strongly connected component and removing the node which started the cycle who is also connected to another component will severe the graph in two.
+107) However, as soon as we add another edge to our starting node it becomes an articulation point, so this is something to watch for and is unique to the starting node.
 
-However, there is just one exception to this. And this is when the starting node you chose to begin your DFS at is part of a cycle but only has 1 outgoing edge. To be an articulation point you need more than one outgoing edge. For example, the graph on the right we start at node zero in green but that starting node is not an articulation point despite our condition being met.
+108) Let's now take a quick look at the changes we need to do to our finding bridges algorithm to find articulation points. 
+To begin with we'll need a way to track the number of outcoming edges from the starting node so I define a new variable called 'outEdgeCount'.
+Nexy, I define a boolean array called isArt which has true or false depending on whether or not node i is an articulation point. Ultimately, this will be the return value of the findArtPoints function.
+In the body of the findArtPoints function I reset the outEdgeCount variable for every connected compoenent and after the DFS mark the starting node i as either an articulation point or not based on how many outcoming edge were found.
 
-However, as soon as we add another edge to our starting node it becomes an articulation point, so this is something to watch and is unique to the starting node.
+109) Inside the DFS method all I added was an if statment to increment the number of outcoming edges from the starting node.
+Besides that I added the equals case to track articulation points and kept the < case from the find bridges algorithm. In a real implmentation, I would merge the two if statments into a single clause, however I wanted to distingush between articulation points found via bridges vs those found via cycles.
 
-Let's now take a quick look at the changes we need to do to our finding bridges algorithm to find articulation points. 
-To begin with we'll need a way to track the number of outcoming edges from the starting node so I define a variable called 'outEdgeCount'.
-As a return value I will be returning a boolean array which has true or false depending on whether or not node i is an articulation point.
-In the body of the findArtPoints method I reset the outEdgeCount variable for every connected compoenent and after the DFS mark the starting node i as either an articulation point or not based on how many outcoming edge were found.
-
-Inside the DFS method all I added was an if statment to increment the number of outcoing edges.
-Besides that I added the equals case to track articulation points and kept the < case from the find bridges algorithm. In a real implmentation I would merge the two if statments into a single clause however I wanted to distingush between articulation points found via bridges vs those found via cycles.
-
-That is all for now, in the next video we'll be looking at some actual source code for this and not just some pseduocode. If you enjoyed this video please like this video and subscribe for more 
-computer science and mathematics videos. 
+110) That is all for now, in the next video we'll be looking at some actual source code for this and not just some pseduocode. If you enjoyed this video please like this video and subscribe for more computer science and mathematics videos. 
 
 
