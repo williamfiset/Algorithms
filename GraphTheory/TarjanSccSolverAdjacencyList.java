@@ -1,3 +1,11 @@
+/**
+ * An implementation of Tarjan's Strongly Connected Components algorithm
+ * using an adjacency list.
+ *
+ * Time complexity: O(V+E)
+ * @author William Fiset, william.alexandre.fiset@gmail.com
+ **/
+
 import static java.lang.Math.min;
 import java.util.*;
 
@@ -79,12 +87,14 @@ public class TarjanSccSolverAdjacencyList {
 
   }
 
+  // Sets up adjacency list with n nodes. 
   public static List<List<Integer>> createGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>();
     for(int i = 0; i < n; i++) graph.add(new ArrayList<>());
     return graph;
   }
 
+  // Adds a directed edge from node 'from' to node 'to'
   public static void addEdge(List<List<Integer>> graph, int from, int to) {
     graph.get(from).add(to);
   }
