@@ -17,7 +17,7 @@ public class TarjanSccSolverAdjacencyList {
   private boolean solved;
   private int sccCount, id;
   private boolean[] onStack;
-  private int[] scc, ids, low;
+  private int[] ids, low;
   private Deque<Integer> stack;
 
   private static final int UNVISITED = -1;
@@ -38,13 +38,12 @@ public class TarjanSccSolverAdjacencyList {
   // have the same value then they're in the same SCC.
   public int[] getSccs() {
     if (!solved) solve();
-    return scc;
+    return low;
   }
 
   public void solve() {
     if (solved) return;
     
-    scc = new int[n];
     ids = new int[n];
     low = new int[n];
     onStack = new boolean[n];
@@ -77,7 +76,7 @@ public class TarjanSccSolverAdjacencyList {
     if (low[at] == ids[at]) {
       for(int node = stack.pop();;node = stack.pop()) {
         onStack[node] = false;
-        scc[node] = sccCount;
+        low[node] = sccCount;
         System.out.println(node);
         if (node == at) break;
       }

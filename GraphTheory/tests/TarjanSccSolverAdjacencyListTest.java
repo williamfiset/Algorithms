@@ -122,10 +122,17 @@ public class TarjanSccSolverAdjacencyListTest {
 
   private static boolean isScc(int[] ids, List<List<Integer>> expectedSccs) {
     Set<Integer> set = new HashSet<>();
+    Set<Integer> sccComponentIds = new HashSet<>();
     for(List<Integer> indexes : expectedSccs) {
       set.clear();
-      for (int index : indexes) set.add(ids[index]);
+      int componentId = 0;
+      for (int index : indexes) {
+        componentId = ids[index];
+        set.add(componentId);
+      }
+      if (sccComponentIds.contains(componentId)) return false;
       if (set.size() != 1) return false;
+      sccComponentIds.add(componentId);
     }
     return true;
   }
