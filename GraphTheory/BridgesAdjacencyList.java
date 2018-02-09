@@ -72,28 +72,31 @@ public class BridgesAdjacencyList {
 
   public static void main(String[] args) {
     
-    int n = 10;
+    int n = 9;
     List<List<Integer>> graph = createGraph(n);
 
     addEdge(graph, 0, 1);
     addEdge(graph, 0, 2);
     addEdge(graph, 1, 2);
-    addEdge(graph, 1, 3);
     addEdge(graph, 2, 3);
-    addEdge(graph, 1, 4);
-    addEdge(graph, 2, 7);
-    addEdge(graph, 4, 6);
-    addEdge(graph, 4, 5);
+    addEdge(graph, 3, 4);
+    addEdge(graph, 2, 5);
     addEdge(graph, 5, 6);
+    addEdge(graph, 6, 7);
     addEdge(graph, 7, 8);
-    addEdge(graph, 7, 9);
+    addEdge(graph, 8, 5);
 
     BridgesAdjacencyList solver = new BridgesAdjacencyList(graph, n);
     List<Integer> bridges = solver.findBridges();
+
+    // Prints:
+    // Bridge between nodes: 3 and 4
+    // Bridge between nodes: 2 and 3
+    // Bridge between nodes: 2 and 5
     for (int i = 0; i < bridges.size() / 2; i++) {
       int node1 = bridges.get(2*i);
       int node2 = bridges.get(2*i+1);
-      System.out.printf("BRIDGE between nodes: %d and %d\n", node1, node2);
+      System.out.printf("Bridge between nodes: %d and %d\n", node1, node2);
     }
 
   }
