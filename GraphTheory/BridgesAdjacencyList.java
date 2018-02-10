@@ -8,14 +8,17 @@
  **/
 
 import static java.lang.Math.min;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BridgesAdjacencyList {
   
   private int n, id;
   private int[] low, ids;
+  private boolean solved;
   private boolean[] visited;
   private List<List<Integer>> graph;
+  private List<Integer> bridges;
 
   public BridgesAdjacencyList(List<List<Integer>> graph, int n) {
     if (graph == null || n <= 0 || graph.size() != n) 
@@ -29,19 +32,21 @@ public class BridgesAdjacencyList {
   // pair. For example, nodes at indexes (0, 1) are a pair, (2, 3) are another
   // pair, etc...
   public List<Integer> findBridges() {
+    if (solved) return bridges;
 
     id = 0;
     low = new int[n]; // Low link values
     ids = new int[n]; // Nodes ids
     visited = new boolean[n];
 
-    List<Integer> bridges = new ArrayList<>();
+    bridges = new ArrayList<>();
 
     // Finds all bridges in the graph across various connected components.
     for (int i = 0; i < n; i++)
       if (!visited[i])
         dfs(i, -1, bridges);
-
+    
+    solved = true;
     return bridges;
   }
 

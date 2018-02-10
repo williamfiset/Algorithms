@@ -8,11 +8,13 @@
  **/
 
 import static java.lang.Math.min;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ArticulationPointsAdjacencyList {
 
   private int n, id, rootNodeOutcomingEdgeCount;
+  private boolean solved;
   private int[] low, ids;
   private boolean[] visited, isArticulationPoint;
   private List<List<Integer>> graph;
@@ -27,6 +29,7 @@ public class ArticulationPointsAdjacencyList {
   // Returns the indexes for all articulation points in the graph even if the
   // graph is not fully connected.
   public boolean[] findArticulationPoints() {
+    if (solved) return isArticulationPoint;
 
     id = 0;
     low = new int[n]; // Low link values
@@ -41,6 +44,8 @@ public class ArticulationPointsAdjacencyList {
         isArticulationPoint[i] = (rootNodeOutcomingEdgeCount > 1);
       }
     }
+
+    solved = true;
     return isArticulationPoint;
   }
 
