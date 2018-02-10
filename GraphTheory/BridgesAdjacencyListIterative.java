@@ -14,8 +14,10 @@ public class BridgesAdjacencyListIterative {
   
   private int n, id;
   private int[] low, ids;
+  private boolean solved;
   private boolean[] visited;
   private List<List<Integer>> graph;
+  private List<Integer> bridges;
 
   private static int CALLBACK_TOKEN = -2;
 
@@ -31,13 +33,14 @@ public class BridgesAdjacencyListIterative {
   // pair. For example, nodes are indexes (0, 1) are a pair, (2, 3) are another
   // pair, etc...
   public List<Integer> findBridges() {
+    if (solved) return bridges;
 
     id = 0;
     low = new int[n]; // Low link values
     ids = new int[n]; // Nodes ids
     visited = new boolean[n];
 
-    List<Integer> bridges = new ArrayList<>();
+    bridges = new ArrayList<>();
 
     // Finds all bridges even if the graph is not one single connected component.
     for (int i = 0; i < n; i++) {
@@ -85,6 +88,7 @@ public class BridgesAdjacencyListIterative {
       }      
     }
 
+    solved = true;
     return bridges;
   }
 
