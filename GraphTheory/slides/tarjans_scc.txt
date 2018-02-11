@@ -23,11 +23,21 @@
 19) In this specific case all the low-link values are the same but there clearly are multiple SCCs. What's going on? Well what's happening is that the low-link values are highly dependent of the order in which the nodes are explored in our DFS so we might NOT end up with the correct arrangement of node ids for our low-link values to tell us which nodes are in which connected component.
 This is where Tarjan's algorithm kicks in which its stack invariant to prevent SCCs from interfering with each others' low-link values.
 
+20) So to cope with the random traversal order of the DFS, Tarjan’s algorithm maintains a set (often as a stack) of valid nodes from which to update low-link values from. How this works is that nodes are added to the stack as nodes are explored for the first time; and nodes are removed from the stack each time a complete SCC is found. Only the nodes in the found SCC are removed from the stack.
 
+21) So if variables u and v are nodes in our graph and we're currently exploring node u then our new low-link update condition is:
+To update node u’s low-link value during the DFS to node v’s low-link value, there must be a path of edges from node u to node v and node v must be on the stack.
+This will prevent SSCs' low-link values from interfering with each other.
 
+22) Another small difference we're going to make to finding the correct low-link values is that instead of finding all low-link values after the fact we're going to update them as with do our DFS 'on the fly' if you will. This will allow us to obtain a linear time complexity :)
 
+23) We'll see an example in the following slides but in great detail this is Tarjan's algorithm in a nutshell:
+- Start out and mark each node as unvisited.
+- Start the DFS somewhere and don't stop until all nodes are visited. Upon visiting a node assign it an id and a low-link value. Additionally also mark the node as visited and add it to the seen stack.
+- On the DFS callback, if the previous node is on the stack then min the current node's low-link value with the last node's low-link value. This is essentially what allows low-link values to propagate throughout cycles.
+- After visiting all of a node's neighbours if the current node started the SCC then pop off all nodes from the stack which are in the SCC. You know a node started a SCC if its id is equal to its low-link value. If you think about that a bit more it'll make sense.
 
-
+24) explain the node color meaning
 
 
 
