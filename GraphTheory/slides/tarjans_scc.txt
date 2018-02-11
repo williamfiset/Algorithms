@@ -1,4 +1,53 @@
-1) 
+1) Hello and welcome back, my name is William, today I want to talk about the fascinating topic of Strongly Connected Components and how to find them using Tarjan's algorithm.
 
-2) So what are SCCs? 
+2) So what are SCCs or Strongly Connected Components? I like to think of them as self contained cycles within a directed graph where every vertex in a given cycle can reach every other vertex in the same cycle. For example, in the graph below there are four strongly connected components.
+
+3) I've outlined them here in different colors. If you inspect each SSC you'll notice that each has it's own self contained cycle and that for each component there's no way to find a path that leaves a component and comes back. Because of that property we can be sure that SSCs are unique within a directed graph.
+
+4) To understand Tarjan's SSC algorithm we're going to need to understand the concept of a low-link value. Simply put, a low-link value is the smallest node id a reachable from that node including itself. For that to make sense we're going to need to label each of the nodes on this graph and we're going to do that by doing a DFS.
+
+5) Suppose we start at the top left corner and label that node with the id 0.
+
+6) Now we continue exploring our graph until we visit all the edges and labeled all nodes.
+
+...
+
+15) [Back to blue graph] Alright now that we're done labeling the nodes inspect the graph and try and determine the low-link value for each node. Again, the low-link value of a node is the smallest [lowest] node id reachable from that node including itself. For example the low-link value of node 1 should be 0 since node 0 is reachable from node 1 via a series of edges. Similarly, node 4's low-link value should be 3 since node 3 is the lowest node is reachable from node 4.
+
+16) So if we assign all the low-link values we get the following setup. From this view you realize that all nodes which have the same low-link value belong to the same connected component.
+
+17) So if I assign colors to each SCC we can now clearly see that for each component all the low-link values are the same. This seems too easy right? You're not wrong there's a catch. This technique is highly dependent on the traversal order of the DFS.
+
+18) For instance in this same graph I rearranged the node ids as though the DFS started in the top right corner and made its way down and then across. In such an event, the low-link values will be incorrect.
+
+19) In this specific case all the low-link values are the same but there clearly are multiple SCCs. What's going on? Well what's happening is that the low-link values are highly dependent of the order in which the nodes are explored in our DFS so we might NOT end up with the correct arrangement of node ids for our low-link values to tell us which nodes are in which connected component.
+This is where Tarjan's algorithm kicks in which its stack invariant to prevent SCCs from interfering with each others' low-link values.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
