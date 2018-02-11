@@ -120,6 +120,38 @@ public class TarjanSccSolverAdjacencyListTest {
     assertThat(isScc(solver.getSccs(), expectedSccs)).isTrue();
   }
 
+  @Test
+  public void testLastGraphInSlides() {
+    int n = 8;
+    List<List<Integer>> g = createGraph(n);
+
+    addEdge(g, 6, 0);
+    addEdge(g, 6, 2);
+    addEdge(g, 3, 4);
+    addEdge(g, 6, 4);
+    addEdge(g, 2, 0);
+    addEdge(g, 0, 1);
+    addEdge(g, 4, 5);
+    addEdge(g, 5, 6);
+    addEdge(g, 3, 7);
+    addEdge(g, 7, 5);
+    addEdge(g, 1, 2);
+    addEdge(g, 7, 3);
+    addEdge(g, 5, 0);
+    
+    TarjanSccSolverAdjacencyList solver = new TarjanSccSolverAdjacencyList(g);
+    solver.solve();
+
+    List<List<Integer>> expectedSccs = ImmutableList.of(
+      ImmutableList.of(6, 5, 4),
+      ImmutableList.of(3, 7),
+      ImmutableList.of(0, 2, 1)
+    );
+    
+    assertThat(solver.sccCount()).isEqualTo(expectedSccs.size());
+    assertThat(isScc(solver.getSccs(), expectedSccs)).isTrue();
+  }
+
   private static boolean isScc(int[] ids, List<List<Integer>> expectedSccs) {
     Set<Integer> set = new HashSet<>();
     Set<Integer> sccComponentIds = new HashSet<>();

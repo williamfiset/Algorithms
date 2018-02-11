@@ -59,7 +59,6 @@ public class TarjanSccSolverAdjacencyList {
   
   private void dfs(int at) {
     
-    System.out.printf("AT: %d - %s\n", at, Arrays.toString(low));
     stack.push(at);
     onStack[at] = true;
     ids[at] = low[at] = id++;
@@ -69,24 +68,20 @@ public class TarjanSccSolverAdjacencyList {
       if (onStack[to]) low[at] = min(low[at], low[to]);  
     }
 
-    System.out.printf("CALLBACK: %d - %s - %s\n", at, Arrays.toString(low), stack);
-
     // On recursive callback, if we're at the root node (start of SCC) 
     // empty the seen stack until back to root.
     if (low[at] == ids[at]) {
       for(int node = stack.pop();;node = stack.pop()) {
         onStack[node] = false;
-        low[node] = sccCount;
-        System.out.println(node);
+        low[node] = ids[at];
         if (node == at) break;
       }
-      System.out.println();
       sccCount++;
     }
 
   }
 
-  // Sets up adjacency list with n nodes. 
+  // Initializes adjacency list with n nodes. 
   public static List<List<Integer>> createGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>();
     for(int i = 0; i < n; i++) graph.add(new ArrayList<>());
@@ -98,47 +93,64 @@ public class TarjanSccSolverAdjacencyList {
     graph.get(from).add(to);
   }
 
+  /* Example usage: */
+
   public static void main(String[] arg) {
-    butterflyStrangeOrdering();
-  }
-
-  public static void grid3x3() {
-    int n = 9;
+    int n = 8;
     List<List<Integer>> graph = createGraph(n);
-    addEdge(graph, 0, 1);
-    addEdge(graph, 1, 2);
-    addEdge(graph, 0, 3);
-    addEdge(graph, 4, 0);
-    addEdge(graph, 5, 1);
-    addEdge(graph, 2, 5);
-    addEdge(graph, 3, 4);
-    addEdge(graph, 4, 5);
-    addEdge(graph, 4, 6);
-    addEdge(graph, 7, 4);
-    addEdge(graph, 4, 8);
-    addEdge(graph, 5, 8);
-    addEdge(graph, 6, 7);
-    addEdge(graph, 7, 8);
-    addEdge(graph, 8, 8);
-    TarjanSccSolverAdjacencyList solver = new TarjanSccSolverAdjacencyList(graph);
-    solver.solve();
-    System.out.println(Arrays.toString(solver.getSccs()));
-    System.out.println("SCCs: " + solver.sccCount());
-  }
 
-  public static void butterflyStrangeOrdering() {
-    int n = 5;
-    List<List<Integer>> g = createGraph(n);
-    addEdge(g, 0 , 1);
-    addEdge(g, 1 , 2);
-    addEdge(g, 2 , 3);
-    addEdge(g, 3 , 1);
-    addEdge(g, 1 , 4);
-    addEdge(g, 4 , 0);
-    TarjanSccSolverAdjacencyList solver = new TarjanSccSolverAdjacencyList(g);
-    solver.solve();
-    System.out.println(Arrays.toString(solver.getSccs()));
-    System.out.println("SCCs: " + solver.sccCount());
+    addEdge(graph, 6, 0);
+    addEdge(graph, 6, 2);
+    addEdge(graph, 3, 4);
+    addEdge(graph, 6, 4);
+    addEdge(graph, 2, 0);
+    addEdge(graph, 0, 1);
+    addEdge(graph, 4, 5);
+    addEdge(graph, 5, 6);
+    addEdge(graph, 3, 7);
+    addEdge(graph, 7, 5);
+    addEdge(graph, 1, 2);
+    addEdge(graph, 7, 3);
+    addEdge(graph, 5, 0);
+
+    TarjanSccSolverAdjacencyList solver = new TarjanSccSolverAdjacencyList(graph);
+    
+    int[] sccs = solver.getSccs();
+    Map<Integer, List<Integer>> multimap = new HashMap<>();
+    for (int i = 0; i < n; i++) {
+      if (!multimap.containsKey(sccs[i]))
+        multimap.put(sccs[i], new ArrayList<>());
+      multimap.get(sccs[i]).add(i);
+    }
+
+    // Prints:
+    // Number of Strongly Connected Components: 3
+    // Nodes: [0, 1, 2] form a Strongly Connected Component.
+    // Nodes: [3, 7] form a Strongly Connected Component.
+    // Nodes: [4, 5, 6] form a Strongly Connected Component.    
+    System.out.printf("Number of Strongly Connected Components: %d\n", solver.sccCount());
+    for (List<Integer> scc : multimap.values()) {
+      System.out.println("Nodes: " + scc + " form a Strongly Connected Component.");
+    }
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
