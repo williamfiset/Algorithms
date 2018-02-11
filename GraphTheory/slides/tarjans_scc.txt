@@ -1,10 +1,10 @@
-1) Hello and welcome back, my name is William, today I want to talk about the fascinating topic of Strongly Connected Components and how to find them using Tarjan's algorithm.
+1) Hello and welcome back, my name is William, today I want to talk about the fascinating topic of Strongly Connected Components and how we're going to use Tarjan's algorithm to find them.
 
-2) So what are SCCs or Strongly Connected Components? I like to think of them as self contained cycles within a directed graph where every vertex in a given cycle can reach every other vertex in the same cycle. For example, in the graph below there are four strongly connected components.
+2) So what are SCCs or Strongly Connected Components? I like to think of them as self contained cycles within a directed graph. Where for every vertex in a given cycle you can reach every other vertex in the same cycle. For example, in the graph below there are four strongly connected components.
 
-3) I've outlined them here in different colors. If you inspect each SSC you'll notice that each has it's own self contained cycle and that for each component there's no way to find a path that leaves a component and comes back. Because of that property we can be sure that SSCs are unique within a directed graph.
+3) I've outlined them here in different colors. If you inspect each SCC you'll notice that each has it's own self contained cycle and that for each component there's no way to find a path that leaves a component and comes back. Because of that property we can be sure that SCCs are unique within a directed graph.
 
-4) To understand Tarjan's SSC algorithm we're going to need to understand the concept of a low-link value. Simply put, a low-link value is the smallest node id a reachable from that node including itself. For that to make sense we're going to need to label each of the nodes on this graph and we're going to do that by doing a DFS.
+4) To understand Tarjan's SCC algorithm we're going to need to understand the concept of a low-link value. Simply put, a low-link value is the smallest node id reachable from that node including itself. For that to make sense, we're going to need to label each of the nodes in our graph by doing a DFS.
 
 5) Suppose we start at the top left corner and label that node with the id 0.
 
@@ -12,30 +12,29 @@
 
 ...
 
-15) [Back to blue graph] Alright now that we're done labeling the nodes inspect the graph and try and determine the low-link value for each node. Again, the low-link value of a node is the smallest [lowest] node id reachable from that node including itself. For example the low-link value of node 1 should be 0 since node 0 is reachable from node 1 via a series of edges. Similarly, node 4's low-link value should be 3 since node 3 is the lowest node is reachable from node 4.
+15) [Back to blue graph] Alright now that we're done labeling the nodes inspect the graph and try and determine the low-link value for each node. Again, the low-link value of a node is the smallest [lowest] node id reachable from that node including itself. For example the low-link value of node 1 should be 0 since node 0 is reachable from node 1 via a series of edges. Similarly, node 4's low-link value should be 3 since node 3 is the lowest node that is reachable from node 4.
 
-16) So if we assign all the low-link values we get the following setup. From this view you realize that all nodes which have the same low-link value belong to the same connected component.
+16) So if we assign all the low-link values we get the following setup. From this view you realize that all nodes which have the same low-link value belong to the same strongly connected component.
 
-17) So if I assign colors to each SCC we can now clearly see that for each component all the low-link values are the same. This seems too easy right? You're not wrong there's a catch. This technique is highly dependent on the traversal order of the DFS.
+17) If I now assign colors to each SCC we can clearly see that for each component all the low-link values are the same. This seems too easy right? Well, you're not wrong, there is a catch. The flaw with this technique is that it is highly dependent on the traversal order of the DFS which is for our purposes is random.
 
-18) For instance in this same graph I rearranged the node ids as though the DFS started in the top right corner and made its way down and then across. In such an event, the low-link values will be incorrect.
+18) For instance, in this same graph I rearranged the node ids as though the DFS started in the top right corner and made its way down and then across. In such an event, the low-link values will be incorrect.
 
-19) In this specific case all the low-link values are the same but there clearly are multiple SCCs. What's going on? Well what's happening is that the low-link values are highly dependent of the order in which the nodes are explored in our DFS so we might NOT end up with the correct arrangement of node ids for our low-link values to tell us which nodes are in which connected component.
+19) In this specific case all the low-link values are the same but there clearly are multiple SCCs. What's going on? Well what's happening is that the low-link values are highly dependent of the order in which the nodes are explored in our DFS so we might NOT end up with the correct arrangement of node ids for our low-link values to tell us which nodes are in which SCC.
 This is where Tarjan's algorithm kicks in which its stack invariant to prevent SCCs from interfering with each others' low-link values.
 
-20) So to cope with the random traversal order of the DFS, Tarjan’s algorithm maintains a set (often as a stack) of valid nodes from which to update low-link values from. How this works is that nodes are added to the stack as nodes are explored for the first time; and nodes are removed from the stack each time a complete SCC is found. Only the nodes in the found SCC are removed from the stack.
+20) So to cope with the random traversal order of the DFS, Tarjan’s algorithm maintains a set (often as a stack) of valid nodes from which to update low-link values from. How the stack works is that nodes are added to the stack as nodes are explored for the first time; and nodes are removed from the stack each time a SCC is found.
 
-21) So if variables u and v are nodes in our graph and we're currently exploring node u then our new low-link update condition is:
-To update node u’s low-link value during the DFS to node v’s low-link value, there must be a path of edges from node u to node v and node v must be on the stack.
-This will prevent SSCs' low-link values from interfering with each other.
+21) Taking a step back, if variables u and v are nodes in our graph and we're currently exploring node u then our new low-link update condition is that:
+To update node u’s low-link value to node v’s low-link value there has to be a path of edges from u to v and node v must be on the stack.
 
 22) Another small difference we're going to make to finding the correct low-link values is that instead of finding all low-link values after the fact we're going to update them as with do our DFS 'on the fly' if you will. This will allow us to obtain a linear time complexity :)
 
-23) We'll see an example in the following slides but in great detail this is Tarjan's algorithm in a nutshell:
+23) We'll see an example in the following slides but this is Tarjan's algorithm in a nutshell:
 - Start out and mark each node as unvisited.
 - Start the DFS somewhere and don't stop until all nodes are visited. Upon visiting a node assign it an id and a low-link value. Additionally also mark the node as visited and add it to the seen stack.
 - On the DFS callback, if the previous node is on the stack then min the current node's low-link value with the last node's low-link value. This is essentially what allows low-link values to propagate throughout cycles.
-- After visiting all of a node's neighbours if the current node started the SCC then pop off all nodes from the stack which are in the SCC. You know a node started a SCC if its id is equal to its low-link value. If you think about that a bit more it'll make sense.
+- After visiting all of a node's neighbours if the current node started the SCC then pop off all nodes from the stack which are in the SCC. You know a node started a SCC if its id is equal to its low-link value. If you think about that a bit more it'll start making sense.
 
 24) Let's do an example. I'm going to mark unvisited nodes as blue, nodes for which the DFS is still exploring some neighbors as orange and nodes which the DFs as explored all neighbors as gray. Note that if a node is orange or gray then it is on the stack and we can update its low-link value. I will also be tracking which nodes are on the stack on in the left column so keep your eyes on that too.
 
