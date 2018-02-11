@@ -70,7 +70,7 @@ public class TarjanSccSolverAdjacencyList {
 
     // On recursive callback, if we're at the root node (start of SCC) 
     // empty the seen stack until back to root.
-    if (low[at] == ids[at]) {
+    if (ids[at] == low[at]) {
       for(int node = stack.pop();;node = stack.pop()) {
         onStack[node] = false;
         low[node] = ids[at];
