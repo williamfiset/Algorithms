@@ -83,7 +83,7 @@ Uncomment when more AI algorithms are done.
 * [Depth first search (adjacency list, recursive)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListRecursive.java) **- O(V+E)**
 * [Dijkstra's shortest path (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DijkstrasShortestPathAdjacencyList.java) **- O(Elog(V))**
 * [Dijkstra's shortest path to all nodes (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DijkstrasShortestPathAllNodesAdjacencyList.java) **- O(Elog(V))**
-* [Floyd Warshall algorithm (adjacency matrix, negative cycle check)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/FloydWarshall.java) **- O(V<sup>3</sup>)**
+* [Floyd Warshall algorithm (adjacency matrix, negative cycle check)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/FloydWarshallSolver.java) **- O(V<sup>3</sup>)**
 * [Graph diameter (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/GraphDiameter.java) **- O(VE)**
 * [Kruskal's min spanning tree algorithm (edge list, union find)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/KruskalsEdgeList.java) **- O(Elog(E))**
 * [Prim's min spanning tree algorithm (lazy version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/LazyPrimsAdjacencyList.java) **- O(Elog(E))**
