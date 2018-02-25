@@ -8,7 +8,7 @@ public class FloydWarshallTest {
   static final double INF = Double.POSITIVE_INFINITY;
   static final double NEG_INF = Double.NEGATIVE_INFINITY;
 
-  static double[][] matrix1, matrix2;
+  static double[][] matrix1, matrix2, matrix2FromSlides;
 
   @Before
   public void setup() {
@@ -25,6 +25,13 @@ public class FloydWarshallTest {
       {INF, INF,   0, INF,  -2},
       {INF, INF,   1,   0, INF},
       {INF, INF, INF,   0,   0}
+    };
+    matrix2FromSlides = new double[][] {
+      {   0,   6, INF,  25,   3},
+      {   1,   0,   6,   1,   3},
+      { INF,   1,   0,   2,   3},
+      {   4,   4,   4,   0, INF},
+      {   4,   3,   5, INF,   0}
     };
   }
 
@@ -78,5 +85,27 @@ public class FloydWarshallTest {
     assertThat(matrix2[4][4]).isEqualTo(NEG_INF);
 
   }
+
+  @Test
+  public void testGraph2FromSlides() {
+    FloydWarshall.floydWarshall(matrix2FromSlides);
+    for (double[]r : matrix2FromSlides) {
+      System.out.println(Arrays.toString(r));
+    }
+  }
   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
