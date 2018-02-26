@@ -7,6 +7,7 @@
  **/
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BellmanFordAdjacencyMatrix {
 
@@ -42,11 +43,14 @@ public class BellmanFordAdjacencyMatrix {
 
   public List<Integer> reconstructShortestPath(int end) {
     if (!solved) solve();
-    List<Integer> path = new ArrayList<>();
+    LinkedList<Integer> path = new LinkedList<>();
     if (dist[end] == Double.POSITIVE_INFINITY) return path;
-    for(int at = start; prev[at] != null; at = prev[at])
-      path.add(at);
-    path.add(end);
+    for(int at = end; prev[at] != null; at = prev[at]) {
+      // Entered negative cycle. There are an infinite number of shortest paths.
+      if (prev[at] == -1) return null;
+      path.addFirst(at);
+    }
+    path.addFirst(start);
     return path;
   }
 
@@ -79,8 +83,10 @@ public class BellmanFordAdjacencyMatrix {
     for (int k = 0; k < n-1; k++)
       for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
-          if (dist[i] + matrix[i][j] < dist[j])
+          if (dist[i] + matrix[i][j] < dist[j]) {
             dist[j] = Double.NEGATIVE_INFINITY;
+            prev[j] = -1;
+          }
 
     solved = true;
   }
@@ -109,7 +115,9 @@ public class BellmanFordAdjacencyMatrix {
     graph[5][7] = 3;
 
     int start = 0;
-    double[] d = new BellmanFordAdjacencyMatrix(start, graph).getShortestPaths();
+    BellmanFordAdjacencyMatrix solver; 
+    solver = new BellmanFordAdjacencyMatrix(start, graph);
+    double[] d = solver.getShortestPaths();
 
     for (int i = 0; i < n; i++)
       System.out.printf("The cost to get from node %d to %d is %.2f\n", start, i, d[i] );
@@ -124,7 +132,30 @@ public class BellmanFordAdjacencyMatrix {
     // The cost to get from node 0 to 6 is 5.00
     // The cost to get from node 0 to 7 is 8.00
     // The cost to get from node 0 to 8 is Infinity
+    System.out.println();
 
+
+    for (int i = 0; i < n; i++) {
+      String strPath;
+      List<Integer> path = solver.reconstructShortestPath(i);
+      if (path == null) {
+        strPath = "Infinite number of shortest paths.";
+      } else {
+        List<String> nodes = path.stream().map(Object::toString).collect(Collectors.toList());
+        strPath = String.join(" -> ", nodes);
+      }
+      System.out.printf("The shortest path from %d to %d is: [%s]\n", start, i, strPath);
+    }
+    // Outputs:
+    // The shortest path from 0 to 0 is: [0]
+    // The shortest path from 0 to 1 is: [0 -> 1]
+    // The shortest path from 0 to 2 is: [Infinite number of shortest paths.]
+    // The shortest path from 0 to 3 is: [Infinite number of shortest paths.]
+    // The shortest path from 0 to 4 is: [Infinite number of shortest paths.]
+    // The shortest path from 0 to 5 is: [0 -> 1 -> 5]
+    // The shortest path from 0 to 6 is: [0 -> 1 -> 6]
+    // The shortest path from 0 to 7 is: [0 -> 1 -> 5 -> 7]
+    // The shortest path from 0 to 8 is: []
   }
 
 }

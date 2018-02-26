@@ -74,6 +74,7 @@ Uncomment when more AI algorithms are done.
 * [Articulation points/cut vertices (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/ArticulationPointsAdjacencyList.java) **- O(V+E)**
 * [Bellman-Ford (edge list, negative cycles)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BellmanFordEdgeList.java) **- O(VE)**
 * [Bellman-Ford (adjacency list, negative cycles)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BellmanFordAdjacencyList.java) **- O(VE)**
+* [Bellman-Ford (adjacency matrix, negative cycles)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BellmanFordAdjacencyMatrix.java) **- O(V<sup>3</sup>)**
 * [Breadth first search (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterative.java) **- O(V+E)**
 * [Breadth first search (adjacency list, fast queue)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterativeFastQueue.java) **- O(V+E)**
 * [Bridges/cut edges (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BridgesAdjacencyList.java) **- O(V+E)**
