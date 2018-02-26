@@ -56,10 +56,10 @@ public class FloydWarshallSolver {
 
   // Returns the shortest path (of nodes) from start to end inclusive.
   // TODO(williamfiset): Needs testing!
-  public List<Integer> getPath(int start, int end) {
+  public List<Integer> reconstructShortestPath(int start, int end) {
     if (!solved) solve();
     List<Integer> path = new ArrayList<>();
-    if (next[start][end] == null) return path;
+    if (dp[start][end] == POSITIVE_INFINITY) return path;
     for(int at = start; at != end; at = next[at][end])
       path.add(at);
     path.add(end);
@@ -118,7 +118,7 @@ public class FloydWarshallSolver {
       {   4,   2,   5, INF,   0}
     };
     FloydWarshallSolver solver = new FloydWarshallSolver(m);
-    List<Integer> path = solver.getPath(0, 3);
+    List<Integer> path = solver.reconstructShortestPath(0, 3);
     System.out.println(path);
   }
 
