@@ -185,7 +185,7 @@ The procedure to add a new algorithm named **Foo** is the following:
 
 This repository places a large emphasis on good testing practice to ensure that published algorithms are bug free and high quality. Testing is done using a combinations of frameworks including: [JUnit](http://junit.org/junit4/), [Mockito](http://site.mockito.org/) and the [Google Truth](http://google.github.io/truth) framework. Currently very few algorithms have tests because they were (informally) tested against problems on [Kattis](https://open.kattis.com/problems) in a competitive programming setting, but we are slowly migrating to formally testing these algorithms for robustness.
 
-When developing you likely do not want to run all tests but only a subset of them. For example, if you want to run the FloydWarshallTest.java file under [GraphTheory/tests/FloydWarshallTest.java](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/tests/FloydWarshallTest.java) you can execute:
+When developing you likely do not want to run all tests but only a subset of them. For example, if you want to run the FloydWarshallTest.java file under [GraphTheory/tests/FloydWarshallTest.java](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/tests/FloydWarshallSolverTest.java) you can execute:
 ```bash
 Algorithms$ gradle test --tests "FloydWarshallTest"
 ```
