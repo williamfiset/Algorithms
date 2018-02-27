@@ -46,10 +46,10 @@ public class BellmanFordAdjacencyMatrix {
     LinkedList<Integer> path = new LinkedList<>();
     if (dist[end] == Double.POSITIVE_INFINITY) return path;
     for(int at = end; prev[at] != null; at = prev[at]) {
-      // Entered negative cycle. There are an infinite number of shortest paths.
+      // Return null since there are an infinite number of shortest paths.
       if (prev[at] == -1) return null;
       path.addFirst(at);
-    }
+    } 
     path.addFirst(start);
     return path;
   }
@@ -75,7 +75,6 @@ public class BellmanFordAdjacencyMatrix {
             dist[j] = dist[i] + matrix[i][j];
             prev[j] = i;
           }
-
 
     // Run algorithm a second time to detect which nodes are part
     // of a negative cycle. A negative cycle has occurred if we 
