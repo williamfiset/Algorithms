@@ -14,7 +14,26 @@ An important note I should mention is that I assume that the distance from a nod
 
 When there is no edge between nodes i and j set the value in the matrix at m i j to be positive infinity. This indicates that the two nodes are not connected to each other.
 
-A very important note to make here is that if your programming language doesn't support a special constant in the standard library for positive infinity such that infinity + infinity equals infinity and infinity + x = infinity then avoid using 2 to the 31 - 1 as infinity. If you do this you will get integer overflow. Simply use a largish constant instead.
+A very important note to make here is that if your programming language doesn't support a special constant in the standard library for positive infinity such that infinity + infinity equals infinity and infinity + x = infinity then avoid using 2 to the 31 - 1 as infinity. If you do this you will get integer overflow. Simply use a large constant instead.
+
+As we will see the main idea with the floyd-warshall algorithm builds off this notion that you want to compute all intermediate routes between two nodes to find the optimal path.
+
+Suppose our adjacency matrix tells us that the distance from a to b is: m[a][b] = 11
+
+Now suppose there exists a third node c. If the distance from a to c and then from c to b is less then the distance from a to b then it's better to go though c!
+
+Again the goal is to consider all the possible intermediate paths between triplets of nodes.
+
+This means we can have something like this where the optimal path from a to b is first going to c then going from c to b but in the process we actually route though another node which I labeled with a question mark because we've already computed the optimal path from b to c and know that it involves an intermediate node.
+
+Similarly, we can start getting longer paths with more intermediate nodes between a and c and c and b at a smaller cost.
+
+We're also not just limited to one intermediate node in between a and c and c and b we can have several like in the graph below.
+
+Now the question comes of how do we actually compute all intermediate paths? The answer is we will use dynamic programming to cache previous optimal solutions. Let dp be a three dimensional matrix of size n by n by n which acts as a memo table. We're going to say that the cell at dp k i j in our table gives us the shortest path from node i to node j routing through nodes 0 to k. 
+What we'll do is start by computing k = 0, then k = 1 then k = 2 and so on. This gradually builds up the optimal solution routing through 0, then all optimal solutions routing through 0 and 1, then all optimal solutions routing through 0, 1, 2, etc… up until n-1 which stores to APSP solution.
+
+
 
 
 
