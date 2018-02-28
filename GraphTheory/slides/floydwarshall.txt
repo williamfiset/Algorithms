@@ -1,0 +1,22 @@
+Hello and welcome, my name is william and today's topic is the floyd-warshall all pairs shortest path algorithm. We will be covering how the algorithm works, how to reconstruct shortest paths, the handling of negative cycles followed by some code, so let's get started.
+
+In Graph theory, the FW algorithm is an APSP algorithm, this means it can find the shortest path between all pairs of nodes. This is very important for many applications across several fields.
+The time complexity to run Floyd-Warshall is big O of V cubed, V being the number of vertices in the graph. This makes the algorithm ideal for graphs with no more than a couple hundred nodes but not much more.
+
+Before we dive too deeply into the FW algorithm I want to address when you should and should NOT use this algorithm.
+This table gives information about various types of graphs and/or constraints in the leftmost column and the performance or outcome of common SP algorithms. For example, you can see in the second row that a BFS and Dijkstra's can handle large graphs with lots of nodes while Bellman-Ford and Floyd-Warshall not as much. I suggest you pause the video and REALLY go through this table and make sure you understand why each cell has the value it does. Feel free to drop a comment if you're uncertain about anything and i'll be glad to answer.
+
+However, what I want to highlight is the rightmost column since we're talking about the Floyd-Warshall algorithm. The Floyd-Warshall algorithm really shines in three places and those are: On small graphs, solving the APSP problem and detecting negative cycles. You can use the algorithm for other tasks but there are likely better algorithms out there.
+
+With FW, the optimal way to represent our graph is with a 2D adjacency matrix m, where cell m[i][j] represents the edge weight of going from node i to node j. So in the image below I transformed the graph with nodes A,B,C and D into an adjacency matrix on the right.
+
+An important note I should mention is that I assume that the distance from a node to itself is zero which is usually the case.
+
+When there is no edge between nodes i and j set the value in the matrix at m i j to be positive infinity. This indicates that the two nodes are not connected to each other.
+
+A very important note to make here is that if your programming language doesn't support a special constant in the standard library for positive infinity such that infinity + infinity equals infinity and infinity + x = infinity then avoid using 2 to the 31 - 1 as infinity. If you do this you will get integer overflow. Simply use a largish constant instead.
+
+
+
+
+
