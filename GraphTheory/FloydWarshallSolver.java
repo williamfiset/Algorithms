@@ -82,7 +82,7 @@ public class FloydWarshallSolver {
     return path;
   }
 
-  // Executes the Floyd-Warshall algorithm internally.
+  // Executes the Floyd-Warshall algorithm.
   public void solve() {
     // Compute all pairs shortest paths.
     for (int k = 0; k < n; k++) {
