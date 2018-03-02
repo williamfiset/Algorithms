@@ -59,51 +59,51 @@ Notice that we will be looping over k starting from 0, then 1, then 2… and so 
 28) Then is the 2D memo table that will contain our APSP solution.
 29) Last is another 2D table that we will use to reconstruct our shortest paths.
 
-30) Now moving to the floyd-Warshall method solver you see that it takes one parameter and this is the 2D adjacency matrix representing our graph's edge weights.
+30) Now moving to the floyd-Warshall function you see that it takes one parameter, this is the 2D adjacency matrix representing our graph.
 
-31) The first thing I do in this method is call the setup method so let's take a peek at that real quick.
+31) The first thing I do in this method is call the setup function so let's take a look at that real quick.
 
 32) Here we are inside the setup method.
 
-33)Here all I do is I allocate memory for our tables. The dp matrix should have the same type as the input adjacency matrix. So if your edges are represented as real number then your dp matrix should hold real number as well. The next matrix will contain indexes of nodes to reconstruct shortest paths so initially this should be populated with null values.
+33)Here all I do is I allocate memory for our tables. The dp matrix should have the same type as the input adjacency matrix. So if your edges are represented as real numbers then your dp matrix should hold real numbers. The 'next' matrix will contain indexes of nodes to reconstruct the shortest paths found from running the FW algorithm. It is important that initially this matrix be populated with null values.
 
 34) Inside the for loops all I do is copy the input matrix into the dp matrix. Think of this as the base case or rather the k = 0 case.
 
 35) For the next matrix if the distance from i to j is not positive infinity then the next node you want to go to from node i is node j by default.
 
-36) Back to the floyd warshall method
+36) Back to the floyd warshall function
 
 37) In here after the setup, loop over k on the exterior loop. It's important that k is on the exterior loop since we want to gradually build up the best solutions for k = 0 then k = 1 then k = 2 and so on..
 
-38) Followed by this, loop over all pairs of node i and j.
+38) Followed by this, loop over all pairs of nodes i and j.
 
-39) Inside the main body actually test for our condition and update the value at dp i j if it is better. 
+39) Inside the main body actually test for our condition to improve the shortest path from i to j and update the value at dp i j if it is better to route through k.
 
 40) also inside here update the next array at i j to point to the next index at next of i k
 
-41) The last thing I want to do is detect and propagate negative cycles. This is an optional step if you know that negative cycles will not manifest themselves then you can ignore this but for good measure I would keep it anyways.
+41) The last thing I want to do is detect and propagate negative cycles. This is an optional step if you know that negative cycles will not manifest themselves.
 
-42) But before we get too far what consists of a negative cycle? This isn't entirely obvious.
+42) But before we get too far, I want to discuss negative cycles and what they entail because it isn't entirely obvious.
 
-43) Consider the following graph. There are basically two types of nodes, nodes directly in negative cycles, and nodes unaffected by the negative cycle.
+43) Consider the following graph. There are basically two types of nodes to consider: nodes directly in negative cycles, and nodes unaffected by the negative cycle.
 
-44) This red node is the cause of a negative cycle because it can endlessly loop and get a better and better cost.
+44) This red node is the cause of a negative cycle because it can endlessly loop on itself and obtain smaller and smaller costs.
 
-45) While all these nodes are not directly in a negative cycle so they're blue. This however doesn't mean they're necessarily safe from the negative cycle as we will see.
+45) While all these blue nodes are not directly in a negative cycle. This however doesn't mean they're necessarily safe from the negative cycles as we will see.
 
 46) NEgative cycles can also manifest themselves as a cycles of multiple nodes like the following.
 
 47) <press/>
 
-48) The important thing to ask ourselves is does the optimal path from node i to node j go through a red node? If so the path is affected by the negative cycle and is compromised. For example, the shortest path from 0 to 5 is negative infinity because I can go from 0 to 2 and indefinitely loop in the negative cycle obtaining better and better costs before going to 5. This is a consequence of traversing a red node on the way to 5. But for example the shortest path from 4 to 6 doesn't involve any red nodes so we can safely conclude that the safest path from 4 to 6 is indeed 2.
+48) The important thing to ask ourselves is does the optimal path from node i to node j go through a red node? If so, the path is affected by the negative cycle and is compromised. For example, the shortest path from 0 to 5 is negative infinity because I can go from 0 to 2 and indefinitely loop in the negative cycle consisting of nodes 1, 2 and 3 obtaining better and better costs before going to 5. This is a consequence of traversing a red node on the way to 5. Some shortest paths avoid red nodes all together, consider the shortest path from 4 to 6, this doesn't involve any red nodes so we can safely conclude that the shortest path from 4 to 6 is indeed 2.
 
 49) So to identify whether or not the optimal path from i to j is affected by a negative cycle re-run the floyd-warshall algorithm a second time. If the best distance is better than the already known best distance then set the value in the matrix from i to j to be negative infinity. Also mark the next matrix with a -1 to indicate that the path is affected by a negative cycle.
 
-50) Back in the floydWarshall algorithm all we need to do is to return the dp matrix which contains the shortest distance from any node to any other node.
+50) Back in the floydWarshall function all we need to do is to return the dp matrix which contains the shortest distance from any node to any other node.
 
-51) Another thing I want to cover is how to reconstruct the shortest path between any two pair of nodes if it exists. This method returns the path of nodes between the start and end nodes or null if there's a negative cycle.
-First check if the distance between the start and end nodes is positive infinity, if so then return the empty path. Then to reconstruct the path I created a variable called 'at' to track the current node and loop through the next array added the current at node to the path. During this process I always check if the current node has the value -1. If it does then this means that the optimal path encountered a red node and is trapped in a negative cycle so return null. 
-Notice that in reality this method has three key return values: an empty path which means that the start and end nodes are not connected, a null value meaning a negative cycle and lastly a non empty path of nodes indexes to mean an actual shortest path was found.
+51) A last thing I want to cover is how to reconstruct the shortest path between any two pairs of nodes. This method returns the path of nodes between the start and end nodes or null if there's a negative cycle.
+First check if the distance between the start and end nodes is positive infinity, if so then return the empty path. Then to reconstruct the path I created a variable called 'at' to track the current node and loop through the next array adding the current node to the path as I go. During this process I check if the current node has the value -1. If it does, then this means that the optimal path encountered a red node and is trapped in a negative cycle so return null. 
+Notice that in reality this method has three key return values: an empty path which means that the start and end nodes are not connected, a null value meaning a negative cycle and lastly a non empty path of nodes indeces to mean an actual shortest path was found.
 
 So I think that's about everything you need to know about the floyd warshall algorithm. Next video I'm covering real source code for this so sick around for that. You can also go get the real source code on my github page at github dot com slash william fiset slash algorithms; there should also be a link in the description. Thanks for watching and sticking around, please subscribe for more computer science and mathematics videos. Cheers.
 
