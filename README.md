@@ -79,6 +79,7 @@ Uncomment when more AI algorithms are done.
 * [Breadth first search (adjacency list, fast queue)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BreadthFirstSearchAdjacencyListIterativeFastQueue.java) **- O(V+E)**
 * [Bridges/cut edges (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/BridgesAdjacencyList.java) **- O(V+E)**
 * [Find connected components (adjacency list, union find)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/ConnectedComponentsAdjacencyList.java) **- O(Elog(E))**
+* [Find connected components (adjacency list, DFS)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/ConnectedComponentsDfsSolverAdjacencyList.java) **- O(V+E)**
 * [Depth first search (adjacency list, iterative)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListIterative.java) **- O(V+E)**
 * [Depth first search (adjacency list, iterative, fast stack)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListIterativeFastStack.java) **- O(V+E)**
 * [Depth first search (adjacency list, recursive)](https://github.com/williamfiset/Algorithms/blob/master/GraphTheory/DepthFirstSearchAdjacencyListRecursive.java) **- O(V+E)**
