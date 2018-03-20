@@ -1,10 +1,18 @@
 package javatests.com.williamfiset.algorithms.graphtheory;
 
+import static java.lang.Math.min;
+import static java.lang.Math.max;
+import static java.lang.Math.random;
 import static com.google.common.truth.Truth.assertThat;
 import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.Edge;
+import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.addUnweightedUndirectedEdge;
+import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.createEmptyGraph;
 
 import com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative;
-import java.util.*;
+import com.williamfiset.algorithms.graphtheory.BellmanFordAdjacencyMatrix;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +23,7 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
   @Before
   public void setup() {
     solver = null;
-  }  
+  }
 
   @Test(expected=IllegalArgumentException.class)
   public void testNullGraphInput() {
@@ -25,7 +33,7 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
   @Test
   public void testSingletonGraph() {
     int n = 1;
-    List<List<Edge>> graph = BreadthFirstSearchAdjacencyListIterative.createEmptyGraph(n);
+    List<List<Edge>> graph = createEmptyGraph(n);
 
     solver = new BreadthFirstSearchAdjacencyListIterative(graph);
     List<Integer> path = solver.reconstructPath(0, 0);
@@ -36,27 +44,71 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
 
   @Test
   public void testTwoNodeGraph() {
-    // TODO(williamfiset): Write test.
+    int n = 2;
+    List<List<Edge>> graph = createEmptyGraph(n);
+    addUnweightedUndirectedEdge(graph, 0, 1);
+    solver = new BreadthFirstSearchAdjacencyListIterative(graph);
+    
+    List<Integer> expected = new ArrayList<>();
+    expected.add(0);
+    expected.add(1);
+
+    List<Integer> path = solver.reconstructPath(0, 1);
+    assertThat(path).isEqualTo(expected);
   }
 
   @Test 
   public void testThreeNodeGraph() {
-    // TODO(williamfiset): Write test.
+    int n = 3;
+    List<List<Edge>> graph = BreadthFirstSearchAdjacencyListIterative.createEmptyGraph(n);
+    addUnweightedUndirectedEdge(graph, 0, 1);
+    addUnweightedUndirectedEdge(graph, 2, 1);
+    solver = new BreadthFirstSearchAdjacencyListIterative(graph);
+    
+    List<Integer> expected = new ArrayList<>();
+    expected.add(0);
+    expected.add(1);
+    expected.add(2);
+
+    List<Integer> path = solver.reconstructPath(0, 2);
+    assertThat(path).isEqualTo(expected);
   }
 
   @Test
   public void testShortestPathAgainstBellmanFord() {
-    // TODO(williamfiset): Write test.
+    int loops = 150;
+    for (int i = 0, n = 1; i < loops; i++, n++) {
+      List<List<Edge>> graph = createEmptyGraph(n);
+      double[][] graph2 = generateRandomGraph(graph, n);
+
+      int s = (int)(random()*n);
+      int e = (int)(random()*n);
+      solver = new BreadthFirstSearchAdjacencyListIterative(graph);
+      BellmanFordAdjacencyMatrix bfSolver = new BellmanFordAdjacencyMatrix(s, graph2);
+      
+      List<Integer> p1 = solver.reconstructPath(s, e);
+      List<Integer> p2 = bfSolver.reconstructShortestPath(e);
+      assertThat(p1.size()).isEqualTo(p2.size());
+    }
   }
 
-  @Test
-  public void testDepthAgainstFloydWarshall() {
-    // TODO(williamfiset): Write test.
-  }
+  public static double[][] generateRandomGraph(List<List<Edge>> graph1, int n) {
+    boolean[][] edgeMatrix = new boolean[n][n];
+    double[][] graph2 = new double[n][n];
+    for (double[] r : graph2) Arrays.fill(r, Double.POSITIVE_INFINITY);
+    
+    int numEdges = max(1, (int)(random()*n*n));
+    for (int i = 0; i < numEdges; i++) {
+      int u = (int)(random()*n);
+      int v = (int)(random()*n);
+      if (!edgeMatrix[u][v]) {
+        addUnweightedUndirectedEdge(graph1, u, v);
+        graph2[u][v] = graph2[v][u] = 1;
+        edgeMatrix[u][v] = edgeMatrix[v][u] = true;
+      }
+    }
 
-  @Test
-  public void testPathBetweenComponents() {
-    // TODO(williamfiset): Write test.
+    return graph2;
   }
 
 }
