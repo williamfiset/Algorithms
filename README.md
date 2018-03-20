@@ -48,12 +48,12 @@
 * [Tree canonical form](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/treealgorithms/TreeCanonicalFormAdjacencyList.java) **- O(V+E)**
 
 ### Network flow
-* [Bipartite graph verification (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/NetworkFlow/BipartiteGraphCheckAdjacencyList.java) **- O(V+E)**
-* [Ford-Fulkerson method with DFS (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/NetworkFlow/FordFulkersonDFSAdjacencyList.java) **- O(fE)**
-* [Ford-Fulkerson method with DFS (max flow, min cut, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/NetworkFlow/FordFulkersonDFSAdjacencyMatrix.java) **- O(fV<sup>2</sup>)**
-* [Edmonds-Karp Algorithm (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/NetworkFlow/EdmondsKarpAdjacencyList.java) **- O(VE<sup>2</sup>)**
-* [Edmonds-Karp Algorithm optimized (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/NetworkFlow/EdmondsKarpAdjacencyListOptimized.java) **- O(VE<sup>2</sup>)**
-* [Maximum Cardinality Bipartite Matching (augmenting path algorithm, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/NetworkFlow/MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList.java) **- O(VE)**
+* [Bipartite graph verification (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/BipartiteGraphCheckAdjacencyList.java) **- O(V+E)**
+* [Ford-Fulkerson method with DFS (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/FordFulkersonDFSAdjacencyList.java) **- O(fE)**
+* [Ford-Fulkerson method with DFS (max flow, min cut, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/FordFulkersonDFSAdjacencyMatrix.java) **- O(fV<sup>2</sup>)**
+* [Edmonds-Karp Algorithm (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/EdmondsKarpAdjacencyList.java) **- O(VE<sup>2</sup>)**
+* [Edmonds-Karp Algorithm optimized (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/EdmondsKarpAdjacencyListOptimized.java) **- O(VE<sup>2</sup>)**
+* [Maximum Cardinality Bipartite Matching (augmenting path algorithm, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList.java) **- O(VE)**
 
 ### Other graph theory
 * [Articulation points/cut vertices (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/ArticulationPointsAdjacencyList.java) **- O(V+E)**
@@ -180,7 +180,7 @@ This repository places a large emphasis on good testing practice to ensure that 
 Algorithms$ gradle test
 ```
 
-When developing you likely do not want to run all tests but only a subset of them. For example, if you want to run the FloydWarshallSolverTest.java file under [javatests/com/williamfiset/algorithms/graphtheory/FloydWarshallSolverTest.java](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/FloydWarshallSolverTest.java) you can execute:
+When developing you likely do not want to run all tests but only a subset of them. For example, if you want to run the FloydWarshallSolverTest.java file under [javatests/com/williamfiset/algorithms/graphtheory/FloydWarshallSolverTest.java](https://github.com/williamfiset/Algorithms/blob/master/javatests/com/williamfiset/algorithms/graphtheory/FloydWarshallSolverTest.java) you can execute:
 ```bash
 Algorithms$ gradle test --tests "javatests.com.williamfiset.algorithms.graphtheory.FloydWarshallSolverTest"
 ```
