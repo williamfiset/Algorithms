@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.Edge;
 
 import com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative;
-
 import java.util.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +29,9 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
 
     solver = new BreadthFirstSearchAdjacencyListIterative(graph);
     List<Integer> path = solver.reconstructPath(0, 0);
-    System.out.println(path);
+    List<Integer> expected = new ArrayList<>();
+    expected.add(0);
+    assertThat(path).isEqualTo(expected);
   }
 
   @Test

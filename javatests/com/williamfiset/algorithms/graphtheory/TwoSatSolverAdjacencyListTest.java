@@ -1,6 +1,8 @@
 package javatests.com.williamfiset.algorithms.graphtheory;
 
 import static com.google.common.truth.Truth.assertThat;
+
+import com.williamfiset.algorithms.graphtheory.TwoSatSolverAdjacencyList;
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -51,7 +53,7 @@ public class TwoSatSolverAdjacencyListTest {
     TwoSatSolverAdjacencyList.addOrClause(g, 2*0, 2*1 ^ 1);     // (p0 or ~p1)
     TwoSatSolverAdjacencyList.addOrClause(g, 2*0 ^ 1, 2*1);     // (~p0 or p1)
     TwoSatSolverAdjacencyList.addOrClause(g, 2*0 ^ 1, 2*1 ^ 1); // (~p0 or ~p1)
-    System.out.println(g);
+    // System.out.println(g);
 
     TwoSatSolverAdjacencyList solver = new TwoSatSolverAdjacencyList(g);
     assertThat(solver.isSatisfiable()).isFalse();

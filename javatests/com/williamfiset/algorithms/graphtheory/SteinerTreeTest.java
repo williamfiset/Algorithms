@@ -2,6 +2,7 @@ package javatests.com.williamfiset.algorithms.graphtheory;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.williamfiset.algorithms.graphtheory.SteinerTree;
 import java.util.*;
 import org.junit.*;
 

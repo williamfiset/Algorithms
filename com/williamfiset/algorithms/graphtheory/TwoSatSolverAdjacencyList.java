@@ -29,7 +29,7 @@ public class TwoSatSolverAdjacencyList {
     if (solved) return;
 
     int[] sccs = sccSolver.getSccs();
-    System.out.println(Arrays.toString(sccs));
+    // System.out.println(Arrays.toString(sccs));
 
     // Assume that this 2SAT problem is satisfiable and try to 
     // disprove it by looking at which SCCs p and ~p belong to.
@@ -73,8 +73,8 @@ public class TwoSatSolverAdjacencyList {
   public static void addOrClause(List<List<Integer>> graph, int p, int q) {
     // Add the edges ~p -> q and ~q -> p to implication graph.
     // System.out.printf("p = %d, ~p = %d, q = %d, ~q = %d\n", p, p ^ 1, q, q ^ 1);
-    System.out.printf("%d -> %d\n", p^1, q);
-    System.out.printf("%d -> %d\n", q^1, p);
+    // System.out.printf("%d -> %d\n", p^1, q);
+    // System.out.printf("%d -> %d\n", q^1, p);
     graph.get(p ^ 1).add(q);
     graph.get(q ^ 1).add(p);
   }

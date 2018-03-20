@@ -1,7 +1,9 @@
 package javatests.com.williamfiset.algorithms.graphtheory;
 
 import static com.google.common.truth.Truth.assertThat;
+
 import com.google.common.collect.ImmutableList;
+import com.williamfiset.algorithms.graphtheory.BridgesAdjacencyList;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
