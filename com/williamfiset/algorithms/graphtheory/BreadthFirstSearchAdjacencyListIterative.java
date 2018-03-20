@@ -25,27 +25,13 @@ public class BreadthFirstSearchAdjacencyListIterative {
   }
 
   private int n;
-  private int maxDepth;
   private Integer[] prev;
-  private boolean pathExists;
   private List<List<Edge>> graph;
-
-  // Each breadth first search frontier layer gets separated by this DEPTH_TOKEN.
-  // This is useful if you want to track the maximum depth of the BFS.
-  private static final int DEPTH_TOKEN = -1;
-
-  // Useful constant to indicate that we don't care about specifying an end node when doing a BFS.
-  private static final int NO_END_DESTINATION = -2;
 
   public BreadthFirstSearchAdjacencyListIterative(List<List<Edge>> graph) {
     if (graph == null) throw new IllegalArgumentException("Graph can not be null");
     n = graph.size();
     this.graph = graph;
-  }
-
-  public int getMaximumDepth(int start) {
-    bfs(start, NO_END_DESTINATION);
-    return maxDepth;
   }
 
   /**
@@ -56,54 +42,38 @@ public class BreadthFirstSearchAdjacencyListIterative {
    * If 'start' and 'end' are not connected then an empty array is returned.
    */
   public List<Integer> reconstructPath(int start, int end) {
-    bfs(start, end);
+    bfs(start);
     List<Integer> path = new ArrayList<>();
-    if (!pathExists) return path;
     for(Integer at = end; at != null; at = prev[at])
       path.add(at);
     Collections.reverse(path);
+    if (path.get(0) == start) return path;
+    path.clear();
     return path;
   }
 
   // Perform a breadth first search on a graph a starting node 'start'.
-  private void bfs(int start, int end) {
-    maxDepth = 0;
+  private void bfs(int start) {
     prev = new Integer[n];
     boolean[] visited = new boolean[n];
     Deque<Integer> queue = new ArrayDeque<>(n);
 
     // Start by visiting the 'start' node and add it to the queue.
     queue.offer(start);
-    queue.offer(DEPTH_TOKEN);
     visited[start] = true;
     
     // Continue until the BFS is done.
-    while(true) {
+    while(!queue.isEmpty()) {
       int node = queue.poll();
-      if (node == end) pathExists = true;
-      
-      // If we encounter a DEPTH_TOKEN this means that we have finished the current frontier
-      // and are about to start a new layer of nodes (all of which are already in the queue), or 
-      // we have visited all the nodes and can terminate.
-      if (node == DEPTH_TOKEN) {
-        // We have visited all the nodes.
-        if (queue.isEmpty()) break;
+      List<Edge> edges = graph.get(node);
 
-        // Add another DEPTH_TOKEN separator marker.
-        queue.offer(DEPTH_TOKEN);
-      } else {
-
-        maxDepth++;
-        List<Edge> edges = graph.get(node);
-
-        // Loop through all edges attached to this node. Mark nodes as visited once they're 
-        // in the queue. This will prevent having duplicate nodes in the queue and speedup the BFS.
-        for(Edge edge : edges) {
-          if (!visited[edge.to]) {
-            visited[edge.to] = true;
-            prev[edge.to] = node;
-            queue.offer(edge.to);
-          }
+      // Loop through all edges attached to this node. Mark nodes as visited once they're 
+      // in the queue. This will prevent having duplicate nodes in the queue and speedup the BFS.
+      for(Edge edge : edges) {
+        if (!visited[edge.to]) {
+          visited[edge.to] = true;
+          prev[edge.to] = node;
+          queue.offer(edge.to);
         }
       }
     }
