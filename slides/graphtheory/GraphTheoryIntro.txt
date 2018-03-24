@@ -1,0 +1,5 @@
+1) Hello and welcome, my name is William and i'm super excited [actually be excited lol] to bring to you this video series focused on graph theory. Graph theory is one of my absolute favorite topics in computer science, all the algorithms we're going to see are amazingly elegant, the whole field is one of the most applicable and useful for real world applications, and I think everyone should be able to, learn, love, enjoy and admire graph theory.
+This video and the first few videos are going to be ramp up videos to introduce the topics of how we store, represent and traverse graphs using a computer. BTW, this whole series will be taking on a computer science view point of graph theory rather then a mathematical one, so we won't be covering proofs and so on per se, but rather looking at algorithm implementation details and code.
+
+
+ then we'll dive into some specialized algorithms. ,so we're gogin to ramp up pretty fast so fasten your seat belt. this is the very first video 
