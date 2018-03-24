@@ -54,7 +54,7 @@ The main disadvantage to using an adjacency list is that its less efficient on d
 
 23) The last representation I want to talk about is the edge list. An edge list is a way to represent a graph simply as an unordered list of edges. Basically it's exactly what it sounds like: a list of edges. Assume the notation for any triplet (u,v,w) means: “the cost from node u to node v is w”. So for this graph the edge list is simply a list of 6 edges represented as triplets. This representation is very simple, however it lacks structure and that's why it's seldom used.
 
-24) 
+24) Advantages to the edge list are that it's great for sparse graphs, iterating over all the edges is super easy, and the structure is simple. The downsides include the edge lookup time and memory issues on large graphs.
 
 
 
