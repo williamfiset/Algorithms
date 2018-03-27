@@ -57,6 +57,30 @@ The main disadvantage to using an adjacency list is that its less efficient on d
 24) Advantages to the edge list are that it's great for sparse graphs, iterating over all the edges is super easy, and the structure is simple. The downsides include the edge lookup time and memory issues on large graphs.
 
 
+---------------------------------
+
+
+
+---------------------------------
+
+49) Hello and welcome! My name and William and today we're moving on to talking about the DFS algorithm which plays a central role in several graphh theory algorithms.
+
+50) So what is a DFS? A DFS is a core algorithm in graph theory that allows you to explore nodes and edge of a graph, so it's a form of traversal algorithm. Thhe nice thing about a DFS is thhat it's really easy to code and it runs in a time complexity of big O of V plus E which is directly proportional to the size of your graph.
+By itself the DFS isn’t all that useful, but when augmented to perform other tasks such as count connected components, determine connectivity, or find bridges/articulation points DFS really shines.
+
+LEt's look at an example; as the name suggests a DFS pluges depthh first into a graph without regard for whhich edge it selects next until it cannot go any further at which point it backtracks and continues.
+
+... 
+
+103) So let's look at some source code for the DFS.
+
+
+
+
+
+
+
+
 
 
 
