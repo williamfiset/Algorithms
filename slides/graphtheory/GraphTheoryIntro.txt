@@ -5,7 +5,7 @@ This video and the first few videos are going to be ramp up videos to introduce 
 
 3) Graphs can be used to represent almost any problem which makes them so interesting because they pop up everywhere. A simple problem that can be phrased as a graph theory problem might be: Given the constraints in this picture, how many different sets of cloths can I make by choosing an article from each category? Of course this could also be phrased and solved using only mathematics, but the advantage to graph theory is that it allows us to visualize the problem using nodes to represent an article of clothing and edges to represent relationships between them.
 
-4) Another canonical graph theory example is a social network of friends. A graph representation enables us to answer interesting questions such as: how many friends does person X have? Or what are the fewest number of people I need to meet to get introduced to person Y?
+4) Another canonical graph theory example is a social network of friends. A graph representation enables us to answer interesting questions such as: how many friends does person X have? Or how many degrees of separation are there between person X and person Y?
 
 5) Now we have to talk about types of graphs. There are many different types of graph representations and it’s important to be able to recognize what type of graph you’re working with especially when you're programming and want to solve a particular problem.
 
@@ -52,7 +52,7 @@ On the downside however the main reason people dont go for the adjacnecy matrix 
 22) The nice thing about adjacency lists is that it's great for sparse graphs because it only tracks the edges you have and doesn't allocate additional memory you might not use like an adjacency matrix. This also means it's efficient when iterative over all the edges.
 The main disadvantage to using an adjacency list is that its less efficient on denser graphs. Another subtle disadvantage is that it takes big of E time to access a specific edge's weight although you rarely or ever need to do this in practice.
 
-23) The last representation I want to talk about is the edge list. An edge list is a way to represent a graph simply as an unordered list of edges. Basically it's exactly what it sounds like: a list of edges. Assume the notation for any triplet (u,v,w) means: “the cost from node u to node v is w”. So for this graph the edge list is simply a list of 6 edges represented as triplets. This representation is very simple, however it lacks structure and that's why it's seldom used.
+23) The last representation I want to talk about is the edge list. An edge list is a way to represent a graph simply as an unordered list of edges. Basically it's exactly what it sounds like: a list of edges. Assume the notation for any triplet (u,v,w) means: "the cost from node u to node v is w". So for this graph the edge list is simply a list of 6 edges represented as triplets. This representation is very simple, however it lacks structure and that's why it's seldom used.
 
 24) Advantages to the edge list are that it's great for sparse graphs, iterating over all the edges is super easy, and the structure is simple. The downsides include the edge lookup time and memory issues on large graphs.
 
@@ -73,9 +73,6 @@ LEt's look at an example; as the name suggests a DFS pluges depthh first into a 
 ... 
 
 103) So let's look at some source code for the DFS.
-
-
-
 
 
 
