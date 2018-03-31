@@ -1,0 +1,86 @@
+1) Hello and welcome, my name is William and i'm super excited [actually be excited lol] to bring to you this video series focused on graph theory. Graph theory is one of my absolute favorite topics in computer science, we're going to see a lot of very awesome algorithms, the whole field is really diverse and hugely applicable to real world applications. I think everybody should able to learn, love, enjoy graph theory.
+These first few videos are going to be ramp up videos to introduce the topics of how we store, represent and traverse graphs on a computer. BTW, this whole series will be taking on a computer science view point of graph theory rather then a mathematical one, so we won't be covering proofs and so on per se, instead we will be looking at algorithm implementation details and code.
+
+2) So, what is graph theory? In essence it's the study of the properties and applications of graphs which common folk refer to as networks. This is a very board topic and my goal with this video series is to teach you how to apply graph theory to real world situations.
+
+3) Graphs can be used to represent almost any problem which makes them so interesting because they pop up absolutely everywhere. A simple problem that can be phrased as a graph theory problem might be: Given the constraints in this picture, how many different sets of cloths can I make by choosing an article from each category? Of course this could also be phrased and solved using only mathematics, but the advantage to graph theory is that it allows us to visualize the problem using nodes to represent an article of clothing and edges to represent relationships between them.
+
+4) Another canonical graph theory example is a social network of friends. A graph representation enables us to answer interesting questions such as: how many friends does person X have? Or how many degrees of separation are there between person X and person Y?
+
+5) Now we have to talk about types of graphs. There are many different types of graph representations and it’s important to be able to recognize what type of graph you’re working with especially when you're programming and want to solve a particular problem.
+
+6) This first type of graph is an undirected graph, it's one where edges have no orientation. That is if there's an edge from node u to node v, it is identical to the edge from node v to node u. 
+
+7) For instance, in the following graph, nodes are cities and edges represent bidirectional roads since if you drive from one city to another you can also retrace your steps by driving the other way.
+
+8) In contrast to undirected graphs are directed graphs sometimes called digraphs. In these graphs, you've guessed it, the edges are directed. So if we have an edge from u to v then you can only go from node u to node v, not the other way around.
+
+9) In this graph you can see that the edges are directed because of the arrowheads on the edges between nodes. This graph could represent people who bought each other gifts, so an incoming edge represents receiving a gift and an outgoing edge represents giving a gift. Therefore, person E bought person D a gift, person A bought themselves and person B a gift and person F bought nobody any gifts and received none (they're probably Ebenezer scrooge).
+
+10) So far we've only seen unweighted graphs, but edges on graphs can contain certain weights to represent arbitrary values such as cost, distance, quantity, and etc... Weighted graphs come in both the directed and undirected flavors. As a side node, I will usually denote an edge of a graph as a triplet (u, v, w) to indicate: where an edge is coming from, where it's going to, and what its weight is. Of course, with such a notation I will also need to specify whether the graph is directed or undirected.
+
+11) Next up, I want to talk about some special types of graphs. There are so many different types of special graphs I was only able to select a handful that will be most relevant for this upcoming video series.
+
+12) The most important type of special graph is definitely the tree. A tree is simply an undirected graph with no cycles, there are several equivalent definitions of what a tree is, another is a graph with N nodes and N-1 edges. All the graphs below are trees, yes even the leftmost one since it has no cycles.
+
+13) A related, but totally different type of graph is a rooted tree. The distinction here is that a rooted tree has a designated root node where every edge either points away from or towards the root node. When edges point away from the root the graph is called an arborescence or an out-tree and anti-arborescence or in-tree otherwise. Out trees are by far more common than in-trees from what i've observed; it is also fairly common for people to refer to a rooted tree simply as a tree instead of an in or out tree, but there is an important difference.
+
+14) Next up are directed acyclic graphs, these are graphs with directed edges and no cycles. These graphs are very important and fairly common in computer science since they often represent structures with dependencies such as: a scheduler, a build system, a compiler maybe or perhaps more relate-able: university class prerequisites. There are several efficient algorithms we'll be looking at that deal specifically with directed a cyclic graphs, such as how to find shortest paths and produce a topological ordering of the nodes. A topological ordering is an ordering of the nodes that tells you how to process the nodes in the graph so that you don't perform a task before first having completed all its dependencies. For example, a topological ordering of class prerequisites would tell you to take intro biology and intro chemistry before taking a class on genomics.
+
+15) This next type of special graph is a bipartite graph, it is one whose vertices can be split into two independent groups U and V such that every edge connects between U and V. This is just a fancy way of saying that the graph is two colourable or than there are no odd length cycles. Often a problem we like to ask is what is the maximum matching we can create on the bipartite graph. Suppose white nodes are jobs and red nodes are people, then we can ask how many people can be matched to jobs? In this case there are lots of edges in each graph so I think the answer is four, but in general its not so easy if there are less edges, tougher constraints and more conflicts. Bipartite graphs also play a critical role in the field on network flow which we will talk about later.
+
+16) This last type of graph is a complete graph. It is one where this is a unique edge between every pair of nodes in the graph. A complete graph with n vertices is denoted as the graph K sub n. I have listed K1 through 6 on the bottom and you can easly see how this scales as we add more nodes. Complete graphs are often seen as the worst case graph you can possibly encounter because of how many edges there are. So if you want to test your algorithm for performance a complete graph is an easy way to start.
+
+17) One thing we're going to have to be really cognizant about is how we're actually representing our graphs on the computer. This isn't just what type of graph it is, but what type of data structure it our graph being represented with and this will have a huge impact on performance.
+
+18) The simplest way is inside a 2D adjacency matrix. This idea is that the cell m i j represents the edge weight of going from node i to node j. So in the graph below there are four nodes so I create a 4 by 4 matrix and populate the graph with all the edge weights. If you look at the edge weight from node C to node D you'll see that it has an edge weight of 2 so in row 3 column 4 there a value of 2. Note that It is often assumed that the edge of going from a node to itself has a cost of zero which is why the matrix diagonal has all zero values.
+
+19) This matrix has several advantages:
+- First, it's really space efficient for dense graphs.
+- Edge weight lookup is constant time which is nice.
+- and lastly that I would argue this is the simplest graph representation.
+On the downside however the main reason people dont go for the adjacnecy matrix as a first choice is because:
+- It requires V squared space. Which is a lot of space. In practice graphs with 10000 or more nodes start to become infeasible quickly.
+- The other issue with the adjacency matrix is that it requires V squared work to iterate over all the edges of your graph. This is fine for dense graphs with lots of edges but isn't great for sparse graphs since most cells will be empty.
+
+20) The main alternative to the adjacency matrix is the adjacency list which is a way to represent a graph as a map of nodes to a list of edges. The idea is that each node tracks all of its outgoing edges.
+
+21) For example, node C has three outgoing edges so in the map entry for C we keep track of the edge from C to A with cost 4, the edge from C to B with cost 1 and the edge from C to D with cost 2. Notice that in the list of edges we only need to track of two things: The node we're going to and the cost to get there, we don't need to keep track of where we came from because that's implicitly known.
+
+22) The nice thing about adjacency lists is that it's great for sparse graphs because it only tracks the edges you have and doesn't allocate additional memory you might not use like an adjacency matrix. This also means it's efficient when iterative over all the edges.
+The main disadvantage to using an adjacency list is that its less efficient on denser graphs. Another subtle disadvantage is that it takes big of E time to access a specific edge's weight although you rarely or ever need to do this in practice.
+
+23) The last representation I want to talk about is the edge list. An edge list is a way to represent a graph simply as an unordered list of edges. Basically it's exactly what it sounds like: a list of edges. Assume the notation for any triplet (u,v,w) means: "the cost from node u to node v is w". So for this graph the edge list is simply a list of 6 edges represented as triplets. This representation is very simple, however it lacks structure and that's why it's seldom used.
+
+24) Advantages to the edge list are that it's great for sparse graphs, iterating over all the edges is super easy, and the structure is simple. The downsides include the edge lookup time and memory issues on large graphs.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
