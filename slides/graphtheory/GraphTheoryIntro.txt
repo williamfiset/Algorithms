@@ -31,8 +31,6 @@ These first few videos are going to be ramp up videos to introduce the topics of
 
 16) This last type of graph is a complete graph. It is one where this is a unique edge between every pair of nodes in the graph. A complete graph with n vertices is denoted as the graph K sub n. I have listed K1 through 6 on the bottom and you can easly see how this scales as we add more nodes. Complete graphs are often seen as the worst case graph you can possibly encounter because of how many edges there are. So if you want to test your algorithm for performance a complete graph is an easy way to start.
 
-# Stop vid?
-
 17) One thing we're going to have to be really cognizant about is how we're actually representing our graphs on the computer. This isn't just what type of graph it is, but what type of data structure it our graph being represented with and this will have a huge impact on performance.
 
 18) The simplest way is inside a 2D adjacency matrix. This idea is that the cell m i j represents the edge weight of going from node i to node j. So in the graph below there are four nodes so I create a 4 by 4 matrix and populate the graph with all the edge weights. If you look at the edge weight from node C to node D you'll see that it has an edge weight of 2 so in row 3 column 4 there a value of 2. Note that It is often assumed that the edge of going from a node to itself has a cost of zero which is why the matrix diagonal has all zero values.
@@ -59,62 +57,62 @@ The main disadvantage to using an adjacency list is that its less efficient on d
 
 ---------------------------------
 
-26) Hello and welcome back, my name is William and today I want to talk about some common problems in graph theory and their solutions. A lot of problems you will encounter can often be reduced to a famous graph theory problem or a variant thereof, so it's important to familiarize ourselves with common graph theory problems.
+26) Hello and welcome back, my name is William and today I want to talk about some common problems in graph theory. A lot of problems you will encounter can often be reduced to a famous or well known problem or a variant thereof, so it's important to familiarize ourselves with common graph theory problems and their solution.
 
-27) Just before we get started, following off what we learned in the last video about ways of representing graphs, I want you to think about various things as i'm describing common graph theory problems to you including:
+27) Just before we get started, following off what we learned in the last video about ways of representing graphs, I want you to think about how you would store and represent the graphs in the problems i'm describing. In particular:
 1) Is the graph in the problem i'm describing directed or undirected?
-2) Are the edges of the graph weighted
+2) Are the edges of the graph weighted or unweighted
 3) Is the common use-case a graph that is likely to be sparse or dense with edges?
 4) and lastly: should I use an adjacency matrix, adjacency list, an edge list or other structure to represent the graph efficiently? 
 
-28) One of the most, if nott he most common problem in graph theory is the shortest path problem. Given a weighted graph, find the shortest path of edges from node A to node B. 
+28) One of the most, if not the most common problem in graph theory is the shortest path problem. Given a weighted graph, find the shortest path of edges from node A to node B.
 
-29) So if we pretend this graph represents a road system and we're at node A and want to get to node H then our shortest path algorithm should be able to find us a list of edges to follow that will lead us from A to H with minimal cost. Lucky for us many algorithms exist to oslve the shortest path problem including: A BFS on an unweighted graph, Dijkstras algorithms, Bellman-Ford, A* and many others.
+29) So if we pretend this graph represents a road system and we're at node A and want to get to node H then our shortest path algorithm should be able to find us a list of edges to follow that will lead us from A to H with minimal cost. Lucky for us many algorithms exist to solve the shortest path problem including: A BFS on an unweighted graph, Dijkstras algorithms, Bellman-Ford, A* and many others.
 
-30) As simple as it sounds, connectivity is a big issue in graph theory. The problem can be simflified to: does there exist a path from node A to node B? In this scenario I don't care about the minimum cost, we just want to know if one node can reach another node.
+30) As simple as it sounds, connectivity is a big issue in graph theory. The problem can be simplified to: does there exist a path from node A to node B? In this scenario I don't care about the minimum cost, we just want to know if one node can reach another node.
 
 31) A typical solution to this is to use a union find data structure or any basic search algorithm such as a DFS or BFS.
 
 32) Another problem is finding and detecting negative cycles in a directed graph. Sometimes we're dealing with graphs that can have negative edge weights and we need to know if a negative cycle exists because it can throw everything off if there is.
 
-33) In this graph nodes 1,2, and 3 form a negative cycle because you can cycle through all the nodes and end up with a cost of -1. In fact, you can cycle endlessly getting smaller and smaller costs. In the context of shortest paths, negative cycles are like wells you fall into and cannot get out of so they're bad. However, there are some contexts where negative cycles are beneficial, suppose we're trading currencies across  an exchange or multiple exchanges. Currency prices try to remain consistent throughout the day across exchanges such as USD to EUROs and CANADIAN to YEN, but sometimes there are inconsistencies with currency exchange prices. This makes it possible to do something called an arbitrage, which cycles through multiple currencies exchanging one currency for another coming back to the original currency with more money then you started with at a risk free gain. This is something we can use graph theory for. There are two well known algorithms: Bellman-ford and Floyd-Warshall that do this.
+33) In this graph nodes 1,2, and 3 form a negative cycle, because you can cycle through all the nodes and end up with a cost of -1. In fact, you can cycle endlessly getting smaller and smaller costs. In the context of finding the shortest path, a negative cycle is like a trap you can never escape. However, there are some contexts where negative cycles are beneficial, suppose we're trading currencies across an exchange or multiple exchanges. Currency prices try to remain consistent throughout the day across exchanges such as USD to EUROs or CANADIAN to YEN, but sometimes there are inconsistencies with currency exchange prices. This makes it possible to do something called an arbitrage, which cycles through multiple currencies exchanging one currency for another coming back to the original currency with more money then you started with, at a risk free gain. This is something we can use graph theory for. There are two well known algorithms that can detect negative cycles: Bellman-ford and Floyd-Warshall that do exactly this.
 
 34) Something else that comes up now and again is finding strongly connected components of a graph. This is analogous to finding the connected components of an undirected graph but for directed graphs. 
 
-35) When looking for SSCs we're looking for self-contained cycles with the graph where every vertex in a given cycle can reach every other vertex in the same cycle. This is useful in many algorithms usually as an intermediate step so it's important to know how to find these strongly connected components.
+35) When looking for SSCs we're looking for self-contained cycles within the graph where every vertex in a given cycle can reach every other vertex in the same cycle. This is useful in many algorithms, usually as an intermediate step, so it's important to know how to find these strongly connected components.
 
 36) You probably won't go through your computer science career without hearing about the TSP. The TSP problem is the problem of having n cities and the distances between each or them and finding what the shortest path that visits each city and comes back to the original city.
 
 37) For example, if our graph is the one on the left, a possible TSP solution is the graph on the right which has a cost of 9.
 
-38) The TSP problem is NP-Hard meaning it’s a very computationally challenging problem. This is unfortunate because the TSP has several very important applications. Some famous algorithms we can use to solve this problem include: The help-Karp algorithm with dynamic programming, branch and bound and many many approximation algorithms including the any colony optimization.
+38) The TSP problem is NP-Hard meaning it is a very computationally challenging problem. This is unfortunate because the TSP has several very important applications. Some famous algorithms we can use to solve this problem include: The Held-Karp algorithm with dynamic programming, branch and bound and many many approximation algorithms including the ant colony optimization.
 
-39) Bridges in graphs are something of a fascination to me. They are edges which if removed increase the number of connected components of the graph.
+39) The next problem I want to talk about is finding bridges in graphs, which is something of a fascination to me. Bridges are edges which if removed increase the number of connected components in a graph.
 
-40) In this graph the edges highlighted in pink are the bridges. Bridges are important in graph theory because they often hint at weak points, bottlenecks or vulnerabilities in a graph. Think of your graph as a telephone network, a physical set bridges between islands or other and you can immediately see the usefulness of detecting bridges.
+40) In this graph the edges highlighted in pink are the bridges. Bridges are important in graph theory because they often hint at weak points, bottlenecks or vulnerabilities in a graph. Think of your graph as a telephone network, or a physical set bridges between islands, you can immediately see the usefulness of detecting bridges.
 
-41) Related to bridges but not the same are articulation points which are nodes that if removed increase the number of connected components of a graph.
+41) Related to bridges but not the same are articulation points, which are nodes that if removed increase the number of connected components of a graph.
 
 42) In the same graph you see here there are three articulation points highlighted in pink.
 
-43) This next problem is finding the minimum spanning tree of a graph. A minimum spanning tree is a subset of the edges of a connected, edge-weighted graph that connects all the vertices together, without any cycles and with the minimum possible total edge weight. For example, in the graph below one possible MST is
+43) This next problem is finding the minimum spanning tree of a graph. A minimum spanning tree is a subset of the edges that connect all the vertices together, without any cycles and with the minimum possible cost. So in summary, it's just a tree, meaning it has no cycles, that spans the graph at a minimal cost, hence the name minimum spanning tree. For example, in the graph below one possible MST is:
 
 44) this graph with a least cost of 12. Note that MSTs all have the same minimum cost but are not unique.
 
-45) MST are seen in lots of different applications in computer science including: Designing a least cost network, circuit design, transportation networks, and etc… They're also used in multiple approximation algorithms. If you want to find the MST of a graph I recommend using one of Kruskal's, Prims or Boruvka's algorithm.
+45) MST are seen in lots of different applications in computer science including: Designing a least cost network, circuit design, transportation networks, and etc… They're also used in multiple approximation algorithms which is interesting. If you want to find the MST of a graph I recommend using one of Kruskal's, Prims or Boruvka's [bar-oov-kas] algorithm.
 
-46) This last problem I think is the most fascinating, and it is about finding the maximum flow through a special type of network called a flow network. Flow networks are networks where edge weights represent capacities in a why. Capacities might be things like the maximum amount of cars on a road, the maximum amount of volume of water that can flow through a pipe, or even how many people can comfortably walk through a hallway. 
-In these types of flow-networks we often want to ask ourselves the question: "With an infinite input source, that is of cars, water, people, whatever, how much “flow” can we push through the network? Assuming that we start at some source and try to make it to a sink node. This question is important because at some point there is bound to be a bottleneck somewhere in our flow graph that limits the amount of stuff we can have traveling on the network. The maximum flow would then represent things like: the volume of water allowed to flow through a network of pipes, the number of cars the roads can sustain in traffic or the maximum amount of people that can navigate through the hallways going from one class to another.
+46) This last problem I think is the most fascinating, and it is about finding the maximum flow through a special type of network called a flow network. Flow networks are networks where edge weights represent capacities in some sense. Capacities might be things like the maximum amount of cars on a road, the maximum amount of volume of water that can flow through a pipe, or even the number of boats a river can sustain without destroying the environment.
+In these types of flow-networks we often want to ask ourselves the question: "With an infinite input source, that is of cars, water, boats, whatever, how much “flow” can we push through the network? Assuming that we start at some source and try to make it to a sink node. This question is important because at some point there is bound to be a bottleneck somewhere in our flow graph that limits the amount of stuff we can have traveling on the network. The maximum flow would then represent things like: the volume of water allowed to flow through a network of pipes, the number of cars the roads can sustain in traffic or the maximum amount of boats we can have on the river.
 With these maximum flow problems we can identify bottlenecks that slow down the whole network and fix the edges at need to have a higher capacity.
 
 
-47) That's all the problems I wanted to talk about today. Cheers everybody and next video I think i'll be talking about the DFS algorithm, stayed tuned and subscribe for more mathematics and computer science videos.
+47) That's all the problems I wanted to talk about today. Cheers everybody, and next video I think i'll be talking about the DFS algorithm, stayed tuned and subscribe for more mathematics and computer science videos.
 
 --------------------------------------------------------------------
 
 48) Hello and welcome! My name and William and today we're moving on to talking about the DFS algorithm which plays a central role in several graph theory algorithms.
 
-49) So what is a DFS? A DFS is a core algorithm in graph theory that allows you to explore nodes and edges of a graph, so it's a form of traversal algorithm. The nice thing about a DFS is that it's really easy to code and it runs in a time complexity of big O of V plus E which is directly proportional to the size of your graph.
+49) So what is a DFS? A DFS is a core algorithm in graph theory that allows you to explore nodes and edges of a graph, so it's a form of traversal algorithm. The nice thing about a DFS is that it's really easy to code and it runs in a time complexity of big O of V plus E, that is vertices plus edges which is directly proportional to the size of your graph.
 By itself the DFS isn’t all that useful, but when augmented to perform other tasks such as count connected components, determine connectivity, or find bridges/articulation points DFS really shines.
 
 50) Let's look at an example; as the name suggests a DFS plunges depth first into a graph without regard for which edge it selects next until it cannot go any further at which point it backtracks and continues.
@@ -123,16 +121,16 @@ By itself the DFS isn’t all that useful, but when augmented to perform other t
 
 103) So let's look at some pseudo code for a DFS to get a deeper understanding for how it works.
 
-104) The first thing we'll need are three variables:
+104) The first thing we'll need to are these three variables:
 - n, the number of nodes in our graph
 - g, the adjacency list representing the graph
-- and visited, a boolean array contained true or false at index i depending on whether or not node i has been visited. In the beginning this array should have all false values because we have not visited any nodes in the graph.
+- and visited, a boolean array containing true or false at index i depending on whether or not node i has been visited. In the beginning this array should have all false values because we have not visited any nodes in the graph.
 
 105) Once that's setup, at the bottom I define our starting node to be node zero and then call the DFS method to do the exploration.
 
 106) The DFS itself only has one argument, the current node we're at which I have conveniently named 'at'.
 
-107) This method is recursive, so I check the base case which is whether we have already visited this node, is so we have no business here so we can return
+107) This method is recursive, so I check the base case which is whether we have already visited this node, if so, we have no business here so we can return
 
 108) Otherwise, let's visit this node by marking its visited status as true and exploring all its neighbors.
 
@@ -144,11 +142,11 @@ By itself the DFS isn’t all that useful, but when augmented to perform other t
 
 112) First let's understand what we mean by connected component. Sometimes a graph is split into multiple disjoint components and it’s useful to be able to identify and count these components.
 
-113) One way to identify these components might be to color them so we can tell them apart, but what does colouring nodes really mean for a computer?
+113) One way to identify these components might be to color them so we can tell them apart, but what does colouring nodes really mean to a computer?
 
-114) Colouring nodes is equivalent to labeling each node in a component with the same id value. For example, every node in the purple component has an id of 1, and every node in the green component has an id of 4.
+114) Colouring nodes is equivalent to labeling each node in a component with the same id value. For example, every node in the purple component has an id of 1, and every node in the green component has an id of 3.
 
-115) We can use a DFS to identify components. First, make sure all the nodes are labeled from [0, n) where n is the number of nodes.
+115) We can use a DFS to identify components this way. First, make sure all the nodes are labeled from [0, n) where n is the number of nodes.
 
 116) The basic algorithm is to start a DFS at every node (except if it’s already been visited) and mark all reachable nodes as being part of the same component using the same id.
 
@@ -161,19 +159,19 @@ By itself the DFS isn’t all that useful, but when augmented to perform other t
 - g and adjacency list representing the graph
 - count, a variable that tracks the number of connected components.
 - components, an integer array that holds the integer value of which component a node belongs to.
-- and finally a boolean array called visited which tracks whether or not node i has been visited or not.
+- and finally a boolean array called 'visited' which tracks whether or not node i has been visited or not.
 
 149) Inside the findComponents method, we loop over every node and check if the current node has been visited or not then execute some logic. 
 
 150) This DFS differs slightly from the previous in that we execute a DFS for every unvisited node. When we actually do the DFS we visit nodes and mark them as visited so we never revisit the same node more than once. We either skip over a node because it's been visited or start a new DFS there, if we start a new DFS we have to increment the count variable to keep track of how many DFS's we have done.
 
-151) Inside the DFS, the first two things we do are mark the current node as visited and set the current node the be part of the component equal to the value of count. 
+151) Inside the DFS, the two things we do are mark the current node as visited and set the current node to be part of the component equal to the value of count. 
 
-154) Then simply iterate over every neighboring node that has not yet been visited and call the DFS method to explore it as well.
+154) Then simply iterate over every neighboring node that has not yet been visited and call the DFS method to explore them as well.
 
 155) Back inside the find components method, simply return the number of components and the components array that contains the information about which component each node belongs to.
 
-156) So we've covered two things the DFS can do, but it can be augmented to do many other things such as:
+156) So we've covered two things the DFS can do, but it can be augmented it to do many other things such as:
  - Compute a graph’s minimum spanning tree.
  - Detect and find cycles in a graph.
  - Check if a graph is bipartite.
@@ -184,7 +182,7 @@ By itself the DFS isn’t all that useful, but when augmented to perform other t
  - Generate mazes.
  - and many more applications
 
-157) Thank you for watching! Cheers everybody and next video I should be talking about the BFS algorithm, stayed tuned and subscribe for more mathematics and computer science videos.
+157) Thank you for watching! Next video I should be talking about the BFS algorithm, stayed tuned and subscribe for more mathematics and computer science videos.
 
 ---------------------------------------------------------------
 
