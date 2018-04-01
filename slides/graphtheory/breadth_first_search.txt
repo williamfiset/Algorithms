@@ -1,9 +1,9 @@
 1) Hello and welcome back, my name is William and today's topic is the Breadth First Search graph traversal algorithm.
 
-2) Alongside the DFS the BFS algorithm is another fundemental search algorithm used to explore nodes and edges of a graph. It runs in a time complexity of big O of V plus E, that is vertices plus edges and is often used as a building block in other algorithms. It differs from a DFS in the way it explores the graph.
-The BFS algorithm is particularly useful for two things: finding the shortest path on unweighted graphs and for testing graph connectivity.
+2) Alongside the DFS the BFS algorithm is another fundamental search algorithm used to explore nodes and edges of a graph. It runs in a time complexity of big O of V plus E, that is vertices plus edges and is often used as a building block in other algorithms. It differs from a DFS in the way it explores the graph.
+The BFS algorithm is particularly useful for one thing: finding the shortest path on an unweighted graph.
 
-3) A BFS starts at some arbitrary node in the graph and explores its neighbour nodes first before moving on to explore the next level of neighbors. In a sense a BFS explores nodes in layers, it does this by maintaining a queue of which node to visit next. This is most easily seen with an example.
+3) A BFS starts at some arbitrary node in the graph and explores its neighbor nodes first before moving on to explore the next level of neighbors. In a sense a BFS explores nodes in layers, it does this by maintaining a queue of which node to visit next. This is most easily seen with an example.
 
 4) Let's begin a BFS at node zero, so let's add node zero to our queue on the left.
 
@@ -43,11 +43,11 @@ The BFS algorithm is particularly useful for two things: finding the shortest pa
 
 47) <press>
 
-48) Back inside thhe BFS method, take the output of the solve methhod which gave us thhe prev array and call the reconstruct path method.
+48) Back inside the BFS method, take the output of the solve method which gave us the prev array and call the reconstruct path method.
 
 49) The reconstruct path method is very simple, let's take a quick look.
 
-50) The first thing we do is actually reconstruct the path by looping backwards from the end node and making our way back to the start node, assuming we can reach it. The reason the prev array had to be initalized to all null values is because the way i'm checking whether or not the for loop should stop is by verifying if the position we're at in the prev is null.
+50) The first thing we do is actually reconstruct the path by looping backwards from the end node and making our way back to the start node, assuming we can reach it. The reason the prev array had to be initialized to all null values is because the way i'm checking whether or not the for loop should stop is by verifying if the position we're at in the prev is null.
 
 51) Since we looped through the prev array backwards we have the reverse the order of the nodes so that the path starts at the start node and ends at the end node.
 
