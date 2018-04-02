@@ -14,7 +14,7 @@ import java.util.List;
 
 public class FordFulkersonDfsSolverAdjacencyList {
 
-  public static class Edge {
+  private static class Edge {
     Edge residual;
     int to, capacity;
     public Edge(int to, int capacity) {
@@ -31,16 +31,41 @@ public class FordFulkersonDfsSolverAdjacencyList {
   private int visitedToken = 1;
   private int[] visited;
   private boolean solved;
+  private List<List<Edge>> graph;
 
   // Outputs
   private int maxFlow;
   private boolean[] minCut;
 
-  public FordFulkersonDfsSolverAdjacencyList(List<List<Edge>> graph, int source, int sink) {
-    this.graph = graph;
+  /**
+   * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)}
+   * method to add edges to the graph.
+   *
+   * @param n      - The number of nodes in the graph including source and sink nodes.
+   * @param source - The index of the source node, 0 <= source < n
+   * @param sink   - The index of the source node, 0 <= sink < n
+   */
+  public FordFulkersonDfsSolverAdjacencyList(int n, int source, int sink) {
+    this.n = n;
+    initializeGraph();
     this.source = source;
     this.sink = sink;
-    n = graph.size();
+  }
+
+  /**
+   * Adds a directed edge (and residual edge) to the flow graph.
+   *
+   * @param from     - The index of the node the directed edge starts at.
+   * @param to       - The index of the node the directed edge end at.
+   * @param capacity - The capacity of the edge.
+   */
+  public void addEdge(int from, int to, int capacity) {
+    Edge e1 = new Edge(to, capacity);
+    Edge e2 = new Edge(from, 0);
+    e1.residual = e2;
+    e2.residual = e1;
+    graph.get(from).add(e1);
+    graph.get(to).add(e2);
   }
 
   // Returns the maximum flow from the source to the sink.
@@ -111,26 +136,12 @@ public class FordFulkersonDfsSolverAdjacencyList {
     return 0;
   }
 
-    /* Helper methods to create flow graph. */
-
-  // Construct an empty graph with n nodes (this 
-  // should include the source and sink nodes)
-  public static List<List<Edge>> createGraph(int n) {
-    List<List<Edge>> graph = new ArrayList<>(n);
+  // Construct an empty graph with n nodes including the source and sink nodes.
+  private List<List<Edge>> initializeGraph() {
+    graph = new ArrayList<>(n);
     for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
-    return graph;
   }
 
-  // Adds a directed edge to the flow graph. This method also
-  // adds the residual edge for when Ford-Fulkerson is run.
-  public static void addEdge(List<List<Edge>> graph, int from, int to, int capacity) {
-    Edge e1 = new Edge(to, capacity);
-    Edge e2 = new Edge(from, 0);
-    e1.residual = e2;
-    e2.residual = e1;
-    graph.get(from).add(e1);
-    graph.get(to).add(e2);
-  }
 
 }
 
