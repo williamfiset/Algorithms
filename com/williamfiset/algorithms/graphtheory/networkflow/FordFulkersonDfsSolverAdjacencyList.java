@@ -14,28 +14,29 @@ import java.util.List;
 
 public class FordFulkersonDfsSolverAdjacencyList {
 
-  private static class Edge {
-    Edge residual;
-    int to, capacity;
+  public static class Edge {
+    public Edge residual;
+    public int to, capacity;
+    public final int originalCapacity;
     public Edge(int to, int capacity) {
       this.to = to; 
       this.capacity = capacity;
+      this.originalCapacity = capacity;
     }
   }
 
   // Inputs
   private int n, source, sink;
-  private List<List<Edge>> graph;
 
   // Internal
   private int visitedToken = 1;
   private int[] visited;
   private boolean solved;
-  private List<List<Edge>> graph;
 
   // Outputs
   private int maxFlow;
   private boolean[] minCut;
+  private List<List<Edge>> graph;
 
   /**
    * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)}
@@ -66,6 +67,17 @@ public class FordFulkersonDfsSolverAdjacencyList {
     e2.residual = e1;
     graph.get(from).add(e1);
     graph.get(to).add(e2);
+  }
+
+  /**
+   * Returns the graph after the solver has been executed. This allow you to
+   * inspect each edge's remaining {@link Edge#capacity} compared to the
+   * {@link Edge.originalCapacity} value. This is useful if you want to figure 
+   * out which edges were used during the max flow.
+   */
+  public List<List<Edge>> getGraph() {
+    solve();
+    return graph;
   }
 
   // Returns the maximum flow from the source to the sink.
@@ -137,12 +149,10 @@ public class FordFulkersonDfsSolverAdjacencyList {
   }
 
   // Construct an empty graph with n nodes including the source and sink nodes.
-  private List<List<Edge>> initializeGraph() {
+  private void initializeGraph() {
     graph = new ArrayList<>(n);
     for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
   }
 
-
 }
-
 
