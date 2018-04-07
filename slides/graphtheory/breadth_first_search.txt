@@ -63,7 +63,7 @@ The first thing we do is actually reconstruct the path by looping backwards from
 
 Since we looped through the prev array backwards we have the reverse the order of the nodes so that the path starts at the start node and ends at the end node.
 
-Last, but not least, we actually have the make sure the path between nodes s and e exists, that is, it is possible to reach node e from node s because it's possible the graph is disjoint and there actually is no path. If this is the case, I return an empty path.
+Last, but not least, we actually have the make sure the path between nodes s and e exists. It might not be possible to reach node e from node s if the graph is disjoint. If this is the case, I return an empty path.
 
 
 

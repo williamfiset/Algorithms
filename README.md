@@ -49,7 +49,7 @@
 
 ### Network flow
 * [Bipartite graph verification (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/BipartiteGraphCheckAdjacencyList.java) **- O(V+E)**
-* [Ford-Fulkerson method with DFS (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/FordFulkersonDFSAdjacencyList.java) **- O(fE)**
+* [Ford-Fulkerson method with DFS (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/FordFulkersonDfsSolverAdjacencyList.java) **- O(fE)**
 * [Ford-Fulkerson method with DFS (max flow, min cut, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/FordFulkersonDFSAdjacencyMatrix.java) **- O(fV<sup>2</sup>)**
 * [Edmonds-Karp Algorithm (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/EdmondsKarpAdjacencyList.java) **- O(VE<sup>2</sup>)**
 * [Edmonds-Karp Algorithm optimized (max flow, min cut, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/EdmondsKarpAdjacencyListOptimized.java) **- O(VE<sup>2</sup>)**
