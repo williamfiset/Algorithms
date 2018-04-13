@@ -137,17 +137,17 @@ To update node u’s low-link value to node v’s low-link value there has to be
 
 76) And that's how Tarjan algorithm works to find SCCs, beautiful, isn't it?
 
-77) Let's look at some pseudo-code for just how this work, I think it will solidify your understanding.
+77) Let's look at some pseudo-code for how this work, I think it will solidify your understanding.
 
-78) To get started in the global or class scope I define a few variables we'll need. The first is a constant to represent unvisited nodes. Then is n, the number of nodes in the graph and g an adjacency list of directed edges, these are both input values.
+78) To get started, in the global or class scope I define a few variables we'll need. The first is a constant to represent unvisited nodes. Then is n, the number of nodes in the graph and g an adjacency list of directed edges, these are both input values.
 
-79) Then comes two variables, 'id' to give each node an id and 'sccCount' to track the number of SCCs found so far.
+79) Then comes two variables, 'id' to give each node an id and 'sccCount' to track the number of SCCs found.
 
-80) After I define a few arrays which store auxiliary information about the nodes in our graph. The first array is 'ids' which stores the id of each node, then is low to store the low-link values and finally onStack to track whether or node a node is on the stack. Finally is just a stack data structure with push and pop operations.
+80) After I define a few arrays which store auxiliary information about the nodes in our graph. The first array is 'ids' which stores the id of each node, then is 'low' to store the low-link values and finally 'onStack' to track whether or not a node is on the stack. Finally is just a stack data structure with push and pop operations.
 
-81) inside the findSccs method the first thing I do is assign the id of each node to be unvisited. The ids array will also be serving to track whether or node a node has need visited as well as which a node's id is.
+81) inside the findSccs method the first thing I do is assign the id of each node to be unvisited. The ids array will also be serving to track whether or node a node has need visited as well as what a node's id is.
 
-82) In the following loop I iterate through all the nodes in the graph and perform a DFS on that node if it has not been visited yet. At the end, I return low, the array of low-link values which will be the final output of the function.
+82) In the following loop I iterate through all the nodes in the graph. There I start a DFS on node i if it has not yet been visited. At the end, I return the array 'low', an array of low-link values which will be the final output of the function.
 
 83) Now let's look at what's happening inside the DFS method which is where all the magic happens.
 
