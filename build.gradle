@@ -28,44 +28,45 @@ dependencies {
 }
 
 test {
-    dependsOn cleanTest
-    testLogging.showStandardStreams = true
+  dependsOn cleanTest
+  testLogging.showStandardStreams = true
 }
+
+String javaAlgorithmsPackage = "com/williamfiset/algorithms";
+String javatestsAlgorithmsPackage = "javatests/com/williamfiset/algorithms";
 
 sourceSets {
   main {
     java {
       srcDirs = [
-        'AI',
-        'ConstructiveAlgorithms',
-        'DynamicProgramming',
-        'Geometry',
-        'GraphTheory',
-        'LinearAlgebra',
-        'Math',
-        'Other',
-        'SearchAlgorithms',
-        'SortingAlgorithms',
-        'StringAlgorithms',
-        'Utils'
+        javaAlgorithmsPackage + '/ai',
+        javaAlgorithmsPackage + '/dp',
+        javaAlgorithmsPackage + '/geometry',
+        javaAlgorithmsPackage + '/graphtheory',
+        javaAlgorithmsPackage + '/linearalgebra',
+        javaAlgorithmsPackage + '/math',
+        javaAlgorithmsPackage + '/other',
+        javaAlgorithmsPackage + '/search',
+        javaAlgorithmsPackage + '/sorting',
+        javaAlgorithmsPackage + '/strings',
+        javaAlgorithmsPackage + '/utils'
       ]
     }
   }
   test {
     java {
       srcDirs = [
-        'AI/tests',
-        'ConstructiveAlgorithms/tests',
-        'DynamicProgramming/tests',
-        'Geometry/tests',
-        'GraphTheory/tests',
-        'LinearAlgebra/tests',
-        'Math/tests',
-        'Other/tests',
-        'SearchAlgorithms/tests',
-        'SortingAlgorithms/tests',
-        'StringAlgorithms/tests',
-        'Utils/tests'
+        javatestsAlgorithmsPackage + '/ai',
+        javatestsAlgorithmsPackage + '/dp',
+        javatestsAlgorithmsPackage + '/geometry',
+        javatestsAlgorithmsPackage + '/graphtheory',
+        javatestsAlgorithmsPackage + '/linearalgebra',
+        javatestsAlgorithmsPackage + '/math',
+        javatestsAlgorithmsPackage + '/other',
+        javatestsAlgorithmsPackage + '/search',
+        javatestsAlgorithmsPackage + '/sorting',
+        javatestsAlgorithmsPackage + '/strings',
+        javatestsAlgorithmsPackage + '/utils'
       ]
     }
   }

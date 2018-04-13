@@ -1,0 +1,78 @@
+1) Hello and welcome back, my name is William and today's topic is the Breadth First Search graph traversal algorithm.
+
+2) Alongside the DFS the BFS algorithm is another fundamental search algorithm used to explore nodes and edges of a graph. It runs in a time complexity of big O of V plus E, that is vertices plus edges and is often used as a building block in other algorithms. It differs from a DFS in the way it explores the graph.
+The BFS algorithm is particularly useful for one thing: finding the shortest path on an unweighted graph.
+
+3) A BFS starts at a node in the graph and explores its neighbor nodes first before moving on to explore the next level of neighbors. In a sense a BFS explores nodes in layers.
+
+4) So if we started a BFS at 0, we would visit node zero first then, all of zero's neighbours.
+
+5) Then we would visit all of zero's neighbours (the nodes in yellow) before the next layer of nodes. 
+
+6) Then we would visit all their neighbours and so on..
+
+7) <press>
+
+8) So as you saw a BFS explores a graph in a layered fashion if you will. It does this by maintaining a queue of which node to visit next. This is most easily seen with an example.
+
+9) Let's begin a BFS at node zero once more. Let's add node zero to our queue on the left.
+
+
+... 
+
+
+And that's how you do a BFS in a nutshell.
+
+In the previous animation we relied on a queue to help to track which node we should visit next. Upon reaching a new node the algorithm adds it to the queue to visit it later. The queue data structure works just like a real world queue such as a waiting line at a restaurant. People can either enter the waiting line, that is get enqueued or get seated, dequeued.
+
+Let's look at some Pseudo code for the BFS.
+
+First things first, we'll need two variables:
+- n the number of nodes in our graph
+- and g, the adjacency list representing our unweighted graph.
+
+This BFS function takes two arguments, s and e, the start and end nodes of the search. The return value for this function is the shortest path of nodes from s to e.
+
+I've divided the function into two methods for simplicity, first we solve the problem by executing our BFS and then we reconstruct the path from s to e. So let's take a look at the solve method.
+
+Here we are inside the solve method.
+
+The first thing I do is initialize the queue data structure that we'll need and add the starting node to it. This queue should support at minimum the enqueue and dequeue operations I just talked about.
+
+Then initialize a boolean array with all false values and mark the starting node as visited. This array tracks whether or not node i has been visited. If the value at index i is true then the node has either been visited or is being visited and is on the queue. In the animation this corresponds to gray and yellow nodes.
+
+The last thing we'll need is an array I called "prev" will help us reconstruct the shortest path from the start to the end node. Initially this array should be initialized with null values. This array tracks who the parent of node i was so we can reconstruct the shortest path later.
+
+Let's loop while the queue is not empty and pull out the top node from the queue by issuing a dequeue operation.
+
+Then reach inside the adjacency list and get all the neighbours of this node.
+
+Loop over each next unvisited node
+
+Once we find a next unvisited node, enqueue it to the queue, and mark it as visited and keep track of the parent node of the next node in the prev array.
+
+Once the queue is empty, and our BFS is complete return the prev array.
+
+<press>
+
+Back inside the BFS method, take the output of the solve method which gave us the prev array and call the reconstruct path method.
+
+Here we are inside the reconstruct path method.
+
+The first thing we do is actually reconstruct the path by looping backwards from the end node and making our way back to the start node, assuming we can reach it. The reason the prev array had to be initialized to all null values is because the way i'm checking whether or not the for loop should stop is by verifying if the position we're at in the prev is null.
+
+Since we looped through the prev array backwards we have the reverse the order of the nodes so that the path starts at the start node and ends at the end node.
+
+Last, but not least, we actually have the make sure the path between nodes s and e exists. It might not be possible to reach node e from node s if the graph is disjoint. If this is the case, I return an empty path.
+
+
+
+
+
+
+
+
+
+
+
+

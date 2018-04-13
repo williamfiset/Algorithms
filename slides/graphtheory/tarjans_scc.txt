@@ -1,0 +1,210 @@
+1) Hello and welcome back, my name is William, today I want to talk about the fascinating topic of Strongly Connected Components and how we're going to use Tarjan's algorithm to find them.
+
+2) So what are SCCs or Strongly Connected Components? I like to think of them as self contained cycles within a directed graph. Where for every vertex in a given cycle you can reach every other vertex in the same cycle. For example, in the graph below there are four strongly connected components.
+
+3) I've outlined them here in different colors. If you inspect each SCC you'll notice that each has it's own self contained cycle and that for each component there's no way to find a path that leaves a component and comes back. Because of that property we can be sure that SCCs are unique within a directed graph.
+
+4) To understand Tarjan's SCC algorithm we're going to need to understand the concept of a low-link value. Simply put, a low-link value is the smallest node id reachable from that node including itself. For that to make sense, we're going to need to label each of the nodes in our graph by doing a DFS.
+
+5) Suppose we start at the top left corner and label that node with the id 0.
+
+6) Now we continue exploring our graph until we visit all the edges and labeled all nodes.
+
+...
+
+15) [Back to blue graph] Alright now that we're done labeling the nodes inspect the graph and try and determine the low-link value for each node. Again, the low-link value of a node is the smallest [lowest] node id reachable from that node including itself. For example the low-link value of node 1 should be 0 since node 0 is reachable from node 1 via a series of edges. Similarly, node 4's low-link value should be 3 since node 3 is the lowest node that is reachable from node 4.
+
+16) So if we assign all the low-link values we get the following setup. From this view you realize that all nodes which have the same low-link value belong to the same strongly connected component.
+
+17) If I now assign colors to each SCC we can clearly see that for each component all the low-link values are the same. This seems too easy right? Well, you're not wrong, there is a catch. The flaw with this technique is that it is highly dependent on the traversal order of the DFS which is for our purposes is random.
+
+18) For instance, in this same graph I rearranged the node ids as though the DFS started in the top right corner and made its way down and then across. In such an event, the low-link values will be incorrect.
+
+19) In this specific case all the low-link values are the same but there clearly are multiple SCCs. What's going on? Well what's happening is that the low-link values are highly dependent of the order in which the nodes are explored in our DFS so we might NOT end up with the correct arrangement of node ids for our low-link values to tell us which nodes are in which SCC.
+This is where Tarjan's algorithm kicks in which its stack invariant to prevent SCCs from interfering with each others' low-link values.
+
+20) So to cope with the random traversal order of the DFS, Tarjan’s algorithm maintains a set (often as a stack) of valid nodes from which to update low-link values from. How the stack works is that nodes are added to the stack as nodes are explored for the first time; and nodes are removed from the stack each time a SCC is found.
+
+21) Taking a step back, if variables u and v are nodes in our graph and we're currently exploring node u then our new low-link update condition is that:
+To update node u’s low-link value to node v’s low-link value there has to be a path of edges from u to v and node v must be on the stack.
+
+22) Another small difference we're going to make to finding the correct low-link values is that instead of finding all low-link values after the fact we're going to update them as with do our DFS 'on the fly' if you will. This will allow us to obtain a linear time complexity :)
+
+23) We'll see an example in the following slides but this is Tarjan's algorithm in a nutshell:
+- Start out and mark each node as unvisited.
+- Start the DFS somewhere and don't stop until all nodes are visited. Upon visiting a node assign it an id and a low-link value. Additionally also mark the node as visited and add it to the seen stack.
+- On the DFS callback, if the previous node is on the stack then min the current node's low-link value with the last node's low-link value. This is essentially what allows low-link values to propagate throughout cycles.
+- After visiting all of a node's neighbours if the current node started the SCC then pop off all nodes from the stack which are in the SCC. You know a node started a SCC if its id is equal to its low-link value. If you think about that a bit more it'll start making sense.
+
+24) Let's do an example. I'm going to mark unvisited nodes as blue, nodes for which the DFS is still exploring some neighbors as orange and nodes which the DFs as explored all neighbors as gray. Note that if a node is orange or gray then it is on the stack and we can update its low-link value. I will also be tracking which nodes are on the stack in the left column so keep your eyes on that too.
+
+25) So let's start our DFS, so just randomly pick a node and start there.
+
+26) </press>
+
+27) As we explore unvisited nodes give each node an id and a low-link value equal to the id.
+
+28) </press>
+
+29) So now we're at node 2 and our only option is to visit node 0
+
+30) Since node 0 is already visited we don't want to visit it again so we backtrack.
+
+31) On the backtrack, since node 0 is on the stack we take the minimum of the current node's low-link value and node 0's low-link value.
+
+32) </press>
+
+33) Similarly now min the low link of the node we're at which is node 1 with node 2
+
+34) </press>
+
+35) And the same for node 0.
+
+36) Upon returning back to node 0 we realize that we've actually finished a SCC since we've visited all the neighbors of node 0 and its id is equal to its low-link value. This means we need to remove all nodes associated with the SCC from the stack. 
+
+37) </press>
+38) </press>
+39) </press>
+
+40) We’re not done exploring the graph so pick another starting node at random.
+
+41) Let's start at node 3 
+
+42) </press>
+
+43) and go to the right.
+
+44) Our only option now is to go down.
+
+45) Now we're at node 5. Let's take to edge to node 0
+
+46) So node 0 is already visited so we can't go there.
+
+47) On the callback we notice that node 0 is not on the stack ATM, so we can't min node 5's low link value against node 0. This is actually very very good BECAUSE if we did then we would contaminate the SCC node 5 is part of with a lower link value which node 0 has to offer.
+
+48) </press>
+
+49) So let's go to node 6. So now we have three edge to choose from.
+
+50) Let's go to the one on the right.
+
+51) Node 2 is not on the stack so don't min with its low-link value.
+
+52) Let's now take the left edge to node 4.
+
+53) Node 4 is on the stack so we can min with its low-link value giving node 6 also a low-link value of 4.
+
+54) The last edge we need to visit is the one going down to node 0.
+
+55) This is another situation where node 0 is not on the stack so we can't min with its low-link value.
+
+56) <press>
+
+57) On the call back node 5 can min with node 6's low-link value because it's on the stack.
+
+58) <press>
+
+59) Similarly for node 4
+
+60) Coming back to node 4, we've visited all its neighbors and its id equals its low link value so it marks the start of a connected component. We now have to remove all associated nodes in the SCC from the stack. These would be the purple nodes.
+
+61) <press>
+62) <press>
+63) <press>
+64) <press>
+
+65) Now coming back to node 3 we cannot min its low-link value with node 4 because we just removed node 4 from the stack. You will also notice that node 3's id is equal to its low-link value so it should be the start of a SCC, HOWEVER, we have not finished visiting all of node 3's neighbors so we cannot make that assessment yet.
+
+66) <press>
+
+67) Let's now take the downward edge to visit node 7
+
+68) Now take the edge to node 5.
+
+69) On the callback notice that node 5 is not on the stack so don't min with its low-link value.
+
+70) Now up to node 3
+
+71) On the callback we can min with node 3's LL since node 3 is on the stack.
+
+72) <press>
+
+73) Also min with node 7
+
+74) So now we've finished with the last SCC. All we need to do is remove all associated nodes from the stack.
+
+75) <press>
+
+76) And that's how Tarjan algorithm works to find SCCs, beautiful, isn't it?
+
+77) Let's look at some pseudo-code for how this work, I think it will solidify your understanding.
+
+78) To get started, in the global or class scope I define a few variables we'll need. The first is a constant to represent unvisited nodes. Then is n, the number of nodes in the graph and g an adjacency list of directed edges, these are both input values.
+
+79) Then comes two variables, 'id' to give each node an id and 'sccCount' to track the number of SCCs found.
+
+80) After I define a few arrays which store auxiliary information about the nodes in our graph. The first array is 'ids' which stores the id of each node, then is 'low' to store the low-link values and finally 'onStack' to track whether or not a node is on the stack. Finally is just a stack data structure with push and pop operations.
+
+81) inside the findSccs method the first thing I do is assign the id of each node to be unvisited. The ids array will also be serving to track whether or node a node has need visited as well as what a node's id is.
+
+82) In the following loop I iterate through all the nodes in the graph. There I start a DFS on node i if it has not yet been visited. At the end, I return the array 'low', an array of low-link values which will be the final output of the function.
+
+83) Now let's look at what's happening inside the DFS method which is where all the magic happens.
+
+84) So this is what the inside of the DFS method looks like. The input argument to the DFS is a variable called 'at' which I use to denote the id of the node we're currently at.
+
+85) On the first three lines I do some housekeeping stuff which is to add the current node to the stack, mark the current node as being on the stack and give the node an id value and a lowlink value.
+
+86) Then comes the part where I visit all the neighbors of the current node. To do this I reach into our graph stored as an adjacency list and loop over a variable called 'to' which represents the id of the node we're going to, I think that intuitively makes sense.
+
+87) Next line says that if the node we're going to is unvisited then visit it. Remember the ids array tracks the id of node i but also whether or not node i has been visited.
+
+88) This next line is very important, in fact it's probably the most important line on this slide. The first thing to notice is that this line happens after the recursive call to the DFS meaning this line gets called on the callback from the DFS. The line says that if the node we just came from is on the stack then min the current low-link value with the node we were just at. This is what allows the low-link values to propagate throughout the cycle.
+
+89) So after we finish the for loop that visited all neighbors of the current node we need to check if we're at the start of a SCC. To check if we're at the start of a SCC check if the id of the current node is equal to its low-link value.
+
+90) After we have identified that we're at the beginning of a completed SCC pop off all nodes inside the SCC from the stack. As we're popping nodes from the stack also mark off nodes as no longer being on the stack. 
+
+91) On more critical thing we need to do while we're removing nodes from our stack is make sure that all nodes which are part of the same SCC have the same id so here I just assign each node to have the id same id as that of the node which started the SCC.
+
+92) Last things are to stop popping nodes from the stack once the start of the SCC is found and to increment the SCC count if you want to track the number of SCCs that were found.
+
+93) Well that's all for Tarjan's SCC algorithm. As always there's working source code for this algorithm at github.com/williamfiset/algorithms. The link should be in the description. Folks, thanks for watching, drop a comment if you have any inquires, like this video and subscribe for more mathematics and computer science videos, cheers.
+
+94) <press for black screen>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

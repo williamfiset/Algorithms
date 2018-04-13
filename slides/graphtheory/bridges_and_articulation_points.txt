@@ -1,0 +1,192 @@
+1) Welcome back, my name is William, today we're going to talk about how to develop an algorithm to find bridges and articulation points in an undirected graph, from a computer science perspective.
+
+2) For starters, let's talk about what a bridge is in a graph. Bridges are also sometimes called cut edges. Essentially, if you have a graph which is a connected component a bridge is an edge which if removed increases the number of connected components in the graph. The name bridge makes sense because if you think of the connected components as islands, then a bridge is what separates them.
+
+3) So for example, in this graph below there would be three possible bridges which are those edges in pink because if you remove any of them the graph is divided into two components.
+
+4) An articulation point, also called a cut vertex, is very similar to a bridge in that the criteria for being an articulation point is that it needs to be any node whose removal increases the number of connected components.
+
+5) As an example, on this graph there are three articulation points since removing any of these vertices will divide the graph in two.
+
+6) As we start to think more about bridges and articulation points we begin to realize how important they can be in Graph Theory. In real world situations bridges and articulation points often hint at weak points, bottlenecks or even vulnerabilities in a graph. Therefore, it’s important to be able to quickly find/detect when and where these occur. We'll begin by investigating how to find bridges in a graph and then modify this algorithm to find articulation points.
+
+7) In the simplest way I can explain it, this is the algorithm we'll be following to find bridges in an undirected graph.
+First start at any node in the graph and begin doing a depth first search traversal labeling nodes with an increasing id as you encounter them. During the traversal, you will need to keep track of two variables, the first is the node's id I just mentioned and the other is the node's low link value. During the DFS, bridges will be found where the id of the node your edge is coming from is less then the low link value of the node your edge is going to.
+The low link value of a node is defined to be the smallest node id reachable from that node when doing a DFS including the id of the node itself. This is an interesting concept we'll come back to. For now let's look at some examples.
+
+8) Suppose we have the following graph we've been looking at and want to find out where the bridges are. Let's begin our DFS on the node at the top left corner.
+
+9) As we do our DFS we're going to label each node with a unique id which I will place inside the node. I will also mark nodes which are visited as yellow and nodes which are blue as unvisited. Let's finish off our DFS.
+
+10) So, explore all nodes transforming undirected edges into directed ones and marking off nodes as visited.
+
+11) </press>
+12) </press>
+13) </press>
+14) </press>
+15) </press>
+16) </press>
+17) </press>
+18) </press>
+
+19) So that would conclude our DFS. I want to take a moment to think about what low link values all these nodes should have. As a reminder, the low-link value of a node is defined as the smallest id reachable from that node using.
+
+20) For now initialize all low-link values to be equal to each node's id. I placed the low link value of each node on the exterior of the node.
+
+21) If you inspect node 1 we can see that there's a path of edges we can take from node 1 to node 0 which has an id of 0. Therefore node 1 should really have a low-link value of 0.
+
+22) That path to reach node 0 would start at node 1
+
+23) Take the edge to node 2
+24) </press>
+25) And then take the edge to node 0
+26) </press>
+27) So now node 1 has a lowlink value of 0
+28) Similarly for node 2 we can reach node 0
+29) </press>
+30) </press>
+31) </press>
+32) </press>
+
+33) You'll notice that there's no way to update the low-link values for nodes 3, 4, 5 because there is no node with a lower id they can reach by following a sequence of edges.
+
+34) However, if we look at node 6 we can update its low link value to 5 since node 5 is reachable from node 6.
+
+35) Start at node 6
+36) </press>
+
+37) take the to edge to 7
+38) </press>
+
+39) Then Take the to edge to 8
+40) </press>
+
+41) and we've made it to node 5 so we know it's possible to reach.
+42) </press>
+
+43) Similarly we can update nodes 7 and 8 to have a low link value of 5 by the same logic.
+
+44) So in general when we look at all the directed edges we have traversed, the ones which form bridges in our graph are the ones where the id of the node you started at is less than the low link value of the node you're going to. Take a moment to think about why this is true. </pause>. 
+Let's look where these bridges actually occur. 
+In each instance the id of the node where the directed edge started at is less than the low link value of the node it's going to. 
+Rephrasing that in another way it means there was no edge connecting back to the start of the component, which is really the definition of what a bridge is. Otherwise, if there was an edge connecting backwards to the starting component the low link value of where the edge is pointing to would at least as low as the id of the node you started at because it would be reachable.
+
+45) For example, if I add an edge from node 8 to node 2 suddenly the edge from node 2 to node 5 is no longer a bridge because the low link value on node 5 got updated to 2 and our bridge property highlighted in teal no longer holds.
+
+46) Let's take an aside and think of the time complexity of the algorithm I just presented. Right now we're doing a DFS to label all the nodes plus V more depth first searches to find all the low link values for roughly big O of V times V plus E in the worst case if we're being really pessimistic and careless with our programming.
+Luckily, however we can do much better than this and instead update all low-link values in one pass for a linear time complexity.
+
+47) Let's look at some pseudo code to find bridges in linear time. I'll show some actual code in the video that follows, so let's get started.
+In the global or class scope I define three variables. The first is 'id' which is use to label each node with a unique id number. Then I have the undirected graph in a variable called 'g'. Note that 'g' needs to be undirected for the following algorithm to work. And last is 'n' which is the number of nodes in the graph.
+Following the top level variables are three arrays which track information about each node in the graph. Index i in each of these arrays represents node i in the graph. So the first array tracks the id of node i, the second array tracks the low link value of node i and the visited array keeps track of whether or not we have visited node i.
+Moving on, the findBridges function is what actually finds our bridges. In the method I iterate over all the nodes which have not yet been visited by our DFS. This is to ensure that we find bridges in our graph even if our graph consists of multiple connected components.
+
+48) Now let's dive into the DFS method which is where the work is really happening. The first argument is the current node you are at, which is node i, then is the parent node which I set to -1 because there is no previous node and last is the bridges array we're populating.
+
+49) So here is the DFS method itself. The arguments to the method are just as I described them to you: The first variable 'at' is the current node id, 'parent' is the previous node id and array 'bridges' stores pairs of nodes which form bridges in a flat array.
+In the first three lines of the method I simply do some house keeping stuff which is to mark the current node as visited, increment the unique 'id' value variable and assign the current node to have a default id and low link value.
+Then we get into the actual DFS traversal bit. So we iterate over each edge from the node we're 'at' and attempt to go to each node i've labeled 'to'.
+Since this is an undirected graph there is bound to be an edge that directly returns to the node we were at previously which is the parent node which we want to avoid so we continue on those cases.
+If the next node we're going to is not visited then we recursively call the DFS method.
+
+50) Alright, we've made it this far and I promise I'll show an example soon, but the two key lines in this method are the min functions which differ slightly. The first one happens on the callback and is what propagates the low-link values, while the second one is when you try to visit an already visited node which has a chance of having a lower id value than your current low link value.
+
+51) Then the last bit just checks for our bridge condition and appends a pair of node ids to the bridges array.
+
+52) Now let's look at an example of all this in action. Suppose we have the following graph again and we start our DFS somewhere.
+
+53) Lets start at node 0 and explore from there.
+
+54) </press>
+55) </press>
+56) </press>
+57) </press>
+
+58) So now is the first instance of something interesting is happening. We're trying to visit an already visited node. Since node 2 is able to reach node 0 from where it is we can update node 2's low link value.
+
+59) </press>
+
+60) And that is what the second min statement is for.
+
+61) continuing on our DFS takes us downwards.
+
+62) </press>
+63) </press>
+64) </press>
+65) </press>
+66) </press>
+67) And now we explore the other branch we have not visited.
+
+68) </press>
+
+69) </press>
+70) </press>
+
+71) </press>
+72) </press>
+
+73) </press>
+74) </press>
+
+75) Again we have this edge that reaches out to find a node with a lower id, so we need to update our low link value for the current node, which is node 8.
+76) </press>
+
+77) Now, we can update node 7's low link value to 5 on the callback of the DFS method. This is an instance of the first min function actually doing something.
+
+78) Just to put everything in context, the red box is the line that was just invoked.
+
+79) And now that statement we just saw gets executed for every node on the callback to the root node.
+
+80) </press>
+81) </press>
+82) </press>
+83) </press>
+84) </press>
+
+85) And now we have the same result as before but we did it with one pass. So here are all the bridge we found again.
+86) </slow press>
+87) </slow press>
+88) </slow press>
+
+89) Let's move away from bridges and discuss how we can modify our algorithm for finding bridges to find articulation points.
+
+90) A simple observation we can make about articulation points is that:
+On a connected component with three or more vertices if an edge (u, v) is a bridge then either u or v is an articulation point. This is a good starting point because it allows us to easily find where articulation points occur.
+
+91) For example, consider the following graph. You will notice that there is a bridge between nodes 0 and 1, meaning that either node 0 or node 1 is an articulation point.
+
+92) Unfortunately, this condition alone is not sufficient to capture all articulations points. There exist cases where there is an articulation point but no bridge nearby. For example, in the following graph node 2 is an articulation point because its removal would cause the graph to split into two components. So the new question is when to these cases occur? The short answer is that it has to do with cycles. To understand why let's look at an example. 
+
+93) Suppose you're traversing your graph and eventually you arrive at node 0. Initially suppose node 0 has a low link value also of 0. Like in any DFS you continue to explore the graph...
+
+94) </press>
+95) </press>
+96) </press>
+97) </press>
+98) And eventually, if you ever re encounter the node that started the cycle with an edge its id value gets propagated throughout the cycle during the callbacks of the DFS. This is the case because we're assigning the new lowlink value to equal the min of the current lowlink value and the id of the node we just visited.
+
+99) So you see that now node 5 has a low link value of 0 acquired form the id of node 0. This gets spread (or propagated as I like to say) throughout the cycle.
+
+100) </press>
+101) </press>
+102) </press>
+103) </press>
+104) </press>
+
+105) Now what you'll notice is that the id of the node you started at is equal to the lowlink value, this indicates that there is a cycle. What's key here is that the presence of a cycle implies that the node is an articulation point. This is because a cycle in a graph corresponds to a strongly connected component and removing the node which started the cycle who is also connected to another component will severe the graph in two.
+
+106) However, there is just one exception to this. And this is when the starting node you chose has no outgoing edges or is part of a cycle and only has 1 outgoing edge. This is because either the node is a singleton, that is the 0 case, or the node is trapped in a cycle, the 1 case. To be an articulation point you need more than one outgoing edge. For example, in the graph on the right we start at node 0 (the green node) that starting node is not an articulation point despite our condition of the id equaling the low link value.
+
+107) However, as soon as we add another edge to our starting node it becomes an articulation point, so this is something to watch for and is unique to the starting node.
+
+108) Let's now take a quick look at the changes we need to do to our finding bridges algorithm to find articulation points. 
+To begin with we'll need a way to track the number of outcoming edges from the starting node so I define a new variable called 'outEdgeCount'.
+Next, I define a boolean array called isArt which has true or false depending on whether or not node i is an articulation point. Ultimately, this will be the return value of the findArtPoints function.
+In the body of the findArtPoints function I reset the outEdgeCount variable for every connected component and after the DFS mark the starting node i as either an articulation point or not based on how many outcoming edges were found.
+
+109) Inside the DFS method all I added was an if statement to increment the number of outcoming edges from the starting node.
+Besides that I added the equals case to track articulation points and kept the < case from the find bridges algorithm. In a real implementation, I would merge the two if statements into a single clause, however I wanted to distinguish between articulation points found via bridges vs those found via cycles.
+
+110) That is all for now, in the next video we'll be looking at some actual source code for this and not just some pseduocode. If you enjoyed this video please hit the like button and subscribe for more computer science and mathematics videos. 
+
+
