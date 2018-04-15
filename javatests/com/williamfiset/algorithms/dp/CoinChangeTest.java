@@ -12,10 +12,10 @@ import org.junit.*;
 public class CoinChangeTest {
   
   static final int LOOPS = 100;
+
   @Test
   public void testCoinChange() {
     for (int i = 1; i < LOOPS; i++) {
-      
       List<Integer> values = TestUtils.randomIntegerList(i, 1, 1000);
       int[] coinValues = Ints.toArray(values);
       
@@ -25,10 +25,8 @@ public class CoinChangeTest {
       int v2 = CoinChange.coinChangeSpaceEfficient(coinValues, amount);
       int v3 = CoinChange.coinChangeRecursive(coinValues, amount);
       
-      System.out.println(v1 + " " + v2 + " " + v3);
       assertThat(v1).isEqualTo(v2);
       assertThat(v2).isEqualTo(v3);
-      
     }
   }
   

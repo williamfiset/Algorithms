@@ -1,6 +1,10 @@
 
 apply plugin: 'java'
 
+// Assume Java 8
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 repositories {
   mavenLocal()
   mavenCentral()
