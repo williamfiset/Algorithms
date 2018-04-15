@@ -1,0 +1,15 @@
+[intro_sound] Hello and welcome! My name is william, today we're going to talk about using a BFS to find the shortest path on a grid. This is going to be a really fun video because we're going to solve a problem and i'm going to teach you a bunch of handy tricks when doing graph theory on grids.
+
+[animation] Before we get started, I highly recommend my video introducing the BFS algorithm. Make sure you understand the basics of a BFS before continuing because we will be building off those concepts. There should be a link in the description.
+
+So the motivation behind why we're learning about grids in this video is that a surprising number of problems can easily be represented using a grid which a lot of the time turns it into a graph theory problem. Grids are interesting because they're a form of implicit graph which means that we can determine a node’s neighbours based on our location within the grid.
+
+For instance, finding a path through a maze is a form of grid problem. 
+
+Or perhaps routing a person or thing though obstacles such as trees, rivers, rocks, and etc to get to a particular location.
+
+A common approach to solving graph theory problems on grids is to first convert the grid to a familiar format such as an adjacency list/matrix so we can easily work with them. However, this isn't always the most efficient technique, but we'll get to that.
+Suppose we have the grid on the left and we want to represent it as both an adjacency list and an adjacency matrix, what do we do first?
+
+First you should label all the cells in the grid with the numbers 0 through n non-inclusive where n is the product of the number of rows and columns. 
+
