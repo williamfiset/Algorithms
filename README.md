@@ -155,7 +155,7 @@ This repository is contribution friendly :smiley:. If you're an algorithms enthu
 
 # For developers
 
-This project uses [Gradle](https://gradle.org/) as a build system and for testing. To get started install the gradle command-line tool and run the build command to make sure you don't get any errors:
+This project uses [Gradle](https://gradle.org/) as a build system (and testing). Make sure you have [Java 8+ SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed and the gradle command-line tool. Run the build command to make sure you don't get any errors:
 
 ```bash
 Algorithms$ gradle build
@@ -169,7 +169,7 @@ The procedure to add a new algorithm named **Foo** is the following:
 2) Add the algorithm implementation to com/williamfiset/algorithms/category/ as com/williamfiset/algorithms/category/Foo.java
 3) Add tests for Foo in javatests/com/williamfiset/algorithms/category/FooTest.java
 4) Edit the **build.gradle** file if you added a new category to the project.
-5) Test your algorithm thoroughly.
+5) Test your algorithm thoroughly (see testing section below)
 6) Send pull request for review :open_mouth:
 
 ### Testing
