@@ -91,25 +91,16 @@ public class KnapsackUnbounded {
     
     // Return the best value achievable
     return DP[maxWeight];
-    
   }  
 
   public static void main(String[] args) {
     
     int[] W = {3,  6, 2};
     int[] V = {5, 20, 3};
-    unboundedKnapsackSpaceEfficient(10, W, V);
+    int knapsackValue = unboundedKnapsackSpaceEfficient(10, W, V);
+    System.out.println("Maximum knapsack value: " + knapsackValue);
     
   }
-
+  
 }
-
-
-
-
-
-
-
-
-
 
