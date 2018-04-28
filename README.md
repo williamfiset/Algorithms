@@ -97,7 +97,7 @@
 * [Square matrix rotation](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/linearalgebra/RotateSquareMatrixInplace.java) **- O(n<sup>2</sup>)**
 
 # Mathematics
-* [Chinese remainder theorem](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/math/ChineseRemainderTheorem.java)
+* [[UNTESTED] Chinese remainder theorem](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/math/ChineseRemainderTheorem.java)
 * [Prime number sieve (sieve of Eratosthenes)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/math/SieveOfEratosthenes.java) **- O(nlog(log(n)))**
 * [Prime number sieve (sieve of Eratosthenes, compressed)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/math/CompressedPrimeSieve.java) **- O(nlog(log(n)))**
 * [Totient function (phi function, relatively prime number count)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/math/EulerTotientFunction.java) **- O(n<sup>1/4</sup>)**
