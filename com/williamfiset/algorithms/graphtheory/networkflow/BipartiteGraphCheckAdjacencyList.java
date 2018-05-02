@@ -16,7 +16,11 @@ import java.util.List;
 public class BipartiteGraphCheckAdjacencyList {
 
   private int n;
+  private int[] colors;
+  private boolean solved;
+  private boolean isBipartite;
   private List<List<Integer>> graph;
+
   public static final int RED = 0b10, BLACK = (RED ^ 1);
 
   public BipartiteGraphCheckAdjacencyList(List<List<Integer>> graph) {
@@ -25,26 +29,35 @@ public class BipartiteGraphCheckAdjacencyList {
     this.graph = graph;
   }
 
-  // Checks whether the input graph is bipartite. If it is bipartite, this method 
-  // returns an array of colors indicating which group each node belongs to or
-  // null if the graph is not bipartite.
-  public int[] isBipartite() {
-    if (n <= 1) return null;
+  // Checks whether the input graph is bipartite. 
+  public boolean isBipartite() {
+    if (!solved) solve();
+    return isBipartite;
+  }
 
-    int[] colors = new int[n];
-    int nodesVisited = colorGraph(0, RED, colors);
+  // If the input graph is bipartite it has a two coloring which can be obtained
+  // through this method. Each index in the returned array is either RED or BLACK
+  // indicating which color node i was colored.
+  public int[] getTwoColoring() {
+    return isBipartite() ? colors : null;
+  }
+
+  private void solve() {
+    if (n <= 1) return;
+
+    colors = new int[n];
+    int nodesVisited = colorGraph(0, RED);
 
     // The graph is not bipartite. Either not all the nodes were visited or the 
     // colorGraph method returned -1 meaning the graph is not 2-colorable.
-    if (nodesVisited != n) return null;
-
-    return colors;
+    isBipartite = (nodesVisited == n);
+    solved = true;
   }
 
   // Do a depth first search coloring the nodes of the graph as we go.
   // This method returns the count of the number of nodes visited while
   // coloring the graph or -1 if this graph is not bipartite.
-  private int colorGraph(int i, int color, int[] colors) {
+  private int colorGraph(int i, int color) {
     colors[i] = color;
 
     // Toggles the color between RED and BLACK by exploiting the binary representation 
@@ -62,7 +75,7 @@ public class BipartiteGraphCheckAdjacencyList {
 
       // If a contradiction is found propagate return -1
       // otherwise keep track of the number of visited nodes.
-      int count = colorGraph(to, nextColor, colors);
+      int count = colorGraph(to, nextColor);
       if (count == -1) return -1;
       visitCount += count;
     }
@@ -189,7 +202,7 @@ public class BipartiteGraphCheckAdjacencyList {
     BipartiteGraphCheckAdjacencyList solver;
     solver = new BipartiteGraphCheckAdjacencyList(graph);
 
-    System.out.println("This graph is bipartite: " + (solver.isBipartite() != null));
+    System.out.println("This graph is bipartite: " + (solver.isBipartite()));
     System.out.println();
   }
 
