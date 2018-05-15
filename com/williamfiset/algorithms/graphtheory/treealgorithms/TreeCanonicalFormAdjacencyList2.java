@@ -46,9 +46,7 @@ public class TreeCanonicalFormAdjacencyList2 {
     // Do a BFS to find all the leaf nodes
     while (!q.isEmpty()) {
       int at = q.poll();
-      List<Integer> neighbors = graph.get(at);
-
-      for (Integer next : neighbors) {
+      for (Integer next : graph.get(at)) {
         if (!visited[next]) {
           visited[next] = true;
           parent[next] = at;
@@ -56,55 +54,43 @@ public class TreeCanonicalFormAdjacencyList2 {
           q.offer(next);
         }
       }
-
       if (degree[at] == 1) leafs.add(node);
     }
 
-    VISITED_TOKEN++;
-    List <TreeNode> newLeafs = new ArrayList<>();
-    Map <TreeNode, List<String>> map = new HashMap<>();
+    List<Integer> newLeafs = new ArrayList<>();
+    String[] map = new String[n];
+    for(int i = 0; i < n; i++) map[i] = "()";
+    java.util.Arrays.fill(visited, false);
 
+    int treeSize = n;
     while(treeSize > 2) {
-
-      for (TreeNode leaf : leafs) {
+      for (Integer leaf : leafs) {
 
         // Find parent of leaf node and check if the parent
         // is a candidate for the next cycle of leaf nodes
-        TreeNode parent = findParent(leaf, visited, VISITED_TOKEN);
-        visited.put(leaf.id, VISITED_TOKEN);
-        boolean parentWillBecomeLeaf = findParent(parent, visited, VISITED_TOKEN) != null;
-
-        // This parent node is the next level leaf
-        if (parentWillBecomeLeaf) newLeafs.add(parent);
-
-        // Update labels associated with parent
-        List <String> labels = map.get(parent);
-        if (labels == null) { labels = new ArrayList<>(); map.put(parent, labels); }
-        labels.add(leaf.label);
+        visited[leaf] = true;
+        int p = parent[leaf];
+        if (--degree[p] == 1) newLeafs.add(p);
 
         treeSize--;
-
       }
 
       // Update parent labels
-      for (TreeNode parent : map.keySet()) {
+      for (Integer p : newLeafs) {
+        List<String> labels = new ArrayList<>();
+        for(int child : graph.get(p))
+          if (visited[child]) // recall edges are bidirectional so we don't want to access the parent's parent here
+            labels.add(map[child]);
 
-        List <String> labels = map.get(parent);
-        String parentInnerParentheses = parent.label.substring(1,parent.label.length()-1);
+        String parentInnerParentheses = map[p].substring(1, map[p].length()-1);
         labels.add(parentInnerParentheses);
 
         Collections.sort(labels);
-        String newLabel = "(" + String.join("", labels) + ")";
-        parent.label = newLabel;
-
+        map[p] = "(" + String.join("", labels) + ")";
       }
-
-      // Update the new set of leaf nodes
       leafs.clear();
       leafs.addAll(newLeafs);
       newLeafs.clear();
-      map.clear();
-
     }
 
     // Only one node remains and it holds the canonical form
@@ -119,42 +105,11 @@ public class TreeCanonicalFormAdjacencyList2 {
 
   }
 
-  // Searches the unvisited neighbors of a node to find its unambiguous
-  // parent. If no parent or more than one parent exists null is returned.
-  private static TreeNode findParent( TreeNode node, Map <Integer, Integer> visited, int VISITED_TOKEN) {
-
-    if (node == null) return null;
-    TreeNode parent = null;
-
-    for (TreeNode neighbor : node.neighbors) {
-      boolean visitedNode = (visited.get(neighbor.id) == VISITED_TOKEN);
-      if (!visitedNode) {
-        if (parent != null) return null;
-        parent = neighbor;
-      }
-    }
-
-    return parent;
-
-  }
-
-  public static TreeNode[] createTree(int n) {
-    TreeNode[] tree = new TreeNode[n];
-    for (int i = 0; i < n; i++)
-      tree[i] = new TreeNode();
-    return tree;
-  }
-
-  public static void addUndirectedEdge(TreeNode[] tree, int u, int v) {
-    tree[u].neighbors.add(tree[v]);
-    tree[v].neighbors.add(tree[u]);
-  }
-
   public static void main(String[] args) {
     
     // Setup tree structure from:
     // http://webhome.cs.uvic.ca/~wendym/courses/582/16/notes/582_12_tree_can_form.pdf
-    TreeNode[] tree = createTree(19);
+    List<List<Integer>> tree = createEmptyGraph(19);
 
     addUndirectedEdge(tree,6,2);
     addUndirectedEdge(tree,6,7);
@@ -182,25 +137,25 @@ public class TreeCanonicalFormAdjacencyList2 {
 
   }
 
-  private static void runTests() {
+  // private static void runTests() {
 
-    TreeNode[] tree = createTree(5);
+  //   TreeNode[] tree = createTree(5);
 
-    addUndirectedEdge(tree,2,0);
-    addUndirectedEdge(tree,2,1);
-    addUndirectedEdge(tree,2,3);
-    addUndirectedEdge(tree,3,4);
-    String encoding1 = canonizeTree(tree);
+  //   addUndirectedEdge(tree,2,0);
+  //   addUndirectedEdge(tree,2,1);
+  //   addUndirectedEdge(tree,2,3);
+  //   addUndirectedEdge(tree,3,4);
+  //   String encoding1 = canonizeTree(tree);
 
-    TreeNode[] tree2 = createTree(5);
-    addUndirectedEdge(tree2,1,3);
-    addUndirectedEdge(tree2,1,0);
-    addUndirectedEdge(tree2,1,2);
-    addUndirectedEdge(tree2,2,4);
-    String encoding2 = canonizeTree(tree2);
+  //   TreeNode[] tree2 = createTree(5);
+  //   addUndirectedEdge(tree2,1,3);
+  //   addUndirectedEdge(tree2,1,0);
+  //   addUndirectedEdge(tree2,1,2);
+  //   addUndirectedEdge(tree2,2,4);
+  //   String encoding2 = canonizeTree(tree2);
 
-    if(!encoding1.equals(encoding2)) System.out.println("ERROR");
+  //   if(!encoding1.equals(encoding2)) System.out.println("ERROR");
 
-  }
+  // }
 
 }
