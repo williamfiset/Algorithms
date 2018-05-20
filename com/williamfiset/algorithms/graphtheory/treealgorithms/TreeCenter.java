@@ -7,18 +7,19 @@
  **/
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 class TreeCenter {
 
-  public static List<Integer> findTreeCenters(List<List<Integer>> graph) {
-    final int n = graph.size();
+  public static List<Integer> findTreeCenters(List<List<Integer>> tree) {
+    final int n = tree.size();
     int[] degrees = new int[n];
 
     // Find all leaf nodes
     List<Integer> leaves = new ArrayList<>();
     for(int i = 0; i < n; i++) {
-      List<Integer> edges = graph.get(i);
+      List<Integer> edges = tree.get(i);
       degrees[i] = edges.size();
       if (degrees[i] <= 1) leaves.add(i);
     }
@@ -31,7 +32,7 @@ class TreeCenter {
     while(processedLeafs < n) {
       List<Integer> newLeaves = new ArrayList<>();
       for(int node : leaves)
-        for (int neighbor : graph.get(node))
+        for (int neighbor : tree.get(node))
           if (--degrees[neighbor] == 1)
             newLeaves.add(neighbor);
       processedLeafs += newLeaves.size();
@@ -45,21 +46,21 @@ class TreeCenter {
     /************ TESTING **********/
 
 
-  // Create a graph as a adjacency list
-  public static List<List<Integer>> createGraph(int n) {
-    List<List<Integer>> graph = new ArrayList<>(n);
-    for (int i = 0; i < n; i++) graph.add(new LinkedList<>());
-    return graph;
+  // Create an empty tree as a adjacency list.
+  public static List<List<Integer>> createEmptyTree(int n) {
+    List<List<Integer>> tree = new ArrayList<>(n);
+    for (int i = 0; i < n; i++) tree.add(new LinkedList<>());
+    return tree;
   }
 
-  public static void addUndirectedEdge(List<List<Integer>> graph, int from, int to) {
-    graph.get(from).add(to);
-    graph.get(to).add(from);
+  public static void addUndirectedEdge(List<List<Integer>> tree, int from, int to) {
+    tree.get(from).add(to);
+    tree.get(to).add(from);
   }
 
   public static void main(String[] args) {
 
-    List<List<Integer>> graph = createGraph(9);
+    List<List<Integer>> graph = createEmptyTree(9);
     addUndirectedEdge(graph, 0, 1);
     addUndirectedEdge(graph, 2, 1);
     addUndirectedEdge(graph, 2, 3);
@@ -73,29 +74,29 @@ class TreeCenter {
     System.out.println(findTreeCenters(graph));
 
     // Centers are 0
-    List<List<Integer>> graph2 = createGraph(1);
+    List<List<Integer>> graph2 = createEmptyTree(1);
     System.out.println(findTreeCenters(graph2));
 
     // Centers are 0,1
-    List<List<Integer>> graph3 = createGraph(2);
+    List<List<Integer>> graph3 = createEmptyTree(2);
     addUndirectedEdge(graph3, 0, 1);
     System.out.println(findTreeCenters(graph3));
 
     // Centers are 1
-    List<List<Integer>> graph4 = createGraph(3);
+    List<List<Integer>> graph4 = createEmptyTree(3);
     addUndirectedEdge(graph4, 0, 1);
     addUndirectedEdge(graph4, 1, 2);
     System.out.println(findTreeCenters(graph4));
 
     // Centers are 1,2
-    List<List<Integer>> graph5 = createGraph(4);
+    List<List<Integer>> graph5 = createEmptyTree(4);
     addUndirectedEdge(graph5, 0, 1);
     addUndirectedEdge(graph5, 1, 2);
     addUndirectedEdge(graph5, 2, 3);
     System.out.println(findTreeCenters(graph5));
 
     // Centers are 2,3 
-    List<List<Integer>> graph6 = createGraph(7);
+    List<List<Integer>> graph6 = createEmptyTree(7);
     addUndirectedEdge(graph6, 0, 1);
     addUndirectedEdge(graph6, 1, 2);
     addUndirectedEdge(graph6, 2, 3);
@@ -103,7 +104,6 @@ class TreeCenter {
     addUndirectedEdge(graph6, 4, 5);
     addUndirectedEdge(graph6, 4, 6);
     System.out.println(findTreeCenters(graph6));
-
   }
 
 }
