@@ -11,210 +11,167 @@
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
-package com.williamfiset.algorithms.graphtheory;
+package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import java.util.*;
 
+public class TreeCanonicalFormAdjacencyList2 {
 
-public class TreeCanonicalFormAdjacencyList {
-  
-  static class TreeNode {
-    
-    static int ID = 0;
-    
-    int id = ID++;
-    String label = "()";
-    List <TreeNode> neighbors = new ArrayList<>();
-
-    // Add an undirected link between two nodes
-    public void connect(TreeNode node) {
-      neighbors.add(node);
-      node.neighbors.add(this);
-    }
-
-    @Override public int hashCode() { return id; }
-    @Override public String toString() { return label; }
-
-  }
-
-  // Encodes a tree in a canonized manner
-  public static String canonizeTree(TreeNode[] tree) {
-    
-    if (tree == null || tree.length == 0) return "";
-    TreeNode node = tree[0];
-
-    int treeSize = 0;
-    List <TreeNode> leafs = new ArrayList<>();
-    
-    // A node has been visited if its value in the map 
-    // is equal to the current value of the VISITED_TOKEN
-    int VISITED_TOKEN = 1;
-    Map <Integer, Integer> visited = new HashMap<>();
-    visited.put(node.id, VISITED_TOKEN);
-    
-    // Do a BFS to find all the leaf nodes
-    Queue <TreeNode> q = new ArrayDeque<>();
-    q.offer(node);
-
-    while (!q.isEmpty()) {
-      
-      treeSize++;
-      node = q.poll();
-      List <TreeNode> neighbors = node.neighbors;
-
-      // The current node is a leaf node
-      if (neighbors.size() == 1) leafs.add(node);
-
-      for (TreeNode neighbor : neighbors) {
-        if (!visited.containsKey(neighbor.id)) {
-          visited.put(neighbor.id, VISITED_TOKEN);
-          q.offer(neighbor);
-        }
-      }
-
-    }
-
-    VISITED_TOKEN++;
-    List <TreeNode> newLeafs = new ArrayList<>();
-    Map <TreeNode, List<String>> map = new HashMap<>();
-
-    while(treeSize > 2) {
-
-      for (TreeNode leaf : leafs) {
-
-        // Find parent of leaf node and check if the parent
-        // is a candidate for the next cycle of leaf nodes
-        TreeNode parent = findParent(leaf, visited, VISITED_TOKEN);
-        visited.put(leaf.id, VISITED_TOKEN);
-        boolean parentWillBecomeLeaf = findParent(parent, visited, VISITED_TOKEN) != null;
-
-        // This parent node is the next level leaf
-        if (parentWillBecomeLeaf) newLeafs.add(parent);
-
-        // Update labels associated with parent
-        List <String> labels = map.get(parent);
-        if (labels == null) { labels = new ArrayList<>(); map.put(parent, labels); }
-        labels.add(leaf.label);
-
-        treeSize--;
-
-      }
-
-      // Update parent labels
-      for (TreeNode parent : map.keySet()) {
-
-        List <String> labels = map.get(parent);
-        String parentInnerParentheses = parent.label.substring(1,parent.label.length()-1);
-        labels.add(parentInnerParentheses);
-
-        Collections.sort(labels);
-        String newLabel = "(" + String.join("", labels) + ")";
-        parent.label = newLabel;
-
-      }
-
-      // Update the new set of leaf nodes
-      leafs.clear();
-      leafs.addAll(newLeafs);
-      newLeafs.clear();
-      map.clear();
-
-    }
-
-    // Only one node remains and it holds the canonical form
-    String label1 = leafs.get(0).label;
-    if (treeSize == 1) return label1;
-
-    // Two nodes remain and we need to combine their labels
-    String label2 = leafs.get(1).label;
-    if (label1.compareTo(label2) < 0)
-      return label1 + label2;
-    return label2 + label1;
-
-  }
-
-  // Searches the unvisited neighbors of a node to find its unambiguous
-  // parent. If no parent or more than one parent exists null is returned.
-  private static TreeNode findParent( TreeNode node, Map <Integer, Integer> visited, int VISITED_TOKEN) {
-
-    if (node == null) return null;
-    TreeNode parent = null;
-
-    for (TreeNode neighbor : node.neighbors) {
-      boolean visitedNode = (visited.get(neighbor.id) == VISITED_TOKEN);
-      if (!visitedNode) {
-        if (parent != null) return null;
-        parent = neighbor;
-      }
-    }
-
-    return parent;
-
-  }
-
-  public static TreeNode[] createTree(int n) {
-    TreeNode[] tree = new TreeNode[n];
-    for (int i = 0; i < n; i++)
-      tree[i] = new TreeNode();
+  public static List<List<Integer>> createEmptyTree(int n) {
+    List<List<Integer>> tree = new ArrayList<>(n);
+    for(int i = 0; i < n; i++) tree.add(new ArrayList<>());
     return tree;
   }
 
-  public static void addUndirectedEdge(TreeNode[] tree, int u, int v) {
-    tree[u].neighbors.add(tree[v]);
-    tree[v].neighbors.add(tree[u]);
+  public static void addUndirectedEdge(List<List<Integer>> tree, int from, int to) {
+    tree.get(from).add(to);
+    tree.get(to).add(from);
   }
+
+  public static List<Integer> findTreeCenters(List<List<Integer>> tree) {
+    final int n = tree.size();
+    int[] degrees = new int[n];
+
+    // Find all leaf nodes
+    List<Integer> leaves = new ArrayList<>();
+    for(int i = 0; i < n; i++) {
+      List<Integer> edges = tree.get(i);
+      degrees[i] = edges.size();
+      if (degrees[i] <= 1) leaves.add(i);
+    }
+
+    int processedLeafs = leaves.size();
+
+    // Remove leaf nodes and decrease the degree of
+    // each node adding new leaf nodes progressively 
+    // until only the centers remain.
+    while(processedLeafs < n) {
+      List<Integer> newLeaves = new ArrayList<>();
+      for(int node : leaves)
+        for (int neighbor : tree.get(node))
+          if (--degrees[neighbor] == 1)
+            newLeaves.add(neighbor);
+      processedLeafs += newLeaves.size();
+      leaves = newLeaves;
+    }
+
+    return leaves;
+  }
+  
+  // Encodes a tree as a string such that any isomorphic tree
+  // also has the same encoding.
+  public static String encodeTree(List<List<Integer>> tree) {
+    if (tree == null || tree.size() == 0) return "";
+    if (tree.size() == 1) return "()";
+    final int n = tree.size();
+
+    int root = findTreeCenters(tree).get(0);
+
+    int[] degree = new int[n];
+    int[] parent = new int[n];
+    boolean[] visited = new boolean[n];
+    List<Integer> leafs = new ArrayList<>();
+    
+    Queue<Integer> q = new ArrayDeque<>();
+    visited[root] = true;
+    parent[root] = -1; // unused.
+    q.offer(root);
+
+    // Do a BFS to find all the leaf nodes
+    while (!q.isEmpty()) {
+      int at = q.poll();
+      List<Integer> edges = tree.get(at);
+      degree[at] = edges.size();
+      for (int next : edges) {
+        if (!visited[next]) {
+          visited[next] = true;
+          parent[next] = at;
+          q.offer(next);
+        }
+      }
+      if (degree[at] == 1) leafs.add(at);
+    }
+
+    List<Integer> newLeafs = new ArrayList<>();
+    String[] map = new String[n];
+    for(int i = 0; i < n; i++) {
+      visited[i] = false;
+      map[i] = "()";
+    }
+
+    int treeSize = n;
+    while(treeSize > 2) {
+      for (int leaf : leafs) {
+
+        // Find parent of leaf node and check if the parent
+        // is a candidate for the next cycle of leaf nodes
+        visited[leaf] = true;
+        int p = parent[leaf];
+        if (--degree[p] == 1) newLeafs.add(p);
+
+        treeSize--;
+      }
+
+      // Update parent labels
+      for (int p : newLeafs) {
+        
+        List<String> labels = new ArrayList<>();
+        for(int child : tree.get(p))
+          // Recall edges are bidirectional so we don't want to
+          // access the parent's parent here.
+          if (visited[child])
+            labels.add(map[child]);
+
+        String parentInnerParentheses = map[p].substring(1, map[p].length()-1);
+        labels.add(parentInnerParentheses);
+
+        Collections.sort(labels);
+        map[p] = "(".concat(String.join("", labels)).concat(")");
+      }
+
+      leafs.clear();
+      leafs.addAll(newLeafs);
+      newLeafs.clear();
+    }
+
+    // Only one node remains and it holds the canonical form
+    String l1 = map[leafs.get(0)];
+    if (treeSize == 1) return l1;
+
+    // Two nodes remain and we need to combine their labels
+    String l2 = map[leafs.get(1)];
+    return (l1.compareTo(l2) < 0) ? (l1 + l2) : (l2 + l1);
+  }
+
+    /* Example usage */
 
   public static void main(String[] args) {
-    
-    // Setup tree structure from:
-    // http://webhome.cs.uvic.ca/~wendym/courses/582/16/notes/582_12_tree_can_form.pdf
-    TreeNode[] tree = createTree(19);
+    // Test if two tree are isomorphic, meaning they are structurally equivalent
+    // but are labeled differently.
+    List<List<Integer>> tree1 = createEmptyTree(5);
+    List<List<Integer>> tree2 = createEmptyTree(5);
 
-    addUndirectedEdge(tree,6,2);
-    addUndirectedEdge(tree,6,7);
-    addUndirectedEdge(tree,6,11);
-    addUndirectedEdge(tree,7,8);
-    addUndirectedEdge(tree,7,9);
-    addUndirectedEdge(tree,7,10);
-    addUndirectedEdge(tree,11,12);
-    addUndirectedEdge(tree,11,13);
-    addUndirectedEdge(tree,11,16);
-    addUndirectedEdge(tree,13,14);
-    addUndirectedEdge(tree,13,15);
-    addUndirectedEdge(tree,16,17);
-    addUndirectedEdge(tree,16,18);
-    addUndirectedEdge(tree,2,0);
-    addUndirectedEdge(tree,2,1);
-    addUndirectedEdge(tree,2,3);
-    addUndirectedEdge(tree,2,4);
-    addUndirectedEdge(tree,4,5);
+    addUndirectedEdge(tree1,2,0);
+    addUndirectedEdge(tree1,3,4);
+    addUndirectedEdge(tree1,2,1);
+    addUndirectedEdge(tree1,2,3);
 
-    String canonicalForm = canonizeTree(tree);
-    System.out.println(canonicalForm);
-
-    runTests();
-
-  }
-
-  private static void runTests() {
-
-    TreeNode[] tree = createTree(5);
-
-    addUndirectedEdge(tree,2,0);
-    addUndirectedEdge(tree,2,1);
-    addUndirectedEdge(tree,2,3);
-    addUndirectedEdge(tree,3,4);
-    String encoding1 = canonizeTree(tree);
-
-    TreeNode[] tree2 = createTree(5);
-    addUndirectedEdge(tree2,1,3);
     addUndirectedEdge(tree2,1,0);
-    addUndirectedEdge(tree2,1,2);
     addUndirectedEdge(tree2,2,4);
-    String encoding2 = canonizeTree(tree2);
+    addUndirectedEdge(tree2,1,3);
+    addUndirectedEdge(tree2,1,2);
 
-    if(!encoding1.equals(encoding2)) System.out.println("ERROR");
+    String encoding1 = encodeTree(tree1);
+    String encoding2 = encodeTree(tree2);
 
+    System.out.println("Tree1 encoding: " + encoding1);
+    System.out.println("Tree2 encoding: " + encoding1);
+    System.out.println("Trees are isomorphic: " + (encoding1.equals(encoding2)));
+
+    // Print:
+    // Tree1 encoding: (()())(())
+    // Tree2 encoding: (()())(())
+    // Trees are isomorphic: true
   }
 
 }

@@ -5,21 +5,20 @@
  *
  * @author Jeffrey Xiao, https://github.com/jeffrey-xiao
  **/
-package com.williamfiset.algorithms.graphtheory;
+package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import java.util.*;
 
 class TreeCenter {
 
-  public static List <Integer> findTreeCenters(List<List<Integer>> graph) {
-    
-    int n = graph.size();
+  public static List<Integer> findTreeCenters(List<List<Integer>> graph) {
+    final int n = graph.size();
     int[] degrees = new int[n];
 
     // Find all leaf nodes
-    List <Integer> leaves = new ArrayList<>();
+    List<Integer> leaves = new ArrayList<>();
     for(int i = 0; i < n; i++) {
-      List <Integer> edges = graph.get(i);
+      List<Integer> edges = graph.get(i);
       degrees[i] = edges.size();
       if (degrees[i] <= 1) leaves.add(i);
     }
@@ -30,7 +29,7 @@ class TreeCenter {
     // each node adding new leaf nodes progressively 
     // until only the centers remain.
     while(processedLeafs < n) {
-      List <Integer> newLeaves = new ArrayList<>();
+      List<Integer> newLeaves = new ArrayList<>();
       for(int node : leaves)
         for (int neighbor : graph.get(node))
           if (--degrees[neighbor] == 1)
@@ -40,7 +39,6 @@ class TreeCenter {
     }
 
     return leaves;
-
   }
 
 

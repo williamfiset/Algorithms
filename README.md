@@ -44,8 +44,10 @@
 # Graph theory
 
 ### Tree algorithms
+* [Tree canonical form (tree isomorphism, tree encoding)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/treealgorithms/TreeCanonicalFormAdjacencyList.java) **- O(V+E)**
+* [Tree center(s)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/treealgorithms/TreeDiameter.java) **- O(V+E)**
 * [Tree diameter](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/treealgorithms/TreeDiameter.java) **- O(V+E)**
-* [Tree canonical form (tree isomorphism)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/treealgorithms/TreeCanonicalFormAdjacencyList.java) **- O(V+E)**
+
 
 ### Network flow
 * [Bipartite graph verification (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/BipartiteGraphCheckAdjacencyList.java) **- O(V+E)**

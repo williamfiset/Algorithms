@@ -6,7 +6,7 @@
  * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
-package com.williamfiset.algorithms.graphtheory;
+package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import java.util.*;
 
