@@ -15,7 +15,7 @@ package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import java.util.*;
 
-public class TreeCanonicalFormAdjacencyList2 {
+public class TreeCanonicalFormAdjacencyList {
 
   public static List<List<Integer>> createEmptyTree(int n) {
     List<List<Integer>> tree = new ArrayList<>(n);
