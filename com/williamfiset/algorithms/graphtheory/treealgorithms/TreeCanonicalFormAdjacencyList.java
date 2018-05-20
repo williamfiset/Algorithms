@@ -7,7 +7,7 @@
  *
  * Tested code against: https://uva.onlinejudge.org/external/124/p12489.pdf
  *
- * Time Complexity: O(V+E)
+ * Time Complexity: O(Elog(E))
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
