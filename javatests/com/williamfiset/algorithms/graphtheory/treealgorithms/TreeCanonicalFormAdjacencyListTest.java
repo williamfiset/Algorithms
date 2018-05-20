@@ -1,13 +1,12 @@
 package javatests.com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCanonicalFormAdjacencyList2.createEmptyTree;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCanonicalFormAdjacencyList2.addUndirectedEdge;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCanonicalFormAdjacencyList2.encodeTree;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCanonicalFormAdjacencyList.createEmptyTree;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCanonicalFormAdjacencyList.addUndirectedEdge;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCanonicalFormAdjacencyList.encodeTree;
 
-import com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCanonicalFormAdjacencyList2;
-import java.util.*;
-import org.junit.*;
+import com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCanonicalFormAdjacencyList;
+import java.util.*; import org.junit.*;
 
 public class TreeCanonicalFormAdjacencyListTest {
 
