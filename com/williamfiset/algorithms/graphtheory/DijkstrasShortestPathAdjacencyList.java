@@ -61,7 +61,6 @@ public class DijkstrasShortestPathAdjacencyList {
    * Initialize the solver by providing the graph size and a starting node. 
    * Use the {@link #addEdge} method to actually add edges to the graph.
    * @param n     - The number of nodes in the graph.
-   * @param start - The starting node to begin the shortest path search at.
    */
   public DijkstrasShortestPathAdjacencyList(int n) {
     this.n = n;
@@ -133,7 +132,7 @@ public class DijkstrasShortestPathAdjacencyList {
 
       // We already found a better path before we got to 
       // processing this node so we can ignore it.
-      if (node.value > dist[node.id]) continue;
+      if (dist[node.id] < node.value) continue;
 
       List<Edge> edges = graph.get(node.id);
       for(int i = 0; i < edges.size(); i++) {
