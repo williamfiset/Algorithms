@@ -115,9 +115,7 @@ public class DijkstrasShortestPathAdjacencyListWithDHeap {
       // processing this node so we can ignore it.
       if (minValue > dist[nodeId]) continue;
 
-      List<Edge> edges = graph.get(nodeId);
-      for(int i = 0; i < edges.size(); i++) {
-        Edge edge = edges.get(i);
+      for(Edge edge : graph.get(nodeId)) {
 
         // You cannot get a shorter path by revisiting
         // a node you have already visited before.
@@ -129,7 +127,10 @@ public class DijkstrasShortestPathAdjacencyListWithDHeap {
           prev[edge.to] = nodeId;
           dist[edge.to] = newDist;
           // Decrease cost of going to a node or insert it with a value of newDist.
-          ipq.decrease(edge.to, newDist);
+          if (!ipq.contains(edge.to))
+            ipq.insert(edge.to, newDist);
+          else
+            ipq.decrease(edge.to, newDist);
         }
       }
       // Once we've visited all the nodes spanning from the end 
@@ -273,19 +274,19 @@ class MinIndexedDHeap <T extends Comparable<T>> {
     return oldValue;
   }
 
+  // Strictly decreases the value associated with 'ki' to 'value'
   public void decrease(int ki, T value) {
-    if (!contains(ki)) {
-      insert(ki, value);
-    } else if (less(value, values[ki])) {
+    keyExistsAndValueNotNullOrThrow(ki, value);
+    if (less(value, values[ki])) {
       values[ki] = value;
       swim(pm[ki]);
     }
   }
 
+  // Strictly increases the value associated with 'ki' to 'value'
   public void increase(int ki, T value) {
-    if (!contains(ki)) {
-      insert(ki, value);
-    } else if (less(values[ki], value)) {
+    keyExistsAndValueNotNullOrThrow(ki, value);
+    if (less(values[ki], value)) {
       values[ki] = value;
       sink(pm[ki]);
     }
