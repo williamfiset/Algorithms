@@ -1,0 +1,55 @@
+[intro_sound] Hello and welcome! My name is william, today we're going to tackle Dijkstra's shortest path algorithm. This is one of the most important algorithms in graph theory for finding the shortest paths, so without further ado let's dive in.
+
+The first thing to mention about Dijkstra's algorithm is that it is a single source shortest path algorithm for graphhs with non-negative edge weighhts. Thhis means thhat at the beginning of the algorithm you need to specify a starting node to indicate a relative starting point. Once you specify the starting node Dijkstra's can tell you thhe shortest path between that node and all other nodes in the graph which is pretty sweet.
+Depending on how you implement your Dijkstra's and what data structures you use the time complexity is typically  O(E*log(V)) which is competitive against other SSSP algorithms we see around.
+
+Before we go crazy trying to find shortest pathhs on various types of graphs you need to know that Dijkstra's requires thhat all edges of our graph have a non-negative weights. This constraint is imposed to ensure that once a node has been visited its optimal distance cannot be improved by finding a shorter path by taking an edge with a negative weight.
+This is property is especially important because it enables Dijkstra’s algorithm to act in a greedy manner by always selecting the next most promising node.
+
+For this slide deck, my goal is to help you understand how to implement Dijkstra’s algorithm, and also how to implement it very efficiently.
+We're going to start by looking at the naive implementation because it's by far the most common and then we'll get into using an indexed PQ alongside the decreaseKey operation; and lastly I want to briefly mention how we can use a D-ary heap to further boost performance.
+
+Let's have a look at the naive version with a standard PQ. In all these examples assume node 0 is the starting node. Beforew we get started with the algorithm you need to know two things i'm keeping track of. First is the optimal distance from the start node to each node in the array 'dist' in the middle of the screen which is initialized to have an optimal distance of infinity to each node. 
+This is good because in the beginning we assume that every node is unreachable from the starting node, so if at thhe end of the algorithm there's still a value of infinity at a certain index we know that node is unreachable from the starting node.
+Then on the right I will be maintaining key-value pairs corresponding to a node's index and the best distance to get to that node. This PQ will tell us which node we should visit next based on the which key-value pair has the lowest value.
+
+To start with, assign a distance of zero to the start node at index 0 in the 'dist' array. Also insert the key-value pair (0, 0) to the PQ to indicate that we're visiting node 0 and that the best distance is 0.
+
+From node 0 we can visit node 1 by using the edge with a cost of 4. This gives us a best distance of 4, so we can update our best distance from infinity to 4 in the 'dist' array. Also add this information to the PQ.
+
+Next we can visit node 2 from node 0. Just like the last node we can update the optimal distance to reach node 2 from infinity to 1 in the 'dist' array. Also add thhat node 2 is reachable with a distance of 1 to the PQ.
+
+That concludes visiting all the edges for node 0. To decide which node to visit next Dijkstra's always selects the next most promising node, this is being tracked in the PQ, so we can poll which node to visit next by extracting the best key-value pair.
+
+Node 2 is the next most promising node because it has a distance of 1 from the start node while node 1 has a value of 4.
+
+From node 2, if we take the upwards edge we can improve the best distance to node 1 by taking the current best distance from node 2, which is 1, plus the edge cost of 2 to get the node 1, for a total cost of 3, which is better than the previous value of 4. Every time we find a better distance to a node we need to insert thhat information into the PQ.
+
+You'll notice that index 1 is already in the PQ with value 4. Instead of updating it we simply insert a new (index, dist) pair with the better distance of 3.
+This is the best solution for standard library PQs since removals/updates are typically O(n) while inserts are only O(log(n)). We end up with duplicate indexes but we’ll deal with that later…
+
+<press>
+
+Then we can improve the best distance to node 3 to be 6.
+
+The next most promising node is node 1
+
+We can improve the best distance to node 3 by taking the edge from node 1 to node 3 with a cost of 1.
+
+<press>
+
+<press>
+
+The next most promising node is node 1 with value 4, but we have already found a better route to get to node 1 (since 'dist' at index 1 has value 3), therefore we can ignore this entry in the PQ.
+
+Next up is node 3
+
+Update the best value to node 4
+
+<press>
+
+We already found a better route to node three so skip this entry in the PQ.
+
+Finally visit node 4
+
+That's all there is for Dijkstra's. There are only a few moving parts, but in large the only things to keep track of is the 'dist' array which contains the best distance so far from the start node to each other node and the PQ which tells you which node to visit next best of best value found so far.
