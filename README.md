@@ -71,7 +71,7 @@
 * [Depth first search (adjacency list, iterative, fast stack)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DepthFirstSearchAdjacencyListIterativeFastStack.java) **- O(V+E)**
 * [Depth first search (adjacency list, recursive)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DepthFirstSearchAdjacencyListRecursive.java) **- O(V+E)**
 * [Dijkstra's shortest path (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DijkstrasShortestPathAdjacencyList.java) **- O(Elog(V))**
-* [Dijkstra's shortest path (adjacency list, D-ary heap)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DijkstrasShortestAdjacencyListWithDHeap.java) **- O(Elog<sub>E/V</sub>(V))**
+* [Dijkstra's shortest path (adjacency list, D-ary heap)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DijkstrasShortestPathAdjacencyListWithDHeap.java) **- O(Elog<sub>E/V</sub>(V))**
 * [Dijkstra's shortest path to all nodes (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DijkstrasShortestPathAllNodesAdjacencyList.java) **- O(Elog(V))**
 * [Floyd Warshall algorithm (adjacency matrix, negative cycle check)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/FloydWarshallSolver.java) **- O(V<sup>3</sup>)**
 * [Graph diameter (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/GraphDiameter.java) **- O(VE)**
