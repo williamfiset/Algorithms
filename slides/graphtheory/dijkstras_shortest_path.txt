@@ -59,9 +59,9 @@ We already found a better route to node 3 so skip this entry in the PQ.
 
 Finally visit node 4
 
-That's all there is for the lazy implementation of Dijkstra's algorithm. There are only a few moving parts, but in large the only things to keep track of is the 'dist' array which contains the best distance so far from the start node to each other node and the PQ which tells you which node to visit next best of best value found so far.
+That's all there is for the lazy implementation of Dijkstra's algorithm. There are only a few moving parts, but in large the only things to keep track of is the 'dist' array which contains the best distance so far from the start node to every other node, and the PQ which tells you which node to visit next based on the best value found so far.
 
-
+Let's look at some pseudo code for how this works. This implementation will run Dijkstra's algorithm from a start node and return the distance array which will tell you shortest distance to any other node. However, it will not tell you which sequence of edges to follow to achieve that optimal distance, to do that we'll need to keep track of some additional information which I'll cover soon.
 
 
 
