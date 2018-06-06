@@ -113,15 +113,37 @@ An Indexed PQ is a PQ variant which allows access to key-value pairs within the 
 
 Now we're going to look at the eager version of Dijkstra's algorithm where we don't ever have duplicate keys in the PQ.
 
-First insert the index of the start node with value zero into the PQ and visit that node.
+-------------------------------
 
-Then visit all the neighbors of zero
-.........
-.........
-TODO(will): copy from previous animation notes
-.........
-.........
+To start with, assign a distance of zero to the start node at index 0 in the distance array. Also, insert the key-value pair (0, 0) into the PQ to indicate that we intend on visiting node 0 with a best distance of 0.
 
+Then the algorithm actually starts and we look inside the PQ for the first time and we discover that we should visit node 0.
+
+From node 0 we can visit node 1 by using the edge with a cost of 5. This gives us a best distance of 5, so we can update our best distance from infinity to 5 in the 'dist' array. Also add this information to the PQ.
+
+Next we can visit node 2 from node 0. Just like the last node we can update the optimal distance to reach node 2 from infinity to 1. Additionally, add that node 2 is reachable with a distance of 1 to the PQ.
+
+That concludes visiting all the edges for node 0. To decide which node to visit next Dijkstra's always select the next most promising node in the PQ. To do this, simply poll the next best key-value pair from the PQ.
+
+Node 2 is the next most promising node because it has a distance of 1 from the start node while node 1 has a greater value of 5.
+
+From node 2, if we take the sideways edge to improve the best distance to node 4 to be 13 by taking the current best distance from node 2, which is 1, plus the edge cost of 12 to get the node 4, for a total cost of 13.
+
+We can also update the best distance to node 1 by taking the upwards edge from node 2. Notice that I did not insert a new key-value pair with a value of 1 comma 4 inside the PQ but rather simply updated the existing value in the PQ from 5 to 4, this is the main difference between the lazy and the eager version.
+
+<press>
+
+The next most promising node is node 1
+
+When taking the downwards edge from node 1 to node 2 we discover that node 2 has already been visited so we cannot improve its already best distance.
+
+We also cannot improve the best distance to node 4 by taking the diagonal downwards edge since the total cost outweighs the best distance already known for that node.
+
+However, we can improve the best distance to node 3 by taking the edge from node 1 to node 3 with a cost of 3.
+
+I'll let the animation play, and as it does try and predict what the next move for the algorithm will be.
+
+...
 
 So that's the eager version of Dijkstra's algorithm which I would say is the proper way of implementing Dijkstra's. Let's take a look at some pseudo-code to see what needs to change.
 
