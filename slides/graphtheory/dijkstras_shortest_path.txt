@@ -111,9 +111,9 @@ The lazy approach works, but it is inefficient for dense graphs because we end u
 
 An Indexed PQ is a PQ variant which allows access to key-value pairs within the PQ in constant time and updates in log time if you're using a binary heap. This type of PQ is extremely useful in many application and I highly recommend you watch my video on the Indexed PQ to become enlightened. I'll make sure to leave a link in the description, but in the meantime we'll just assume we have access to an indexed PQ at hand.
 
-Now we're going to look at the eager version of Dijkstra's algorithm where we don't ever have duplicate keys in the PQ.
-
 -------------------------------
+
+Now we're going to look at the eager version of Dijkstra's algorithm where we don't ever have duplicate keys in the PQ.
 
 To start with, assign a distance of zero to the start node at index 0 in the distance array. Also, insert the key-value pair (0, 0) into the PQ to indicate that we intend on visiting node 0 with a best distance of 0.
 
@@ -127,9 +127,9 @@ That concludes visiting all the edges for node 0. To decide which node to visit 
 
 Node 2 is the next most promising node because it has a distance of 1 from the start node while node 1 has a greater value of 5.
 
-From node 2, if we take the sideways edge to improve the best distance to node 4 to be 13 by taking the current best distance from node 2, which is 1, plus the edge cost of 12 to get the node 4, for a total cost of 13.
+From node 2, we can take the sideways edge to improve the best distance to node 4 to be 13 by taking the current best distance from node 2, which is 1, plus the edge cost of 12 to get the node 4, for a total cost of 13.
 
-We can also update the best distance to node 1 by taking the upwards edge from node 2. Notice that I did not insert a new key-value pair with a value of 1 comma 4 inside the PQ but rather simply updated the existing value in the PQ from 5 to 4, this is the main difference between the lazy and the eager version.
+We can also update the best distance to node 1 by taking the upwards edge from node 2. Notice that I did not insert a new key-value pair with a value of 1 comma 4 inside the PQ, but rather simply updated the existing value in the PQ from 5 to 4, this is the main difference between the lazy and the eager version.
 
 <press>
 
@@ -137,7 +137,7 @@ The next most promising node is node 1
 
 When taking the downwards edge from node 1 to node 2 we discover that node 2 has already been visited so we cannot improve its already best distance.
 
-We also cannot improve the best distance to node 4 by taking the diagonal downwards edge since the total cost outweighs the best distance already known for that node.
+We also cannot improve the best distance to node 4 by taking the diagonal downwards edge since the total cost of 24 outweighs the best distance of 13 already known for that node.
 
 However, we can improve the best distance to node 3 by taking the edge from node 1 to node 3 with a cost of 3.
 
