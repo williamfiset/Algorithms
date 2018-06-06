@@ -95,9 +95,91 @@ Now I want to talk about actually finding the shortest path, not just the distan
 The way to do this is to maintain a previous array which tracks the index of the node you took to get a particular node i. Initially the previous array should contain all null values, but as you are able to perform relaxation operations you want to update the previous array to say that the node you're going to came from the node you're currently at. Then at the end, instead of just returning the distance array also return the previous array which we'll need soon.
 
 In another method, perhaps one called findShortestPath, provide all the same arguments with the addition of the end node index and execute Dijkstra's to obtain the dist and prev arrays. With these two bits of information we can reconstruct the shortest path. First, check that the end node is reachable by checking that its value in the dist array is not infinity, then starting at the end node loop backward through the previous array until you make is back to the start node. You know you have made it back to the start node when a value of null is reached since the start node doesn't have a parent node index from which it came from.
-The resulting path of nodes indices to follow for the shortest path from the start node to the end node will be in reverse order so make sure you reverse the array before returning.
+The resulting path of nodes indices to follow for the shortest path from the start node to the end node will be in reverse order because we started at the end node and worked backwards so make sure you reverse the array before returning.
+
+Now I want to talk about a few optimization we can use to make Dijkstra's algorithm more efficient. Sometimes we know the index of our destination node and don't necessarily need to know the optimal distance to every node in the graph just that one node. So the question is do we still have to visit every node in the graph?
+
+Actually yes we do, but only in the worst case. However, it is possible to stop early once you have finished visiting the destination node.
+
+The main idea for stopping early is that Dijkstra’s algorithm processes each next most promising node in order. So if the destination node has been visited, its shortest distance will not change as more future nodes are visited.
+
+So all we have to do to stop early is to check if the current index is the end node and stop the algorithm early. This can prove to be a very substantial speedup depending on how early you encounter the end node while processing the graph.
+
+Our current implementation of Dijkstra’s is what we call the lazy implementation because it inserts duplicate key-value pairs and lazily deletes them because it’s more efficient to insert a new key-value pair in logarithmic time into the PQ than it is to update an existing key’s value in linear time.
+The lazy approach works, but it is inefficient for dense graphs because we end up with several stale outdated key-value pairs in our PQ. The eager version of Dijkstra’s however avoids duplicate key-value pairs and supports efficient value updates in O(log(n)) by using an Indexed Priority Queue (IPQ).
+
+An Indexed PQ is a PQ variant which allows access to key-value pairs within the PQ in constant time and updates in log time if you're using a binary heap. This type of PQ is extremely useful in many application and I highly recommend you watch my video on the indexed PQ. I'll make sure to leave a link in the description, but in the meantime we'll just assume we have access to an indexed PQ at hand.
+
+Now we're going to look at the eager version of Dijkstra's algorithm where we don't ever have duplicate keys in the PQ.
+
+First insert the index of the start node with value zero into the PQ and visit that node.
+
+Then visit all the neighbors of zero
+.........
+.........
+.........
 
 
+So that's the eager version of Dijkstra's algorithm which I would say is the proper way of implementing Dijkstra's. Let's take a look at some pseudo-code to see what needs to change.
+
+First notice that we're using an indexed PQ instead of a regular PQ. Also notice that we no longer need to wrap our key-value pairs as tuples in an object because indexed PQs have first class support for key-value pairs as opposed to a PQ you would find in a standard library.
+
+The other thing that changes is how we insert key-value pairs into the PQ. If the key or node index does not yet exist in the IPQ insert it, otherwise invoke a decreaseKey operation to update the best distance to that node in the PQ. The operation is called decrease key instead of update because it only updates the value if it's strictly less than the current value in the PQ.
+
+Alright we've looked at several Dijkstra optimizations already but there's one last one I want to talk about, and that it improving the heap we're using. Currently we're probably using an indexed binary heap but we can do better. The thing to notice is that when executing Dijkstra’s algorithm, especially on dense graphs, there are a lot more updates (i.e decreaseKey operations) to key-value pairs than there are dequeue operations.
+A D-ary heap is a heap variant in which each node has at most D children instead of at most 2. This speeds up decrease key operations at the expense of more costly removals.
+
+For example, here's a d-ary heap with D equal to 4.
+
+In this heap suppose we want to update the node with index 6 to have a new shortest distance of 1.
+
+What we should do is lookup the position of the node with index 6 in the heap and update its value. Then we need to adjust its position within the heap. This is a min heap so low values belong above high values. 1 is less than 3 the value of the node directly above the purple node so they should swap positions.
+
+Similarly, a value of 2 is greater than a value of 1 so we should swap again.
+
+Now our heap invariant is satisfied once again.
+
+So the whole update only took two swaps in total because the heap was very flat.
+
+In contrast let's suppose we want to remove the root node.
+
+So the node in red is the node we want to remove and we're going to swap it with the node in the bottom right position in purple because that's our technique for removing from this type of heap.
+
+We do the swap and now we can remove the red node.
+
+However, the heap invariant is not satisfied at the moment because the purple node we swapped into the root's position has a greater value than some of its children. What we need to do is search the D children of the current node and find the minimum key-value pair to swap the purple node downwards.
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+The value of two was the smallest so we swap with that node. 
+
+The heap invariant is still not satisfied because some of the children of the purple node have a value less than it.
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+After searhcing all the children we determine that the node with value 3 has the smallest value so we swap with that one.
+
+<press>
+
+So in conclusion, what I want to demonstrate was that decreaseKey operations are very efficient with a D-ary heap but removals can be very expensive although they are more rare. There's definitely a trade off and it depends on the density of your graph.
+
+The question then becomes, what is the optimal D-ary heap degree I should use to maximize performance of Dijkstra's algorithm? The answer is in general a value of D equal to the number of edges divided by the number of nodes is the best degree to use to balance removals against decreaseKey operations. In turn this improves Dijkstra’s time complexity to big O of E times log base E divided by V of V which is much better especially for dense graphs which have lots of decreaseKey operations. 
+
+That's all I have for now, thank you so much for watching! Implementation source code and slides can be found at github.com slash williamfiset slash algorithms. There should be a link in the description below. Again, thanks for watching and please give this video a thumbs up if you learned something and subscribe for more mathematics and computer science videos.
+
+Next video we'll be looking at some source code for everything we talked about in this video see you then.
 
 [outro sound]
 
