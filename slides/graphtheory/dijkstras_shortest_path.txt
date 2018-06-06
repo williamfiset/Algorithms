@@ -63,40 +63,39 @@ Finally visit node 4
 
 That's all there is for the lazy implementation of Dijkstra's algorithm. There are only a few moving parts, but in large the only things to keep track of is the 'dist' array which contains the best distance so far from the start node to every other node, and the PQ which tells you which node to visit next based on the best value found so far.
 
-Let's look at some pseudo code for how this works. This implementation will run Dijkstra's algorithm from a start node and return the distance array which will tell you shortest distance to any other node. However, it will not tell you which sequence of edges to follow to achieve that optimal distance, to do that we'll need to keep track of some additional information which I'll cover soon.
+Let's look at some pseudo code for how this works, I'll be covering real source code in the next video for those interested. This pseudo-code runs Dijkstra's algorithm from a start node and returns the distance array which will tells you the shortest distance to every node in the graph. However, it will not tell you which sequence of edges to follow to achieve that optimal distance, to do that we'll need to keep track of some additional information which I'll cover soon as well.
 
-In terms of the variables we'll need, in the function definition I specify three things:
+In terms of the variables we'll need, in the function definition I specify three:
 The first is 'g', an adjacency list of the weighted graph,
 'n', the number of nodes in the graph
-and s, the index of the start node.
+and 's', the index of the start node.
 
-Inside the function the first thing I do is initialize two arrays to track some information we'll need. 
-First is a boolean array called 'vis' short for visited which tracks whether or node i has been visited or not.
-Then is 'dist' the distance array, which will be the output of the function. Make sure you set all the initial values for the dist array to be infinity except for the start node which should be zero.
+Inside the function, I begin by initializing two arrays to track some information we'll need. First, is a boolean array called V-I-S, short for visited, which tracks whether node i has been visited or not. Then, I also initialize 'dist', the distance array, which will be the output of the function. Make sure you fill the dist array with positive infinity, except for the start node which should be set to zero.
 
-After this initialize a PQ that will store (node index, best distance) pairs sorted by minimum distance. You should be able to use the built in PQ for whatever programming language you're using.
+After this, initialize a PQ that will store the node-index--best-distance pairs sorted by minimum distance. You should be able to use the built in PQ in whatever programming language you're using.
 
-Remember to insert the start node's index paired with a distance of zero into the Pqto kick start the algorithm.
+Remember to insert the start node's index paired with a distance of zero into the PQ to kick start the algorithm. If you're wondering why there are two sets of brackets it's because the pair s comma zero is meant to represent a tuple or an object with two values, a key and a value.
 
 So while the PQ is not empty, remove the next most promising (index, min distance) pair and mark that node as visited.
 
 Loop over all the neighbors of the current node and skip the visited neighbors because we do not want to visit them again.
 
-Then simply perform the relaxation. First compute the distance to the new node which is the best distance from the start node to the current node which is found in the dist array plus the edge cost to get to the next node. Once you know that, compare it against the current best distance for the next node and update the value if it's better. Then finally insert a new key-value pair inside the PQ so we visit that node in the future.
+Then simply perform the edge relaxation. First, compute the distance to the new node which is calculated by adding the best distance from the start node to the current node which is found in the 'dist' array plus the edge cost to get to the next node. Once you know that, compare it against the current best distance for the next node and update the value if it's better. Then finally insert a new key-value pair inside the PQ so we visit that node in the future.
 
-So in practice most standard libraries do not support the decrease key operations on PQs. You can think of a decrease key operation as an operation which updates the value of a key in the PQ. A way to get around this is to add a new (node index, best distance) pair every time we need update the distance to a node.
+So in practice most standard libraries do not support a decrease key operation for the builtin PQ. You can think of a decrease key operation as an operation which updates the value of a key in the PQ. A way to get around this is to add a new (node index, best distance) pair every time we need update the distance to a node.
 
-As a result, it is possible to have duplicate node indices in the PQ. This is not ideal, but inserting a new key-value pair in logarithmic time is much faster than searching for the key you want to update in the PQ which takes linear time and then updating its value.
+As a result, it is possible to have duplicate node indices in the PQ. This is not ideal, but inserting a new key-value pair in logarithmic time is much faster than searching for the key you want to update in the PQ which takes linear time. Yes, searching for a key in a priority queue takes linear time because the heap is sorted by the key's values not the keys themselves, so it's effectively it's like searching in an unordered list for a particular element.
 
 <pause><press>
 
-A neat optimization we can do which ignores stale (index, dist) pairs in our PQ is to skip nodes where we already found a better path routing through others nodes before we got to processing this node.
+A neat optimization we can do which ignores stale (index, min distance) pairs in our PQ is to skip nodes where we already found a better path routing through others nodes before we got to processing this node. I'll let that sink in for a little bit, but this is definitely a neat one line optimization you'll want to keep around. 
+<slow next slide>
 
-Now I want to talk about actually finding the shortest path, not just the distance to get there. To do this we'll need to keep track of some additional information, in particular, we'll want to keep track of the index of the previous node we took to get to the next node.
+Now I want to talk about actually finding the shortest path, not just the distance to get there. To do this we'll need to keep track of some additional information, in particular, we'll want to keep track of the index of the previous node we took to get to the current node.
 
-The way to do this is to maintain a previous array which tracks the index of the node you took to get a particular node i. Initially the previous array should contain all null values, but as you are able to perform relaxation operations you want to update the previous array to say that the node you're going to came from the node you're currently at. Then at the end, instead of just returning the distance array also return the previous array which we'll need soon.
+The way to do this is to maintain a previous array I call 'prev' in this slide, this array tracks the index of the node you took to get to node i. Initially, the previous array should contain all null values, but as you perform edge relaxation operations you want to update the previous array to say that the node you're going to came from the node you're currently at. Then at the end, instead of just returning the distance array also return the previous array which we will need soon.
 
-In another method, perhaps one called findShortestPath, provide all the same arguments with the addition of the end node index and execute Dijkstra's to obtain the dist and prev arrays. With these two bits of information we can reconstruct the shortest path. First, check that the end node is reachable by checking that its value in the dist array is not infinity, then starting at the end node loop backward through the previous array until you make is back to the start node. You know you have made it back to the start node when a value of null is reached since the start node doesn't have a parent node index from which it came from.
+In another method, perhaps called findShortestPath, provide all the same arguments with the addition of the end node index and execute Dijkstra's to obtain the dist and prev arrays. With these two bits of information we can reconstruct the shortest path. First, check that the end node is reachable by checking that its value in the dist array is not infinity, then starting at the end node loop backward through the previous array until you make is back to the start node. You know you have made it back to the start node when a value of null is reached since the start node doesn't have a parent node index from which it came from.
 The resulting path of nodes indices to follow for the shortest path from the start node to the end node will be in reverse order because we started at the end node and worked backwards so make sure you reverse the array before returning.
 
 Now I want to talk about a few optimization we can use to make Dijkstra's algorithm more efficient. Sometimes we know the index of our destination node and don't necessarily need to know the optimal distance to every node in the graph just that one node. So the question is do we still have to visit every node in the graph?
@@ -118,6 +117,8 @@ First insert the index of the start node with value zero into the PQ and visit t
 
 Then visit all the neighbors of zero
 .........
+.........
+TODO(will): copy from previous animation notes
 .........
 .........
 
