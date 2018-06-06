@@ -65,20 +65,49 @@ Let's look at some pseudo code for how this works. This implementation will run 
 
 In terms of the variables we'll need, in the function definition I specify three things:
 The first is 'g', an adjacency list of the weighted graph,
-'n' - the number of nodes in the graph
+'n', the number of nodes in the graph
 and s, the index of the start node.
 
+Inside the function the first thing I do is initialize two arrays to track some information we'll need. 
+First is a boolean array called 'vis' short for visited which tracks whether or node i has been visited or not.
+Then is 'dist' the distance array, which will be the output of the function. Make sure you set all the initial values for the dist array to be infinity except for the start node which should be zero.
 
+After this initialize a PQ that will store (node index, best distance) pairs sorted by minimum distance. You should be able to use the built in PQ for whatever programming language you're using.
 
+Remember to insert the start node's index paired with a distance of zero into the Pqto kick start the algorithm.
 
+So while the PQ is not empty, remove the next most promising (index, min distance) pair and mark that node as visited.
 
+Loop over all the neighbors of the current node and skip the visited neighbors because we do not want to visit them again.
 
+Then simply perform the relaxation. First compute the distance to the new node which is the best distance from the start node to the current node which is found in the dist array plus the edge cost to get to the next node. Once you know that, compare it against the current best distance for the next node and update the value if it's better. Then finally insert a new key-value pair inside the PQ so we visit that node in the future.
 
+So in practice most standard libraries do not support the decrease key operations on PQs. You can think of a decrease key operation as an operation which updates the value of a key in the PQ. A way to get around this is to add a new (node index, best distance) pair every time we need update the distance to a node.
 
+As a result, it is possible to have duplicate node indices in the PQ. This is not ideal, but inserting a new key-value pair in logarithmic time is much faster than searching for the key you want to update in the PQ which takes linear time and then updating its value.
 
+<pause><press>
+
+A neat optimization we can do which ignores stale (index, dist) pairs in our PQ is to skip nodes where we already found a better path routing through others nodes before we got to processing this node.
+
+Now I want to talk about actually finding the shortest path, not just the distance to get there. To do this we'll need to keep track of some additional information, in particular, we'll want to keep track of the index of the previous node we took to get to the next node.
+
+The way to do this is to maintain a previous array which tracks the index of the node you took to get a particular node i. Initially the previous array should contain all null values, but as you are able to perform relaxation operations you want to update the previous array to say that the node you're going to came from the node you're currently at. Then at the end, instead of just returning the distance array also return the previous array which we'll need soon.
+
+In another method, perhaps one called findShortestPath, provide all the same arguments with the addition of the end node index and execute Dijkstra's to obtain the dist and prev arrays. With these two bits of information we can reconstruct the shortest path. First, check that the end node is reachable by checking that its value in the dist array is not infinity, then starting at the end node loop backward through the previous array until you make is back to the start node. You know you have made it back to the start node when a value of null is reached since the start node doesn't have a parent node index from which it came from.
+The resulting path of nodes indices to follow for the shortest path from the start node to the end node will be in reverse order so make sure you reverse the array before returning.
 
 
 
 [outro sound]
+
+
+
+
+
+
+
+
+
 
 
