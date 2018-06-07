@@ -1,21 +1,22 @@
 [intro_sound]
-Hello and welcome! My name is william, today we're going to tackle Dijkstra's shortest path algorithm. This is one of the most important algorithms in graph theory for finding the shortest paths on a graph, so without further ado let's dive in.
+Hello and welcome! My name is William, today we are going to tackle Dijkstra's shortest path algorithm. This is one of the most important algorithms in graph theory for finding the shortest path on a graph, so let's dive in.
 
-The first thing to mention about Dijkstra's algorithm is that it is a single source shortest path algorithm for graphs. This means that at the beginning of the algorithm, you need to specify a starting node to indicate a relative starting point. Once you specify the starting node Dijkstra's can tell you the shortest path between that node and all other nodes in your graph, which is pretty sweet.
-Depending on how you implement your Dijkstra's and what data structures you use, the time complexity is typically big O of E log V which is competitive against other shortest path algorithms we see around.
+The first thing to mention about Dijkstra's algorithm is that it is a single source shortest path algorithm for graphs. This means that at the beginning of the algorithm, you need to specify a starting node to indicate a relative starting point for algorithm. Once you specify the starting node and execute the algorithm, Dijkstra's can tell you the shortest path between that node and all other nodes in your graph, which is pretty sweet.
+Depending on how you implement your Dijkstra's and what data structures you use, the time complexity is typically big O of E log V which is fairly competitive against other shortest path algorithms we see around.
 
-Before we go crazy trying to find shortest paths on various graphs you need to know that in order to run Dijkstra's algorithm all edges of our graph need to have non-negative weights. This constraint is imposed to ensure that once a node has been visited its optimal distance from the starting node cannot be improved by finding a shorter path by taking an edge with a negative weight. This is property is especially important because it enables Dijkstra’s algorithm to act in a greedy manner by always selecting the next most promising node to visit.
+However, before we go crazy trying to find shortest paths on various graphs, you need to know which graphs we are allowed to run Dijkstra's algorithm on. The one main constraint for Dijkstra's is that all edges of the graph need to have non-negative weights. This constraint is imposed to ensure that once a node has been visited its optimal distance from the starting node cannot be improved by finding a shorter path by taking an edge with a negative weight. This property is especially important because it enables Dijkstra’s algorithm to act in a greedy manner by always selecting the next most promising node to visit.
 
 For this slide deck, my goal is to help you understand how to implement Dijkstra’s algorithm, and also how to implement it very efficiently.
-We're going to start by looking at the lazy implementation because it's by far the most common and then we will look at the eager implementation which uses an indexed PQ alongside the decreaseKey operation; and lastly, I want to briefly mention how we can use a D-ary heap to further boost algorithm performance.
+We're going to start by looking at the lazy implementation, because it's by far the most common and then we will look at the eager implementation of Dijkstra's which uses an indexed PQ alongside the decreaseKey operation; and lastly, I want to briefly mention how we can use a other types of heaps, in particular the D-ary heap to further boost the performance.
 
-At a high level we can examine the steps required in executing Dijkstra's algorithm. First we'll need two bits of information, first is an array called 'dist' that keeps track of the shortest distance to every node from the start node. Initially this array is populated with the value positive infinity, except for the index of the starting node which should be initialized to zero.
-Additionally we'll need to maintain a PQ of key-value pairs of: node index-comma-distance pairs which tell us which node to visit next based on sorted min value.
-At the start of the algorithm we'll insert the key-value pair (s, 0) into the PQ and loop while PQ is not empty pulling out the next most promising (node index, distance) pair as we go.
-For each node we visit, we will want to iterate over all the outwards edges and relax each edge appending a new node-index-distance key-value pair to the PQ for every relaxation.
-We do this until our PQ is empty, at which point the shortest distance to each node is known and is stored in the 'dist' array we maintain.
+At a high level, these are all the steps required in executing Dijkstra's algorithm: 
+First you'll note that we need two bits of information, first is an array called 'dist' that keeps track of the shortest distance to every node from the start node. Initially this array is populated with the value positive infinity, except for the index of the starting node which should be initialized to zero.
+Additionally we'll need to maintain a PQ of key-value pairs. The key-value pairs will be node-index--distance pairs which tell us which node to visit next based on sorted minimum value.
+At the start of the algorithm we will begin by inserting the key-value pair (s, 0) into the PQ. Then we'll loop while PQ is not empty pulling out the next most promising (node index, distance) pair as we go.
+After that, for each node we visit, we will want to iterate over all the outwards edges and relax each edge appending a new node-index-distance key-value pair to the PQ upon every successful relaxation.
+We do this until our PQ is empty, at which point the shortest distance to each node will be known stored in the 'dist' array we are maintaining.
 
-That explanation was a little abstract, let's have a look at a simple example with a standard PQ. In all these examples assume node 0 is always the starting node although any node is perfectly fine.
+That explanation was a little abstract, let's have a look at a simple example with a standard PQ. In all these examples, assume node 0 is always the starting node, although any node is perfectly fine.
 
 Boxed in red is the distance array. I will be using it to track the optimal distance from the start node to each node in the graph. At the beginning, the distance to every node is initialized to positive infinity since we assume every node is unreachable. If at the end of the algorithm there's still a value of infinity at a certain index, then we know that that node is unreachable.
 
@@ -88,10 +89,10 @@ As a result, it is possible to have duplicate node indices in the PQ. This is no
 
 <pause><press>
 
-A neat optimization we can do which ignores stale (index, min distance) pairs in our PQ is to skip nodes where we already found a better path routing through others nodes before we got to processing this node. I'll let that sink in for a little bit, but this is definitely a neat one line optimization you'll want to keep around. 
+A neat optimization we can do which ignores stale outdated (index, min distance) pairs in our PQ is to skip them immediately as we poll them from the PQ. We can do this by checking if the value in the distance array is better than the value in the PQ and if it is then we already found a better path routing through others nodes before we got to processing this node. I'll let that sink in for a little bit, but this is definitely a neat one line optimization you'll want to keep around. 
 <slow next slide>
 
-Now I want to talk about actually finding the shortest path, not just the distance to get there. To do this we'll need to keep track of some additional information, in particular, we'll want to keep track of the index of the previous node we took to get to the current node.
+Now I want to talk about actually finding the shortest path itself, and not just the shortest distance to get there. To do this we'll need to keep track of some additional information, in particular, we'll want to keep track of the index of the previous node we took to get to the current node.
 
 The way to do this is to maintain a previous array I call 'prev' in this slide, this array tracks the index of the node you took to get to node i. Initially, the previous array should contain all null values, but as you perform edge relaxation operations you want to update the previous array to say that the node you're going to came from the node you're currently at. Then at the end, instead of just returning the distance array also return the previous array which we will need soon.
 
@@ -100,9 +101,9 @@ The resulting path of nodes indices to follow for the shortest path from the sta
 
 Now I want to talk about a few optimizations we can use to make Dijkstra's algorithm more efficient. Sometimes we know the index of our destination node and don't necessarily need to know the optimal distance to every node in the graph just that one node. So the question is, do we still have to visit every node in the graph to figure out the distance to that one particular node?
 
-The answer is yes we do, but only in the worst case, which depending on your graph can be somewhat rare. The key realization we'll need to make is that it is possible to stop early once you have finished visiting the destination node.
+The answer is yes we do, but only in the worst case, which, depending on your graph can be somewhat rare. The key realization we'll need to make is that it is possible to stop early once we have finished visiting the destination node.
 
-The main idea for stopping early is that Dijkstra’s algorithm processes each next most promising node in order. So if the destination node has been visited, its shortest distance will not change as more future nodes are visited.
+The main idea for stopping early is that Dijkstra’s algorithm processes each next most promising node in order. So, if the destination node has been visited, its shortest distance will not change as more future nodes are visited.
 
 In terms of code, all we have to do to stop early is check if the current index is the end node and return early. This can prove to be a very substantial speedup depending on how early you encounter the end node while processing the graph.
 
@@ -151,8 +152,10 @@ First notice that we're using an indexed PQ instead of a regular PQ. Also notice
 
 The other thing that changes is how we insert key-value pairs into the PQ. If the key or node index does not yet exist in the IPQ insert it, otherwise invoke a decreaseKey operation to update the best distance to that node in the PQ. The operation is called decrease key instead of update because it only updates the value if it's strictly less than the current value in the PQ.
 
-Alright we've looked at several Dijkstra optimizations already but there's one last one I want to talk about, and that it improving the heap we're using. Currently we're probably using an indexed binary heap but we can do better. The thing to notice is that when executing Dijkstra’s algorithm, especially on dense graphs, there are a lot more updates (i.e decreaseKey operations) to key-value pairs than there are dequeue operations.
+Alright we've looked at several Dijkstra optimizations already but there's one key last optimization I want to talk about and that is improving the heap we're using. Currently we're probably using an indexed binary heap, but we can do better, the thing to notice is thhat when executing Dijkstra's algorithm there are a lot more updates, especially on dense graphs than there are removal operations.
 A D-ary heap is a heap variant in which each node has at most D children instead of at most 2. This speeds up decrease key operations at the expense of more costly removals.
+
+--------------------------
 
 For example, here's a d-ary heap with D equal to 4.
 
@@ -197,6 +200,9 @@ The heap invariant is still not satisfied because some of the children of the pu
 After searching all the children we determine that the node with value 3 has the smallest value so we swap with that one.
 
 <press>
+
+--------------------------
+
 
 So in conclusion, what I want to demonstrate was that decreaseKey operations are very efficient with a D-ary heap but removals can be very expensive although they are more rare. There's definitely a trade off and it depends on the density of your graph.
 
