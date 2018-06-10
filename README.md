@@ -34,7 +34,6 @@
 * [Line segment to general form (ax + by = c)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/LineSegmentToGeneralForm.java) **- O(1)**
 * [Line segment-line segment intersection](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/LineSegmentLineSegmentIntersection.java) **- O(1)**
 * [Longitude-Latitude geographic distance](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/LongitudeLatitudeGeographicDistance.java) **- O(1)**
-* [Point-circle tangent line(s)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/PointCircleTangent.java) **- O(1)**
 * [Point is inside triangle check](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/PointInsideTriangle.java) **- O(1)**
 * [Point rotation about point](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/PointRotation.java) **- O(1)**
 * [Triangle area algorithms](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/TriangleArea.java) **- O(1)**
