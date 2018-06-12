@@ -13,10 +13,9 @@ import java.util.*;
 
 public class EulerianPathDirectedEdgesAdjacencyList {
   
-  int n, edgeCount, start, end, orderIndex;
-  int[] indexes, in, out;
-  List<Integer> ans = new ArrayList<>();
-  List<List<Integer>> graph;
+  public int n, start, end, orderIndex;
+  public int[] indexes, in, out, ordering;
+  public List<List<Integer>> graph;
 
   public EulerianPathDirectedEdgesAdjacencyList(List<List<Integer>> graph) {
     if (graph == null) throw new IllegalArgumentException("Graph cannot be null");
@@ -24,22 +23,15 @@ public class EulerianPathDirectedEdgesAdjacencyList {
     this.graph = graph;
   }
 
-  private void dfs(int at) {
-    while(out[at] != 0) {
-      out[at]--;  
-      int next = graph.get(at).get(indexes[at]);
-      indexes[at]++;
-      dfs(next);
-    }
-    ans.add(at);
-  }
-
   // Assume that all belong to on connected component.
-  public int[] eulerianPath() {
+  public int[] getEulerianPath() {
 
     // Tracks in degrees and out degrees for each node.
     in  = new int[n];
     out = new int[n];
+
+    int edgeCount, endNodes, startNodes;
+    start = end = edgeCount = endNodes = startNodes = 0;
 
     for (int from = 0; from < n; from++) {
       List<Integer> edges = graph.get(from);
@@ -51,11 +43,6 @@ public class EulerianPathDirectedEdgesAdjacencyList {
       }
     }
 
-    System.out.printf("In: %s\n", Arrays.toString(in));
-    System.out.printf("Out: %s\n", Arrays.toString(out));
-    System.out.printf("Edge count: %d\n", edgeCount);
-
-    int endNodes = 0, startNodes = 0;
     for (int i = 0; i < n; i++) {
       if (in[i] - out[i] == 1) {
         end = i;
@@ -68,29 +55,31 @@ public class EulerianPathDirectedEdgesAdjacencyList {
       }
     }
     
-    // Assert that an Eulerian path exists on this graph.
-    if (endNodes > 1 || startNodes > 1) {
-      System.out.println("Graph is does not contain Eulerian Path. Too many start/end nodes.");
+    // Graph is does not contain Eulerian Path. Too many start/end nodes.
+    if (endNodes > 1 || startNodes > 1)
       return null;
-    }
     
-    System.out.println("START: " + start);
-    System.out.println("END: " + end);
-
-    // ordering = new int[edgeCount]; // should this be e + 1 to account for the nodes?
+    orderIndex = edgeCount;
+    ordering = new int[edgeCount+1];
     indexes = new int[n];
 
     dfs(start);
+    return ordering;
+  }
 
-    Collections.reverse(ans);
-    System.out.println(ans);
-
-    return new int[]{};
+  private void dfs(int at) {
+    while(out[at] != 0) {
+      out[at]--;  
+      int next = graph.get(at).get(indexes[at]);
+      indexes[at]++;
+      dfs(next);
+    }
+    ordering[orderIndex--] = at;
   }
 
   public static void main(String[] args) {
-    // testSimplePath();
-    testMoreComplexPath();
+    testSimplePath();
+    // testMoreComplexPath();
   }
 
   public static List<List<Integer>> initializeEmptyGraph(int N) {
@@ -123,40 +112,7 @@ public class EulerianPathDirectedEdgesAdjacencyList {
     solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
 
     // [0, 1, 2, 1, 4, 1, 3]
-    solver.eulerianPath();
-  }
-
-  // There should be an Eulerian path on this directed graph from node 1 to node 0;
-  public static void testMoreComplexPath() {
-    int n = 9;
-    List<List<Integer>> graph = initializeEmptyGraph(n);
-
-    // Component connecting edges
-    addDirectedEdge(graph, 6, 7);
-    addDirectedEdge(graph, 4, 1);
-    addDirectedEdge(graph, 7, 0);
-    addDirectedEdge(graph, 1, 5);
-    addDirectedEdge(graph, 1, 3);
-
-    addDirectedEdge(graph, 1, 2);
-    addDirectedEdge(graph, 1, 2);
-    addDirectedEdge(graph, 2, 1);
-    addDirectedEdge(graph, 2, 1);
-
-    addDirectedEdge(graph, 3, 4);
-    addDirectedEdge(graph, 3, 4);
-    addDirectedEdge(graph, 4, 3);
-
-    addDirectedEdge(graph, 5, 6);
-    addDirectedEdge(graph, 5, 6);
-    addDirectedEdge(graph, 6, 5);
-
-    addDirectedEdge(graph, 7, 8);
-    addDirectedEdge(graph, 8, 7);
-
-    EulerianPathDirectedEdgesAdjacencyList solver;
-    solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
-    solver.eulerianPath();
+    solver.getEulerianPath();
   }
 
 
