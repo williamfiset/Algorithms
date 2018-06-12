@@ -13,103 +13,75 @@ import java.util.*;
 
 public class EulerianPathDirectedEdgesAdjacencyList {
   
-  static List<Integer> ans = new ArrayList<>();
-  static Map<Long, Integer> map = new HashMap<>();
+  int n, edgeCount, start, end, orderIndex;
+  int[] indexes, in, out;
+  List<Integer> ans = new ArrayList<>();
+  List<List<Integer>> graph;
 
-  static void dfs(int at, int N, int[] indexes, List<List<Integer>> graph) {
+  public EulerianPathDirectedEdgesAdjacencyList(List<List<Integer>> graph) {
+    if (graph == null) throw new IllegalArgumentException("Graph cannot be null");
+    n = graph.size();
+    this.graph = graph;
+  }
 
-    List<Integer> edges = graph.get(at);
-    if (edges != null) {
-
-      for (int i = indexes[at]; i < edges.size(); i = indexes[at]) {
-        
-        int from = at, to = edges.get(i);
-        indexes[at]++;
-
-        long edgeId = at*N + to;
-        int count = map.get(edgeId);
-
-        if (count > 0) {
-          map.put(edgeId, --count);
-          System.out.printf("FROM: %d TO: %d\n", from, to);
-          dfs(to, N, indexes, graph);
-        }
-
-      }
-
+  private void dfs(int at) {
+    while(out[at] != 0) {
+      out[at]--;  
+      int next = graph.get(at).get(indexes[at]);
+      indexes[at]++;
+      dfs(next);
     }
-
     ans.add(at);
-
   }
 
   // Assume that all belong to on connected component.
-  static int[] eulerianPath(List<List<Integer>> graph) {
-
-    if (graph == null) throw new IllegalArgumentException();
-    
-    final int N = graph.size();
+  public int[] eulerianPath() {
 
     // Tracks in degrees and out degrees for each node.
-    int[] in  = new int[N];
-    int[] out = new int[N];
-    
-    // Edge count.
-    int E = 0;
+    in  = new int[n];
+    out = new int[n];
 
-    for (int from = 0; from < N; from++) {
+    for (int from = 0; from < n; from++) {
       List<Integer> edges = graph.get(from);
       for (int i = 0; i < edges.size(); i++) {
-
         int to = edges.get(i);
-        out[from]++;
         in[to]++;
-        E++;
-        
-        long hash = (long)(from * N) + to;
-        Integer count = map.get(hash);
-        if (count == null) count = 0;
-        map.put(hash, ++count);
+        out[from]++;
+        edgeCount++;
+      }
+    }
 
+    System.out.printf("In: %s\n", Arrays.toString(in));
+    System.out.printf("Out: %s\n", Arrays.toString(out));
+    System.out.printf("Edge count: %d\n", edgeCount);
+
+    int endNodes = 0, startNodes = 0;
+    for (int i = 0; i < n; i++) {
+      if (in[i] - out[i] == 1) {
+        end = i;
+        endNodes++;
+      } else if (out[i] - in[i] == 1) {
+        start = i;
+        startNodes++;
+      } else if (in[i] != out[i]) {
+        return null;
       }
     }
     
-    // System.out.println(Arrays.toString(in));
-    // System.out.println(Arrays.toString(out));
-    // System.out.printf("%d\n", E);
-
-    int start = 0, end = 0, inOut = 0, outIn = 0;
-    for (int i = 0; i < N; i++) {
-      if (in[i] - out[i] == 1) {
-        end = i;
-        inOut++;
-      } else if (out[i] - in[i] == 1) {
-        start = i;
-        outIn++;
-      } else if (in[i] != out[i]) return null;
-    }
-    
-    // Assert that an eulerian path exists on this graph.
-    if (inOut > 1 || outIn > 1) {
-      // System.out.println("NOT Eulerian");
-      // System.out.println(inOut + " " + outIn);
+    // Assert that an Eulerian path exists on this graph.
+    if (endNodes > 1 || startNodes > 1) {
+      System.out.println("Graph is does not contain Eulerian Path. Too many start/end nodes.");
       return null;
     }
     
-    // System.out.println("START: " + start);
-    // System.out.println("END: " + end);
+    System.out.println("START: " + start);
+    System.out.println("END: " + end);
 
-    // Main algorithm here.
-    Stack<Integer> stack = new Stack<>();
-    stack.push(start);
-    
-    int[] ordering = new int[E];
-    int[] indexes = new int[N];
+    // ordering = new int[edgeCount]; // should this be e + 1 to account for the nodes?
+    indexes = new int[n];
 
-    dfs(start, N, indexes, graph);
+    dfs(start);
 
-    // Add start node?
-    // System.out.println(ans);
     Collections.reverse(ans);
     System.out.println(ans);
 
@@ -121,19 +93,23 @@ public class EulerianPathDirectedEdgesAdjacencyList {
     testMoreComplexPath();
   }
 
-  static List<List<Integer>> initializeEmptyGraph(int N) {
+  public static List<List<Integer>> initializeEmptyGraph(int N) {
     List<List<Integer>> graph = new ArrayList<>(N);
     for (int i = 0; i < N; i++) 
       graph.add(new ArrayList<>());
     return graph;
   }
 
+  public static void addDirectedEdge(List<List<Integer>> g, int from, int to) {
+    g.get(from).add(to);
+  }
+
   /* TESTING */
 
   public static void testSimplePath() {
 
-    int N = 5;
-    List<List<Integer>> graph = initializeEmptyGraph(N);
+    int n = 5;
+    List<List<Integer>> graph = initializeEmptyGraph(n);
 
     // Add edges.
     graph.get(0).add(1);
@@ -143,44 +119,46 @@ public class EulerianPathDirectedEdgesAdjacencyList {
     graph.get(2).add(1);
     graph.get(4).add(1);
 
+    EulerianPathDirectedEdgesAdjacencyList solver;
+    solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
+
     // [0, 1, 2, 1, 4, 1, 3]
-    eulerianPath(graph);
-
+    solver.eulerianPath();
   }
 
+  // There should be an Eulerian path on this directed graph from node 1 to node 0;
   public static void testMoreComplexPath() {
-    int N = 9;
-    List<List<Integer>> graph = initializeEmptyGraph(N);
+    int n = 9;
+    List<List<Integer>> graph = initializeEmptyGraph(n);
 
-    graph.get(0).add(1);
+    // Component connecting edges
+    addDirectedEdge(graph, 6, 7);
+    addDirectedEdge(graph, 4, 1);
+    addDirectedEdge(graph, 7, 0);
+    addDirectedEdge(graph, 1, 5);
+    addDirectedEdge(graph, 1, 3);
 
-    graph.get(2).add(1);
-    graph.get(1).add(3);
-    graph.get(5).add(6);
-    graph.get(1).add(2);
-    graph.get(1).add(2);
+    addDirectedEdge(graph, 1, 2);
+    addDirectedEdge(graph, 1, 2);
+    addDirectedEdge(graph, 2, 1);
+    addDirectedEdge(graph, 2, 1);
 
+    addDirectedEdge(graph, 3, 4);
+    addDirectedEdge(graph, 3, 4);
+    addDirectedEdge(graph, 4, 3);
 
-    graph.get(3).add(4);
-    graph.get(2).add(1);
+    addDirectedEdge(graph, 5, 6);
+    addDirectedEdge(graph, 5, 6);
+    addDirectedEdge(graph, 6, 5);
 
-    graph.get(6).add(5);
-    graph.get(4).add(1);
-    graph.get(6).add(5);
+    addDirectedEdge(graph, 7, 8);
+    addDirectedEdge(graph, 8, 7);
 
-    graph.get(5).add(6);
-    graph.get(1).add(5);
-    graph.get(5).add(7);
-
-
-    // graph.get(7).add(1);
-
-    graph.get(8).add(7);
-    graph.get(7).add(8);
-
-    eulerianPath(graph);
-
+    EulerianPathDirectedEdgesAdjacencyList solver;
+    solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
+    solver.eulerianPath();
   }
+
 
 }
 
