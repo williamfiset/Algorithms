@@ -7,8 +7,8 @@ import java.util.*;
 
 public class EulerianPathDirectedEdgesAdjacencyList {
   
-  public int n, start, end, orderIndex;
-  public int[] indexes, in, out, ordering;
+  public int n, orderIndex;
+  public int[] in, out, ordering;
   public List<List<Integer>> graph;
 
   public EulerianPathDirectedEdgesAdjacencyList(List<List<Integer>> graph) {
@@ -17,9 +17,20 @@ public class EulerianPathDirectedEdgesAdjacencyList {
     this.graph = graph;
   }
 
-  // Assumes that graph is one connected component.
-  // Returns a list of edgeCount + 1 node ids that give the
-  // Eulerian path or null if no path exists.
+  private int findStartNode() {
+    int start = 0;
+    for (int i = 0; i < n; i++) {
+      // Unique starting node.
+      if (out[i] - in[i] == 1) return i;
+
+      // Start in a non-empty component
+      if (out[i] > 0) start = i;
+    }
+    return start;
+  }
+
+  // Returns a list of edgeCount + 1 node ids that give the Eulerian path or
+  // null if no path exists or the graph is disconnected.
   public int[] getEulerianPath() {
 
     if (n < 2) return null;
@@ -29,7 +40,7 @@ public class EulerianPathDirectedEdgesAdjacencyList {
     out = new int[n];
 
     int edgeCount, endNodes, startNodes;
-    start = end = edgeCount = endNodes = startNodes = 0;
+    edgeCount = endNodes = startNodes = 0;
 
     for (int from = 0; from < n; from++) {
       List<Integer> edges = graph.get(from);
@@ -40,36 +51,40 @@ public class EulerianPathDirectedEdgesAdjacencyList {
         edgeCount++;
       }
     }
-
-    boolean allEqual = true;
+    
     for (int i = 0; i < n; i++) {
-      allEqual &= (in[i] == out[i]);
+      if (out[i] - in[i] > 1) // equivalently, in[i] - out[i] > 1 by symmetry.
+        return null;
       if (in[i] - out[i] == 1) {
-        end = i;
         endNodes++;
       } else if (out[i] - in[i] == 1) {
-        start = i;
         startNodes++;
       }
     }
 
-    // Graph is does not contain Eulerian Path
-    if ((endNodes != 1 || startNodes != 1) && !allEqual)
+    // Graph does not contain Eulerian Path.
+    if (!((endNodes == 0 && startNodes == 0) || 
+          (endNodes == 1 && startNodes == 1)))
       return null;
     
     orderIndex = edgeCount;
     ordering = new int[edgeCount+1];
-    indexes = new int[n];
 
-    dfs(start);
+    dfs(findStartNode());
+
+    // Make sure all edges were traversed. It could be the case 
+    // that the graph is disconnected in which case return null.
+    for (int i = 0; i < n; i++)
+      if (out[i] != 0)
+        return null;
+
     return ordering;
   }
 
+  // Perform DFS to find Eulerian path.
   private void dfs(int at) {
     while(out[at] != 0) {
-      out[at]--;  
-      int next = graph.get(at).get(indexes[at]);
-      indexes[at]++;
+      int next = graph.get(at).get(--out[at]);
       dfs(next);
     }
     ordering[orderIndex--] = at;

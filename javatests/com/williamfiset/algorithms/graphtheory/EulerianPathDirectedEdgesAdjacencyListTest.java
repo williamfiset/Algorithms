@@ -109,7 +109,7 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
 
     verifyEulerianPath(graph);
   }
-
+  
   @Test
   public void testInvalidGraph1() {
     int n = 2;
@@ -193,8 +193,33 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
   }
 
   @Test
-  public void testTwoNodeGraph() {
+  public void testMultiPartDisconnectedGraph() {
+    int n = 6;
+    List<List<Integer>> graph = initializeEmptyGraph(n);
+    
+    addDirectedEdge(graph, 2, 1);
+    addDirectedEdge(graph, 1, 2);
 
+    addDirectedEdge(graph, 3, 4);
+    addDirectedEdge(graph, 4, 5);
+    addDirectedEdge(graph, 5, 3);
+
+    EulerianPathDirectedEdgesAdjacencyList solver;
+    solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
+    assertThat(solver.getEulerianPath()).isNull();
+  }
+
+  @Test
+  public void testMultiPartDisconnectedGraph2() {
+    int n = 4;
+    List<List<Integer>> graph = initializeEmptyGraph(n);
+    
+    addDirectedEdge(graph, 0, 1);
+    addDirectedEdge(graph, 2, 3);
+
+    EulerianPathDirectedEdgesAdjacencyList solver;
+    solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
+    assertThat(solver.getEulerianPath()).isNull();
   }
 
   @Test
