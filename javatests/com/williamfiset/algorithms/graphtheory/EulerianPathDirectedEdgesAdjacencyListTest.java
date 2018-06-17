@@ -89,9 +89,25 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
     addDirectedEdge(graph, 1, 0);
     addDirectedEdge(graph, 1, 0);
 
-    EulerianPathDirectedEdgesAdjacencyList solver;
-    solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
-    assertThat(solver.getEulerianPath()).isNotNull();
+    verifyEulerianPath(graph);
+  }
+
+
+
+  @Test
+  public void testGraphAllEqualEdgeFrequency2() {
+    int n = 4;
+    List<List<Integer>> graph = initializeEmptyGraph(n);
+    addDirectedEdge(graph, 0, 2);
+    addDirectedEdge(graph, 2, 1);
+    addDirectedEdge(graph, 2, 3);
+    addDirectedEdge(graph, 3, 0);
+    addDirectedEdge(graph, 3, 1);
+    addDirectedEdge(graph, 1, 0);
+    addDirectedEdge(graph, 1, 2);
+    addDirectedEdge(graph, 0, 3);
+
+    verifyEulerianPath(graph);
   }
 
   @Test
@@ -120,6 +136,47 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
     solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
     assertThat(solver.getEulerianPath()).isNull();
   }
+
+  @Test
+  public void testInvalidGraph3() {
+    int n = 4;
+    List<List<Integer>> graph = initializeEmptyGraph(n);
+
+    // Add edges.
+    addDirectedEdge(graph, 0, 2);
+    addDirectedEdge(graph, 2, 1);
+    addDirectedEdge(graph, 2, 3);
+    addDirectedEdge(graph, 3, 0);
+    addDirectedEdge(graph, 3, 1);
+    addDirectedEdge(graph, 1, 3);
+    addDirectedEdge(graph, 1, 0);
+    addDirectedEdge(graph, 1, 2);
+    addDirectedEdge(graph, 0, 3);
+    addDirectedEdge(graph, 2, 0);
+
+    EulerianPathDirectedEdgesAdjacencyList solver;
+    solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
+    assertThat(solver.getEulerianPath()).isNull();
+  }
+
+  @Test
+  public void testInvalidGraph4() {
+    int n = 4;
+    List<List<Integer>> graph = initializeEmptyGraph(n);
+
+    // Add edges.
+    addDirectedEdge(graph, 0, 2);
+    addDirectedEdge(graph, 2, 3);
+    addDirectedEdge(graph, 3, 1);
+    addDirectedEdge(graph, 1, 0);
+    addDirectedEdge(graph, 1, 2);
+    addDirectedEdge(graph, 0, 3);
+
+    EulerianPathDirectedEdgesAdjacencyList solver;
+    solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
+    assertThat(solver.getEulerianPath()).isNull();
+  }
+
 
   @Test
   public void testOneNodeSelfLoopGraph() {
@@ -151,6 +208,25 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
     addDirectedEdge(graph, 1, 4);
     addDirectedEdge(graph, 2, 1);
     addDirectedEdge(graph, 4, 1);
+
+    verifyEulerianPath(graph);
+  }
+
+  @Test
+  public void testPathUniqueStartAndEndNodes() {
+    int n = 4;
+    List<List<Integer>> graph = initializeEmptyGraph(n);
+
+    // Add edges.
+    addDirectedEdge(graph, 0, 2);
+    addDirectedEdge(graph, 2, 1);
+    addDirectedEdge(graph, 2, 3);
+    addDirectedEdge(graph, 3, 0);
+    addDirectedEdge(graph, 3, 1);
+    addDirectedEdge(graph, 1, 3);
+    addDirectedEdge(graph, 1, 0);
+    addDirectedEdge(graph, 1, 2);
+    addDirectedEdge(graph, 0, 3);
 
     verifyEulerianPath(graph);
   }
