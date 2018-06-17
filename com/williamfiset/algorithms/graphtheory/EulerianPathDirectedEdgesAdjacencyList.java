@@ -1,5 +1,12 @@
 /**
- * NOTE: This file is still under development!
+ * Implementation of finding an Eulerian Path on a graph. This implementation
+ * verifies that the input graph is fully connected and supports self loops
+ * and repeated edges between nodes.
+ *
+ * Test against Kattis online judge at:
+ * https://open.kattis.com/problems/eulerianpath
+ * 
+ * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.graphtheory;
 
@@ -79,10 +86,10 @@ public class EulerianPathDirectedEdgesAdjacencyList {
   public int[] getEulerianPath() {
 
     setUp();
-    if (edgeCount == 0) return null;
 
+    if (edgeCount == 0) return null;
     if (!graphHasEulerianPath()) return null;
-    
+
     orderIndex = edgeCount;
     ordering = new int[edgeCount+1];
     dfs(findStartNode());
