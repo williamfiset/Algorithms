@@ -3,11 +3,13 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class EulerianPathDirectedEdgesAdjacencyList {
   
-  public int n, orderIndex;
+  public int n, edgeCount, orderIndex;
   public int[] in, out, ordering;
   public List<List<Integer>> graph;
 
@@ -15,6 +17,25 @@ public class EulerianPathDirectedEdgesAdjacencyList {
     if (graph == null) throw new IllegalArgumentException("Graph cannot be null");
     n = graph.size();
     this.graph = graph;
+  }
+
+  private void setUp() {
+    // Arrays that track the in degree and out degree of each node.
+    in  = new int[n];
+    out = new int[n];
+
+    edgeCount = 0;
+
+    // Compute in and out node degrees.
+    for (int from = 0; from < n; from++) {
+      List<Integer> edges = graph.get(from);
+      for (int i = 0; i < edges.size(); i++) {
+        int to = edges.get(i);
+        in[to]++;
+        out[from]++;
+        edgeCount++;
+      }
+    }
   }
 
   private int findStartNode() {
@@ -29,54 +50,44 @@ public class EulerianPathDirectedEdgesAdjacencyList {
     return start;
   }
 
-  // Returns a list of edgeCount + 1 node ids that give the Eulerian path or
-  // null if no path exists or the graph is disconnected.
-  public int[] getEulerianPath() {
-
-    if (n < 2) return null;
-
-    // Tracks in degrees and out degrees for each node.
-    in  = new int[n];
-    out = new int[n];
-
-    int edgeCount, endNodes, startNodes;
-    edgeCount = endNodes = startNodes = 0;
-
-    for (int from = 0; from < n; from++) {
-      List<Integer> edges = graph.get(from);
-      for (int i = 0; i < edges.size(); i++) {
-        int to = edges.get(i);
-        in[to]++;
-        out[from]++;
-        edgeCount++;
-      }
-    }
-    
+  private boolean graphHasEulerianPath() {
+    int endNodes = 0, startNodes = 0;
     for (int i = 0; i < n; i++) {
       if (out[i] - in[i] > 1) // equivalently, in[i] - out[i] > 1 by symmetry.
-        return null;
+        return false;
       if (in[i] - out[i] == 1) {
         endNodes++;
       } else if (out[i] - in[i] == 1) {
         startNodes++;
       }
     }
+    return (endNodes == 0 && startNodes == 0) || 
+           (endNodes == 1 && startNodes == 1);
+  }
 
-    // Graph does not contain Eulerian Path.
-    if (!((endNodes == 0 && startNodes == 0) || 
-          (endNodes == 1 && startNodes == 1)))
-      return null;
+  // Make sure all edges of the graph were traversed. It could be the case that
+  // the graph is disconnected in which case return null.
+  private boolean graphIsConnected() {
+    for (int i = 0; i < n; i++)
+      if (out[i] != 0)
+        return false;
+    return true;
+  }
+
+  // Returns a list of edgeCount + 1 node ids that give the Eulerian path or
+  // null if no path exists or the graph is disconnected.
+  public int[] getEulerianPath() {
+
+    setUp();
+    if (edgeCount == 0) return null;
+
+    if (!graphHasEulerianPath()) return null;
     
     orderIndex = edgeCount;
     ordering = new int[edgeCount+1];
-
     dfs(findStartNode());
 
-    // Make sure all edges were traversed. It could be the case 
-    // that the graph is disconnected in which case return null.
-    for (int i = 0; i < n; i++)
-      if (out[i] != 0)
-        return null;
+    if (!graphIsConnected()) return null;
 
     return ordering;
   }
