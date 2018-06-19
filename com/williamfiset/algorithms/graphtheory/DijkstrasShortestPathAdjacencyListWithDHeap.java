@@ -1,13 +1,12 @@
 /**
- * This file contains an implementation of Dijkstra's shortest path algorithm from a 
- * start node to a specific ending node. Dijkstra can also be modified
+ * This file contains an implementation of Dijkstra's shortest path algorithm
+ * from a start node to a specific ending node. Dijkstra's can also be modified
  * to find the shortest path between a starting node and all other nodes
- * in the graph. However, in this implementation since we're only going from
- * a starting node to an ending node we can employ an optimization to stop
- * early once we've visited all the neighbors of the ending node.
+ * in the graph with minimal effort.
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
+
 package com.williamfiset.algorithms.graphtheory;
 
 import static java.lang.Math.max;
@@ -43,7 +42,7 @@ public class DijkstrasShortestPathAdjacencyListWithDHeap {
   /**
    * Initialize the solver by providing the graph size and a starting node. 
    * Use the {@link #addEdge} method to actually add edges to the graph.
-   * @param n     - The number of nodes in the graph.
+   * @param n - The number of nodes in the graph.
    */
   public DijkstrasShortestPathAdjacencyListWithDHeap(int n) {
     this.n = n;
@@ -71,14 +70,17 @@ public class DijkstrasShortestPathAdjacencyListWithDHeap {
   /**
    * Reconstructs the shortest path (of nodes) from 'start' to 'end' inclusive.
    *
-   * @return An array of nodes indexes of the shortest path from 'start' to 'end'.
-   * If 'start' and 'end' are not connected then an empty array is returned.
+   * @return An array of nodes indexes of the shortest path from 'start'
+   * to 'end'. If 'start' and 'end' are not connected then an empty array
+   * is returned.
    */
   public List<Integer> reconstructPath(int start, int end) {
-    if (end < 0 || end >= n) throw new IllegalArgumentException("Invalid node index");
-    if (start < 0 || start >= n) throw new IllegalArgumentException("Invalid node index");
-    double dist = dijkstra(start, end);
+    if (end < 0 || end >= n)
+      throw new IllegalArgumentException("Invalid node index");
+    if (start < 0 || start >= n)
+      throw new IllegalArgumentException("Invalid node index");
     List<Integer> path = new ArrayList<>();
+    double dist = dijkstra(start, end);
     if (dist == Double.POSITIVE_INFINITY) return path;
     for(Integer at = end; at != null; at = prev[at])
       path.add(at);
@@ -92,7 +94,8 @@ public class DijkstrasShortestPathAdjacencyListWithDHeap {
   // Double.POSITIVE_INFINITY.
   public double dijkstra(int start, int end) {
 
-    // Keep an Indexed Priority Queue (ipq) of the next most promising node to visit.
+    // Keep an Indexed Priority Queue (ipq) of the next most promising node
+    // to visit.
     int degree = edgeCount / n;
     MinIndexedDHeap<Double> ipq = new MinIndexedDHeap<>(degree, n);
     ipq.insert(start, 0.0);
@@ -102,14 +105,14 @@ public class DijkstrasShortestPathAdjacencyListWithDHeap {
     Arrays.fill(dist, Double.POSITIVE_INFINITY);
     dist[start] = 0.0;
 
-    // Array used to track which nodes have already been visited.
     boolean[] visited = new boolean[n];
     prev = new Integer[n];
 
     while(!ipq.isEmpty()) {
       int nodeId = ipq.peekMinKeyIndex();
-      double minValue = ipq.pollMinValue();
+
       visited[nodeId] = true;
+      double minValue = ipq.pollMinValue();
 
       // We already found a better path before we got to 
       // processing this node so we can ignore it.
@@ -117,8 +120,8 @@ public class DijkstrasShortestPathAdjacencyListWithDHeap {
 
       for(Edge edge : graph.get(nodeId)) {
 
-        // You cannot get a shorter path by revisiting
-        // a node you have already visited before.
+        // We cannot get a shorter path by revisiting
+        // a node we have already visited before.
         if (visited[edge.to]) continue;
 
         // Relax edge by updating minimum cost if applicable.
@@ -126,19 +129,21 @@ public class DijkstrasShortestPathAdjacencyListWithDHeap {
         if (newDist < dist[edge.to]) {
           prev[edge.to] = nodeId;
           dist[edge.to] = newDist;
-          // Decrease cost of going to a node or insert it with a value of newDist.
+          // Insert the cost of going to a node for the first time in the PQ,
+          // or try and update it to a better value by calling decrease.
           if (!ipq.contains(edge.to))
             ipq.insert(edge.to, newDist);
           else
             ipq.decrease(edge.to, newDist);
         }
       }
-      // Once we've visited all the nodes spanning from the end 
-      // node we know we can return the minimum distance value to 
-      // the end node because it cannot get any better after this point.
+      // Once we've processed the end node we can return early (without 
+      // necessarily visiting the whole graph) because we know we cannot get a
+      // shorter path by routing through any other nodes since Dijkstra's is
+      // greedy and there are no negative edge weights.
       if (nodeId == end) return dist[end];
     }
-    // End node is unreachable
+    // End node is unreachable.
     return Double.POSITIVE_INFINITY;
   }
 
