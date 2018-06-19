@@ -41,7 +41,7 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
       assertThat(ordering.length).isEqualTo(0);
       return;
     }
-    System.out.println(Arrays.toString(ordering));
+
     // Make sure solver actually found an Eulerian Path.
     assertThat(ordering).isNotNull();
 
