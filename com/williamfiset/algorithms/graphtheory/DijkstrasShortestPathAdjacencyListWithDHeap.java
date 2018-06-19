@@ -61,8 +61,10 @@ public class DijkstrasShortestPathAdjacencyListWithDHeap {
     graph.get(from).add(new Edge(to, cost));
   }
 
-  // Use {@link #addEdge} method to add edges to the graph and use this method
-  // to retrieve the constructed graph.
+  /**
+   * Use {@link #addEdge} method to add edges to the graph and use this method
+   * to retrieve the constructed graph.
+   */
   public List<List<Edge>> getGraph() {
     return graph;
   }
