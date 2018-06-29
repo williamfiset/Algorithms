@@ -8,7 +8,7 @@
  * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
-package com.williamfiset.algorithms.graphtheory;
+package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import java.util.*;
 
@@ -84,7 +84,7 @@ public class EdmondsKarpAdjacencyList {
     Edge [] prev = new Edge[n];
 
     // The queue can be optimized to use a faster queue
-    Queue <Integer> q = new ArrayDeque<>(n);
+    Queue<Integer> q = new ArrayDeque<>(n);
     visited[source] = true;
     q.offer(source);
 
