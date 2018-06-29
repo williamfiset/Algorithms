@@ -1,5 +1,6 @@
 /**
- * THIS FILE IS A WIP. 
+ * Min Cost Max Flow algorithm implemented with Bellman-Ford as a means of 
+ * finding augmenting paths to support negative edge weights. 
  *
  * Time Complexity: O(E²V²)
  *
@@ -44,9 +45,9 @@ public class MinCostMaxFlowWithNegativeCosts {
    */
   public MinCostMaxFlowWithNegativeCosts(int n, int source, int sink) {
     this.n = n;
-    initializeGraph();
     this.source = source;
     this.sink = sink;
+    initializeGraph();
   }
 
   // Construct an empty graph with n nodes including the source and sink nodes.
