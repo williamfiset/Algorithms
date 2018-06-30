@@ -1,16 +1,24 @@
 /**
- * Min Cost Max Flow algorithm implemented with Bellman-Ford as a means of 
- * finding augmenting paths to support negative edge weights. 
+ * Min Cost Max Flow algorithm implemented with Dijkstra's algorithm as a means 
+ * of finding augmenting paths. This approach does not support negative edge 
+ * weights in the flow graph.
  *
- * Time Complexity: O(E²V²)
+ * Time Complexity: O(E²Vlog(V))
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
+import static java.util.Collections.*;
+import static java.lang.System.*;
+import static java.util.Arrays.*;
+import static java.lang.Math.*;
+import java.awt.geom.*;
+import java.math.*;
 import java.util.*;
+import java.io.*;
 
-public class MinCostMaxFlowWithNegativeCosts {
+public class MinCostMaxFlow {
 
   private static class Edge {
     Edge residual;
@@ -43,7 +51,7 @@ public class MinCostMaxFlowWithNegativeCosts {
    * @param source - The index of the source node, 0 <= source < n
    * @param sink   - The index of the source node, 0 <= sink < n
    */
-  public MinCostMaxFlowWithNegativeCosts(int n, int source, int sink) {
+  public MinCostMaxFlow(int n, int source, int sink) {
     this.n = n;
     this.source = source;
     this.sink = sink;
@@ -116,31 +124,59 @@ public class MinCostMaxFlowWithNegativeCosts {
     solved = true;
   }
 
-  /** 
-   * Use the Bellman-Ford algorithm (which handles negative edge weights) to 
-   * find an augmenting path through the flow network.
-   */
+  // Priority Queue comparator used for Dijkstra's
+  private Comparator<Node> comparator = new Comparator<Node>() {
+    @Override
+    public int compare(Node node1, Node node2) {
+      if (Math.abs(node1.value-node2.value) < 0.000001) return 0;
+      return (node1.value - node2.value) > 0 ? +1 : -1;
+    }
+  };
+
+  // Node class used for Dijkstra's
+  private static class Node {
+    int id;
+    double value;
+    public Node(int id, double value) {
+      this.id = id; 
+      this.value = value;
+    }
+  }
+
+  // Use Dijkstra's algorithm to find an augmenting path through the flow network.
   private List<Edge> getAugmentingPath() {
     double[] dist = new double[n];
     Arrays.fill(dist, Double.POSITIVE_INFINITY);
     dist[source] = 0;
 
+    boolean[] visited = new boolean[n];
     Edge[] prev = new Edge[n];
 
-    // For each vertex, relax all the edges in the graph, O(VE)
-    for (int i = 0; i < n-1; i++) {
-      for(int from = 0; from < n; from++) {
-        for (Edge edge : graph.get(from)) {
-          if (edge.capacity > 0 && dist[from] + edge.cost < dist[edge.to]) {
-            dist[edge.to] = dist[from] + edge.cost;
-            prev[edge.to] = edge;
-          }
+    PriorityQueue<Node> pq = new PriorityQueue<>(2*n, comparator);
+    pq.offer(new Node(source, 0));
+
+    // Run Dijkstra's to find augmenting path.
+    while(!pq.isEmpty()) {
+      Node node = pq.poll();
+      visited[node.id] = true;
+      if (dist[node.id] < node.value) continue;
+      List<Edge> edges = graph.get(node.id);
+      for(int i = 0; i < edges.size(); i++) {
+        Edge edge = edges.get(i);
+        if (visited[edge.to]) continue;
+        double newDist = dist[edge.from] + edge.cost;
+        if (edge.capacity > 0 && newDist < dist[edge.to]) {
+          prev[edge.to] = edge;
+          dist[edge.to] = newDist;
+          pq.offer(new Node(edge.to, dist[edge.to]));
         }
       }
+      if (node.id == sink) break;
     }
 
     // Retrace augmenting path from sink back to the source.
     LinkedList<Edge> path = new LinkedList<>();
+    if (dist[sink] == Double.POSITIVE_INFINITY) return path;
     for(Edge edge = prev[sink]; edge != null; edge = prev[edge.from])
       path.addFirst(edge);
     return path;
@@ -165,30 +201,4 @@ public class MinCostMaxFlowWithNegativeCosts {
 
     return bottleNeck;
   }
-
-    /* Example usage. */
-
-  public static void main(String[] args) {
-    testSmallNetwork();
-  }
-
-  private static void testSmallNetwork() {
-    int n = 4;
-    int source = n;
-    int sink = n+1;
-    MinCostMaxFlowWithNegativeCosts solver;
-    solver = new MinCostMaxFlowWithNegativeCosts(n+2, source, sink);
-
-    solver.addEdge(source, 1, 4, 10);
-    solver.addEdge(source, 2, 2, 30);
-    solver.addEdge(1, 2, 2, 10);
-    solver.addEdge(1, sink, 0, 9999);
-    solver.addEdge(2, sink, 4, 10);
-
-    // Prints: Max flow: 4, Min cost: 140
-    System.out.printf("Max flow: %d, Min cost: %d\n", solver.getMaxFlow(), solver.getMinCost());
-  }
-
 }
-
-
