@@ -10,7 +10,7 @@ package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import java.util.*;
 
-public class MinCostMaxFlowWithNegativeCosts {
+public class MinCostMaxFlowWithBellmanFord {
 
   private static class Edge {
     Edge residual;
@@ -43,7 +43,7 @@ public class MinCostMaxFlowWithNegativeCosts {
    * @param source - The index of the source node, 0 <= source < n
    * @param sink   - The index of the source node, 0 <= sink < n
    */
-  public MinCostMaxFlowWithNegativeCosts(int n, int source, int sink) {
+  public MinCostMaxFlowWithBellmanFord(int n, int source, int sink) {
     this.n = n;
     this.source = source;
     this.sink = sink;
@@ -161,6 +161,8 @@ public class MinCostMaxFlowWithNegativeCosts {
       Edge res = edge.residual;
       edge.capacity -= bottleNeck;
       res.capacity  += bottleNeck;
+      // TODO(williamfiset): Optimize to avoid adding an edge every time...
+      addEdge(edge.to, edge.from, bottleNeck, -edge.cost);
     }
 
     return bottleNeck;
@@ -176,8 +178,8 @@ public class MinCostMaxFlowWithNegativeCosts {
     int n = 4;
     int source = n;
     int sink = n+1;
-    MinCostMaxFlowWithNegativeCosts solver;
-    solver = new MinCostMaxFlowWithNegativeCosts(n+2, source, sink);
+    MinCostMaxFlowWithBellmanFord solver;
+    solver = new MinCostMaxFlowWithBellmanFord(n+2, source, sink);
 
     solver.addEdge(source, 1, 4, 10);
     solver.addEdge(source, 2, 2, 30);
