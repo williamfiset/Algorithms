@@ -1,22 +1,11 @@
 /**
- * Min Cost Max Flow algorithm implemented with Dijkstra's algorithm as a means 
- * of finding augmenting paths. This approach does not support negative edge 
- * weights in the flow graph.
- *
- * Time Complexity: O(E²Vlog(V))
+ * NOTE: This file is still a WIP!
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
-import static java.util.Collections.*;
-import static java.lang.System.*;
-import static java.util.Arrays.*;
-import static java.lang.Math.*;
-import java.awt.geom.*;
-import java.math.*;
 import java.util.*;
-import java.io.*;
 
 public class MinCostMaxFlow {
 
@@ -197,6 +186,8 @@ public class MinCostMaxFlow {
       Edge res = edge.residual;
       edge.capacity -= bottleNeck;
       res.capacity  += bottleNeck;
+      // TODO(williamfiset): Optimize to avoid adding an edge every time...
+      addEdge(edge.to, edge.from, bottleNeck, -edge.cost);
     }
 
     return bottleNeck;
