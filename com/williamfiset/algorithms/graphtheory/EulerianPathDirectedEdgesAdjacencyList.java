@@ -73,7 +73,7 @@ public class EulerianPathDirectedEdgesAdjacencyList {
   }
 
   // Make sure all edges of the graph were traversed. It could be the case that
-  // the graph is disconnected in which case return null.
+  // the graph is disconnected in which case return false.
   private boolean graphIsConnected() {
     for (int i = 0; i < n; i++)
       if (out[i] != 0)
