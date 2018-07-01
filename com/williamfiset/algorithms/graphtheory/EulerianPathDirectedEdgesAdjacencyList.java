@@ -5,6 +5,8 @@
  *
  * Test against Kattis online judge at:
  * https://open.kattis.com/problems/eulerianpath
+ *
+ * Time Complexity: O(V+E)
  * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
@@ -35,26 +37,12 @@ public class EulerianPathDirectedEdgesAdjacencyList {
 
     // Compute in and out node degrees.
     for (int from = 0; from < n; from++) {
-      List<Integer> edges = graph.get(from);
-      for (int i = 0; i < edges.size(); i++) {
-        int to = edges.get(i);
+      for (int to : graph.get(from)) {
         in[to]++;
         out[from]++;
         edgeCount++;
       }
     }
-  }
-
-  private int findStartNode() {
-    int start = 0;
-    for (int i = 0; i < n; i++) {
-      // Unique starting node.
-      if (out[i] - in[i] == 1) return i;
-
-      // Start at a node with an outgoing edge.
-      if (out[i] > 0) start = i;
-    }
-    return start;
   }
 
   private boolean graphHasEulerianPath() {
@@ -72,13 +60,16 @@ public class EulerianPathDirectedEdgesAdjacencyList {
            (endNodes == 1 && startNodes == 1);
   }
 
-  // Make sure all edges of the graph were traversed. It could be the case that
-  // the graph is disconnected in which case return false.
-  private boolean graphIsConnected() {
-    for (int i = 0; i < n; i++)
-      if (out[i] != 0)
-        return false;
-    return true;
+  private int findStartNode() {
+    int start = 0;
+    for (int i = 0; i < n; i++) {
+      // Unique starting node.
+      if (out[i] - in[i] == 1) return i;
+
+      // Start at a node with an outgoing edge.
+      if (out[i] > 0) start = i;
+    }
+    return start;
   }
 
   // Returns a list of edgeCount + 1 node ids that give the Eulerian path or
@@ -105,6 +96,15 @@ public class EulerianPathDirectedEdgesAdjacencyList {
       dfs(next);
     }
     ordering[orderIndex--] = at;
+  }
+
+  // Make sure all edges of the graph were traversed. It could be the case that
+  // the graph is disconnected in which case return false.
+  private boolean graphIsConnected() {
+    for (int i = 0; i < n; i++)
+      if (out[i] != 0)
+        return false;
+    return true;
   }
 
     /* Graph creation helper methods */
