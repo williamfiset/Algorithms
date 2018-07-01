@@ -51,7 +51,7 @@ public class EulerianPathDirectedEdgesAdjacencyList {
       // Unique starting node.
       if (out[i] - in[i] == 1) return i;
 
-      // Start in a non-empty component
+      // Start at a node with an outgoing edge.
       if (out[i] > 0) start = i;
     }
     return start;
@@ -84,7 +84,6 @@ public class EulerianPathDirectedEdgesAdjacencyList {
   // Returns a list of edgeCount + 1 node ids that give the Eulerian path or
   // null if no path exists or the graph is disconnected.
   public int[] getEulerianPath() {
-
     setUp();
 
     if (edgeCount == 0) return null;

@@ -71,6 +71,7 @@
 * [Depth first search (adjacency list, recursive)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DepthFirstSearchAdjacencyListRecursive.java) **- O(V+E)**
 * [Dijkstra's shortest path (adjacency list, lazy implementation)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DijkstrasShortestPathAdjacencyList.java) **- O(Elog(V))**
 * [Dijkstra's shortest path (adjacency list, eager implementation + D-ary heap)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DijkstrasShortestPathAdjacencyListWithDHeap.java) **- O(Elog<sub>E/V</sub>(V))**
+* [Eulerian Path (directed edges)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/EulerianPathDirectedEdgesAdjacencyList.java) **- O(E+V)**
 * [Floyd Warshall algorithm (adjacency matrix, negative cycle check)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/FloydWarshallSolver.java) **- O(V<sup>3</sup>)**
 * [Graph diameter (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/GraphDiameter.java) **- O(VE)**
 * [Kruskal's min spanning tree algorithm (edge list, union find)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/KruskalsEdgeList.java) **- O(Elog(E))**
