@@ -15,7 +15,7 @@ package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import java.util.*;
 
-public class class MinCostMaxFlowSolver {
+public class MinCostMaxFlow {
 
   private static final long INF = 987654321;
 
@@ -51,7 +51,7 @@ public class class MinCostMaxFlowSolver {
    * @param source - The index of the source node, 0 <= source < n
    * @param sink   - The index of the source node, 0 <= sink < n
    */
-  public MinCostMaxFlowSolver(int n, int source, int sink) {
+  public MinCostMaxFlow(int n, int source, int sink) {
     this.n = n;
     initializeGraph();
     this.source = source;
