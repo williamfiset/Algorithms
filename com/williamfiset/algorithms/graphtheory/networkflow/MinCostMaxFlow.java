@@ -4,6 +4,7 @@
  * 
  * Tests against:
  * - https://open.kattis.com/problems/mincostmaxflow
+ * - https://open.kattis.com/problems/jobpostings
  *
  * Time Complexity: O(E²Vlog(V))
  *
@@ -135,7 +136,6 @@ public class class MinCostMaxFlowSolver {
 
   public void solve() {
     if (solved) return;
-
     init();
 
     // Sum up the bottlenecks on each augmenting path to find the max flow.

@@ -12,11 +12,14 @@ import java.util.*;
 
 public class MinCostMaxFlowWithBellmanFord {
 
+  private static final long INF = 987654321;
+
   private static class Edge {
     Edge residual;
-    int from, to, capacity, cost;
-    final int originalCapacity;
-    public Edge(int from, int to, int capacity, int cost) {
+    int from, to;
+    long flow, capacity;
+    final long cost, originalCapacity;
+    public Edge(int from, int to, long capacity, long cost) {
       this.to = to; 
       this.from = from;
       this.cost = cost;
@@ -66,7 +69,7 @@ public class MinCostMaxFlowWithBellmanFord {
    */
   public void addEdge(int from, int to, int capacity, int cost) {
     Edge e1 = new Edge(from, to, capacity, cost);
-    Edge e2 = new Edge(to, from, 0, 0);
+    Edge e2 = new Edge(to, from, 0, -cost);
     e1.residual = e2;
     e2.residual = e1;
     graph.get(from).add(e1);
@@ -98,20 +101,16 @@ public class MinCostMaxFlowWithBellmanFord {
 
   public void solve() {
     if (solved) return;
-
     maxFlow = minCost = 0;
 
     // Sum up the bottlenecks on each augmenting path to find the max flow.
-    for(int flow = findBottleNeck(); flow != 0; flow = findBottleNeck())
+    for(long flow = findBottleNeck(); flow != 0; flow = findBottleNeck())
       maxFlow += flow;
 
     // Compute the min cost.
-    for (List<Edge> edges : graph) {
-      for (Edge edge : edges) {
-        int consumedCapacity = (edge.originalCapacity - edge.capacity);
-        minCost += consumedCapacity * edge.cost;
-      }
-    }
+    for (List<Edge> edges : graph)
+      for (Edge edge : edges)
+        minCost += edge.flow * edge.cost;
 
     solved = true;
   }
@@ -121,8 +120,8 @@ public class MinCostMaxFlowWithBellmanFord {
    * find an augmenting path through the flow network.
    */
   private List<Edge> getAugmentingPath() {
-    double[] dist = new double[n];
-    Arrays.fill(dist, Double.POSITIVE_INFINITY);
+    long[] dist = new long[n];
+    java.util.Arrays.fill(dist, INF);
     dist[source] = 0;
 
     Edge[] prev = new Edge[n];
@@ -146,23 +145,22 @@ public class MinCostMaxFlowWithBellmanFord {
     return path;
   }
 
-  private int findBottleNeck() {
+  private long findBottleNeck() {
     List<Edge> path = getAugmentingPath();
     
     // Sink not reachable!
     if (path.isEmpty()) return 0;
 
     // Find bottle neck edge value along path.
-    int bottleNeck = Integer.MAX_VALUE;
+    long bottleNeck = Long.MAX_VALUE;
     for(Edge edge : path) bottleNeck = Math.min(bottleNeck, edge.capacity);
     
     // Retrace path and update edge capacities.
     for(Edge edge : path) {
       Edge res = edge.residual;
+      edge.flow += bottleNeck;
       edge.capacity -= bottleNeck;
       res.capacity  += bottleNeck;
-      // TODO(williamfiset): Optimize to avoid adding an edge every time...
-      addEdge(edge.to, edge.from, bottleNeck, -edge.cost);
     }
 
     return bottleNeck;
