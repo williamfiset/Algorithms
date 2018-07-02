@@ -3,8 +3,9 @@
  * verifies that the input graph is fully connected and supports self loops
  * and repeated edges between nodes.
  *
- * Test against Kattis online judge at:
+ * Test against:
  * https://open.kattis.com/problems/eulerianpath
+ * http://codeforces.com/contest/508/problem/D
  *
  * Time Complexity: O(V+E)
  * 
