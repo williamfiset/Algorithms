@@ -97,9 +97,9 @@ public class Dinics {
   // Do BFS from source to sink and compute the depth/level of each node
   // which is the minimum number of edges from that node to the source.
   private boolean bfs() {
-    ArrayDeque<Integer> q = new ArrayDeque<>(n);
     Arrays.fill(level, -1);
     level[s] = 0;
+    Deque<Integer> q = new ArrayDeque<>(n);
     q.offer(s);
     while(!q.isEmpty()) {
       int node = q.poll();
@@ -113,15 +113,16 @@ public class Dinics {
     return level[t] != -1;
   }
 
-  private long dfs(int at, long flow) {
+  private long dfs(int at, int[] p, long flow) {
     // At sink node, return augmented path flow.
     if (at == t) return flow;
-
-    for (Edge edge : graph.get(at)) {
+    final int sz = graph.get(at).size();
+    
+    for (;p[at] < sz; p[at]++) {
+      Edge edge = graph.get(at).get(p[at]);
       if (edge.flow < edge.capacity && level[edge.to] == level[at] + 1) {
 
-        long bottleNeck = dfs(edge.to, min(flow, edge.capacity - edge.flow));
-
+        long bottleNeck = dfs(edge.to, p, min(flow, edge.capacity - edge.flow));
         if (bottleNeck > 0) {
           Edge res = edge.residual;
           edge.flow += bottleNeck;
@@ -137,10 +138,15 @@ public class Dinics {
   public void solve() {
     if (solved) return;
     
-    while(bfs())
+    // p[i] indicates the next unused edge index in the adjacency list for node i
+    int[] p = new int[n];
 
-      for (long flow = dfs(s, INF); flow != 0; flow = dfs(s, INF))
+    while(bfs()) {
+      Arrays.fill(p, 0);
+      for (long flow = dfs(s, p, INF); flow != 0; flow = dfs(s, p, INF)) {
         maxFlow += flow;
+      }
+    }
 
     minCut = new boolean[n];
     for (int i = 0; i < n; i++)
