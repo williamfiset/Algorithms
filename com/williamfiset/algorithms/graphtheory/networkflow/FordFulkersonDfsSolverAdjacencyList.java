@@ -44,7 +44,7 @@ public class FordFulkersonDfsSolverAdjacencyList {
    *
    * @param n      - The number of nodes in the graph including source and sink nodes.
    * @param source - The index of the source node, 0 <= source < n
-   * @param sink   - The index of the source node, 0 <= sink < n
+   * @param sink   - The index of the sink node, 0 <= sink < n
    */
   public FordFulkersonDfsSolverAdjacencyList(int n, int source, int sink) {
     this.n = n;
@@ -100,7 +100,6 @@ public class FordFulkersonDfsSolverAdjacencyList {
   public void solve() {
     if (solved) return;
 
-    maxFlow = 0;
     visited = new int[n];
     minCut = new boolean[n];
 
