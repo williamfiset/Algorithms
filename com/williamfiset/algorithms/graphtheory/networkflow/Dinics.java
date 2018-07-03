@@ -114,7 +114,6 @@ public class Dinics {
   }
 
   private long dfs(int at, int[] p, long flow) {
-    // At sink node, return augmented path flow.
     if (at == t) return flow;
     final int sz = graph.get(at).size();
     
