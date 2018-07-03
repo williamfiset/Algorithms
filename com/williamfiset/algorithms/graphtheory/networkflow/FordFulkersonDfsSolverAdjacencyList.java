@@ -7,7 +7,7 @@
  * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
-package com.williamfiset.algorithms.graphtheory;
+package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,7 +129,7 @@ public class FordFulkersonDfsSolverAdjacencyList {
     visited[node] = visitedToken;
 
     for (Edge edge : edges) {
-      if (visited[edge.to] != visitedToken && edge.capacity > 0) {
+      if (edge.capacity > 0 && visited[edge.to] != visitedToken) {
 
         // Update flow to be bottleneck 
         if (edge.capacity < flow) flow = edge.capacity;
