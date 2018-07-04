@@ -1,7 +1,7 @@
 /**
  * Finds all articulation points on an undirected graph.
  *
- * Test against HackerEarth online judge at:
+ * Tested against HackerEarth online judge at:
  * https://www.hackerearth.com/practice/algorithms/graphs/articulation-points-and-bridges/tutorial
  * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
