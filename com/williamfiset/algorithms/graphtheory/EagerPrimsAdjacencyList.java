@@ -1,6 +1,6 @@
 /**
  * An implementation of the eager Prim's algorithm which relies on 
- * an IndexMinPQ data structure to query the next best edge.
+ * an indexed priority queue data structure to query the next best edge.
  *
  *  Time Complexity: O(ElogV)
  *
@@ -8,74 +8,84 @@
  **/
 package com.williamfiset.algorithms.graphtheory;
 
+import static java.lang.Math.*;
 import java.util.*;
 
 public class EagerPrimsAdjacencyList {
 
-    static class Edge implements Comparable <Edge> {
-      int from, to, cost;
-      public Edge(int from, int to, int cost) {
-        this.from = from;
-        this.to = to;
-        this.cost = cost;
-      }
-      @Override public int compareTo(Edge other) {
-        return cost - other.cost;
-      }
+  static class Edge implements Comparable<Edge> {
+    int from, to, cost;
+    public Edge(int from, int to, int cost) {
+      this.from = from;
+      this.to = to;
+      this.cost = cost;
     }
-  
-  public static Long prims(Map <Integer, List<Edge>> graph, int n) {
-    
-    long sum = 0, nodesVisited = 1;
-    boolean[] visited = new boolean[n];
-    IndexMinPQ <Edge> pq = new IndexMinPQ<>(n);
-    
-    List <Edge> edges = graph.get(0);
-    if (edges.size() == 0) return null;
+    @Override public int compareTo(Edge other) {
+      return cost - other.cost;
+    }
+  }
 
-    // Add initial set of edges
-    for(Edge edge : edges) {
-      if (pq.contains(edge.to)) {
-        pq.decreaseKey(edge.to, edge);
+  private final int n;
+  private Edge[] mstEdges;
+  private final List<List<Edge>> graph;
+
+  public EagerPrimsAdjacencyList(List<List<Edge>> graph) {
+    if (graph == null) throw new IllegalArgumentException();
+    this.n = graph.size();
+    this.graph = graph;
+  }
+
+  private void relaxEdgesAtNode(int nodeIndex, MinIndexedDHeap<Edge> ipq) {
+    // Insert initial set of edges
+    for (Edge e : graph.get(nodeIndex)) {
+      if (ipq.contains(e.to)) {
+        ipq.decrease(e.to, e);
       } else {
-        pq.insert(edge.to, edge);
+        ipq.insert(e.to, e);
       }
     }
+  }
 
+  public Long mst() {
+    long nodeCount = 1, minCostSum = 0;
+    boolean[] visited = new boolean[n];
+    MinIndexedDHeap<Edge> ipq = new MinIndexedDHeap<>(2, n);
+
+    relaxEdgesAtNode(0, ipq);
     visited[0] = true;
 
-    // Loop while the MST is not complete
-    while ( nodesVisited != n && !pq.isEmpty() ) {
-      
-      // Query the best edge and remove it
-      Edge edge = pq.minKey();
-      pq.delMin();
+    mstEdges = new Edge[n-1];
 
-      if (!visited[edge.to]) {
-        
-        nodesVisited++;
-        sum += edge.cost;
-        
-        // Update the priority queue with the best new edges
-        edges = graph.get(edge.to);
-        for (Edge e : edges) {
-          if (pq.contains(e.to)) {
-            pq.decreaseKey(e.to, e);
-          } else {
-            pq.insert(e.to, e);
-          }
-        }
+    for(int i = 0; !ipq.isEmpty() && nodeCount != n;) {
+      Edge e = ipq.pollMinValue();
+      if (!visited[e.to]) {
+        mstEdges[i++] = e;
 
-        visited[edge.to] = true;
+        nodeCount++;
+        minCostSum += e.cost;
 
+        relaxEdgesAtNode(e.to, ipq);
+        visited[e.to] = true;
       }
     }
 
-    // Check if MST spans entire graph
-    if(nodesVisited != n) return null;
-    return sum;
-
+    // Verify MST spans entire graph.
+    return (nodeCount == n) ? minCostSum : null;
   }
+
+  /* Graph construct helpers. */
+
+  static List<List<Edge>> createEmptyGraph(int n) {
+    List<List<Edge>> g = new ArrayList<>();
+    for(int i = 0; i < n; i++) g.add(new ArrayList<>());
+    return g;
+  }
+
+  static void addDirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
+    g.get(from).add(new Edge(from, to, cost));
+  }
+
+  /* Example usage. */
 
   public static void main(String[] args) {
     
@@ -111,331 +121,245 @@ public class EagerPrimsAdjacencyList {
 
     };
 
-    final int NUM_NODES = 10;
+  }
+}
 
-    // Setup graph as adjacency list
-    Map <Integer, List<Edge>> graph = new HashMap<>();
-    for (int i = 0; i < NUM_NODES; i++) graph.put(i, new ArrayList<>());
-    for ( int[] tuple : edges ) {
-      int from = tuple[0];
-      int to = tuple[1];
-      int cost = tuple[2];
-      Edge edge = new Edge(from, to, cost);
-      Edge revEdge = new Edge(to, from, cost);
-      graph.get(from).add(edge);
-      graph.get(to).add(revEdge);
+class MinIndexedDHeap <T extends Comparable<T>> {
+
+  // Current number of elements in the heap.
+  private int sz;
+
+  // Maximum number of elements in the heap.
+  private final int N;
+
+  // The degree of every node in the heap.
+  private final int D;
+
+  // Lookup arrays to track the child/parent indexes of each node.
+  private final int[] child, parent;
+
+  // The Position Map (pm) maps Key Indexes (ki) to where the position of that 
+  // key is represented in the priority queue in the domain [0, sz).
+  public final int[] pm;
+
+  // The Inverse Map (im) stores the indexes of the keys in the range
+  // [0, sz) which make up the priority queue. It should be noted that
+  // 'im' and 'pm' are inverses of each other, so: pm[im[i]] = im[pm[i]] = i
+  public final int[] im;
+
+  // The values associated with the keys. It is very important  to note 
+  // that this array is indexed by the key indexes (aka 'ki').
+  public final Object[] values;
+
+  // Initializes a D-ary heap with a maximum capacity of maxSize.
+  public MinIndexedDHeap(int degree, int maxSize) {
+    if (maxSize <= 0) throw new IllegalArgumentException("maxSize <= 0");
+
+    D = max(2, degree);
+    N = max(D+1, maxSize);
+
+    im = new int[N];
+    pm = new int[N];
+    child = new int[N];
+    parent = new int[N];
+    values = new Object[N];
+
+    for (int i = 0; i < N; i++) {
+      parent[i] = (i-1) / D;
+      child[i] = i*D + 1;
+      pm[i] = im[i] = -1;
     }
+  }
 
-    Long mstCost = prims(graph, NUM_NODES);
-    System.out.println("MST cost: " + mstCost);
+  public int size() {
+    return sz;
+  }
 
+  public boolean isEmpty() {
+    return sz == 0;
+  }
+
+  public boolean contains(int ki) {
+    keyInBoundsOrThrow(ki);
+    return pm[ki] != -1;
+  }
+
+  public int peekMinKeyIndex() {
+    isNotEmptyOrThrow();
+    return im[0];
+  }
+
+  public int pollMinKeyIndex() {
+    int minki = peekMinKeyIndex();
+    delete(minki);
+    return minki;
+  }
+
+  @SuppressWarnings("unchecked")
+  public T peekMinValue() {
+    isNotEmptyOrThrow();
+    return (T) values[im[0]];
+  }
+
+  public T pollMinValue() {
+    T minValue = peekMinValue();
+    delete(peekMinKeyIndex());
+    return minValue;
+  }
+
+  public void insert(int ki, T value) {
+    if (contains(ki))
+      throw new IllegalArgumentException("index already exists; received: " + ki);
+    valueNotNullOrThrow(value);
+    pm[ki] = sz;
+    im[sz] = ki;
+    values[ki] = value;
+    swim(sz++);
+  }
+
+  @SuppressWarnings("unchecked")
+  public T valueOf(int ki) {
+    keyExistsOrThrow(ki);
+    return (T) values[ki];
+  }
+
+  @SuppressWarnings("unchecked")
+  public T delete(int ki) {
+    keyExistsOrThrow(ki);
+    final int i = pm[ki];
+    swap(i, --sz);
+    sink(i);
+    swim(i);
+    T value = (T) values[ki];
+    values[ki] = null;
+    pm[ki] = -1;
+    im[sz] = -1;
+    return value;
+  }
+
+  @SuppressWarnings("unchecked")
+  public T update(int ki, T value) {
+    keyExistsAndValueNotNullOrThrow(ki, value);
+    final int i = pm[ki];
+    T oldValue = (T) values[ki];
+    values[ki] = value;
+    sink(i);
+    swim(i);
+    return oldValue;
+  }
+
+  // Strictly decreases the value associated with 'ki' to 'value'
+  public void decrease(int ki, T value) {
+    keyExistsAndValueNotNullOrThrow(ki, value);
+    if (less(value, values[ki])) {
+      values[ki] = value;
+      swim(pm[ki]);
+    }
+  }
+
+  // Strictly increases the value associated with 'ki' to 'value'
+  public void increase(int ki, T value) {
+    keyExistsAndValueNotNullOrThrow(ki, value);
+    if (less(values[ki], value)) {
+      values[ki] = value;
+      sink(pm[ki]);
+    }
+  }
+
+    /* Helper functions */
+
+  private void sink(int i) {
+    for(int j = minChild(i); j != -1;) {
+      swap(i, j);
+      i = j;
+      j = minChild(i);
+    }
+  }
+
+  private void swim(int i) {
+    while(less(i, parent[i])) {
+      swap(i, parent[i]);
+      i = parent[i];
+    }
+  }
+
+  // From the parent node at index i find the minimum child below it
+  private int minChild(int i) {
+    int index = -1, from = child[i], to = min(sz, from + D);
+    for(int j = from; j < to; j++)
+      if (less(j, i))
+        index = i = j;
+    return index;
+  }
+
+  private void swap(int i, int j) {
+    pm[im[j]] = i;
+    pm[im[i]] = j;
+    int tmp = im[i];
+    im[i] = im[j];
+    im[j] = tmp;
+  }
+
+  // Tests if the value of node i < node j
+  @SuppressWarnings("unchecked")
+  private boolean less(int i, int j) {
+    return ((Comparable<? super T>) values[im[i]]).compareTo((T) values[im[j]]) < 0;
+  }
+
+  @SuppressWarnings("unchecked")
+  private boolean less(Object obj1, Object obj2) {
+    return ((Comparable<? super T>) obj1).compareTo((T) obj2) < 0;
+  }
+
+  @Override
+  public String toString() {
+    List<Integer> lst = new ArrayList<>(sz);
+    for(int i = 0; i < sz; i++) lst.add(im[i]);
+    return lst.toString();
+  }
+
+    /* Helper functions to make the code more readable. */
+
+  private void isNotEmptyOrThrow() {
+    if (isEmpty()) throw new NoSuchElementException("Priority queue underflow");
+  }
+
+  private void keyExistsAndValueNotNullOrThrow(int ki, Object value) {
+    keyExistsOrThrow(ki);
+    valueNotNullOrThrow(value);
+  }
+
+  private void keyExistsOrThrow(int ki) {
+    if (!contains(ki)) 
+      throw new NoSuchElementException("Index does not exist; received: " + ki);
+  }
+
+  private void valueNotNullOrThrow(Object value) {
+    if (value == null) 
+      throw new IllegalArgumentException("value cannot be null");
+  }
+
+  private void keyInBoundsOrThrow(int ki) {
+    if (ki < 0 || ki >= N) 
+      throw new IllegalArgumentException("Key index out of bounds; received: " + ki);
+  }
+
+    /* Test functions */
+
+  // Recursively checks if this heap is a min heap. This method is used
+  // for testing purposes to validate the heap invariant.
+  public boolean isMinHeap() {
+    return isMinHeap(0);
+  }
+
+  private boolean isMinHeap(int i) {
+    int from = child[i], to = min(sz, from + D);
+    for(int j = from; j < to; j++) {
+      if (!less(i, j)) return false;
+      if (!isMinHeap(j)) return false;
+    }
+    return true;
   }
 
 }
-
-// IndexMinPQ data structure by Robert Sedgewick & Kevin Wayne
-@SuppressWarnings("unchecked")
-class IndexMinPQ <Key extends Comparable<Key>> implements Iterable <Integer> {
-
-    private int maxN;        // maximum number of elements on PQ
-    private int n;           // number of elements on PQ
-    private int[] pq;        // binary heap using 1-based indexing
-    private int[] qp;        // inverse of pq - qp[pq[i]] = pq[qp[i]] = i
-    private Key[] keys;      // keys[i] = priority of i
-
-    /**
-     * Initializes an empty indexed priority queue with indices between {@code 0}
-     * and {@code maxN - 1}.
-     * @param  maxN the keys on this priority queue are index from {@code 0}
-     *         {@code maxN - 1}
-     * @throws IllegalArgumentException if {@code maxN < 0}
-     */
-    public IndexMinPQ(int maxN) {
-        if (maxN < 0) throw new IllegalArgumentException();
-        this.maxN = maxN;
-        n = 0;
-        keys = (Key[]) new Comparable[maxN + 1];    // make this of length maxN??
-        pq   = new int[maxN + 1];
-        qp   = new int[maxN + 1];                   // make this of length maxN??
-        for (int i = 0; i <= maxN; i++)
-            qp[i] = -1;
-    }
-
-    /**
-     * Returns true if this priority queue is empty.
-     *
-     * @return {@code true} if this priority queue is empty;
-     *         {@code false} otherwise
-     */
-    public boolean isEmpty() {
-        return n == 0;
-    }
-
-    /**
-     * Is {@code i} an index on this priority queue?
-     *
-     * @param  i an index
-     * @return {@code true} if {@code i} is an index on this priority queue;
-     *         {@code false} otherwise
-     * @throws IndexOutOfBoundsException unless {@code 0 <= i < maxN}
-     */
-    public boolean contains(int i) {
-        if (i < 0 || i >= maxN) throw new IndexOutOfBoundsException();
-        return qp[i] != -1;
-    }
-
-    /**
-     * Returns the number of keys on this priority queue.
-     *
-     * @return the number of keys on this priority queue
-     */
-    public int size() {
-        return n;
-    }
-
-    /**
-     * Associates key with index {@code i}.
-     *
-     * @param  i an index
-     * @param  key the key to associate with index {@code i}
-     * @throws IndexOutOfBoundsException unless {@code 0 <= i < maxN}
-     * @throws IllegalArgumentException if there already is an item associated
-     *         with index {@code i}
-     */
-    public void insert(int i, Key key) {
-        if (i < 0 || i >= maxN) throw new IndexOutOfBoundsException();
-        if (contains(i)) throw new IllegalArgumentException("index is already in the priority queue");
-        n++;
-        qp[i] = n;
-        pq[n] = i;
-        keys[i] = key;
-        swim(n);
-    }
-
-    /**
-     * Returns an index associated with a minimum key.
-     *
-     * @return an index associated with a minimum key
-     * @throws NoSuchElementException if this priority queue is empty
-     */
-    public int minIndex() {
-        if (n == 0) throw new NoSuchElementException("Priority queue underflow");
-        return pq[1];
-    }
-
-    /**
-     * Returns a minimum key.
-     *
-     * @return a minimum key
-     * @throws NoSuchElementException if this priority queue is empty
-     */
-    public Key minKey() {
-        if (n == 0) throw new NoSuchElementException("Priority queue underflow");
-        return keys[pq[1]];
-    }
-
-    /**
-     * Removes a minimum key and returns its associated index.
-     * @return an index associated with a minimum key
-     * @throws NoSuchElementException if this priority queue is empty
-     */
-    public int delMin() {
-        if (n == 0) throw new NoSuchElementException("Priority queue underflow");
-        int min = pq[1];
-        exch(1, n--);
-        sink(1);
-        assert min == pq[n+1];
-        qp[min] = -1;        // delete
-        keys[min] = null;    // to help with garbage collection
-        pq[n+1] = -1;        // not needed
-        return min;
-    }
-
-    /**
-     * Returns the key associated with index {@code i}.
-     *
-     * @param  i the index of the key to return
-     * @return the key associated with index {@code i}
-     * @throws IndexOutOfBoundsException unless {@code 0 <= i < maxN}
-     * @throws NoSuchElementException no key is associated with index {@code i}
-     */
-    public Key keyOf(int i) {
-        if (i < 0 || i >= maxN) throw new IndexOutOfBoundsException();
-        if (!contains(i)) throw new NoSuchElementException("index is not in the priority queue");
-        else return keys[i];
-    }
-
-    /**
-     * Change the key associated with index {@code i} to the specified value.
-     *
-     * @param  i the index of the key to change
-     * @param  key change the key associated with index {@code i} to this key
-     * @throws IndexOutOfBoundsException unless {@code 0 <= i < maxN}
-     * @throws NoSuchElementException no key is associated with index {@code i}
-     */
-    public void changeKey(int i, Key key) {
-        if (i < 0 || i >= maxN) throw new IndexOutOfBoundsException();
-        if (!contains(i)) throw new NoSuchElementException("index is not in the priority queue");
-        keys[i] = key;
-        swim(qp[i]);
-        sink(qp[i]);
-    }
-
-    /**
-     * Change the key associated with index {@code i} to the specified value.
-     *
-     * @param  i the index of the key to change
-     * @param  key change the key associated with index {@code i} to this key
-     * @throws IndexOutOfBoundsException unless {@code 0 <= i < maxN}
-     * @deprecated Replaced by {@code changeKey(int, Key)}.
-     */
-    @Deprecated
-    public void change(int i, Key key) {
-        changeKey(i, key);
-    }
-
-    /**
-     * Decrease the key associated with index {@code i} to the specified value.
-     *
-     * @param  i the index of the key to decrease
-     * @param  key decrease the key associated with index {@code i} to this key
-     * @throws IndexOutOfBoundsException unless {@code 0 <= i < maxN}
-     * @throws IllegalArgumentException if {@code key >= keyOf(i)}
-     * @throws NoSuchElementException no key is associated with index {@code i}
-     */
-    public void decreaseKey(int i, Key key) {
-        if (i < 0 || i >= maxN) throw new IndexOutOfBoundsException();
-        if (!contains(i)) throw new NoSuchElementException("index is not in the priority queue");
-        if (key.compareTo(keys[i]) < 0) {
-            keys[i] = key;
-            swim(qp[i]);
-        }
-    }
-
-    /**
-     * Increase the key associated with index {@code i} to the specified value.
-     *
-     * @param  i the index of the key to increase
-     * @param  key increase the key associated with index {@code i} to this key
-     * @throws IndexOutOfBoundsException unless {@code 0 <= i < maxN}
-     * @throws IllegalArgumentException if {@code key <= keyOf(i)}
-     * @throws NoSuchElementException no key is associated with index {@code i}
-     */
-    public void increaseKey(int i, Key key) {
-        if (i < 0 || i >= maxN) throw new IndexOutOfBoundsException();
-        if (!contains(i)) throw new NoSuchElementException("index is not in the priority queue");
-        if (keys[i].compareTo(key) >= 0)
-            throw new IllegalArgumentException("Calling increaseKey() with given argument would not strictly increase the key");
-        keys[i] = key;
-        sink(qp[i]);
-    }
-
-    /**
-     * Remove the key associated with index {@code i}.
-     *
-     * @param  i the index of the key to remove
-     * @throws IndexOutOfBoundsException unless {@code 0 <= i < maxN}
-     * @throws NoSuchElementException no key is associated with index {@code i}
-     */
-    public void delete(int i) {
-        if (i < 0 || i >= maxN) throw new IndexOutOfBoundsException();
-        if (!contains(i)) throw new NoSuchElementException("index is not in the priority queue");
-        int index = qp[i];
-        exch(index, n--);
-        swim(index);
-        sink(index);
-        keys[i] = null;
-        qp[i] = -1;
-    }
-
-
-   /***************************************************************************
-    * General helper functions.
-    ***************************************************************************/
-    private boolean greater(int i, int j) {
-        return keys[pq[i]].compareTo(keys[pq[j]]) > 0;
-    }
-
-    private void exch(int i, int j) {
-        int swap = pq[i];
-        pq[i] = pq[j];
-        pq[j] = swap;
-        qp[pq[i]] = i;
-        qp[pq[j]] = j;
-    }
-
-
-   /***************************************************************************
-    * Heap helper functions.
-    ***************************************************************************/
-    private void swim(int k) {
-        while (k > 1 && greater(k/2, k)) {
-            exch(k, k/2);
-            k = k/2;
-        }
-    }
-
-    private void sink(int k) {
-        while (2*k <= n) {
-            int j = 2*k;
-            if (j < n && greater(j, j+1)) j++;
-            if (!greater(k, j)) break;
-            exch(k, j);
-            k = j;
-        }
-    }
-
-
-   /***************************************************************************
-    * Iterators.
-    ***************************************************************************/
-
-    /**
-     * Returns an iterator that iterates over the keys on the
-     * priority queue in ascending order.
-     * The iterator doesn't implement {@code remove()} since it's optional.
-     *
-     * @return an iterator that iterates over the keys in ascending order
-     */
-    public Iterator<Integer> iterator() { return new HeapIterator(); }
-
-    private class HeapIterator implements Iterator<Integer> {
-        // create a new pq
-        private IndexMinPQ<Key> copy;
-
-        // add all elements to copy of heap
-        // takes linear time since already in heap order so no keys move
-        public HeapIterator() {
-            copy = new IndexMinPQ<Key>(pq.length - 1);
-            for (int i = 1; i <= n; i++)
-                copy.insert(pq[i], keys[pq[i]]);
-        }
-
-        public boolean hasNext()  { return !copy.isEmpty();                     }
-        public void remove()      { throw new UnsupportedOperationException();  }
-
-        public Integer next() {
-            if (!hasNext()) throw new NoSuchElementException();
-            return copy.delMin();
-        }
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
