@@ -8,11 +8,12 @@ import java.util.*;
 public class Boruvkas {
 
   static final int INF = 987654321;
-  static final Edge INF_EDGE = new Edge(INF, INF, INF);
+  static final Edge INF_EDGE = new Edge(-1, INF, INF, INF);
 
   static class Edge implements Comparable<Edge> {
-    final int u, v, cost;
-    public Edge(int u, int v, int cost) {
+    final int i, u, v, cost; // index, from, to, cost
+    public Edge(int i, int u, int v, int cost) {
+      this.i = i;
       this.u = u;
       this.v = v;
       this.cost = cost;
@@ -33,16 +34,9 @@ public class Boruvkas {
     }
   }
 
-  // TODO: Remove the need to hash edges.
-  private static long hashEdge(Edge e) {
-    return e.u < e.v ? 
-           ((long)e.u << 32) | e.v : 
-           ((long)e.v << 32) | e.u;
-  }
-
   // Inputs
-  private final int n;
-  private final List<List<Edge>> graph;
+  private final int n, m; // Num nodes, num edges
+  private final Edge[] graph; // Edge list
 
   // Internal
   private boolean solved;
@@ -52,10 +46,11 @@ public class Boruvkas {
   private long minCostSum;
   private Edge[] mstEdges;
 
-  public Boruvkas(List<List<Edge>> graph) {
+  public Boruvkas(int n, Edge[] graph) {
     if (graph == null) throw new IllegalArgumentException();
     this.graph = graph;
-    this.n = graph.size();
+    this.n = n;
+    this.m = graph.length;
   }
 
   // Returns the edges used in finding the minimum spanning tree, or returns
@@ -79,42 +74,36 @@ public class Boruvkas {
     int index = 0;
     mstEdges = new Edge[n-1];
 
+    boolean[] used = new boolean[m];
     UnionFind uf = new UnionFind(n);
-    Set<Long> edgeSet = new HashSet<>();
 
     Edge[] cheapest = new Edge[n];
+    Arrays.fill(cheapest, INF_EDGE);
+
     for(int components = n;;components = uf.components) {
 
-      Arrays.fill(cheapest, INF_EDGE);
-      for (int i = 0; i < n; i++) {
-        for (Edge e : graph.get(i)) {
-          
-          int uc = uf.id[e.u], vc = uf.id[e.v];
-          if (uc == vc) continue;
-
-          // Q: do we need both?
-          if (e.compareTo(cheapest[vc]) < 0) cheapest[vc] = e;
-          if (e.compareTo(cheapest[uc]) < 0) cheapest[uc] = e;
-        }
+      for (Edge e : graph) {
+        int uc = uf.id[e.u], vc = uf.id[e.v];
+        if (uc == vc) continue;
+        if (e.compareTo(cheapest[vc]) < 0) cheapest[vc] = e;
+        if (e.compareTo(cheapest[uc]) < 0) cheapest[uc] = e;
       }
-      
+
       for (int i = 0; i < n; i++) {
         if (cheapest[i] == INF_EDGE) continue;
-        Edge e = cheapest[i];        
-        if (e.cost != INF && !edgeSet.contains(hashEdge(e))) {
-          
-          // System.out.println(e);
-
+        Edge e = cheapest[i];
+        if (!used[e.i]) {
           minCostSum += e.cost;
-          uf.union(e.u, e.v);
-          edgeSet.add(hashEdge(e));
-
           mstEdges[index++] = e;
-          // LinkedList<Edge> edges = g.get(e.u);
-          // edges.remove(e);
-          // g.set(e.u, edges);
-          // edgeSet.add(e);
+
+          uf.union(e.u, e.v);
+          used[e.i] = true;
+          // used[e.i^1] = true;
+
+          // TODO(williamfiset): Optimization is to remove e from graph.
         }
+
+        cheapest[i] = INF_EDGE;
       }
 
       // Was not able to reduce num components.
@@ -125,47 +114,45 @@ public class Boruvkas {
     solved = true;
   }
 
-  static List<List<Edge>> createEmptyGraph(int n) {
-    List<List<Edge>> g = new ArrayList<>();
-    for(int i = 0; i < n; i++) g.add(new ArrayList<>());
-    return g;
+  static Edge[] createEmptyGraph(int m) {
+    return new Edge[m];
   }
 
-  static void addDirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
-    g.get(from).add(new Edge(from, to, cost));
+  static void addDirectedEdge(Edge[] g, int i, int from, int to, int cost) {
+    g[i] = new Edge(i, from, to, cost);
   }
 
-  static void addUndirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
-    addDirectedEdge(g, from, to, cost);
-    addDirectedEdge(g, to, from, cost);
-  }
+  // static void addUndirectedEdge(List<List<Edge>> g, int i, int from, int to, int cost) {
+  //   addDirectedEdge(g, i, from, to, cost);
+  //   addDirectedEdge(g, i, to, from, cost);
+  // }
 
   public static void main(String[] args) {
     
-    int n = 10;
-    List<List<Edge>> g = createEmptyGraph(n);
+    int n = 10, m = 18, i = 0;
+    Edge[] g = createEmptyGraph(m);
 
     // Edges are treated as undirected
-    addDirectedEdge(g, 0, 1, 5);
-    addDirectedEdge(g, 1, 2, 4);
-    addDirectedEdge(g, 2, 9, 2);
-    addDirectedEdge(g, 0, 4, 1);
-    addDirectedEdge(g, 0, 3, 4);
-    addDirectedEdge(g, 1, 3, 2);
-    addDirectedEdge(g, 2, 7, 4);
-    addDirectedEdge(g, 2, 8, 1);
-    addDirectedEdge(g, 9, 8, 0);
-    addDirectedEdge(g, 4, 5, 1);
-    addDirectedEdge(g, 5, 6, 7);
-    addDirectedEdge(g, 6, 8, 4);
-    addDirectedEdge(g, 4, 3, 2);
-    addDirectedEdge(g, 5, 3, 5);
-    addDirectedEdge(g, 3, 6, 11);
-    addDirectedEdge(g, 6, 7, 1);
-    addDirectedEdge(g, 3, 7, 2);
-    addDirectedEdge(g, 7, 8, 6);
+    addDirectedEdge(g, i++, 0, 1, 5);
+    addDirectedEdge(g, i++, 0, 3, 4);
+    addDirectedEdge(g, i++, 0, 4, 1);
+    addDirectedEdge(g, i++, 1, 2, 4);
+    addDirectedEdge(g, i++, 1, 3, 2);
+    addDirectedEdge(g, i++, 2, 7, 4);
+    addDirectedEdge(g, i++, 2, 8, 1);
+    addDirectedEdge(g, i++, 2, 9, 2);
+    addDirectedEdge(g, i++, 3, 6, 11);
+    addDirectedEdge(g, i++, 3, 7, 2);
+    addDirectedEdge(g, i++, 4, 3, 2);
+    addDirectedEdge(g, i++, 4, 5, 1);
+    addDirectedEdge(g, i++, 5, 3, 5);
+    addDirectedEdge(g, i++, 5, 6, 7);
+    addDirectedEdge(g, i++, 6, 7, 1);
+    addDirectedEdge(g, i++, 6, 8, 4);
+    addDirectedEdge(g, i++, 7, 8, 6);
+    addDirectedEdge(g, i++, 9, 8, 0);
 
-    Boruvkas solver = new Boruvkas(g);
+    Boruvkas solver = new Boruvkas(n, g);
 
     Long ans = solver.getMstCost();
     if (ans != null) {
