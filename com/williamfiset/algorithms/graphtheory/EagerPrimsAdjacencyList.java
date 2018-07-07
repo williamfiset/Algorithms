@@ -46,7 +46,14 @@ public class EagerPrimsAdjacencyList {
     }
   }
 
-  public Long mst() {
+  // Returns the edges used in finding the minimum spanning tree, or returns
+  // null if no MST exists.
+  public Edge[] getMst() {
+    return (getMstCost() == null) ? null : mstEdges;
+  }
+
+  // Returns the minimum spanning tree cost or null if no MST exists.
+  public Long getMstCost() {
     long nodeCount = 1, minCostSum = 0;
     boolean[] visited = new boolean[n];
     MinIndexedDHeap<Edge> ipq = new MinIndexedDHeap<>(2, n);
