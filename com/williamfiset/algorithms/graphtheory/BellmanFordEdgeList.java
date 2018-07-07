@@ -36,19 +36,35 @@ public class BellmanFordEdgeList {
     java.util.Arrays.fill(dist, Double.POSITIVE_INFINITY);
     dist[start] = 0;
 
+    // Only in the worst case does it take V-1 iterations for the Bellman-Ford
+    // algorithm to complete. Another stopping condition is when we're unable to
+    // relax an edge, this means we have reached the optimal solution early.
+    boolean relaxedAnEdge = true;
+
     // For each vertex, apply relaxation for all the edges
-    for (int v = 0; v < V-1; v++)
-      for (Edge edge : edges)
-        if (dist[edge.from] + edge.cost < dist[edge.to])
+    for (int v = 0; v < V-1 && relaxedAnEdge; v++) {
+      relaxedAnEdge = false;
+      for (Edge edge : edges) {
+        if (dist[edge.from] + edge.cost < dist[edge.to]) {
           dist[edge.to] = dist[edge.from] + edge.cost;
+          relaxedAnEdge = true;
+        }
+      }
+    }
 
     // Run algorithm a second time to detect which nodes are part
     // of a negative cycle. A negative cycle has occurred if we 
     // can find a better path beyond the optimal solution.
-    for (int v = 0; v < V-1; v++)
-      for (Edge edge : edges)
-        if (dist[edge.from] + edge.cost < dist[edge.to])
+    relaxedAnEdge = true;
+    for (int v = 0; v < V-1 && relaxedAnEdge; v++) {
+      relaxedAnEdge = false;
+      for (Edge edge : edges) {
+        if (dist[edge.from] + edge.cost < dist[edge.to]) {
           dist[edge.to] = Double.NEGATIVE_INFINITY;
+          relaxedAnEdge = true;
+        }
+      }
+    }
 
     // Return the array containing the shortest distance to every node
     return dist;
