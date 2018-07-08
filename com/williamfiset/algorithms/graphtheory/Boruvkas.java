@@ -7,13 +7,9 @@ import java.util.*;
 
 public class Boruvkas {
 
-  static final int INF = 987654321;
-  static final Edge INF_EDGE = new Edge(-1, INF, INF, INF);
-
-  static class Edge implements Comparable<Edge> {
-    final int i, u, v, cost; // index, from, to, cost
-    public Edge(int i, int u, int v, int cost) {
-      this.i = i;
+  static class Edge {
+    int u, v, cost;
+    public Edge(int u, int v, int cost) {
       this.u = u;
       this.v = v;
       this.cost = cost;
@@ -21,7 +17,7 @@ public class Boruvkas {
     public String toString() {
       return String.format("%d %d, cost: %d", u, v, cost);
     }
-    @Override 
+    // @Override 
     public int compareTo(Edge other) {
       int cmp = cost - other.cost;
       // Break ties by picking lexicographically smallest edge pair.
@@ -44,20 +40,20 @@ public class Boruvkas {
 
   // Outputs
   private long minCostSum;
-  private Edge[] mstEdges;
+  private List<Edge> mst;
 
-  public Boruvkas(int n, Edge[] graph) {
+  public Boruvkas(int n, int m, Edge[] graph) {
     if (graph == null) throw new IllegalArgumentException();
     this.graph = graph;
     this.n = n;
-    this.m = graph.length;
+    this.m = m;
   }
 
   // Returns the edges used in finding the minimum spanning tree, or returns
   // null if no MST exists.
-  public Edge[] getMst() {
+  public List<Edge> getMst() {
     solve();
-    return mstExists ? mstEdges : null;
+    return mstExists ? mst : null;
   }
 
   public Long getMstCost() {
@@ -71,88 +67,132 @@ public class Boruvkas {
   private void solve() {
     if (solved) return;
 
-    int index = 0;
-    mstEdges = new Edge[n-1];
+    mst = new ArrayList<>();
 
-    boolean[] used = new boolean[m];
     UnionFind uf = new UnionFind(n);
 
-    Edge[] cheapest = new Edge[n];
-    Arrays.fill(cheapest, INF_EDGE);
+    int[] cheapest = new int[n];
+    Arrays.fill(cheapest, -1);
 
-    for(int components = n;;components = uf.components) {
+    // Repeat at most log(n) times or until we have a complete spanning tree.
+    // for(int t = 1; t < N && index < n - 1; t = t + t) {
+    // for(long t = 1; t <= n && mst.size() != n-1; t = t << 1) {
+    for(;mst.size() != n-1;) {
 
-      for (Edge e : graph) {
+      // TODO: Remove
+      Arrays.fill(cheapest, -1);
+      boolean stop = true;
+
+      for (int i = 0; i < graph.length; i++) {
+        Edge e = graph[i];
+        if (e.u == e.v) continue;
         int uc = uf.id[e.u], vc = uf.id[e.v];
         if (uc == vc) continue;
-        if (e.compareTo(cheapest[vc]) < 0) cheapest[vc] = e;
-        if (e.compareTo(cheapest[uc]) < 0) cheapest[uc] = e;
+        // if (cheapest[vc] == -1 || e.compareTo(graph[cheapest[vc]]) < 0) { stop = false; cheapest[vc] = i; }
+        // if (cheapest[uc] == -1 || e.compareTo(graph[cheapest[uc]]) < 0) { stop = false; cheapest[uc] = i; }
+        if (cheapest[vc] == -1 || e.cost < graph[cheapest[vc]].cost) { stop = false; cheapest[vc] = i; }
+        if (cheapest[uc] == -1 || e.cost < graph[cheapest[uc]].cost) { stop = false; cheapest[uc] = i; }
       }
+
+      if (stop) break;
 
       for (int i = 0; i < n; i++) {
-        if (cheapest[i] == INF_EDGE) continue;
-        Edge e = cheapest[i];
-        if (!used[e.i]) {
-          minCostSum += e.cost;
-          mstEdges[index++] = e;
+        if (cheapest[i] == -1) continue;
+        Edge e = graph[cheapest[i]];
+        // cheapest[i] = -1;
+        if (uf.connected(e.u, e.v)) continue; 
 
-          uf.union(e.u, e.v);
-          used[e.i] = true;
-          // used[e.i^1] = true;
+        mst.add(e);
+        minCostSum += e.cost;
+        uf.union(e.u, e.v);
 
-          // TODO(williamfiset): Optimization is to remove e from graph.
-        }
-
-        cheapest[i] = INF_EDGE;
+        // TODO(williamfiset): Optimization is to remove e from graph.
       }
-
-      // Was not able to reduce num components.
-      if (uf.components == components) break;
     }
 
-    mstExists = (uf.size(0) == n);
+    // if ( (index==n-1) != (uf.size(0) == n) ) throw new NullPointerException();
+
+    mstExists = (mst.size() == n-1); // (uf.size(0) == n);
     solved = true;
+
+    // if (!check()) throw new IllegalStateException();
   }
 
-  static Edge[] createEmptyGraph(int m) {
-    return new Edge[m];
-  }
+  private boolean check() {
 
-  static void addDirectedEdge(Edge[] g, int i, int from, int to, int cost) {
-    g[i] = new Edge(i, from, to, cost);
-  }
+    if (!mstExists) return true;
 
-  // static void addUndirectedEdge(List<List<Edge>> g, int i, int from, int to, int cost) {
-  //   addDirectedEdge(g, i, from, to, cost);
-  //   addDirectedEdge(g, i, to, from, cost);
-  // }
+    // check that it is acyclic
+    UnionFind uf = new UnionFind(n);
+    for (Edge e : mst) {
+      int u = e.u, v = e.v;
+      if (uf.connected(u, v)) {
+        System.err.println("Not a forest");
+        return false;
+      }
+      uf.union(u, v);
+    }
+
+    // check that it is a spanning forest
+    for (Edge e : mst) {
+        int u = e.u, v = e.v;
+        if (!uf.connected(u, v)) {
+          System.err.println("Not a spanning forest");
+          return false;
+        }
+    }
+
+    // check that it is a minimal spanning forest (cut optimality conditions)
+    for (Edge e : mst) {
+
+      // all edges in MST except e
+      uf = new UnionFind(n);
+      for (Edge f : mst) {
+        int x = f.u, y = f.v;
+        if (f != e) uf.union(x, y);
+      }
+
+      // check that e is min weight edge in crossing cut
+      for (Edge f : graph) {
+        int x = f.u, y = f.v;
+        if (!uf.connected(x, y)) {
+          if (f.cost < e.cost) {
+            System.err.println("Edge " + f + " violates cut optimality conditions");
+            return false;
+          }
+        }
+      }
+
+    }
+    return true;
+  }
 
   public static void main(String[] args) {
     
     int n = 10, m = 18, i = 0;
-    Edge[] g = createEmptyGraph(m);
+    Edge[] g = new Edge[m];
 
     // Edges are treated as undirected
-    addDirectedEdge(g, i++, 0, 1, 5);
-    addDirectedEdge(g, i++, 0, 3, 4);
-    addDirectedEdge(g, i++, 0, 4, 1);
-    addDirectedEdge(g, i++, 1, 2, 4);
-    addDirectedEdge(g, i++, 1, 3, 2);
-    addDirectedEdge(g, i++, 2, 7, 4);
-    addDirectedEdge(g, i++, 2, 8, 1);
-    addDirectedEdge(g, i++, 2, 9, 2);
-    addDirectedEdge(g, i++, 3, 6, 11);
-    addDirectedEdge(g, i++, 3, 7, 2);
-    addDirectedEdge(g, i++, 4, 3, 2);
-    addDirectedEdge(g, i++, 4, 5, 1);
-    addDirectedEdge(g, i++, 5, 3, 5);
-    addDirectedEdge(g, i++, 5, 6, 7);
-    addDirectedEdge(g, i++, 6, 7, 1);
-    addDirectedEdge(g, i++, 6, 8, 4);
-    addDirectedEdge(g, i++, 7, 8, 6);
-    addDirectedEdge(g, i++, 9, 8, 0);
+    g[i++] = new Edge(0, 1, 5);
+    g[i++] = new Edge(0, 3, 4);
+    g[i++] = new Edge(0, 4, 1);
+    g[i++] = new Edge(1, 2, 4);
+    g[i++] = new Edge(1, 3, 2);
+    g[i++] = new Edge(2, 7, 4);
+    g[i++] = new Edge(2, 8, 1);
+    g[i++] = new Edge(2, 9, 2);
+    g[i++] = new Edge(3, 6, 11);
+    g[i++] = new Edge(3, 7, 2);
+    g[i++] = new Edge(4, 3, 2);
+    g[i++] = new Edge(4, 5, 1);
+    g[i++] = new Edge(5, 3, 5);
+    g[i++] = new Edge(5, 6, 7);
+    g[i++] = new Edge(6, 7, 1);
+    g[i++] = new Edge(6, 8, 4);
+    g[i++] = new Edge(7, 8, 6);
+    g[i++] = new Edge(9, 8, 0);
 
-    Boruvkas solver = new Boruvkas(n, g);
+    Boruvkas solver = new Boruvkas(n, m, g);
 
     Long ans = solver.getMstCost();
     if (ans != null) {
