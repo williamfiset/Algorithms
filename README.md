@@ -77,9 +77,10 @@
 * [Floyd Warshall algorithm (adjacency matrix, negative cycle check)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/FloydWarshallSolver.java) **- O(V<sup>3</sup>)**
 * [Graph diameter (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/GraphDiameter.java) **- O(VE)**
 * [Kruskal's min spanning tree algorithm (edge list, union find)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/KruskalsEdgeList.java) **- O(Elog(E))**
+* [Kruskal's min spanning tree algorithm (edge list, union find, lazy sorting)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/KruskalsEdgeListPartialSortSolver.java) **- O(Elog(E))**
 * [Prim's min spanning tree algorithm (lazy version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/LazyPrimsAdjacencyList.java) **- O(Elog(E))**
-* [Prim's min spanning tree  algorithm (lazy version, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/LazyPrimsAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
-* [Prim's min spanning tree  algorithm (eager version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/EagerPrimsAdjacencyList.java) **- O(Elog(V))**
+* [Prim's min spanning tree algorithm (lazy version, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/LazyPrimsAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
+* [Prim's min spanning tree algorithm (eager version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/EagerPrimsAdjacencyList.java) **- O(Elog(V))**
 * [Steiner tree (minimum spanning tree generalization)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/SteinerTree.java) **- O(V<sup>3</sup> + V<sup>2</sup> * 2<sup>T</sup> + V * 3<sup>T</sup>)**
 * [Tarjan's strongly connected components algorithm (adjacency list) ](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/TarjanSccSolverAdjacencyList.java) **- O(V+E)**
 * [Tarjan's strongly connected components algorithm (adjacency matrix) ](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/TarjanAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
