@@ -49,7 +49,7 @@ public class MinCostMaxFlow {
    *
    * @param n      - The number of nodes in the graph including source and sink nodes.
    * @param source - The index of the source node, 0 <= source < n
-   * @param sink   - The index of the source node, 0 <= sink < n
+   * @param sink   - The index of the sink node, 0 <= sink < n
    */
   public MinCostMaxFlow(int n, int source, int sink) {
     this.n = n;
@@ -83,9 +83,8 @@ public class MinCostMaxFlow {
 
   /**
    * Returns the graph after the solver has been executed. This allow you to
-   * inspect each edge's remaining {@link Edge#capacity} compared to the
-   * {@link Edge.originalCapacity} value. This is useful if you want to figure 
-   * out which edges were used during the max flow.
+   * inspect the graph to figure out where the flow is throughout the network to
+   * recover which edges were taken.
    */
   public List<List<Edge>> getGraph() {
     solve();
