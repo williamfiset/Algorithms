@@ -1,5 +1,5 @@
 /**
- * An implementation of Kruskal's MST algorithm using an edge list.
+ * An implementation of Kruskal's MST algorithm with lazy sorting.
  *
  * Tested against: 
  * - https://open.kattis.com/problems/minspantree
@@ -11,19 +11,21 @@
 
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
 
 public class KruskalsEdgeListPartialSortSolver {
 
   static class Edge implements Comparable<Edge> {
     int u, v, cost;
-    // u, v are nodes indexes and cost is the cost of taking this edge.
+    // 'u' and 'v' are nodes indexes and 'cost' is the cost of taking this edge.
     public Edge(int u, int v, int cost) {
       this.u = u;
       this.v = v;
       this.cost = cost;
     }
-    // Sort edges based on cost;
+    // Sort edges based on cost.
     @Override public int compareTo(Edge other) {
       return cost - other.cost;
     }
@@ -41,7 +43,7 @@ public class KruskalsEdgeListPartialSortSolver {
   private Edge[] mst;
   private long mstCost;
 
-  // edges - A list of undirected edges
+  // edges - A list of undirected edges.
   // n     - The number of nodes in the input graph.
   public KruskalsEdgeListPartialSortSolver(List<Edge> edges, int n) {
     if (edges == null || n <= 1) throw new IllegalArgumentException();
@@ -64,18 +66,19 @@ public class KruskalsEdgeListPartialSortSolver {
   private void kruskals() {
     if (solved) return;
 
+    // Heapify operation in constructor transforms list of edges into a binary heap in O(n)
+    PriorityQueue<Edge> pq = new PriorityQueue<>(edges);
     UnionFind uf = new UnionFind(n);
-    PriorityQueue<Edge> pq = new PriorityQueue<>(edges); // heapify, O(n)
 
     int index = 0;
     mst = new Edge[n-1];
 
     while (!pq.isEmpty()) {
-      // Use heap to poll the next best edge. This avoids the need to sort 
-      // before the loop if ever the algorithm terminates early.
+      // Use heap to poll the next cheapest edge. This avoids the need to sort 
+      // the edges before loop in the event that the algorithm terminates early.
       Edge edge = pq.poll();
 
-      // Skip this edge to avoid creating a cycle in MST
+      // Skip this edge to avoid creating a cycle in MST.
       if (uf.connected(edge.u, edge.v)) continue;
 
       // Include this edge
@@ -83,8 +86,7 @@ public class KruskalsEdgeListPartialSortSolver {
       mstCost += edge.cost;
       mst[index++] = edge;
 
-      // Optimization to stop early if we found
-      // a MST that includes all the nodes
+      // Stop early if we found a MST that includes all the nodes.
       if (uf.size(0) == n) break;
     }
 
