@@ -74,7 +74,7 @@ public class KruskalsEdgeListPartialSortSolver {
     mst = new Edge[n-1];
 
     while (!pq.isEmpty()) {
-      // Use heap to poll the next cheapest edge. This avoids the need to sort 
+      // Use heap to poll the next cheapest edge. Polling avoids the need to sort 
       // the edges before loop in the event that the algorithm terminates early.
       Edge edge = pq.poll();
 
