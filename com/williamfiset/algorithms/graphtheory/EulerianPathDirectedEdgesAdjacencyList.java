@@ -124,26 +124,49 @@ public class EulerianPathDirectedEdgesAdjacencyList {
     /* Example */
 
   public static void main(String[] args) {
-    smallExample();
+    exampleFromSlides();
+    // smallExample();
   }
 
-  public static void smallExample() {
-
-    int n = 5;
+  private static void exampleFromSlides() {
+    int n = 7;
     List<List<Integer>> graph = initializeEmptyGraph(n);
 
-    // Add edges.
-    graph.get(0).add(1);
-    graph.get(1).add(2);
-    graph.get(1).add(4);
-    graph.get(1).add(3);    
-    graph.get(2).add(1);
-    graph.get(4).add(1);
+    addDirectedEdge(graph, 1, 2);
+    addDirectedEdge(graph, 1, 3);
+    addDirectedEdge(graph, 2, 2);
+    addDirectedEdge(graph, 2, 4);
+    addDirectedEdge(graph, 2, 4);
+    addDirectedEdge(graph, 3, 1);
+    addDirectedEdge(graph, 3, 2);
+    addDirectedEdge(graph, 3, 5);
+    addDirectedEdge(graph, 4, 3);
+    addDirectedEdge(graph, 4, 6);
+    addDirectedEdge(graph, 5, 6);
+    addDirectedEdge(graph, 6, 3);
 
     EulerianPathDirectedEdgesAdjacencyList solver;
     solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
 
-    // Outputs: [0, 1, 2, 1, 4, 1, 3]
+    // Outputs path: [1, 3, 5, 6, 3, 2, 4, 3, 1, 2, 2, 4, 6]
+    System.out.println(Arrays.toString(solver.getEulerianPath()));
+  }
+
+  private static void smallExample() {
+    int n = 5;
+    List<List<Integer>> graph = initializeEmptyGraph(n);
+
+    addDirectedEdge(graph, 0, 1);
+    addDirectedEdge(graph, 1, 2);
+    addDirectedEdge(graph, 1, 4);
+    addDirectedEdge(graph, 1, 3);    
+    addDirectedEdge(graph, 2, 1);
+    addDirectedEdge(graph, 4, 1);
+
+    EulerianPathDirectedEdgesAdjacencyList solver;
+    solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
+
+    // Outputs path: [0, 1, 2, 1, 4, 1, 3]
     System.out.println(Arrays.toString(solver.getEulerianPath()));
   }
 
