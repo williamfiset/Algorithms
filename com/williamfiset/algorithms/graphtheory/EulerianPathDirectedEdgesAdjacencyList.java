@@ -82,7 +82,8 @@ public class EulerianPathDirectedEdgesAdjacencyList {
     dfs(findStartNode());
     if (!graphIsConnected()) return null;
 
-    // Return solution as a primitive array for convenience.
+    // Instead of returning the 'path' linked list return the
+    // solution as a primitive array for convenience.
     int[] soln = new int[edgeCount+1];
     for(int i = 0; !path.isEmpty(); i++) 
       soln[i] = path.removeFirst();
