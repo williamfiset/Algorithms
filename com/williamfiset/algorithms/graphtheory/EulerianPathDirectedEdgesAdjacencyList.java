@@ -16,17 +16,20 @@ package com.williamfiset.algorithms.graphtheory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.LinkedList;
 
 public class EulerianPathDirectedEdgesAdjacencyList {
   
-  public int n, edgeCount, orderIndex;
-  public int[] in, out, ordering;
+  public int[] in, out;
+  public int n, edgeCount;
+  public LinkedList<Integer> path;
   public List<List<Integer>> graph;
 
   public EulerianPathDirectedEdgesAdjacencyList(List<List<Integer>> graph) {
     if (graph == null) throw new IllegalArgumentException("Graph cannot be null");
     n = graph.size();
     this.graph = graph;
+    path = new LinkedList<>();
   }
 
   private void setUp() {
@@ -47,15 +50,11 @@ public class EulerianPathDirectedEdgesAdjacencyList {
   }
 
   private boolean graphHasEulerianPath() {
-    int endNodes = 0, startNodes = 0;
+    int startNodes = 0, endNodes = 0;
     for (int i = 0; i < n; i++) {
-      if (out[i] - in[i] > 1) // equivalently, in[i] - out[i] > 1 by symmetry.
-        return false;
-      if (in[i] - out[i] == 1) {
-        endNodes++;
-      } else if (out[i] - in[i] == 1) {
-        startNodes++;
-      }
+      if (out[i] - in[i] > 1 || in[i] - out[i] > 1) return false;
+      else if (out[i] - in[i] == 1) startNodes++;
+      else if (in[i] - out[i] == 1) endNodes++;
     }
     return (endNodes == 0 && startNodes == 0) || 
            (endNodes == 1 && startNodes == 1);
@@ -80,14 +79,15 @@ public class EulerianPathDirectedEdgesAdjacencyList {
 
     if (edgeCount == 0) return null;
     if (!graphHasEulerianPath()) return null;
-
-    orderIndex = edgeCount;
-    ordering = new int[edgeCount+1];
     dfs(findStartNode());
-
     if (!graphIsConnected()) return null;
 
-    return ordering;
+    // Return solution as a primitive array for convenience.
+    int[] soln = new int[edgeCount+1];
+    for(int i = 0; !path.isEmpty(); i++) 
+      soln[i] = path.removeFirst();
+
+    return soln;
   }
 
   // Perform DFS to find Eulerian path.
@@ -96,7 +96,7 @@ public class EulerianPathDirectedEdgesAdjacencyList {
       int next = graph.get(at).get(--out[at]);
       dfs(next);
     }
-    ordering[orderIndex--] = at;
+    path.addFirst(at);
   }
 
   // Make sure all edges of the graph were traversed. It could be the case that
@@ -150,6 +150,7 @@ public class EulerianPathDirectedEdgesAdjacencyList {
 
     // Outputs path: [1, 3, 5, 6, 3, 2, 4, 3, 1, 2, 2, 4, 6]
     System.out.println(Arrays.toString(solver.getEulerianPath()));
+    System.out.println(solver.path);
   }
 
   private static void smallExample() {
