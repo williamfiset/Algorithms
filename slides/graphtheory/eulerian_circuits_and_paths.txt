@@ -1,0 +1,2 @@
+Hello everyone, my name is William; today we're going to talk about Eulerian paths and circuits from a computer science perspective. We're going to be discussing what euler paths and circuits are, how to find them, and lastly we'll look at some code to wrap things up.
+
