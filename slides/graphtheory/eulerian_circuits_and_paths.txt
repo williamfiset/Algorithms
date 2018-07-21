@@ -1,2 +1,115 @@
 Hello everyone, my name is William; today we're going to talk about Eulerian paths and circuits from a computer science perspective. We're going to be discussing what euler paths and circuits are, how to find them, and lastly we'll look at some code to wrap things up.
 
+Let's begin with what is an Eulerian path? An euler path, also called an euler trail is a path of edges in a graph that visits every edge exactly once.
+
+Suppose we have the undirected graph below and we want to find an eulerian path. First off, not every graph has an eulerian path, this one does, but even still we need to be careful about which node we start our path at.
+
+Suppose we begin the path at the middle right node.
+
+and decide to follow the path left
+
+down
+
+up
+
+up again
+
+and finally left. This completes the eulerian path. 
+
+<press>
+
+However, suppose we start at the top node, what happens if we decide to find a path from this node?
+
+If we take the edge going down you'll notice that we're now stuck. We cannot go anywhere else from this node since there are no edges left to follow.
+
+More importantly, the issue is that we have unvisited edges we still have not used. We'll see how to resolve, or rather avoid this issue later.
+
+Moving on, what is an eulerian circuit, also called and eulerian cycle? An eulerian circuit is an eulerian path which starts and ends on the same vertex.
+
+Similar to eulerian paths, not every graph has an Eulerian circuit, but the following graph does.
+
+If you know your graph has an eulerian circuit you can begin the circuit at any node. I'm going to begin the circuit on the orange node and also end it on the orange node.
+
+...
+
+and that's the full circuit
+
+If your graph does not contain an eulerian circuit, you may not be able to return to the start node or you will not be able to visit all edges of the graph.
+
+Suppose we start at the same node on this slightly modified graph and try and find an Eulerian circuit.
+
+...
+
+So by randomly selecting edges to traverse we weren't able to make it back to the starting node.
+
+Furthermore, we also have unvisited edges, so that's double bad.
+
+Luckily for us we don't have to guess whether or not a graph contains an Eulerian path or an Eulerian circuit. We can inspect the graph we're dealing with by counting the in and out degrees of each node to determine whether or not the graph meets one of the conditions in this table. There are four flavours of the Eulerian path/circuit problem we care about and those are whether the graph is directed or undirected and whether we want to find an euler path or an euler circuit. All of these variants talk about node degrees, so I want to have a quick look at that before coming back to this table.
+
+The degree of a node means different things depending on whether we're dealing with a directed or an undirected graph.
+
+In an undirected graph, the node degree is simply how many edges are attached to that particular node. So in the node above there are three edges attached to the node so its degree is 3.
+
+In a directed graph there are two forms of node degrees, in degrees and out degrees. The 'in' degree is how many incoming edges are coming to the node and the 'out' degree is the number of outgoing edges. In the example on the right, the in degree of the node is 2 while its out degree is 1, pretty simple.
+
+Coming back to the table, you should now be able to understand the constraints required for each variant. Let's go ever them one by one anyways.
+
+The simplest case is when you have an undirected graph and you want to know if it has an Eulerian circuit. The requirement for this is that every node has an even degree.
+
+The Eulerian Path problem on an undirected graph is similar expect that in addition that every vertex has even degree you can also have exactly two vertices which have odd degree. Those two vertices if they exist would be the start and end nodes for the Eulerian path.
+
+On a directed graph, you have an Eulerian circuit if every vertex has equal in and out degree.
+
+The last variant is finding an Eulerian path on a directed graph. For there to exist an Eulerian path on a directed graph at most one vertex has (outdegree) - (indegree) = 1 and at most one vertex has 
+(indegree) - (outdegree) = 1 and all other vertices have equal in and out degrees. 
+
+
+Now it's pop quiz time to make sure you've been paying attention. I'm going to present various graphs and you need to determine whether an Eulerian path, an Eulerian circuit or both exist on this graph. We'll start with undirected graphs and then move on to directed graphs. Feel free to pause the video to think it over.
+
+This graph has no Eulerian path or circuit. You can tell because there are too many nodes with odd degree.
+
+How about this graph?
+
+This graph has an eulerian path, and the green nodes represent the valid start and end nodes.
+
+How about this graph?
+
+Yes, it has both an euler path and euler circuit.
+
+Here's a side question: True or false, if a graph has an euelrian circuit it also has an euelrian path? I'll give you a moment to think about it.
+
+The answer is true. Any circuit is an Eulerian path.
+
+Here's another one, are there any paths or circuits in this graph?
+
+This one is a bit of a trick question, bit there are no eulerian paths or circuits. An additional requirement I have not yet mentioned is that when finding paths and circuits is that all vertices with nonzero degree need to belong to a single connected component.
+
+Now let's have a look at some examples with directed graphs. Does the following graph contain any paths or circuits?
+
+Yes, it has both an eulerian path and an eulerian circuit because all in/out degrees are equal.
+
+What about this graph?
+
+No path or circuit. The red nodes have either too many in coming or outgoing edges.
+
+What about this graph? I'll give you a bit more time because there are a lot of edges here.
+
+The answer is graph has an Eulerian path, but no Eulerian circuit. It also has a unique start/end node for the path.
+
+Note that the singleton node has no incoming/outgoing edges, so it doesn't impact whether or not we have an Eulerian path.
+
+Ok, that is it on the existence of Eulerian paths and circuits for directed and undirected graphs. I hope that made sense, please give a thumbs up if you learned something, and also stick around for the next video where things get even more interesting as we look at an algorithm to find these Eulerian paths and circuits.
+
+------------------------------------------------------------------
+
+
+... The difficulty in finding an Eulerian path is not to finding the Eulerian path itself, but rather to verify that one exists.
+
+
+In practice, from my experience, I have found this variant to be the most common 
+
+
+
+
+
+
