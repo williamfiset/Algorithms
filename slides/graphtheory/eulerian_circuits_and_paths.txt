@@ -76,13 +76,13 @@ How about this graph?
 
 Yes, it has both an euler path and euler circuit.
 
-Here's a side question: True or false, if a graph has an euelrian circuit it also has an euelrian path? I'll give you a moment to think about it.
+Here's a side question: True or false, if a graph has an Eulerian circuit it also has an euelrian path? I'll give you a moment to think about it.
 
 The answer is true. Any circuit is an Eulerian path.
 
 Here's another one, are there any paths or circuits in this graph?
 
-This one is a bit of a trick question, bit there are no eulerian paths or circuits. An additional requirement I have not yet mentioned is that when finding paths and circuits is that all vertices with nonzero degree need to belong to a single connected component.
+This one is a bit of a trick question, there are no Eulerian paths or circuits. An additional requirement I have not yet mentioned is that when finding paths and circuits is that all vertices with nonzero degree need to belong to a single connected component.
 
 Now let's have a look at some examples with directed graphs. Does the following graph contain any paths or circuits?
 
@@ -90,11 +90,11 @@ Yes, it has both an eulerian path and an eulerian circuit because all in/out deg
 
 What about this graph?
 
-No path or circuit. The red nodes have either too many in coming or outgoing edges.
+There are no paths or circuits. The red nodes have either too many incoming or outgoing edges.
 
 What about this graph? I'll give you a bit more time because there are a lot of edges here.
 
-The answer is graph has an Eulerian path, but no Eulerian circuit. It also has a unique start/end node for the path.
+This graph only has an Eulerian path, but no Eulerian circuit. It also has a unique start/end node for the path.
 
 Note that the singleton node has no incoming/outgoing edges, so it doesn't impact whether or not we have an Eulerian path.
 
