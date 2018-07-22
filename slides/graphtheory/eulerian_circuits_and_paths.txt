@@ -1,4 +1,4 @@
-Hello everyone, my name is William; today we're going to talk about Eulerian paths and circuits from a computer science perspective. We're going to be discussing what euler paths and circuits are, how to find them, and lastly we'll look at some code to wrap things up.
+Hello everyone, my name is William; today we're going to talk about Eulerian paths and circuits from a computer science perspective. We're going to start with discussing what euler paths and circuits are, how to determine there existence, how to find them, and lastly we'll look at some code to wrap things up.
 
 Let's begin with what is an Eulerian path? An euler path, also called an euler trail is a path of edges in a graph that visits every edge exactly once.
 
@@ -102,6 +102,13 @@ Ok, that is it on the existence of Eulerian paths and circuits for directed and 
 
 ------------------------------------------------------------------
 
+
+Hello everyone, and welcome back, my name is William; today we're going to talk about how to find Eulerian paths and circuits.
+
+This video builds off concepts from my last video which talked about the existence of Eulerian paths and Eulerian circuits in graphs, make sure you give that a watch, the link should be in the description below.
+
+Finding an Eulerian path and an Eulerian circuit are very similar problems for both directed and undirected graphs. If you have an algorithm that finds an Eulerian path, finding an Eulerian circuit comes for free. All you need to do is feed the graph with the Eulerian circuit into the Eulerian path algorithm and out comes the Eulerian circuit. For that reason today we'll be looking at an algorithm that finds an Eulerian path on a directed graph. 
+The undirected version is just a spin-off of the directed version, furthermore I've found that directed graphs are far more common in practice, at least from personal experience.
 
 ... The difficulty in finding an Eulerian path is not to finding the Eulerian path itself, but rather to verify that one exists.
 
