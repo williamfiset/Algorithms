@@ -103,7 +103,7 @@ Ok, that is it on the existence of Eulerian paths and circuits for directed and 
 ------------------------------------------------------------------
 
 
-Hello everyone, and welcome back, my name is William; today we're going to talk about how to find Eulerian paths and circuits.
+Hello everyone, and welcome back, my name is William; today we're talking about how to algorithmically find Eulerian paths and circuits.
 
 This video builds off concepts from my last video which talked about the existence of Eulerian paths and Eulerian circuits in graphs, make sure you give that a watch, the link should be in the description below.
 
@@ -232,7 +232,7 @@ Lastly, there's a variable called path which is a linked list which is going to 
 
 To actually find an Eulerian path on our graph 'g' we're going to call the findEuelrianPath method.
 
-The first thing we want to do is verify that an Eulerian path exists. To do that we first need to count the in and out degree of each node. Once we know that we can verify that the graph is a good candidate.
+The first thing we want to do is verify that an Eulerian path exists. To do that we first need to count the in and out degree of each node, and once we know that we can verify that the graph is a good candidate for an Eulerian path.
 
 Here we are looking at the methods which count the in and out degrees and verify whether an Eulerian path can exist.
 
