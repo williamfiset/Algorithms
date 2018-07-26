@@ -1,7 +1,7 @@
 /**
  * Implementation of Dinic's network flow algorithm. The algorithm works 
  * by first constructing a level graph using a BFS and then finding 
- * augmenting paths on the level graph using multiple DFS's.
+ * augmenting paths on the level graph using multiple DFSs.
  *
  * Time Complexity: O(EV²)
  * 
