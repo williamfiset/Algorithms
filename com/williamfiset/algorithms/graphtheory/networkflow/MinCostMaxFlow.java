@@ -68,7 +68,7 @@ public class MinCostMaxFlow {
    * Adds a directed edge (and residual edge) to the flow graph.
    *
    * @param from     - The index of the node the directed edge starts at.
-   * @param to       - The index of the node the directed edge end at.
+   * @param to       - The index of the node the directed edge ends at.
    * @param capacity - The number of units of capacity for this edge.
    * @param cost     - The cost of using up 1 unit of capacity along this edge.
    */

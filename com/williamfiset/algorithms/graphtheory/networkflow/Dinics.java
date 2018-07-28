@@ -1,7 +1,7 @@
 /**
  * Implementation of Dinic's network flow algorithm. The algorithm works 
  * by first constructing a level graph using a BFS and then finding 
- * augmenting paths on the level graph using multiple DFS's.
+ * augmenting paths on the level graph using multiple DFSs.
  *
  * Time Complexity: O(EV²)
  * 
@@ -63,7 +63,7 @@ public class Dinics {
    * Adds a directed edge (and residual edge) to the flow graph.
    *
    * @param from     - The index of the node the directed edge starts at.
-   * @param to       - The index of the node the directed edge end at.
+   * @param to       - The index of the node the directed edge ends at.
    * @param capacity - The capacity of the edge.
    */
   public void addEdge(int from, int to, int capacity) {
@@ -86,7 +86,7 @@ public class Dinics {
     return maxFlow;
   }
 
-  // Returns the min-cut of this flow network in which the nodes on the "left side"
+  // Returns the min-cut of this flow network where the nodes on the "left side"
   // of the cut with the source are marked as true and those on the "right side" 
   // of the cut with the sink are marked as false.
   public boolean[] getMinCut() {
@@ -94,7 +94,7 @@ public class Dinics {
     return minCut;
   }
 
-  // Do BFS from source to sink and compute the depth/level of each node
+  // Do a BFS from source to sink and compute the depth/level of each node
   // which is the minimum number of edges from that node to the source.
   private boolean bfs() {
     Arrays.fill(level, -1);
