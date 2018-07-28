@@ -76,6 +76,7 @@ public class EulerianPathDirectedEdgesAdjacencyList {
   // null if no path exists or the graph is disconnected.
   public int[] getEulerianPath() {
     setUp();
+    if (edgeCount == 0) return null;
 
     if (!graphHasEulerianPath()) return null;
     dfs(findStartNode());
