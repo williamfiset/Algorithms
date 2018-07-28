@@ -10,10 +10,10 @@ public class LongestIncreasingSubsequence {
   
   public static void main(String[] args) {
     
-    System.out.println(lis(new int[]{1,3,2,4,3}));
-    System.out.println(lis(new int[]{2,7,4,3,8}));
-    System.out.println(lis(new int[]{5,4,3,2,1}));
-    System.out.println(lis(new int[]{1,2,3,4,5,6,7,8,9}));
+    System.out.println(lis(new int[]{1,3,2,4,3})); // 3
+    System.out.println(lis(new int[]{2,7,4,3,8})); // 3
+    System.out.println(lis(new int[]{5,4,3,2,1})); // 1
+    System.out.println(lis(new int[]{1,2,3,4,5,6,7,8,9})); // 9
   
   }
   
@@ -32,18 +32,16 @@ public class LongestIncreasingSubsequence {
     // conditions hold 1) The value at i is less than that of the one at j
     // and 2) updating the value of dp[j] to dp[i]+1 is better
     for (int i = 0; i < n; i++) {
-      for (int j = i+1; j < n; j++)
-        if (ar[i] < ar[j])
-          if (dp[i] + 1 > dp[j])
-            dp[j] = dp[i] + 1;
-      
+      for (int j = i+1; j < n; j++) {
+        if (ar[i] < ar[j] && dp[j] < dp[i] + 1) {
+          dp[j] = dp[i] + 1;
+        }
+      }
       // Track the LIS
       if (dp[i] > len) len = dp[i];
-      
     }
 
     return len;
-    
   }
   
 }

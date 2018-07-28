@@ -77,12 +77,11 @@ public class EulerianPathDirectedEdgesAdjacencyList {
   public int[] getEulerianPath() {
     setUp();
 
-    if (edgeCount == 0) return null;
     if (!graphHasEulerianPath()) return null;
     dfs(findStartNode());
 
     // Make sure all edges of the graph were traversed. It could be the
-    // case that the graph is disconnected in which case return false.
+    // case that the graph is disconnected in which case return null.
     if (path.size() != edgeCount+1) return null;
 
     // Instead of returning the 'path' linked list return the
