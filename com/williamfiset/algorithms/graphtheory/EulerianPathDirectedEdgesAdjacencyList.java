@@ -7,7 +7,7 @@
  * https://open.kattis.com/problems/eulerianpath
  * http://codeforces.com/contest/508/problem/D
  *
- * Time Complexity: O(V+E)
+ * Time Complexity: O(E)
  * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
@@ -20,18 +20,41 @@ import java.util.LinkedList;
 
 public class EulerianPathDirectedEdgesAdjacencyList {
   
-  public int[] in, out;
-  public int n, edgeCount;
-  public LinkedList<Integer> path;
-  public List<List<Integer>> graph;
+  private final int n;
+  private int edgeCount;
+  private int[] in, out;
+  private LinkedList<Integer> path;
+  private List<List<Integer>> graph;
 
   public EulerianPathDirectedEdgesAdjacencyList(List<List<Integer>> graph) {
-    if (graph == null) throw new IllegalArgumentException("Graph cannot be null");
+    if (graph == null) 
+      throw new IllegalArgumentException("Graph cannot be null");
     n = graph.size();
     this.graph = graph;
     path = new LinkedList<>();
   }
 
+  // Returns a list of edgeCount + 1 node ids that give the Eulerian path or
+  // null if no path exists or the graph is disconnected.
+  public int[] getEulerianPath() {
+    setUp();
+    if (edgeCount == 0) return null;
+
+    if (!graphHasEulerianPath()) return null;
+    dfs(findStartNode());
+
+    // Make sure all edges of the graph were traversed. It could be the
+    // case that the graph is disconnected in which case return null.
+    if (path.size() != edgeCount+1) return null;
+
+    // Instead of returning the 'path' as a linked list return 
+    // the solution as a primitive array for convenience.
+    int[] soln = new int[edgeCount+1];
+    for(int i = 0; !path.isEmpty(); i++) 
+      soln[i] = path.removeFirst();
+
+    return soln;
+  }
   private void setUp() {
     // Arrays that track the in degree and out degree of each node.
     in  = new int[n];
@@ -48,7 +71,6 @@ public class EulerianPathDirectedEdgesAdjacencyList {
       }
     }
   }
-
   private boolean graphHasEulerianPath() {
     int startNodes = 0, endNodes = 0;
     for (int i = 0; i < n; i++) {
@@ -59,7 +81,6 @@ public class EulerianPathDirectedEdgesAdjacencyList {
     return (endNodes == 0 && startNodes == 0) || 
            (endNodes == 1 && startNodes == 1);
   }
-
   private int findStartNode() {
     int start = 0;
     for (int i = 0; i < n; i++) {
@@ -71,29 +92,6 @@ public class EulerianPathDirectedEdgesAdjacencyList {
     }
     return start;
   }
-
-  // Returns a list of edgeCount + 1 node ids that give the Eulerian path or
-  // null if no path exists or the graph is disconnected.
-  public int[] getEulerianPath() {
-    setUp();
-    if (edgeCount == 0) return null;
-
-    if (!graphHasEulerianPath()) return null;
-    dfs(findStartNode());
-
-    // Make sure all edges of the graph were traversed. It could be the
-    // case that the graph is disconnected in which case return null.
-    if (path.size() != edgeCount+1) return null;
-
-    // Instead of returning the 'path' linked list return the
-    // solution as a primitive array for convenience.
-    int[] soln = new int[edgeCount+1];
-    for(int i = 0; !path.isEmpty(); i++) 
-      soln[i] = path.removeFirst();
-
-    return soln;
-  }
-
   // Perform DFS to find Eulerian path.
   private void dfs(int at) {
     while(out[at] != 0) {
@@ -116,7 +114,7 @@ public class EulerianPathDirectedEdgesAdjacencyList {
     g.get(from).add(to);
   }
 
-    /* Example */
+    /* Examples */
 
   public static void main(String[] args) {
     exampleFromSlides();
@@ -145,7 +143,6 @@ public class EulerianPathDirectedEdgesAdjacencyList {
 
     // Outputs path: [1, 3, 5, 6, 3, 2, 4, 3, 1, 2, 2, 4, 6]
     System.out.println(Arrays.toString(solver.getEulerianPath()));
-    System.out.println(solver.path);
   }
 
   private static void smallExample() {

@@ -307,4 +307,57 @@ Thank you for watching, real source code for the Eulerian path can be found on g
 Please like this video if you learned something, and subscribe for more computer science and mathematics videos.
 
 
+----------------------------------------------------------------
+
+Hello and welcome, my name is william, and today we're going to look at some source code for the Eulerian path algorithm. This video follows off my last videos explaining the Eulerian path algorithm itself, there should be a link to those in the description.
+
+As usual, source code can be found on Github at github.com slash william fiset slash algorithms. There should be a link in the description below, so let's dive in.
+
+So here we are in the source code for the Eulerian path. Let's begin by taking a look at the class constructor.
+
+In the constructor we give a directed graph as input to the algorithm, we verify that the graph is not null, then we initialize 'n' the number of nodes in the graph, save a reference to our directed graph and initialize the path linked list.
+
+Before we go too far, let's have a look at the instance variables for this class. We already talked about 'n' the number of nodes in the graph, next we have the edgeCount which we compute dynamically from the input graph followed by the 'in' and 'out' integer arrays to track the in/out degree of each node, then we have the path, which is the Eulerian path solution to the algorithm and finally the input graph.
+
+So once you create an instance of this class, there's only one public method and that's 'getEulerianPath' which does exactly what is says, it'll return you an eulerian path consisting the nodes you need to follow to traverse all the edges of the graph, or null if no path exists.
+
+The first thing in the 'getEulerianPath' method is a setUp method call so let's have a look at that.
+
+All the setup method does is loop through all the edges and increment the in and out array degrees as well as compute the number of edges in the graph.
+
+<close setUp>
+
+back in the 'getEulerianPath' method I check if the edgeCount is zero and return null if we don't have any edges to work with, then I call the 'graphHasEulerianPath' method to verify that our graph actually has an Eulerian path, because most don't.
+
+The 'graphHasEulerianPath' is also fairly simple, what we want to do is make sure that no node has too many outgoing edges or too many incoming edges as well as ensure that there's the correct amount of start and end nodes for the eulerian path. The 'startNodes' and 'endNodes' variables keep track of how many nodes have either exactly one extra outgoing edge or one extra incoming edge. For an eulerian path to exist either there has to be no designated start and end nodes, meaning we have an euler circuit or there's exactly one start and end node. 
+So when we're inside the for loop we have three conditions, the first is that we identify there there exists a node with too many incoming or outgoing edges, which mathematically means that the difference between the in and out degree or vice versa is greater than one. The other conditions we care about are whether the current node might be a start node or an end node, and if it is then we increment the startNodes and endNodes counter.
+The last step is of course to check that we have the correct number of start and end nodes.
+
+<close graphHasEulerianPath>
+
+Returning back to the 'getEulerianPath' the next thing in the algorithm is to actually find the euler path now that we know one can exist. To do this we find a valid starting node and feed that as the first node to the DFS method, so let's look at both of those.
+
+We don't want to start our Eulerian path anywhere as we saw in the first video because this doesn't ensure that we find an eulerian path even though we know one exists. The find start node method does exactly what it sounds like, it looks for a node which is a valid starting node, meaning a node with exactly one extra outgoing edge or in the case of an Eulerian circuit just any node with an outgoing edge. It's important that we start at a node with an outgoing edge because our graph might have singleton nodes which have no outgoing edges but another component of the graph does which is where we really want to start.
+
+<close findStartNode>
+
+Next up is the DFS method where things get interesting. It turns out the DFS method is really short, and could even be shorter, but at the expense of readability. Remember that when calling this method the first node is the starting node, which is the 'at' variable in this method which if you haven't guessed it, is the current node index we're 'at'. In essence what's happening in this method is that while the current node still has unvisited edges, we're going to select the next node to explore and call the DFS method recursively. Each time we take an edge we decrease the outgoing edge count which means that eventually there will be no more outgoing edges for the current node and the loop will terminate. Once this happens we can add the current node to the front of the solution. The key realization I think in this method is to notice that the out array is being used as both a way of determining if there any unvisited edges left to take as well as an index for reaching into the adjacency list to grab the next node to visit.
+
+<goto getEulerianPath>
+
+Returning back to the getEulerianPath method, once we've finished executing the DFS the next thing to do is ensure that we've found an eulerian path. It could be the case that the graph is disconnected in which case the correct thing to do is return null. Checking that the graph is disconnected is not something the 'graphHasEulerianPath' method verifies just because it's easier to do it after by ensuring that the found solution actually contains edgeCount plus one items.
+
+The next thing I do before returning the solution, which is optional is simply empty the contents of the linkedlist input an primitive integer array for convenience because it's easier to index for the caller.
+
+The rest of the methods in this file are just helper methods for creating a directed graph and adding directed edges to the graph. I also provide two examples here, one from the previous slides and another that I made up, I encourage you to look them over to understand how this program works.
+
+Thank you for watching, please like this video if you learned something, and subscribe for more computer science and mathematics videos, catch you next time.
+
+
+
+
+
+
+
+
 
