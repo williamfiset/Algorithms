@@ -154,4 +154,65 @@ public class Dinics {
 
     solved = true;
   }
+
+    /* Example usage */
+
+  public static void main(String[] args) {
+    int n = 10;
+    int s = n + 0;
+    int t = n + 1;
+    
+    Dinics solver = new Dinics(n+2, s, t);
+
+    int x = 5;
+
+    solver.addEdge(0, x + 1, 1);
+    solver.addEdge(0, x + 2, 1);
+
+    solver.addEdge(1, x + 1, 1);
+    solver.addEdge(1, x + 2, 1);
+    solver.addEdge(1, x + 3, 1);
+
+    solver.addEdge(2, x + 0, 1);    
+    solver.addEdge(2, x + 1, 1);    
+    solver.addEdge(2, x + 2, 1);
+    solver.addEdge(2, x + 4, 1);
+
+    solver.addEdge(3, x + 2, 1);
+
+    solver.addEdge(4, x + 2, 1);
+    solver.addEdge(4, x + 3, 1);
+    solver.addEdge(4, x + 4, 1);
+
+    int[] s_caps = {1, 2, 3, 1, 2};
+    int[] t_caps = {5, 1, 2, 1, 3};
+    for (int i = 0; i < x; i++) {
+      solver.addEdge(s, i, s_caps[i]);
+      solver.addEdge(x+i, t, t_caps[i]);
+    }
+
+    long f = solver.getMaxFlow();
+    List<List<Edge>> g = solver.getGraph();
+    for (int i = 0; i < g.size(); i++) {
+      // if (i == s) continue;
+      for (Edge e : g.get(i)) {
+        if (e.flow >= 1) {
+          // if (e.to == t) continue;
+          System.out.printf("%2d %2d %2d %2d\n", i, e.to, e.flow, e.capacity);
+        }
+      }
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
