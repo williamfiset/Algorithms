@@ -29,7 +29,7 @@ public class Dinics {
   private boolean[] minCut;
   private List<List<Edge>> graph;
 
-  static class Edge {
+  public static class Edge {
     int to;
     Edge residual;
     long flow, capacity;
