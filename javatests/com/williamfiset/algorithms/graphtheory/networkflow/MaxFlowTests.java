@@ -91,6 +91,38 @@ public class MaxFlowTests {
     assertFlow(19);
   }
 
+  @Test
+  public void classicNetwork() {
+    int n = 2, s = n, t = n+1;
+    final int k = 10000;
+    createAllSolvers(n, s, t);
+
+    addEdge(s, 0, k);
+    addEdge(s, 1, k);
+    addEdge(0, t, k);
+    addEdge(1, t, k);
+    addEdge(0, 1, 1);
+
+    assertFlow(2*k);
+  }
+
+  @Test
+  public void evilNetwork1() {
+    int n = 4, s = n, t = n+1;
+    final int k = 100000;
+    createAllSolvers(2*k, s, t);
+
+    addEdge(s, 0, k);
+    for (int i = 0; i < k - 1; i++)
+      addEdge(i, i + 1, k);
+    for (int i = 0; i < k; i++) {
+      addEdge(k-1, k + i, 1);
+      addEdge(k + i, t, 1);
+    }
+
+    assertFlow(k);
+  }
+
 }
 
 
