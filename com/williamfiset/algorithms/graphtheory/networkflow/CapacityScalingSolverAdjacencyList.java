@@ -2,7 +2,7 @@
  * Implementation of the Capacity Scaling algorithm using a DFS
  * as a method of finding augmenting paths.
  *
- * Time Complexity: O(E^2log(C))
+ * Time Complexity: O(E^2log(C)), where E = num edges, C = max capacity
  * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
@@ -13,45 +13,21 @@ import static java.lang.Math.min;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CapacityScalingSolverAdjacencyList {
+public class CapacityScalingSolverAdjacencyList extends NetworkFlowBase {
 
-  public static class Edge {
-    int to;
-    Edge residual;
-    long flow, capacity;
-    public Edge(int to, long capacity) {
-      this.to = to; 
-      this.capacity = capacity;
-    }
-  }
-
-  // Inputs
-  private int n, source, sink;
-
-  // Internal
   private int delta;
-  private int visitedToken = 1;
-  private int[] visited;
   private boolean solved;
-
-  // Outputs
-  private long maxFlow;
-  private boolean[] minCut;
-  private List<List<Edge>> graph;
 
   /**
    * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)}
    * method to add edges to the graph.
    *
-   * @param n      - The number of nodes in the graph including source and sink nodes.
-   * @param source - The index of the source node, 0 <= source < n
-   * @param sink   - The index of the sink node, 0 <= sink < n
+   * @param n - The number of nodes in the graph including source and sink nodes.
+   * @param s - The index of the source node, 0 <= s < n
+   * @param t - The index of the sink node, 0 <= t < n
    */
-  public CapacityScalingSolverAdjacencyList(int n, int source, int sink) {
-    this.n = n;
-    initializeGraph();
-    this.source = source;
-    this.sink = sink;
+  public CapacityScalingSolverAdjacencyList(int n, int s, int t) {
+    super(n, s, t);
   }
 
   /**
@@ -61,64 +37,38 @@ public class CapacityScalingSolverAdjacencyList {
    * @param to       - The index of the node the directed edge end at.
    * @param capacity - The capacity of the edge.
    */
+  @Override
   public void addEdge(int from, int to, int capacity) {
-    Edge e1 = new Edge(to, capacity);
-    Edge e2 = new Edge(from, 0);
-    e1.residual = e2;
-    e2.residual = e1;
-    graph.get(from).add(e1);
-    graph.get(to).add(e2);
+    super.addEdge(from, to, capacity);
     delta = Math.max(delta, capacity);
-  }
-
-  /**
-   * Returns the graph after the solver has been executed. This allow you to
-   * inspect each edge's {@link Edge#flow} and {@link Edge#capacity}. This is
-   * useful if you want to figure out which edges were used during the max flow.
-   */
-  public List<List<Edge>> getGraph() {
-    solve();
-    return graph;
-  }
-
-  // Returns the maximum flow from the source to the sink.
-  public long getMaxFlow() {
-    solve();
-    return maxFlow;
-  }
-
-  // Returns the min-cut of this flow network in which the nodes on the "left side"
-  // of the cut with the source are marked as true and those on the "right side" 
-  // of the cut with the sink are marked as false.
-  public boolean[] getMinCut() {
-    solve();
-    return minCut;
   }
 
   // Performs the Ford-Fulkerson method applying a depth first search as
   // a means of finding an augmenting path.
+  @Override
   public void solve() {
     if (solved) return;
 
     visited = new int[n];
-    minCut = new boolean[n];
 
-    // Make sure delta is a power of two.
+    // Start delta at the smallest power of 2 <= the largest capacity.
     delta = Integer.highestOneBit(delta);
 
-    for (long flow; delta > 0; delta /= 2) {
+    // Repeatedly find an augmenting paths from source to sink using only edges
+    // with capacity >= delta. Half delta every time we become unable to find an
+    // augmenting path from source to sink until the max flow is found.
+    for(long f = 0; delta > 0; delta /= 2) {
       do {
-        // Try to find an augmenting path from source to sink 
-        // with capacity greater than or equal to delta.
-        flow = dfs(source, Long.MAX_VALUE);
-        maxFlow += flow;
         visitedToken++;
-      } while(flow != 0);
+        f = dfs(s, INF);
+        maxFlow += f;
+      } while (f != 0);
     }
 
     // Find min cut.
+    minCut = new boolean[n];
     for(int i = 0; i < n; i++)
-      if (visited[i] == visitedToken-1)
+      if (visited[i] == visitedToken)
         minCut[i] = true;
 
     solved = true;
@@ -126,7 +76,7 @@ public class CapacityScalingSolverAdjacencyList {
 
   private long dfs(int node, long flow) {
     // At sink node, return augmented path flow.
-    if (node == sink) return flow;
+    if (node == t) return flow;
 
     List<Edge> edges = graph.get(node);
     visited[node] = visitedToken;
@@ -148,12 +98,6 @@ public class CapacityScalingSolverAdjacencyList {
       }
     }
     return 0;
-  }
-
-  // Construct an empty graph with n nodes including the source and sink nodes.
-  private void initializeGraph() {
-    graph = new ArrayList<>(n);
-    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
   }
 
     /* Example */

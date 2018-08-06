@@ -13,31 +13,10 @@ package com.williamfiset.algorithms.graphtheory.networkflow;
 import static java.lang.Math.*;
 import java.util.*;
 
-public class Dinics {
+public class Dinics extends NetworkFlowBase {
 
-  static final long INF = 987654321L;
-
-  // Inputs: n = number of nodes, s = source, t = sink
-  private final int n, s, t;
-  
-  // Internal
-  private boolean solved;
   private int[] level;
-
-  // Outputs
-  private long maxFlow;
-  private boolean[] minCut;
-  private List<List<Edge>> graph;
-
-  public static class Edge {
-    int to;
-    Edge residual;
-    long flow, capacity;
-    public Edge(int to, long capacity) {
-      this.to = to; 
-      this.capacity = capacity;
-    }
-  }
+  private boolean solved;
 
   /**
    * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)}
@@ -48,50 +27,31 @@ public class Dinics {
    * @param t - The index of the sink node, 0 <= sink < n
    */
   public Dinics(int n, int s, int t) {
-    this.n = n; this.s = s; this.t = t;
+    super(n, s, t);
     level = new int[n];
-    initializeGraph();
   }
 
-  // Construct an empty graph with n nodes including the source and sink nodes.
-  private void initializeGraph() {
-    graph = new ArrayList<>(n);
-    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
-  }
+  @Override
+  public void solve() {
+    if (solved) return;
+    
+    // p[i] indicates the next unused edge index in the adjacency list for node i
+    int[] p = new int[n];
 
-  /**
-   * Adds a directed edge (and residual edge) to the flow graph.
-   *
-   * @param from     - The index of the node the directed edge starts at.
-   * @param to       - The index of the node the directed edge ends at.
-   * @param capacity - The capacity of the edge.
-   */
-  public void addEdge(int from, int to, int capacity) {
-    Edge e1 = new Edge(to, capacity);
-    Edge e2 = new Edge(from, 0);
-    e1.residual = e2;
-    e2.residual = e1;
-    graph.get(from).add(e1);
-    graph.get(to).add(e2);
-  }
+    while(bfs()) {
+      Arrays.fill(p, 0);
+      // Find max flow by adding all augmenting path flows.
+      for (long f = dfs(s, p, INF); f != 0; f = dfs(s, p, INF)) {
+        maxFlow += f;
+      }
+    }
 
-  public List<List<Edge>> getGraph() {
-    solve();
-    return graph;
-  }
+    minCut = new boolean[n];
+    for (int i = 0; i < n; i++)
+      if (level[i] != -1)
+        minCut[i] = true;
 
-  // Returns the maximum flow from the source to the sink.
-  public long getMaxFlow() {
-    solve();
-    return maxFlow;
-  }
-
-  // Returns the min-cut of this flow network where the nodes on the "left side"
-  // of the cut with the source are marked as true and those on the "right side" 
-  // of the cut with the sink are marked as false.
-  public boolean[] getMinCut() {
-    solve();
-    return minCut;
+    solved = true;
   }
 
   // Do a BFS from source to sink and compute the depth/level of each node
@@ -134,24 +94,38 @@ public class Dinics {
     return 0;
   }
 
-  public void solve() {
-    if (solved) return;
-    
-    // p[i] indicates the next unused edge index in the adjacency list for node i
-    int[] p = new int[n];
+    /* Example */
 
-    while(bfs()) {
-      Arrays.fill(p, 0);
-      for (long flow = dfs(s, p, INF); flow != 0; flow = dfs(s, p, INF)) {
-        maxFlow += flow;
-      }
-    }
-
-    minCut = new boolean[n];
-    for (int i = 0; i < n; i++)
-      if (level[i] != -1)
-        minCut[i] = true;
-
-    solved = true;
+  public static void main(String[] args) {
+    testSmallFlowGraph();
   }
+
+  // Testing graph from:
+  // http://crypto.cs.mcgill.ca/~crepeau/COMP251/KeyNoteSlides/07demo-maxflowCS-C.pdf
+  private static void testSmallFlowGraph() {
+    int n = 4;
+    int s = n;
+    int t = n+1;
+
+    CapacityScalingSolverAdjacencyList solver;
+    solver = new CapacityScalingSolverAdjacencyList(n+2, s, t);
+
+    // Source edges
+    solver.addEdge(s, 0, 10);
+    solver.addEdge(s, 1, 10);
+
+    // Sink edges
+    solver.addEdge(2, t, 10);
+    solver.addEdge(3, t, 10);
+
+    // Middle edges
+    solver.addEdge(0, 1, 2);
+    solver.addEdge(0, 2, 4);
+    solver.addEdge(0, 3, 8);
+    solver.addEdge(1, 3, 9);
+    solver.addEdge(3, 2, 6);
+
+    System.out.println(solver.getMaxFlow()); // 19
+  }
+
 }
