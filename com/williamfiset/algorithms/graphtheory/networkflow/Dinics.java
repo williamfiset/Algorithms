@@ -57,7 +57,7 @@ public class Dinics extends NetworkFlowSolverBase {
     q.offer(s);
     while(!q.isEmpty()) {
       int node = q.poll();
-      for (Edge edge : graph.get(node)) {
+      for (Edge edge : graph[node]) {
         if (edge.flow < edge.capacity && level[edge.to] == -1) {
           level[edge.to] = level[node] + 1;
           q.offer(edge.to);
@@ -69,10 +69,10 @@ public class Dinics extends NetworkFlowSolverBase {
 
   private long dfs(int at, int[] p, long flow) {
     if (at == t) return flow;
-    final int sz = graph.get(at).size();
+    final int sz = graph[at].size();
     
     for (;p[at] < sz; p[at]++) {
-      Edge edge = graph.get(at).get(p[at]);
+      Edge edge = graph[at].get(p[at]);
       if (edge.flow < edge.capacity && level[edge.to] == level[at] + 1) {
 
         long bottleNeck = dfs(edge.to, p, min(flow, edge.capacity - edge.flow));

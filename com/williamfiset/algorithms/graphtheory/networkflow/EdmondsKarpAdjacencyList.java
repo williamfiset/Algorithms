@@ -33,7 +33,6 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
     do {
       visitedToken++;
       flow = bfs();
-      System.out.println(flow);
       maxFlow += flow;
     } while (flow != 0);
 
@@ -55,7 +54,7 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
       int node = q.poll();
       if (node == t) break;
 
-      for (Edge edge : graph.get(node)) {
+      for (Edge edge : graph[node]) {
         final long cap = edge.capacity - edge.flow; // Remaining capacity
         if (cap > 0 && visited[edge.to] != visitedToken) {
           visited[edge.to] = visitedToken;

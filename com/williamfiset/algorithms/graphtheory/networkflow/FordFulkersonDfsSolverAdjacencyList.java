@@ -49,7 +49,7 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
     // At sink node, return augmented path flow.
     if (node == t) return flow;
 
-    List<Edge> edges = graph.get(node);
+    List<Edge> edges = graph[node];
     visited[node] = visitedToken;
 
     for (Edge edge : edges) {

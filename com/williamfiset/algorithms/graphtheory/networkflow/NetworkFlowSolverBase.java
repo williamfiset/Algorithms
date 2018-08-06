@@ -35,7 +35,7 @@ public abstract class NetworkFlowSolverBase {
   // Outputs
   protected long maxFlow;
   protected boolean[] minCut;
-  protected List<List<Edge>> graph;
+  protected List<Edge>[] graph;
 
   /**
    * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)}
@@ -54,8 +54,9 @@ public abstract class NetworkFlowSolverBase {
 
   // Construct an empty graph with n nodes including the source and sink nodes.
   private void initializeGraph() {
-    graph = new ArrayList<>(n);
-    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
+    graph = new List[n];
+    for (int i = 0; i < n; i++)
+      graph[i] = new ArrayList<Edge>();
   }
 
   /**
@@ -70,8 +71,8 @@ public abstract class NetworkFlowSolverBase {
     Edge e2 = new Edge(to, from, 0);
     e1.residual = e2;
     e2.residual = e1;
-    graph.get(from).add(e1);
-    graph.get(to).add(e2);
+    graph[from].add(e1);
+    graph[to].add(e2);
   }
 
   /**
@@ -80,7 +81,7 @@ public abstract class NetworkFlowSolverBase {
    * each edge. This is useful if you want to figure out which edges were 
    * used during the max flow.
    */
-  public List<List<Edge>> getGraph() {
+  public List<Edge>[] getGraph() {
     execute();
     return graph;
   }
