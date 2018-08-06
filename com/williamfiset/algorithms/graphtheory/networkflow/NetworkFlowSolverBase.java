@@ -10,8 +10,8 @@ import java.util.List;
 
 public abstract class NetworkFlowSolverBase {
 
-  // To avoid overflow set infinity to a value less than Long.MAX_VALUE;
-  static final long INF = (Long.MAX_VALUE / 2) - 1;
+  // To avoid overflow, set infinity to a value less than Long.MAX_VALUE;
+  protected static final long INF = Long.MAX_VALUE / 2;
 
   public static class Edge {
     Edge residual;
@@ -107,7 +107,7 @@ public abstract class NetworkFlowSolverBase {
     solved = true;
   }
 
-  // Method to implement.
+  // Method to implement which solves the network flow problem.
   public abstract void solve();
 
 }
