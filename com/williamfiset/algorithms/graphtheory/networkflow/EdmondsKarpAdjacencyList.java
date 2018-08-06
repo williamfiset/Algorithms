@@ -12,91 +12,53 @@ package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import java.util.*;
 
-public class EdmondsKarpAdjacencyList {
+public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
 
-  private static class Edge {
-    Edge residual;
-    int to, from, capacity;
-    public Edge(int to, int from, int capacity) {
-      this.to = to; 
-      this.from = from;
-      this.capacity = capacity;
-    }
+  /**
+   * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)}
+   * method to add edges to the graph.
+   *
+   * @param n - The number of nodes in the graph including source and sink nodes.
+   * @param s - The index of the source node, 0 <= s < n
+   * @param t - The index of the sink node, 0 <= t < n
+   */
+  public EdmondsKarpAdjacencyList(int n, int s, int t) {
+    super(n, s, t);
   }
 
-  // Construct an empty graph with n nodes (this 
-  // should include the source and sink nodes)
-  public static List<Edge>[] createGraph(int n) {
-    List<Edge>[] graph = new ArrayList[n];
-    for (int i = 0; i < n; i++) graph[i] = new ArrayList<>();
-    return graph;
-  }
-
-  // Adds a directed edge to the flow graph. This method also
-  // adds the residual edge for when Ford-Fulkerson is run.
-  static void addEdge(List<Edge>[] graph, int from, int to, int capacity) {
-    Edge e1 = new Edge(to, from, capacity);
-    Edge e2 = new Edge(from, to, 0);
-    e1.residual = e2;
-    e2.residual = e1;
-    graph[from].add(e1);
-    graph[to].add(e2);
-  }
-
-  // Run Edmonds-Karp and return the max flow from the source to the 
-  // sink node. You can modify this algorithm to return the min cut.
-  public static int edmondsKarp(List<Edge>[] graph, int source, int sink) {
-
-    int n = graph.length;
-
-    boolean [] minCut = new boolean[n];
-    boolean [] visited = new boolean[n];
-
-    for (int maxFlow = 0;;) {
-
-      // Try to find an augmenting path from source to sink
-      Arrays.fill(visited, false);
-      int flow = bfs(graph, visited, source, sink);
-
+  // Run Edmonds-Karp and compute the max flow from the source to the sink node.
+  @Override
+  public void solve() {
+    long flow;
+    do {
+      visitedToken++;
+      flow = bfs();
+      System.out.println(flow);
       maxFlow += flow;
-      if (flow == 0) {
+    } while (flow != 0);
 
-        return maxFlow;
-
-        // Uncomment to return the min-cut in which the nodes on the "LEFT SIDE"
-        // of the cut are marked as true and those on the "RIGHT SIDE" of the cut
-        // are marked as false. This finds all the nodes which participated in the
-        // last (failed) attempt to find an augmenting path from the source to 
-        // the sink in the BFS phase.
-        // for(int i = 0; i < n; i++)
-        //   if (visited[i])
-        //     minCut[i] = true;
-        // return minCut;
-
-      }
-
-    }
+    for(int i = 0; i < n; i++)
+      if (visited[i] == visitedToken)
+        minCut[i] = true;
   }
 
-  private static int bfs(List<Edge>[] graph, boolean[] visited, int source, int sink) {
-
-    int n = graph.length;
-    Edge [] prev = new Edge[n];
+  private long bfs() {
+    Edge[] prev = new Edge[n];
 
     // The queue can be optimized to use a faster queue
     Queue<Integer> q = new ArrayDeque<>(n);
-    visited[source] = true;
-    q.offer(source);
+    visited[s] = visitedToken;
+    q.offer(s);
 
     // Perform BFS from source to sink
     while(!q.isEmpty()) {
-
       int node = q.poll();
-      if (node == sink) break;
+      if (node == t) break;
 
-      for (Edge edge : graph[node]) {
-        if (!visited[edge.to] && edge.capacity > 0) {
-          visited[edge.to] = true;
+      for (Edge edge : graph.get(node)) {
+        final long cap = edge.capacity - edge.flow; // Remaining capacity
+        if (cap > 0 && visited[edge.to] != visitedToken) {
+          visited[edge.to] = visitedToken;
           prev[edge.to] = edge;
           q.offer(edge.to);
         }
@@ -105,24 +67,57 @@ public class EdmondsKarpAdjacencyList {
     }
 
     // Sink not reachable!
-    if (prev[sink] == null) return 0;
+    if (prev[t] == null) return 0;
 
-    int bottleNeck = Integer.MAX_VALUE;
+    long bottleNeck = Long.MAX_VALUE;
 
     // Find augmented path and bottle neck
-    for(Edge edge = prev[sink]; edge != null; edge = prev[edge.from])
-      bottleNeck = Math.min(bottleNeck, edge.capacity);
+    for(Edge edge = prev[t]; edge != null; edge = prev[edge.from])
+      bottleNeck = Math.min(bottleNeck, edge.capacity - edge.flow);
 
     // Retrace augmented path and update edges
-    for(Edge edge = prev[sink]; edge != null; edge = prev[edge.from]) {
+    for(Edge edge = prev[t]; edge != null; edge = prev[edge.from]) {
       Edge res = edge.residual;
-      edge.capacity -= bottleNeck;
-      res.capacity  += bottleNeck;
+      edge.flow += bottleNeck;
+      res.flow -= bottleNeck;
     }
 
     // Return bottleneck flow
     return bottleNeck;
+  }
 
+    /* Example */
+
+  public static void main(String[] args) {
+    testSmallFlowGraph();
+  }
+
+  // Testing graph from:
+  // http://crypto.cs.mcgill.ca/~crepeau/COMP251/KeyNoteSlides/07demo-maxflowCS-C.pdf
+  private static void testSmallFlowGraph() {
+    int n = 4;
+    int s = n;
+    int t = n+1;
+
+    EdmondsKarpAdjacencyList solver;
+    solver = new EdmondsKarpAdjacencyList(n+2, s, t);
+
+    // Source edges
+    solver.addEdge(s, 0, 10);
+    solver.addEdge(s, 1, 10);
+
+    // Sink edges
+    solver.addEdge(2, t, 10);
+    solver.addEdge(3, t, 10);
+
+    // Middle edges
+    solver.addEdge(0, 1, 2);
+    solver.addEdge(0, 2, 4);
+    solver.addEdge(0, 3, 8);
+    solver.addEdge(1, 3, 9);
+    solver.addEdge(3, 2, 6);
+
+    System.out.println(solver.getMaxFlow()); // 19
   }
 
 }

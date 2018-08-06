@@ -13,10 +13,9 @@ import static java.lang.Math.min;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CapacityScalingSolverAdjacencyList extends NetworkFlowBase {
+public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
 
   private int delta;
-  private boolean solved;
 
   /**
    * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)}
@@ -47,9 +46,6 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowBase {
   // a means of finding an augmenting path.
   @Override
   public void solve() {
-    if (solved) return;
-
-    visited = new int[n];
 
     // Start delta at the smallest power of 2 <= the largest capacity.
     delta = Integer.highestOneBit(delta);
@@ -70,8 +66,6 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowBase {
     for(int i = 0; i < n; i++)
       if (visited[i] == visitedToken)
         minCut[i] = true;
-
-    solved = true;
   }
 
   private long dfs(int node, long flow) {

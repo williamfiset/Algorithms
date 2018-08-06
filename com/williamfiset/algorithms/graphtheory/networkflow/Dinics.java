@@ -13,10 +13,9 @@ package com.williamfiset.algorithms.graphtheory.networkflow;
 import static java.lang.Math.*;
 import java.util.*;
 
-public class Dinics extends NetworkFlowBase {
+public class Dinics extends NetworkFlowSolverBase {
 
   private int[] level;
-  private boolean solved;
 
   /**
    * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)}
@@ -33,8 +32,6 @@ public class Dinics extends NetworkFlowBase {
 
   @Override
   public void solve() {
-    if (solved) return;
-    
     // p[i] indicates the next unused edge index in the adjacency list for node i
     int[] p = new int[n];
 
@@ -46,12 +43,9 @@ public class Dinics extends NetworkFlowBase {
       }
     }
 
-    minCut = new boolean[n];
     for (int i = 0; i < n; i++)
       if (level[i] != -1)
         minCut[i] = true;
-
-    solved = true;
   }
 
   // Do a BFS from source to sink and compute the depth/level of each node
@@ -107,8 +101,8 @@ public class Dinics extends NetworkFlowBase {
     int s = n;
     int t = n+1;
 
-    CapacityScalingSolverAdjacencyList solver;
-    solver = new CapacityScalingSolverAdjacencyList(n+2, s, t);
+    Dinics solver;
+    solver = new Dinics(n+2, s, t);
 
     // Source edges
     solver.addEdge(s, 0, 10);

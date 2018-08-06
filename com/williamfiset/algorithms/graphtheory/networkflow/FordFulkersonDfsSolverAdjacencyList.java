@@ -14,9 +14,7 @@ import static java.lang.Math.min;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowBase {
-
-  private boolean solved;
+public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
 
   /**
    * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)}
@@ -34,10 +32,6 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowBase {
   // a means of finding an augmenting path.
   @Override
   public void solve() {
-    if (solved) return;
-
-    visited = new int[n];
-    minCut = new boolean[n];
 
     // Find max flow by adding all augmenting path flows.
     for (long f = dfs(s, INF); f != 0; f = dfs(s, INF)) {
@@ -49,8 +43,6 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowBase {
     for(int i = 0; i < n; i++)
       if (visited[i] == visitedToken)
         minCut[i] = true;
-
-    solved = true;
   }
 
   private long dfs(int node, long flow) {
@@ -92,8 +84,8 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowBase {
     int s = n;
     int t = n+1;
 
-    CapacityScalingSolverAdjacencyList solver;
-    solver = new CapacityScalingSolverAdjacencyList(n+2, s, t);
+    FordFulkersonDfsSolverAdjacencyList solver;
+    solver = new FordFulkersonDfsSolverAdjacencyList(n+2, s, t);
 
     // Source edges
     solver.addEdge(s, 0, 10);

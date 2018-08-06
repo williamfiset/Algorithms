@@ -8,16 +8,18 @@ import static java.lang.Math.min;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class NetworkFlowBase {
+public abstract class NetworkFlowSolverBase {
 
-  static final long INF = 987654321L;
+  // To avoid overflow set infinity to a value less than Long.MAX_VALUE;
+  static final long INF = (Long.MAX_VALUE / 2) - 1;
 
   public static class Edge {
     Edge residual;
-    int to;
+    int from, to;
     long flow, capacity;
-    public Edge(int to, long capacity) {
-      this.to = to; 
+    public Edge(int from, int to, long capacity) {
+      this.from = from;
+      this.to = to;
       this.capacity = capacity;
     }
   }
@@ -28,6 +30,7 @@ public abstract class NetworkFlowBase {
   // Internal
   protected int visitedToken = 1;
   protected int[] visited;
+  protected boolean solved;
 
   // Outputs
   protected long maxFlow;
@@ -42,9 +45,11 @@ public abstract class NetworkFlowBase {
    * @param s - The index of the source node, 0 <= s < n
    * @param t - The index of the sink node, 0 <= t < n
    */
-  public NetworkFlowBase(int n, int s, int t) {
+  public NetworkFlowSolverBase(int n, int s, int t) {
     this.n = n; this.s = s; this.t = t; 
     initializeGraph();
+    minCut = new boolean[n];
+    visited = new int[n];
   }
 
   // Construct an empty graph with n nodes including the source and sink nodes.
@@ -61,8 +66,8 @@ public abstract class NetworkFlowBase {
    * @param capacity - The capacity of the edge.
    */
   public void addEdge(int from, int to, int capacity) {
-    Edge e1 = new Edge(to, capacity);
-    Edge e2 = new Edge(from, 0);
+    Edge e1 = new Edge(from, to, capacity);
+    Edge e2 = new Edge(to, from, 0);
     e1.residual = e2;
     e2.residual = e1;
     graph.get(from).add(e1);
@@ -71,18 +76,18 @@ public abstract class NetworkFlowBase {
 
   /**
    * Returns the graph after the solver has been executed. This allow you to
-   * inspect the {@link Edge#flow} compared to the {@link Edge.capacity} in 
+   * inspect the {@link Edge#flow} compared to the {@link Edge#capacity} in 
    * each edge. This is useful if you want to figure out which edges were 
    * used during the max flow.
    */
   public List<List<Edge>> getGraph() {
-    solve();
+    execute();
     return graph;
   }
 
   // Returns the maximum flow from the source to the sink.
   public long getMaxFlow() {
-    solve();
+    execute();
     return maxFlow;
   }
 
@@ -90,8 +95,15 @@ public abstract class NetworkFlowBase {
   // of the cut with the source are marked as true and those on the "right side" 
   // of the cut with the sink are marked as false.
   public boolean[] getMinCut() {
-    solve();
+    execute();
     return minCut;
+  }
+
+  // Wrapper method that ensures we only call solve() once
+  private void execute() {
+    if (solved) return; 
+    solve();
+    solved = true;
   }
 
   // Method to implement.
