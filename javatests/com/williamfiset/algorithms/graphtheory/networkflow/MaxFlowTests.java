@@ -7,6 +7,7 @@ import com.williamfiset.algorithms.graphtheory.networkflow.CapacityScalingSolver
 import com.williamfiset.algorithms.graphtheory.networkflow.Dinics;
 import com.williamfiset.algorithms.graphtheory.networkflow.EdmondsKarpAdjacencyList;
 import com.williamfiset.algorithms.graphtheory.networkflow.FordFulkersonDfsSolverAdjacencyList;
+import com.williamfiset.algorithms.graphtheory.networkflow.MinCostMaxFlowWithBellmanFord;
 
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.tuple.Pair;
@@ -28,6 +29,7 @@ public class MaxFlowTests {
     solvers.add(new Dinics(n + 2, s, t));
     solvers.add(new EdmondsKarpAdjacencyList(n + 2, s, t));
     solvers.add(new FordFulkersonDfsSolverAdjacencyList(n + 2, s, t));
+    solvers.add(new MinCostMaxFlowWithBellmanFord(n + 2, s, t));
   }
 
   void addEdge(int f, int t, int c) {
@@ -109,7 +111,7 @@ public class MaxFlowTests {
   @Test
   public void evilNetwork1() {
     int n = 4, s = n, t = n+1;
-    final int k = 100000;
+    final int k = 1000;
     createAllSolvers(2*k, s, t);
 
     addEdge(s, 0, k);
