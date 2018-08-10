@@ -11,7 +11,7 @@
  * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
-package com.williamfiset.algorithms.graphtheory;
+package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import java.util.*;
 
@@ -48,40 +48,37 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
     if (visited[at] == visitToken) return 0;
     visited[at] = visitToken;
 
-    List<Integer> edges = graph.get(at);
-    if (edges != null) {
-      for (int i = 0; i < edges.size(); i++) {
+    for (int node : graph.get(at)) {
+      // If the value of oppositeNode is FREE then it has not yet been 
+      // matched, otherwise the value refers to the index of the node
+      // used to reach the oppositeNode.
+      int oppositeNode = next[node];
+
+      if (oppositeNode == FREE) {
+        // Record which node we came from and return
+        // 1 to indicate a path was found
+        next[node] = at;
+        return 1;
+      }
+
+      // We were able to find an alternating path
+      if(augment(graph, visited, next, oppositeNode) != 0) {
         
-        int rightNode = edges.get(i);
-
-        // If the value of node is FREE then the node on the right
-        // side has not yet been matched, otherwise the value of 
-        // node refers to the index of the node in the left set.
-        int node = next[rightNode];
-
-        // If the node on the right side has not been matched
-        if (node == FREE) {
-          
-          // Record which node we came from and return
-          // 1 to indicate a path was found
-          next[rightNode] = at;
-          return 1;
-
-        // We were able to find an alternating path
-        } else if(augment(graph, visited, next, node) != 0) {
-          
-          // Record which node we came from and return
-          // 1 to indicate a path was found
-          next[rightNode] = at;
-          return 1;
-        }
-
+        // Record which node we came from and return
+        // 1 to indicate a path was found
+        next[node] = at;
+        return 1;
       }
     }
 
     // No path found :/
     return 0;
+  }
 
+  private static List<List<Integer>> createEmptyGraph(int n) {
+    List<List<Integer>> graph = new ArrayList<>();
+    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
+    return graph;
   }
 
   private static void addEdge(List<List<Integer>> graph, int from, int to) {
@@ -89,9 +86,8 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
   }
 
   public static void main(String[] args) {
-    
-    List<List<Integer>> graph = new ArrayList<>();
-    for (int i = 0; i < 8; i++) graph.add(new ArrayList<>());
+    int n = 8;
+    List<List<Integer>> graph = createEmptyGraph(n);
     
     // Left set includes {0,1,2,3} and right set {4,5,6,7}
     addEdge(graph, 0, 4);
