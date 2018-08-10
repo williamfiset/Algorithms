@@ -14,26 +14,40 @@ public abstract class NetworkFlowSolverBase {
   protected static final long INF = Long.MAX_VALUE / 2;
 
   public static class Edge {
-    Edge residual;
     int from, to;
-    long flow, capacity;
+    Edge residual;
+    long flow, capacity, cost;
+    
     public Edge(int from, int to, long capacity) {
       this.from = from;
       this.to = to;
       this.capacity = capacity;
+    }
+
+    // Cost is only used for min-cost max-flow algorithms.
+    public Edge(int from, int to, long capacity, long cost) {
+      this(from, to, capacity);
+      this.cost = cost;
     }
   }
 
   // Inputs: n = number of nodes, s = source, t = sink
   protected final int n, s, t;
 
-  // Internal
+  // 'visited' and 'visitedToken' are variables used in graph sub-routines to 
+  // track whether a node has been visited or not. In particular, node 'i' was 
+  // recently visited if visited[i] == visitedToken is true. This is handy 
+  // because to mark all nodes as unvisited simply increment the visitedToken.
   protected int visitedToken = 1;
   protected int[] visited;
+
+  // Indicates whether the network flow algorithm has ran. We should not need to
+  // run the solver multiple times, because it always yields the same result.
   protected boolean solved;
 
-  // Outputs
   protected long maxFlow;
+  protected long minCost;
+
   protected boolean[] minCut;
   protected List<Edge>[] graph;
 
@@ -66,9 +80,19 @@ public abstract class NetworkFlowSolverBase {
    * @param to       - The index of the node the directed edge end at.
    * @param capacity - The capacity of the edge.
    */
-  public void addEdge(int from, int to, int capacity) {
+  public void addEdge(int from, int to, long capacity) {
     Edge e1 = new Edge(from, to, capacity);
     Edge e2 = new Edge(to, from, 0);
+    e1.residual = e2;
+    e2.residual = e1;
+    graph[from].add(e1);
+    graph[to].add(e2);
+  }
+
+  /** Cost variant of {@link #addEdge(int, int, int)} for min-cost max-flow */
+  public void addEdge(int from, int to, long capacity, long cost) {
+    Edge e1 = new Edge(from, to, capacity, cost);
+    Edge e2 = new Edge(to, from, 0, -cost);
     e1.residual = e2;
     e2.residual = e1;
     graph[from].add(e1);
@@ -90,6 +114,13 @@ public abstract class NetworkFlowSolverBase {
   public long getMaxFlow() {
     execute();
     return maxFlow;
+  }
+
+  // Returns the min cost from the source to the sink.
+  // NOTE: This method only applies to min-cost max-flow algorithms.
+  public long getMinCost() {
+    execute();
+    return minCost;
   }
 
   // Returns the min-cut of this flow network in which the nodes on the "left side"

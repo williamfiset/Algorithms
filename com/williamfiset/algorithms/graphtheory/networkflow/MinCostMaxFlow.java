@@ -23,12 +23,12 @@ public class MinCostMaxFlow {
     Edge residual;
     int from, to;
     long flow, capacity, cost;
-    final long originalCapacity, originalCost;
+    final long originalCost;
     public Edge(int from, int to, long capacity, long cost) {
       this.to = to; 
       this.from = from;
       this.originalCost = this.cost = cost;
-      this.originalCapacity = this.capacity = capacity;
+      this.capacity = capacity;
     }
   }
 

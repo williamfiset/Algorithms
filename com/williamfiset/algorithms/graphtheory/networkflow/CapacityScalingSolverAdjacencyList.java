@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
 
-  private int delta;
+  private long delta;
 
   /**
    * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)}
@@ -37,7 +37,7 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
    * @param capacity - The capacity of the edge.
    */
   @Override
-  public void addEdge(int from, int to, int capacity) {
+  public void addEdge(int from, int to, long capacity) {
     super.addEdge(from, to, capacity);
     delta = Math.max(delta, capacity);
   }
@@ -48,7 +48,7 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
   public void solve() {
 
     // Start delta at the smallest power of 2 <= the largest capacity.
-    delta = Integer.highestOneBit(delta);
+    delta = Long.highestOneBit(delta);
 
     // Repeatedly find an augmenting paths from source to sink using only edges
     // with capacity >= delta. Half delta every time we become unable to find an
