@@ -10,7 +10,7 @@ jdk:
 before_install:
   - sudo apt-add-repository -y ppa:brightbox/ruby-ng
   - sudo apt-get -y update
-  - sudo apt-get -y install ruby2.4
+  - sudo apt-get -y install ruby-full
 
 # Install awesome_bot for README.md broken link checking
 before_script:
