@@ -10,7 +10,7 @@
 * [Longest Common Subsequence (LCS)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/dp/LongestCommonSubsequence.java) **- O(nm)**
 * [Longest Increasing Subsequence (LIS)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/dp/LongestIncreasingSubsequence.java) **- O(n<sup>2</sup>)**
 * [Longest Palindrome Subsequence (LPS)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/dp/LongestPalindromeSubsequence.java) **- O(n<sup>2</sup>)**
-* [Traveling Salesman Problem (dynamic programming, iterative)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/TspDynamicProgrammingIterative.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
+* [:movie_camera:](https://www.youtube.com/watch?v=cY4HiiFHO1o)[Traveling Salesman Problem (dynamic programming, iterative)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/TspDynamicProgrammingIterative.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
 * [Traveling Salesman Problem (dynamic programming, recursive)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/TspDynamicProgrammingRecursive.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
 
 # Geometry
