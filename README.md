@@ -4,7 +4,7 @@
 # Dynamic Programming
 * [Coin change problem](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/dp/CoinChange.java) **- O(nW)**
 * [Edit distance](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/dp/EditDistance.java) **- O(nm)**
-* [Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/dp/Knapsack_01.java) **- O(nW)**
+* [:movie_camera:](https://www.youtube.com/watch?v=cJ21moQpofY)[Knapsack 0/1](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/dp/Knapsack_01.java) **- O(nW)**
 * [Knapsack unbounded (0/∞)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/dp/KnapsackUnbounded.java) **- O(nW)**
 * [Maximum contiguous subarray](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/dp/MaximumSubarray.java) **- O(n)**
 * [Longest Common Subsequence (LCS)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/dp/LongestCommonSubsequence.java) **- O(nm)**
@@ -64,18 +64,18 @@
 * [Bellman-Ford (edge list, negative cycles, fast & optimized)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/BellmanFordEdgeList.java) **- O(VE)**
 * [:movie_camera:](https://www.youtube.com/watch?v=lyw4FaxrwHg)[Bellman-Ford (adjacency list, negative cycles)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/BellmanFordAdjacencyList.java) **- O(VE)**
 * [Bellman-Ford (adjacency matrix, negative cycles)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/BellmanFordAdjacencyMatrix.java) **- O(V<sup>3</sup>)**
-* [:movie_camera:]()[Breadth first search (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/BreadthFirstSearchAdjacencyListIterative.java) **- O(V+E)**
+* [:movie_camera:](https://www.youtube.com/watch?v=oDqjPvD54Ss)[Breadth first search (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/BreadthFirstSearchAdjacencyListIterative.java) **- O(V+E)**
 * [Breadth first search (adjacency list, fast queue)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/BreadthFirstSearchAdjacencyListIterativeFastQueue.java) **- O(V+E)**
-* [:movie_camera:]()[Bridges/cut edges (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/BridgesAdjacencyList.java) **- O(V+E)**
+* [:movie_camera:](https://www.youtube.com/watch?v=aZXi1unBdJA)[Bridges/cut edges (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/BridgesAdjacencyList.java) **- O(V+E)**
 * [Find connected components (adjacency list, union find)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/ConnectedComponentsAdjacencyList.java) **- O(Elog(E))**
 * [Find connected components (adjacency list, DFS)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/ConnectedComponentsDfsSolverAdjacencyList.java) **- O(V+E)**
 * [Depth first search (adjacency list, iterative)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DepthFirstSearchAdjacencyListIterative.java) **- O(V+E)**
 * [Depth first search (adjacency list, iterative, fast stack)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DepthFirstSearchAdjacencyListIterativeFastStack.java) **- O(V+E)**
-* [:movie_camera:]()[Depth first search (adjacency list, recursive)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DepthFirstSearchAdjacencyListRecursive.java) **- O(V+E)**
-* [:movie_camera:]()[Dijkstra's shortest path (adjacency list, lazy implementation)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DijkstrasShortestPathAdjacencyList.java) **- O(Elog(V))**
-* [:movie_camera:]()[Dijkstra's shortest path (adjacency list, eager implementation + D-ary heap)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DijkstrasShortestPathAdjacencyListWithDHeap.java) **- O(Elog<sub>E/V</sub>(V))**
+* [:movie_camera:](https://www.youtube.com/watch?v=7fujbpJ0LB4)[Depth first search (adjacency list, recursive)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DepthFirstSearchAdjacencyListRecursive.java) **- O(V+E)**
+* [:movie_camera:](https://www.youtube.com/watch?v=pSqmAO-m7Lk)[Dijkstra's shortest path (adjacency list, lazy implementation)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DijkstrasShortestPathAdjacencyList.java) **- O(Elog(V))**
+* [:movie_camera:](https://www.youtube.com/watch?v=pSqmAO-m7Lk)[Dijkstra's shortest path (adjacency list, eager implementation + D-ary heap)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/DijkstrasShortestPathAdjacencyListWithDHeap.java) **- O(Elog<sub>E/V</sub>(V))**
 * [:movie_camera:]()[Eulerian Path (directed edges)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/EulerianPathDirectedEdgesAdjacencyList.java) **- O(E+V)**
-* [:movie_camera:]()[Floyd Warshall algorithm (adjacency matrix, negative cycle check)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/FloydWarshallSolver.java) **- O(V<sup>3</sup>)**
+* [:movie_camera:](https://www.youtube.com/watch?v=4NQ3HnhyNfQ)[Floyd Warshall algorithm (adjacency matrix, negative cycle check)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/FloydWarshallSolver.java) **- O(V<sup>3</sup>)**
 * [Graph diameter (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/GraphDiameter.java) **- O(VE)**
 * [Kruskal's min spanning tree algorithm (edge list, union find)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/KruskalsEdgeList.java) **- O(Elog(E))**
 * [:movie_camera:](https://www.youtube.com/watch?v=JZBQLXgSGfs)[Kruskal's min spanning tree algorithm (edge list, union find, lazy sorting)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/KruskalsEdgeListPartialSortSolver.java) **- O(Elog(E))**
