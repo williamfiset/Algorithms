@@ -1,0 +1,12 @@
+Hello and Welcome,
+My name is William, today we're going to start tackling the field of network flow by understanding what Maximum Flow is and in particular how we can use the Ford-Fulkerson method it find it.
+
+Finding the maximum flow begins with having a flow graph; which is a graph where edges have a certain maximum capacity which cannot be exceeded. There are also two special nodes in a flow graph, the source node and the sink node, usually denoted as s and t respectively. The maximum flow problem asks: "With an infinite input source how much “flow” can we push through the network without exceeding the capacity on any edge."; and it's not at all obvious how one should figure that out.
+
+Maximum flow can be used in numerous situations where edges and nodes can be swapped out for any number of things. For instance, suppose the edges are roads with cars, pipes with water or wires with electric current. Each of those has a certain capacity value we can associate with. The maximum flow on the other hand would represent the volume of water allowed to flow through the pipes, the number of cars the roads can sustain in traffic and net electric current. Effectively, the max flow is the “bottleneck” value for the amount of flow that can pass through the network from source to sink under all the constraints.
+
+
+
+---------------------------
+
+… you must understand that bipartite graphs with weighted edges are a totally different beast than those with unweighted edges. The algorithms you need to use to solve this type of problem vary in significant ways.
