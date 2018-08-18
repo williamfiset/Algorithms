@@ -1,9 +1,35 @@
 Hello and Welcome,
 My name is William, today we're going to start tackling the field of network flow by understanding what Maximum Flow is and in particular how we can use the Ford-Fulkerson method it find it.
 
-Finding the maximum flow begins with having a flow graph; which is a graph where edges have a certain maximum capacity which cannot be exceeded. There are also two special nodes in a flow graph, the source node and the sink node, usually denoted as s and t respectively. The maximum flow problem asks: "With an infinite input source how much “flow” can we push through the network without exceeding the capacity on any edge."; and it's not at all obvious how one should figure that out.
+Finding the maximum flow begins with having a flow graph; which is a graph where edges have a certain maximum capacity which cannot be exceeded. Edges also have a flow value which is how many units of flow are passing through the edge. Initially, the flow is zero on all edges everywhere until we run a max flow algorithm. There are also two special nodes in a flow graph, the source node and the sink node, usually denoted as 's' and 't' respectively. The maximum flow problem asks: "With an infinite input source how much “flow” can we push through the network without exceeding the capacity on any edge."; and it's not at all obvious how one should figure that out.
 
 Maximum flow can be used in numerous situations where edges and nodes can be swapped out for any number of things. For instance, suppose the edges are roads with cars, pipes with water or wires with electric current. Each of those has a certain capacity value we can associate with. The maximum flow on the other hand would represent the volume of water allowed to flow through the pipes, the number of cars the roads can sustain in traffic and net electric current. Effectively, the max flow is the “bottleneck” value for the amount of flow that can pass through the network from source to sink under all the constraints.
+
+The max-flow for this particular network is 7, you can tell because after running the max flow algorithm the sum of the flows attached to the sink is 7. Running a maximum flow algorithm is used to determine how much flow each edge should receive to achieve the overall maximum flow. Note that there might be multiple ways of achieving the maximum flow by having flow run through different edges, but all solutions will have the same max flow value.
+
+Let's dig deeper into how to find the maximum flow. To begin with, you will need a flow graph which consists of directed edges, also called arcs. Each directed edge has a certain capacity which can receive a certain amount of flow. At all times, the flow running through an edge must be less than or equal to the capacity. This intuitively makes sense, because if we allow more flow than what the capacity permits it means something has to go wrong. When an edge becomes over capacitated in some manner it means we've pushed the system past its limit; in the context of edges representing pipes with water it means your pipe broke or leaked; if your edge is a wire with electric current it means your wire fried, melted or exploded due to too much electric current, this is not good, so we don't allow more flow than capacity.
+
+Each edge in the flow graph has a certain flow and capacity specified by the fraction adjacent to each edge. Originally, the flow through each edge is 0 and the capacity is a non negative value.
+
+To find the maximum flow (and min-cut as a by product), the Ford-Fulkerson method repeatedly finds augmenting paths through the residual graph and augments the flow until no more augmenting paths can be found. So your probably asking yourself: What is an augmenting path, what the heck is the residual graph and what does it mean to augment the flow? Let me explain
+
+An augmenting path is a path of edges in the residual graph with capacity greater than zero from the source s to the sink t. In orange here I have highlighted a possible augmenting path. The key thing to remember about an augmenting path is that it can only flow through edges which aren't fully saturated yet. In fact, you know you've achieved the maximum flow when there are no more augmenting paths left to be found. How to actually find augmenting paths is left unspecified in the Ford-Folkerson method, but lets assume we use a DFS.
+
+Something else to know is that every augmenting path will have what I call a "bottleneck value" which is the “smallest” edge on the path. You can find the value of the bottleneck by taking the difference between the capacity and the current flow for edge edge, so for this augmenting path the bottleneck value is 6. We can use the bottleneck value to augment the flow along the path.
+
+Augmenting the flow means to update the flow values of the edges along the augmenting path. You can see here that I've increased the flow of each edge along the augmenting path by exactly 6 units.
+
+However, we're not done augmenting the flow, we not only need to increase the flow going forwards, but we also need to decrease the flow going backwards in the residual edges by the same bottleneck value.
+
+The logical behind having residual edges is to "undo" bad choices of augmenting paths which do not lead to a maximum flow. Effectively, we don't know which are the best or even correct augmenting paths to take, so this is a mechanism to enable us to freely find any augmenting path without having to worry whether we'll be able to achieve the maximum flow. It should be mentioned that residual edges become valid edges to take when finding augmenting paths in later iterations.
+
+If we take a step back, you can think of every edge in the original graph as having a residual edge with a flow/capacity of 0/0 which is not usually shown.
+Now that we know about residual edges, the term "residual graph" is the graph which also contains the residual edges, not just the original edges. Generally when I mention the flow graph, I mean the residual graph.
+
+Here's a good question you might have at this point: 
+Q: The shown residual edges have a capacity of 0? Aren't those forbidden? How does that work?
+A: Here's the thing, with this method of augmenting the flow, you have to think of the remaining capacity of an edge e (residual or not) as: e.capacity - e.flow,
+This ensures that the remaining capacity of an edge is always non-negative (even if the flow can be negative). For example, in the residual edges we have right now, 0 minus minus six is 6, so those residual edges actually have a capacity of 6 if you will.
 
 
 
