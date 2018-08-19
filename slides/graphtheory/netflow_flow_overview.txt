@@ -21,7 +21,7 @@ Augmenting the flow means to update the flow values of the edges along the augme
 
 However, we're not done augmenting the flow, we not only need to increase the flow going forwards, but we also need to decrease the flow going backwards in the residual edges by the same bottleneck value.
 
-The logical behind having residual edges is to "undo" bad choices of augmenting paths which do not lead to a maximum flow. Effectively, we don't know which are the best or even correct augmenting paths to take, so this is a mechanism to enable us to freely find any augmenting path without having to worry whether we'll be able to achieve the maximum flow. It should be mentioned that residual edges become valid edges to take when finding augmenting paths in later iterations.
+The logic behind having residual edges is to "undo" bad choices of augmenting paths which do not lead to a maximum flow. Effectively, we don't know which are the best or even correct augmenting paths to take, so this is a mechanism to enable us to freely find any augmenting path without having to worry whether we'll be able to achieve the maximum flow. It should be mentioned that residual edges become valid edges to take when finding augmenting paths in later iterations.
 
 If we take a step back, you can think of every edge in the original graph as having a residual edge with a flow/capacity of 0/0 which is not usually shown.
 Now that we know about residual edges, the term "residual graph" is the graph which also contains the residual edges, not just the original edges. Generally when I mention the flow graph, I mean the residual graph.
@@ -31,7 +31,63 @@ Q: The shown residual edges have a capacity of 0? Aren't those forbidden? How do
 A: Here's the thing, with this method of augmenting the flow, you have to think of the remaining capacity of an edge e (residual or not) as: e.capacity - e.flow,
 This ensures that the remaining capacity of an edge is always non-negative (even if the flow can be negative). For example, in the residual edges we have right now, 0 minus minus six is 6, so those residual edges actually have a capacity of 6 if you will.
 
+The Ford-Fulkerson method continues finding augmenting paths and augments the flow until no more augmenting paths from s -> t exist. A key realization to make at this point is that the sum of the bottlenecks found in each augmenting path is equal to the max-flow!
 
+Let's keep finding augmenting paths. Remember that we can only select edges whose remaining capacity is greater than zero to be part of an augmenting.
+
+The bottleneck for this augmenting path is 4 since 4 is the minimum of all the remaining capacities.
+
+Then augment the flow for all forward and residual edges.
+
+<press>
+
+Here's another valid augmenting path from the source to the sink. You'll notice that we're actually using one of the residual edges we created earlier in this path. You'll also notice thhat there are two purple edges in this slide, this is a coincidence since both those edges have the same bottleneck value of 6.
+
+Then augment the flow as we do.
+
+<press>
+
+I'll let the animation plat for this next one
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+In terms of the time complexity, the Ford-Fulkerson derives its complexity from how augmenting paths are found which is left as an unspecified detail. If you assume that finding augmenting paths are found using a DFS then the hold algorithm runs in big O of f times E where f is the max-flow and E is the number of edges.
+
+Here's a graph we can use to derive that time complexity. Suppose the side edges have very high capacity values of 100 and the middle edge has a capacity of 1. You can clearly tell that the max flow should be 200 because you can run two augmenting paths with flow values of 100 running on the top and bottom of the graph from the source to the sink.
+
+However, recall that a DFS traversal is essentially random, so it's possible to pick the middle edge every time limiting your flow to 1 because that's the value of the bottleneck.
+
+When we picked the middle edge in the last iteration, that decreased the flow on the residual edge, enabling flow to run through that edge in this iteration. So it's entirely possible that we select the middle edge again but this time through the residual edge limiting the flow value to 1.
+
+This results in flipping back and forth between the same two alternating paths for 200 iterations…
+
+<press>
+
+<press>
+
+Luckily much faster algorithms and heuristics exist to find maximum flow such as: Edmond's-Karp which is Ford-Fulkerson but instead of using a DFS you use a BFS to find the shorting augmenting path from the source to the sink every time. There's also capacity scaling which is this idea of picking larger path first to reduce the number of paths you need to find which works really well from my empirical tests. Then there's Dinic's which uses a combination for a BFS to first find a directed layered graph that guides edges towards the sink and then uses a DFS to actually find the augmenting paths. There's also this idea of these push-relabel algorithms which work differently than algorithms that find augmenting paths, instead they maintain this concept of a "preflow" to find the maximum flow of a network.
+Please be mindful that the time complexities for flow algorithms are very pessimistic. In practice, they tend to operate much faster, making it hard to compare the performance of flow algorithms solely based on complexity.
+
+There's another topic I want to talk about which is maintaining non-negative flow. Currently, it’s possible to have negative flow on residual edges because of how we’ve decided on augmenting the flow which is to increase the flow on the forward edge and decrease the flow on the residual edge by the same amount.
+
+This isn’t necessarily bad, but it’s surely not intuitive. Furthermore, negative flow doesn’t play well with min-cost max-flow algorithms which is a topic we’ll encounter later.
+
+So the main issue is that we've allowing flow to be subtracted from the residual edge.
+
+An alternative way of augmenting the flow is to lift the restriction that the edge capacity must remain constant and treat it as a dynamic value that can be adjusted.
+One way of interpreting this new way of augmenting the flow is to understand that subtracting flow from the residual edge is equivalent to transferring capacity from the forward edge to the residual edge. This eliminates any negative values we previously had.
+
+One consequence of this is that the bottleneck value is no longer calculated as edge.capacity - edge.flow for all edges along the augmenting path, but rather the minimum edge.capacity of all edges along the path.
+
+Furthermore, the “original capacity” of an edge is lost in some sense because the capacity is treated as a dynamic value. However, this value can be retrieved by adding the capacity of the forward and residual edge. However, I do believe that overall this approach is better than the former for calculating the max-flow, at least it makes debugging easier IMO.
+
+Awesome well thank you for watching, next video we'll be going over some source code so stick around. Please like this video if you learned something and subscribe for more mathematics and computer science videos.
 
 ---------------------------
 
