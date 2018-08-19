@@ -73,13 +73,14 @@ public class Dinics extends NetworkFlowSolverBase {
     
     for (;p[at] < sz; p[at]++) {
       Edge edge = graph[at].get(p[at]);
-      if (edge.flow < edge.capacity && level[edge.to] == level[at] + 1) {
+      if (edge.capacity > 0 && level[edge.to] == level[at] + 1) {
 
-        long bottleNeck = dfs(edge.to, p, min(flow, edge.capacity - edge.flow));
+        long bottleNeck = dfs(edge.to, p, min(flow, edge.capacity));
         if (bottleNeck > 0) {
           Edge res = edge.residual;
           edge.flow += bottleNeck;
-          res.flow -= bottleNeck;
+          edge.capacity -= bottleNeck;
+          res.capacity += bottleNeck;
           return bottleNeck;
         }
 

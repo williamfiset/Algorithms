@@ -2,7 +2,7 @@
  * Implementation of the Capacity Scaling algorithm using a DFS
  * as a method of finding augmenting paths.
  *
- * Time Complexity: O(E^2log(C)), where E = num edges, C = max capacity
+ * Time Complexity: O(E^2log(U)), where E = num edges, U = max capacity
  * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
@@ -76,16 +76,16 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
     visited[node] = visitedToken;
 
     for (Edge edge : edges) {
-      final long cap = edge.capacity - edge.flow; // Remaining capacity
-      if (cap >= delta && visited[edge.to] != visitedToken) {
+      if (edge.capacity >= delta && visited[edge.to] != visitedToken) {
 
-        long bottleNeck = dfs(edge.to, min(flow, cap));
+        long bottleNeck = dfs(edge.to, min(flow, edge.capacity));
 
         // Augment flow with bottle neck value
         if (bottleNeck > 0) {
           Edge res = edge.residual;
           edge.flow += bottleNeck;
-          res.flow -= bottleNeck;
+          edge.capacity -= bottleNeck;
+          res.capacity += bottleNeck;
           return bottleNeck;
         }
 

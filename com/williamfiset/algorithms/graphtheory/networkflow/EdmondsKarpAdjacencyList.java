@@ -55,8 +55,7 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
       if (node == t) break;
 
       for (Edge edge : graph[node]) {
-        final long cap = edge.capacity - edge.flow; // Remaining capacity
-        if (cap > 0 && visited[edge.to] != visitedToken) {
+        if (edge.capacity > 0 && visited[edge.to] != visitedToken) {
           visited[edge.to] = visitedToken;
           prev[edge.to] = edge;
           q.offer(edge.to);
@@ -72,13 +71,14 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
 
     // Find augmented path and bottle neck
     for(Edge edge = prev[t]; edge != null; edge = prev[edge.from])
-      bottleNeck = Math.min(bottleNeck, edge.capacity - edge.flow);
+      bottleNeck = Math.min(bottleNeck, edge.capacity);
 
     // Retrace augmented path and update edges
     for(Edge edge = prev[t]; edge != null; edge = prev[edge.from]) {
       Edge res = edge.residual;
       edge.flow += bottleNeck;
-      res.flow -= bottleNeck;
+      edge.capacity -= bottleNeck;
+      res.capacity += bottleNeck;
     }
 
     // Return bottleneck flow

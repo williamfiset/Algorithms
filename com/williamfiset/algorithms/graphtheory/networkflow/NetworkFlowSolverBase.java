@@ -17,17 +17,24 @@ public abstract class NetworkFlowSolverBase {
     int from, to;
     Edge residual;
     long flow, capacity, cost;
+    final long originalCapacity;
     
     public Edge(int from, int to, long capacity) {
       this.from = from;
       this.to = to;
-      this.capacity = capacity;
+      this.originalCapacity = this.capacity = capacity;
     }
 
     // Cost is only used for min-cost max-flow algorithms.
     public Edge(int from, int to, long capacity, long cost) {
       this(from, to, capacity);
       this.cost = cost;
+    }
+
+    public String toString(int s, int t) {
+      String u = (from == s) ? "s" : ((from == t) ? "t" : String.valueOf(from));
+      String v = (to == s) ? "s" : ((to == t) ? "t" : String.valueOf(to));
+      return String.format("Edge %s -> %s = %d/%d", u, v, flow, originalCapacity);
     }
   }
 

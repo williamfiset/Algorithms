@@ -8,7 +8,7 @@
  * 
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
-package com.williamfiset.algorithms.graphtheory;
+package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import java.util.*;
 
