@@ -14,10 +14,10 @@ public abstract class NetworkFlowSolverBase {
   protected static final long INF = Long.MAX_VALUE / 2;
 
   public static class Edge {
-    int from, to;
-    Edge residual;
-    long flow, capacity, cost;
-    final long originalCapacity;
+    public int from, to;
+    public Edge residual;
+    public long flow, capacity, cost;
+    final public long originalCapacity;
     
     public Edge(int from, int to, long capacity) {
       this.from = from;

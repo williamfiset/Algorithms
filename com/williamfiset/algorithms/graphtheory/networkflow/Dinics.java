@@ -58,7 +58,7 @@ public class Dinics extends NetworkFlowSolverBase {
     while(!q.isEmpty()) {
       int node = q.poll();
       for (Edge edge : graph[node]) {
-        if (edge.flow < edge.capacity && level[edge.to] == -1) {
+        if (edge.capacity > 0 && level[edge.to] == -1) {
           level[edge.to] = level[node] + 1;
           q.offer(edge.to);
         }
