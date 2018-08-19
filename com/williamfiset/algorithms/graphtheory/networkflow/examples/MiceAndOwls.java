@@ -32,8 +32,8 @@ public class MiceAndOwls {
   static void solve(Point2D[] mice, Hole[] holes, int radius) {
     final int M = mice.length;
     final int H = holes.length;
-    
-    final int N = M + H + 2
+
+    final int N = M + H + 2;
     final int S = N - 1;
     final int T = N - 2;
     
