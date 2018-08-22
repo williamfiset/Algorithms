@@ -103,12 +103,12 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
   // Testing graph from:
   // http://crypto.cs.mcgill.ca/~crepeau/COMP251/KeyNoteSlides/07demo-maxflowCS-C.pdf
   private static void testSmallFlowGraph() {
-    int n = 4;
-    int s = n;
-    int t = n+1;
+    int n = 6;
+    int s = n-1;
+    int t = n-2;
 
     CapacityScalingSolverAdjacencyList solver;
-    solver = new CapacityScalingSolverAdjacencyList(n+2, s, t);
+    solver = new CapacityScalingSolverAdjacencyList(n, s, t);
 
     // Source edges
     solver.addEdge(s, 0, 10);
