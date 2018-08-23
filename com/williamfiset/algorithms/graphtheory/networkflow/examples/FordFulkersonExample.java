@@ -3,13 +3,12 @@
  * as a method of finding augmenting paths.
  *
  * Time Complexity: O(fE), where f is the max flow and E is the number of edges
- **/
+ */
 
 package com.williamfiset.algorithms.graphtheory.networkflow.examples;
 
 import static java.lang.Math.min;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +54,10 @@ public class FordFulkersonExample {
     // needs to run once because it always yields the same result.
     protected boolean solved;
 
+    // The maximum flow. Calculated by calling the {@link #solve} method.
     protected long maxFlow;
+
+    // The adjacency list representing the flow graph.
     protected List<Edge>[] graph;
 
     /**
