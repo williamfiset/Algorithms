@@ -18,7 +18,7 @@ public class Dinics extends NetworkFlowSolverBase {
   private int[] level;
 
   /**
-   * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)}
+   * Creates an instance of a flow network solver. Use the {@link #addEdge}
    * method to add edges to the graph.
    *
    * @param n - The number of nodes in the graph including source and sink nodes.

@@ -59,7 +59,7 @@ public abstract class NetworkFlowSolverBase {
   protected List<Edge>[] graph;
 
   /**
-   * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)}
+   * Creates an instance of a flow network solver. Use the {@link #addEdge}
    * method to add edges to the graph.
    *
    * @param n - The number of nodes in the graph including source and sink nodes.
@@ -84,10 +84,11 @@ public abstract class NetworkFlowSolverBase {
    * Adds a directed edge (and residual edge) to the flow graph.
    *
    * @param from     - The index of the node the directed edge starts at.
-   * @param to       - The index of the node the directed edge end at.
+   * @param to       - The index of the node the directed edge ends at.
    * @param capacity - The capacity of the edge.
    */
   public void addEdge(int from, int to, long capacity) {
+    if (capacity < 0) throw new IllegalArgumentException("Capacity < 0");
     Edge e1 = new Edge(from, to, capacity);
     Edge e2 = new Edge(to, from, 0);
     e1.residual = e2;
