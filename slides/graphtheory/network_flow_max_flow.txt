@@ -104,7 +104,7 @@ If you have not already done so, please go watch the last video explaining the F
 
 Our goal in this video is to setup the following flow graph and find the maximum flow.
 
-After we run the max-flow algorithm we should end up with a graph similar to this one with flow running through each edge.
+After we run the max-flow algorithm we should end up with a graph similar to this one with flow running through some of the edges. you can see in this example that we had to use some residual edges for self correction because the algorithm presumably took some wrong turns when finding earlier augmenting paths.
 
 The source code and the example I have lined up for you can both be found on github, so I encourage you to go check that out and play along.
 

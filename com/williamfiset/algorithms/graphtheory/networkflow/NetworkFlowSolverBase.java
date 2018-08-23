@@ -17,7 +17,7 @@ public abstract class NetworkFlowSolverBase {
     public int from, to;
     public Edge residual;
     public long flow, capacity, cost;
-    final public long originalCapacity;
+    public final long originalCapacity;
     
     public Edge(int from, int to, long capacity) {
       this.from = from;
@@ -31,10 +31,15 @@ public abstract class NetworkFlowSolverBase {
       this.cost = cost;
     }
 
+    public boolean isResidual() {
+      return originalCapacity == 0;
+    }
+
     public String toString(int s, int t) {
       String u = (from == s) ? "s" : ((from == t) ? "t" : String.valueOf(from));
       String v = (to == s) ? "s" : ((to == t) ? "t" : String.valueOf(to));
-      return String.format("Edge %s -> %s = %d/%d", u, v, flow, originalCapacity);
+      return String.format("Edge %s -> %s | flow = %d | capacity = %d | original capacity = %d | " +
+        "is residual: %s", u, v, flow, capacity, originalCapacity, isResidual());
     }
   }
 

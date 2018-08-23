@@ -26,11 +26,15 @@ public class FordFulkersonExample {
       this.originalCapacity = this.capacity = capacity;
     }
 
+    public boolean isResidual() {
+      return originalCapacity == 0;
+    }
+
     public String toString(int s, int t) {
       String u = (from == s) ? "s" : ((from == t) ? "t" : String.valueOf(from));
       String v = (to == s) ? "s" : ((to == t) ? "t" : String.valueOf(to));
-      return String.format("Edge %s -> %s, flow = %d, capacity = %d, original capacity = %d", u, v, 
-        flow, capacity, originalCapacity);
+      return String.format("Edge %s -> %s | flow = %d | original capacity = %d | capacity = %d | " +
+        "is residual: %s", u, v, flow, originalCapacity, capacity, isResidual());
     }
   }
 
@@ -213,6 +217,7 @@ public class FordFulkersonExample {
     solver.addEdge(3, 6, 7);
     solver.addEdge(3, 7, 1);
     solver.addEdge(4, 5, 8);
+    solver.addEdge(4, 6, 3);
     solver.addEdge(4, 8, 3);
     solver.addEdge(5, 8, 3);
 
@@ -230,7 +235,8 @@ public class FordFulkersonExample {
     // Prints the flow and capacity value of each edge.
     for (List<Edge> edges : resultGraph)
       for (Edge e : edges)
-        System.out.println(e.toString(s, t));
+        // Print only the interesting edges
+        if (e.flow > 0) System.out.println(e.toString(s, t));
 
   }
 
