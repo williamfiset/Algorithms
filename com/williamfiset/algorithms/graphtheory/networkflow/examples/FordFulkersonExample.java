@@ -9,6 +9,7 @@ package com.williamfiset.algorithms.graphtheory.networkflow.examples;
 
 import static java.lang.Math.min;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,8 @@ public class FordFulkersonExample {
     public String toString(int s, int t) {
       String u = (from == s) ? "s" : ((from == t) ? "t" : String.valueOf(from));
       String v = (to == s) ? "s" : ((to == t) ? "t" : String.valueOf(to));
-      return String.format("Edge %s -> %s = %d/%d", u,  v, flow, capacity);
+      return String.format("Edge %s -> %s, flow = %d, capacity = %d, original capacity = %d", u, v, 
+        flow, capacity, originalCapacity);
     }
   }
 
@@ -80,7 +82,7 @@ public class FordFulkersonExample {
     }
 
     /**
-     * Adds a directed edge (and residual edge) to the flow graph.
+     * Adds a directed edge (and its residual edge) to the flow graph.
      *
      * @param from     - The index of the node the directed edge starts at.
      * @param to       - The index of the node the directed edge ends at.
@@ -98,9 +100,10 @@ public class FordFulkersonExample {
 
     /**
      * Returns the residual graph after the solver has been executed. This 
-     * allows you to inspect the {@link Edge#flow} and {@link Edge#capacity} 
-     * values of each edge. This is useful if you want to figure out which edges
-     * were used during the max flow.
+     * allows you to inspect the {@link Edge#flow}, {@link Edge#capacity},
+     * and {@link Edge#originalCapacity} values of each edge. This is useful
+     * if you are debugging or want to figure out which edges were used
+     * during the max flow.
      */
     public List<Edge>[] getGraph() {
       execute();
@@ -222,14 +225,12 @@ public class FordFulkersonExample {
     // Maximum Flow is: 7
     System.out.printf("Maximum Flow is: %d\n", solver.getMaxFlow());
 
-    // Prints the flow and capacity value of each edge.
     List<Edge>[] resultGraph = solver.getGraph();
-    for (int i = 0; i < resultGraph.length; i++) {
-      List<Edge> edges = resultGraph[i];
-      for (Edge e : edges) {
+    
+    // Prints the flow and capacity value of each edge.
+    for (List<Edge> edges : resultGraph)
+      for (Edge e : edges)
         System.out.println(e.toString(s, t));
-      }
-    }
 
   }
 
