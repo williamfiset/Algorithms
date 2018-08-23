@@ -135,7 +135,7 @@ public class FordFulkersonExample {
   }
 
 
-  private static class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
+  private static class FordFulkersonDfsSolver extends NetworkFlowSolverBase {
 
     /**
      * Creates an instance of a flow network solver. Use the {@link #addEdge}
@@ -145,7 +145,7 @@ public class FordFulkersonExample {
      * @param s - The index of the source node, 0 <= s < n
      * @param t - The index of the sink node, 0 <= t < n
      */
-    public FordFulkersonDfsSolverAdjacencyList(int n, int s, int t) {
+    public FordFulkersonDfsSolver(int n, int s, int t) {
       super(n, s, t);
     }
 
@@ -191,16 +191,11 @@ public class FordFulkersonExample {
 
 
   public static void main(String[] args) {
-    exampleFromSlides();
-  }
-
-  private static void exampleFromSlides() {
     int n = 12;
     int s = n-2;
     int t = n-1;
 
-    FordFulkersonDfsSolverAdjacencyList solver;
-    solver = new FordFulkersonDfsSolverAdjacencyList(n, s, t);
+    NetworkFlowSolverBase solver = new FordFulkersonDfsSolver(n, s, t);
 
     // Edges from source
     solver.addEdge(s, 1, 2);
@@ -232,11 +227,11 @@ public class FordFulkersonExample {
 
     List<Edge>[] resultGraph = solver.getGraph();
     
-    // Prints the flow and capacity value of each edge.
+    // Displays all interesting edges part of the resulting residual graph.
     for (List<Edge> edges : resultGraph)
       for (Edge e : edges)
-        // Print only the interesting edges
-        if (e.flow > 0) System.out.println(e.toString(s, t));
+        if (e.flow > 0) 
+          System.out.println(e.toString(s, t));
 
   }
 

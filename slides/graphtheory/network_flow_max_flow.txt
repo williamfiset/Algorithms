@@ -98,18 +98,32 @@ Awesome well thank you for watching, next video we'll be going over some source 
 
 ---------------------------
 
+TODO(WILLIAM): TEST YOUR FF WITH DFS VS KATTIS!
+
 Hello everybody, welcome back, my name is William and today we're taking a look at the source code for the Ford-Fulkerson method implemented with a DFS.
 
-If you have not already done so, please go watch the last video explaining the Ford-Fulkerson method. There you'll find everything you need to know about augmenting paths, residual edges and flow augmentation.
+If you have not already done so, please go watch my last video explaining the Ford-Fulkerson method. There you'll find everything you need to know about augmenting paths, residual edges and flow augmentation.
 
 Our goal in this video is to setup the following flow graph and find the maximum flow.
 
-After we run the max-flow algorithm we should end up with a graph similar to this one with flow running through some of the edges. you can see in this example that we had to use some residual edges for self correction because the algorithm presumably took some wrong turns when finding earlier augmenting paths.
+After we run the max-flow algorithm we should end up with a graph similar to this one with flow running through some of the edges. You can see in this example that we had to use some residual edges for self correction because the algorithm presumably took some wrong turns when finding earlier augmenting paths.
 
 The source code and the example I have lined up for you can both be found on github, so I encourage you to go check that out and play along.
 
-Alright, here we are in the source code. 
+Alright, here we are in the source code written in Java. This program has three main supporting classes: An Edge class, a NetflowFlowSolverBase and the FordFulkersonDfsSolver. However, before we get into any of those, I want to take a look at the main method where I actually use the classes above to solve the flow problem we just saw. I know a lot of people struggle setting up the flow graph which is usually somehwat of a mystery, so I want to clear that up.
 
+The first thing I recommend you do everytime you setup a flow problem is intialize three variables: n - the number of nodes in your graph, including the source and the sink, then label s and t, the source and sink nodes to have indices n-1 and n-2. The rest of the nodes in your graph should then have indices between 0 and n-3 inclusive. I've always found this to be the easiest way to setup any flow graph.
+
+Next, I create a FF solver by providing the three variables n, s and t as inputs. Then I use the solver to actually create the flow graph and add edges with different capacities.
+
+Then hook up the edges from the source.
+<SHOW IMAGE>
+
+Then hook up the middle edges.
+<SHOW IMAGE>
+
+And lastly the edges leading into the sink.
+<SHOW IMAGE>
 
 ---------------------------
 
