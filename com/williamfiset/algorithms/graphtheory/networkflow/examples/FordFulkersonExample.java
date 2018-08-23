@@ -198,27 +198,25 @@ public class FordFulkersonExample {
     FordFulkersonDfsSolverAdjacencyList solver;
     solver = new FordFulkersonDfsSolverAdjacencyList(n, s, t);
 
+    // Edges from source
     solver.addEdge(s, 1, 2);
     solver.addEdge(s, 2, 1);
     solver.addEdge(s, 0, 7);
 
+    // Middle edges
     solver.addEdge(0, 3, 2);
     solver.addEdge(0, 4, 4);
-
     solver.addEdge(1, 4, 5);
     solver.addEdge(1, 5, 6);
-
     solver.addEdge(2, 3, 4);
     solver.addEdge(2, 7, 8);
-
     solver.addEdge(3, 6, 7);
     solver.addEdge(3, 7, 1);
-
     solver.addEdge(4, 5, 8);
     solver.addEdge(4, 8, 3);
-
     solver.addEdge(5, 8, 3);
 
+    // Edges to sink
     solver.addEdge(6, t, 1);
     solver.addEdge(7, t, 3);
     solver.addEdge(8, t, 4);

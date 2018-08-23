@@ -98,4 +98,19 @@ Awesome well thank you for watching, next video we'll be going over some source 
 
 ---------------------------
 
+Hello everybody, welcome back, my name is William and today we're taking a look at the source code for the Ford-Fulkerson method implemented with a DFS.
+
+If you have not already done so, please go watch the last video explaining the Ford-Fulkerson method. There you'll find everything you need to know about augmenting paths, residual edges and flow augmentation.
+
+Our goal in this video is to setup the following flow graph and find the maximum flow.
+
+After we run the max-flow algorithm we should end up with a graph similar to this one with flow running through each edge.
+
+The source code and the example I have lined up for you can both be found on github, so I encourage you to go check that out and play along.
+
+Alright, here we are in the source code. 
+
+
+---------------------------
+
 … you must understand that bipartite graphs with weighted edges are a totally different beast than those with unweighted edges. The algorithms you need to use to solve this type of problem vary in significant ways.
