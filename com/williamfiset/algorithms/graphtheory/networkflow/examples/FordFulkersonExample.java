@@ -48,10 +48,10 @@ public class FordFulkersonExample {
   private static abstract class NetworkFlowSolverBase {
 
     // To avoid overflow, set infinity to a value less than Long.MAX_VALUE;
-    protected static final long INF = Long.MAX_VALUE / 2;
+    static final long INF = Long.MAX_VALUE / 2;
 
     // Inputs: n = number of nodes, s = source, t = sink
-    protected final int n, s, t;
+    final int n, s, t;
 
     // 'visited' and 'visitedToken' are variables used in graph sub-routines to 
     // track whether a node has been visited or not. In particular, node 'i' was 
@@ -76,18 +76,18 @@ public class FordFulkersonExample {
      *
      * @param n - The number of nodes in the graph including s and t.
      * @param s - The index of the source node, 0 <= s < n
-     * @param t - The index of the sink node, 0 <= t < n
+     * @param t - The index of the sink node, 0 <= t < n and t != s
      */
     public NetworkFlowSolverBase(int n, int s, int t) {
       this.n = n; 
       this.s = s; 
       this.t = t; 
-      initializeGraph();
+      initializeEmptyFlowGraph();
       visited = new int[n];
     }
 
     // Constructs an empty graph with n nodes including s and t.
-    private void initializeGraph() {
+    private void initializeEmptyFlowGraph() {
       graph = new List[n];
       for (int i = 0; i < n; i++)
         graph[i] = new ArrayList<Edge>();
@@ -101,7 +101,8 @@ public class FordFulkersonExample {
      * @param capacity - The capacity of the edge
      */
     public void addEdge(int from, int to, long capacity) {
-      if (capacity <= 0) throw new IllegalArgumentException("Forward edge capacity <= 0");
+      if (capacity <= 0) 
+        throw new IllegalArgumentException("Forward edge capacity <= 0");
       Edge e1 = new Edge(from, to, capacity);
       Edge e2 = new Edge(to, from, 0);
       e1.residual = e2;
@@ -131,8 +132,8 @@ public class FordFulkersonExample {
     // Wrapper method that ensures we only call solve() once
     private void execute() {
       if (solved) return; 
-      solve();
       solved = true;
+      solve();
     }
 
     // Method to implement which solves the network flow problem.
@@ -149,7 +150,7 @@ public class FordFulkersonExample {
      *
      * @param n - The number of nodes in the graph including s and t.
      * @param s - The index of the source node, 0 <= s < n
-     * @param t - The index of the sink node, 0 <= t < n
+     * @param t - The index of the sink node, 0 <= t < n and t != s
      */
     public FordFulkersonDfsSolver(int n, int s, int t) {
       super(n, s, t);

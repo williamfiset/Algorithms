@@ -173,6 +173,32 @@ Last is the toString method which was responsible for displaying those nice colu
 
 The next class we're going to look at is the NetworkFlowSolverBase class. This class is a generic base for max flow solvers which all solver should extend to gain access to reused variables and setup methods. For example, a simple task like adding an edge to the flow graph should be the same whether the max flow algorithm we're using is Edmond's-Karp, Dinics or some Push-Relabel algorithm; therefore that behavior does not change, so it makes sense to abstract it.
 
+Let's take a look at some of the variables I have declared here which all get used by the ford-fulkerson solver.
+
+First is, INF short for infinity which is just a handy large constant.
+
+Then are the three input variables, n, s and t that track the number of nodes in the graph, the index of the source node and the index of the sink node.
+
+Followed by this are two special variables I usually end up using -- because they greatly help boost performance. 
+The rational behind using a visited token in combination with an integer array that tracks the visited state of a node is that when we're finding augmenting paths, whether via DFS, BFS or whatever graph traversal method you want to use, you generally want to ensure your augmenting path doesn't don't visit the same node twice, otherwise that could result in a cycle which we don't want.
+The way to check if node 'i' is visited if the state in the visited array at index i is equal to the visited token. This is handy because in the next iteration when we need to again find another augmenting path we also need to mark all nodes as unvisited which we can do simply by incrementing the visitedToken; I know, it's kind of hacky but it's super efficient.
+The alternative is to maintain a boolean visited array and fill it with false before finding any augmenting path. That's not great because it results in an additional order n work every time you want to find an augmenting path.
+
+Next is a boolean solved variables which indicates whether the network flow algorithm has ran. The solver only needs to run once because it always yields the same result.
+
+Next is the maxFlow value which we're trying to calculate
+
+and finally the adjacency list representing the flow graph itself. I highly recommend an adjacency list over an adjacency matrix for network flow problems even though it's a lot more work to setup. I say this mainly because it's common to have sparse flow graphs -- the exception being dense bipartite graphs which are somewhat frequent.
+
+Then looking at the constructor, we require the user to specify the number of nodes along with the source and the sink. Then I also take the opportunity to initialize the flow graph and allocate memory for the visited array.
+
+In the initializeEmptyFlowGraph method I just initialize each node index to have an empty arraylist of edges so we don't get a null pointer when a user tries to add an edge to the graph.
+
+Talking about adding edges to the graph, let's have a look at the addEdge method. Here we need provide the start node and the end node of the directed edge and a positive capacity. In this method we not only create the forward edge but also it's associated residual edge. To do that create another edge in the reverse direction and give it a capacity of zero -- then make the forward edge's residual edge the residual edge and the residual edges residual edge the forward edge -- and finally add them both to the flow graph.
+
+The remaining methods are client facing methods -- they can be used to get the residual graph after the solver has been executed and obtain the maximum flow.
+
+You'll notice that I ensure that the solve method is only ever called once. The solve method needs to be implemented by the child class -- it's the method that finds augmenting paths through the flow graph and augments the flow.
 
 
 ---------------------------
