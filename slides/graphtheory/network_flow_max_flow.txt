@@ -112,18 +112,68 @@ The source code and the example I have lined up for you can both be found on git
 
 Alright, here we are in the source code written in Java. This program has three main supporting classes: An Edge class, a NetflowFlowSolverBase and the FordFulkersonDfsSolver. However, before we get into any of those, I want to take a look at the main method where I actually use the classes above to solve the flow problem we just saw. I know a lot of people struggle setting up the flow graph which is usually somehwat of a mystery, so I want to clear that up.
 
-The first thing I recommend you do everytime you setup a flow problem is intialize three variables: n - the number of nodes in your graph, including the source and the sink, then label s and t, the source and sink nodes to have indices n-1 and n-2. The rest of the nodes in your graph should then have indices between 0 and n-3 inclusive. I've always found this to be the easiest way to setup any flow graph.
+The first thing I recommend you do every-time you setup a flow problem is initialize three variables: n - the number of nodes in your graph, including the source and the sink, then label s and t, the source and sink nodes to have indices n-1 and n-2. The rest of the nodes in your graph should then have indices between 0 and n-3 inclusive. I've always found this to be the easiest way to setup any flow graph.
 
-Next, I create a FF solver by providing the three variables n, s and t as inputs. Then I use the solver to actually create the flow graph and add edges with different capacities.
+Next, I create the flow solver by providing the three variables n, s and t as inputs. Then, I use the solver to actually create the flow graph by adding edges with different capacities.
 
 Then hook up the edges from the source.
 <SHOW IMAGE>
 
-Then hook up the middle edges.
+Then carefully hook up the middle edges.
 <SHOW IMAGE>
 
 And lastly the edges leading into the sink.
 <SHOW IMAGE>
+
+It's usually always these three steps , andmost of the time your graph is bipartite so the middle edges are much simpler to setup.
+
+After this, I call the getMaxFlow method on the solver which actually runs the Ford-Fulkerson max flow DFS and returns an integer value, which in this graph should be seven.
+
+Followed by printing the max-flow, I also display the interesting edges on the residual graph. First, I get the resulting residual graph from the solver after executing the max flow algorithm, iterate over all the edges, and display those with flow greater than one.
+
+Let's actually run this program, and see what the output looks, like shall we? First lemme pop open a terminal right here. For those of you who also have a terminal open and want to play with the code first just clone the code from Github by typing git clone followed by the repo URL which is github dot com slash william fiset slash algorithms
+
+$ git clone https://github.com/williamfiset/Algorithms
+
+You see that i've already cloned the repo, so I don't need to do it again.
+
+Next, simply change directory to be at the base of the Algorithms repo.
+
+$ cd Algorithms
+
+The file we're working with is called FordFulkersonExample.java, and it's in the graphtheory networkflow examples package. Luckily for use it doesn't have any dependencies yet, so we can just compile it with java-ak.
+
+$ javac com/williamfiset/algorithms/graphtheory/networkflow/examples/FordFulkersonExample.java
+
+That'll produce a .class file in that directory, so let's execute it.
+
+$ java com/williamfiset/algorithms/graphtheory/networkflow/examples/FordFulkersonExample
+
+This prints a lot of interesting information, notably the max flow of 7 and all the edges. For each edge five columns are displayed:
+
+1) First the start and end nodes of the directed edge, 
+2) The amount of flow running through this edge
+3) The original capacity of the edge.
+4) The dynamic capacity of the edge - this is what I talked about in the last video which allows having non-negative flow.
+5) And lastly, a boolean indicating whether the edge is a residual edge or not, so all handy values for debugging.
+
+Alright, let's get back to the code to see how we actually generate all these values and get that max flow of 7.
+
+Let's scroll up and take a look at the supporting classes. Let's begin with the Edge class.
+
+The Edge class is composed of a few instance variables, in particular, every edge has a start node called "from" and an end node called "to". Each edge in a flow graph also has a certain amount of flow and capacity. I want to remind you that in this implementation the capacity is a dynamic value that changes as we augment the flow through the network, so for this reason I also track what I call the original capacity of the edge just for reference.
+
+When you create a new edge, it should have a start and an end node plus an initial capacity; the flow defaults to zero. You might notice that the residual edge does not get initialized here. The reason is that I initialize this edge and the residual edge together and hook them up manually in a helper which we'll see later.
+
+The next method, isResidual determines if the edge is a residual edge or not; because forward edges are not permitted to have a capacity of zero you know the edge must be residual if the capacity is zero.
+
+Last is the toString method which was responsible for displaying those nice columns we saw in the terminal.
+
+---
+
+The next class we're going to look at is the NetworkFlowSolverBase class. This class is a generic base for max flow solvers which all solver should extend to gain access to reused variables and setup methods. For example, a simple task like adding an edge to the flow graph should be the same whether the max flow algorithm we're using is Edmond's-Karp, Dinics or some Push-Relabel algorithm; therefore that behavior does not change, so it makes sense to abstract it.
+
+
 
 ---------------------------
 

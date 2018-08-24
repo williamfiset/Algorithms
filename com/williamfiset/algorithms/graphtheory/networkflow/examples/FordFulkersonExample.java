@@ -3,6 +3,12 @@
  * as a method of finding augmenting paths.
  *
  * Time Complexity: O(fE), where f is the max flow and E is the number of edges
+ *
+ * Build:
+ * $ javac com/williamfiset/algorithms/graphtheory/networkflow/examples/FordFulkersonExample.java
+ *
+ * Run:
+ * $ java com/williamfiset/algorithms/graphtheory/networkflow/examples/FordFulkersonExample
  */
 
 package com.williamfiset.algorithms.graphtheory.networkflow.examples;
@@ -15,10 +21,10 @@ import java.util.List;
 public class FordFulkersonExample {
 
   private static class Edge {
-    public int from, to;
-    public Edge residual;
-    public long flow, capacity;
-    public final long originalCapacity;
+    Edge residual;
+    long flow, capacity;
+    final int from, to;
+    final long originalCapacity;
     
     public Edge(int from, int to, long capacity) {
       this.from = from;
@@ -95,7 +101,7 @@ public class FordFulkersonExample {
      * @param capacity - The capacity of the edge
      */
     public void addEdge(int from, int to, long capacity) {
-      if (capacity < 0) throw new IllegalArgumentException("Capacity < 0");
+      if (capacity <= 0) throw new IllegalArgumentException("Forward edge capacity <= 0");
       Edge e1 = new Edge(from, to, capacity);
       Edge e2 = new Edge(to, from, 0);
       e1.residual = e2;
