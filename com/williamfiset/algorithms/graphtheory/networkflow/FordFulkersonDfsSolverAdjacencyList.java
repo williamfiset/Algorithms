@@ -22,7 +22,7 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
    *
    * @param n - The number of nodes in the graph including source and sink nodes.
    * @param s - The index of the source node, 0 <= s < n
-   * @param t - The index of the sink node, 0 <= t < n
+   * @param t - The index of the sink node, 0 <= t < n, t != s
    */
   public FordFulkersonDfsSolverAdjacencyList(int n, int s, int t) {
     super(n, s, t);
@@ -59,9 +59,7 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
 
         // Augment flow with bottle neck value
         if (bottleNeck > 0) {
-          Edge res = edge.residual;
-          edge.flow += bottleNeck;
-          res.flow -= bottleNeck;
+          edge.augment(bottleNeck);
           return bottleNeck;
         }
 

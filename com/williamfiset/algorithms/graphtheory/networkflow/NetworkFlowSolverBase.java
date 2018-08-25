@@ -17,18 +17,17 @@ public abstract class NetworkFlowSolverBase {
     public int from, to;
     public Edge residual;
     public long flow, capacity, cost;
-    public final long originalCapacity;
+    public final long originalCapacity, originalCost;
     
     public Edge(int from, int to, long capacity) {
-      this.from = from;
-      this.to = to;
-      this.originalCapacity = this.capacity = capacity;
+      this(from, to, capacity, 0 /* unused */);
     }
 
-    // Cost is only used for min-cost max-flow algorithms.
     public Edge(int from, int to, long capacity, long cost) {
-      this(from, to, capacity);
-      this.cost = cost;
+      this.from = from;
+      this.to = to;
+      this.originalCost = this.cost = cost;
+      this.originalCapacity = this.capacity = capacity;
     }
 
     public boolean isResidual() {
@@ -37,6 +36,11 @@ public abstract class NetworkFlowSolverBase {
 
     public long remainingCapacity() {
       return capacity - flow;
+    }
+
+    public void augment(long bottleNeck) {
+      flow += bottleNeck;
+      residual.flow -= bottleNeck;
     }
 
     public String toString(int s, int t) {
@@ -57,15 +61,15 @@ public abstract class NetworkFlowSolverBase {
   protected int visitedToken = 1;
   protected int[] visited;
 
-  // Indicates whether the network flow algorithm has ran. We should not need to
-  // run the solver multiple times, because it always yields the same result.
-  protected boolean solved;
-
   protected long maxFlow;
   protected long minCost;
 
   protected boolean[] minCut;
   protected List<Edge>[] graph;
+
+  // Indicates whether the network flow algorithm has ran. We should not need to
+  // run the solver multiple times, because it always yields the same result.
+  private boolean solved;
 
   /**
    * Creates an instance of a flow network solver. Use the {@link #addEdge}
@@ -73,7 +77,7 @@ public abstract class NetworkFlowSolverBase {
    *
    * @param n - The number of nodes in the graph including source and sink nodes.
    * @param s - The index of the source node, 0 <= s < n
-   * @param t - The index of the sink node, 0 <= t < n
+   * @param t - The index of the sink node, 0 <= t < n, t != s
    */
   public NetworkFlowSolverBase(int n, int s, int t) {
     this.n = n; this.s = s; this.t = t; 
@@ -151,8 +155,8 @@ public abstract class NetworkFlowSolverBase {
   // Wrapper method that ensures we only call solve() once
   private void execute() {
     if (solved) return; 
-    solve();
     solved = true;
+    solve();
   }
 
   // Method to implement which solves the network flow problem.

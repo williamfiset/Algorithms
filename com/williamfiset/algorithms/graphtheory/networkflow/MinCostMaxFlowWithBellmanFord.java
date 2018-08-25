@@ -18,12 +18,12 @@ public class MinCostMaxFlowWithBellmanFord extends NetworkFlowSolverBase {
 
   /**
    * Creates a min-cost maximum flow network solver. To construct the flow 
-   * network use the {@link NetworkFlowSolverBase#addEdge(int, int, int, int)} 
+   * network use the {@link NetworkFlowSolverBase#addEdge}
    * method to add edges to the graph.
    *
    * @param n - The number of nodes in the graph including source and sink nodes.
-   * @param s - The index of the source node, 0 <= source < n
-   * @param t - The index of the source node, 0 <= sink < n
+   * @param s - The index of the source node, 0 <= s < n
+   * @param t - The index of the sink node, 0 <= t < n, t != s
    */
   public MinCostMaxFlowWithBellmanFord(int n, int s, int t) {
     super(n, s, t);
@@ -31,38 +31,25 @@ public class MinCostMaxFlowWithBellmanFord extends NetworkFlowSolverBase {
 
   @Override
   public void solve() {
-    // Sum up the bottlenecks on each augmenting path to find the max flow.
-    for(long flow = findBottleNeck(); flow != 0; flow = findBottleNeck())
-      maxFlow += flow;
 
-    // Compute the min cost.
-    for (List<Edge> edges : graph)
-      for (Edge edge : edges)
-        minCost += edge.flow * edge.cost;
+    // Sum up the bottlenecks on each augmenting path to find the max flow and min cost.
+    List<Edge> path;
+    while((path = getAugmentingPath()).size() != 0) {
 
-    // TODO(williamfiset): Compute mincut.
-  }
+      // Find bottle neck edge value along path.
+      long bottleNeck = Long.MAX_VALUE;
+      for(Edge edge : path) 
+        bottleNeck = min(bottleNeck, edge.remainingCapacity());
 
-  private long findBottleNeck() {
-    List<Edge> path = getAugmentingPath();
-
-    // Sink not reachable!
-    if (path.isEmpty()) return 0;
-
-    // Find bottle neck edge value along path.
-    long bottleNeck = Long.MAX_VALUE;
-    for(Edge edge : path) 
-      bottleNeck = min(bottleNeck, edge.capacity);
-
-    // Retrace path and update edge capacities.
-    for(Edge edge : path) {
-      Edge res = edge.residual;
-      edge.flow += bottleNeck;
-      edge.capacity -= bottleNeck;
-      res.capacity += bottleNeck;
+      // Retrace path while augmenting the flow
+      for(Edge edge : path) {
+        edge.augment(bottleNeck);
+        minCost += bottleNeck * edge.originalCost;
+      }
+      maxFlow += bottleNeck;
     }
 
-    return bottleNeck;
+    // TODO(williamfiset): Compute mincut.
   }
 
   /**
@@ -80,7 +67,7 @@ public class MinCostMaxFlowWithBellmanFord extends NetworkFlowSolverBase {
     for (int i = 0; i < n-1; i++) {
       for(int from = 0; from < n; from++) {
         for (Edge edge : graph[from]) {
-          if (edge.capacity > 0 && dist[from] + edge.cost < dist[edge.to]) {
+          if (edge.remainingCapacity() > 0 && dist[from] + edge.cost < dist[edge.to]) {
             dist[edge.to] = dist[from] + edge.cost;
             prev[edge.to] = edge;
           }
@@ -102,11 +89,11 @@ public class MinCostMaxFlowWithBellmanFord extends NetworkFlowSolverBase {
   }
 
   private static void testSmallNetwork() {
-    int n = 4;
-    int s = n;
-    int t = n+1;
+    int n = 6;
+    int s = n-1;
+    int t = n-2;
     MinCostMaxFlowWithBellmanFord solver;
-    solver = new MinCostMaxFlowWithBellmanFord(n+2, s, t);
+    solver = new MinCostMaxFlowWithBellmanFord(n, s, t);
 
     solver.addEdge(s, 1, 4, 10);
     solver.addEdge(s, 2, 2, 30);

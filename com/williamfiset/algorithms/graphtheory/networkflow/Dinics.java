@@ -10,7 +10,7 @@
 
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
-import static java.lang.Math.*;
+import static java.lang.Math.min;
 import java.util.*;
 
 public class Dinics extends NetworkFlowSolverBase {
@@ -22,8 +22,8 @@ public class Dinics extends NetworkFlowSolverBase {
    * method to add edges to the graph.
    *
    * @param n - The number of nodes in the graph including source and sink nodes.
-   * @param s - The index of the source node, 0 <= source < n
-   * @param t - The index of the sink node, 0 <= sink < n
+   * @param s - The index of the source node, 0 <= s < n
+   * @param t - The index of the sink node, 0 <= t < n, t != s
    */
   public Dinics(int n, int s, int t) {
     super(n, s, t);
@@ -58,7 +58,7 @@ public class Dinics extends NetworkFlowSolverBase {
     while(!q.isEmpty()) {
       int node = q.poll();
       for (Edge edge : graph[node]) {
-        final long cap = edge.capacity - edge.flow; // remaining capacity;
+        long cap = edge.remainingCapacity();
         if (cap > 0 && level[edge.to] == -1) {
           level[edge.to] = level[node] + 1;
           q.offer(edge.to);
@@ -79,9 +79,7 @@ public class Dinics extends NetworkFlowSolverBase {
 
         long bottleNeck = dfs(edge.to, p, min(flow, cap));
         if (bottleNeck > 0) {
-          Edge res = edge.residual;
-          edge.flow += bottleNeck;
-          res.flow -= bottleNeck;
+          edge.augment(bottleNeck);
           return bottleNeck;
         }
 
@@ -93,19 +91,19 @@ public class Dinics extends NetworkFlowSolverBase {
     /* Examples */
 
   public static void main(String[] args) {
-    // testSmallFlowGraph();
-    testGraphFromSlides();
+    testSmallFlowGraph();
+    // testGraphFromSlides();
   }
 
   // Testing graph from:
   // http://crypto.cs.mcgill.ca/~crepeau/COMP251/KeyNoteSlides/07demo-maxflowCS-C.pdf
   private static void testSmallFlowGraph() {
-    int n = 4;
-    int s = n;
-    int t = n+1;
+    int n = 6;
+    int s = n-1;
+    int t = n-2;
 
     Dinics solver;
-    solver = new Dinics(n+2, s, t);
+    solver = new Dinics(n, s, t);
 
     // Source edges
     solver.addEdge(s, 0, 10);
@@ -126,12 +124,12 @@ public class Dinics extends NetworkFlowSolverBase {
   }
 
   private static void testGraphFromSlides() {
-    int n = 10;
-    int s = n;
-    int t = n+1;
+    int n = 12;
+    int s = n-1;
+    int t = n-2;
 
     Dinics solver;
-    solver = new Dinics(n+2, s, t);
+    solver = new Dinics(n, s, t);
 
     // Source edges
     solver.addEdge(s, 0, 5);

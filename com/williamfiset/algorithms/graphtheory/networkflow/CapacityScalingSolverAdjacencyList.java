@@ -9,6 +9,7 @@
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import static java.lang.Math.min;
+import static java.lang.Math.max;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
    *
    * @param n - The number of nodes in the graph including source and sink nodes.
    * @param s - The index of the source node, 0 <= s < n
-   * @param t - The index of the sink node, 0 <= t < n
+   * @param t - The index of the sink node, 0 <= t < n, t != s
    */
   public CapacityScalingSolverAdjacencyList(int n, int s, int t) {
     super(n, s, t);
@@ -39,7 +40,7 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
   @Override
   public void addEdge(int from, int to, long capacity) {
     super.addEdge(from, to, capacity);
-    delta = Math.max(delta, capacity);
+    delta = max(delta, capacity);
   }
 
   // Performs the Ford-Fulkerson method applying a depth first search as
@@ -83,9 +84,7 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
 
         // Augment flow with bottle neck value
         if (bottleNeck > 0) {
-          Edge res = edge.residual;
-          edge.flow += bottleNeck;
-          res.flow -= bottleNeck;
+          edge.augment(bottleNeck);
           return bottleNeck;
         }
 

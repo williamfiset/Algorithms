@@ -22,7 +22,7 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
    *
    * @param n - The number of nodes in the graph including source and sink nodes.
    * @param s - The index of the source node, 0 <= s < n
-   * @param t - The index of the sink node, 0 <= t < n
+   * @param t - The index of the sink node, 0 <= t < n, t != s
    */
   public EdmondsKarpAdjacencyList(int n, int s, int t) {
     super(n, s, t);
@@ -76,12 +76,9 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
     for(Edge edge = prev[t]; edge != null; edge = prev[edge.from])
       bottleNeck = min(bottleNeck, edge.remainingCapacity());
 
-    // Retrace augmented path and update edges
-    for(Edge edge = prev[t]; edge != null; edge = prev[edge.from]) {
-      Edge res = edge.residual;
-      edge.flow += bottleNeck;
-      res.flow -= bottleNeck;
-    }
+    // Retrace augmented path and update flow values.
+    for(Edge edge = prev[t]; edge != null; edge = prev[edge.from])
+      edge.augment(bottleNeck);
 
     // Return bottleneck flow
     return bottleNeck;
@@ -96,12 +93,12 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
   // Testing graph from:
   // http://crypto.cs.mcgill.ca/~crepeau/COMP251/KeyNoteSlides/07demo-maxflowCS-C.pdf
   private static void testSmallFlowGraph() {
-    int n = 4;
-    int s = n;
-    int t = n+1;
+    int n = 6;
+    int s = n-1;
+    int t = n-2;
 
     EdmondsKarpAdjacencyList solver;
-    solver = new EdmondsKarpAdjacencyList(n+2, s, t);
+    solver = new EdmondsKarpAdjacencyList(n, s, t);
 
     // Source edges
     solver.addEdge(s, 0, 10);
