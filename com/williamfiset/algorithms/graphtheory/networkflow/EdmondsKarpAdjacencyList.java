@@ -10,6 +10,8 @@
  **/
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
+import static java.lang.Math.min;
+
 import java.util.*;
 
 public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
@@ -55,7 +57,8 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
       if (node == t) break;
 
       for (Edge edge : graph[node]) {
-        if (edge.capacity > 0 && visited[edge.to] != visitedToken) {
+        long cap = edge.remainingCapacity();
+        if (cap > 0 && visited[edge.to] != visitedToken) {
           visited[edge.to] = visitedToken;
           prev[edge.to] = edge;
           q.offer(edge.to);
@@ -71,14 +74,13 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
 
     // Find augmented path and bottle neck
     for(Edge edge = prev[t]; edge != null; edge = prev[edge.from])
-      bottleNeck = Math.min(bottleNeck, edge.capacity);
+      bottleNeck = min(bottleNeck, edge.remainingCapacity());
 
     // Retrace augmented path and update edges
     for(Edge edge = prev[t]; edge != null; edge = prev[edge.from]) {
       Edge res = edge.residual;
       edge.flow += bottleNeck;
-      edge.capacity -= bottleNeck;
-      res.capacity += bottleNeck;
+      res.flow -= bottleNeck;
     }
 
     // Return bottleneck flow

@@ -35,6 +35,10 @@ public abstract class NetworkFlowSolverBase {
       return originalCapacity == 0;
     }
 
+    public long remainingCapacity() {
+      return capacity - flow;
+    }
+
     public String toString(int s, int t) {
       String u = (from == s) ? "s" : ((from == t) ? "t" : String.valueOf(from));
       String v = (to == s) ? "s" : ((to == t) ? "t" : String.valueOf(to));

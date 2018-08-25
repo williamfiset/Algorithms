@@ -76,16 +76,16 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
     visited[node] = visitedToken;
 
     for (Edge edge : edges) {
-      if (edge.capacity >= delta && visited[edge.to] != visitedToken) {
+      long cap = edge.remainingCapacity();
+      if (cap >= delta && visited[edge.to] != visitedToken) {
 
-        long bottleNeck = dfs(edge.to, min(flow, edge.capacity));
+        long bottleNeck = dfs(edge.to, min(flow, cap));
 
         // Augment flow with bottle neck value
         if (bottleNeck > 0) {
           Edge res = edge.residual;
           edge.flow += bottleNeck;
-          edge.capacity -= bottleNeck;
-          res.capacity += bottleNeck;
+          res.flow -= bottleNeck;
           return bottleNeck;
         }
 

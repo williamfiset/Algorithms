@@ -171,15 +171,16 @@ public class FordFulkersonExample {
       // At sink node, return augmented path flow.
       if (node == t) return flow;
 
-      List<Edge> edges = graph[node];
+      // Mark the current node as visited.
       visited[node] = visitedToken;
 
+      List<Edge> edges = graph[node];
       for (Edge edge : edges) {
         if (edge.capacity > 0 && visited[edge.to] != visitedToken) {
           long bottleNeck = dfs(edge.to, min(flow, edge.capacity));
 
           // If we made it from s -> t (a.k.a bottleNeck > 0) then
-          // augment flow with bottle neck value and recurse.
+          // augment flow with bottleneck value.
           if (bottleNeck > 0) {
             Edge res = edge.residual;
             edge.flow += bottleNeck;

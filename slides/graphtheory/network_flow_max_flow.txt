@@ -200,6 +200,30 @@ The remaining methods are client facing methods -- they can be used to get the r
 
 You'll notice that I ensure that the solve method is only ever called once. The solve method needs to be implemented by the child class -- it's the method that finds augmenting paths through the flow graph and augments the flow.
 
+---
+
+So that's the base class, now let's talk about the FordFuklersonSolver. This class extends the Networkflowsolver and implements the solve method which actually find the augmenting paths and augments the flow.
+
+The first method is the constructor which takes as input n, s and t and calls the super class constructor.
+
+Next is the solve method which I'm overriding. In this method you can see that I repeatedly call the dfs method; the dfs method returns as output the bottleneck value found along the augmenting path. I store that value as 'f' and increase the max flow by f each iteration because we know that the sum of the bottleneck values equals the max-flow. We do this until the bottleneck value is 0, at which point we know that no more augmenting paths exist and the algorithm terminates. In between finding each augmenting path and calling the dfs method I increment the visitedToken to indicate that all nodes are now marked as unvisited.
+
+The dfs method itself takes two arguments, the current node index and the flow of the augmenting path. Initially, the starting node is set to be the source and the flow is infinity; as we progress through the flow graph the flow value eventually becomes the bottleneck value as we find smaller and smaller edges with more restricting capacities.
+
+Inside the method itself, we know to stop when we've reached the sink node. At that point we can return the amount of flow we can push through the augmenting path.
+
+Afterwards since the current node is not the sink we need to explore it, so we mark it as visited by assigning the index for the current node to be equal to the visited token.
+
+Then comes the interesting part. First get all the outgoing edges from this node, residual or otherwise and loop over them all. If the capacity is greater than zero, meaning we can push flow through it and the next node is unvisited, meaning we don't risk creating a cycle then we enter the if block.
+
+Inside the if block the first thing I do is call the DFs method recursively. I pass in the index of the next node and the new flow value equals the minimum of the current flow value or the current edge's capacity. That intuitively makes sense, it's saying either keep the previously found bottleneck value or if this new edge is even smaller then it should be the new bottleneck value.
+
+That process continues recursively until the base case is hit and the sink was reached. This returns the bottleneck of the augmenting path. We can then use that value to augment the flow along our augmenting path. However, first check that the bottleneck value is greater than zero, it could be the case that we never actually made it to the sink and hit a dead end.
+
+Assuming that's not the case, simply augment the flow by increasing the flow of the current edge by the bottleneck, decreasing the current edge's capacity and increasing the residual edge's capacity; we covered in the last video why this is a good way of augmenting the flow, essentially is keeps the flow non-negative. After that, simply return the bottleneck value, this propagates it up the stack so that all the other edges along the augmenting path can also be augmented. This also ensures that the bottleneck value is returned to the solve method where the maxflow is calculated.
+
+So that's all I wanted to cover for the Ford-Fulkerson method implemented with a DFS. Thank you for watching, I sincerely hope you learned something, please like this video and subscribe for more mathematics and computer science videos.
+
 
 ---------------------------
 
