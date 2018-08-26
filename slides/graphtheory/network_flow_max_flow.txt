@@ -104,34 +104,34 @@ Hello everybody, welcome back, my name is William and today we're taking a look 
 
 If you have not already done so, please go watch my last video explaining the Ford-Fulkerson method. There you'll find everything you need to know about augmenting paths, residual edges and flow augmentation.
 
-Our goal in this video is to setup the following flow graph and find the maximum flow.
+The goal of this video is to show you how to setup the following flow graph and find the maximum flow.
 
-After we run the max-flow algorithm we should end up with a graph similar to this one with flow running through some of the edges. You can see in this example that we had to use some residual edges for self correction because the algorithm presumably took some wrong turns when finding earlier augmenting paths.
+After we run the max-flow algorithm we should end up with a graph similar to this one with flow running through some of the edges.
 
 The source code and the example I have lined up for you can both be found on github, so I encourage you to go check that out and play along.
 
-Alright, here we are in the source code written in Java. This program has three main supporting classes: An Edge class, a NetflowFlowSolverBase and the FordFulkersonDfsSolver. However, before we get into any of those, I want to take a look at the main method where I actually use the classes above to solve the flow problem we just saw. I know a lot of people struggle setting up the flow graph which is usually somehwat of a mystery, so I want to clear that up.
+Alright, here we are in the source code written in Java. This program has three main supporting classes: An Edge class, a NetflowFlowSolverBase and the FordFulkersonDfsSolver. However, before we get into any of those, I want to take a look at the main method where I actually use the classes above to solve the flow problem we just saw. I know a lot of people struggle setting up the flow graph, which is usually somewhat of a mystery, so I want to clear that up.
 
 The first thing I recommend you do every-time you setup a flow problem is initialize three variables: n - the number of nodes in your graph, including the source and the sink, then label s and t, the source and sink nodes to have indices n-1 and n-2. The rest of the nodes in your graph should then have indices between 0 and n-3 inclusive. I've always found this to be the easiest way to setup any flow graph.
 
-Next, I create the flow solver by providing the three variables n, s and t as inputs. Then, I use the solver to actually create the flow graph by adding edges with different capacities.
+Next, I create the flow solver by providing the three variables n, s and t as inputs so that the sovler knows how many nodes there are in the graph and which are labeled as the source and sink. Then, I use the solver to actually create the flow graph by adding edges with different capacities.
 
-Then hook up the edges from the source.
+The next step is to hook up the edges from the source, those would be the ones shown in this picture.
 <SHOW IMAGE>
 
-Then carefully hook up the middle edges.
+Then carefully hook up the all the middle edges.
 <SHOW IMAGE>
 
-And lastly the edges leading into the sink.
+And lastly add the edges leading into the sink.
 <SHOW IMAGE>
 
-It's usually always these three steps , andmost of the time your graph is bipartite so the middle edges are much simpler to setup.
+It's usually always these three steps, and most of the time your graph is bipartite, so the middle edges are much simpler to setup.
 
-After this, I call the getMaxFlow method on the solver which actually runs the Ford-Fulkerson max flow DFS and returns an integer value, which in this graph should be seven.
+After this, I call the getMaxFlow method on the solver which actually runs the Ford-Fulkerson max flow DFS and returns an integer value. For this graph we're expecting a max flow of 23.
 
-Followed by printing the max-flow, I also display the interesting edges on the residual graph. First, I get the resulting residual graph from the solver after executing the max flow algorithm, iterate over all the edges, and display those with flow greater than one.
+Followed by printing the max-flow, I also display the interesting edges on the residual graph. First, I get the resulting residual graph from the solver after executing the max flow algorithm, iterate over all the edges, and display the flow on each edge.
 
-Let's actually run this program, and see what the output looks, like shall we? First lemme pop open a terminal right here. For those of you who also have a terminal open and want to play with the code first just clone the code from Github by typing git clone followed by the repo URL which is github dot com slash william fiset slash algorithms
+Let's actually run this program, and see what the output looks, like shall we? First lemme pop open a terminal right here. For those of you who also have a terminal open and want to play with the code, first just clone the code from Github by typing git clone followed by the repo URL which is github dot com slash william fiset slash algorithms
 
 $ git clone https://github.com/williamfiset/Algorithms
 
@@ -141,7 +141,7 @@ Next, simply change directory to be at the base of the Algorithms repo.
 
 $ cd Algorithms
 
-The file we're working with is called FordFulkersonExample.java, and it's in the graphtheory networkflow examples package. Luckily for use it doesn't have any dependencies yet, so we can just compile it with java-ak.
+The file we're working with is called FordFulkersonExample.java, and it's in the graphtheory networkflow examples package. Luckily for us it doesn't have any dependencies yet, so we can just compile it with java-ak.
 
 $ javac com/williamfiset/algorithms/graphtheory/networkflow/examples/FordFulkersonExample.java
 
@@ -153,25 +153,30 @@ This prints a lot of interesting information, notably the max flow of 7 and all 
 
 1) First the start and end nodes of the directed edge, 
 2) The amount of flow running through this edge
-3) The original capacity of the edge.
-4) The dynamic capacity of the edge - this is what I talked about in the last video which allows having non-negative flow.
-5) And lastly, a boolean indicating whether the edge is a residual edge or not, so all handy values for debugging.
+3) The capacity of the edge
+4) And lastly, a boolean indicating whether the edge is a residual edge or not which is handy for debugging.
 
-Alright, let's get back to the code to see how we actually generate all these values and get that max flow of 7.
+Alright, let's get back to the code to see how we actually generate all these values and get that max flow of 23.
 
 Let's scroll up and take a look at the supporting classes. Let's begin with the Edge class.
 
-The Edge class is composed of a few instance variables, in particular, every edge has a start node called "from" and an end node called "to". Each edge in a flow graph also has a certain amount of flow and capacity. I want to remind you that in this implementation the capacity is a dynamic value that changes as we augment the flow through the network, so for this reason I also track what I call the original capacity of the edge just for reference.
+---
 
-When you create a new edge, it should have a start and an end node plus an initial capacity; the flow defaults to zero. You might notice that the residual edge does not get initialized here. The reason is that I initialize this edge and the residual edge together and hook them up manually in a helper which we'll see later.
+The Edge class is composed of a few instance variables, in particular, every edge has a start node called "from" and an end node called "to". Each edge in the flow graph also has a certain amount of flow and capacity. The capacity of each edge is constant and does not change, the flow is dynamic and adjusts as we augment the flow.
 
-The next method, isResidual determines if the edge is a residual edge or not; because forward edges are not permitted to have a capacity of zero you know the edge must be residual if the capacity is zero.
+When you create a new edge, it should have a start and an end node plus an initial capacity; the flow defaults to zero. You might notice that the residual edge variable does not get initialized here. The reason is that I initialize this edge and the residual edge together and hook them up manually in a helper method which we'll see later.
+
+The next method, isResidual determines if the edge is a residual edge or not; because forward edges are not permitted to have a capacity of zero you know an edge must be residual if the capacity is zero.
+
+There's also the remaining capacity method which can be used to determine the maximum amount of flow we can push through this edge. This method works whether the flow is positive or negative.
+
+Next is the augment method which augments the flow for this edge alone. All it does is increase the flow on the forward edge by the bottleneck value we found along the augmenting path and also decrease the flow along the residual edge.
 
 Last is the toString method which was responsible for displaying those nice columns we saw in the terminal.
 
 ---
 
-The next class we're going to look at is the NetworkFlowSolverBase class. This class is a generic base for max flow solvers which all solver should extend to gain access to reused variables and setup methods. For example, a simple task like adding an edge to the flow graph should be the same whether the max flow algorithm we're using is Edmond's-Karp, Dinics or some Push-Relabel algorithm; therefore that behavior does not change, so it makes sense to abstract it.
+The next class we're going to look at is the NetworkFlowSolverBase class. This class is a generic base for max flow solvers which all solver should extend to gain access to reused variables and setup methods. For example, a simple task like adding an edge to the flow graph should be the same whether the max flow algorithm we're using is Edmond's-Karp or Dinics; therefore, since that behavior does not change it makes sense to abstract it.
 
 Let's take a look at some of the variables I have declared here which all get used by the ford-fulkerson solver.
 
@@ -180,8 +185,8 @@ First is, INF short for infinity which is just a handy large constant.
 Then are the three input variables, n, s and t that track the number of nodes in the graph, the index of the source node and the index of the sink node.
 
 Followed by this are two special variables I usually end up using -- because they greatly help boost performance. 
-The rational behind using a visited token in combination with an integer array that tracks the visited state of a node is that when we're finding augmenting paths, whether via DFS, BFS or whatever graph traversal method you want to use, you generally want to ensure your augmenting path doesn't don't visit the same node twice, otherwise that could result in a cycle which we don't want.
-The way to check if node 'i' is visited if the state in the visited array at index i is equal to the visited token. This is handy because in the next iteration when we need to again find another augmenting path we also need to mark all nodes as unvisited which we can do simply by incrementing the visitedToken; I know, it's kind of hacky but it's super efficient.
+The rational behind using a visited token in combination with an integer array that tracks the visited state of a node is that when we're finding augmenting paths, whether via DFS, BFS or whatever graph traversal method you want to use, you generally want to ensure your augmenting path doesn't visit the same node twice, otherwise that could result in a cycle which we don't want.
+The way to check if node 'i' is visited is to check if the state in the visited array at index 'i' is equal to the visited token. This is handy because in the next iteration, when we need to yet again find another augmenting path we can reset the visited states of all the nodes by simply incrementing the visitedToken; I know, it's kind of hacky but it's super efficient.
 The alternative is to maintain a boolean visited array and fill it with false before finding any augmenting path. That's not great because it results in an additional order n work every time you want to find an augmenting path.
 
 Next is a boolean solved variables which indicates whether the network flow algorithm has ran. The solver only needs to run once because it always yields the same result.
@@ -192,7 +197,7 @@ and finally the adjacency list representing the flow graph itself. I highly reco
 
 Then looking at the constructor, we require the user to specify the number of nodes along with the source and the sink. Then I also take the opportunity to initialize the flow graph and allocate memory for the visited array.
 
-In the initializeEmptyFlowGraph method I just initialize each node index to have an empty arraylist of edges so we don't get a null pointer when a user tries to add an edge to the graph.
+In the initializeEmptyFlowGraph method I just initialize each node index to have an empty arraylist of edges so we don't get a null pointer when we try to add an edge to the graph.
 
 Talking about adding edges to the graph, let's have a look at the addEdge method. Here we need provide the start node and the end node of the directed edge and a positive capacity. In this method we not only create the forward edge but also it's associated residual edge. To do that create another edge in the reverse direction and give it a capacity of zero -- then make the forward edge's residual edge the residual edge and the residual edges residual edge the forward edge -- and finally add them both to the flow graph.
 
@@ -202,7 +207,7 @@ You'll notice that I ensure that the solve method is only ever called once. The 
 
 ---
 
-So that's the base class, now let's talk about the FordFuklersonSolver. This class extends the Networkflowsolver and implements the solve method which actually find the augmenting paths and augments the flow.
+So that's the base class, now let's talk about the FordFuklersonSolver. This class extends the Networkflowsolver and implements the solve method which actually finds augmenting paths and augments the flow.
 
 The first method is the constructor which takes as input n, s and t and calls the super class constructor.
 

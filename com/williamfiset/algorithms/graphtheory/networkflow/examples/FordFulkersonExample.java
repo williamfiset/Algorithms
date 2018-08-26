@@ -21,26 +21,35 @@ import java.util.List;
 public class FordFulkersonExample {
 
   private static class Edge {
-    Edge residual;
-    long flow, capacity;
-    final int from, to;
-    final long originalCapacity;
+    public int from, to;
+    public Edge residual;
+    public long flow;
+    public final long capacity;
     
     public Edge(int from, int to, long capacity) {
       this.from = from;
       this.to = to;
-      this.originalCapacity = this.capacity = capacity;
+      this.capacity = capacity;
     }
 
     public boolean isResidual() {
-      return originalCapacity == 0;
+      return capacity == 0;
+    }
+
+    public long remainingCapacity() {
+      return capacity - flow;
+    }
+
+    public void augment(long bottleNeck) {
+      flow += bottleNeck;
+      residual.flow -= bottleNeck;
     }
 
     public String toString(int s, int t) {
       String u = (from == s) ? "s" : ((from == t) ? "t" : String.valueOf(from));
       String v = (to == s) ? "s" : ((to == t) ? "t" : String.valueOf(to));
-      return String.format("Edge %s -> %s | flow = %d | original capacity = %d | capacity = %d | " +
-        "is residual: %s", u, v, flow, originalCapacity, capacity, isResidual());
+      return String.format("Edge %s -> %s | flow = %3d | capacity = %3d | is residual: %s", 
+        u, v, flow, capacity, isResidual());
     }
   }
 
@@ -113,10 +122,9 @@ public class FordFulkersonExample {
 
     /**
      * Returns the residual graph after the solver has been executed. This 
-     * allows you to inspect the {@link Edge#flow}, {@link Edge#capacity},
-     * and {@link Edge#originalCapacity} values of each edge. This is useful
-     * if you are debugging or want to figure out which edges were used
-     * during the max flow.
+     * allows you to inspect the {@link Edge#flow} and {@link Edge#capacity}
+     * values of each edge. This is useful if you are debugging or want to 
+     * figure out which edges were used during the max flow.
      */
     public List<Edge>[] getGraph() {
       execute();
@@ -176,16 +184,13 @@ public class FordFulkersonExample {
 
       List<Edge> edges = graph[node];
       for (Edge edge : edges) {
-        if (edge.capacity > 0 && visited[edge.to] != visitedToken) {
-          long bottleNeck = dfs(edge.to, min(flow, edge.capacity));
+        if (edge.remainingCapacity() > 0 && visited[edge.to] != visitedToken) {
+          long bottleNeck = dfs(edge.to, min(flow, edge.remainingCapacity()));
 
           // If we made it from s -> t (a.k.a bottleNeck > 0) then
           // augment flow with bottleneck value.
           if (bottleNeck > 0) {
-            Edge res = edge.residual;
-            edge.flow += bottleNeck;
-            edge.capacity -= bottleNeck;
-            res.capacity += bottleNeck;
+            edge.augment(bottleNeck);
             return bottleNeck;
           }
 
@@ -199,47 +204,47 @@ public class FordFulkersonExample {
 
 
   public static void main(String[] args) {
+    // n is the number of nodes including the source and the sink.
     int n = 12;
+
     int s = n-2;
     int t = n-1;
 
     NetworkFlowSolverBase solver = new FordFulkersonDfsSolver(n, s, t);
 
     // Edges from source
-    solver.addEdge(s, 1, 2);
-    solver.addEdge(s, 2, 1);
-    solver.addEdge(s, 0, 7);
+    solver.addEdge(s, 0, 10);
+    solver.addEdge(s, 1, 5);
+    solver.addEdge(s, 2, 10);
 
     // Middle edges
-    solver.addEdge(0, 3, 2);
-    solver.addEdge(0, 4, 4);
-    solver.addEdge(1, 4, 5);
-    solver.addEdge(1, 5, 6);
-    solver.addEdge(2, 3, 4);
-    solver.addEdge(2, 7, 8);
-    solver.addEdge(3, 6, 7);
-    solver.addEdge(3, 7, 1);
-    solver.addEdge(4, 5, 8);
-    solver.addEdge(4, 6, 3);
-    solver.addEdge(4, 8, 3);
-    solver.addEdge(5, 8, 3);
+    solver.addEdge(0, 3, 10);
+    solver.addEdge(1, 2, 10);
+    solver.addEdge(2, 5, 15);
+    solver.addEdge(3, 1, 2);
+    solver.addEdge(3, 6, 15);
+    solver.addEdge(4, 1, 15);
+    solver.addEdge(4, 3, 3);
+    solver.addEdge(5, 4, 4);
+    solver.addEdge(5, 8, 10);
+    solver.addEdge(6, 7, 10);
+    solver.addEdge(7, 4, 10);
+    solver.addEdge(7, 5, 7);
 
     // Edges to sink
-    solver.addEdge(6, t, 1);
-    solver.addEdge(7, t, 3);
-    solver.addEdge(8, t, 4);
+    solver.addEdge(6, t, 15);
+    solver.addEdge(8, t, 10);
 
     // Prints:
-    // Maximum Flow is: 7
+    // Maximum Flow is: 23
     System.out.printf("Maximum Flow is: %d\n", solver.getMaxFlow());
 
     List<Edge>[] resultGraph = solver.getGraph();
     
-    // Displays all interesting edges part of the resulting residual graph.
+    // Displays all edges part of the resulting residual graph.
     for (List<Edge> edges : resultGraph)
       for (Edge e : edges)
-        if (e.flow > 0) 
-          System.out.println(e.toString(s, t));
+        System.out.println(e.toString(s, t));
 
   }
 
