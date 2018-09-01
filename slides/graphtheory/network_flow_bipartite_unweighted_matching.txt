@@ -56,9 +56,75 @@ And lastly, the hardest of the four variants is when your graph is non-bipartite
 and the edges are weighted. I didn't find much information about this online,
 but the recommendation seems to be to use dynamic programming for small graphs.
 
+Let's now take a look at an example. This is going to be for the unweighted
+bipartite case, the easiest of the four. So, I want you to imagine that there
+are 5 people and 5 books, and some people express interest in some books.
+
+This results in a bipartite graph with people on one side and books on the other.
+So far so good. Now suppose we want to find Maximum Cardinality Bipartite Matching,
+or in other words, we want to match as many people with as many books as we can.
+
+Let's try a greedy approach to this matching problem.
+
+Let's start with person green
+
+Their first edge connects to the second book on the right side
+
+The second book is unallocated, so person green is matched with what is now
+book green.
+
+Next up is person orange.
+
+The first book he wants is the same as the book person green is already matched
+to, so he cannot select that book.
+
+His next choice is the third book which is unallocated.
+
+So he gets matched.
+
+Next up is person purple.
+
+<press>
+
+They insistently match to an unallocated book.
+
+Now person red.
+
+Person red only has one edge, meaning they're only willing to read that one book,
+however, that book has already been allocated to person orange, so person red
+cannot have it.
+
+Next is person brown
+
+They also want person orange's book but they also cannot have it, fortunately
+they have other options of books to read.
+
+<press>
+
+So person brown gets matched with one of those books.
+
+In the end of greedy approach only found us 4 matchings, but can we do better?
+Is this the true Maximum Cardinality matching? Turns out it's not, a greedy
+approach to maximum matching does not work as we just saw, we need to be more
+sophisticated.
+
+We're going to solve this maximum matching problem by turning our problem into
+a network flow problem and finding the maximum flow.
+
+The first thing we're going to do is make every edge directed and add unit
+capacities to each edge. The 0 slash 1 besides each edge means 0 flow and a
+maximum capacity of 1.
+
+Next we're going to introduce two new nodes, the source and the sink and hook up
+edges outwards from the source to the people with a capacity of 1 and hook up
+edges from the books to the sink also with a capacity of one.
+Let's think about what we have just done.
+1) First attaching an edge with capacity 1 from the source to a person
+intuitively means that, that person is allowed to receive at most one book.
+2) Then the middle directed edge from the person the book with capacity 1 means
+that, that person is allowed to pick up at most one copy of that book.
+3) And lastly the edge from the book to the sink with capacity 1 means that
+there is only one copy of this book.
 
 
 
-
-
-The same thing can be said about pairing boys and girls at a school dance.
