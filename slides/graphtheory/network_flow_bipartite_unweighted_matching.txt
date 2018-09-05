@@ -146,18 +146,21 @@ pick up more than one book.
 If we run max-flow again through the network we see that it’s now possible for
 one person to be matched with multiple books.
 
-What do we need to change in the flow network to allow a book to be selected
-multiple times, this is there are multiple copies of the book in the library?
+The next thing we want to do is change the flow network to allow a book to be 
+selected multiple times. Pause the video and think about how we can modify the
+network to support having multiple copies of the same book in the library, i'll 
+give you a short moment.
 
 The number of "copies" of a book is controlled by the capacity of the edges
 leading to the sink t. Increasing this value will allow more flow to run
-through the designated edge for each book.
+through the designated edge, this effectively limits or "controls" the number
+of book copies.
 
 Let’s change the capacity of some of the edges leading to the sink to allow
 having multiple copies of the same book to see what happens.
 
 If we re-run the algorithm on the network, we see that we now have people
-matched with the same books because multiple copies exist. For example book 3
+matched with the same books because multiple copies exist. For example, book 3
 and book 5 both have two people grabbing a copy of them.
 
 The actual assignment of people to books would be as follows, i'll let the
