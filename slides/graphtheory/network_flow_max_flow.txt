@@ -131,7 +131,7 @@ After this, I call the getMaxFlow method on the solver which actually runs the F
 
 Followed by printing the max-flow, I also display the interesting edges on the residual graph. First, I get the resulting residual graph from the solver after executing the max flow algorithm, iterate over all the edges, and display the flow on each edge.
 
-Let's actually run this program, and see what the output looks, like shall we? First lemme pop open a terminal right here. For those of you who also have a terminal open and want to play with the code, first just clone the code from Github by typing git clone followed by the repo URL which is github dot com slash william fiset slash algorithms
+Let's actually run this program, and see what the output looks, like shall we? so i just poped ipen a terminal, and For those of you who also have a terminal open and want to play with the code, first just clone the code from Github by typing git clone followed by the repo URL which is github dot com slash william fiset slash algorithms
 
 $ git clone https://github.com/williamfiset/Algorithms
 
@@ -189,7 +189,7 @@ The rational behind using a visited token in combination with an integer array t
 The way to check if node 'i' is visited is to check if the state in the visited array at index 'i' is equal to the visited token. This is handy because in the next iteration, when we need to yet again find another augmenting path we can reset the visited states of all the nodes by simply incrementing the visitedToken; I know, it's kind of hacky but it's super efficient.
 The alternative is to maintain a boolean visited array and fill it with false before finding any augmenting path. That's not great because it results in an additional order n work every time you want to find an augmenting path.
 
-Next is a boolean solved variables which indicates whether the network flow algorithm has ran. The solver only needs to run once because it always yields the same result.
+Next is a boolean solved variable which indicates whether the network flow algorithm has ran. The solver only needs to run once since it always yields the same result.
 
 Next is the maxFlow value which we're trying to calculate
 
