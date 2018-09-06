@@ -189,26 +189,3 @@ Awesome, that's all I got for this video, thank you for watching, please like
 this video if you learned something and please subscribe for more mathematics
 and computer science videos.
 
-
-
-
------------------------------------------------
-
-
-Hello and welcome, my name is William,
-Today we're going to use network flow to solve a problem. The problem we're 
-going to tackle I called the mice and owls problem which I got by tweaking 
-another competitive programming problem. I love this problem because of its
-simple elegant solution and its real world application, let's have a look.
-
-Suppose M mice are out on a field and there’s a hungry owl about to make a move.
-
-
-
-
-
-
-
-
-
-

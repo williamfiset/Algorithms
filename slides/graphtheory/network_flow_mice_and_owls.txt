@@ -1,0 +1,62 @@
+
+Hello and welcome, my name is William,
+Today we're going to use network flow to solve a problem. The problem we're 
+going to tackle I called the "mice and owls" problem which is a slightly harder 
+variation of another competitive programming problem which i'll link in the 
+description. I love this problem because of its simple elegant solution and its
+realistic application, let's have a look.
+
+Suppose M mice are out on a field and there’s a hungry owl about to make a move.
+Assume that the owl can reach every mouse.
+
+Further suppose there are H holes scattered across the ground that the mice can
+hide in (each having a certain capacity).
+
+Every mouse is capable of running a radius of r before being caught by the owl.
+The question asks what is the maximum number of mice that can hide safely?
+If you want to attempt the problem, now is a good time to stop the video and
+give it a go.
+
+The first step is to figure out which holes each mouse can reach. Visualize this
+by drawing a radius of r around each mouse, and if inside the radius there's a
+hole or the circle touches a hole we'll assume the mouse can make it to that 
+hole.
+
+So if we draw an edge between a mouse and a hole if the mouse can make it to
+that hole we get the following graph.
+
+The next step is to actually match mice to holes to maximize the overall
+safety of the group. By doing a simple quick inspection it's clear that not
+every mouse should be matched to any hole.
+
+For example, this orange mouse should probably not try to run to the hole with
+capacity 3, because it's the only mouse that can reach the other hole behind it
+with capacity 1.
+Making any bad decision like that has the chance to jeopardize maximizing the
+overall number of mice that can safely hide. 
+
+The key realization to make is that this graph is bipartite; and once we know
+that, it becomes a simpler task to setup the flow graph and run maximum flow to
+maximize the overall number of mice which can make it to safety.
+
+Here are the steps I would do to setup the flow graph to run max flow. First I
+would create M mice nodes labeled zero through M-1 inclusive.
+
+Then on the over side, I would create H nodes each representing a hole. I would
+label, or index those nodes from M to M+H-1 inclusive to give them a different
+id then the mouse nodes.
+
+Then place an edge with a capacity of 1 between the mouse and the hole if the
+mouse can reach the particular hole.
+
+Connect an edge with capacity 1 from the source to each mouse node to indicate
+that each node can have at most 1 mouse.
+
+And lastly, connect an edge from the hole node to the sink with the capacity of
+each hole.
+
+The problem has now been transformed into a maximum flow problem. Run any 
+max-flow algorithm and the maximum number of mice that are safe is equal to the
+value of the max-flow. This is really neat, and it's worth looking at some
+source code to really understand this setup and how it works.
+
