@@ -58,6 +58,7 @@ public class MiceAndOwls {
     final int M = mice.length;
     final int H = holes.length;
 
+    // N = number of nodes, S = source node, T = sink node
     final int N = M + H + 2;
     final int S = N - 1;
     final int T = N - 2;
@@ -70,7 +71,7 @@ public class MiceAndOwls {
       solver.addEdge(S, i, 1);
     }
 
-    // Hook up mice with holes
+    // Hook up each mouse with the holes they are able to reach
     for (int i = 0; i < M; i++) {
       Point2D mouse = mice[i].point;
       for (int j = 0; j < H; j++) {

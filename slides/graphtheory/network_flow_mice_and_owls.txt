@@ -81,4 +81,49 @@ The last thing I do in the main method is call the solve method which takes as
 input the two arrays we just created and a radius. The radius is how far a mouse
 can run from its current position before being caught by the owl.
 
-The solve method is where things really start getting interesting. 
+The solve method is where things really start getting interesting. Let's define
+some constant to make our lives a lot easier.
+- first let's get M, the number of mice
+- and H, the number of holes.
+- Next I compute N, the number of nodes as the number of mice, plus the number 
+of holes plus 2. The plus 2 is to account for the source and the sink nodes.
+- As per convention, I always index S and T, the source and the sink to N-1 and 
+N-2 to give them unique indeces.
+
+After that I initialize the NetworkFlowSolverBase by providing N, S and T. The 
+solver class is defined below. It's the exact same one from the Ford-Fulkerson
+source code video. In short, the solver lets you add edges with various
+capacities to the flow graph and then find the max flow once it's all setup. The
+goal of this video is not to explain how the max flow is found, or how the 
+solver works; I already discussed that previously. What I really want to focus 
+on is how to setup the flow graph for this problem, and run flow through it.
+
+When the graph is bipartite, like it is for this problem, the setup is pretty
+straight forward.
+
+The first setup is to hook up the edge from the source S, to each mouse with
+capacity 1. Intuitively, this limits each mouse node to represent at most one 
+mouse, this is necessary because we don't want a mouse node to represent more
+than one mouse, that doesn't really make sense.
+
+The next part hooks up mouse nodes with hole nodes in the flow graph. This is
+the middle section of the flow graph where we add an edge between a mouse node
+and a hole if the distance from a mouse to the hole is less than the radius. In
+other words, if the mouse can make it to the hole on time, add an edge connecting
+the mouse and the hole.
+
+This last step is also important. You need to remember to hook up the edges
+between the holes and the sink. These edges are slightly different because their
+capacity represents the number of mice which can fit into each particular hole.
+Say a hole has a capacity of 3 but there are 5 mice which can make it to that
+hole, well cannot allow more than 3 of those mice to fit into the hole so we set
+the capacity of this edge to the sink to be 3. Those 2 leftover mice will need
+to find another hole or get scooped up by the owl.
+
+The very last thing is to actually get the max flow to determine the number of
+safe mice, which for the configuration of holes and mice that I have is 4.
+
+Awesome thank you for watching, please like this video if you learned something
+and subscribe for more mathematics and computer science videos.
+
+
