@@ -1,4 +1,10 @@
 /**
+ * Download the code: 
+ * $ git clone https://github.com/williamfiset/Algorithms
+ *
+ * Change directory to the root of the Algorithms directory:
+ * $ cd Algorithms
+ *
  * Build:
  * $ javac com/williamfiset/algorithms/graphtheory/networkflow/examples/MiceAndOwls.java
  *
@@ -15,6 +21,13 @@ import java.util.*;
 
 public class MiceAndOwls {
 
+  static class Mouse {
+    Point2D point;
+    public Mouse(int x, int y) {
+      point = new Point2D.Double(x, y);
+    }
+  }
+
   static class Hole {
     int capacity;
     Point2D point;
@@ -25,15 +38,15 @@ public class MiceAndOwls {
   }
 
   public static void main(String[] args) {
-    Point2D[] mice = new Point2D[]{
-      new Point2D.Double(1, 0),
-      new Point2D.Double(0, 1),
-      new Point2D.Double(8, 1),
-      new Point2D.Double(12, 0),
-      new Point2D.Double(12, 4),
-      new Point2D.Double(15, 5)
+    Mouse[] mice = {
+      new Mouse(1, 0),
+      new Mouse(0, 1),
+      new Mouse(8, 1),
+      new Mouse(12, 0),
+      new Mouse(12, 4),
+      new Mouse(15, 5)
     };
-    Hole[] holes = new Hole[]{
+    Hole[] holes = {
       new Hole(1, 1, 1),
       new Hole(10, 2, 2),
       new Hole(14, 5, 1)
@@ -41,7 +54,7 @@ public class MiceAndOwls {
     solve(mice, holes, /* radius= */ 3);
   }
 
-  static void solve(Point2D[] mice, Hole[] holes, int radius) {
+  static void solve(Mouse[] mice, Hole[] holes, int radius) {
     final int M = mice.length;
     final int H = holes.length;
 
@@ -59,7 +72,7 @@ public class MiceAndOwls {
 
     // Hook up mice with holes
     for (int i = 0; i < M; i++) {
-      Point2D mouse = mice[i];
+      Point2D mouse = mice[i].point;
       for (int j = 0; j < H; j++) {
         Point2D hole = holes[j].point;
         if (mouse.distance(hole) <= radius) {

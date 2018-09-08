@@ -60,3 +60,25 @@ max-flow algorithm and the maximum number of mice that are safe is equal to the
 value of the max-flow. This is really neat, and it's worth looking at some
 source code to really understand this setup and how it works.
 
+Let's have a look at some source code for how to setup a problem like this.
+
+Here we are in the source code. I've laid out some instructions up top here in
+case you wanted to run or change the program yourself.
+
+This program actually uses the Ford Fulkerson flow solver we saw two videos 
+back, so I highly recommend you watch that video before continuing. I'll link
+it in the description below in case you haven't.
+
+So let's get started, the first thing I do is define a Mouse class, this is just
+a wrapper around a point2D object. Effectively a mouse is just a point a plane.
+I also do the same thing with a Hole class except that the Hole class also has a
+capacity with addition to a point2D object.
+
+Next up in the main method you see that I'm creating a bunch of mouse objects
+and holes with various capacities and placing both of those in arrays.
+
+The last thing I do in the main method is call the solve method which takes as
+input the two arrays we just created and a radius. The radius is how far a mouse
+can run from its current position before being caught by the owl.
+
+The solve method is where things really start getting interesting. 

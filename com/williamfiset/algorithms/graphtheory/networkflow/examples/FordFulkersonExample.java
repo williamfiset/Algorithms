@@ -4,6 +4,13 @@
  *
  * Time Complexity: O(fE), where f is the max flow and E is the number of edges
  *
+ *
+ * Download the code: 
+ * $ git clone https://github.com/williamfiset/Algorithms
+ *
+ * Change directory to the root of the Algorithms directory:
+ * $ cd Algorithms
+ *
  * Build:
  * $ javac com/williamfiset/algorithms/graphtheory/networkflow/examples/FordFulkersonExample.java
  *
