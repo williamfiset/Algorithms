@@ -219,7 +219,6 @@ public class MiceAndOwls {
 
     // Method to implement which solves the network flow problem.
     public abstract void solve();
-
   }
 
   private static class FordFulkersonDfsSolver extends NetworkFlowSolverBase {
