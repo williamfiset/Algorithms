@@ -9,11 +9,12 @@ realistic application, let's have a look.
 Suppose M mice are out on a field and there’s a hungry owl about to make a move.
 Assume that the owl can reach every mouse.
 
-Further suppose there are H holes scattered across the ground that the mice can
-hide in (each having a certain capacity).
+Further suppose there are H holes scattered across the ground, and that each 
+hole has a certain capacity for how many mice can fit in it.
 
-Every mouse is capable of running a radius of r before being caught by the owl.
-The question asks what is the maximum number of mice that can hide safely?
+We also happen to know that every mouse is capable of running a distance of r in
+any direction before being caught by the owl. The question asks what is the 
+maximum number of mice that can find hide safely before being caught?
 If you want to attempt the problem, now is a good time to stop the video and
 give it a go.
 
@@ -63,14 +64,13 @@ source code to really understand this setup and how it works.
 Let's have a look at some source code for how to setup a problem like this.
 
 Here we are in the source code. I've laid out some instructions up top here in
-case you wanted to run or change the program yourself.
-
+case you wanted to download this code and play around with it on your machine.
 This program actually uses the Ford Fulkerson flow solver we saw two videos 
 back, so I highly recommend you watch that video before continuing. I'll link
 it in the description below in case you haven't.
 
 So let's get started, the first thing I do is define a Mouse class, this is just
-a wrapper around a point2D object. Effectively a mouse is just a point a plane.
+a wrapper around a point2D object. Effectively, a mouse is just a point a plane.
 I also do the same thing with a Hole class except that the Hole class also has a
 capacity with addition to a point2D object.
 
