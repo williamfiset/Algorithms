@@ -142,3 +142,43 @@ the found matching. Basically we first solve the problem by figuring out which
 answers we get and then work backwards to figure out which operator was used. In
 theory we could tag each middle edge with the operator used, but I didn't bother.
 
+Let's wrap up this problem, the last thing we need to do is look at the 
+matchings we have and figure out which operator to use.
+
+The first matching is the input pair 1,5 matched to 6. So we ask ourselves which
+of the three operators plus, minus or multiply results in 1,5 equaling 6?
+
+So we try all three options and we figure out the answer is plus because 1 + 5 
+equals 6.
+
+Then we move on to the next pair and do the same thing.
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+If there are multiple operators that result in the right answer, pick any of them
+
+<press>
+
+<press>
+
+And that's basically it, we can verify that all our operators yield the correct 
+result and that all our answer are unique. 
+I didn't go into great detail on how to support multiple repeated pairs, but 
+i'll leave that as an exercise to the listener.
+
+Thank you so much for watching, please this this video if you learned something,
+and subscribe for more mathematics and computer science videos.
+
+
+
+
+
+
+
+
