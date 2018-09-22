@@ -1,0 +1,40 @@
+Hello and welcome,
+
+My name is William and today we are still talking about network flow, and in 
+particular we will be looking at a specific implementation of the Ford-Fulkerson
+method which is the Edmonds-Karp algorithm. The Edmonds-Karp algorithm is 
+another maximum flow algorithm which uses a different technique to find 
+augmenting paths through the flow graph.
+
+Before we get started let me give you a refresher on what we're doing:
+1) We are trying to find the maximum flow on a flow graph because we know that
+finding the max flow is really useful for finding bipartite matchings and to 
+solve a whole host of problems.
+2) So far we have looked at one technique to find the max flow which is to use 
+the Ford-Fulkerson method which at a high level says that all we want to do is
+repeatedly find augmenting paths from s to t, augment the flow and repeat until
+no more paths exist.
+3) The key takeaway here is that the Ford-Fulkerson method does NOT specify HOW 
+to actually find augmenting paths, so this is where optimization comes into play
+
+[Ford-Fulkerson animation]
+A few videos ago we saw what the Ford-Fulkerson method is, how it is used to 
+find the maximum flow and how it can be implemented with a DFS.
+
+[The flip graph animation]
+However, we saw that the pitfall when using a DFS was that the time complexity
+depends on the capacity of the edges in the graph. This is because the DFS picks
+the edges to traverse in such a way that we might only ever able to push one 
+unit of flow in each iteration.
+
+This is really bad and can kill the time complexity even though it is unlikely 
+to happen in practice, but it's something we absolutely want to avoid should it 
+happen. Right now, the time complexity of the Ford-Fulkerson method with a DFS 
+is O(Ef) where f is the maximum flow. Edmonds-Karp is just a small twist which
+says that instead of using a DFS to find augmenting paths we should use a BFS.
+
+The Edmonds-Karp algorithm can also be thought of as finding the shortest 
+augmenting path from s to t (in terms of the number of edges used). If we consider
+each edge with a positive capacity as unweighted, because we don't assume that
+one edge is any better or worse to take then any other edge then doing a BFS 
+from source to the sink yields the shortest length augmenting path.
