@@ -30,11 +30,17 @@ unit of flow in each iteration.
 This is really bad and can kill the time complexity even though it is unlikely 
 to happen in practice, but it's something we absolutely want to avoid should it 
 happen. Right now, the time complexity of the Ford-Fulkerson method with a DFS 
-is O(Ef) where f is the maximum flow. Edmonds-Karp is just a small twist which
-says that instead of using a DFS to find augmenting paths we should use a BFS.
+is O(E times f) where E is the number of edges and f is the maximum flow. The 
+idea behind Edmonds-Karp says that instead of using a DFS to find augmenting
+paths we should use a BFS and that doing this should result in a better time 
+complexity of O(V time E squared). O(V time E squared) may not look like a 
+better time complexity, but it actually is because the time complexity while it 
+may not be great does no depend on the capacity value of any edge in the flow 
+graph, and this is crucial.
 
 The Edmonds-Karp algorithm can also be thought of as finding the shortest 
 augmenting path from s to t (in terms of the number of edges used). If we consider
-each edge with a positive capacity as unweighted, because we don't assume that
-one edge is any better or worse to take then any other edge then doing a BFS 
-from source to the sink yields the shortest length augmenting path.
+each edge with a positive capacity as unweighted and edges with a non-negative
+capacity as non existent then doing a BFS from source to the sink yields the 
+shortest length augmenting path. We can consider each each as unweighted because
+we don't assume that one edge is any better or worse to take then any other edge
