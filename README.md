@@ -50,7 +50,7 @@
 
 ### Network flow
 * [Bipartite graph verification (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/BipartiteGraphCheckAdjacencyList.java) **- O(V+E)**
-* [Max flow & Min cut (Ford-Fulkerson with DFS, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/FordFulkersonDfsSolverAdjacencyList.java) **- O(fE)**
+* [:movie_camera:](https://www.youtube.com/watch?v=LdOnanfc5TM)[Max flow & Min cut (Ford-Fulkerson with DFS, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/FordFulkersonDfsSolverAdjacencyList.java) **- O(fE)**
 * [Max flow & Min cut (Ford-Fulkerson with DFS, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/FordFulkersonDFSAdjacencyMatrix.java) **- O(fV<sup>2</sup>)**
 * [Max flow & Min cut (Edmonds-Karp, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/EdmondsKarpAdjacencyList.java) **- O(VE<sup>2</sup>)**
 * [Max flow & Min cut (Capacity scaling, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/networkflow/CapacityScalingSolverAdjacencyList.java) **- O(E<sup>2</sup>log<sub>2</sub>(U))**
