@@ -1,0 +1,13 @@
+
+Hello and welcome to this Graph Theory algorithms course, my name is William, 
+and I will be your instructor throughout these videos!
+
+Graph theory is  ... this course focuses on the computer science elements of Graph theory
+
+
+What is GT?
+
+What is being tought?
+
+Is it free? Yup it's on youtube and Udemy
+

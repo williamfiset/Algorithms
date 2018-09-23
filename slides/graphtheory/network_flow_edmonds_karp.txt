@@ -38,9 +38,13 @@ better time complexity, but it actually is because the time complexity while it
 may not be great does no depend on the capacity value of any edge in the flow 
 graph, and this is crucial.
 
-The Edmonds-Karp algorithm can also be thought of as finding the shortest 
-augmenting path from s to t (in terms of the number of edges used). If we consider
-each edge with a positive capacity as unweighted and edges with a non-negative
-capacity as non existent then doing a BFS from source to the sink yields the 
-shortest length augmenting path. We can consider each each as unweighted because
-we don't assume that one edge is any better or worse to take then any other edge
+The Edmonds-Karp algorithm can also be thought of as a method of augmentation 
+which repeatedly finds the shortest augmenting path from s -> t (in terms of the
+number of edges used) each iteration. 
+Using a BFS during Edmonds-Karp ensures that we find the shortest path, because
+every edge is unweighted. I say unweighted, because as long as the edge has a
+positive capacity we don't distinguish between one edge being any better or
+worse than any other edge.
+
+
+
