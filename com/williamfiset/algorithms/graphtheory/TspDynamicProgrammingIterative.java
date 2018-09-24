@@ -31,6 +31,8 @@ public class TspDynamicProgrammingIterative {
     if (N <= 2) throw new IllegalStateException("N <= 2 not yet supported.");
     if (N != distance[0].length) throw new IllegalStateException("Matrix must be square (n x n)");
     if (start < 0 || start >= N) throw new IllegalArgumentException("Invalid start node.");
+    if (N > 32) throw new IllegalArgumentException("Matrix too large! A matrix that size for the DP TSP problem with a time complexity of" +
+                                                   "O(n^2*2^n) requires way too much computation for any modern home computer to handle");
 
     this.start = start;
     this.distance = distance;
