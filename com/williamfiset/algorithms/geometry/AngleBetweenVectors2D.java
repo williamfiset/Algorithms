@@ -33,8 +33,9 @@ public class AngleBetweenVectors2D {
 
   }
 
+    /* Examples */
+
   public static void main(String[] args) {
-    
     System.out.println("Angle between   (0,1),   (1,0): " + angleBetweenVectors(0,1,1,0));
     System.out.println("Angle between   (0,1),  (0,-1): " + angleBetweenVectors(0,1,0,-1));
     System.out.println("Angle between   (2,0), (-1,-1): " + angleBetweenVectors(2,0,-1,-1));
@@ -45,18 +46,6 @@ public class AngleBetweenVectors2D {
     System.out.println("Angle between  (0,-1),   (1,1): " + angleBetweenVectors(0,-1,1,1));
     System.out.println("Angle between  (-6,6),   (3,0): " + angleBetweenVectors(-6,6,3,0));
     System.out.println("Angle between  (0,-1),  (1,-1): " + angleBetweenVectors(0,-1,1,-1));
-    
-    int loops = 100000;
-    while(loops-- > 0) {
-
-      double v = Math.random() * 1e11;
-      double angle = angleBetweenVectors(v,v,-v,-v);
-      if (Double.isNaN(angle)) System.out.printf("Error: (%f,%f), (%f,%f) angle is not a number\n", v,v,-v,-v);
-      angle = angleBetweenVectors(v,v,v,v);
-      if (Double.isNaN(angle)) System.out.printf("Error: (%f,%f), (%f,%f) angle is not a number\n", v,v,v,v);
-      
-    }
-
   }
 
 }
