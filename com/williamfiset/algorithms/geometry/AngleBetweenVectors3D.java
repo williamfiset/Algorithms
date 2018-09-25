@@ -15,7 +15,6 @@ public class AngleBetweenVectors3D {
   // Return the smaller of the two angles between two 3D vectors in radians
   static double angleBetweenVectors(double v1x, double v1y, double v1z,
                                     double v2x, double v2y, double v2z) {
-    
     // To determine the angle between two vectors v1 and v2 we can use
     // the following formula: dot(v1,v2) = len(v1)*len(v2)*cosθ and solve
     // for θ where dot(a,b) is the dot product and len(c) is the length of c.
@@ -30,30 +29,14 @@ public class AngleBetweenVectors3D {
     if (value <= -1.0) return PI;
     if (value >= +1.0) return 0;
     return acos(value); 
-
   }
 
   public static void main(String[] args) {
-    
     System.out.println("Angle between  (1,1,0),  (1,1,1): " + angleBetweenVectors(1,1,0,1,1,1));
     System.out.println("Angle between  (5,5,5),  (5,5,5): " + angleBetweenVectors(5,5,5,5,5,5));
     System.out.println("Angle between  (-5,-5,-5),  (-5,-5,-5): " + angleBetweenVectors(-5,-5,-5,-5,-5,-5));
     System.out.println("Angle between  (2,2,2),  (-1,-1,-1): " + angleBetweenVectors(2,2,2,-1,-1,-1));
     System.out.println("Angle between  (4,-6,5), (-3,7,12): " + angleBetweenVectors(4,-6,5,-3,7,12));
-    
-    int loops = 100000;
-    while(loops-- > 0) {
-
-      double v = Math.random() * 1e11;
-
-      double angle = angleBetweenVectors(v,v,v,-v,-v,-v);
-      if (Double.isNaN(angle)) System.out.printf("Error: (%f,%f,%f), (%f,%f,%f) angle is not a number\n", v,v,v,-v,-v,-v);
-
-      angle = angleBetweenVectors(v,v,v,v,v,v);
-      if (Double.isNaN(angle)) System.out.printf("Error: (%f,%f,%f), (%f,%f,%f) angle is not a number\n", v,v,v,v,v,v); 
-
-    }
-
   }
 
 }
