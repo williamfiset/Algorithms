@@ -2,12 +2,24 @@
 Hello and welcome to this Graph Theory algorithms course, my name is William, 
 and I will be your instructor throughout these videos!
 
-Graph theory is  ... this course focuses on the computer science elements of Graph theory
+Graph theory is the Mathematical study of the relationship between vertices and
+edges in a network.
+[Mention how graphs can represent just about anything].
+Throughout this course we will be taking on a computer science approach to GT
+and look at graph algorithms and how they are used and applied in the real world.
 
+1) How graphs are represented and stored on a computer
+2) Common graph theory problems
+3) Breadth first search algorithm
+4) Depth first search algorithm
+5) Dijkstra's algorithm
+6) Topological sort algorithm
+7) Shortest/longest path on a acyclic graph
+8) Bellman Ford's algorithm
+9) Floyd-Warshall all pairs shortest path algorithm
+10) Finding bridges/articulation points
+11) Finding strongly connected components (Tarjan's)
+12) Travelling salesman problem (TSP)
 
-What is GT?
-
-What is being tought?
-
-Is it free? Yup it's on youtube and Udemy
+Q: Is the course free? Where can users find it?
 
