@@ -46,7 +46,7 @@ public class MinimumWeightPerfectMatching {
    * {@code
    *     MinimumWeightPerfectMatching mwpm = ...
    *     int[] matching = mwpm.getMinWeightCostMatching();
-   *     for (int i = 0; i < n/2; i += 2) {
+   *     for (int i = 0; i < matching.length / 2; i++) {
    *       int node1 = matching[2*i];
    *       int node2 = matching[2*i+1];
    *       // Do something with the matched pair (node1, node2)
@@ -67,6 +67,8 @@ public class MinimumWeightPerfectMatching {
     // operator to compare states to see if they overlap and the '|' operator to combine states.
     double[][] dp = new double[n >> 1][1 << n];
     
+    int[][] memo = new int[n >> 1][1 << n];
+
     int numPairs = (n*(n+1))/2;
     int[] pairStates = new int[numPairs];
     double[] pairCost = new double[numPairs];
@@ -75,6 +77,7 @@ public class MinimumWeightPerfectMatching {
       for (int j = i+1; j < n; j++) {
         int state = (1 << i) | (1 << j);
         dp[0][state] = cost[i][j];
+        memo[0][state] = 0;
         pairStates[k] = state;
         pairCost[k++] = cost[i][j];
       }
@@ -85,16 +88,21 @@ public class MinimumWeightPerfectMatching {
         double prevStateCost = dp[k-1][state];
         // A cost of zero means the previous state does not exist.
         if (prevStateCost == 0) continue;
-        for (int j = 0; j < numPairs; j++) {
+        for (int i = 0; i < numPairs; i++) {
 
-          int pairState = pairStates[j];
+          int pairState = pairStates[i];
           // Ignore states which overlap
           if ((state & pairState) != 0) continue;
 
           int newState = state | pairState;
-          double newCost = prevStateCost + pairCost[j];
-          if (dp[k][newState] == 0 || newCost < dp[k][newState])
+          double newCost = prevStateCost + pairCost[i];
+          if (dp[k][newState] == 0 || newCost < dp[k][newState]) {
             dp[k][newState] = newCost;
+            // Save the fact that we went from 'state' -> 'newState' at stage k. From this we will
+            // be able to reconstruct which pairs of nodes were taken by looking at 'state' xor 'newState'
+            // which should give us the 'pairState' from which we can deduce the pair used.
+            memo[k][newState] = state;
+          }
         }
       }
     }
@@ -102,7 +110,27 @@ public class MinimumWeightPerfectMatching {
     int END_STATE = (1 << n) - 1;
     minWeightCost = dp[(n >> 1) - 1][END_STATE];
 
+    matching = new int[n];
+    int state = END_STATE;
+    for (int k = (n >> 1) - 1, i = 0; k >= 0; k--) {
+      int previousState = memo[k][state];
+      int pairUsed = state ^ previousState;
+      matching[i++] = getBitPosition(Integer.lowestOneBit(pairUsed));
+      matching[i++] = getBitPosition(Integer.highestOneBit(pairUsed));
+      state = previousState;
+    }
+
     solved = true;
+  }
+
+  // Gets the zero base index position of the 1 bit in 'k'
+  private int getBitPosition(int k) {
+    int count = -1;
+    while (k > 0) {
+      count++;
+      k >>= 1;
+    }
+    return count;
   }
 
     /* Example */
@@ -131,6 +159,13 @@ public class MinimumWeightPerfectMatching {
       System.out.printf("MWPM cost is wrong! Got: %.5f But wanted: %d\n", minCost, n/2);
     } else {
       System.out.printf("MWPM is: %.5f\n", minCost);
+    }
+
+    int[] matching = mwpm.getMinWeightCostMatching();
+    for (int i = 0; i < matching.length / 2; i++) {
+      int ii = matching[2*i];
+      int jj = matching[2*i+1];
+      System.out.printf("(%d, %d) <-> (%d, %d)\n", (int) pts.get(ii).getX(), (int) pts.get(ii).getY(), (int) pts.get(jj).getX(), (int) pts.get(jj).getY());
     }
   }
 
