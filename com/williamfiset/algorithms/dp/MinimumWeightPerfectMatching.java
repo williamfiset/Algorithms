@@ -24,6 +24,8 @@ public class MinimumWeightPerfectMatching {
   public MinimumWeightPerfectMatching(double[][] cost) {
     if (cost == null) throw new IllegalArgumentException("Input cannot be null");
     n = cost.length;
+    if (n == 0)
+      throw new IllegalArgumentException("Matrix size is zero");
     if (n % 2 != 0)
       throw new IllegalArgumentException("Matrix has an odd size, no perfect matching exists.");
     if (n > 32) throw new IllegalArgumentException("Matrix too large! A matrix that size for the MWPM problem with a time complexity of" +
@@ -69,7 +71,7 @@ public class MinimumWeightPerfectMatching {
     // included in the state. Encoding the state this way allows us to compactly represent selecting
     // a subset of the nodes present in the matching. Furthermore, it allows using the '&' binary 
     // operator to compare states to see if they overlap and the '|' operator to combine states.
-    double[][] dp = new double[NUM_PAIRS][1 << n];
+    Double[][] dp = new Double[NUM_PAIRS][1 << n];
     
     // Memo table to save the history of the chosen states. This table is used to reconstruct the
     // chosen pairs of nodes after the algorithm has executed.
@@ -82,32 +84,30 @@ public class MinimumWeightPerfectMatching {
     double[] pairCost = new double[NUM_SINGLETON_PAIRS];
 
     for (int i = 0, k = 0; i < n; i++) {
-      for (int j = i+1; j < n; j++) {
+      for (int j = i+1; j < n; j++, k++) {
         int state = (1 << i) | (1 << j);
         dp[0][state] = cost[i][j];
         pairStates[k] = state;
-        pairCost[k++] = cost[i][j];
+        pairCost[k] = cost[i][j];
       }
     }
 
     for (int k = 1; k < NUM_PAIRS; k++) {
       for (int state = 0; state < (1 << n); state++) {
-        double prevStateCost = dp[k-1][state];
-        // A cost of zero means the previous state does not exist.
-        if (prevStateCost == 0) continue;
+        // A cost of null means the previous state does not exist.
+        if (dp[k-1][state] == null) continue;
         for (int i = 0; i < NUM_SINGLETON_PAIRS; i++) {
-
-          int pairState = pairStates[i];
+          int pair = pairStates[i];
           // Ignore states which overlap
-          if ((state & pairState) != 0) continue;
+          if ((state & pair) != 0) continue;
 
-          int newState = state | pairState;
-          double newCost = prevStateCost + pairCost[i];
-          if (dp[k][newState] == 0 || newCost < dp[k][newState]) {
+          int newState = state | pair;
+          double newCost = dp[k-1][state] + pairCost[i];
+          if (dp[k][newState] == null || newCost < dp[k][newState]) {
             dp[k][newState] = newCost;
             // Save the fact that we went from 'state' -> 'newState' at stage k. From this we will
             // be able to reconstruct which pairs of nodes were taken by looking at 'state' xor
-            // 'newState' which should give us the 'pairState' from which we can deduce the pair used.
+            // 'newState' which should give us the binary representation (state) of the pair used.
             history[k][newState] = state;
           }
         }

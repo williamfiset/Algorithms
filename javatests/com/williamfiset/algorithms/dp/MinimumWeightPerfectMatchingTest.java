@@ -12,7 +12,7 @@ public class MinimumWeightPerfectMatchingTest {
   static class BruteForceMwpm {
     private int n;
     private double[][] matrix;
-    private double minWeightMatching;
+    private double minWeightMatching = Double.POSITIVE_INFINITY;
 
     public BruteForceMwpm(double[][] matrix) {
       this.matrix = matrix;
@@ -38,16 +38,13 @@ public class MinimumWeightPerfectMatchingTest {
       int[] permutation = new int[n];
       for(int i = 0; i < n; i++) permutation[i] = i;
 
-      double bestMatchingCost = Double.POSITIVE_INFINITY;
-
       // Try all matchings
       do {
         double matchingCost = computeMatchingCost(permutation);
-        if (matchingCost < bestMatchingCost) {
-          bestMatchingCost = matchingCost;
+        if (matchingCost < minWeightMatching) {
+          minWeightMatching = matchingCost;
         }
       } while(nextPermutation(permutation));
-      minWeightMatching = bestMatchingCost;
     }
 
     // Generates the next ordered permutation in-place (skips repeated permutations).
@@ -82,7 +79,7 @@ public class MinimumWeightPerfectMatchingTest {
     for (int loop = 0; loop < 10; loop++) {
       int n = Math.max(1, (int) (Math.random() * 11)) * 2; // n is either 2,4,6,8,10,12,14,16,18,20
       double[][] costMatrix = new double[n][n];
-      randomFillSymmetricMatrix(costMatrix);
+      randomFillSymmetricMatrix(costMatrix, 100);
 
       MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
       int[] matching = mwpm.getMinWeightCostMatching();
@@ -100,7 +97,7 @@ public class MinimumWeightPerfectMatchingTest {
     for (int loop = 0; loop < 50; loop++) {
       int n = Math.max(1, (int) (Math.random() * 11)) * 2; // n is either 2,4,6,8,10,12,14,16,18,20
       double[][] costMatrix = new double[n][n];
-      randomFillSymmetricMatrix(costMatrix);
+      randomFillSymmetricMatrix(costMatrix, 100);
 
       MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
       int[] matching = mwpm.getMinWeightCostMatching();
@@ -115,11 +112,11 @@ public class MinimumWeightPerfectMatchingTest {
   }
 
   @Test
-  public void testAgainstBruteForce() {
+  public void testAgainstBruteForce_largeValues() {
     for (int loop = 0; loop < 50; loop++) {
       int n = Math.max(1, (int) (Math.random() * 6)) * 2; // n is either 2,4,6,8, or 10
       double[][] costMatrix = new double[n][n];
-      randomFillSymmetricMatrix(costMatrix);
+      randomFillSymmetricMatrix(costMatrix, /*maxValue=*/ 10000);
 
       MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
       BruteForceMwpm bfMwpm = new BruteForceMwpm(costMatrix);
@@ -129,10 +126,26 @@ public class MinimumWeightPerfectMatchingTest {
     }
   }
 
-  public void randomFillSymmetricMatrix(double[][] dist) {
+  @Test
+  public void testAgainstBruteForce_smallValues() {
+    for (int loop = 0; loop < 100; loop++) {
+      int n = Math.max(1, (int) (Math.random() * 6)) * 2; // n is either 2,4,6,8, or 10
+      double[][] costMatrix = new double[n][n];
+      randomFillSymmetricMatrix(costMatrix, /*maxValue=*/ 3); 
+
+      MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
+      BruteForceMwpm bfMwpm = new BruteForceMwpm(costMatrix);
+      double dpSoln = mwpm.getMinWeightCost();
+      double bfSoln = bfMwpm.getMinWeightCost();
+
+      assertThat(dpSoln).isEqualTo(bfSoln);
+    }
+  }
+  
+  public void randomFillSymmetricMatrix(double[][] dist, int maxValue) {
     for (int i = 0; i < dist.length; i++) {
       for (int j = i+1; j < dist.length; j++) {
-        double val = (int)(Math.random() * 10000);
+        double val = (int)(Math.random() * maxValue);
         dist[i][j] = dist[j][i] = val;
       }
     }
