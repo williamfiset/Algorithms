@@ -172,7 +172,11 @@ public class MinimumWeightPerfectMatching {
     for (int i = 0; i < matching.length / 2; i++) {
       int ii = matching[2*i];
       int jj = matching[2*i+1];
-      System.out.printf("(%d, %d) <-> (%d, %d)\n", (int) pts.get(ii).getX(), (int) pts.get(ii).getY(), (int) pts.get(jj).getX(), (int) pts.get(jj).getY());
+      System.out.printf("(%d, %d) <-> (%d, %d)\n",
+        (int) pts.get(ii).getX(),
+        (int) pts.get(ii).getY(),
+        (int) pts.get(jj).getX(),
+        (int) pts.get(jj).getY());
     }
   }
 
