@@ -1,7 +1,12 @@
-/*
-WIP
-*/
-
+/**
+ * Implementation of the Minimum Weight Perfect Matching (MWPM) problem. In this problem you
+ * are given a distance matrix which gives the distance from each node to every other node, and
+ * you want to pair up all the nodes to one another minimizing the overall cost.
+ *
+ * Time Complexity: O(n^3 * 2^n) 
+ *
+ * @author William Fiset
+ */
 
 import java.util.*;
 import java.awt.geom.*;
@@ -11,6 +16,7 @@ public class MinimumWeightPerfectMatching {
   private final int n;
   private double[][] cost;
   private double minWeightCost;
+  private int[] matching;
   private boolean solved;
 
   // The cost matrix should be a symmetric (i.e cost[i][j] = cost[j][i])
@@ -19,12 +25,9 @@ public class MinimumWeightPerfectMatching {
     n = cost.length;
     if (n % 2 != 0)
       throw new IllegalArgumentException("Matrix has an odd size, no perfect matching exists.");
-    // TODO(william): Check if n is too large
+    if (n > 32) throw new IllegalArgumentException("Matrix too large! A matrix that size for the MWPM problem with a time complexity of" +
+                                                   "O(n^3*2^n) requires way too much computation and memory for a modern home computer.");
     this.cost = cost;
-  }
-
-  public String pbs(int b) {
-    return String.format("%1$10s", Integer.toBinaryString(b));
   }
 
   public double getMinWeightCost() {
@@ -32,8 +35,30 @@ public class MinimumWeightPerfectMatching {
     return minWeightCost;
   }
 
-  public void solve2() {
-    // State is: Number of pairs solved for (zero based) and the binary encoded state.
+  /**
+   * Get the minimum weight cost matching.
+   * The matching is returned as an array where the nodes at index 2*i and 2*i+1 form
+   * a matched pair. For example, nodes at indexes (0, 1) are a pair, (2, 3) are 
+   * another pair, etc...
+   * 
+   * How to iterate over the pairs:
+   * <pre>
+   * {@code
+   *     MinimumWeightPerfectMatching mwpm = ...
+   *     int[] matching = mwpm.getMinWeightCostMatching();
+   *     for (int i = 0; i &lt; n/2; i += 2) {
+   *       int node1 = matching[2*i];
+   *       int node2 = matching[2*i+1];
+   *       // Do something with the matched pair (node1, node2)
+   *     }
+   * }</pre>
+   */
+  public int[] getMinWeightCostMatching() {
+    if (!solved) solve();
+    return matching;
+  }
+
+  public void solve() {
     double[][] dp = new double[n >> 1][1 << n];
     
     int numPairs = (n*(n+1))/2;
@@ -52,8 +77,10 @@ public class MinimumWeightPerfectMatching {
     for (int k = 1; k < (n >> 1); k++) {
       for (int state = 0; state < (1 << n); state++) {
         double prevStateCost = dp[k-1][state];
+        // A cost of zero means the previous state does not exist.
         if (prevStateCost == 0) continue;
         for (int j = 0; j < numPairs; j++) {
+
           int pairState = pairStates[j];
           // Ignore states which overlap
           if ((state & pairState) != 0) continue;
@@ -68,48 +95,6 @@ public class MinimumWeightPerfectMatching {
 
     int END_STATE = (1 << n) - 1;
     minWeightCost = dp[(n >> 1) - 1][END_STATE];
-  }
-
-  public void solve() {
-    final int H = n / 2;
-    
-    Map<Integer, Double> pairs = new HashMap<>();
-    Map<Integer, Double> states = new HashMap<>();
-    for (int i = 0; i < n; i++) {
-      for (int j = i+1; j < n; j++) {
-        int state = (1 << j) | (1 << i);
-        pairs.put(state, cost[i][j]);
-        states.put(state, cost[i][j]);
-      }
-    }
-
-    for (int h = 1; h < H; h++) {
-      Map<Integer, Double> newStates = new HashMap<>();
-      System.out.println(states.size());
-      for (int state : states.keySet()) {
-        double stateCost = states.get(state);
-        for (int pairState : pairs.keySet()) {
-          double pairCost = pairs.get(pairState);
-          if ((state & pairState) != 0) continue;
-          int newState = state | pairState;
-          double newCost = stateCost + pairCost;
-          Double value = newStates.get(newState);
-          value = value == null ? newCost : Math.min(newCost, value);
-          newStates.put(newState, value);
-        }
-      }
-      states = newStates;
-    }
-
-    int END_STATE = (1 << n) - 1;
-    if (!states.containsKey(END_STATE)) {
-      System.out.println("We got a problem. End state does not exist!");
-      System.out.println(states);
-    } else {
-      minWeightCost = states.get(END_STATE);
-    }
-
-    solved = true;
   }
 
     /* Example */
