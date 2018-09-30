@@ -60,35 +60,41 @@ public class MinimumWeightPerfectMatching {
 
   public void solve() {
     if (solved) return;
+    
+    final int NUM_PAIRS = n / 2;
+    final int END_STATE = (1 << n) - 1;
 
     // The DP state is encoded as a bitmask where the i'th bit is flipped on if the i'th node is
     // included in the state. Encoding the state this way allows us to compactly represent selecting
     // a subset of the nodes present in the matching. Furthermore, it allows using the '&' binary 
     // operator to compare states to see if they overlap and the '|' operator to combine states.
-    double[][] dp = new double[n >> 1][1 << n];
+    double[][] dp = new double[NUM_PAIRS][1 << n];
     
-    int[][] memo = new int[n >> 1][1 << n];
+    // Memo table to save the history of the chosen states. This table is used to reconstruct the
+    // chosen pairs of nodes after the algorithm has executed.
+    int[][] history = new int[NUM_PAIRS][1 << n];
 
-    int numPairs = (n*(n+1))/2;
-    int[] pairStates = new int[numPairs];
-    double[] pairCost = new double[numPairs];
+    // Singleton pair states with only two nodes are the building blocks of this algorithm. Every
+    // iteration, we try to add singleton pairs to previous states to construct a larger matching.
+    final int NUM_SINGLETON_PAIRS = (n*(n+1))/2;
+    int[] pairStates = new int[NUM_SINGLETON_PAIRS];
+    double[] pairCost = new double[NUM_SINGLETON_PAIRS];
 
     for (int i = 0, k = 0; i < n; i++) {
       for (int j = i+1; j < n; j++) {
         int state = (1 << i) | (1 << j);
         dp[0][state] = cost[i][j];
-        memo[0][state] = 0;
         pairStates[k] = state;
         pairCost[k++] = cost[i][j];
       }
     }
 
-    for (int k = 1; k < (n >> 1); k++) {
+    for (int k = 1; k < NUM_PAIRS; k++) {
       for (int state = 0; state < (1 << n); state++) {
         double prevStateCost = dp[k-1][state];
         // A cost of zero means the previous state does not exist.
         if (prevStateCost == 0) continue;
-        for (int i = 0; i < numPairs; i++) {
+        for (int i = 0; i < NUM_SINGLETON_PAIRS; i++) {
 
           int pairState = pairStates[i];
           // Ignore states which overlap
@@ -101,24 +107,24 @@ public class MinimumWeightPerfectMatching {
             // Save the fact that we went from 'state' -> 'newState' at stage k. From this we will
             // be able to reconstruct which pairs of nodes were taken by looking at 'state' xor 'newState'
             // which should give us the 'pairState' from which we can deduce the pair used.
-            memo[k][newState] = state;
+            history[k][newState] = state;
           }
         }
       }
     }
 
-    int END_STATE = (1 << n) - 1;
-    minWeightCost = dp[(n >> 1) - 1][END_STATE];
-
+    // Reconstruct the matching of pairs of nodes.
     matching = new int[n];
     int state = END_STATE;
-    for (int k = (n >> 1) - 1, i = 0; k >= 0; k--) {
-      int previousState = memo[k][state];
-      int pairUsed = state ^ previousState;
+    for (int k = NUM_PAIRS - 1, i = 0; k >= 0; k--) {
+      int prevState = history[k][state];
+      int pairUsed = state ^ prevState;
       matching[i++] = getBitPosition(Integer.lowestOneBit(pairUsed));
       matching[i++] = getBitPosition(Integer.highestOneBit(pairUsed));
-      state = previousState;
+      state = prevState;
     }
+
+    minWeightCost = dp[NUM_PAIRS - 1][END_STATE];
 
     solved = true;
   }
