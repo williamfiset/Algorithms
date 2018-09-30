@@ -76,6 +76,24 @@ public class MinimumWeightPerfectMatchingTest {
       sequence[j] = tmp;
     }
   }
+
+  @Test
+  public void testMatchingOutputsUniqueNodes() {
+    for (int loop = 0; loop < 10; loop++) {
+      int n = Math.max(1, (int) (Math.random() * 11)) * 2; // n is either 2,4,6,8,10,12,14,16,18,20
+      double[][] costMatrix = new double[n][n];
+      randomFillSymmetricMatrix(costMatrix);
+
+      MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
+      int[] matching = mwpm.getMinWeightCostMatching();
+      Set<Integer> set = new HashSet<>();
+      for (int i = 0; i < matching.length; i++) {
+        set.add(matching[i]);
+      }
+      
+      assertThat(set.size()).isEqualTo(matching.length);
+    }
+  }
   
   @Test
   public void testMatchingAndCostAreConsistent() {
@@ -100,7 +118,6 @@ public class MinimumWeightPerfectMatchingTest {
   public void testAgainstBruteForce() {
     for (int loop = 0; loop < 50; loop++) {
       int n = Math.max(1, (int) (Math.random() * 6)) * 2; // n is either 2,4,6,8, or 10
-      System.out.println(n);
       double[][] costMatrix = new double[n][n];
       randomFillSymmetricMatrix(costMatrix);
 
