@@ -7,6 +7,7 @@
  *
  * @author William Fiset
  */
+package com.williamfiset.algorithms.dp;
 
 import java.util.*;
 import java.awt.geom.*;
@@ -105,8 +106,8 @@ public class MinimumWeightPerfectMatching {
           if (dp[k][newState] == 0 || newCost < dp[k][newState]) {
             dp[k][newState] = newCost;
             // Save the fact that we went from 'state' -> 'newState' at stage k. From this we will
-            // be able to reconstruct which pairs of nodes were taken by looking at 'state' xor 'newState'
-            // which should give us the 'pairState' from which we can deduce the pair used.
+            // be able to reconstruct which pairs of nodes were taken by looking at 'state' xor
+            // 'newState' which should give us the 'pairState' from which we can deduce the pair used.
             history[k][newState] = state;
           }
         }
