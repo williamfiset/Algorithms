@@ -31,7 +31,7 @@ public class MinimumWeightPerfectMatching {
   }
 
   public double getMinWeightCost() {
-    if (!solved) solve();
+    solve();
     return minWeightCost;
   }
 
@@ -46,7 +46,7 @@ public class MinimumWeightPerfectMatching {
    * {@code
    *     MinimumWeightPerfectMatching mwpm = ...
    *     int[] matching = mwpm.getMinWeightCostMatching();
-   *     for (int i = 0; i &lt; n/2; i += 2) {
+   *     for (int i = 0; i < n/2; i += 2) {
    *       int node1 = matching[2*i];
    *       int node2 = matching[2*i+1];
    *       // Do something with the matched pair (node1, node2)
@@ -54,11 +54,17 @@ public class MinimumWeightPerfectMatching {
    * }</pre>
    */
   public int[] getMinWeightCostMatching() {
-    if (!solved) solve();
+    solve();
     return matching;
   }
 
   public void solve() {
+    if (solved) return;
+
+    // The DP state is encoded as a bitmask where the i'th bit is flipped on if the i'th node is
+    // included in the state. Encoding the state this way allows us to compactly represent selecting
+    // a subset of the nodes present in the matching. Furthermore, it allows using the '&' binary 
+    // operator to compare states to see if they overlap and the '|' operator to combine states.
     double[][] dp = new double[n >> 1][1 << n];
     
     int numPairs = (n*(n+1))/2;
@@ -95,6 +101,8 @@ public class MinimumWeightPerfectMatching {
 
     int END_STATE = (1 << n) - 1;
     minWeightCost = dp[(n >> 1) - 1][END_STATE];
+
+    solved = true;
   }
 
     /* Example */
