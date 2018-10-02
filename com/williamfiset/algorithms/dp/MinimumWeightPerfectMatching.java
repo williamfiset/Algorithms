@@ -143,7 +143,7 @@ public class MinimumWeightPerfectMatching {
     /* Example */
 
   public static void main(String[] args) {
-    int n = 20;
+    int n = 18;
     List<Point2D> pts = new ArrayList<>();
 
     // Generate points on a 2D plane which will produce a unique answer
