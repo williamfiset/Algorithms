@@ -54,7 +54,7 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
     // Repeatedly find an augmenting paths from source to sink using only edges
     // with capacity >= delta. Half delta every time we become unable to find an
     // augmenting path from source to sink until the max flow is found.
-    for(long f = 0; delta > 0; delta /= 2) {
+    for (long f = 0; delta > 0; delta /= 2) {
       do {
         visitedToken++;
         f = dfs(s, INF);
@@ -97,6 +97,7 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
 
   public static void main(String[] args) {
     testSmallFlowGraph();
+    testExampleFromMySlides();
   }
 
   // Testing graph from:
@@ -126,6 +127,33 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
 
     System.out.println(solver.getMaxFlow()); // 19
   }
+
+  private static void testExampleFromMySlides() {
+    int n = 6;
+    int s = n-1;
+    int t = n-2;
+
+    CapacityScalingSolverAdjacencyList solver;
+    solver = new CapacityScalingSolverAdjacencyList(n, s, t);
+
+    // Source edges
+    solver.addEdge(s, 0, 6);
+    solver.addEdge(s, 1, 14);
+
+    // Sink edges
+    solver.addEdge(2, t, 11);
+    solver.addEdge(3, t, 12);
+
+    // Middle edges
+    solver.addEdge(0, 1, 1);
+    solver.addEdge(2, 3, 1);
+    solver.addEdge(0, 2, 5);
+    solver.addEdge(1, 2, 7);
+    solver.addEdge(1, 3, 10);
+
+    System.out.println(solver.getMaxFlow()); // 20
+  }
+
 
 }
 
