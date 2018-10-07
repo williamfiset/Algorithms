@@ -63,7 +63,6 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
     }
 
     // Find min cut.
-    minCut = new boolean[n];
     for(int i = 0; i < n; i++)
       if (visited[i] == visitedToken)
         minCut[i] = true;
