@@ -10,6 +10,7 @@ Before we get started let me give you a refresher on what we're doing:
 1) We are trying to find the maximum flow on a flow graph because we know that
 finding the max flow is really useful for finding bipartite matchings and to 
 solve a whole host of problems.
+
 2) So far we have looked at one technique to find the max flow which is to use 
 the Ford-Fulkerson method which at a high level says that all we want to do is
 repeatedly find augmenting paths from s to t, augment the flow and repeat until
