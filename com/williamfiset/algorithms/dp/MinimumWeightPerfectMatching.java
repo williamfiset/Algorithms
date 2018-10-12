@@ -14,11 +14,16 @@ import java.awt.geom.*;
 
 public class MinimumWeightPerfectMatching {
 
+  // Inputs
   private final int n;
   private double[][] cost;
+
+  // Internal
+  private boolean solved;
+
+  // Outputs
   private double minWeightCost;
   private int[] matching;
-  private boolean solved;
 
   // The cost matrix should be a symmetric (i.e cost[i][j] = cost[j][i])
   public MinimumWeightPerfectMatching(double[][] cost) {
@@ -126,7 +131,6 @@ public class MinimumWeightPerfectMatching {
     }
 
     minWeightCost = dp[NUM_PAIRS - 1][END_STATE];
-
     solved = true;
   }
 
