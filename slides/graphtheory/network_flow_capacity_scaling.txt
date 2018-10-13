@@ -93,3 +93,14 @@ implemented with a DFS or O(EVlog(U)) if the shortest augmenting path
 is used, which is basically Edmonds-Karp with capacity scaling, although I've
 found that this is much slower in practice.
 
+Let's do an example, let's find the maximum flow of the following graph using 
+capacity scaling.
+
+First, compute U as the maximum of all initial capacity values, so U is the 
+maximum of 6,14,1,5,7,10,1,11 and 12 which is 14.
+
+Next, compute the starting value for Δ which is the smallest power of 2 less
+than or equal to U (=14) which we know to be 14.
+The starting value of delta is 8, since the next power of 2 after 8 is 16 which
+is larger than 14
+
