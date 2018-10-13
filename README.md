@@ -11,7 +11,8 @@
 * [Longest Increasing Subsequence (LIS)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/dp/LongestIncreasingSubsequence.java) **- O(n<sup>2</sup>)**
 * [Longest Palindrome Subsequence (LPS)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/dp/LongestPalindromeSubsequence.java) **- O(n<sup>2</sup>)**
 * [:movie_camera:](https://www.youtube.com/watch?v=cY4HiiFHO1o)[Traveling Salesman Problem (dynamic programming, iterative)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/TspDynamicProgrammingIterative.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
-*  [Traveling Salesman Problem (dynamic programming, recursive)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/TspDynamicProgrammingRecursive.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
+* [Traveling Salesman Problem (dynamic programming, recursive)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/TspDynamicProgrammingRecursive.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
+* [Minimum Weight Perfect Matching (iterative, complete graph)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/dp/MinimumWeightPerfectMatching.java) **- O(n<sup>3</sup>2<sup>n</sup>)**
 
 # Geometry
 * [Angle between 2D vectors](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/AngleBetweenVectors2D.java) **- O(1)**
