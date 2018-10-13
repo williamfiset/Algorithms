@@ -104,3 +104,134 @@ than or equal to U (=14) which we know to be 14.
 The starting value of delta is 8, since the next power of 2 after 8 is 16 which
 is larger than 14
 
+Now that we have delta, we can start finding paths from s -> to which have a
+remaining capacity greater than or equal to 8.
+
+Start at the source
+
+From the source, there's only one edge which has a remaining capacity of 8 or
+more, which is the edge with capacity 14 going downwards.
+
+Then, there's an edge sideways with remaining capacity of 10 we can take.
+
+And finally an edge with remaining capacity of 12 going up.
+
+We've reached the sink, so we can find the bottleneck value which is 10, because
+10 is the smallest remaining capacity along the found path. You'll notice that 
+the bottleneck has to always be greater than or equal to delta, and this is what
+greatly contributes to the efficiency of this algorithm.
+
+Next, augment the flow along the path. I scaled down the size of each edge to
+reflect how much remaining capacity they have left.
+
+<press>
+
+You can analyse the flow graph, but there are no more augmenting paths from
+s -> t which have a remaining capacity greater than or equal to 8, so the new
+Δ is halved to 4.
+
+<press>
+
+One path we can take with all remaining capacities with 4 or more is this path
+
+<press>
+
+<press>
+
+<press>
+
+Then do the usual, find the bottleneck
+
+and augment the flow.
+
+
+There's another path with all remaining capacities of 4 or more we can take
+from s to t.
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+Again, find the bottleneck, which this time has a value of 4, because 4 is the 
+smallest remaining capacity along the path.
+
+Then augment the flow along the path with this value.
+
+If you inspect the flow graph, there are no more paths with remaining capacity
+values all greater than or equal to 4 going from s -> t, so halve the value of
+delta in two. However, there are also no paths with remaining capacity all of 2
+or more, so halve the value of delta again, and now delta is equal to 1.
+
+I believe there's one remaining path we can take before the graph is fully 
+saturated, let's start at the source and find it.
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+Find the bottleneck which is 1
+
+and augment the flow.
+
+Now there are no more augmenting paths from s -> t which have a remaining
+capacity greater than or equal to 1, so the new Δ is 0, which terminates
+the algorithm.
+
+We can compute the maximum flow by summing all the bottleneck values we found
+in each iteration which is: 10 + 5 + 4 + 1 for a total of 20
+
+We can also compute the maximum flow by summing the capacity values going into
+the sink as highlighted in red.
+
+So in summary of what we learned about: We know that Ford-Fulkerson implemented
+with DFS can result in having a bottleneck of 1 every iteration which kills the
+time complexity.
+
+Capacity scaling is when we push flow through the larger edges first to achieve
+a better runtime.
+
+One approach to capacity scaling is to maintain a decreasing parameter Δ which
+acts as a threshold for which edges should be accepted or rejected based on
+their remaining capacity, so it's this pretty simple but very powerful idea that
+greatly speeds up finding the maximum flow.
+
+Awesome, thank you for watching, next video we'll take a quick look at some
+source code for capacity scaling, and until then please like this video if you
+learned something and subscribe for more mathematics and computer science videos
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
