@@ -84,5 +84,42 @@ than 0, so we add all the neighbours to the queue and proceed…
 
 Again, add all reachable neighbours to the queue and continue
 
+<press>
 
+So now the BFS has reached the sink, so we can stop. In the real algorithm, we
+stop as soon as any edge reaches the sink, but for symmetry I show three edges
+entering the sink which isn't really accurate.
 
+If we assume the bottom edge made it to the sink first and we retrace the path
+we get the following augmenting path, but it's not just any augmenting path, it's
+a shortest length augmenting path.
+
+Then to augment the flow, do the usual: Find to bottleneck value by finding the
+minimum capacity of all the edges along the path.
+
+Then augment the flow values along the path by the bottleneck.
+
+So that was the first path we find, but we're not done until no more paths
+exist. Let's start over again at the source. Recall that while exploring the
+flow graph we can only reach a node if the capacity of the edge to get there
+is greater than 0.
+
+For instance, all the reachable neighbors of the source node does not include
+the bottom left node because the edge from the source to the bottom left node
+has a remaining capacity of zero.
+
+Keep exploring until the sink is reached.
+
+<press>
+
+<press>
+
+We have reached to end again.
+
+Find to bottleneck value
+
+Next, use the bottleneck value to update the flow along the augmenting path.
+
+<press>
+
+[Slide 198] Then I believe there's one more iteration left.
