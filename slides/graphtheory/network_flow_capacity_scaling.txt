@@ -1,0 +1,32 @@
+Hello and welcome back,
+My name is William, and today we're still talking network flow, and in particular
+we're going to cover something called capacity scaling which IMO is more of a
+heuristic then an algorithm. Capacity scaling is a heuristic which says that we
+should attempt the push flow through only the largest edges first and then allow
+using edges which have smaller capacities to achieve the maximum flow more
+rapidly.
+
+This video builds off the Max-Flow tutorial I made a few videos back, so I highly
+recommend checking that out before proceeding.
+
+Just before we dive into capacity scaling, I want to quickly revisit finding the
+max flow using DFS and the issues surrounding that, I keep coming back to this
+because I think it's important to understand the intuition behind why all these
+other maximum flow algorithms were developed and why they came about.
+So the worst case for the Ford-Fulkerson method is when we find an augmenting
+path but we can only augment the flow by 1 unit, and it goes like this:
+
+Start at the source node
+
+Take any edge with a remaining capacity greater than 0
+
+and just keep going that until you reach the sink
+
+<press>
+
+<press>
+
+And once you've reached the sink, find the bottleneck value, that is, the edge
+with the smallest remaining capacity along the augmenting path.
+
+Augment (update) the flow by adding the bottleneck value to the flow along the forward edges and subtracting flow by the bottleneck value along the residual edges.
