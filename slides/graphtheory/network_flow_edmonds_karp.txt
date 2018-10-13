@@ -122,4 +122,52 @@ Next, use the bottleneck value to update the flow along the augmenting path.
 
 <press>
 
-[Slide 198] Then I believe there's one more iteration left.
+And we're still not done because there still exists another augmenting path.
+
+So now only one edge outwards from the source has a capacity greater than zero,
+so it's the edge we must follow.
+
+There's also only one edge to follow from the second node because the other
+edges have a remaining capacity of zero.
+
+<press>
+
+And now the BFS has reached the sink
+
+and we can trace back the edges that were used.
+
+Then as usual, find the bottleneck value
+
+and augment the flow.
+
+Now you can see that there are no more augmenting paths left to be found because
+all the edges leading outwards from the source have a remaining capacity of 0.
+However, more generally we know to stop when there are no more augmenting paths
+from s -> t, because then we know we cannot increase the flow anymore.
+
+The maximum flow we get from running Edmonds-Karp is the sum of the bottleneck 
+values. If you recall, in the first iteration we were able to push 5 units of 
+flow, in the second iteration, 10 units, and in the last iteration 5 units, for
+a total of 20 units of flow.
+
+Another way to find the max flow is to sum the capacity values going into the 
+sink which I have circled in red.
+
+In summary, this is what we've learned: Using a DFS on a flow graph will
+sometimes find long windy paths from the source to the sink.
+
+This is usually undesirable because the longer the path, the smaller the
+bottleneck value, and the longer the runtime.
+
+Edmonds-Karp tries to resolve this problem by finding the shortest path from the
+source to the sink using a breadth first search.
+
+More importantly, the big achievement of Edmonds-Karp is that its time 
+complexity of O(VE²) is independent of the max flow, so it doesn't depend on the
+capacity values of the flow graph.
+
+And that's Edmonds-Karp in a nutshell, thank you for watching, next video we'll
+cover some source code, for now please like this video if you learned something
+and subscribe for more computer science and mathematics videos.
+
+
