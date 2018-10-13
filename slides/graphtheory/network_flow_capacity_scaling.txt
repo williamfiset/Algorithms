@@ -29,4 +29,67 @@ and just keep going that until you reach the sink
 And once you've reached the sink, find the bottleneck value, that is, the edge
 with the smallest remaining capacity along the augmenting path.
 
-Augment (update) the flow by adding the bottleneck value to the flow along the forward edges and subtracting flow by the bottleneck value along the residual edges.
+Augment (update) the flow by adding the bottleneck value to the flow along the
+forward edges and subtracting flow by the bottleneck value along the residual
+edges.
+
+<press>
+
+Start once again at the source and find another path.
+
+Suppose this time we take the edge going down.
+
+and take the residual edge going up
+
+then sideways
+
+and down again
+
+We have now found another augmenting path, so let's find the bottleneck value.
+Recall that the remaining capacity of an edge is calculated as the capacity
+minus the flow. This allows residual edges with negative flow to have a positive
+remaining capacity.
+Notice that yet again the bottleneck is one unit of flow.
+
+Augment (update) the flow by adding the bottleneck value to the flow along the
+forward edges and subtracting flow by the bottleneck value along the residual
+edges.
+
+<press>
+
+You could imagine a DFS algorithm repeatedly taking an edge with a capacity of
+1, ultimately limiting how much flow we can push through the network with each
+iteration as shown in the next few slides:
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+Capacity scaling is the idea that we should prioritize taking edges with larger
+capacities first to avoid ending up with a path that has a small bottleneck.
+
+If we adjust the size of each edge based on its capacity value, then we can more
+easily visualize which edges we should give more attention to.
+
+The capacity scaling algorithm is pretty straight forward, but first let's
+define two variables we'll need.
+Let U = the value of the largest edge capacity in the initial flow graph.
+and also,
+Let Δ be the largest power of 2 less than or equal to U.
+The capacity scaling heuristic says that you should only take edges whose
+remaining capacity is ≥ Δ in order to achieve a better runtime.
+
+But that's not everything, the algorithm repeatedly finds augmenting paths with
+remaining capacity ≥ Δ until no more paths satisfy this criteria, then what we
+do is decrease the value of Δ by dividing it by 2 and repeat while Δ > 0.
+
+The remarkable thing about capacity scaling is that it works very very well in
+practice. In terms of time complexity, it is bounded by O(E²log(U)) when 
+implemented with a DFS or O(EVlog(U)) if the shortest augmenting path
+is used, which is basically Edmonds-Karp with capacity scaling, although I've
+found that this is much slower in practice.
+
