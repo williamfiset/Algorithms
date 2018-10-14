@@ -36,7 +36,7 @@ public class Dinics extends NetworkFlowSolverBase {
     // of the Shimon Even and Alon Itai optimization of pruning deads ends as part of the DFS phase.
     int[] next = new int[n];
 
-    while(bfs()) {
+    while (bfs()) {
       Arrays.fill(next, 0);
       // Find max flow by adding all augmenting path flows.
       for (long f = dfs(s, next, INF); f != 0; f = dfs(s, next, INF)) {
