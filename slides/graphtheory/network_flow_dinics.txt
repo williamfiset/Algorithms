@@ -39,8 +39,33 @@ whatever place of interest we desire to go. How can we apply this to solving
 for the maximum flow?
 
 In this analogy, you are the source and the coffee shop is the sink. The main
-idea behind Dinic’s algorithm is to guide augmenting paths from s -> t using a
+idea behind Dinic’s algorithm is to GUIDE augmenting paths from s -> t using a
 level graph, and in doing so greatly reducing the runtime.
+
+The way Dinic’s determines which edges make progress towards the sink T and
+which do not is by building what is called a level graph.
+
+The levels of the graph are those obtained by doing a BFS from the source.
+
+Furthermore, an edge is only part of the level graph if it makes progress 
+towards the sink. That is, the edge must go from a node at level L to another
+at level L+1.
+
+The requirement that edges must go from L to L+1 prunes backwards and "sideways"
+edges (grey edges in this slide).
+
+As yourself, if we're trying to go from s -> t as quickly as possible, does it
+make sense to take the red edge going in the backwards direction?
+
+No, taking the red edge doesn’t bring you closer to the sink, so it should only
+be taken if a detour is required. This is why backwards edges are omitted in
+the level graph.
+
+The same thing can be said about edges which cut across sideways across the same
+level since no progress is made.
+
+It’s also worth mentioning that residual edges can be made part of the level
+graph, but they must have a remaining capacity, greater than 0.
 
 
 
