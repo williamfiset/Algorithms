@@ -67,5 +67,80 @@ level since no progress is made.
 It’s also worth mentioning that residual edges can be made part of the level
 graph, but they must have a remaining capacity, greater than 0.
 
+So that's the level graph. The actual steps to executing Dinic's are as follow:
+Step1: Construct a level graph by doing a BFS from the source to label all the
+levels of the current flow graph.
+Step 2: If the sink was never reached while building the level graph, then stop
+and return the max flow.
+Step 3: Using only valid edges in the level graph, do multiple DFSs from s -> t
+until a blocking flow is reached, and sum over the bottleneck values of all the
+augmenting paths to calculate the max flow.
+Then repeat steps 1 to 3
+A blocking flow is when we cannot find any more paths from the source to the 
+sink because too many edges in the level graph have been saturated.
 
+This will all become clear with an example. Let's use Dinic's algorithm to find
+the maximum flow. If this were a bipartite graph, we would also be able to get a
+maximum matching.
+
+Step 1 is to figure out which edges are part of the current level graph. You 
+don't need to think of the level graph as a totally separate graph, but rather
+as a valid subset of the edges. So start at the source and do a BFS outwards.
+
+The first layer includes all the red nodes
+
+Then is the second layer
+
+and so on
+
+until we reach the sink.
+
+[309] Now if we focus on the edges which form the level graph we see that they 
+are all edges which go from L to L+1 in level and have remaining capacity > 0.
+
+Step 2 of the algorithm is to find paths from s -> t until a blocking flow is
+reached, that is, we cannot find any more paths.
+
+So we start at the source and do a DFS on the edges of the level graph until the
+sink is reached.
+
+<press>
+
+<press>
+
+<press>
+
+We found our first augmenting path, and the bottleneck value along this path is
+5 since 5 is the smallest remaining capacity.
+
+So update the flow values along the path by 5.
+
+If you inspect the graph, the blocking flow has not yet been reached since there
+are still exists paths from s -> t.
+
+Start once again at the source and do a DFS.
+
+<press>
+
+<press>
+
+<press>
+
+We found another path, and this one has a bottleneck value of 15.
+
+Augment the flow values along the path by 15
+
+Let's try and find another path from s -> t
+
+<press>
+
+<press>
+
+<press>
+
+What happens now is that we get stuck while performing the DFS. There are
+no edges in the level graph with a remaining capacity greater than 0 which
+can lead us to the sink, so the blocking flow has been reached.
+
+<press>
 
