@@ -210,11 +210,35 @@ The issue with dead ends is that they are highly undesirable because they extend
 the length of the journey from the source to the sink, especially if the same 
 dead end is taken multiple times during a blocking flow iteration.
 
-In his original paper, Dinitz’s suggested “cleaning” the level graph ridding it
+In his original paper, Dinitz’s suggested "cleaning" the level graph ridding it
 of all dead ends before the DFS phase.
 In 1975, Shimon Even and Alon Itai suggested pruning dead ends when backtracking
-during the DFS phase.
+during the DFS phase, effectively getting rid of dead ends on the fly as the
+algorithm executes.
 This trick greatly speeds up (and simplifies) the algorithm because dead ends
 are only ever encountered once.
+
+To summarize what we have learned, there is that: a good path finding heuristic
+which ensures that we continuously make progress towards a goal will greatly
+speed up an algorithm.
+
+We also learned how Dinic's uses a level graph to direct edges towards the sink
+
+In the next phase of the algorithm, multiple DFSs are run on the level graph
+until a blocking flow is reached.
+
+The process of rebuilding the level graph and finding the blocking flow is
+repeated until no more augmenting paths exist and the max flow is found.
+
+And lastly that a critical optimization of Dinitz’s algorithm is pruning dead
+ends so that you do not encounter them again. 
+
+Thank you so much for watching, next video we'll look at some source code. 
+Please drop a comment and let me know how I did, like this video if you learned
+something and subscribe for more mathematics and computer science videos.
+
+
+
+
 
 
