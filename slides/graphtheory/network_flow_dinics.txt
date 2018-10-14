@@ -18,8 +18,8 @@ be over stated: it makes it possible to handle bipartite graphs of a RIDICULOUS
 size. If you are doing competitive programming, Dinic's is the defacto standard
 algorithm to solve maximum flow problems.
 The algorithm was conceived in 69 by Yee-fim Dinitz and published in 1970. The 
-algorithm was later modified slightly and popularized in the West by Shy-mon
-Even, mispronouncing Dinitz algorithm as Dinics algorithm.
+algorithm was later modified slightly and popularized by Shy-mon Even, 
+mispronouncing Dinitz algorithm as Dinics algorithm.
 
 Let's start talking about the algorithm itself, but first beginning with an
 analogy. Suppose you and a friend planned to meet up at a coffee shop a few 
@@ -84,8 +84,9 @@ the maximum flow. If this were a bipartite graph, we would also be able to get a
 maximum matching.
 
 Step 1 is to figure out which edges are part of the current level graph. You 
-don't need to think of the level graph as a totally separate graph, but rather
-as a valid subset of the edges. So start at the source and do a BFS outwards.
+don't need to think of the level graph as a totally separate graph, you can 
+think of it rather as a valid subset of the edges. So start at the source and
+do a BFS outwards.
 
 The first layer includes all the red nodes
 
@@ -142,5 +143,78 @@ What happens now is that we get stuck while performing the DFS. There are
 no edges in the level graph with a remaining capacity greater than 0 which
 can lead us to the sink, so the blocking flow has been reached.
 
+We just finished the first blocking flow iteration.
+
+Now we reset and rebuild the level graph. This time it should look different
+because the remaining capacities of multiple edges has changed.
+
+Start at the source
+
+Expand outwards taking all edges with a remaining capacity greater than 0, which
+in this case is only the middle edge leading to the red node. The top edge going
+outwards from the source is saturated, and so is the one going downwards.
+
+We keeping doing this and building the level graph layer by layer.
+
 <press>
+
+<press>
+
+<press>
+
+Awesome, so this is our new level graph, you can see that this time we have one
+extra layer to play with
+
+Let's try and find a path from s -> t
+
+Once again we start at the source and probe forwards taking only edges part of 
+the level graph.
+
+<press>
+
+<press>
+
+Oops, we reached a dead end in our DFS because we can no longer go forwards, so
+we need to backtrack and keep going until we reach the sink.
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+Perfect we made it to the sink.
+
+The current path has a bottleneck value of 10 since the minimum remaining 
+capacity along the paths
+
+Next, augment the flow by 10
+
+<press>
+
+The blocking flow has once again been reached. No more flow can be pushed 
+through the network when we build the level graph, so the algorithm terminates.
+
+The max flow is the sum of the bottleneck values, which is you recall were 5, 15
+and 10 for a maximum flow of 30.
+
+The max flow can also be calculated by looking at the flow values of the edges
+leading into the sink highlighted in red.
+
+One of the pitfalls of the current implementation of Dinic’s at the moment is 
+that the algorithm may encounter multiple dead ends during the DFS phase.
+
+The issue with dead ends is that they are highly undesirable because they extend
+the length of the journey from the source to the sink, especially if the same 
+dead end is taken multiple times during a blocking flow iteration.
+
+In his original paper, Dinitz’s suggested “cleaning” the level graph ridding it
+of all dead ends before the DFS phase.
+In 1975, Shimon Even and Alon Itai suggested pruning dead ends when backtracking
+during the DFS phase.
+This trick greatly speeds up (and simplifies) the algorithm because dead ends
+are only ever encountered once.
+
 
