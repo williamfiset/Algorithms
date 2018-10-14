@@ -32,13 +32,14 @@ public class Dinics extends NetworkFlowSolverBase {
 
   @Override
   public void solve() {
-    // p[i] indicates the next unused edge index in the adjacency list for node i
-    int[] p = new int[n];
+    // next[i] indicates the next unused edge index in the adjacency list for node i. This is part 
+    // of the Shimon Even and Alon Itai optimization of pruning deads ends as part of the DFS phase.
+    int[] next = new int[n];
 
     while(bfs()) {
-      Arrays.fill(p, 0);
+      Arrays.fill(next, 0);
       // Find max flow by adding all augmenting path flows.
-      for (long f = dfs(s, p, INF); f != 0; f = dfs(s, p, INF)) {
+      for (long f = dfs(s, next, INF); f != 0; f = dfs(s, next, INF)) {
         maxFlow += f;
       }
     }
@@ -68,16 +69,16 @@ public class Dinics extends NetworkFlowSolverBase {
     return level[t] != -1;
   }
 
-  private long dfs(int at, int[] p, long flow) {
+  private long dfs(int at, int[] next, long flow) {
     if (at == t) return flow;
     final int sz = graph[at].size();
     
-    for (;p[at] < sz; p[at]++) {
-      Edge edge = graph[at].get(p[at]);
+    for (;next[at] < sz; next[at]++) {
+      Edge edge = graph[at].get(next[at]);
       long cap = edge.remainingCapacity();
       if (cap > 0 && level[edge.to] == level[at] + 1) {
 
-        long bottleNeck = dfs(edge.to, p, min(flow, cap));
+        long bottleNeck = dfs(edge.to, next, min(flow, cap));
         if (bottleNeck > 0) {
           edge.augment(bottleNeck);
           return bottleNeck;
