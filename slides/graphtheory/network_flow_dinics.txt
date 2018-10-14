@@ -17,4 +17,30 @@ time complexity of big O of sqrt root V times E. The importance of this cannot
 be over stated: it makes it possible to handle bipartite graphs of a RIDICULOUS
 size. If you are doing competitive programming, Dinic's is the defacto standard
 algorithm to solve maximum flow problems.
+The algorithm was conceived in 69 by Yee-fim Dinitz and published in 1970. The 
+algorithm was later modified slightly and popularized in the West by Shy-mon
+Even, mispronouncing Dinitz algorithm as Dinics algorithm.
+
+Let's start talking about the algorithm itself, but first beginning with an
+analogy. Suppose you and a friend planned to meet up at a coffee shop a few 
+streets east of where you are. You have never been to this coffee shop and you
+don't exactly know where it is, but you know it is somewhere east, how would 
+you get there?
+
+Q: With the information you have, would it make sense to head south? What 
+about north west?
+
+The only sensible directions are: east, north east and south east, this is
+because you know that those directions guarantee that you make positive progress
+towards the coffee shop.
+
+This form of heuristic ensures that we continuously make progress towards
+whatever place of interest we desire to go. How can we apply this to solving
+for the maximum flow?
+
+In this analogy, you are the source and the coffee shop is the sink. The main
+idea behind Dinic’s algorithm is to guide augmenting paths from s -> t using a
+level graph, and in doing so greatly reducing the runtime.
+
+
 
