@@ -1,5 +1,4 @@
 Hello and welcome,
-
 My name is William and today we are going to probe further into network flow
 talking about a specific implementation of the Ford-Fulkerson method which is
 the Edmonds-Karp algorithm. The Edmonds-Karp algorithm is another maximum flow
