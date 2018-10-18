@@ -96,15 +96,15 @@ found that this is much slower in practice.
 Let's do an example, let's find the maximum flow of the following graph using 
 capacity scaling.
 
-First, compute U as the maximum of all initial capacity values, so U is the 
-maximum of 6,14,1,5,7,10,1,11 and 12 which is 14.
+First, compute U as the maximum of all initial capacity values. In this example,
+U is the maximum of 6,14,1,5,7,10,1,11 and 12 which is 14.
 
-Next, compute the starting value for Δ which is the smallest power of 2 less
-than or equal to U (=14) which we know to be 14.
+Next, compute the starting value for Δ, which is the smallest power of 2 less
+than or equal to U which we know to be 14.
 The starting value of delta is 8, since the next power of 2 after 8 is 16 which
 is larger than 14
 
-Now that we have delta, we can start finding paths from s -> to which have a
+Now that we have delta, we can start finding paths from s -> t which have a
 remaining capacity greater than or equal to 8.
 
 Start at the source
@@ -128,7 +128,7 @@ reflect how much remaining capacity they have left.
 
 You can analyse the flow graph, but there are no more augmenting paths from
 s -> t which have a remaining capacity greater than or equal to 8, so the new
-Δ is halved to 4.
+Δ value is halved to 4.
 
 <press>
 
