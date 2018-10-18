@@ -1,8 +1,9 @@
 Hello and welcome,
-My name is William and today we are going to probe further into network flow
+My name is William and today we are going to probe further into network flow.
+We will be
 talking about a specific implementation of the Ford-Fulkerson method which is
-the Edmonds-Karp algorithm. The Edmonds-Karp algorithm is another maximum flow
-algorithm which, uses a different technique to find augmenting paths through
+the Edmonds-Karp algorithm. Edmonds-Karp is another maximum flow
+algorithm which uses a different technique to find augmenting paths through
 the flow graph.
 
 Before we get started let me give you a refresher on what we're doing:
@@ -11,7 +12,7 @@ finding the max flow is really useful for finding bipartite matchings and to
 solve a whole host of problems.
 
 2) So far we have looked at one technique to find the max flow which is to use 
-the Ford-Fulkerson method which at a high level says that all we want to do is
+the Ford-Fulkerson method, which at a high level says that all we want to do is
 repeatedly find augmenting paths from s to t, augment the flow and repeat until
 no more paths exist.
 
@@ -51,7 +52,7 @@ Let's look at why we might care about using Edmonds-Karp. Suppose we have this
 flow graph, and we want to find the maximum flow. If we're using a DFS we might
 do something like this:
 
-Start and the source
+Start at the source
 
 and do a random DFS going forwards
 
@@ -90,18 +91,18 @@ stop as soon as any edge reaches the sink, but for symmetry I show three edges
 entering the sink which isn't really accurate.
 
 If we assume the bottom edge made it to the sink first and we retrace the path
-we get the following augmenting path, but it's not just any augmenting path, it's
-a shortest length augmenting path.
+we get the following augmenting path, but we didn't just find any augmenting 
+path, we found a shortest length augmenting path.
 
 Then to augment the flow, do the usual: Find to bottleneck value by finding the
-minimum capacity of all the edges along the path.
+smallest remaining capacity of all the edges along the path.
 
 Then augment the flow values along the path by the bottleneck.
 
-So that was the first path we find, but we're not done until no more paths
-exist. Let's start over again at the source. Recall that while exploring the
-flow graph we can only reach a node if the capacity of the edge to get there
-is greater than 0.
+So that was the first path, however, we're not done yet. 
+Let's start over again at the source. Recall that while exploring the
+flow graph we can only reach a node if the remaining capacity of the edge
+ to get there is greater than 0.
 
 For instance, all the reachable neighbors of the source node does not include
 the bottom left node because the edge from the source to the bottom left node
@@ -115,7 +116,7 @@ Keep exploring until the sink is reached.
 
 We have reached to end again.
 
-Find to bottleneck value
+Find the bottleneck value
 
 Next, use the bottleneck value to update the flow along the augmenting path.
 
