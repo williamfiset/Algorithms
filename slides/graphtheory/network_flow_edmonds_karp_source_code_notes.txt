@@ -1,7 +1,11 @@
+Hello and welcome,
+My name is William, today we're going to have a look at some source code for the
+Edmonds-Karp algorithm. 
 
-
-Intro about watching the intro video
-
+In the previous video, I explained what Edmonds-Karp algorithm is, how it works
+and why you would want to use it, so I highly recommend watching that video
+before proceeding, I'll leave a link in the description, and all the source code
+for this can be found on Github at github.com slash william fiset slash algorithms
 
 Alright, here we are in the source code written in Java, I have laid out some
 instructions here in case you wanted to download the code, play around with it
