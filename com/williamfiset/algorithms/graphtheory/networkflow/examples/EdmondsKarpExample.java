@@ -199,14 +199,13 @@ public class EdmondsKarpExample {
     }
 
     private long bfs() {
-      Edge[] prev = new Edge[n];
-
-      // The queue can be optimized to use a faster queue
+      // Initialize BFS queue and add starting source node.
       Queue<Integer> q = new ArrayDeque<>(n);
       visit(s);
       q.offer(s);
 
       // Perform BFS from source to sink
+      Edge[] prev = new Edge[n];
       while(!q.isEmpty()) {
         int node = q.poll();
         if (node == t) break;
@@ -225,9 +224,8 @@ public class EdmondsKarpExample {
       // Sink not reachable!
       if (prev[t] == null) return 0;
 
-      long bottleNeck = Long.MAX_VALUE;
-
       // Find augmented path and bottle neck
+      long bottleNeck = Long.MAX_VALUE;
       for(Edge edge = prev[t]; edge != null; edge = prev[edge.from])
         bottleNeck = min(bottleNeck, edge.remainingCapacity());
 
