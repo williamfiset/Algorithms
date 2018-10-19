@@ -56,7 +56,7 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
     // augmenting path from source to sink until the max flow is found.
     for (long f = 0; delta > 0; delta /= 2) {
       do {
-        visitedToken++;
+        markAllNodesAsUnvisited();
         f = dfs(s, INF);
         maxFlow += f;
       } while (f != 0);
@@ -64,7 +64,7 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
 
     // Find min cut.
     for(int i = 0; i < n; i++)
-      if (visited[i] == visitedToken)
+      if (visited(i))
         minCut[i] = true;
   }
 
@@ -73,11 +73,11 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
     if (node == t) return flow;
 
     List<Edge> edges = graph[node];
-    visited[node] = visitedToken;
+    visit(node);
 
     for (Edge edge : edges) {
       long cap = edge.remainingCapacity();
-      if (cap >= delta && visited[edge.to] != visitedToken) {
+      if (cap >= delta && !visited(edge.to)) {
 
         long bottleNeck = dfs(edge.to, min(flow, cap));
 

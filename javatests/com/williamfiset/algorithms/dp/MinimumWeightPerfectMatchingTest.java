@@ -9,6 +9,8 @@ import org.junit.*;
 
 public class MinimumWeightPerfectMatchingTest {
 
+  static final int LOOPS = 25;
+
   static class BruteForceMwpm {
     private int n;
     private double[][] matrix;
@@ -76,7 +78,7 @@ public class MinimumWeightPerfectMatchingTest {
 
   @Test
   public void testMatchingOutputsUniqueNodes() {
-    for (int loop = 0; loop < 10; loop++) {
+    for (int loop = 0; loop < LOOPS; loop++) {
       int n = Math.max(1, (int) (Math.random() * 11)) * 2; // n is either 2,4,6,8,10,12,14,16,18,20
       double[][] costMatrix = new double[n][n];
       randomFillSymmetricMatrix(costMatrix, 100);
@@ -94,7 +96,7 @@ public class MinimumWeightPerfectMatchingTest {
   
   @Test
   public void testMatchingAndCostAreConsistent() {
-    for (int loop = 0; loop < 50; loop++) {
+    for (int loop = 0; loop < LOOPS; loop++) {
       int n = Math.max(1, (int) (Math.random() * 11)) * 2; // n is either 2,4,6,8,10,12,14,16,18,20
       double[][] costMatrix = new double[n][n];
       randomFillSymmetricMatrix(costMatrix, 100);
@@ -113,7 +115,7 @@ public class MinimumWeightPerfectMatchingTest {
 
   @Test
   public void testAgainstBruteForce_largeValues() {
-    for (int loop = 0; loop < 50; loop++) {
+    for (int loop = 0; loop < LOOPS; loop++) {
       int n = Math.max(1, (int) (Math.random() * 6)) * 2; // n is either 2,4,6,8, or 10
       double[][] costMatrix = new double[n][n];
       randomFillSymmetricMatrix(costMatrix, /*maxValue=*/ 10000);
@@ -128,7 +130,7 @@ public class MinimumWeightPerfectMatchingTest {
 
   @Test
   public void testAgainstBruteForce_smallValues() {
-    for (int loop = 0; loop < 100; loop++) {
+    for (int loop = 0; loop < LOOPS; loop++) {
       int n = Math.max(1, (int) (Math.random() * 6)) * 2; // n is either 2,4,6,8, or 10
       double[][] costMatrix = new double[n][n];
       randomFillSymmetricMatrix(costMatrix, /*maxValue=*/ 3); 

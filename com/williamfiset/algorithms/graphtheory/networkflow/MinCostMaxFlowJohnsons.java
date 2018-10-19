@@ -107,7 +107,7 @@ public class MinCostMaxFlowJohnsons extends NetworkFlowSolverBase {
     Arrays.fill(dist, INF);
     dist[s] = 0;
 
-    boolean[] visited = new boolean[n];
+    markAllNodesAsUnvisited();
     Edge[] prev = new Edge[n];
 
     PriorityQueue<Node> pq = new PriorityQueue<>();
@@ -116,12 +116,12 @@ public class MinCostMaxFlowJohnsons extends NetworkFlowSolverBase {
     // Run Dijkstra's to find augmenting path.
     while(!pq.isEmpty()) {
       Node node = pq.poll();
-      visited[node.id] = true;
+      visit(node.id);
       if (dist[node.id] < node.value) continue;
       List<Edge> edges = graph[node.id];
       for(int i = 0; i < edges.size(); i++) {
         Edge edge = edges.get(i);
-        if (visited[edge.to]) continue;
+        if (visited(edge.to)) continue;
         long newDist = dist[edge.from] + edge.cost;
         if (edge.remainingCapacity() > 0 && newDist < dist[edge.to]) {
           prev[edge.to] = edge;

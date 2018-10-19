@@ -33,13 +33,13 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
   public void solve() {
     long flow;
     do {
-      visitedToken++;
+      markAllNodesAsUnvisited();
       flow = bfs();
       maxFlow += flow;
     } while (flow != 0);
 
     for(int i = 0; i < n; i++)
-      if (visited[i] == visitedToken)
+      if (visited(i))
         minCut[i] = true;
   }
 
@@ -48,7 +48,7 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
 
     // The queue can be optimized to use a faster queue
     Queue<Integer> q = new ArrayDeque<>(n);
-    visited[s] = visitedToken;
+    visit(s);
     q.offer(s);
 
     // Perform BFS from source to sink
@@ -58,8 +58,8 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
 
       for (Edge edge : graph[node]) {
         long cap = edge.remainingCapacity();
-        if (cap > 0 && visited[edge.to] != visitedToken) {
-          visited[edge.to] = visitedToken;
+        if (cap > 0 && !visited(edge.to)) {
+          visit(edge.to);
           prev[edge.to] = edge;
           q.offer(edge.to);
         }

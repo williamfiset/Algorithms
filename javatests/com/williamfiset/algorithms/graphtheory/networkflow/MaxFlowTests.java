@@ -9,6 +9,7 @@ import com.williamfiset.algorithms.graphtheory.networkflow.Dinics;
 import com.williamfiset.algorithms.graphtheory.networkflow.EdmondsKarpAdjacencyList;
 import com.williamfiset.algorithms.graphtheory.networkflow.FordFulkersonDfsSolverAdjacencyList;
 import com.williamfiset.algorithms.graphtheory.networkflow.MinCostMaxFlowWithBellmanFord;
+import com.williamfiset.algorithms.graphtheory.networkflow.MinCostMaxFlowJohnsons;
 
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.tuple.Pair;
@@ -31,6 +32,7 @@ public class MaxFlowTests {
     solvers.add(new EdmondsKarpAdjacencyList(n, s, t));
     solvers.add(new FordFulkersonDfsSolverAdjacencyList(n, s, t));
     solvers.add(new MinCostMaxFlowWithBellmanFord(n, s, t));
+    solvers.add(new MinCostMaxFlowJohnsons(n, s, t));
   }
 
   void addEdge(int f, int t, int c) {

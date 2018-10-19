@@ -54,18 +54,18 @@ public abstract class NetworkFlowSolverBase {
   // Inputs: n = number of nodes, s = source, t = sink
   protected final int n, s, t;
 
-  // 'visited' and 'visitedToken' are variables used in graph sub-routines to 
-  // track whether a node has been visited or not. In particular, node 'i' was 
-  // recently visited if visited[i] == visitedToken is true. This is handy 
-  // because to mark all nodes as unvisited simply increment the visitedToken.
-  protected int visitedToken = 1;
-  protected int[] visited;
-
   protected long maxFlow;
   protected long minCost;
 
   protected boolean[] minCut;
   protected List<Edge>[] graph;
+
+  // 'visited' and 'visitedToken' are variables used for graph sub-routines to 
+  // track whether a node has been visited or not. In particular, node 'i' was 
+  // recently visited if visited[i] == visitedToken is true. This is handy 
+  // because to mark all nodes as unvisited simply increment the visitedToken.
+  private int visitedToken = 1;
+  private int[] visited;
 
   // Indicates whether the network flow algorithm has ran. We should not need to
   // run the solver multiple times, because it always yields the same result.
@@ -118,6 +118,22 @@ public abstract class NetworkFlowSolverBase {
     e2.residual = e1;
     graph[from].add(e1);
     graph[to].add(e2);
+  }
+
+  // Marks node 'i' as visited.
+  public void visit(int i) {
+    visited[i] = visitedToken;
+  }
+
+  // Returns whether or not node 'i' has been visited.
+  public boolean visited(int i) {
+    return visited[i] == visitedToken;
+  }
+
+  // Resets all nodes as unvisited. This is especially useful to do
+  // between iterations of finding augmenting paths, O(1)
+  public void markAllNodesAsUnvisited() {
+    visitedToken++;
   }
 
   /**

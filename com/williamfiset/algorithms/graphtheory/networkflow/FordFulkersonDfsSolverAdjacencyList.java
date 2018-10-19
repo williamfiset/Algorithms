@@ -35,13 +35,13 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
 
     // Find max flow by adding all augmenting path flows.
     for (long f = dfs(s, INF); f != 0; f = dfs(s, INF)) {
-      visitedToken++;
+      markAllNodesAsUnvisited();
       maxFlow += f;
     }
 
     // Find min cut.
     for(int i = 0; i < n; i++)
-      if (visited[i] == visitedToken)
+      if (visited(i))
         minCut[i] = true;
   }
 
@@ -50,11 +50,11 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
     if (node == t) return flow;
 
     List<Edge> edges = graph[node];
-    visited[node] = visitedToken;
+    visit(node);
 
     for (Edge edge : edges) {
       long rcap = edge.remainingCapacity();
-      if (rcap > 0 && visited[edge.to] != visitedToken) {
+      if (rcap > 0 && !visited(edge.to)) {
         long bottleNeck = dfs(edge.to, min(flow, rcap));
 
         // Augment flow with bottle neck value
