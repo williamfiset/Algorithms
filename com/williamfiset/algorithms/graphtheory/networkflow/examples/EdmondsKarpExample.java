@@ -226,10 +226,9 @@ public class EdmondsKarpExample {
 
     /* EXAMPLE */
 
-
   public static void main(String[] args) {
     // n is the number of nodes including the source and the sink.
-    int n = 12;
+    int n = 11;
 
     int s = n-2;
     int t = n-1;
@@ -237,30 +236,31 @@ public class EdmondsKarpExample {
     NetworkFlowSolverBase solver = new EdmondsKarpSolver(n, s, t);
 
     // Edges from source
-    solver.addEdge(s, 0, 10);
-    solver.addEdge(s, 1, 5);
-    solver.addEdge(s, 2, 10);
+    solver.addEdge(s, 0, 5);
+    solver.addEdge(s, 1, 10);
+    solver.addEdge(s, 2, 5);
 
     // Middle edges
     solver.addEdge(0, 3, 10);
-    solver.addEdge(1, 2, 10);
-    solver.addEdge(2, 5, 15);
-    solver.addEdge(3, 1, 2);
-    solver.addEdge(3, 6, 15);
-    solver.addEdge(4, 1, 15);
-    solver.addEdge(4, 3, 3);
-    solver.addEdge(5, 4, 4);
+    solver.addEdge(1, 0, 15);
+    solver.addEdge(1, 4, 20);
+    solver.addEdge(2, 5, 10);
+    solver.addEdge(3, 4, 25);
+    solver.addEdge(3, 6, 10);
+    solver.addEdge(4, 2, 5);
+    solver.addEdge(4, 7, 30);
+    solver.addEdge(5, 7, 5);
     solver.addEdge(5, 8, 10);
-    solver.addEdge(6, 7, 10);
-    solver.addEdge(7, 4, 10);
-    solver.addEdge(7, 5, 7);
+    solver.addEdge(7, 3, 15);
+    solver.addEdge(7, 8, 5);
 
     // Edges to sink
-    solver.addEdge(6, t, 15);
+    solver.addEdge(6, t, 5);
+    solver.addEdge(7, t, 15);
     solver.addEdge(8, t, 10);
 
     // Prints:
-    // Maximum Flow is: 23
+    // Maximum Flow is: 20
     System.out.printf("Maximum Flow is: %d\n", solver.getMaxFlow());
 
     List<Edge>[] resultGraph = solver.getGraph();
