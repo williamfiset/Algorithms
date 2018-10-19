@@ -155,8 +155,8 @@ public class CapacityScalingExample {
 
     // Method to implement which solves the network flow problem.
     public abstract void solve();
-
   }
+
 
   private static class CapacityScalingSolver extends NetworkFlowSolverBase {
 
