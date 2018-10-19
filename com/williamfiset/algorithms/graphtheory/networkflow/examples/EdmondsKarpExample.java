@@ -74,8 +74,8 @@ public class EdmondsKarpExample {
     // track whether a node has been visited or not. In particular, node 'i' was 
     // recently visited if visited[i] == visitedToken is true. This is handy 
     // because to mark all nodes as unvisited simply increment the visitedToken.
-    protected int visitedToken = 1;
-    protected int[] visited;
+    private int visitedToken = 1;
+    private int[] visited;
 
     // Indicates whether the network flow algorithm has ran. The solver only 
     // needs to run once because it always yields the same result.
@@ -145,6 +145,22 @@ public class EdmondsKarpExample {
       return maxFlow;
     }
 
+    // Marks node 'i' as visited.
+    public void visit(int i) {
+      visited[i] = visitedToken;
+    }
+
+    // Returns true/false depending on whether node 'i' has been visited or not.
+    public boolean visited(int i) {
+      return visited[i] == visitedToken;
+    }
+
+    // Resets all nodes as unvisited. This is especially useful to do
+    // between iterations finding augmenting paths, O(1)
+    public void markAllNodesAsUnvisited() {
+      visitedToken++;
+    }
+
     // Wrapper method that ensures we only call solve() once
     private void execute() {
       if (solved) return; 
@@ -176,7 +192,7 @@ public class EdmondsKarpExample {
     public void solve() {
       long flow;
       do {
-        visitedToken++;
+        markAllNodesAsUnvisited();
         flow = bfs();
         maxFlow += flow;
       } while (flow != 0);
@@ -187,7 +203,7 @@ public class EdmondsKarpExample {
 
       // The queue can be optimized to use a faster queue
       Queue<Integer> q = new ArrayDeque<>(n);
-      visited[s] = visitedToken;
+      visit(s);
       q.offer(s);
 
       // Perform BFS from source to sink
@@ -197,8 +213,8 @@ public class EdmondsKarpExample {
 
         for (Edge edge : graph[node]) {
           long cap = edge.remainingCapacity();
-          if (cap > 0 && visited[edge.to] != visitedToken) {
-            visited[edge.to] = visitedToken;
+          if (cap > 0 && !visited(edge.to)) {
+            visit(edge.to);
             prev[edge.to] = edge;
             q.offer(edge.to);
           }
