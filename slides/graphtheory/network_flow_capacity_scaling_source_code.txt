@@ -1,0 +1,13 @@
+Hello and welcome,
+My name is William, today we're going to have a look at some source code for 
+the Capacity Scaling algorithm.
+
+In the previous video, I explained what Capacity Scaling is, how it works
+and what it is good for, so I highly recommend watching that video before 
+proceeding, there will be a link in the description. All the source code for 
+this can be found on Github at github.com slash william fiset slash algorithms
+
+Alright, here we are in the source code written in Java, I have laid out some
+instructions here in case you wanted to download the code, play around with it
+and run it yourself.
+

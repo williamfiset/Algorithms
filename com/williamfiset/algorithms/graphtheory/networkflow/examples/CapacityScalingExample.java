@@ -75,8 +75,8 @@ public class CapacityScalingExample {
     // track whether a node has been visited or not. In particular, node 'i' was 
     // recently visited if visited[i] == visitedToken is true. This is handy 
     // because to mark all nodes as unvisited simply increment the visitedToken.
-    protected int visitedToken = 1;
-    protected int[] visited;
+    private int visitedToken = 1;
+    private int[] visited;
 
     // Indicates whether the network flow algorithm has ran. The solver only 
     // needs to run once because it always yields the same result.
@@ -146,6 +146,22 @@ public class CapacityScalingExample {
       return maxFlow;
     }
 
+    // Marks node 'i' as visited.
+    public void visit(int i) {
+      visited[i] = visitedToken;
+    }
+
+    // Returns true/false depending on whether node 'i' has been visited or not.
+    public boolean visited(int i) {
+      return visited[i] == visitedToken;
+    }
+
+    // Resets all nodes as unvisited. This is especially useful to do
+    // between iterations finding augmenting paths, O(1)
+    public void markAllNodesAsUnvisited() {
+      visitedToken++;
+    }
+
     // Wrapper method that ensures we only call solve() once
     private void execute() {
       if (solved) return; 
@@ -200,7 +216,7 @@ public class CapacityScalingExample {
       // augmenting path from source to sink until the graph is saturated.
       for (long f = 0; delta > 0; delta /= 2) {
         do {
-          visitedToken++;
+          markAllNodesAsUnvisited();
           f = dfs(s, INF);
           maxFlow += f;
         } while (f != 0);
@@ -213,11 +229,11 @@ public class CapacityScalingExample {
       if (node == t) return flow;
 
       List<Edge> edges = graph[node];
-      visited[node] = visitedToken;
+      visit(node);
 
       for (Edge edge : edges) {
         long cap = edge.remainingCapacity();
-        if (cap >= delta && visited[edge.to] != visitedToken) {
+        if (cap >= delta && !visited(edge.to)) {
 
           long bottleNeck = dfs(edge.to, min(flow, cap));
 
