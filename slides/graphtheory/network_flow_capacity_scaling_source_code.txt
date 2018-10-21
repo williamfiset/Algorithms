@@ -67,7 +67,24 @@ of that edge is smaller than delta, because this violates the capacity scaling
 heuristic. Also ensure that the node we're going to has not already been visited
 to avoid cycles.
 
+Inside the inner if statement, we call the dfs method recursively passing in the
+node we're going to as the current node, and the flow as the
+minimum of the current flow and this edge's remaining capacity. The DFS returns
+the bottleneck value along the augmenting path. After the DFS call, we are
+unwinding the call stack from the sink back to the source. This is a 
+perfect time to augment the flow for each edge along the augmenting path 
+since we already know what the bottleneck value is. So, if the bottleneck value
+is greater than 0, meaning an augmenting path was found, augment the flow, which
+add flow along the forward edge and subtracts flow along the residual edge, and
+also return the bottleneck value.
 
+If we scroll to the main method, you see that I have setup the flow graph from 
+the slides here and I create a flow solver and push flow through it to get a 
+result. I also display the resulting flow graph after the flow algorithm has 
+been executed so you can see what happened.
+
+Awesome, that's all for capacity scaling, please like this video if you learned
+something and subscribe fore more mathematics and computer science videos.
 
 
 
