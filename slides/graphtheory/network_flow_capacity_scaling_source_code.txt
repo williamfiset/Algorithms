@@ -8,6 +8,54 @@ proceeding, there will be a link in the description. All the source code for
 this can be found on Github at github.com slash william fiset slash algorithms
 
 Alright, here we are in the source code written in Java, I have laid out some
-instructions here in case you wanted to download the code, play around with it
-and run it yourself.
+instructions here in the header in case you wanted to get the code, play around
+with it and run it yourself.
+
+Scrolling down, you can see the familiar Edge class, this class is used to
+represent an edge that connects two nodes and has a certain capacity.
+
+A little further down is also the NetworkFlowSolverBase which acts as a template
+for all the different flow algorithms we have been implementing. I already 
+covered how these two classes work in previous videos linked below, so please 
+have a look at those before continuing. 
+
+However, the part we're really interested in is a new class I have defined below
+which is the CapacityScalingSolver. The CapacityScalingSolver is an 
+implementation of the NetworkFlowSolver base which uses capacity scaling to find
+the maximum flow.
+
+You will notice that I have defined a new instance variable in this class called
+delta. This is the same delta from the slides that we will be using as a 
+parameter to determine whether an edge should be accepted or rejected based on
+its remaining capacity relative to the value of delta.
+
+The constructor for this class simply calls the super class's constructor to
+initialize the flow graph and allocate some memory.
+
+Just below is the addEdge method which is particularly interesting. For capacity
+scaling to work, we need to know the value of the edge with the largest capacity.
+Since we need to construct the flow graph do to anything interesting, we can 
+capture the largest capacity value as we build the graph. The implementation of
+the addEdge method is defined in the NetworkSolverBase, we don't want to change
+this functionality, so inside the addEdge method we are overriding here what I 
+do is I call the addEdge method in the super class and initialize delta to be
+the largest capacity we encounter -- simple enough.
+
+Inside the solve method, which gets called to compute the maximum flow, the 
+first thing we do is initialize delta to be the largest power of 2 less than or
+equal to the largest capacity.
+Following that, we repeatedly find an augmenting paths from source to sink using
+only edges with a remaining capacity >= delta. Half delta every time we become 
+unable to find an augmenting path from source to sink until the graph is 
+saturated.
+
+
+
+
+
+
+
+
+
+
 

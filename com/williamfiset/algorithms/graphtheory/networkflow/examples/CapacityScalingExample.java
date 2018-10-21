@@ -23,6 +23,7 @@ package com.williamfiset.algorithms.graphtheory.networkflow.examples;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static java.lang.Math.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -208,12 +209,13 @@ public class CapacityScalingExample {
     @Override
     public void solve() {
 
-      // Start delta at the smallest power of 2 <= the largest capacity.
+      // Start delta at the largest power of 2 <= the largest capacity.
+      // Equivalent of: delta = (long) pow(2, (int)floor(log(delta)/log(2)))
       delta = Long.highestOneBit(delta);
 
       // Repeatedly find an augmenting paths from source to sink using only edges
-      // with capacity >= delta. Half delta every time we become unable to find an
-      // augmenting path from source to sink until the graph is saturated.
+      // with a remaining capacity >= delta. Half delta every time we become unable
+      // to find an augmenting path from source to sink until the graph is saturated.
       for (long f = 0; delta > 0; delta /= 2) {
         do {
           markAllNodesAsUnvisited();
