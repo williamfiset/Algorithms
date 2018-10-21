@@ -208,12 +208,11 @@ public class CapacityScalingExample {
     // a means of finding an augmenting path.
     @Override
     public void solve() {
-
       // Start delta at the largest power of 2 <= the largest capacity.
       // Equivalent of: delta = (long) pow(2, (int)floor(log(delta)/log(2)))
       delta = Long.highestOneBit(delta);
 
-      // Repeatedly find an augmenting paths from source to sink using only edges
+      // Repeatedly find augmenting paths from source to sink using only edges
       // with a remaining capacity >= delta. Half delta every time we become unable
       // to find an augmenting path from source to sink until the graph is saturated.
       for (long f = 0; delta > 0; delta /= 2) {
@@ -229,11 +228,9 @@ public class CapacityScalingExample {
     private long dfs(int node, long flow) {
       // At sink node, return augmented path flow.
       if (node == t) return flow;
-
-      List<Edge> edges = graph[node];
       visit(node);
 
-      for (Edge edge : edges) {
+      for (Edge edge : graph[node]) {
         long cap = edge.remainingCapacity();
         if (cap >= delta && !visited(edge.to)) {
 

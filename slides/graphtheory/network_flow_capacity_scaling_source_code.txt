@@ -43,14 +43,29 @@ the largest capacity we encounter -- simple enough.
 
 Inside the solve method, which gets called to compute the maximum flow, the 
 first thing we do is initialize delta to be the largest power of 2 less than or
-equal to the largest capacity.
-Following that, we repeatedly find an augmenting paths from source to sink using
+equal to the largest capacity. One way to do this is to find the floor of the 
+base 2 logarithm and then raise that value to the power of 2, or in Java you can
+use the builtin highest one bit function to do that but in a more efficient way.
+  Following that, we repeatedly find augmenting paths from source to sink using
 only edges with a remaining capacity >= delta. Half delta every time we become 
 unable to find an augmenting path from source to sink until the graph is 
 saturated.
+  Inside the inner loop, mark all nodes as unvisited, do a DFS and sum over the 
+bottleneck values to calculate the maximum flow. Repeatedly does this until 
+delta is equal to zero.
 
+Now let's have a look at the DFS method. The dfs method takes two arguments, the
+current node, and the minimum flow found along the path so far. When we 
+initially call the method, the source node is the current node and flow is set 
+to infinity. This method performs a DFS recursively, and we know we can stop
+searching when we have reached the sink node t.
 
-
+If the current node is not the sink node, then visit the current node and reach
+iterate through all the neighbors of the current node. Here's the catch though,
+we cannot take the edge going to the neighboring node if the remaining capacity
+of that edge is smaller than delta, because this violates the capacity scaling
+heuristic. Also ensure that the node we're going to has not already been visited
+to avoid cycles.
 
 
 
