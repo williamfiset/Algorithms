@@ -71,9 +71,9 @@ public class Dinics extends NetworkFlowSolverBase {
 
   private long dfs(int at, int[] next, long flow) {
     if (at == t) return flow;
-    final int sz = graph[at].size();
+    final int numEdges = graph[at].size();
     
-    for (;next[at] < sz; next[at]++) {
+    for (;next[at] < numEdges; next[at]++) {
       Edge edge = graph[at].get(next[at]);
       long cap = edge.remainingCapacity();
       if (cap > 0 && level[edge.to] == level[at] + 1) {
@@ -130,7 +130,7 @@ public class Dinics extends NetworkFlowSolverBase {
     int t = n-2;
 
     NetworkFlowSolverBase solver;
-    solver = new DinicsSolver(n, s, t);
+    solver = new Dinics(n, s, t);
 
     // Source edges
     solver.addEdge(s, 0, 5);

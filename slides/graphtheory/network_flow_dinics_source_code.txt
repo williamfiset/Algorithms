@@ -129,6 +129,13 @@ This is exactly what the 'next[at]++' line does which gets executed after an
 iteration of the loop, it increments the index of the edge to take at the 
 current node.
 
+If we scroll to the main method, you see that I show you how to setup a flow 
+graph by initializing the flow solver and pushing some flow through the graph. 
+In particular, this flow graph is the graph from the slides in the last video,
+and you can verify that the maximum flow should be 30.
+
+Wonderful, thank you for watching, please like this video if you learned 
+something, and subscribe for more mathematics and computer science videos.
 
 
 
