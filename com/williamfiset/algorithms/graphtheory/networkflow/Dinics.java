@@ -56,7 +56,7 @@ public class Dinics extends NetworkFlowSolverBase {
     level[s] = 0;
     Deque<Integer> q = new ArrayDeque<>(n);
     q.offer(s);
-    while(!q.isEmpty()) {
+    while (!q.isEmpty()) {
       int node = q.poll();
       for (Edge edge : graph[node]) {
         long cap = edge.remainingCapacity();
@@ -125,48 +125,37 @@ public class Dinics extends NetworkFlowSolverBase {
   }
 
   private static void testGraphFromSlides() {
-    int n = 12;
+    int n = 11;
     int s = n-1;
     int t = n-2;
 
-    Dinics solver;
-    solver = new Dinics(n, s, t);
+    NetworkFlowSolverBase solver;
+    solver = new DinicsSolver(n, s, t);
 
     // Source edges
     solver.addEdge(s, 0, 5);
-    solver.addEdge(s, 1, 20);
-    solver.addEdge(s, 2, 10);
+    solver.addEdge(s, 1, 10);
+    solver.addEdge(s, 2, 15);
 
     // Middle edges
-    solver.addEdge(0, 1, 3);
-    solver.addEdge(0, 5, 4);
+    solver.addEdge(0, 3, 10);
+    solver.addEdge(1, 0, 15);
+    solver.addEdge(1, 4, 20);
+    solver.addEdge(2, 5, 25);
+    solver.addEdge(3, 4, 25);
+    solver.addEdge(3, 6, 10);
+    solver.addEdge(4, 2, 5);
+    solver.addEdge(4, 7, 30);
+    solver.addEdge(5, 7, 20);
+    solver.addEdge(5, 8, 10);
+    solver.addEdge(7, 8, 15);
 
-    solver.addEdge(1, 4, 14);
-    solver.addEdge(1, 5, 14);
+    // Sink edges
+    solver.addEdge(6, t, 5);
+    solver.addEdge(7, t, 15);
+    solver.addEdge(8, t, 10);
 
-    solver.addEdge(2, 1, 5);
-    solver.addEdge(2, 3, 4);
-
-    solver.addEdge(3, 4, 3);
-    solver.addEdge(3, 9, 11);
-
-    solver.addEdge(4, 6, 4);
-    solver.addEdge(4, 8, 22);
-
-    solver.addEdge(5, 6, 8);
-    solver.addEdge(5, 7, 3);
-
-    solver.addEdge(6, 7, 12);
-
-    solver.addEdge(7, 8, 9);
-    solver.addEdge(7, t, 7);
-
-    solver.addEdge(8, 9, 11);
-    solver.addEdge(8, t, 15);
-
-    solver.addEdge(9, t, 60);
-
-    System.out.println(solver.getMaxFlow()); // 29
-  }  
+    System.out.printf("Maximum flow %d\n", solver.getMaxFlow()); // 30
+  }
 
 }
