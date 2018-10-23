@@ -90,19 +90,45 @@ Each iteration you want to reset the next array to allow taking previously
 forbidden edges.
 Alright, so when we call the DFS method we pass in three arguments: the current
 node being the source, the next array, and the minimum flow along the path which
-starts at positive infinity.
+starts at positive infinity. Then for each augmenting path we find, sum over the
+bottleneck values we find to compute the maximum flow.
 
 Awesome, so let's have a look at the DFS method itself. 
 
+The dfs method takes three arguments, the current node, the next array, 
+and the minimum flow found along the path so far. This method performs a DFS 
+recursively, and we know we can stop searching when we have reached the sink 
+node t.
 
- to get
-all the functionality I was just talking about.
+Then I capture the number of edges going out of this node. The for-loop loops
+through all the edges while we have not tried taking each edge for the current
+node. The next edge to take is the next outgoing edge from this node at the 
+index in the next array. The thing we have to watch out for is that we must 
+ensure the selected edge has a remaining capacity greater than zero, and that it
+goes up a level. Remember that we always want to be making progress towards the 
+sink, and taking an edge at the next level guarantees that, unless of course it
+leads to a dead end, but we end up pruning those. So if all goes well get can
+enter the inner if statement.
 
+Inside the inner if statement, we call the dfs method recursively passing in the
+node we're going to as the current node, the next array and the flow as the
+minimum of the current flow and this edge's remaining capacity. The DFS returns
+the bottleneck value along the augmenting path. After the DFS call, we are
+unwinding the call stack from the sink back to the source. This is a 
+perfect time to augment the flow for each edge along the augmenting path 
+since we already know what the bottleneck value is. So, if the bottleneck value
+is greater than 0, meaning an augmenting path was found, augment the flow, which
+add flow along the forward edge and subtracts flow along the residual edge, and
+also return the bottleneck value.
 
+So, assuming we were not able to take the selected edge from the 
+current node, because it did not have enough remaining capacity, or it didn't 
+increase in level, or we hit a dead end, or whatever reason, we need to mark
+the selected edge as invalid so we can prune it for future iterations to ignore.
+This is exactly what the 'next[at]++' line does which gets executed after an
+iteration of the loop, it increments the index of the edge to take at the 
+current node.
 
-
-...next[at]++ only gets executed on a DFS callback, that's the key thing to 
-realize here
 
 
 
