@@ -1,11 +1,12 @@
 Hello and welcome,
 My name is William, and today we're still talking about network flow, and in
-particular we're look at maximum flow and unweighted bipartite matching. 
+particular we're looking at finding the maximum flow and a new very efficient 
+method of solving the unweighted bipartite matching problem.
 Dinic's algorithm is one of those extremely fast and revolutionary algorithms
 which really pushed the field of network flow forwards. It was one, if not the
 first algorithm to introduce a bunch of new concepts like building a level 
-graph, combining multiple graph traversal techniques and the concept of a 
-blocking flow, which we will all get to.
+graph, combining multiple graph traversal techniques together and the concept
+of a blocking flow, which we will all get to.
 
 So, what is Dinic's algorithm? It's a fast strongly polynomial maximum flow
 algorithm. The fact that it's a strongly polynomial is important, it means that

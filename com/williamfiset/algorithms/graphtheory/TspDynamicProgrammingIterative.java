@@ -148,12 +148,12 @@ public class TspDynamicProgrammingIterative {
     } else {
       for (int i = at; i < n; i++) {
         // Try including this element
-        set |= 1 << i;
+        set ^= (1 << i);
 
         combinations(set, i + 1, r - 1, n, subsets);
 
         // Backtrack and try the instance where we did not include this element
-        set &= ~(1 << i);
+        set ^= (1 << i);
       }
     }
   }
