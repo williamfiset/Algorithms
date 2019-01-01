@@ -4,9 +4,10 @@ for Dinics algorithm.
 
 In the previous video, I explained what Dinics is, how it works, and why it is a
 great choice as a maximum flow algorithm, so I highly recommend watching that 
-video before proceeding, there will be a link in the description. All the source
-code for this can be found on Github at github.com slash williamfiset slash 
-algorithms.
+video before proceeding, there will be a link in the description. 
+
+All the source code for this video can be found on Github at github.com slash
+williamfiset slash algorithms.
 
 Alright, here we are in the source code written in Java, I have laid out some
 instructions here in the header in case you wanted to get the code, play around

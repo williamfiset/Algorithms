@@ -204,32 +204,35 @@ and 10 for a maximum flow of 30.
 The max flow can also be calculated by looking at the flow values of the edges
 leading into the sink highlighted in red.
 
-One of the pitfalls of the current implementation of Dinic’s at the moment is 
-that the algorithm may encounter multiple dead ends during the DFS phase.
+One of the pitfalls of the current implementation of Dinic’s algorithm at the 
+moment is that the algorithm may encounter multiple dead ends during the
+DFS phase.
 
 The issue with dead ends is that they are highly undesirable because they extend
 the length of the journey from the source to the sink, especially if the same 
 dead end is taken multiple times during a blocking flow iteration.
 
 In his original paper, Dinitz’s suggested "cleaning" the level graph ridding it
-of all dead ends before the DFS phase.
-In 1975, Shimon Even and Alon Itai suggested pruning dead ends when backtracking
+of all dead ends before starting each blocking flow phase.
+Laster 1975, Shimon Even and Alon Itai suggested pruning dead ends when backtracking
 during the DFS phase, effectively getting rid of dead ends on the fly as the
 algorithm executes.
 This trick greatly speeds up (and simplifies) the algorithm because dead ends
 are only ever encountered once.
 
-To summarize what we have learned, there is that: a good path finding heuristic
-which ensures that we continuously make progress towards a goal will greatly
-speed up an algorithm.
+Awesome, that's basically everything you need to know.
+Let's summarize what we have learned. First we talked about the motivation behind
+Dinic's, and why having a guiding heuristic can greatly speed up you algorithm.
 
-We also learned how Dinic's uses a level graph to direct edges towards the sink
+Then we learned about the intuition and practicality behind having a level 
+graph that directs edges towards the sink.
 
-In the next phase of the algorithm, multiple DFSs are run on the level graph
-until a blocking flow is reached.
+Then we talked about the concept of a blocking flow, which is achieved by doing
+multiple DFSs on the level graph until it is saturated.
 
-The process of rebuilding the level graph and finding the blocking flow is
-repeated until no more augmenting paths exist and the max flow is found.
+Afterwards we looked at The process of rebuilding the level graph and finding 
+the blocking flow repeatedly until no more augmenting paths exist and the
+max flow is found.
 
 And lastly that a critical optimization of Dinitz’s algorithm is pruning dead
 ends so that you do not encounter them again. 
