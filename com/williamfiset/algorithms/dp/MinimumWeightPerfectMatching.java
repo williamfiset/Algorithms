@@ -3,7 +3,7 @@
  * are given a distance matrix which gives the distance from each node to every other node, and
  * you want to pair up all the nodes to one another minimizing the overall cost.
  *
- * Time Complexity: O(n^3 * 2^n) 
+ * Time Complexity: O(n^2 * 2^n) 
  *
  * @author William Fiset
  */
@@ -69,68 +69,62 @@ public class MinimumWeightPerfectMatching {
   public void solve() {
     if (solved) return;
     
-    final int NUM_PAIRS = n / 2;
     final int END_STATE = (1 << n) - 1;
 
     // The DP state is encoded as a bitmask where the i'th bit is flipped on if the i'th node is
     // included in the state. Encoding the state this way allows us to compactly represent selecting
     // a subset of the nodes present in the matching. Furthermore, it allows using the '&' binary 
     // operator to compare states to see if they overlap and the '|' operator to combine states.
-    Double[][] dp = new Double[NUM_PAIRS][1 << n];
+    Double[] dp = new Double[1 << n];
     
     // Memo table to save the history of the chosen states. This table is used to reconstruct the
     // chosen pairs of nodes after the algorithm has executed.
-    int[][] history = new int[NUM_PAIRS][1 << n];
+    int[] history = new int[1 << n];
 
     // Singleton pair states with only two nodes are the building blocks of this algorithm. Every
     // iteration, we try to add singleton pairs to previous states to construct a larger matching.
-    final int NUM_SINGLETON_PAIRS = (n*(n+1))/2;
-    int[] pairStates = new int[NUM_SINGLETON_PAIRS];
-    double[] pairCost = new double[NUM_SINGLETON_PAIRS];
+    final int numPairs = (n*(n+1))/2;
+    int[] pairStates = new int[numPairs];
+    double[] pairCost = new double[numPairs];
 
     for (int i = 0, k = 0; i < n; i++) {
       for (int j = i+1; j < n; j++, k++) {
         int state = (1 << i) | (1 << j);
-        dp[0][state] = cost[i][j];
+        dp[state] = cost[i][j];
         pairStates[k] = state;
         pairCost[k] = cost[i][j];
       }
     }
 
-    for (int k = 1; k < NUM_PAIRS; k++) {
-      for (int state = 0; state < (1 << n); state++) {
-        // A cost of null means the previous state does not exist.
-        if (dp[k-1][state] == null) continue;
-        for (int i = 0; i < NUM_SINGLETON_PAIRS; i++) {
-          int pair = pairStates[i];
-          // Ignore states which overlap
-          if ((state & pair) != 0) continue;
+    for (int state = 0; state < (1 << n); state++) {
+      // A cost of null means the previous state does not exist.
+      if (dp[state] == null) continue;
+      for (int i = 0; i < numPairs; i++) {
+        int pair = pairStates[i];
+        // Ignore states which overlap
+        if ((state & pair) != 0) continue;
 
-          int newState = state | pair;
-          double newCost = dp[k-1][state] + pairCost[i];
-          if (dp[k][newState] == null || newCost < dp[k][newState]) {
-            dp[k][newState] = newCost;
-            // Save the fact that we went from 'state' -> 'newState' at stage k. From this we will
-            // be able to reconstruct which pairs of nodes were taken by looking at 'state' xor
-            // 'newState' which should give us the binary representation (state) of the pair used.
-            history[k][newState] = state;
-          }
+        int newState = state | pair;
+        double newCost = dp[state] + pairCost[i];
+        if (dp[newState] == null || newCost < dp[newState]) {
+          dp[newState] = newCost;
+          // Save the fact that we went from 'state' -> 'newState'. From this we will be able to
+          // reconstruct which pairs of nodes were taken by looking at 'state' xor 'newState' which
+          // should give us the binary representation (state) of the pair used.
+          history[newState] = state;
         }
       }
     }
 
     // Reconstruct the matching of pairs of nodes.
     matching = new int[n];
-    int state = END_STATE;
-    for (int k = NUM_PAIRS - 1, i = 0; k >= 0; k--) {
-      int prevState = history[k][state];
-      int pairUsed = state ^ prevState;
+    for (int i = 0, state = END_STATE; state != 0; state = history[state]) {
+      int pairUsed = state ^ history[state];
       matching[i++] = getBitPosition(Integer.lowestOneBit(pairUsed));
       matching[i++] = getBitPosition(Integer.highestOneBit(pairUsed));
-      state = prevState;
     }
 
-    minWeightCost = dp[NUM_PAIRS - 1][END_STATE];
+    minWeightCost = dp[END_STATE];
     solved = true;
   }
 
