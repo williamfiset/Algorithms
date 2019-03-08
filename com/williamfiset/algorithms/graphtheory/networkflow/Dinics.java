@@ -144,6 +144,7 @@ public class Dinics extends NetworkFlowSolverBase {
     solver.addEdge(2, 5, 25);
     solver.addEdge(3, 4, 25);
     solver.addEdge(3, 6, 10);
+    solver.addEdge(3, 7, 20);
     solver.addEdge(4, 2, 5);
     solver.addEdge(4, 7, 30);
     solver.addEdge(5, 7, 20);
