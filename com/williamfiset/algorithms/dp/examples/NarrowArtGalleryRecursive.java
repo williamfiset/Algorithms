@@ -2,7 +2,6 @@ import java.util.Scanner;
 
 public class NarrowArtGalleryRecursive {
 
-  static Scanner sc = new Scanner(System.in);
   static final int INF = 10000;
 
   static int sum;
@@ -25,7 +24,9 @@ public class NarrowArtGalleryRecursive {
     return sum - min(f(k, n, LEFT), f(k, n, RIGHT));
   }
 
-  // k = num rooms to close, n = row index, s = the side, either LEFT or RIGHT.
+  // k = num rooms to close
+  // n = the row index
+  // s = the side, either LEFT, RIGHT or NEITHER.
   static int f(int k, int n, int s) {
     if (n < 0) return INF;
     if (k == 0) return 0;
@@ -35,13 +36,13 @@ public class NarrowArtGalleryRecursive {
       return dp[k][n][s];
 
     dp[k][n][LEFT] = min(
-      f(k, n, NEITHER)  + g(n-2, LEFT),
+      f(k, n, NEITHER) + g(n-2, LEFT),
       f(k-1, n-1, LEFT) + g(n-2, LEFT),
       f(k, n-1, LEFT)
     );
 
     dp[k][n][RIGHT] = min(
-      f(k, n, NEITHER)   + g(n-2, RIGHT),
+      f(k, n, NEITHER) + g(n-2, RIGHT),
       f(k-1, n-1, RIGHT) + g(n-2, RIGHT),
       f(k, n-1, RIGHT)
     );
@@ -55,6 +56,7 @@ public class NarrowArtGalleryRecursive {
   }
 
   public static void main(String[] Fiset) {
+    Scanner sc = new Scanner(System.in);
     while(true) {
       int N = sc.nextInt();
       int K = sc.nextInt();
@@ -70,7 +72,7 @@ public class NarrowArtGalleryRecursive {
         sum += gallery[i][LEFT] + gallery[i][RIGHT];
       }
 
-      System.out.printf("%d\n", f(K, N+1));
+      System.out.println(f(K, N+1));
     }
   }
 }
