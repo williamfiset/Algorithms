@@ -136,7 +136,7 @@ public class LongestCommonSubstring {
       indexMap[k++] = i;
     }
 
-    // TODO(williamfiseT): Devise a mathematically correct solution of computing alphabet size rather
+    // TODO(williamfiset): Devise a mathematically correct solution of computing alphabet size rather
     // than shifting a large value. In theory the lower bound should maybe be around:
     // ALPHABET_SIZE = NUM_SENTINELS + (highestAsciiValue - lowestAsciiValue) + 2;
     final int SHIFT = 1500;

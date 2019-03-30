@@ -1,3 +1,9 @@
+/**
+ *
+ * $ gradle test --tests "javatests.com.williamfiset.algorithms.strings.LongestCommonSubstringTest" 
+ *
+ */
+
 package javatests.com.williamfiset.algorithms.strings;
 
 // TODO(williamfiset): Replace junit asserts with all Google truth assertions.
@@ -10,6 +16,81 @@ import org.junit.*;
 import java.util.*;
 
 public class LongestCommonSubstringTest {
+
+  @Test
+  public void k2Lcs() {
+    int k = 2;
+    String[] strs = { "TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT" };
+
+    TreeSet<String> ans = new TreeSet<>();
+    ans.add("TAAAAT");
+
+    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    assertEquals(ans, lcss);    
+  }
+
+  @Test
+  public void k3Lcs() {
+    int k = 3;
+    String[] strs = { "TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT" };
+
+    TreeSet<String> ans = new TreeSet<>();
+    ans.add("ATA");
+    ans.add("AAT");
+
+    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    assertEquals(ans, lcss);    
+  }
+
+  @Test
+  public void k4Lcs() {
+    int k = 4;
+    String[] strs = { "TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT" };
+
+    TreeSet<String> ans = new TreeSet<>();
+    ans.add("AT");
+    ans.add("TA");
+
+    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    assertEquals(ans, lcss);    
+  }
+
+  @Test
+  public void k5Lcs() {
+    int k = 5;
+    String[] strs = { "TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT" };
+
+    TreeSet<String> ans = new TreeSet<>();
+    ans.add("AT");
+    ans.add("TA");
+
+    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    assertEquals(ans, lcss);    
+  }
+
+  @Test
+  public void k6Lcs() {
+    int k = 6;
+    String[] strs = { "TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT" };
+
+    TreeSet<String> ans = new TreeSet<>();
+    ans.add("T");
+
+    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    assertEquals(ans, lcss);    
+  }
+
+  @Test
+  public void k7Lcs() {
+    int k = 7;
+    String[] strs = { "TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT" };
+
+    TreeSet<String> ans = new TreeSet<>();
+    ans.add("T");
+
+    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    assertEquals(ans, lcss);    
+  }
 
   @Test
   public void noLongestCommonSubstringTest() {
