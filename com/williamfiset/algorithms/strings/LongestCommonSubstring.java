@@ -39,7 +39,6 @@ public class LongestCommonSubstring {
   // suffix came from. While constructing the index map also keep track of
   // the lowest ascii value and return this value.
   private static int fillIndexMap(String[] strings, int[] indexMap) {
-    
     int lowestAsciiValue = Integer.MAX_VALUE;
 
     // Find the lowest ASCII value within the strings.
@@ -58,10 +57,8 @@ public class LongestCommonSubstring {
 
       // Record that the sentinel belongs to string i
       indexMap[k++] = i;
-
     }
     return lowestAsciiValue;
-
   }
 
   private static int[] constructText(String[] strings, final int TEXT_LENGTH, final int SHIFT) {
@@ -128,31 +125,22 @@ public class LongestCommonSubstring {
     int highestAsciiValue = Integer.MIN_VALUE;
 
     for (int i = 0, k = 0; i < strings.length; i++) {
-      
       String str = strings[i];
-      
       for (int j = 0; j < str.length(); j++) {
         int asciiVal = str.charAt(j);
         if (asciiVal < lowestAsciiValue)  lowestAsciiValue  = asciiVal;
         if (asciiVal > highestAsciiValue) highestAsciiValue = asciiVal;
         indexMap[k++] = i;
       }
-
       // Record that the sentinel belongs to string i
       indexMap[k++] = i;
-
     }
 
-    // System.out.println(lowestAsciiValue + " " + highestAsciiValue + " " + NUM_SENTINELS);
+    // TODO(williamfiseT): Devise a mathematically correct solution of computing alphabet size rather
+    // than shifting a large value. In theory the lower bound should maybe be around:
+    // ALPHABET_SIZE = NUM_SENTINELS + (highestAsciiValue - lowestAsciiValue) + 2;
+    final int SHIFT = 1500;
 
-     // TODO: Clean this crap up
-    final int SHIFT = 1500; // NUM_SENTINELS + (highestAsciiValue - lowestAsciiValue) + 1;
-
-
-    // In theory the lower bound is around:
-    // final int ALPHABET_SIZE = NUM_SENTINELS + (highestAsciiValue - lowestAsciiValue) + 2;
-
-    // In practice it's much worse:
     final int ALPHABET_SIZE = highestAsciiValue + NUM_SENTINELS + SHIFT + 1;
 
     int[] T = constructText(strings, TEXT_LENGTH, SHIFT);
@@ -174,8 +162,7 @@ public class LongestCommonSubstring {
     int bestLCSLength = 0;
     int windowColorCount = 0;
 
-    // suffixArray.display(SHIFT);
-    // TODO: Gross techique refactor
+    // TODO(williamfiset): Refactor sliding window code.
     boolean done = false;
     boolean exit = false;
 
@@ -197,14 +184,12 @@ public class LongestCommonSubstring {
         int windowLCP = w.getMin();
 
         if (windowLCP > 0) {
-
           if (bestLCSLength < windowLCP) {
             bestLCSLength = windowLCP;
             lcss.clear();
           }
 
           if (bestLCSLength == windowLCP) {
-
             // Construct the current LCS within the window interval
             int pos = sa[w.lo];
             char[] lcs = new char[windowLCP];
@@ -214,18 +199,14 @@ public class LongestCommonSubstring {
             lcss.add(new String(lcs));
           }
         }
-
-
       // Increase the window size because we don't have enough colors
       } else {
-
         // Update the colors in our window
         int nextColor = indexMap[sa[w.hi]];
         windowColorCount = addColor(windowColorCountMap, windowColorCount, nextColor);
         
         w.advance();
         if (w.hi == TEXT_LENGTH) done = true;
-
       }
 
     }
@@ -328,7 +309,6 @@ public class LongestCommonSubstring {
   }
 
   private static class SlidingWindowMinimum {
-
     int[] values;
     int N, lo, hi;
 
@@ -342,7 +322,6 @@ public class LongestCommonSubstring {
 
     // Advances the front of the window by one unit
     public void advance() {
-
       // Remove all the worse values in the back of the deque
       while(!deque.isEmpty() && values[deque.peekLast()] > values[hi])
         deque.removeLast();
@@ -352,12 +331,10 @@ public class LongestCommonSubstring {
 
       // Increase the window size
       hi++;
-
     }
 
     // Retracks the back of the window by one unit
     public void shrink() {
-
       // Decrease window size by pushing it forward
       lo++;
 
@@ -365,7 +342,6 @@ public class LongestCommonSubstring {
       // valid in the reduced window.
       while(!deque.isEmpty() && deque.peekFirst() < lo)
         deque.removeFirst();
-
     }
 
     // Query the current minimum value in the window
@@ -373,10 +349,7 @@ public class LongestCommonSubstring {
       if (lo >= hi) throw new IllegalStateException("Make sure lo < hi");
       return values[deque.peekFirst()];
     }
-
   }
-
-
 }
 
 
