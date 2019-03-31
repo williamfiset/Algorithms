@@ -345,9 +345,9 @@ public class Lcs {
       return text;
     }
 
-    private boolean enoughColorsInWindow(int lo, int hi, int[] imap, int[] sa) {
+    private boolean enoughUniqueColorsInWindow(int lo, int hi, int[] imap, int[] sa) {
       Set<Integer> set = new HashSet<>();
-      for (int i = lo; i < hi; i++) {
+      for (int i = lo; i <= hi; i++) {
         set.add(imap[sa[i]]);
       }
       return set.size() >= k;
@@ -361,7 +361,27 @@ public class Lcs {
       return new String(s);
     }
 
+    private int lcsLen = 0;
+    private void addLcs(int lo, int hi, int windowLcs, int shift, int[] sa, int[] text, int[] imap) {
+      if (hi - lo < k - 1) {
+        System.out.printf("lo: %d, hi: %d. Too small range. lo: %d, hi: %d, k: %d, hi - lo < k - 1\n", lo, hi, lo, hi, k);
+        return;
+      }
+      if (!enoughUniqueColorsInWindow(lo, hi, imap, sa)) {
+        System.out.printf("lo: %d, hi: %d. Not enough unique colors in range [%d, %d]\n", lo, hi, lo, hi);
+        return;
+      }
+      if (windowLcs > lcsLen) {
+        lcsLen = windowLcs;
+        lcss.clear();
+      }
+      if (windowLcs == lcsLen) {
+        lcss.add(retrieveStrAt(sa[lo], windowLcs, shift, text));
+      }
+    }
+
     public void solve() {
+      lcsLen = 0;
       int[] imap = buildReverseColorIndexMapping();
       int[] text = buildText();
       
@@ -371,48 +391,36 @@ public class Lcs {
 
       // Add 10 extra spots to lcp array because seg tree is not inclusive on right endpoint
       // and we don't want index out of bounds.
-      int[] lcp2 = new int[lcp.length + 10];
-      for(int i = 0; i < lcp.length; i++) lcp2[i] = lcp[i];
+      // int[] lcp2 = new int[lcp.length + 10];
+      // for(int i = 0; i < lcp.length; i++) lcp2[i] = lcp[i];
 
       // TODO(williamfiset): Replace with SlidingWindowMinimum for speed.
-      CompactMinSegmentTree tree = new CompactMinSegmentTree(lcp2);
+      CompactMinSegmentTree tree = new CompactMinSegmentTree(lcp);
 
       int lo = numSentinels;
       int hi = numSentinels;
 
-      int lcsLen = 0;
       final int shift = numSentinels - lowestAsciiValue;
       System.out.println(java.util.Arrays.toString(lcp));
 
       while (true) {
-        boolean shrinkWindow = (hi == textLength-1) ? true : enoughColorsInWindow(lo, hi, imap, sa);
+        boolean shrinkWindow = (hi == textLength-1) ? true : enoughUniqueColorsInWindow(lo, hi, imap, sa);
 
         if (shrinkWindow) {
           lo++;
-          if (lo == hi) break;
+          if (lo == textLength-1) break;
 
-          int windowLcs = tree.query(lo+1, hi+1);
-          System.out.printf("lo: %d, hi: %d, lcp: %d\n", lo, hi, windowLcs);
-          if (windowLcs > lcsLen) {
-            lcsLen = windowLcs;
-            lcss.clear();
-          }
-          if (windowLcs == lcsLen) {
-            // Add str to lcss
-            lcss.add(retrieveStrAt(sa[lo], windowLcs, shift, text));
+          if (lo != hi) { // Only a constraint because seg tree range is [l, r)
+            int windowLcs = tree.query(lo+1, hi+1);
+            addLcs(lo, hi, windowLcs, shift, sa, text, imap);
           }
         // Expand window
         } else {
           hi++;
 
-          int windowLcs = tree.query(lo+1, hi+1);
-          System.out.printf("lo: %d, hi: %d, lcp: %d\n", lo, hi, windowLcs);
-          if (windowLcs > lcsLen) {
-            lcsLen = windowLcs;
-            lcss.clear();
-          }
-          if (windowLcs == lcsLen) {
-            lcss.add(retrieveStrAt(sa[lo], windowLcs, shift, text));
+          if (lo != hi) { // Only a constraint because seg tree range is [l, r)
+            int windowLcs = tree.query(lo+1, hi+1);
+            addLcs(lo, hi, windowLcs, shift, sa, text, imap);
           }
         }
       }
@@ -528,13 +536,14 @@ public class Lcs {
   }
 
   public static void main(String[] args) {
-    String[] strings = new String[]{"TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT"};
+    // String[] strings = new String[]{"TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT"};
+    String[] strings = new String[]{"AABAABA", "BBAABA", "BAABA", "ABBABB", "BBA", "ABA"};
     List<Integer> sentinelIndexes = new ArrayList<>();
     String t = addSentinels(strings, sentinelIndexes);
     SuffixArray sa = new SuffixArrayImpl(t);
 
     sa.display(sentinelIndexes);
-    LcsSolver solver = new LcsSolver(strings, 3);
+    LcsSolver solver = new LcsSolver(strings, 4);
     solver.solve();
     System.out.println(solver.lcss);
 

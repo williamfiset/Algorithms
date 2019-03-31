@@ -33,9 +33,9 @@ public class LongestCommonSubstringTest {
     Map<Integer, TreeSet<String>> answers = new HashMap<>();
 
     answers.put(2, new TreeSet<>(ImmutableList.of("TAAAAT")));
-    answers.put(3, new TreeSet<>(ImmutableList.of("ATA", "AAT"))); // should not have TTT?
+    answers.put(3, new TreeSet<>(ImmutableList.of("ATA", "AAT")));
     answers.put(4, new TreeSet<>(ImmutableList.of("AT", "TA")));
-    answers.put(5, new TreeSet<>(ImmutableList.of("AT", "TA")));
+    answers.put(5, new TreeSet<>(ImmutableList.of("AT")));
     answers.put(6, new TreeSet<>(ImmutableList.of("T")));
     answers.put(7, new TreeSet<>(ImmutableList.of("T")));
 
@@ -49,7 +49,7 @@ public class LongestCommonSubstringTest {
 
     answers.put(2, new TreeSet<>(ImmutableList.of("BAABA")));
     answers.put(3, new TreeSet<>(ImmutableList.of("BAABA")));
-    answers.put(4, new TreeSet<>(ImmutableList.of("ABA"))); // Should not have BBA?
+    answers.put(4, new TreeSet<>(ImmutableList.of("ABA")));
 
     verifyMultipleKValues(strs, answers);
   }
