@@ -12,84 +12,34 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.williamfiset.algorithms.strings.LongestCommonSubstring;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.*;
 import java.util.*;
 
 public class LongestCommonSubstringTest {
 
-  @Test
-  public void k2Lcs() {
-    int k = 2;
-    String[] strs = { "TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT" };
+  public void verifyMultipleKValues(String[] strings, Map<Integer, TreeSet<String>> answers) {
+    for (int k : answers.keySet()) {
+      TreeSet<String> expectedLcss = answers.get(k);
 
-    TreeSet<String> ans = new TreeSet<>();
-    ans.add("TAAAAT");
-
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
-    assertEquals(ans, lcss);    
+      TreeSet<String> lcss = LongestCommonSubstring.lcs(strings, k);
+      assertEquals(expectedLcss, lcss);
+    }
   }
 
   @Test
-  public void k3Lcs() {
-    int k = 3;
+  public void breakingLcs() {
     String[] strs = { "TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT" };
+    Map<Integer, TreeSet<String>> answers = new HashMap<>();
 
-    TreeSet<String> ans = new TreeSet<>();
-    ans.add("ATA");
-    ans.add("AAT");
+    answers.put(2, new TreeSet<>(ImmutableList.of("TAAAAT")));
+    answers.put(3, new TreeSet<>(ImmutableList.of("ATA", "AAT")));
+    answers.put(4, new TreeSet<>(ImmutableList.of("AT", "TA")));
+    answers.put(5, new TreeSet<>(ImmutableList.of("AT", "TA")));
+    answers.put(6, new TreeSet<>(ImmutableList.of("T")));
+    answers.put(7, new TreeSet<>(ImmutableList.of("T")));
 
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
-    assertEquals(ans, lcss);    
-  }
-
-  @Test
-  public void k4Lcs() {
-    int k = 4;
-    String[] strs = { "TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT" };
-
-    TreeSet<String> ans = new TreeSet<>();
-    ans.add("AT");
-    ans.add("TA");
-
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
-    assertEquals(ans, lcss);    
-  }
-
-  @Test
-  public void k5Lcs() {
-    int k = 5;
-    String[] strs = { "TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT" };
-
-    TreeSet<String> ans = new TreeSet<>();
-    ans.add("AT");
-    ans.add("TA");
-
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
-    assertEquals(ans, lcss);    
-  }
-
-  @Test
-  public void k6Lcs() {
-    int k = 6;
-    String[] strs = { "TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT" };
-
-    TreeSet<String> ans = new TreeSet<>();
-    ans.add("T");
-
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
-    assertEquals(ans, lcss);    
-  }
-
-  @Test
-  public void k7Lcs() {
-    int k = 7;
-    String[] strs = { "TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT" };
-
-    TreeSet<String> ans = new TreeSet<>();
-    ans.add("T");
-
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
-    assertEquals(ans, lcss);    
+    verifyMultipleKValues(strs, answers);
   }
 
   @Test
