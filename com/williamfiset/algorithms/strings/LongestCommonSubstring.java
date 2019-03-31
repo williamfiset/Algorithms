@@ -15,23 +15,28 @@ public class LongestCommonSubstring {
   // Example usages
   public static void main(String[] args) {
 
-    int k = 2;
-    String[] strs = { "abcde", "habcab", "ghabcdf" };
-    Set <String> set = lcs(strs, k);
-    System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
+    // int k = 2;
+    // String[] strs = { "abcde", "habcab", "ghabcdf" };
+    // Set <String> set = lcs(strs, k);
+    // System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
     // OUTPUT: LCS(s) of [abcde, habcab, ghabcdf] with k = 2 equals = [abcd, habc]
 
-    k = 3;
-    strs = new String[]{ "AAGAAGC", "AGAAGT", "CGAAGC" };
-    set = lcs(strs, k);
-    System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
+    // k = 3;
+    // strs = new String[]{ "AAGAAGC", "AGAAGT", "CGAAGC" };
+    // set = lcs(strs, k);
+    // System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
     // OUTPUT: LCS(s) of [AAGAAGC, AGAAGT, CGAAGC] with k = 3 equals = [GAAG]
 
-    k = 2;
-    strs = new String[]{ "AABC", "BCDC", "BCDE", "CDED", "CDCABC" };
-    set = lcs(strs, k);
-    System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
+    // k = 2;
+    // strs = new String[]{ "AABC", "BCDC", "BCDE", "CDED", "CDCABC" };
+    // set = lcs(strs, k);
+    // System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
     // OUTPUT: LCS(s) of [AABC, BCDC, BCDE, CDED, CDCABC] with k = 2 equals = [ABC, BCD, CDC, CDE]
+
+    int k = 3;
+    String[] strs = new String[]{ "TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT" };
+    Set<String> set = lcs(strs, k);
+    System.out.printf("LCS(s) of %s with k = %d equals = %s\n", Arrays.toString(strs), k, set);
 
   }
 
@@ -139,7 +144,7 @@ public class LongestCommonSubstring {
     // TODO(williamfiset): Devise a mathematically correct solution of computing alphabet size rather
     // than shifting a large value. In theory the lower bound should maybe be around:
     // ALPHABET_SIZE = NUM_SENTINELS + (highestAsciiValue - lowestAsciiValue) + 2;
-    final int SHIFT = 1500;
+    final int SHIFT = 10; //1500;
 
     final int ALPHABET_SIZE = highestAsciiValue + NUM_SENTINELS + SHIFT + 1;
 
@@ -149,6 +154,8 @@ public class LongestCommonSubstring {
     SuffixArray suffixArray = new SuffixArray(T, ALPHABET_SIZE);
     int[] sa  = suffixArray.sa;
     int[] lcp = suffixArray.lcp;
+
+    suffixArray.display();
 
     SlidingWindowMinimum w = new SlidingWindowMinimum(lcp);
 
@@ -228,7 +235,7 @@ public class LongestCommonSubstring {
     
     private static int[] toIntArray(String s) {   
       int[] text = new int[s.length()];   
-      for(int i=0;i<s.length();i++)text[i] = s.charAt(i);   
+      for(int i = 0; i < s.length(); i++) text[i] = s.charAt(i);   
       return text;    
     }
 
