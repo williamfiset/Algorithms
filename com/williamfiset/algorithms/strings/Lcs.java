@@ -12,59 +12,65 @@ public class Lcs {
 
   private static abstract class SuffixArray {
     
-    protected static final int DEFAULT_ALPHABET_SHIFT = 0;
-    protected static final int DEFAULT_ALPHABET_SIZE = 256;
-    
     // Length of the suffix array
-    public final int N;
-    
-    // The shift value is used if you need to fake "shifting" the entire alphabet a certain
-    // number of units either up or down. This is useful when you introduce sentinel values into
-    // the suffix array which need to be lexicographically less than the rest the alphabet.
-    // The shift value can also be useful to reduce the alphabet size if you know your alphabet will
-    // only contain values between [a, b], then if your shift = a, your new alphabet can be
-    // of a lower range [0, b - a]
-    //
-    // NOTE: It may be best to set the user shift the values of the text before supplying it to the
-    // Suffix array that way the implementation never needs to worry about shifting. This is the 
-    // default behavior anyways.
-    protected int shift = DEFAULT_ALPHABET_SHIFT;
-    
-    protected int alphabetSize = DEFAULT_ALPHABET_SIZE;
+    protected final int N;
 
     // T is the text
-    public int[] T;
+    protected int[] T;
 
     // The sorted suffix array values.
-    public int[] sa;
+    protected int[] sa;
     
     // Longest Common Prefix array
-    public int [] lcp;
+    protected int [] lcp;
 
-    // Designated constructor
-    public SuffixArray(int[] text, int shift, int alphabetSize) {
-      if (text == null || alphabetSize <= 0) 
-        throw new IllegalArgumentException();
-      
+    private boolean constructedSa = false;
+    private boolean constructedLcpArray = false;
+
+    public SuffixArray(int[] text) {
+      if (text == null) 
+        throw new IllegalArgumentException("Text cannot be null.");
       this.T = text;
       this.N = text.length;
-      
-      this.shift = shift;
-      this.alphabetSize = alphabetSize;
-      
-      // Build suffix array
+    }
+
+    public int getTextLength() {
+      return T.length;
+    }
+
+    // Returns the suffix array.
+    public int[] getSa() {
+      buildSuffixArray();
+      return sa;
+    }
+
+    // Returns the LCP array.
+    public int[] getLcpArray() {
+      buildLcpArray();
+      return lcp;
+    }
+
+    // Builds the suffix array by calling the construct() method.
+    protected void buildSuffixArray() {
+      if (constructedSa) return;
       construct();
-      
-      // Build LCP array
+      constructedSa = true;
+    }
+
+    // Builds the LCP array by first creating the SA and then running the kasai algorithm.
+    protected void buildLcpArray() {
+      if (constructedLcpArray) return;
+      buildSuffixArray();
       kasai();
+      constructedLcpArray = true;
     }
     
     protected static int[] toIntArray(String s) {
       if (s == null) return null;
-      int[] text = new int[s.length()];
+      int[] t = new int[s.length()];
       for(int i = 0; i < s.length(); i++)
-        text[i] = s.charAt(i);
-      return text;
+        t[i] = s.charAt(i);
+      return t;
     }
     
     // The suffix array construction algorithm is left undefined 
@@ -96,7 +102,7 @@ public class Lcs {
         int suffixLen = N - sa[i];
         char[] string = new char[suffixLen];
         for (int j = sa[i], k = 0; j < N; j++, k++)
-          string[k] = (char)(T[j] - shift);
+          string[k] = (char)(T[j]);
         String suffix = new String(string);
         String formattedStr = String.format("% 7d % 7d % 7d %s\n", i, sa[i], lcp[i], suffix);
         sb.append(formattedStr);
@@ -117,14 +123,15 @@ public class Lcs {
       return colors[colorIndex];
     }
 
-    // Display an augmented colored SA representation for debugging LCS problem.
-    public void display(List<Integer> sentinelIndexes) {
+    // Display an augmented colored SA for debugging LCS problem.
+    public void toString(List<Integer> sentinelIndexes) {
       System.out.println("------i------SA------LCP--------Suffix");
+      buildLcpArray();
       for(int i = 0; i < N; i++) {
         int suffixLen = N - sa[i];
         char[] string = new char[suffixLen];
         for (int j = sa[i], k = 0; j < N; j++, k++)
-          string[k] = (char)(T[j] - shift);
+          string[k] = (char)(T[j]);
         String suffix = new String(string);
 
         System.out.print(findColorFromPos(sa[i], sentinelIndexes));
@@ -136,10 +143,8 @@ public class Lcs {
     // https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println
     //
     // Usage:
-    // System.out.print(Color.CYAN);
-    // System.out.println("111111111aaaaaaaaaaaaaaaa==============");
-    // System.out.print(Color.RESET);
-    enum Color {
+    // System.out.println(Color.CYAN + "Hello World" + Color.RESET);
+    private enum Color {
       RESET("\033[0m"),
 
       BLACK("\033[0;30m"),
@@ -179,33 +184,14 @@ public class Lcs {
         if (cmp == 0) return Integer.compare(secondHalf, other.secondHalf);
         return cmp;
       }
-
-      @Override
-      public String toString() {
-        return originalIndex + " -> (" + firstHalf + ", " + secondHalf + ")";
-      }
     }
 
     public SuffixArrayImpl(String text) {
-      super(toIntArray(text), DEFAULT_ALPHABET_SHIFT, DEFAULT_ALPHABET_SIZE);
+      super(toIntArray(text));
     }
 
     public SuffixArrayImpl(int[] text) {
-      super(text, DEFAULT_ALPHABET_SHIFT, DEFAULT_ALPHABET_SIZE);
-    }
-
-    // TODO(williamfiset): Get rid of these constructors in favor of
-    // automatically detecting the alphabet size shift required
-    public SuffixArrayImpl(String text, int shift) {
-      super(toIntArray(text), shift, DEFAULT_ALPHABET_SHIFT);
-    }
-    public SuffixArrayImpl(int[] text, int shift) {
-      super(text, shift, DEFAULT_ALPHABET_SIZE);
-    }
-
-    // Designated constructor
-    public SuffixArrayImpl(int[] text, int shift, int alphabetSize) {
-      super(text, shift, alphabetSize);
+      super(text);
     }
 
     // Construct a suffix array in O(nlog^2(n))
@@ -386,13 +372,8 @@ public class Lcs {
       int[] text = buildText();
       
       SuffixArray suffixArray = new SuffixArrayImpl(text);
-      int[] sa = suffixArray.sa;
-      int[] lcp = suffixArray.lcp;
-
-      // Add 10 extra spots to lcp array because seg tree is not inclusive on right endpoint
-      // and we don't want index out of bounds.
-      // int[] lcp2 = new int[lcp.length + 10];
-      // for(int i = 0; i < lcp.length; i++) lcp2[i] = lcp[i];
+      int[] sa = suffixArray.getSa();
+      int[] lcp = suffixArray.getLcpArray();
 
       // TODO(williamfiset): Replace with SlidingWindowMinimum for speed.
       CompactMinSegmentTree tree = new CompactMinSegmentTree(lcp);
@@ -536,14 +517,15 @@ public class Lcs {
   }
 
   public static void main(String[] args) {
-    // String[] strings = new String[]{"TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT"};
-    String[] strings = new String[]{"AABAABA", "BBAABA", "BAABA", "ABBABB", "BBA", "ABA"};
+    String[] strings = new String[]{"TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT"};
+    // String[] strings = new String[]{"AABAABA", "BBAABA", "BAABA", "ABBABB", "BBA", "ABA"};
     List<Integer> sentinelIndexes = new ArrayList<>();
     String t = addSentinels(strings, sentinelIndexes);
     SuffixArray sa = new SuffixArrayImpl(t);
+    
+    sa.toString(sentinelIndexes);
 
-    sa.display(sentinelIndexes);
-    LcsSolver solver = new LcsSolver(strings, 4);
+    LcsSolver solver = new LcsSolver(strings, 2);
     solver.solve();
     System.out.println(solver.lcss);
 
@@ -554,7 +536,7 @@ public class Lcs {
     // sentinelIndexes.add(T.length() - 1);
     // SuffixArray sa = new SuffixArrayImpl(T);
 
-    // sa.display(sentinelIndexes);
+    // sa.toString(sentinelIndexes);
   }
 }
 
