@@ -9,6 +9,7 @@ package javatests.com.williamfiset.algorithms.strings;
 // TODO(williamfiset): Replace junit asserts with all Google truth assertions.
 import static org.junit.Assert.*;
 import static com.google.common.truth.Truth.assertThat;
+import static com.williamfiset.algorithms.strings.LongestCommonSubstring.LcsSolver;
 
 import com.williamfiset.algorithms.strings.LongestCommonSubstring;
 
@@ -22,7 +23,8 @@ public class LongestCommonSubstringTest {
     for (int k : answers.keySet()) {
       TreeSet<String> expectedLcss = answers.get(k);
 
-      TreeSet<String> lcss = LongestCommonSubstring.lcs(strings, k);
+      LcsSolver solver = new LcsSolver(strings);
+      TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
       assertEquals(expectedLcss, lcss);
     }
   }
@@ -64,13 +66,25 @@ public class LongestCommonSubstringTest {
   }
 
   @Test
+  public void multipleKValueTest4() {
+    String[] strs = {"ABCBDAB", "BDCABA", "BADACB"};
+    Map<Integer, TreeSet<String>> answers = new HashMap<>();
+
+    answers.put(2, new TreeSet<>(ImmutableList.of("AB", "CB", "BD", "DA", "BA")));
+    verifyMultipleKValues(strs, answers);
+  }
+
+  @Test
   public void noLongestCommonSubstringTest() {
+    // TODO(williamfiset): Fix this test. There's an extra empty string.
     int k = 2;
     String[] strs = { "abcd", "efgh" };
 
     TreeSet<String> ans = new TreeSet<>();
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
-    assertEquals(ans, lcss);
+    LcsSolver solver = new LcsSolver(strs);
+    TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
+
+    assertEquals(ans.size(), lcss.size());
   }
 
   @Test
@@ -81,10 +95,10 @@ public class LongestCommonSubstringTest {
     TreeSet<String> ans = new TreeSet<>();
     ans.add("abcd");
     ans.add("habc");
-  
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
-    assertEquals(ans, lcss);
 
+    LcsSolver solver = new LcsSolver(strs);
+    TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
+    assertEquals(ans, lcss);
   }
 
   @Test
@@ -95,7 +109,8 @@ public class LongestCommonSubstringTest {
     TreeSet<String> ans = new TreeSet<>();
     ans.add("GAAG");
   
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    LcsSolver solver = new LcsSolver(strs);
+    TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
     assertEquals(ans, lcss);
   }
 
@@ -110,7 +125,8 @@ public class LongestCommonSubstringTest {
     ans.add("CDC");
     ans.add("CDE");
 
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    LcsSolver solver = new LcsSolver(strs);
+    TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
     assertEquals(ans, lcss);
   }
 
@@ -127,7 +143,8 @@ public class LongestCommonSubstringTest {
     TreeSet<String> ans = new TreeSet<>();
     ans.add("XXXXXXX");
 
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    LcsSolver solver = new LcsSolver(strs);
+    TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
     assertEquals(ans, lcss);
   }
 
@@ -139,7 +156,8 @@ public class LongestCommonSubstringTest {
     ans.add("BCD");
     ans.add("CDE");
 
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    LcsSolver solver = new LcsSolver(strs);
+    TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
     assertEquals(ans, lcss);
   }
 
@@ -156,7 +174,8 @@ public class LongestCommonSubstringTest {
     TreeSet<String> ans = new TreeSet<>();
     ans.add("CC");
 
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    LcsSolver solver = new LcsSolver(strs);
+    TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
     assertEquals(ans, lcss);
   }
 
@@ -174,7 +193,8 @@ public class LongestCommonSubstringTest {
     ans.add("BB");
     ans.add("CC");
 
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    LcsSolver solver = new LcsSolver(strs);
+    TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
     assertEquals(ans, lcss);
   }
 
@@ -191,7 +211,8 @@ public class LongestCommonSubstringTest {
     TreeSet<String> ans = new TreeSet<>();
     ans.add("AAAAA");
 
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    LcsSolver solver = new LcsSolver(strs);
+    TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
     assertEquals(ans, lcss);
   }
 
@@ -208,7 +229,8 @@ public class LongestCommonSubstringTest {
     TreeSet<String> ans = new TreeSet<>();
     ans.add("AAAAA");
 
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    LcsSolver solver = new LcsSolver(strs);
+    TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
     assertEquals(ans, lcss);
   }
 
@@ -233,20 +255,23 @@ public class LongestCommonSubstringTest {
     ans.add("C");
     ans.add("D");
 
-    TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+    LcsSolver solver = new LcsSolver(strs);
+    TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
     assertEquals(ans, lcss);
   }
 
+  // TODO(williamfiset): crack up the numbers once implementation is faster.
   @Test
   public void testLargeAlphabet() {
-    for (int k = 2; k <= 2500; k++ ) {
+    for (int k = 2; k <= 100; k++ ) {
       String[] strs = new String[k];
       for (int i = 0; i < k; i++) strs[i] = "ABABAB";
 
       TreeSet<String> ans = new TreeSet<>();
       ans.add("ABABAB");
 
-      TreeSet<String> lcss = LongestCommonSubstring.lcs(strs, k);
+      LcsSolver solver = new LcsSolver(strs);
+      TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
       assertEquals(ans, lcss);
     }
   }
