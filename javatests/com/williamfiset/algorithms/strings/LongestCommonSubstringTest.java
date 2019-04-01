@@ -75,8 +75,22 @@ public class LongestCommonSubstringTest {
   }
 
   @Test
+  public void multipleKValueTest5() {
+    String[] strs = {"abcde", "f", "ghij", "kmlop", "qrs", "tu", "v", "wxyz"};
+    Map<Integer, TreeSet<String>> answers = new HashMap<>();
+
+    answers.put(2, new TreeSet<>());
+    answers.put(3, new TreeSet<>());
+    answers.put(4, new TreeSet<>());
+    answers.put(5, new TreeSet<>());
+    answers.put(6, new TreeSet<>());
+    answers.put(7, new TreeSet<>());
+    answers.put(8, new TreeSet<>());
+    verifyMultipleKValues(strs, answers);
+  }
+
+  @Test
   public void noLongestCommonSubstringTest() {
-    // TODO(williamfiset): Fix this test. There's an extra empty string.
     int k = 2;
     String[] strs = { "abcd", "efgh" };
 
