@@ -17,7 +17,6 @@ import java.util.*;
 public class LongestCommonSubstring {
 
   public static void main(String[] args) {
-    /*
     String[] strings = new String[]{"abcde", "habcab", "ghabcdf"};
 
     // Display suffix array
@@ -30,13 +29,6 @@ public class LongestCommonSubstring {
     int k = 2;
     LcsSolver solver = new LcsSolver(strings);
     System.out.println("Longest common substrings: " + solver.getLongestCommonSubstrings(k));
-    */
-    String[] strs = { "abcd", "efgh" };
-
-    int k = 2;
-    LcsSolver solver = new LcsSolver(strs);
-    TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
-    System.out.println(lcss);
   }
 
   // Method to add unique sentinels. Works for low number of strings.
