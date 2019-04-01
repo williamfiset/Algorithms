@@ -260,15 +260,21 @@ public class Lcs {
   private static class LcsSolver {
 
     // Inputs
-    final int k, numSentinels, textLength;
+    int k, numSentinels, textLength;
     String[] strings;
 
-    int lowestAsciiValue = Integer.MAX_VALUE;
-    int highestAsciiValue = Integer.MIN_VALUE;
+    // Internal
+    int shift, lcsLen;
+    int lowestAsciiValue;
+    int highestAsciiValue;
+    int[] imap, text, sa, lcp;
 
     // Output
-    TreeSet<String> lcss = new TreeSet<>();
+    TreeSet<String> lcss;
 
+    private static final boolean DEBUG_MODE = true;
+
+    // TODO(williamfiset): support LCS with strings as int arrays for larger alphabet sizes.
     public LcsSolver(String[] strings, int k) {
       if (strings == null || strings.length <= 1)
         throw new IllegalArgumentException("Invalid strings array provided.");
@@ -276,23 +282,33 @@ public class Lcs {
         throw new IllegalArgumentException("k must be greater than or equal to 2");
       this.strings = strings;
       this.k = k;
-      this.numSentinels = strings.length;
-      this.textLength = computeTextLength(strings) + numSentinels;
     }
 
-    // TODO(williamfiset): support LCS with strings as int arrays for larger alphabet sizes.
+    private void init() {
+      shift = lcsLen = 0;
+      lowestAsciiValue = Integer.MAX_VALUE;
+      highestAsciiValue = Integer.MIN_VALUE;
+      numSentinels = strings.length;
+      lcss = new TreeSet<>();
+      imap = text = sa = lcp = null;
 
-    private static int computeTextLength(String[] strings) {
-      int len = 0;
+      computeTextLength(strings);
+      buildReverseColorMapping();
+      computeShift();
+      buildText();
+    }
+
+    private void computeTextLength(String[] strings) {
+      textLength = 0;
       for (String str : strings) 
-        len += str.length();
-      return len;
+        textLength += str.length();
+      textLength += numSentinels;
     }
 
     // Builds a reverse color index map. The reverse color map tells you which
     // color a character is at a given index in the new text.
-    private int[] buildReverseColorIndexMapping() {
-      int[] imap = new int[textLength];
+    private void buildReverseColorMapping() {
+      imap = new int[textLength];
       for (int i = 0, k = 0; i < strings.length; i++) {
         String str = strings[i];
         for (int j = 0; j < str.length(); j++) {
@@ -304,16 +320,25 @@ public class Lcs {
         // Record that the sentinel belongs to string i
         imap[k++] = i;
       }
-      return imap;
+    }
+
+    private void verifyMinAndMaxAsciiValues() {
+      if (lowestAsciiValue == Integer.MAX_VALUE || highestAsciiValue == Integer.MIN_VALUE)
+        throw new IllegalStateException("Must set min/max ascii values!");
+    }
+
+    private void computeShift() {
+      verifyMinAndMaxAsciiValues();
+      shift = numSentinels - lowestAsciiValue;
     }
 
     // Build text containing sentinels. Must have computed lowest and highest ascii values beforehand.
     // All sentinels values will be in the range [0, numSentinels)
     // All text values will be in the range [numSentinels, numSentinels + highestAsciiValue - lowestAsciiValue]
-    private int[] buildText() {
+    private void buildText() {
+      verifyMinAndMaxAsciiValues();
+      text = new int[textLength];
       int sentinel = 0;
-      int shift = numSentinels - lowestAsciiValue;
-      int[] text = new int[textLength];
       // Construct the new text with the shifted values and the sentinels
       for(int i = 0, k = 0; i < strings.length; i++) {
         String str = strings[i];
@@ -328,52 +353,58 @@ public class Lcs {
           throw new IllegalStateException(String.format("Unexpected character range. Was: %d, wanted between [%d, %d)", text[k-1], 0, numSentinels));
         }
       }
-      return text;
     }
 
-    private boolean enoughUniqueColorsInWindow(int lo, int hi, int[] imap, int[] sa) {
+    // Counts the number of suffixes of different colors between [lo, hi] and determines
+    // if there is enough variety for a LCS candidate.
+    private boolean enoughUniqueColorsInWindow(int lo, int hi) {
+      // TODO(williamfiset): Avoid initializing a new hash set to count colors every method call.
       Set<Integer> set = new HashSet<>();
       for (int i = lo; i <= hi; i++) {
         set.add(imap[sa[i]]);
       }
-      return set.size() >= k;
+      // TODO(williamfiset): Investigate if == can become >=
+      return set.size() == k;
     }
 
-    private String retrieveStrAt(int i, int windowLcp, int shift, int[] text) {
-      char[] s = new char[windowLcp];
-      for (int j = 0; j < windowLcp; j++) {
+    // Retrieves a string from the suffix array given a position and a length.
+    private String retrieveString(int i, int len) {
+      char[] s = new char[len];
+      for (int j = 0; j < len; j++)
         s[j] = (char)(text[i + j] - shift);
-      }
       return new String(s);
     }
 
-    private int lcsLen = 0;
-    private void addLcs(int lo, int hi, int windowLcs, int shift, int[] sa, int[] text, int[] imap) {
-      if (hi - lo < k - 1) {
-        System.out.printf("lo: %d, hi: %d. Too small range. lo: %d, hi: %d, k: %d, hi - lo < k - 1\n", lo, hi, lo, hi, k);
+    private void log(String s) {
+      if (DEBUG_MODE) {
+        System.out.println(s);
+      }
+    }
+
+    private void addLcs(int lo, int hi, int windowLcp) {
+      if (hi - lo + 1 < k) {
+        log(String.format("lo: %d, hi: %d. Too small range. lo: %d, hi: %d, k: %d, hi - lo + 1 < k", lo, hi, lo, hi, k));
         return;
       }
-      if (!enoughUniqueColorsInWindow(lo, hi, imap, sa)) {
-        System.out.printf("lo: %d, hi: %d. Not enough unique colors in range [%d, %d]\n", lo, hi, lo, hi);
+      if (!enoughUniqueColorsInWindow(lo, hi)) {
+        log(String.format("lo: %d, hi: %d. Not enough unique colors in range [%d, %d]", lo, hi, lo, hi));
         return;
       }
-      if (windowLcs > lcsLen) {
-        lcsLen = windowLcs;
+      if (windowLcp > lcsLen) {
+        lcsLen = windowLcp;
         lcss.clear();
       }
-      if (windowLcs == lcsLen) {
-        lcss.add(retrieveStrAt(sa[lo], windowLcs, shift, text));
+      if (windowLcp == lcsLen) {
+        lcss.add(retrieveString(sa[lo], windowLcp));
       }
     }
 
     public void solve() {
-      lcsLen = 0;
-      int[] imap = buildReverseColorIndexMapping();
-      int[] text = buildText();
-      
+      init();
+
       SuffixArray suffixArray = new SuffixArrayImpl(text);
-      int[] sa = suffixArray.getSa();
-      int[] lcp = suffixArray.getLcpArray();
+      sa = suffixArray.getSa();
+      lcp = suffixArray.getLcpArray();
 
       // TODO(williamfiset): Replace with SlidingWindowMinimum for speed.
       CompactMinSegmentTree tree = new CompactMinSegmentTree(lcp);
@@ -381,29 +412,26 @@ public class Lcs {
       int lo = numSentinels;
       int hi = numSentinels;
 
-      final int shift = numSentinels - lowestAsciiValue;
-      System.out.println(java.util.Arrays.toString(lcp));
-
       while (true) {
-        boolean shrinkWindow = (hi == textLength-1) ? true : enoughUniqueColorsInWindow(lo, hi, imap, sa);
+        // Shrink the window (by increasing lo) if the current interval has enough
+        // of the correct suffix colors or hi has reached the end.
+        boolean shrinkWindow = (hi == textLength-1) ? true : enoughUniqueColorsInWindow(lo, hi);
 
         if (shrinkWindow) {
           lo++;
-          if (lo == textLength-1) break;
-
-          if (lo != hi) { // Only a constraint because seg tree range is [l, r)
-            int windowLcs = tree.query(lo+1, hi+1);
-            addLcs(lo, hi, windowLcs, shift, sa, text, imap);
-          }
-        // Expand window
         } else {
           hi++;
-
-          if (lo != hi) { // Only a constraint because seg tree range is [l, r)
-            int windowLcs = tree.query(lo+1, hi+1);
-            addLcs(lo, hi, windowLcs, shift, sa, text, imap);
-          }
         }
+
+        if (lo == textLength-1) break;
+
+        // Segment tree queries are right endpoint exclusive: [l, r)
+        // so we must be careful to avoid the empty interval case.
+        if (lo == hi)
+          continue;
+
+        int windowLcp = tree.query(lo+1, hi+1);
+        addLcs(lo, hi, windowLcp);
       }
     }
 
@@ -517,7 +545,8 @@ public class Lcs {
   }
 
   public static void main(String[] args) {
-    String[] strings = new String[]{"TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT"};
+    String[] strings = new String[]{"A", "CA", "EB", "CB", "D", "EDA" };
+    // String[] strings = new String[]{"TAAAAT", "ATAAAAT", "TATA", "ATA", "AAT", "TTTT", "TT"};
     // String[] strings = new String[]{"AABAABA", "BBAABA", "BAABA", "ABBABB", "BBA", "ABA"};
     List<Integer> sentinelIndexes = new ArrayList<>();
     String t = addSentinels(strings, sentinelIndexes);

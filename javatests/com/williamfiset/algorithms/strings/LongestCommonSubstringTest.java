@@ -55,6 +55,15 @@ public class LongestCommonSubstringTest {
   }
 
   @Test
+  public void multipleKValueTest3() {
+    String[] strs = { "A", "CA", "EB", "CB", "D", "EDA" };
+    Map<Integer, TreeSet<String>> answers = new HashMap<>();
+
+    answers.put(2, new TreeSet<>(ImmutableList.of("A", "B", "C", "D", "E")));
+    verifyMultipleKValues(strs, answers);
+  }
+
+  @Test
   public void noLongestCommonSubstringTest() {
     int k = 2;
     String[] strs = { "abcd", "efgh" };
