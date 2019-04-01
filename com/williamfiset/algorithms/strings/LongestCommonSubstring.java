@@ -31,7 +31,7 @@ public class LongestCommonSubstring {
     System.out.println("Longest common substrings: " + solver.getLongestCommonSubstrings(k));
   }
 
-  // Method to add unique sentinels. Works for low number of strings.
+  // Method to add unique sentinels. Works for low number of strings. Only used for debugging.
   private static String addSentinels(String[] s, List<Integer> sentinelIndexes) {
     int token = 35; // starts at '#'
     String t = "";
