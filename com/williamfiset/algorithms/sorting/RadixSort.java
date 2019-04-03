@@ -6,25 +6,29 @@ package com.williamfiset.algorithms.sorting;
 
 */
 
-public class radixSort
+public class RadixSort
 {
 
         static int[] radix(int []a)
         {
 
-            // Counting sort is also the part of radix sort. So, you should have the knowledge about it.
+            /* Counting sort is also the part of radix sort. So, you should have the knowledge about it. */
 
             int b[] = new int[10];
             int sorted[] = new int[a.length];
             int max = a[0];
             int divisor = 1;
 
-            for(int i = 0; i < sorted.length; i++)  // copy contents of a[] so that the original array is not changed
+            /* copy contents of a[] so that the original array is not changed */
+                
+            for(int i = 0; i < sorted.length; i++)  
             {
                 sorted[i] = a[i];
             }
+                
+            /* finding max to implement counting sort. (Range of elements) */
 
-            for(int i = 0; i < sorted.length; i++)  // finding max to implement counting sort. (Range of elements)
+            for(int i = 0; i < sorted.length; i++)  
             {
                 if(sorted[i] > max)
                 {
@@ -36,8 +40,10 @@ public class radixSort
             while((max / divisor) > 0)
             {
                 int count[] = new int[10];   // A single digit can be in range 0 - 9, making 10 digits in total.
+                    
+                /* Counting the number of digits at unit, 10, 100's etc at each iteration of while respectively. */
 
-                for(int i = 0; i < sorted.length; i++)   // Counting the number of digits at unit, 10, 100's etc at each iteration of while respectively.
+                for(int i = 0; i < sorted.length; i++)   
                 {
                     count[ (sorted[i] / divisor) % 10 ]++;
                 }
@@ -51,8 +57,10 @@ public class radixSort
                 {
                     b[ --count[ (sorted[i] / divisor) % 10 ] ] = sorted[i];
                 }
+                    
+                /* Manipulating the array after each iteration of while loop, for one radix. */
 
-                for(int i = 0; i < sorted.length; i++) // Manipulating the array after each iteration of while loop, for one radix.
+                for(int i = 0; i < sorted.length; i++) 
                 {
                     sorted[i] = b[i];
                 }
