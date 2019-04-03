@@ -6,6 +6,9 @@ package com.williamfiset.algorithms.sorting;
 
 */
 
+
+import java.util.Arrays;
+
 public class RadixSort
 {
 
@@ -76,12 +79,9 @@ public class RadixSort
         {
             int a[] = {10, 3, 1, 44, 100, 33, 3};
 
-            int sort[] = radix(a);
+            String array = Arrays.toString(radix(a));
 
-            for(int i = 0; i < sort.length; i++)
-            {
-                System.out.println(sort[i]);
-            }
+            System.out.println(array);
         }
 
 
