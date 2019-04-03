@@ -17,7 +17,7 @@ public class RadixSort
 
             /* Counting sort is also the part of radix sort. So, you should have the knowledge about it. */
 
-            int b[] = new int[10];
+            int b[] = new int[a.length];
             int sorted[] = new int[a.length];
             int max = a[0];
             int divisor = 1;
