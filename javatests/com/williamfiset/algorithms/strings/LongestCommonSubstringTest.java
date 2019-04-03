@@ -1,7 +1,6 @@
 /**
- *
+ * Run like:
  * $ gradle test --tests "javatests.com.williamfiset.algorithms.strings.LongestCommonSubstringTest" 
- *
  */
 
 package javatests.com.williamfiset.algorithms.strings;
@@ -274,7 +273,7 @@ public class LongestCommonSubstringTest {
     assertEquals(ans, lcss);
   }
 
-  // TODO(williamfiset): crack up the numbers once implementation is faster.
+  // TODO(williamfiset): crank up the numbers once implementation is faster.
   @Test
   public void testLargeAlphabet() {
     for (int k = 2; k <= 100; k++ ) {
