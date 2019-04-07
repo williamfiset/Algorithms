@@ -2,7 +2,7 @@
  * Min cost max flow implementation using Johnson's algorithm (initial Bellman-
  * Ford + subsequent Dijkstra runs) as a method of finding augmenting paths.
  * 
- * Tests against:
+ * Tested against:
  * - https://open.kattis.com/problems/mincostmaxflow
  * - https://open.kattis.com/problems/jobpostings
  *

@@ -34,7 +34,7 @@ public class MinimumWeightPerfectMatching {
     if (n % 2 != 0)
       throw new IllegalArgumentException("Matrix has an odd size, no perfect matching exists.");
     if (n > 32) throw new IllegalArgumentException("Matrix too large! A matrix that size for the MWPM problem with a time complexity of" +
-                                                   "O(n^3*2^n) requires way too much computation and memory for a modern home computer.");
+                                                   "O(n^2*2^n) requires way too much computation and memory for a modern home computer.");
     this.cost = cost;
   }
 
