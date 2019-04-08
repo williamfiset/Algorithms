@@ -326,9 +326,42 @@ public class LongestCommonSubstringTest {
   }
 
   @Test
-  public void randomLcssWithBruteForceSolver() {
+  public void randomLcssWithBruteForceSolver1() {
     for (int len = 2; len < 50; len++) {
-      String[] strings = createRandomStrings(len, 10, 20, 3);
+      String[] strings = createRandomStrings(len, 12, 20, 3);
+      for (int k = 2; k <= len; k++) {
+        LcsSolver solver = new LcsSolver(strings);
+        TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
+
+        SlowLcsSolver slowSolver = new SlowLcsSolver(strings);
+        TreeSet<String> lcss2 = slowSolver.getLongestCommonSubstrings(k);
+        assertThat(lcss).isEqualTo(lcss2);
+      }
+    }
+  }
+
+  // This test makes sure the LCS behaves well with longer strings that have
+  // lots of matchings.
+  @Test
+  public void randomLcssWithBruteForceSolver2() {
+    for (int len = 2; len < 10; len++) {
+      String[] strings = createRandomStrings(len, 150, 200, 2);
+      for (int k = 2; k <= len; k++) {
+        LcsSolver solver = new LcsSolver(strings);
+        TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
+
+        SlowLcsSolver slowSolver = new SlowLcsSolver(strings);
+        TreeSet<String> lcss2 = slowSolver.getLongestCommonSubstrings(k);
+        assertThat(lcss).isEqualTo(lcss2);
+      }
+    }
+  }
+
+
+  @Test
+  public void randomLcssWithBruteForceSolver3() {
+    for (int len = 2; len < 100; len++) {
+      String[] strings = createRandomStrings(len, 6, 10, 15);
       for (int k = 2; k <= len; k++) {
         LcsSolver solver = new LcsSolver(strings);
         TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
@@ -356,11 +389,6 @@ public class LongestCommonSubstringTest {
     }
     return new String(chrs);
   }
-
-  // static int randInt(int min, int max) {
-  //   return min + (int)(Math.random() * ((max - min) + 1));
-  // }
-
 
   // TODO(williamfiset): crank up the numbers once implementation is faster.
   @Test
