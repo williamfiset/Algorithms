@@ -1,6 +1,6 @@
 /**
  * This file contains an implementation of finding the Longest Common
- * Subsequence (LCS) between two strings using dynamic programming.
+ * Substring (LCS) between two strings using dynamic programming.
  *
  * Time Complexity: O(nm)
  *
@@ -8,9 +8,9 @@
  **/
 package com.williamfiset.algorithms.dp;
 
-public class LongestCommonSubsequence {
+public class LongestCommonSubstring {
 
-  // Returns a non unique Longest Common Subsequence
+  // Returns a non unique Longest Common Substring
   // between the strings str1 and str2 in O(nm)
   public static String lcs(char[] A, char[] B) {
 
