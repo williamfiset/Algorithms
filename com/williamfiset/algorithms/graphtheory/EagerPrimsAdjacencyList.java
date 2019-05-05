@@ -170,20 +170,20 @@ public class EagerPrimsAdjacencyList {
   }
 
   private static void firstGraphFromSlides() {
-    int n = 10;
+    int n = 7;
     List<List<Edge>> g = createEmptyGraph(n);
 
     addUndirectedEdge(g, 0, 1, 9);
     addUndirectedEdge(g, 0, 2, 0);
     addUndirectedEdge(g, 0, 3, 5);
-    addUndirectedEdge(g, 0, 5, 5);
-    addUndirectedEdge(g, 1, 3, 6);
-    addUndirectedEdge(g, 1, 4, -2);
+    addUndirectedEdge(g, 0, 5, 7);
+    addUndirectedEdge(g, 1, 3, -2);
+    addUndirectedEdge(g, 1, 4, 3);
     addUndirectedEdge(g, 1, 6, 4);
     addUndirectedEdge(g, 2, 5, 6);
-    addUndirectedEdge(g, 3, 5, 3);
-    addUndirectedEdge(g, 3, 6, 2);
-    addUndirectedEdge(g, 4, 6, 3);
+    addUndirectedEdge(g, 3, 5, 2);
+    addUndirectedEdge(g, 3, 6, 3);
+    addUndirectedEdge(g, 4, 6, 6);
     addUndirectedEdge(g, 5, 6, 1);
 
     EagerPrimsAdjacencyList solver = new EagerPrimsAdjacencyList(g);
