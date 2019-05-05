@@ -40,7 +40,7 @@ public class EagerPrimsAdjacencyList {
   private Edge[] mstEdges;
 
   public EagerPrimsAdjacencyList(List<List<Edge>> graph) {
-    if (graph == null) throw new IllegalArgumentException();
+    if (graph == null || graph.isEmpty()) throw new IllegalArgumentException();
     this.n = graph.size();
     this.graph = graph;
   }
@@ -57,27 +57,19 @@ public class EagerPrimsAdjacencyList {
     return mstExists ? minCostSum : null;
   }
 
-  private boolean addInitialEdges() {
-    if (graph.isEmpty())
-      return false;
-
-    // Node 0 is a singleton.
-    List<Edge> edges = graph.get(0);
-    if (edges == null || edges.size() == 0)
-      return false;
-
-    relaxEdgesAtNode(0);
-    return true;
-  }
-
   private void relaxEdgesAtNode(int nodeIndex) {
+    // edges will never be null if the createEmptyGraph method was used to build the graph.
+    List<Edge> edges = graph.get(nodeIndex);
     visited[nodeIndex] = true;
-    // Insert initial set of edges
-    for (Edge e : graph.get(nodeIndex)) {
-      if (ipq.contains(e.to)) {
-        ipq.decrease(e.to, e);
+
+    for (Edge edge : edges) {
+      int destNode = edge.to;
+      if (ipq.contains(destNode)) {
+        // Try and improve the cheapest edge at destNode with the current edge in the IPQ.
+        ipq.decrease(destNode, edge);
       } else {
-        ipq.insert(e.to, e);
+        // Insert edge for the first time.
+        ipq.insert(destNode, edge);
       }
     }
   }
@@ -92,10 +84,8 @@ public class EagerPrimsAdjacencyList {
     mstEdges = new Edge[m];
     ipq = new MinIndexedDHeap<>(/*degree=*/2, n);
 
-    // Add initial set of edges to the priority queue. This can fail if node 0
-    // is a singleton which would mean we have a disjoint graph.
-    if (!addInitialEdges())
-      return;
+    // Add initial set of edges to the priority queue start at node 0.
+    relaxEdgesAtNode(0);
 
     for (int i = 0; !ipq.isEmpty() && edgeCount != m;) {
       Edge edge = ipq.pollMinValue();
@@ -116,8 +106,9 @@ public class EagerPrimsAdjacencyList {
     mstExists = (edgeCount == m);
   }
 
-  /* Graph construction helpers. */
+    /* Graph construction helpers. */
 
+  // Creates an empty adjacency list graph with n nodes.
   static List<List<Edge>> createEmptyGraph(int n) {
     List<List<Edge>> g = new ArrayList<>();
     for(int i = 0; i < n; i++) g.add(new ArrayList<>());
@@ -139,6 +130,8 @@ public class EagerPrimsAdjacencyList {
     example1();
     firstGraphFromSlides();
     squareGraphFromSlides();
+    disjointOnFirstNode();
+    disjointGraph();
   }
 
   private static void example1() {
@@ -235,6 +228,55 @@ public class EagerPrimsAdjacencyList {
     addUndirectedEdge(g, 5, 8, 10);
     addUndirectedEdge(g, 6, 7, 11);
     addUndirectedEdge(g, 7, 8, 5);
+
+    EagerPrimsAdjacencyList solver = new EagerPrimsAdjacencyList(g);
+    Long cost = solver.getMstCost();
+
+    if (cost == null) {
+      System.out.println("No MST does not exists");
+    } else {
+      System.out.println("MST cost: " + cost);
+      for (Edge e : solver.getMst()) {
+        System.out.println(String.format("from: %d, to: %d, cost: %d", e.from, e.to, e.cost));
+      }
+    }
+  }
+
+  private static void disjointOnFirstNode() {
+    int n = 4;
+    List<List<Edge>> g = createEmptyGraph(n);
+
+    // Node edges connected to zero
+    addUndirectedEdge(g, 1, 2, 1);
+    addUndirectedEdge(g, 2, 3, 1);
+    addUndirectedEdge(g, 3, 1, 1);
+
+    EagerPrimsAdjacencyList solver = new EagerPrimsAdjacencyList(g);
+    Long cost = solver.getMstCost();
+
+    if (cost == null) {
+      System.out.println("No MST does not exists");
+    } else {
+      System.out.println("MST cost: " + cost);
+      for (Edge e : solver.getMst()) {
+        System.out.println(String.format("from: %d, to: %d, cost: %d", e.from, e.to, e.cost));
+      }
+    }
+  }
+
+  private static void disjointGraph() {
+    int n = 6;
+    List<List<Edge>> g = createEmptyGraph(n);
+
+    // Component 1
+    addUndirectedEdge(g, 0, 1, 1);
+    addUndirectedEdge(g, 1, 2, 1);
+    addUndirectedEdge(g, 2, 0, 1);
+
+    // Component 1
+    addUndirectedEdge(g, 3, 4, 1);
+    addUndirectedEdge(g, 4, 5, 1);
+    addUndirectedEdge(g, 5, 3, 1);
 
     EagerPrimsAdjacencyList solver = new EagerPrimsAdjacencyList(g);
     Long cost = solver.getMstCost();

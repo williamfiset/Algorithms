@@ -40,7 +40,7 @@ public class LazyPrimsAdjacencyList {
   private Edge[] mstEdges;
 
   public LazyPrimsAdjacencyList(List<List<Edge>> graph) {
-    if (graph == null) throw new IllegalArgumentException();
+    if (graph == null || graph.isEmpty()) throw new IllegalArgumentException();
     this.n = graph.size();
     this.graph = graph;
   }
@@ -55,19 +55,6 @@ public class LazyPrimsAdjacencyList {
   public Long getMstCost() {
     solve();
     return mstExists ? minCostSum : null;
-  }
-
-  private boolean addInitialEdges() {
-    if (graph.isEmpty())
-      return false;
-
-    // Node 0 is a singleton.
-    List<Edge> edges = graph.get(0);
-    if (edges == null || edges.size() == 0)
-      return false;
-
-    addEdges(0);
-    return true;
   }
 
   private void addEdges(int nodeIndex) {
@@ -89,10 +76,8 @@ public class LazyPrimsAdjacencyList {
     visited = new boolean[n];
     mstEdges = new Edge[m];
 
-    // Add initial set of edges to the priority queue. This can fail if node 0
-    // is a singleton which would mean we have a disjoint graph.
-    if (!addInitialEdges())
-      return;
+    // Add initial set of edges to the priority queue start at node 0.
+    addEdges(0);
 
     // Loop while the MST is not complete.
     for (int i = 0; !pq.isEmpty() && edgeCount != m;) {
