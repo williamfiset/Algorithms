@@ -54,8 +54,8 @@ public class EagerPrimsAdjacencyList {
     }
   }
 
-  // Returns the edges used in finding the minimum spanning tree, or returns
-  // null if no MST exists.
+  // Returns the edges used in finding the minimum spanning tree,
+  // or returns null if no MST exists.
   public Edge[] getMst() {
     solve();
     return mstExists ? mstEdges : null;
@@ -71,7 +71,7 @@ public class EagerPrimsAdjacencyList {
     if (solved) return;
 
     boolean[] visited = new boolean[n];
-    MinIndexedDHeap<Edge> ipq = new MinIndexedDHeap<>(2 /* Degree */, n);
+    MinIndexedDHeap<Edge> ipq = new MinIndexedDHeap<>(/*degree=*/2, n);
 
     relaxEdgesAtNode(0, ipq);
     visited[0] = true;
@@ -114,10 +114,14 @@ public class EagerPrimsAdjacencyList {
     addDirectedEdge(g, to, from, cost);
   }
 
-  /* Example usage. */
+    /* Example usage. */
 
   public static void main(String[] args) {
-    
+    // example1();
+    firstGraphFromSlides();
+  }
+
+  private static void example1() {
     int n = 10;
     List<List<Edge>> g = createEmptyGraph(n);
 
@@ -163,7 +167,36 @@ public class EagerPrimsAdjacencyList {
     // from: 6, to: 8, cost: 4
     // from: 8, to: 9, cost: 0
     // from: 8, to: 2, cost: 1
+  }
 
+  private static void firstGraphFromSlides() {
+    int n = 10;
+    List<List<Edge>> g = createEmptyGraph(n);
+
+    addUndirectedEdge(g, 0, 1, 9);
+    addUndirectedEdge(g, 0, 2, 0);
+    addUndirectedEdge(g, 0, 3, 5);
+    addUndirectedEdge(g, 0, 5, 5);
+    addUndirectedEdge(g, 1, 3, 6);
+    addUndirectedEdge(g, 1, 4, -2);
+    addUndirectedEdge(g, 1, 6, 4);
+    addUndirectedEdge(g, 2, 5, 6);
+    addUndirectedEdge(g, 3, 5, 3);
+    addUndirectedEdge(g, 3, 6, 2);
+    addUndirectedEdge(g, 4, 6, 3);
+    addUndirectedEdge(g, 5, 6, 1);
+
+    EagerPrimsAdjacencyList solver = new EagerPrimsAdjacencyList(g);
+    Long cost = solver.getMstCost();
+
+    if (cost == null) {
+      System.out.println("No MST does not exists");
+    } else {
+      System.out.println("MST cost: " + cost);
+      for (Edge e : solver.getMst()) {
+        System.out.println(String.format("from: %d, to: %d, cost: %d", e.from, e.to, e.cost));
+      }
+    }
   }
 
     /* Supporting indexed priority queue implementation. */
@@ -406,10 +439,6 @@ public class EagerPrimsAdjacencyList {
     }
 
   }
-
-
-
-
 
 }
 

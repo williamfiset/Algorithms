@@ -11,10 +11,9 @@ package com.williamfiset.algorithms.graphtheory;
 
 import java.util.*;
 
-
 public class LazyPrimsAdjacencyList {
-  
-  static class Edge implements Comparable <Edge> {
+
+  static class Edge implements Comparable<Edge> {
     int from, to, cost;
     public Edge(int from, int to, int cost) {
       this.from = from;
@@ -25,9 +24,9 @@ public class LazyPrimsAdjacencyList {
       return cost - other.cost;
     }
   }
-  
+
   // Graph must be undirected!
-  public static Long prims(Map <Integer, List<Edge>> graph, int n) {
+  public static Long prims(Map<Integer, List<Edge>> graph, int n) {
     
     if (graph == null) return null;
     
@@ -122,33 +121,4 @@ public class LazyPrimsAdjacencyList {
   }
 
 }
-
-
-
-
-// 1
-// 1
-// 2
-// 2
-// 2
-// 1
-// 4
-// 1
-// 0
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
