@@ -82,16 +82,20 @@ public class EagerPrimsAdjacencyList {
     int m = n-1, edgeCount = 0;
     visited = new boolean[n];
     mstEdges = new Edge[m];
-    ipq = new MinIndexedDHeap<>(/*degree=*/2, n);
 
-    // Add initial set of edges to the priority queue start at node 0.
+    // The degree of the IPQ can greatly impact performance, especially on dense graphs.
+    // The base 2 logarithm of n is a decent value based on my quick experiments.
+    int degree = (int) Math.ceil(Math.log(n)/Math.log(2));
+    ipq = new MinIndexedDHeap<>(max(2, degree), n);
+
+    // Add initial set of edges to the priority queue starting at node 0.
     relaxEdgesAtNode(0);
 
     for (int i = 0; !ipq.isEmpty() && edgeCount != m;) {
       Edge edge = ipq.pollMinValue();
       int nodeIndex = edge.to;
 
-      // Skip any already visited edges.
+      // Skip any already visited nodes.
       if (visited[nodeIndex]) 
         continue;
 
@@ -127,11 +131,12 @@ public class EagerPrimsAdjacencyList {
     /* Example usage. */
 
   public static void main(String[] args) {
-    example1();
-    firstGraphFromSlides();
-    squareGraphFromSlides();
-    disjointOnFirstNode();
-    disjointGraph();
+    // example1();
+    // firstGraphFromSlides();
+    // squareGraphFromSlides();
+    // disjointOnFirstNode();
+    // disjointGraph();
+    lazyVsEagerAnalysis();
   }
 
   private static void example1() {
@@ -273,7 +278,7 @@ public class EagerPrimsAdjacencyList {
     addUndirectedEdge(g, 1, 2, 1);
     addUndirectedEdge(g, 2, 0, 1);
 
-    // Component 1
+    // Component 2
     addUndirectedEdge(g, 3, 4, 1);
     addUndirectedEdge(g, 4, 5, 1);
     addUndirectedEdge(g, 5, 3, 1);
@@ -289,6 +294,39 @@ public class EagerPrimsAdjacencyList {
         System.out.println(String.format("from: %d, to: %d, cost: %d", e.from, e.to, e.cost));
       }
     }
+  }
+
+  static Random random = new Random(); 
+  private static void lazyVsEagerAnalysis() {
+    int n = 5000;
+    List<List<EagerPrimsAdjacencyList.Edge>> g1 = EagerPrimsAdjacencyList.createEmptyGraph(n);
+    List<List<LazyPrimsAdjacencyList.Edge>> g2 = LazyPrimsAdjacencyList.createEmptyGraph(n);
+    
+    for (int i = 0; i < n; i++) {
+      for (int j = i + 1; j < n; j++) {
+        int r = random.nextInt() % 10;
+        EagerPrimsAdjacencyList.addUndirectedEdge(g1, i, j, r);
+        LazyPrimsAdjacencyList.addUndirectedEdge(g2, i, j, r);
+      }
+    }
+
+    EagerPrimsAdjacencyList eagerSolver = new EagerPrimsAdjacencyList(g1);
+    LazyPrimsAdjacencyList lazySolver = new LazyPrimsAdjacencyList(g2);
+
+    long startTime = System.nanoTime();
+    Long eagerCost = eagerSolver.getMstCost();
+    long endTime = System.nanoTime();
+    System.out.println("Eager: " + (endTime - startTime));
+
+    startTime = System.nanoTime();
+    Long lazyCost = lazySolver.getMstCost();
+    endTime = System.nanoTime();
+    System.out.println("Lazy:  " + (endTime - startTime));
+
+    if (eagerCost.longValue() != lazyCost.longValue()) {
+      System.out.println("Oh dear. " + eagerCost + " != " + lazyCost);
+    }
+
   }
 
     /* Supporting indexed priority queue implementation. */

@@ -76,7 +76,7 @@ public class LazyPrimsAdjacencyList {
     visited = new boolean[n];
     mstEdges = new Edge[m];
 
-    // Add initial set of edges to the priority queue start at node 0.
+    // Add initial set of edges to the priority queue starting at node 0.
     addEdges(0);
 
     // Loop while the MST is not complete.
@@ -84,7 +84,7 @@ public class LazyPrimsAdjacencyList {
       Edge edge = pq.poll();
       int nodeIndex = edge.to;
 
-      // Skip any already visited edges.
+      // Skip any already visited nodes.
       if (visited[nodeIndex])
         continue;
 
