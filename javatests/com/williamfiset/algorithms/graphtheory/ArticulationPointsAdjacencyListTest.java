@@ -238,6 +238,21 @@ public class ArticulationPointsAdjacencyListTest {
     assertThat(actual).isEqualTo(expected);
   }
 
+  @Test
+  public void testThreeNodeLineGraph() {
+    int n = 3;
+    List<List<Integer>> graph = createGraph(n);
+    addEdge(graph, 0, 1);
+    addEdge(graph, 1, 2);
+    
+    ArticulationPointsAdjacencyList solver = new ArticulationPointsAdjacencyList(graph, n);
+    boolean[] actual = solver.findArticulationPoints();
+
+    boolean[] expected = new boolean[n];
+    expected[1] = true; // middle node.
+    assertThat(actual).isEqualTo(expected);
+  }
+
 }
 
 
