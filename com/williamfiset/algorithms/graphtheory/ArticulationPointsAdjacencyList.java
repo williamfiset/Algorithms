@@ -73,12 +73,31 @@ public class ArticulationPointsAdjacencyList {
 
   }
 
+  /* Graph helpers */
+
+
+  // Initialize a graph with 'n' nodes.
+  public static List<List<Integer>> createGraph(int n) {
+    List<List<Integer>> graph = new ArrayList<>(n);
+    for(int i = 0; i < n; i++) graph.add(new ArrayList<>());
+    return graph;
+  }
+
+  // Add an undirected edge to a graph.
+  public static void addEdge(List<List<Integer>> graph, int from, int to) {
+    graph.get(from).add(to);
+    graph.get(to).add(from);
+  }
+
   
   /* Example usage: */
 
 
   public static void main(String[] args) {
-    
+    testExample2();
+  }
+
+  private static void testExample1() {
     int n = 9;
     List<List<Integer>> graph = createGraph(n);
 
@@ -103,20 +122,25 @@ public class ArticulationPointsAdjacencyList {
     for (int i = 0; i < n; i++)
       if (isArticulationPoint[i])
         System.out.printf("Node %d is an articulation\n", i);
-
   }
 
-  // Initialize a graph with 'n' nodes.
-  public static List<List<Integer>> createGraph(int n) {
-    List<List<Integer>> graph = new ArrayList<>(n);
-    for(int i = 0; i < n; i++) graph.add(new ArrayList<>());
-    return graph;
-  }
+  // Tests a graph with 3 nodes in a line: A - B - C
+  // Only node 'B' should be an articulation point.
+  private static void testExample2() {
+    int n = 3;
+    List<List<Integer>> graph = createGraph(n);
 
-  // Add an undirected edge to a graph.
-  public static void addEdge(List<List<Integer>> graph, int from, int to) {
-    graph.get(from).add(to);
-    graph.get(to).add(from);
+    addEdge(graph, 0, 1);
+    addEdge(graph, 1, 2);
+
+    ArticulationPointsAdjacencyList solver = new ArticulationPointsAdjacencyList(graph, n);
+    boolean[] isArticulationPoint = solver.findArticulationPoints();
+
+    // Prints:
+    // Node 1 is an articulation
+    for (int i = 0; i < n; i++)
+      if (isArticulationPoint[i])
+        System.out.printf("Node %d is an articulation\n", i);
   }
 
 }
