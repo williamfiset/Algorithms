@@ -61,7 +61,6 @@ public class LazyPrimsAdjacencyList {
     List<Edge> edges = graph.get(nodeIndex);
     visited[nodeIndex] = true;
 
-    // Insert initial set of edges
     for (Edge e : edges)
       if (!visited[e.to])
         pq.offer(e);
