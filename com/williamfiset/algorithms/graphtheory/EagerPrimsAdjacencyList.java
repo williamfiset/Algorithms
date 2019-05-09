@@ -92,8 +92,8 @@ public class EagerPrimsAdjacencyList {
     relaxEdgesAtNode(0);
 
     for (int i = 0; !ipq.isEmpty() && edgeCount != m;) {
+      int nodeIndex = ipq.peekMinKeyIndex(); // equivalently: edge.to
       Edge edge = ipq.pollMinValue();
-      int nodeIndex = edge.to;
 
       // Skip any already visited nodes.
       if (visited[nodeIndex]) 
@@ -131,12 +131,12 @@ public class EagerPrimsAdjacencyList {
     /* Example usage. */
 
   public static void main(String[] args) {
-    // example1();
-    // firstGraphFromSlides();
-    // squareGraphFromSlides();
-    // disjointOnFirstNode();
-    // disjointGraph();
-    lazyVsEagerAnalysis();
+    example1();
+    firstGraphFromSlides();
+    squareGraphFromSlides();
+    disjointOnFirstNode();
+    disjointGraph();
+    // lazyVsEagerAnalysis();
   }
 
   private static void example1() {
