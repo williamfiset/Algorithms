@@ -84,7 +84,8 @@ public class EagerPrimsAdjacencyList {
     mstEdges = new Edge[m];
 
     // The degree of the IPQ can greatly impact performance, especially on dense graphs.
-    // The base 2 logarithm of n is a decent value based on my quick experiments.
+    // The base 2 logarithm of n is a decent value based on my quick experiments (even
+    // better than E/V in many cases).
     int degree = (int) Math.ceil(Math.log(n)/Math.log(2));
     ipq = new MinIndexedDHeap<>(max(2, degree), n);
 
