@@ -1,7 +1,6 @@
 /**
- * An implementation of the lazy Prim's algorithm with an adjacency list
- * which upon visiting a new node adds all the edges to the min priority
- * queue and also removes already seen edges when polling.
+ * An implementation of the lazy version of Prim's algorithm which relies on
+ * using a traditional priority queue to query the next best edge.
  *
  *  Time Complexity: O(ElogE)
  *
@@ -58,14 +57,16 @@ public class LazyPrimsAdjacencyList {
   }
 
   private void addEdges(int nodeIndex) {
-    List<Edge> edges = graph.get(nodeIndex);
     visited[nodeIndex] = true;
 
+    // edges will never be null if the createEmptyGraph method was used to build the graph.
+    List<Edge> edges = graph.get(nodeIndex);
     for (Edge e : edges)
       if (!visited[e.to])
         pq.offer(e);
   }
 
+  // Computes the minimum spanning tree and minimum spanning tree cost.
   private void solve() {
     if (solved) return;
     solved = true;
@@ -79,17 +80,16 @@ public class LazyPrimsAdjacencyList {
     addEdges(0);
 
     // Loop while the MST is not complete.
-    for (int i = 0; !pq.isEmpty() && edgeCount != m;) {
+    while (!pq.isEmpty() && edgeCount != m) {
       Edge edge = pq.poll();
       int nodeIndex = edge.to;
 
-      // Skip any already visited nodes.
+      // Skip any edge pointing to an already visited node.
       if (visited[nodeIndex])
         continue;
 
-      mstEdges[i++] = edge;
+      mstEdges[edgeCount++] = edge;
       minCostSum += edge.cost;
-      edgeCount++;
 
       addEdges(nodeIndex);
     }

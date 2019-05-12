@@ -1,6 +1,6 @@
 /**
- * An implementation of the eager Prim's algorithm which relies on 
- * an indexed priority queue data structure to query the next best edge.
+ * An implementation of the eager version of Prim's algorithm which relies on 
+ * using an indexed priority queue data structure to query the next best edge.
  *
  *  Time Complexity: O(ElogV)
  *
@@ -57,24 +57,30 @@ public class EagerPrimsAdjacencyList {
     return mstExists ? minCostSum : null;
   }
 
-  private void relaxEdgesAtNode(int nodeIndex) {
+  private void relaxEdgesAtNode(int currentNodeIndex) {
+    visited[currentNodeIndex] = true;
+
     // edges will never be null if the createEmptyGraph method was used to build the graph.
-    List<Edge> edges = graph.get(nodeIndex);
-    visited[nodeIndex] = true;
+    List<Edge> edges = graph.get(currentNodeIndex);
 
     for (Edge edge : edges) {
-      int destNode = edge.to;
-      if (ipq.contains(destNode)) {
-        // Try and improve the cheapest edge at destNode with the current edge in the IPQ.
-        ipq.decrease(destNode, edge);
+      int destNodeIndex = edge.to;
+
+      // Skip edges pointing to already visited nodes.
+      if (visited[destNodeIndex])
+        continue;
+
+      if (ipq.contains(destNodeIndex)) {
+        // Try and improve the cheapest edge at destNodeIndex with the current edge in the IPQ.
+        ipq.decrease(destNodeIndex, edge);
       } else {
         // Insert edge for the first time.
-        ipq.insert(destNode, edge);
+        ipq.insert(destNodeIndex, edge);
       }
     }
   }
 
-  // Returns the minimum spanning tree cost or null if no MST exists.
+  // Computes the minimum spanning tree and minimum spanning tree cost.
   private void solve() {
     if (solved) return;
     solved = true;
@@ -83,32 +89,47 @@ public class EagerPrimsAdjacencyList {
     visited = new boolean[n];
     mstEdges = new Edge[m];
 
-    // The degree of the IPQ can greatly impact performance, especially on dense graphs.
-    // The base 2 logarithm of n is a decent value based on my quick experiments (even
-    // better than E/V in many cases).
+    // The degree of the d-ary heap supporting the IPQ can greatly impact performance, especially
+    // on dense graphs. The base 2 logarithm of n is a decent value based on my quick experiments 
+    // (even better than E/V in many cases).
     int degree = (int) Math.ceil(Math.log(n)/Math.log(2));
     ipq = new MinIndexedDHeap<>(max(2, degree), n);
 
     // Add initial set of edges to the priority queue starting at node 0.
     relaxEdgesAtNode(0);
 
-    for (int i = 0; !ipq.isEmpty() && edgeCount != m;) {
-      int nodeIndex = ipq.peekMinKeyIndex(); // equivalently: edge.to
+    while (!ipq.isEmpty() && edgeCount != m) {
+      int destNodeIndex = ipq.peekMinKeyIndex(); // equivalently: edge.to
       Edge edge = ipq.pollMinValue();
 
-      // Skip any already visited nodes.
-      if (visited[nodeIndex]) 
-        continue;
+      // This should never execute in the Eager version because no edge is ever
+      // stale or outdated.
+      // if (visited[destNodeIndex]) {
+      //   continue;
+      // }
 
-      mstEdges[i++] = edge;
+      mstEdges[edgeCount++] = edge;
       minCostSum += edge.cost;
-      edgeCount++;
 
-      relaxEdgesAtNode(nodeIndex);
+      relaxEdgesAtNode(destNodeIndex);
     }
 
     // Verify MST spans entire graph.
     mstExists = (edgeCount == m);
+
+    if (mstExists) {
+      int[] indegree = new int[n];
+      int[] outdegree = new int[n];
+      for (Edge edge : mstEdges) {
+        indegree[edge.to]++;
+        outdegree[edge.from]++;
+      }
+      for (int i = 0; i < n; i++) {
+        if (indegree[i] > 1) {
+          System.out.println("indegree assumption fails");
+        }
+      }
+    }
   }
 
     /* Graph construction helpers. */
