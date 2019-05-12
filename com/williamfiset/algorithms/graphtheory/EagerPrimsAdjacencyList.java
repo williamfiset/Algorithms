@@ -116,20 +116,6 @@ public class EagerPrimsAdjacencyList {
 
     // Verify MST spans entire graph.
     mstExists = (edgeCount == m);
-
-    if (mstExists) {
-      int[] indegree = new int[n];
-      int[] outdegree = new int[n];
-      for (Edge edge : mstEdges) {
-        indegree[edge.to]++;
-        outdegree[edge.from]++;
-      }
-      for (int i = 0; i < n; i++) {
-        if (indegree[i] > 1) {
-          System.out.println("indegree assumption fails");
-        }
-      }
-    }
   }
 
     /* Graph construction helpers. */

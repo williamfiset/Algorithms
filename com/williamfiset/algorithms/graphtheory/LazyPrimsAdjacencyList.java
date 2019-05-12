@@ -62,8 +62,10 @@ public class LazyPrimsAdjacencyList {
     // edges will never be null if the createEmptyGraph method was used to build the graph.
     List<Edge> edges = graph.get(nodeIndex);
     for (Edge e : edges)
-      if (!visited[e.to])
+      if (!visited[e.to]) {
+        // System.out.printf("(%d, %d, %d)\n", e.from, e.to, e.cost);
         pq.offer(e);
+      }
   }
 
   // Computes the minimum spanning tree and minimum spanning tree cost.
@@ -118,9 +120,10 @@ public class LazyPrimsAdjacencyList {
     /* Example usage. */
 
   public static void main(String[] args) {
-    example1();
-    firstGraphFromSlides();
-    squareGraphFromSlides();
+    // example1();
+    // firstGraphFromSlides();
+    // squareGraphFromSlides();
+    lazyPrimsDemoFromSlides();
   }
 
   private static void example1() {
@@ -217,6 +220,59 @@ public class LazyPrimsAdjacencyList {
     addUndirectedEdge(g, 5, 8, 10);
     addUndirectedEdge(g, 6, 7, 11);
     addUndirectedEdge(g, 7, 8, 5);
+
+    LazyPrimsAdjacencyList solver = new LazyPrimsAdjacencyList(g);
+    Long cost = solver.getMstCost();
+
+    if (cost == null) {
+      System.out.println("No MST does not exists");
+    } else {
+      System.out.println("MST cost: " + cost);
+      for (Edge e : solver.getMst()) {
+        System.out.println(String.format("from: %d, to: %d, cost: %d", e.from, e.to, e.cost));
+      }
+    }
+  }
+
+  private static void lazyPrimsDemoFromSlides() {
+    int n = 8;
+    List<List<Edge>> g = createEmptyGraph(n);
+
+    addDirectedEdge(g, 0, 1, 10);
+    addDirectedEdge(g, 0, 2, 1);
+    addDirectedEdge(g, 0, 3, 4);
+
+    addDirectedEdge(g, 2, 1, 3);
+    addDirectedEdge(g, 2, 5, 8);
+    addDirectedEdge(g, 2, 3, 2);
+    addDirectedEdge(g, 2, 0, 1);
+
+    addDirectedEdge(g, 3, 2, 2);
+    addDirectedEdge(g, 3, 5, 2);
+    addDirectedEdge(g, 3, 6, 7);
+    addDirectedEdge(g, 3, 0, 4);
+
+    addDirectedEdge(g, 5, 2, 8);
+    addDirectedEdge(g, 5, 4, 1);
+    addDirectedEdge(g, 5, 7, 9);
+    addDirectedEdge(g, 5, 6, 6);
+    addDirectedEdge(g, 5, 3, 2);
+
+    addDirectedEdge(g, 4, 1, 0);
+    addDirectedEdge(g, 4, 5, 1);
+    addDirectedEdge(g, 4, 7, 8);
+
+    addDirectedEdge(g, 1, 0, 10);
+    addDirectedEdge(g, 1, 2, 3);
+    addDirectedEdge(g, 1, 4, 0);
+
+    addDirectedEdge(g, 6, 3, 7);
+    addDirectedEdge(g, 6, 5, 6);
+    addDirectedEdge(g, 6, 7, 12);
+
+    addDirectedEdge(g, 7, 4, 8);
+    addDirectedEdge(g, 7, 5, 9);
+    addDirectedEdge(g, 7, 6, 12);
 
     LazyPrimsAdjacencyList solver = new LazyPrimsAdjacencyList(g);
     Long cost = solver.getMstCost();
