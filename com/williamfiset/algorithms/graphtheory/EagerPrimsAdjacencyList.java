@@ -304,6 +304,38 @@ public class EagerPrimsAdjacencyList {
     }
   }
 
+  private static void eagerPrimsExampleFromSlides() {
+    int n = 7;
+    List<List<Edge>> g = createEmptyGraph(n);
+
+    addDirectedEdge(g, 0, 2, 0);
+    addDirectedEdge(g, 0, 5, 7);
+    addDirectedEdge(g, 0, 3, 5);
+    addDirectedEdge(g, 0, 1, 9);
+
+    addDirectedEdge(g, 2, 0, 0);
+    addDirectedEdge(g, 2, 5, 6);
+
+    addDirectedEdge(g, 3, 0, 5);
+    addDirectedEdge(g, 3, 1, -2);
+    addDirectedEdge(g, 3, 6, 3);
+    addDirectedEdge(g, 3, 5, 2);
+
+    
+
+    EagerPrimsAdjacencyList solver = new EagerPrimsAdjacencyList(g);
+    Long cost = solver.getMstCost();
+
+    if (cost == null) {
+      System.out.println("No MST does not exists");
+    } else {
+      System.out.println("MST cost: " + cost);
+      for (Edge e : solver.getMst()) {
+        System.out.println(String.format("from: %d, to: %d, cost: %d", e.from, e.to, e.cost));
+      }
+    }
+  }
+
   static Random random = new Random(); 
   private static void lazyVsEagerAnalysis() {
     int n = 5000;
