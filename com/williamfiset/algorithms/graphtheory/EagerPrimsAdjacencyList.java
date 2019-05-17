@@ -102,12 +102,6 @@ public class EagerPrimsAdjacencyList {
       int destNodeIndex = ipq.peekMinKeyIndex(); // equivalently: edge.to
       Edge edge = ipq.pollMinValue();
 
-      // This should never execute in the Eager version because no edge is ever
-      // stale or outdated.
-      // if (visited[destNodeIndex]) {
-      //   continue;
-      // }
-
       mstEdges[edgeCount++] = edge;
       minCostSum += edge.cost;
 
@@ -139,11 +133,12 @@ public class EagerPrimsAdjacencyList {
     /* Example usage. */
 
   public static void main(String[] args) {
-    example1();
-    firstGraphFromSlides();
-    squareGraphFromSlides();
-    disjointOnFirstNode();
-    disjointGraph();
+    // example1();
+    // firstGraphFromSlides();
+    // squareGraphFromSlides();
+    // disjointOnFirstNode();
+    // disjointGraph();
+    eagerPrimsExampleFromSlides();
     // lazyVsEagerAnalysis();
   }
 
@@ -321,7 +316,23 @@ public class EagerPrimsAdjacencyList {
     addDirectedEdge(g, 3, 6, 3);
     addDirectedEdge(g, 3, 5, 2);
 
-    
+    addDirectedEdge(g, 1, 0, 9);
+    addDirectedEdge(g, 1, 3, -2);
+    addDirectedEdge(g, 1, 6, 4);
+    addDirectedEdge(g, 1, 4, 3);
+
+    addDirectedEdge(g, 5, 2, 6);
+    addDirectedEdge(g, 5, 0, 7);
+    addDirectedEdge(g, 5, 3, 2);
+    addDirectedEdge(g, 5, 6, 1);
+
+    addDirectedEdge(g, 6, 5, 1);
+    addDirectedEdge(g, 6, 3, 3);
+    addDirectedEdge(g, 6, 1, 4);
+    addDirectedEdge(g, 6, 4, 6);
+
+    addDirectedEdge(g, 4, 1, 3);    
+    addDirectedEdge(g, 4, 6, 6);    
 
     EagerPrimsAdjacencyList solver = new EagerPrimsAdjacencyList(g);
     Long cost = solver.getMstCost();
