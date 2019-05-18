@@ -1,0 +1,58 @@
+Hello everybody, what's happening? My name is William and today we're talking 
+about minimum spanning trees, and in particular how to use Prim's algorithm to
+find them.
+
+3.
+So, what is a minimum spanning tree? On a weighted graph, a minimum spanning 
+tree (or MST for short) is a tree which spans the whole graph connecting all 
+nodes together while minimizing the total edge cost. It's important to note that
+your spanning tree cannot contain any cycles, otherwise it's not a tree.
+
+4.
+Here's a weighted graph with nodes labeled 0 through 6 with various edges of 
+different weights connecting them.
+
+5.
+One possible minimum spanning tree is the following edges highlighted in green
+whose edge costs sum to 9. There's no way to cannot all the nodes together and 
+get a lower cost than this. Note that even though the minimum spanning tree in
+this graph is unique in general it's possible for a graph to have multiple MSTs
+of equal costs.
+
+6.
+Hopefully you've been paying attention because now it's your turn. I'm going to
+present you some weighted graphs and you need to identify any possible MST you
+can. Let's begin with this graph; take a moment and find any MST on this graph.
+
+<pause>
+
+7.
+One possible MST is the following with a cost of 14. Again, MSTs are not unique
+so there could be other valid minimum spanning trees, but they'll all have a 
+cost of 14.
+
+8. 
+Let's do another one, can you find a minimum spanning tree here? I'll give 
+you a moment, but feel free to pause the video if you need.
+
+<pause>
+
+9.
+Here's a possible answer with the MST highlighted in green and a cost of 39
+
+10.
+What about this graph? I promise it's the last one.
+
+11.
+This is a bit of a trick question because there's no MST. All nodes must to 
+connected on a single component for a spanning tree to exist.
+
+
+
+
+
+
+
+
+
+
