@@ -2,54 +2,54 @@ Hello everybody, what's happening? My name is William and today we're talking
 about minimum spanning trees, and in particular how to use Prim's algorithm to
 find them.
 
-3.
+@3.
 So, what is a minimum spanning tree? On a weighted graph, a minimum spanning 
 tree (or MST for short) is a tree which spans the whole graph connecting all 
 nodes together while minimizing the total edge cost. It's important to note that
 your spanning tree cannot contain any cycles, otherwise it's not a tree.
 
-4.
+@4.
 Here's a weighted graph with nodes labeled 0 through 6 with various edges of 
 different weights connecting them.
 
-5.
+@5.
 One possible minimum spanning tree is the following edges highlighted in green
 whose edge costs sum to 9. There's no way to cannot all the nodes together and 
 get a lower cost than this. Note that even though the minimum spanning tree in
 this graph is unique in general it's possible for a graph to have multiple MSTs
 of equal costs.
 
-6.
+@6.
 Hopefully you've been paying attention because now it's your turn. I'm going to
 present you some weighted graphs and you need to identify any possible MST you
 can. Let's begin with this graph; take a moment and find any MST on this graph.
 
 <pause>
 
-7.
+@7.
 One possible MST is the following with a cost of 14. Again, MSTs are not unique
 so there could be other valid minimum spanning trees, but they'll all have a 
 cost of 14.
 
-8. 
+@8. 
 Let's do another one, can you find a minimum spanning tree here? I'll give 
 you a moment, but feel free to pause the video if you need.
 
 <pause>
 
-9.
+@9.
 Here's a possible answer with the MST highlighted in green and a cost of 39
 
-10.
+@10.
 What about this graph? I promise it's the last one.
 
-11.
+@11.
 This is a bit of a trick question because there's no MST. All nodes must to 
 connected on a single component for a spanning tree to exist.
 
-12.
+@12.
 Let's change focus and start talking about Prim's algorithm. Prim's is one of my
-favorite MST algorithms because of how simple and intuitive it is. By nature it's
+favorite MST algorithms because of how simple and intuitive it is. By nature its
 a greedy algorithm which always selects the next best edge to add to the MST and
 it works very well on dense graphs with lots of edges.
 However, a few the downsides of Prim's is that it's not as easily parallelizable
@@ -60,15 +60,143 @@ more common lazy version which runs in big O of E log E, and then there's the
 improved eager version which runs in big O of E log V but requires a slightly
 different data structure.
 
-13.
+@13.
+Let's start by looking at the lazy version because it's easier to implement. 
+Here's the general idea:
+Maintain a PQ that sorts edges based on minimum edge cost. This PQ is used to 
+tell you which node to go to next and what edge was used to get there.
+Then the algorithm begins and we start on any starting node s and mark s as
+visited and iterate over all its edges and add them to the PQ.
+From this point on, while the PQ is not empty and a MST has not been formed,
+dequeue the next best edge from the PQ. If the dequeued edge is not outdated
+which it could be if we visit the node it points to via another path before 
+getting to this edge then mark the current node as visited and add the selected
+edge to the PQ. If you selected a stale outdated edge simply poll again.
+Then repeat the process of iterating over the current node's edges and adding 
+them to the PQ. While doing this care not to add edges which point to already
+visited nodes, this will reduce the number of outdated edges in the PQ.
 
+@14.
+Let's have a look at an example, suppose we have this weighted undirected graph
+and we want to find any MST. 
 
+@15.
+An important thing to keep in mind is that while the graph above represents an
+undirected graph, our internal adjacency list representation has each undirected
+edge stored as two directed edges.
 
+@16.
+The actual internal representation typically looks like this which is a lot
+easier to work with.
 
+@17.
+Along with the graph, I will also be keeping track of the edges in the PQ on the
+right. The edges objects in the PQ will be stored as triplets containing the
+start node, end node and edge cost.
 
+@18.
+Lastly, I will be coloring nodes nodes has either blue for unvisited, orange for
+visiting and gray for visited.
 
+@19.
+Let's begin Prim's on node 0.
 
+@20.
+Iterate over all outgoing edges and add them to the PQ
 
+@21.
+The first edge to go into the PQ is the edge from 0 to 1 with cost 10.
 
+@22.
+Then edge 0 to 2 with cost 1
+
+@23.
+And finally edge 0 to 3 with cost 4
+
+@24. <nothing>
+@25. <nothing>
+
+@26.
+Now we look in our PQ and poll the next most promising edge and add it to the 
+MST. The edge from 0 to 2 with a cost of 1 has the lowest value in the PQ so it
+gets added to the MST. This also means that the next node we process is node 2.
+
+@27. <nothing>
+
+@28.
+Next, iterate through all the edges of node 2 and add them to the PQ.
+
+@29. <nothing>
+@30. <nothing>
+
+@31.
+While iterating over the outgoing edges of node 2 realize that we may encounter
+edges which point to already visited nodes. We do NOT want to add these to the
+PQ because they're of no use.
+
+@32.
+The reason we don't include edges which point to already visited nodes is that
+either they overlap with an edge already part of the MST as is the case with the
+edge on this slide or they would introduce a cycle in the MST if included.
+
+@33. <nothing>
+
+@34.
+So the next best edge in the PQ is the edge from 2 to 3 with cost 2 so it gets
+add to the MST. This also means that the next node we process is node 3.
+
+@35. <nothing>
+
+@36.
+The same process of adding edges to the PQ and polling the smallest edge 
+continues until the MST is complete. I'll let the animation play until something
+interesting happens.
+
+...
+
+@62.
+Notice that the next best edge we poll from the PQ is an edge which points to 
+node 1 which is already visited. This means that the edge is outdated and stale
+because we found a better cheaper path to node 1 already so we can safely ignore
+this edge and poll again.
+
+@63.
+The next edge is also stale, so keep polling.
+
+...
+
+@71.
+So what happens when we have two edges which have the same minimum cost in the 
+PQ, which gets polled first? In practice it doesn't matter so let's assume it's
+edge (2, 5, 8) because it was added to the PQ first.
+
+@72.
+That edge was stale so poll again.
+
+@73.
+The next edge is from 4 to 7 with cost 8.
+
+@74. <nothing>
+@75. <nothing>
+@76. <nothing>
+@77. <nothing>
+@78. <nothing>
+
+@79.
+We can now stop Prim’s since the MST is complete. We know the MST is complete 
+because the number of edges in the tree is one less than the number of nodes in
+the graph; this is precisely the definition of a tree.
+
+@80.
+If we collapse the graph back into the undirected edge view it becomes clear 
+which edges are included in the MST.
+
+@81. <nothing>
+
+@82.
+To find the MST cost simply sum up the cost of all the edges which were selected
+which totals to 20.
+
+83.
 
 
