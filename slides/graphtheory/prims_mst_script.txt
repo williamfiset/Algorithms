@@ -284,9 +284,28 @@ to the PQ.
 The very last thing is to make sure our tree spans the whole graph and return 
 the edges comprising the MST along with the MST cost.
 
-@103.
-So that's all for the lazy implementation, now let's talk about the eager 
-version and what optimization it brings.
+@103
+So that's all for the lazy implementation, in the next video we'll be talking
+about the eager version and what optimizations we can do.
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
+@105.
+Hello and welcome back, my name is William and today we're talking about the 
+eager version of Prim's minimum spanning tree algorithm.
+
+@106.
+In the previous video on Prim's algorithm I go over MST basics and the lazy
+implementation of Prim's. This video builds off concepts explained there, so 
+please watch that video before this one, there should be a link in the
+description.
+
+@107.
 The lazy implementation of Prim’s inserts E edges into the PQ. This results in
 each poll operation on the PQ to be O(log(E)).
 In the eager version we maintain the idea that instead of adding edges to the PQ
@@ -294,32 +313,66 @@ which could later become outdated as the algorithm continues to visit nodes that
 we should instead track (node, edge) key-value pairs that can easily be updated
 and polled to determine the next best edge to add to the MST.
 
-@104.
-for this all to make sense there's a key realization that needs to happen and 
-that is that: for any MST with directed edges, each node is paired with
+@108.
+For this all to make sense there's a key realization that needs to happen and 
+that is: for any MST with directed edges, each node is paired with
 exactly one of its incoming edges (except for the start node).
 One way to see this is on a MST with possibly multiple edges leaving a node, but
 only ever one edge entering a node.
 
-@105.
+@109.
 Let's have a closer look at what I mean. Suppose we have this undirected graph.
 
-@106.
+@110.
 The equivalent directed version looks like this.
 
-@107.
+@111.
 A possible MST starting at node 0 looks like the following.
 
-@108.
+@112.
 Now notice that on this directed MST each node is paired with exactly one edge, 
 well except the starting node.
 
-@109.
+@113.
 So in a sense, there seems to be a relationship we can take advantage of here 
 which is that each node is paired with exactly one incoming edge.
 
-@110.
+@114.
+In the eager version we are trying to determine which of a node's incoming edges
+we should select to include in the MST.
+The main difference coming from the lazy version is that instead of adding edges
+to the PQ as we iterate over the edges of node we’re going to relax (update) the
+destination node’s most promising incoming edge.
 
+@115.
+So you might be asking yourself the question how are we going to efficiently 
+update and retrieve these (node, edge) pairs?
+Well one possible solution is to use an Indexed Priority Queue (IPQ) which can
+efficiently update and poll key-value pairs. Think of an indexed priority queue
+as the data structure you'd get if a hashtable and a priority queue had a baby
+together. It supports sorted key-value pair update and poll operations in 
+logarithmic time.
+Using this new approach would reduce the overall time complexity from O(E*logE)
+to O(E*logV) since there can only be V (node, edge) pairs in the IPQ.
+
+@116.
+If you're interested in learning more about what an indexed priority queue is 
+and how it's implemented I highly recommend my data structures video on the
+subject. I will link it in the description if you need to catch up.
+
+@117.
+The new implementation for the Eager version is slightly different, the 
+algorithm goes as follows:
+Maintain an indexed priority queue of size V that sorts vertex edge pairs 
+(v comma e) based on the minimum edge cost of e.
+Start the algorithm on any node s. Mark s as visited and relax all edges of s.
+Relaxing in this context refers to updating the entry for node v in the IPQ from
+(v comma old edge) to (v comma new edge) if the new edge has a better cost than 
+the old edge.
+Then while the IPQ is not empty and a MST has not been formed, dequeue the next
+best (v, e) pair from the IPQ. Mark node v as visited and add edge e to the MST.
+Lastly, relax all edges of v while making sure not to relax any edge pointing to
+a node which has already been visited.
 
 
 
