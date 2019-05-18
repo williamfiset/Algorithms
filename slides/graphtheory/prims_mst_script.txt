@@ -197,6 +197,46 @@ which edges are included in the MST.
 To find the MST cost simply sum up the cost of all the edges which were selected
 which totals to 20.
 
-83.
+@83.
+Great, now that we understand the gist of the lazy implementation of Prim's lets
+have a look at some pseudo code. Let me first define a few variables we'll need:
+
+@84.
+First is 'n' the number of nodes in the graph.
+
+@85.
+The variable 'pq' represents the PQ data structure, it stores edge objects 
+based on minimum edge cost. Each edge object consists of a start node, an end
+node, and an edge cost.
+
+@86.
+Next is 'g' which represents the graph we're working with. 'g' represents an
+adjacency list of weighted edges. In g, every undirected edge is represented as
+two directed edges.
+As a side node, if your graph is extremely dense you should probably prefer 
+using an adjacency matrix instead of an adjacency list for efficiency.
+
+@87.
+And lastly is a visited boolean array of size n which tracks whether node i has
+been visited or not.
+
+@88.
+So this is the whole algorithm, we're going to go over it step by step.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
