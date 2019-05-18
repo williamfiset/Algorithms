@@ -253,7 +253,72 @@ Next, I iterate over all the outgoing edges of the current node.
 @95.
 If the destination node of the edge is unvisited add it to the PQ.
 
+@96. <nothing>
 
+@97.
+Once we've added the first set of edges to the PQ the algorithm really begins 
+and we enter a while loop. While the PQ is not empty and the minimum spanning
+tree is not complete keep iterating.
+
+@98.
+Then inside the loop we poll the next best edge out of the PQ and grab a 
+reference to the destination node index, this is the node the edge is 
+pointing at.
+
+@99.
+This next line is very important, it's the logic that skips adding an edge to 
+the PQ if that edge points to an already visited node. Again, edges can become
+stale or outdated in the PQ if the node they're pointing to becomes visited
+via another path.
+
+@100.
+Next, actually add the edge to the MST by adding it to the mstEdges array. While
+we're adding the edge to the tree also sum over the edge costs.
+
+@101.
+The last thing we want to do is call the addEdges method with the new current 
+node. Recall that this will add all outgoing edges pointing to unvisited nodes
+to the PQ.
+
+@102
+The very last thing is to make sure our tree spans the whole graph and return 
+the edges comprising the MST along with the MST cost.
+
+@103.
+So that's all for the lazy implementation, now let's talk about the eager 
+version and what optimization it brings.
+The lazy implementation of Prim’s inserts E edges into the PQ. This results in
+each poll operation on the PQ to be O(log(E)).
+In the eager version we maintain the idea that instead of adding edges to the PQ
+which could later become outdated as the algorithm continues to visit nodes that
+we should instead track (node, edge) key-value pairs that can easily be updated
+and polled to determine the next best edge to add to the MST.
+
+@104.
+for this all to make sense there's a key realization that needs to happen and 
+that is that: for any MST with directed edges, each node is paired with
+exactly one of its incoming edges (except for the start node).
+One way to see this is on a MST with possibly multiple edges leaving a node, but
+only ever one edge entering a node.
+
+@105.
+Let's have a closer look at what I mean. Suppose we have this undirected graph.
+
+@106.
+The equivalent directed version looks like this.
+
+@107.
+A possible MST starting at node 0 looks like the following.
+
+@108.
+Now notice that on this directed MST each node is paired with exactly one edge, 
+well except the starting node.
+
+@109.
+So in a sense, there seems to be a relationship we can take advantage of here 
+which is that each node is paired with exactly one incoming edge.
+
+@110.
 
 
 
