@@ -47,6 +47,22 @@ What about this graph? I promise it's the last one.
 This is a bit of a trick question because there's no MST. All nodes must to 
 connected on a single component for a spanning tree to exist.
 
+12.
+Let's change focus and start talking about Prim's algorithm. Prim's is one of my
+favorite MST algorithms because of how simple and intuitive it is. By nature it's
+a greedy algorithm which always selects the next best edge to add to the MST and
+it works very well on dense graphs with lots of edges.
+However, a few the downsides of Prim's is that it's not as easily parallelizable
+as other well know MST algorithms and it's slightly harder but not impossible to
+find the minimum spanning forest of a graph.
+There are two well known versions of Prim's I want to discuss, the first is the 
+more common lazy version which runs in big O of E log E, and then there's the
+improved eager version which runs in big O of E log V but requires a slightly
+different data structure.
+
+13.
+
+
 
 
 
