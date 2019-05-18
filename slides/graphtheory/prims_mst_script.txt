@@ -221,7 +221,37 @@ And lastly is a visited boolean array of size n which tracks whether node i has
 been visited or not.
 
 @88.
-So this is the whole algorithm, we're going to go over it step by step.
+So this is the whole algorithm for the lazy implementation, let's go over it
+step by step.
+
+@89.
+The function takes one argument s which is the start node index, by default s is
+set to node 0.
+
+@90.
+Then I define a few more variables we'll need:
+'m' is a constant representing the number of expected edges in the MST
+'edgeCount' is the number of edges we have currently included in the MST. This
+variable is used to make sure the tree spans the whole graph.
+'mstCost' tracks the total cost of the MST
+and finally, 'mstEdges' is an array which holds edges which we have included in
+the MST.
+
+@91.
+The first actual bit of logic we do is add all outgoing edges from s to the pq
+with the addEdges method, let's have a look...
+
+@92.
+Here we are at the addEdges function.
+
+@93.
+The first thing I do is mark the current node as visited.
+
+@94.
+Next, I iterate over all the outgoing edges of the current node.
+
+@95.
+If the destination node of the edge is unvisited add it to the PQ.
 
 
 
