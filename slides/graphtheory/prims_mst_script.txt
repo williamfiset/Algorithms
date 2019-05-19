@@ -610,10 +610,32 @@ The first thing I do in the solve method is initialize some more variables and a
 
 Next I initialize an indexed priority queue of size n. This particular IPQ is implemented with a d-ary heap so you need to provide a node degree for the supporting heap. I arbitrary choose the base 2 logarithm of the number of nodes which seems to give a pretty good performance. Typically this is an implementation detail you don't need to worry about. This indexed priority queue implementation is defined below and we'll have a quick look after.
 
+The first actual bit of logic we're going to do is call the relaxEdgesAtNode method on node 0. This adds an initial set of edges to the PQ.
+
+Let's look at that method right now.
 
 
+The first thing we do is mark the current node as visited so that we don't visit it again in the future. Then I reach into our graph adjacency list and get all edges going outwards from
+the current node. As we enter the loop and start iterating over all the outgoing edges the first thing I do inside the loop is grab a reference to the destination node index, this is the node the edge is pointing at. Next, skip edges which point at already visited nodes.
 
+Now here's the bit where we actually relax the edge. First I check if the IPQ contains the key with the value of the destination node. If it doesn't then add the edge to the IPQ for the first time. Otherwise, try and improve the cheapest edge at destNodeIndex with the current edge in the IPQ by calling the decrease function.
 
+Let's go back to the solve method.
+
+After we add the initial set of edges iterate while the IPQ is not empty and a MST has not been formed.
+Inside the loop, pull out the next best node index, edge pair. The destination node can also be found by checking which node the directed edge we just polled is pointing at.
+
+After that add the polled edge to the MST and sum over the edge costs. 
+
+finally relax all the edges of the new current node. This process continues and we keep polling the best edge and slowly build our MST until eventually the loop breaks.
+
+The last thing we need to do is set the mstExists variable to check if we actually found a minimum spanning tree. If the edge count is equal to m we successfully computed a spanning tree, otherwise the graph is disconnected in some way and no spanning tree exists.
+
+So that's all for the eager implementation of Prim's. The only piece of the puzzle that might still be unclear is the IPQ implementation which I have defined below.
+
+However, this data structure merits a video on its own which is why if you're still struggling to understand the IPQ you should check out my data structures video on the subject, and I will leave it at that.
+
+Thank you so much for watching! Please give this video a thumbs up if you learned something and subscribe for more mathematics and computer science videos.
 
 
 
