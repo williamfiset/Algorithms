@@ -571,69 +571,83 @@ code for Prim's minimum spanning tree algorithm.
 If you haven't done so already please be sure to check out my previous video on
 Prim's MST algorithm that goes over implementation details and animations on how the algorithm works. There should be a link in the description.
 
-All the source code you see today can be found on github at github.com slash william fiset slash algorithms, also a link to that in the description. Alright, time to dive in.
+All the source code you see today can be found on github at github.com slash william fiset slash algorithms, there should also be a link to that in the description.
 
-Alright, here we are in the source code for Prim's minimum spanning tree algorithm implemented in Java. At the top here I posted some instructions on how to download and run this script yourself in case you wanted to play around with it a little bit.
+Alright, here we are in the source code for Prim's implemented in Java. At the top here I posted some instructions on how to download and run this script in case you wanted to play around with it a little bit.
 
 Let's begin by taking a look at the main method.
 
 The first thing I do is setup a graph we want to find the MST of, in fact it's the same graph we had in the slides in the previous video.
-To do that I call a helper method createEmptyGraph to initialize a graph adjacency list of size n and then add various undirected edges of different weights to the graph.
+To create the graph I call the helper method createEmptyGraph to initialize an adjacency list of size n and then add various undirected edges of different weights to the graph.
 
-Once the graph is setup I create a minimum spanning tree solver and pass it the graph we just created. The solver is able to tell use whether a MST exists, and if it does then it can tell us the minimum spanning tree cost and get all the edges which make up the minimum spanning tree by calling the getMst method.
+Once the graph is setup I create a minimum spanning tree solver and pass it the graph we just created. The solver is able to tell us whether a MST exists, what the minimum spanning tree cost is as well as get all the edges which make up the minimum spanning tree. The three key methods we'll be looking at today include the mstExists() function, getMstCost() and lastly getMst()
 
 The output of running this script is illustrated below.
 
-If you were curious as to how the graph adjacency list is initialized and how I add edges to the graph here's that code right here.
+<scroll>
 
-Next up is a class struct which represents a directed edge used in the graph. One important thing to note about this class is that it implements the Comparable interface and overrides the compareTo method, this simply means that edges are able to be sorted in reference to one another based on minimum edges cost. This is important for the IPQ because it needs to know how to compare edge objects with one another.
+If you were curious as to how the graph adjacency list gets initialized and how I add edges to the graph here's the code that does that.
 
-After the Edge class is the MinimumSpanningTreeSolver class where all the interesting logic happens. In this class I store a whole bunch of variables to help us out.
+<scroll>
 
-The first two are inputs to the class which are:
-'n' the number of nodes in the graph. I get this from the constructor.
+Next up is a class struct which represents a directed edge used in the graph. One important thing to note about this class is that it implements the Comparable interface and overrides the compareTo method, this simply means that edges are able to be sorted in reference to one another based on minimum edge cost. This is important for the IPQ because it needs to know how to compare edge objects with one another.
+
+<scroll>
+
+After the Edge class is the MinimumSpanningTreeSolver where all the interesting logic happens. In this class I store a whole bunch of variables to help us out.
+
+The first two are inputs which are:
+'n' the number of nodes in the graph which I get this from the constructor.
 and then there's the graph adjacency list itself.
 
 Internally I store a boolean solved variable to track whether we have already computed the MST so that we don't do it again once we've already solved the problem. 
-The 'mstExsts' variable tells you whether a MST was found in the input graph, by default this value is false.
+The 'mstExists' variable tells you whether a MST was found in the input graph, by default this value is false.
 The visited boolean array is used to keep track of whether node i has been visited or not.
 Lastly is the variable ipq which is an Indexed Priority queue data structure defined below.
 
 The outputs to this class include the minimum spanning tree cost and the edges which make up the minimum spanning tree, if one exists.
 
-After the constructor initialization there are two important methods to know about, these are the getMst() method for retrieving the MST edges and getMstCost which gets the spanning tree cost. Both of these methods work in the same manner, they both call the solve() method and then check whether the MST exists and returns the value or null. The real method we care about then is the solve method, so let's have a look at that.
+<scroll past constructor>
 
-The solve method is only ever executed once because we mark the solved boolean as true the first time solve() is called and the other times the method returns early.
+After the constructor initialization there are two important methods to know about, these are the getMst() method for retrieving the MST edges and getMstCost which gets the spanning tree cost. Both of these methods work in the same manner, they both call the solve() method and then check whether the MST exists and return a value or null. Therefore, the real method we care about is the solve method, so let's have a look at that.
 
-The first thing I do in the solve method is initialize some more variables and allocate some memory for the arrays we'll need.
+<scroll>
+
+The solve method is only ever executed once because we mark the solved boolean value as true the first time solve() is called and the other times the method returns early.
+
+The first thing I do in the solve method is initialize some more variables and allocate some memory for the arrays we will be using.
 'm' is the expected number of edges in the minimum spanning tree, and edgeCount is the current number of edges we have included in the MST so far.
 
-Next I initialize an indexed priority queue of size n. This particular IPQ is implemented with a d-ary heap so you need to provide a node degree for the supporting heap. I arbitrary choose the base 2 logarithm of the number of nodes which seems to give a pretty good performance. Typically this is an implementation detail you don't need to worry about. This indexed priority queue implementation is defined below and we'll have a quick look after.
+Next, I initialize an indexed priority queue of size n. This particular IPQ is implemented with a d-ary heap so we need to provide a node degree for the underlying supporting heap structure. I arbitrary choose the base 2 logarithm of the number of nodes which actually seems to give a pretty good performance. Typically this is an implementation detail isn't something you don't need to worry about.
 
-The first actual bit of logic we're going to do is call the relaxEdgesAtNode method on node 0. This adds an initial set of edges to the PQ.
+The first actual bit of logic we're going to do is call the relaxEdgesAtNode method on node 0. This adds the initial set of edges to the IPQ.
 
 Let's look at that method right now.
 
+<scroll>
 
-The first thing we do is mark the current node as visited so that we don't visit it again in the future. Then I reach into our graph adjacency list and get all edges going outwards from
-the current node. As we enter the loop and start iterating over all the outgoing edges the first thing I do inside the loop is grab a reference to the destination node index, this is the node the edge is pointing at. Next, skip edges which point at already visited nodes.
+The first thing we do is mark the current node as visited so that we don't visit it again in the future. Then I reach into our graph adjacency list and get all the outgoing edges from the current node. As we enter the loop and start iterating over all the outgoing edges the first thing I do inside the loop is grab a reference to the destination node index, this is the node the edge is pointing at. Next, skip edges which point at already visited nodes.
 
-Now here's the bit where we actually relax the edge. First I check if the IPQ contains the key with the value of the destination node. If it doesn't then add the edge to the IPQ for the first time. Otherwise, try and improve the cheapest edge at destNodeIndex with the current edge in the IPQ by calling the decrease function.
+Now here's the bit where we actually relax the edge. First check if the IPQ contains the key with the value of the destination node. If it doesn't, then add the edge to the IPQ for the first time. Otherwise, try and improve the cheapest edge at destNodeIndex with the current edge in the IPQ by calling the decrease function.
 
 Let's go back to the solve method.
 
-After we add the initial set of edges iterate while the IPQ is not empty and a MST has not been formed.
+<scroll>
+
+After we add the initial set of edges, iterate while the IPQ is not empty and the MST has not been formed.
 Inside the loop, pull out the next best node index, edge pair. The destination node can also be found by checking which node the directed edge we just polled is pointing at.
 
-After that add the polled edge to the MST and sum over the edge costs. 
+After that, add the polled edge to the MST by placing it in the mstEdges array and sum over the edge costs.
 
-finally relax all the edges of the new current node. This process continues and we keep polling the best edge and slowly build our MST until eventually the loop breaks.
+Finally, relax all the edges of the new current node. This process continues and we keep polling the best edge and slowly build our MST until eventually the loop breaks.
 
-The last thing we need to do is set the mstExists variable to check if we actually found a minimum spanning tree. If the edge count is equal to m we successfully computed a spanning tree, otherwise the graph is disconnected in some way and no spanning tree exists.
+The last thing we need to do is set the mstExists variable to check if we actually found a minimum spanning tree. If the edge count is equal to m then we successfully computed a spanning tree, otherwise the graph is disconnected in some way and no spanning tree exists.
 
-So that's all for the eager implementation of Prim's. The only piece of the puzzle that might still be unclear is the IPQ implementation which I have defined below.
+So that's all for the eager implementation of Prim's MST algorithm. The only piece of the puzzle that might still be unclear is how the IPQ implementation works.
 
-However, this data structure merits a video on its own which is why if you're still struggling to understand the IPQ you should check out my data structures video on the subject, and I will leave it at that.
+<scroll>
+
+Here's the IPQ implementation, however this data structure merits a video on its own which is why if you're still struggling to understand the IPQ you should check out my data structures video on the subject, and I will leave it at that.
 
 Thank you so much for watching! Please give this video a thumbs up if you learned something and subscribe for more mathematics and computer science videos.
 
