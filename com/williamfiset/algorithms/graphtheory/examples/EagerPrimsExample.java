@@ -10,10 +10,10 @@
  * $ cd Algorithms
  *
  * Compile:
- * $ javac com/williamfiset/algorithms/graphtheory/examples/EagerPrimsAdjacencyList.java
+ * $ javac com/williamfiset/algorithms/graphtheory/examples/EagerPrimsExample.java
  *
  * Run:
- * $ java com/williamfiset/algorithms/graphtheory/examples/EagerPrimsAdjacencyList
+ * $ java com/williamfiset/algorithms/graphtheory/examples/EagerPrimsExample
  *
  *
  * Time Complexity: O(ElogV)
@@ -26,7 +26,9 @@ package com.williamfiset.algorithms.graphtheory.examples;
 import static java.lang.Math.*;
 import java.util.*;
 
-public class EagerPrimsAdjacencyList {
+public class EagerPrimsExample {
+
+    /* Example from slides. */
 
   public static void main(String[] args) {
     int n = 7;
@@ -45,21 +47,17 @@ public class EagerPrimsAdjacencyList {
     addUndirectedEdge(g, 4, 6, 6);
     addUndirectedEdge(g, 5, 6, 1);
 
-    EagerPrimsAdjacencyList solver = new EagerPrimsAdjacencyList(g);
-    Long cost = solver.getMstCost();
+    MinimumSpanningTreeSolver solver = new MinimumSpanningTreeSolver(g);
 
-    if (cost == null) {
+    if (!solver.mstExists()) {
       System.out.println("No MST does not exists");
     } else {
-      System.out.println("MST cost: " + cost);
+      System.out.println("MST cost: " + solver.getMstCost());
       System.out.println("MST edges:");
       for (Edge e : solver.getMst()) {
         System.out.println(String.format("  (%d, %d, %d)", e.from, e.to, e.cost));
       }
     }
-
-    // Output:
-    // 
     // MST cost: 9
     // MST edges:
     //   (0, 2, 0)
@@ -73,24 +71,23 @@ public class EagerPrimsAdjacencyList {
     /* Graph construction helpers. */
 
   // Creates an empty adjacency list graph with n nodes.
-  static List<List<Edge>> createEmptyGraph(int n) {
+  private static List<List<Edge>> createEmptyGraph(int n) {
     List<List<Edge>> g = new ArrayList<>();
     for(int i = 0; i < n; i++) g.add(new ArrayList<>());
     return g;
   }
 
-  static void addDirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
+  private static void addDirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
     g.get(from).add(new Edge(from, to, cost));
   }
 
-  static void addUndirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
+  private static void addUndirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
     addDirectedEdge(g, from, to, cost);
     addDirectedEdge(g, to, from, cost);
   }
 
-    /* Prim's implementation */
-
-  static class Edge implements Comparable<Edge> {
+  // Directed Edge class.
+  private static class Edge implements Comparable<Edge> {
     int from, to, cost;
     public Edge(int from, int to, int cost) {
       this.from = from;
@@ -102,89 +99,98 @@ public class EagerPrimsAdjacencyList {
     }
   }
 
-  // Inputs
-  private final int n;
-  private final List<List<Edge>> graph;
+  // Solves the MST problem using Prim's algorithm.
+  private static class MinimumSpanningTreeSolver {
 
-  // Internal
-  private boolean solved;
-  private boolean mstExists;
-  private boolean[] visited;
-  private MinIndexedDHeap<Edge> ipq;
+    // Inputs
+    private final int n;
+    private final List<List<Edge>> graph;
 
-  // Outputs
-  private long minCostSum;
-  private Edge[] mstEdges;
+    // Internal
+    private boolean solved;
+    private boolean mstExists;
+    private boolean[] visited;
+    private MinIndexedDHeap<Edge> ipq;
 
-  public EagerPrimsAdjacencyList(List<List<Edge>> graph) {
-    if (graph == null || graph.isEmpty()) throw new IllegalArgumentException();
-    this.n = graph.size();
-    this.graph = graph;
-  }
+    // Outputs
+    private long minCostSum;
+    private Edge[] mstEdges;
 
-  // Returns the edges used in finding the minimum spanning tree,
-  // or returns null if no MST exists.
-  public Edge[] getMst() {
-    solve();
-    return mstExists ? mstEdges : null;
-  }
-
-  public Long getMstCost() {
-    solve();
-    return mstExists ? minCostSum : null;
-  }
-
-  // Computes the minimum spanning tree and minimum spanning tree cost.
-  private void solve() {
-    if (solved) return;
-    solved = true;
-
-    int m = n-1, edgeCount = 0;
-    visited = new boolean[n];
-    mstEdges = new Edge[m];
-
-    // The degree of the d-ary heap supporting the IPQ can greatly impact performance, especially
-    // on dense graphs. The base 2 logarithm of n is a decent value based on my quick experiments 
-    // (even better than E/V in many cases).
-    int degree = (int) Math.ceil(Math.log(n)/Math.log(2));
-    ipq = new MinIndexedDHeap<>(max(2, degree), n);
-
-    // Add initial set of edges to the priority queue starting at node 0.
-    relaxEdgesAtNode(0);
-
-    while (!ipq.isEmpty() && edgeCount != m) {
-      int destNodeIndex = ipq.peekMinKeyIndex(); // equivalently: edge.to
-      Edge edge = ipq.pollMinValue();
-
-      mstEdges[edgeCount++] = edge;
-      minCostSum += edge.cost;
-
-      relaxEdgesAtNode(destNodeIndex);
+    public MinimumSpanningTreeSolver(List<List<Edge>> graph) {
+      if (graph == null || graph.isEmpty()) throw new IllegalArgumentException();
+      this.n = graph.size();
+      this.graph = graph;
     }
 
-    // Verify MST spans entire graph.
-    mstExists = (edgeCount == m);
-  }
+    // Returns the edges used in finding the minimum spanning tree,
+    // or returns null if no MST exists.
+    public Edge[] getMst() {
+      solve();
+      return mstExists ? mstEdges : null;
+    }
 
-  private void relaxEdgesAtNode(int currentNodeIndex) {
-    visited[currentNodeIndex] = true;
+    public Long getMstCost() {
+      solve();
+      return mstExists ? minCostSum : null;
+    }
 
-    // edges will never be null if the createEmptyGraph method was used to build the graph.
-    List<Edge> edges = graph.get(currentNodeIndex);
+    public boolean mstExists() {
+      solve();
+      return mstExists;
+    }
 
-    for (Edge edge : edges) {
-      int destNodeIndex = edge.to;
+    // Computes the minimum spanning tree and minimum spanning tree cost.
+    private void solve() {
+      if (solved) return;
+      solved = true;
 
-      // Skip edges pointing to already visited nodes.
-      if (visited[destNodeIndex])
-        continue;
+      int m = n-1, edgeCount = 0;
+      visited = new boolean[n];
+      mstEdges = new Edge[m];
 
-      if (ipq.contains(destNodeIndex)) {
-        // Try and improve the cheapest edge at destNodeIndex with the current edge in the IPQ.
-        ipq.decrease(destNodeIndex, edge);
-      } else {
-        // Insert edge for the first time.
-        ipq.insert(destNodeIndex, edge);
+      // The degree of the d-ary heap supporting the IPQ can greatly impact performance, especially
+      // on dense graphs. The base 2 logarithm of n is a decent value based on my quick experiments 
+      // (even better than E/V in many cases).
+      int degree = (int) Math.ceil(Math.log(n)/Math.log(2));
+      ipq = new MinIndexedDHeap<>(max(2, degree), n);
+
+      // Add initial set of edges to the indexed priority queue starting with node 0.
+      relaxEdgesAtNode(0);
+
+      while (!ipq.isEmpty() && edgeCount != m) {
+        int destNodeIndex = ipq.peekMinKeyIndex(); // equivalently: edge.to
+        Edge edge = ipq.pollMinValue();
+
+        mstEdges[edgeCount++] = edge;
+        minCostSum += edge.cost;
+
+        relaxEdgesAtNode(destNodeIndex);
+      }
+
+      // Verify MST spans entire graph.
+      mstExists = (edgeCount == m);
+    }
+
+    private void relaxEdgesAtNode(int currentNodeIndex) {
+      visited[currentNodeIndex] = true;
+
+      // edges will never be null if the createEmptyGraph method was used to build the graph.
+      List<Edge> edges = graph.get(currentNodeIndex);
+
+      for (Edge edge : edges) {
+        int destNodeIndex = edge.to;
+
+        // Skip edges pointing to already visited nodes.
+        if (visited[destNodeIndex])
+          continue;
+
+        if (ipq.contains(destNodeIndex)) {
+          // Try and improve the cheapest edge at destNodeIndex with the current edge in the IPQ.
+          ipq.decrease(destNodeIndex, edge);
+        } else {
+          // Insert edge for the first time.
+          ipq.insert(destNodeIndex, edge);
+        }
       }
     }
   }

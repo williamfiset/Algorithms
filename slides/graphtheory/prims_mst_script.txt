@@ -569,25 +569,46 @@ Hello and welcome, my name is William and today we're looking at some source
 code for Prim's minimum spanning tree algorithm.
 
 If you haven't done so already please be sure to check out my previous video on
-Prim's MST algorithm that goes over implementation details and animations on how
-the algorithm works. There should be a link in the description.
+Prim's MST algorithm that goes over implementation details and animations on how the algorithm works. There should be a link in the description.
 
 All the source code you see today can be found on github at github.com slash william fiset slash algorithms, also a link to that in the description. Alright, time to dive in.
 
-Alright, here we are in the source code for Prim's minimum spanning tree algorithm implemented in Java. At the top here I posted 
+Alright, here we are in the source code for Prim's minimum spanning tree algorithm implemented in Java. At the top here I posted some instructions on how to download and run this script yourself in case you wanted to play around with it a little bit.
 
+Let's begin by taking a look at the main method.
 
+The first thing I do is setup a graph we want to find the MST of, in fact it's the same graph we had in the slides in the previous video.
+To do that I call a helper method createEmptyGraph to initialize a graph adjacency list of size n and then add various undirected edges of different weights to the graph.
 
+Once the graph is setup I create a minimum spanning tree solver and pass it the graph we just created. The solver is able to tell use whether a MST exists, and if it does then it can tell us the minimum spanning tree cost and get all the edges which make up the minimum spanning tree by calling the getMst method.
 
+The output of running this script is illustrated below.
 
+If you were curious as to how the graph adjacency list is initialized and how I add edges to the graph here's that code right here.
 
+Next up is a class struct which represents a directed edge used in the graph. One important thing to note about this class is that it implements the Comparable interface and overrides the compareTo method, this simply means that edges are able to be sorted in reference to one another based on minimum edges cost. This is important for the IPQ because it needs to know how to compare edge objects with one another.
 
+After the Edge class is the MinimumSpanningTreeSolver class where all the interesting logic happens. In this class I store a whole bunch of variables to help us out.
 
+The first two are inputs to the class which are:
+'n' the number of nodes in the graph. I get this from the constructor.
+and then there's the graph adjacency list itself.
 
+Internally I store a boolean solved variable to track whether we have already computed the MST so that we don't do it again once we've already solved the problem. 
+The 'mstExsts' variable tells you whether a MST was found in the input graph, by default this value is false.
+The visited boolean array is used to keep track of whether node i has been visited or not.
+Lastly is the variable ipq which is an Indexed Priority queue data structure defined below.
 
+The outputs to this class include the minimum spanning tree cost and the edges which make up the minimum spanning tree, if one exists.
 
+After the constructor initialization there are two important methods to know about, these are the getMst() method for retrieving the MST edges and getMstCost which gets the spanning tree cost. Both of these methods work in the same manner, they both call the solve() method and then check whether the MST exists and returns the value or null. The real method we care about then is the solve method, so let's have a look at that.
 
+The solve method is only ever executed once because we mark the solved boolean as true the first time solve() is called and the other times the method returns early.
 
+The first thing I do in the solve method is initialize some more variables and allocate some memory for the arrays we'll need.
+'m' is the expected number of edges in the minimum spanning tree, and edgeCount is the current number of edges we have included in the MST so far.
+
+Next I initialize an indexed priority queue of size n. This particular IPQ is implemented with a d-ary heap so you need to provide a node degree for the supporting heap. I arbitrary choose the base 2 logarithm of the number of nodes which seems to give a pretty good performance. Typically this is an implementation detail you don't need to worry about. This indexed priority queue implementation is defined below and we'll have a quick look after.
 
 
 
