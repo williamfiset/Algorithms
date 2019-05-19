@@ -443,19 +443,122 @@ From this point on I will let the animation play.
 ...
 
 @164.
-And that's
+Alright, that's the algorithm, and the MST are the edges in green.
 
+@165.
+If we collapse the graph back into the undirected edge view it becomes clear
+which edges are included in the MST.
 
+@166.
+You can also get the MST cost by adding all the edges of the spanning tree for
+a total cost of 9.
 
+@167.
+Let's have a look at some pseudo code for the eager implementation of Prim's
+MST algorithm. You'll notice that it's almost identical to the lazy version
+except for a few key details which I will highlight.
 
+@168.
+First is n, this is still the number of nodes in the graph.
 
+@169.
+ipq represents that we're using an indexed priority queue instead of a 
+traditional PQ to store (node index, edge object) pairs. Edge objects are still
+represented as {start node, end node, edge cost} triplets and the node index is
+simply an integer.
 
+@170.
+g is once again our graph adjacency list of weighted edges. In g, every 
+undirected edge is represented as two directed edges.
 
+@171.
+And lastly is a visited boolean array of size n which tracks whether node i has
+been visited or not.
 
+@172.
+Now let's look at the actual algorithm for eager Prim's.
 
+@173.
+In this first block I define a few more variables we'll need:
+'m' the number of expected edges in the MST.
+'edgeCount' the number of edges we have currently included in the MST. This
+variable is used to make sure the tree spans the whole graph.
+'mstCost' tracks the total cost of the MST
+and finally, 'mstEdges' is an array which holds edges which we have included in
+the MST.
 
+@174.
+Then I call the relaxEdgesAtNode method passing the start node as an argument.
+Let's have a look inside the relaxEdgesAtNode method to understand what's 
+happening.
 
+@175.
+Here we are. You'll notice that this method takes a single argument which is the
+current node we care about.
 
+@176.
+The first thing we do is mark the current node as visited so that we don't visit
+it again in the future.
+
+@177.
+Then I reach into our graph adjacency list and get all edges going outwards from
+the current node.
+
+@178.
+As we enter the loop and start iterating over all the outgoing edges the first
+thing I do inside the loop is grab a reference to the destination node index, 
+this is the node the edge is pointing at.
+
+@179.
+Next, skip edges which point at already visited nodes.
+
+@180.
+Now here's the bit where we actually relax the edge. First I check if the IPQ
+contains the key with the value of the destination node.
+
+@181.
+If it doesn't then add the edge to the IPQ for the first time.
+
+@182.
+Otherwise, try and improve the cheapest edge at destNodeIndex with the current
+edge in the IPQ.
+
+@183. <nothing>
+
+@184.
+We're back inside the main method.
+
+@185.
+Next up, keeping looping while the IPQ is not empty and the MST is not complete.
+
+@186.
+After, extract the next best (node index, edge object) pair from the IPQ based 
+on minimum edge cost.
+
+@187.
+Include the selected edge as part of the MST and sum over the edge cost.
+
+@188.
+Lastly, relax all the edges of the new current node and repeat until the 
+loop breaks.
+
+@189.
+Outside the main loop, check if we have successfully created a spanning tree, 
+this might not be the case if some of the nodes are unreachable. But assuming
+that's not the case return the MST cost and the edges which make up the spanning
+tree.
+
+@190.
+And that concludes the pseudo code for Prim's algorithm, thank you so much for
+watching! Implementation source code and slides can be found at github.com slash
+williamfiset slash algorithms.
+There should be a link in the description below. Please give this video a thumbs
+up if you learned something and subscribe for more mathematics and computer
+science videos.
+
+@191.
+Next video we'll be looking at some source code for the eager implementation of
+Prim's MST algorithm, so stick around if you want to see more.
 
 
 
