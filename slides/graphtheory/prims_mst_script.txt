@@ -286,10 +286,11 @@ the edges comprising the MST along with the MST cost.
 
 @103
 So that's all for the lazy implementation, in the next video we'll be talking
-about the eager version and what optimizations we can do.
-
-
-
+about the eager version and what optimizations we can do there. Thank you so
+much for watching!
+Implementation source code and slides can be found at github.com slash
+williamfiset slash algorithms. Please give this video a thumbs up if you learned
+something and subscribe for more mathematics and computer science videos.
 
 
 
