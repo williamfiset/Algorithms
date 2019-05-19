@@ -374,6 +374,79 @@ best (v, e) pair from the IPQ. Mark node v as visited and add edge e to the MST.
 Lastly, relax all edges of v while making sure not to relax any edge pointing to
 a node which has already been visited.
 
+@118.
+Alright, let's see an example. Suppose we have the following weighted undirected
+graph and we want to find any MST.
+
+@119.
+One thing to remember is that while we're dealing with an undirected graph I 
+will be internally representing it as a directed graph where each undirected 
+edge is stored as two directed edges.
+
+@120.
+I will also be keeping track of all (node, edge) key-value pairs on the right
+and update them accordingly as the algorithm executes.
+
+@121.
+Let's begin the algorithm on node 0 and start iterate over all the edges of 0
+and relax all of them. During the relaxing process add a (node, edge) pair to 
+the IPQ if it does not yet exist, or update the value if is has a better cost.
+
+@122.
+The first (node, edge) pair we add is node 2 with the incoming edge from 0 to 2
+with cost 0 and similarly for the rest of node 0's edges.
+
+@123. <press>
+@124. <press>
+@125. <press>
+@126. <press>
+
+@127.
+The next best (node, edge) pair based on minimum edge cost is node 2 with the
+incoming edge from node 0.
+
+@128. <press>
+
+@129.
+Now iterate through all the edges of node 2 and relax all edges. Care to ignore
+edges pointing to already visited nodes like on this slide.
+
+@130.
+The edge (2, 5, 6) has a better cost going to node 5 than the edge from node 0 
+to node 5 with cost 7, so update the IPQ with the new edge. I will denote IPQ
+updates with a purple box around the edge being updated.
+
+@131. <press>
+
+@132.
+The next best node-edge pair is node 3 with the edge coming from node 0 with a 
+cost of 5.
+
+@133. 
+Now iterate through all the edges of node 3 and relax all edges. 
+
+@134. <press>
+
+@135.
+The edge coming from node 3 offers a better value so update the value for node 1
+in the IPQ with the new edge.
+
+@136.
+Add the new key-value pair entry for node 6
+
+@137.
+Update the value for node 5 with the new better edge.
+
+@138.
+From this point on I will let the animation play.
+
+...
+
+@164.
+And that's
+
+
+
 
 
 
