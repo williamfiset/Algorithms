@@ -568,10 +568,12 @@ Prim's MST algorithm, so stick around if you want to see more.
 Hello and welcome, my name is William and today we're looking at some source 
 code for Prim's minimum spanning tree algorithm.
 
-If you haven't done so already please be sure to check out my previous video on
-Prim's MST algorithm that goes over implementation details and animations on how the algorithm works. There should be a link in the description.
+If you haven't done so already, please be sure to check out my previous video on
+Prim's which goes over implementation details, animations on how the algorithm works. You can find a link in the description below.
 
-All the source code you see today can be found on github at github.com slash william fiset slash algorithms, there should also be a link to that in the description.
+All the source code you see today can be found on github at github.com slash william fiset slash algorithms, so without further ado, let's dive right in.
+
+
 
 Alright, here we are in the source code for Prim's implemented in Java. At the top here I posted some instructions on how to download and run this script in case you wanted to play around with it a little bit.
 
