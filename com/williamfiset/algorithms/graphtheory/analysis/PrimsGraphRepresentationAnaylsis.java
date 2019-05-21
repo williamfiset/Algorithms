@@ -1,3 +1,98 @@
+/*
+Performs density analysis to figure out whether an adjacency list or an 
+adjacency matrix is better for prims MST algorithm.
+
+Results seem to indicate that the adjacency matrix is better starting at 
+around ~33% edge percentage density:
+
+
+
+Percentage full: ~0%, Edges included: 0
+List:   1168811 nanos
+Matrix: 300204 nanos
+
+Percentage full: ~5%, Edges included: 1249282
+List:   78032794 nanos
+Matrix: 160413885 nanos
+
+Percentage full: ~10%, Edges included: 2499128
+List:   53444885 nanos
+Matrix: 136684636 nanos
+
+Percentage full: ~15%, Edges included: 3747556
+List:   84818677 nanos
+Matrix: 154946744 nanos
+
+Percentage full: ~20%, Edges included: 4996636
+List:   105822314 nanos
+Matrix: 167086118 nanos
+
+Percentage full: ~25%, Edges included: 6246068
+List:   117237558 nanos
+Matrix: 190984980 nanos
+
+Percentage full: ~30%, Edges included: 7497476
+List:   249309754 nanos
+Matrix: 233969389 nanos
+
+Percentage full: ~35%, Edges included: 8748710
+List:   265593928 nanos
+Matrix: 235897178 nanos
+
+Percentage full: ~40%, Edges included: 10000808
+List:   317905981 nanos
+Matrix: 255262713 nanos
+
+Percentage full: ~45%, Edges included: 11245712
+List:   428115402 nanos
+Matrix: 244939994 nanos
+
+Percentage full: ~50%, Edges included: 12495078
+List:   485647021 nanos
+Matrix: 241433180 nanos
+
+Percentage full: ~55%, Edges included: 13744132
+List:   523930222 nanos
+Matrix: 240345667 nanos
+
+Percentage full: ~60%, Edges included: 14991078
+List:   565671594 nanos
+Matrix: 250618728 nanos
+
+Percentage full: ~65%, Edges included: 16249278
+List:   635804318 nanos
+Matrix: 247628418 nanos
+
+Percentage full: ~70%, Edges included: 17492252
+List:   448590410 nanos
+Matrix: 218092040 nanos
+
+Percentage full: ~75%, Edges included: 18748276
+List:   365672497 nanos
+Matrix: 209152347 nanos
+
+Percentage full: ~80%, Edges included: 19997560
+List:   389878221 nanos
+Matrix: 197766511 nanos
+
+Percentage full: ~85%, Edges included: 21243518
+List:   360389630 nanos
+Matrix: 181542371 nanos
+
+Percentage full: ~90%, Edges included: 22496480
+List:   486827671 nanos
+Matrix: 182686235 nanos
+
+Percentage full: ~95%, Edges included: 23747794
+List:   423884430 nanos
+Matrix: 159974003 nanos
+
+Percentage full: ~100%, Edges included: 24995000
+List:   436565071 nanos
+Matrix: 154691124 nanos
+
+*/
+
 package com.williamfiset.algorithms.graphtheory.analysis;
 
 import static java.lang.Math.*;
@@ -250,7 +345,7 @@ public class PrimsGraphRepresentationAnaylsis {
       for (int i = 0; i < n; i++) {
         for (int j = i + 1; j < n; j++) {
           int r = Math.abs(random.nextInt()) % 100;
-          if (r > percentage) continue;
+          if (r >= percentage) continue;
           PrimsAdjList.addUndirectedEdge(g1, i, j, r);
           PrimsAdjMatrix.addUndirectedEdge(g2, i, j, r);
           numEdgesIncluded += 2;
@@ -265,12 +360,12 @@ public class PrimsGraphRepresentationAnaylsis {
       long startTime = System.nanoTime();
       Long listCost = adjListSolver.getMstCost();
       long endTime = System.nanoTime();
-      System.out.println("List:   " + (endTime - startTime));
+      System.out.println("List:   " + (endTime - startTime) + " nanos");
 
       startTime = System.nanoTime();
       Long matrixCost = matrixSolver.getMstCost();
       endTime = System.nanoTime();
-      System.out.println("Matrix: " + (endTime - startTime));
+      System.out.println("Matrix: " + (endTime - startTime) + " nanos");
 
       if (listCost != null && listCost.longValue() != matrixCost.longValue()) {
         System.out.println("Oh dear. " + listCost + " != " + matrixCost);
