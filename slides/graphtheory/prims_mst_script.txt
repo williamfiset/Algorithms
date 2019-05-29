@@ -471,6 +471,33 @@ simply an integer.
 @170.
 g is once again our graph adjacency list of weighted edges. In g, every 
 undirected edge is represented as two directed edges.
+There's also the whole story about whether we should be using an adjacency list
+or an adjacency matrix to represent our graph when using Prim's MST algorithm.
+I did some analysis comparing both graph representations and these are the 
+results I got
+
+@170 1/2.
+This line graph shows the performance of using an adjacency list in blue vs an 
+adjacency matrix in green. The x axis represents the graph edge density 
+percentage used and the y axis indicates performance measured in milliseconds.
+As you can see, for graphs with fewer edges the adjacency list outperforms the
+adjacency matrix, but as the edge density increases the adjacency matrix becomes
+the better choice.
+You may be wondering why the adjacency matrix's performance starts to increase
+after the middle mark where the graph has more edges.
+This is an excellent question.
+My best guess is that the denser the graph the less relaxation operations need 
+to be performed which is an expensive part of Prim's. Since the time to iterate
+over all the edges of a node is constant, but fewer relax operations are needed
+performance increases as a result.
+The takeaway is that the graph representation you choose can greatly impact your
+performance depending on whether your graph is sparse or dense.
+
+TODO(williamfiset): add adj matrix impl to README
+TODO(williamfiset): redo analysis with either same graph structure with 
+more/less edges to remove inbalances or compute percentage p with multiple graph
+x times and get average.
+
 
 @171.
 And lastly is a visited boolean array of size n which tracks whether node i has
