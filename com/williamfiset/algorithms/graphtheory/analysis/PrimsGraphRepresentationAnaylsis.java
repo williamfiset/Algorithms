@@ -5,8 +5,6 @@ adjacency matrix is better for prims MST algorithm.
 Results seem to indicate that the adjacency matrix is better starting at 
 around ~33% edge percentage density:
 
-
-
 Percentage full: ~0%, Edges included: 0
 List:   1168811 nanos
 Matrix: 300204 nanos
@@ -97,6 +95,9 @@ package com.williamfiset.algorithms.graphtheory.analysis;
 
 import static java.lang.Math.*;
 import java.util.*;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.concurrent.TimeUnit;
 
 public class PrimsGraphRepresentationAnaylsis {
 
@@ -328,15 +329,19 @@ public class PrimsGraphRepresentationAnaylsis {
 
     /* Example usage. */
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException {
     densityTest();
   }
 
   static Random random = new Random(); 
-  private static void densityTest() {
-    
-    for (int percentage = 0; percentage <= 100; percentage += 10) {
-      
+  private static void densityTest() throws InterruptedException {
+    String rows = "", header = "edge density percentage, adj list, adj matrix\n";
+    for (int percentage = 5; percentage <= 100; percentage += 5) {
+
+      // Calling GC seems to give more consistent results?
+      System.gc();
+      TimeUnit.SECONDS.sleep(2);
+
       int n = 5000;
       List<List<Edge>> g1 = PrimsAdjList.createEmptyGraph(n);
       Integer[][] g2 = PrimsAdjMatrix.createEmptyGraph(n);
@@ -357,21 +362,25 @@ public class PrimsGraphRepresentationAnaylsis {
 
       System.out.println("\nPercentage full: ~" + percentage + "%, Edges included: " + numEdgesIncluded);
 
-      long startTime = System.nanoTime();
+      Instant start = Instant.now();
       Long listCost = adjListSolver.getMstCost();
-      long endTime = System.nanoTime();
-      System.out.println("List:   " + (endTime - startTime) + " nanos");
+      Instant end = Instant.now();
+      long listTimeMs = Duration.between(start, end).toMillis();
+      System.out.println("List:   " + listTimeMs + " millis");
 
-      startTime = System.nanoTime();
+      start = Instant.now();
       Long matrixCost = matrixSolver.getMstCost();
-      endTime = System.nanoTime();
-      System.out.println("Matrix: " + (endTime - startTime) + " nanos");
+      end = Instant.now();
+      long matrixTimeMs = Duration.between(start, end).toMillis();
+      System.out.println("Matrix: " + matrixTimeMs + " millis");
 
       if (listCost != null && listCost.longValue() != matrixCost.longValue()) {
         System.out.println("Oh dear. " + listCost + " != " + matrixCost);
       }
 
+      rows += String.format("%d%%,%d,%d\n", percentage, listTimeMs, matrixTimeMs);
     }
+    System.out.println("CSV printout:\n\n" + header + rows);
 
   }
 

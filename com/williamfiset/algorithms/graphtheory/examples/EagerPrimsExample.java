@@ -3,7 +3,7 @@
  * using an indexed priority queue data structure to query the next best edge.
  *
  *
- * Download the code: 
+ * Download the code:
  * $ git clone https://github.com/williamfiset/Algorithms
  *
  * Change directory to the root of the Algorithms directory:
