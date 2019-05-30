@@ -158,7 +158,8 @@
 
 # Contributing
 
-This repository is contribution friendly :smiley:. See the [Wiki](https://github.com/williamfiset/Algorithms/wiki) for instructions on how to contribute code.
+This repository is contribution friendly :smiley:. If you're an algorithms enthusiast (like me!) and want to add or improve an algorithm your contribution is welcome! Please be sure to checkout the [Wiki](https://github.com/williamfiset/Algorithms/wiki) for instructions.
+
 # License
 
 This repository is released under the [MIT license](https://opensource.org/licenses/MIT). In short, this means you are free to use this software in any personal, open-source or commercial projects. Attribution is optional but appreciated.
