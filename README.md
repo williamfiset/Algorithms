@@ -158,41 +158,7 @@
 
 # Contributing
 
-This repository is contribution friendly :smiley:. If you're an algorithms enthusiast (like me!) and want to add or improve an algorithm your contribution is welcome! Please be sure to include tests :kissing_heart:.
-
-# For developers
-
-This project uses [Gradle](https://gradle.org/) as a build system (and testing). Make sure you have [Java 8+ SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed and the gradle command-line tool. Run the build command to make sure you don't get any errors:
-
-```bash
-Algorithms$ gradle build
-```
-
-### Adding a new algorithm
-
-The procedure to add a new algorithm named **Foo** is the following:
-
-1) Identify the category folder your algorithm belongs to. For example a matrix multiplication snippet would belong to the com/williamfiset/algorithms/linearalgebra folder. You may also create a new category folder if appropriate.
-2) Add the algorithm implementation to com/williamfiset/algorithms/category/ as com/williamfiset/algorithms/category/Foo.java
-3) Add tests for Foo in javatests/com/williamfiset/algorithms/category/FooTest.java
-4) Edit the **build.gradle** file if you added a new category to the project.
-5) Test your algorithm thoroughly (see testing section below)
-6) Run 'gradle goJF' to format all Java code according to Google Style Guide.
-7) Send pull request for review :open_mouth:
-
-### Testing
-
-This repository places a large emphasis on good testing practice to ensure that published algorithms are bug free and high quality. Testing is done using a combinations of frameworks including: [JUnit](http://junit.org/junit4/), [Mockito](http://site.mockito.org/) and the [Google Truth](http://google.github.io/truth) framework. Currently very few algorithms have tests because they were (informally) tested against problems on [Kattis](https://open.kattis.com/problems) in a competitive programming setting, but we are slowly migrating to formally testing these algorithms for robustness. To run all the tests execute:
-
-```bash
-Algorithms$ gradle test
-```
-
-When developing you likely do not want to run all tests but only a subset of them. For example, if you want to run the FloydWarshallSolverTest.java file under [javatests/com/williamfiset/algorithms/graphtheory/FloydWarshallSolverTest.java](https://github.com/williamfiset/Algorithms/blob/master/javatests/com/williamfiset/algorithms/graphtheory/FloydWarshallSolverTest.java) you can execute:
-```bash
-Algorithms$ gradle test --tests "javatests.com.williamfiset.algorithms.graphtheory.FloydWarshallSolverTest"
-```
-
+This repository is contribution friendly :smiley:. See the [Wiki](https://github.com/williamfiset/Algorithms/wiki) for instructions on how to contribute code.
 # License
 
 This repository is released under the [MIT license](https://opensource.org/licenses/MIT). In short, this means you are free to use this software in any personal, open-source or commercial projects. Attribution is optional but appreciated.
