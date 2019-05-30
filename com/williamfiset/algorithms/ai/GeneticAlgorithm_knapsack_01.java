@@ -87,7 +87,9 @@ public class GeneticAlgorithm_knapsack_01 {
 
         // Apply mutations to all parts of the DNA
         // according to a predefined mutation rate
-        for (int j = 0; j < N; j++) if (Math.random() < MUTATION_RATE) mutate(child, j);
+        for (int j = 0; j < N; j++) {
+          if (Math.random() < MUTATION_RATE) mutate(child, j);
+        }
 
         nextGeneration[i] = child;
       }
@@ -195,8 +197,9 @@ public class GeneticAlgorithm_knapsack_01 {
      */
     public static int knapsack(int maxWeight, int[] W, int[] V) {
 
-      if (W == null || V == null || W.length != V.length || maxWeight < 0)
+      if (W == null || V == null || W.length != V.length || maxWeight < 0) {
         throw new IllegalArgumentException("Invalid input");
+      }
 
       final int N = W.length;
 
@@ -216,7 +219,9 @@ public class GeneticAlgorithm_knapsack_01 {
 
           // Consider including the current element and
           // see if this would be more profitable
-          if (sz >= w && DP[i - 1][sz - w] + v > DP[i][sz]) DP[i][sz] = DP[i - 1][sz - w] + v;
+          if (sz >= w && DP[i - 1][sz - w] + v > DP[i][sz]) {
+            DP[i][sz] = DP[i - 1][sz - w] + v;
+          }
         }
       }
 

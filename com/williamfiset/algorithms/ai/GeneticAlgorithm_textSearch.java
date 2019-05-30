@@ -36,7 +36,9 @@ public class GeneticAlgorithm_textSearch {
     // Create initial population
     Individual[] generation = new Individual[POPULATION_SZ + 1];
     Individual[] nextGeneration = new Individual[POPULATION_SZ + 1];
-    for (int i = 1; i <= POPULATION_SZ; i++) generation[i] = new Individual();
+    for (int i = 1; i <= POPULATION_SZ; i++) {
+      generation[i] = new Individual();
+    }
 
     // Stores the ranges of individuals in the selection roulette
     double[] lo = new double[POPULATION_SZ + 1];
@@ -84,7 +86,11 @@ public class GeneticAlgorithm_textSearch {
 
         // Apply mutations to all parts of the DNA
         // according to a predefined mutation rate
-        for (int j = 0; j < TL; j++) if (Math.random() < MUTATION_RATE) child = mutate(child, j);
+        for (int j = 0; j < TL; j++) {
+          if (Math.random() < MUTATION_RATE) {
+            child = mutate(child, j);
+          }
+        }
 
         nextGeneration[i] = child;
 
@@ -109,7 +115,9 @@ public class GeneticAlgorithm_textSearch {
     // Constructs a random individual
     public Individual() {
       dna = new char[TL];
-      for (int i = 0; i < TL; i++) dna[i] = ALPHA[RANDOM.nextInt(ALPHA.length)];
+      for (int i = 0; i < TL; i++) {
+        dna[i] = ALPHA[RANDOM.nextInt(ALPHA.length)];
+      }
       this.str = new String(dna);
       this.fitness = fitness();
     }
@@ -124,7 +132,9 @@ public class GeneticAlgorithm_textSearch {
     // Objective function
     public double fitness() {
       double score = 0.0;
-      for (int i = 0; i < TL; i++) if (TARGET.charAt(i) == dna[i]) score++;
+      for (int i = 0; i < TL; i++) {
+        if (TARGET.charAt(i) == dna[i]) score++;
+      }
       return Math.pow(score, power);
     }
 

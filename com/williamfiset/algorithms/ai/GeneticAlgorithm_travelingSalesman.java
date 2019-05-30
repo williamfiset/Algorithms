@@ -29,7 +29,11 @@ public class GeneticAlgorithm_travelingSalesman {
     final int N = adjacencyMatrix.length;
 
     double max = Double.NEGATIVE_INFINITY;
-    for (double[] row : adjacencyMatrix) for (double elem : row) max = Math.max(max, elem);
+    for (double[] row : adjacencyMatrix) {
+      for (double elem : row) {
+        max = Math.max(max, elem);
+      }
+    }
 
     // Create initial population
     Individual[] generation = new Individual[P + 1];
@@ -107,7 +111,11 @@ public class GeneticAlgorithm_travelingSalesman {
 
         // Apply mutations to all parts of the DNA
         // according to a predefined mutation rate
-        for (int j = 0; j < N; j++) if (Math.random() < MUTATION_RATE) mutate(child);
+        for (int j = 0; j < N; j++) {
+          if (Math.random() < MUTATION_RATE) {
+            mutate(child);
+          }
+        }
 
         nextGeneration[i] = child;
       }
@@ -198,8 +206,11 @@ public class GeneticAlgorithm_travelingSalesman {
     Individual.shuffleArray(missing);
 
     j = 0;
-    for (int i = 0; i < n; i++) if (i < minimum || i > maximum) newPath[i] = missing[j++];
-
+    for (int i = 0; i < n; i++) {
+      if (i < minimum || i > maximum) {
+        newPath[i] = missing[j++];
+      }
+    }
     return new Individual(newPath);
   }
 
@@ -208,7 +219,9 @@ public class GeneticAlgorithm_travelingSalesman {
     int n = 64;
 
     double[][] m = new double[n][n];
-    for (double[] row : m) Arrays.fill(row, 10.0);
+    for (double[] row : m) {
+      Arrays.fill(row, 10.0);
+    }
 
     // Construct an optimal path
     List<Integer> path = new ArrayList<>(n);
