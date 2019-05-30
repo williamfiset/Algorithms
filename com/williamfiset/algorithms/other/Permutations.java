@@ -1,21 +1,21 @@
 /**
- * Here we present two methods (recursive and iterative) of
- * generating all the permutations of a list of elements.
- * 
- * Time Complexity: O(n!)
+ * Here we present two methods (recursive and iterative) of generating all the permutations of a
+ * list of elements.
+ *
+ * <p>Time Complexity: O(n!)
  *
  * @author William Fiset, Micah Stairs
- **/
+ */
 package com.williamfiset.algorithms.other;
 
 public class Permutations {
-  
-    /* RECURSIVE APPROACH */
+
+  /* RECURSIVE APPROACH */
 
   // Generates all the permutations of a sequence of objects
-  public static void generatePermutations(Object [] sequence) {
+  public static void generatePermutations(Object[] sequence) {
     if (sequence == null) return;
-    boolean [] used = new boolean[sequence.length];
+    boolean[] used = new boolean[sequence.length];
     int[] picked = new int[sequence.length];
     permutations(0, used, picked, sequence);
   }
@@ -24,8 +24,8 @@ public class Permutations {
   // at       -> Current element we're considering
   // used     -> The elements we have currently selected in our permutation
   // picked   -> The order of the indexes we have selected in our permutation
-  // sequence -> The array we're generating permutations for 
-  private static void permutations(int at, boolean[] used, int[] picked, Object [] sequence) {
+  // sequence -> The array we're generating permutations for
+  private static void permutations(int at, boolean[] used, int[] picked, Object[] sequence) {
 
     final int N = sequence.length;
 
@@ -34,8 +34,7 @@ public class Permutations {
 
       // Print permutation
       System.out.print("[ ");
-      for (int i = 0; i < N; i++)
-        System.out.print(sequence[picked[i]] + " ");
+      for (int i = 0; i < N; i++) System.out.print(sequence[picked[i]] + " ");
       System.out.println("]");
 
     } else {
@@ -45,8 +44,8 @@ public class Permutations {
         // We can only select elements once, so make sure we do
         // not select an element which has already been chosen
         if (!used[i]) {
-          
-          // Select this element and track in picked which 
+
+          // Select this element and track in picked which
           // element was chosen for this permutations
           used[i] = true;
           picked[at] = i;
@@ -54,15 +53,12 @@ public class Permutations {
 
           // Backtrack (unselect element)
           used[i] = false;
-
         }
-
       }
-
     }
   }
 
-    /* ITERATIVE APPROACH */
+  /* ITERATIVE APPROACH */
 
   // Generates the next ordered permutation in-place (skips repeated permutations).
   // Calling this when the array is already at the highest permutation returns false.
@@ -73,11 +69,12 @@ public class Permutations {
     if (first == -1) return false;
     int toSwap = sequence.length - 1;
     while (sequence[first].compareTo(sequence[toSwap]) >= 0) --toSwap;
-    swap(sequence, first++, toSwap); toSwap = sequence.length - 1;
+    swap(sequence, first++, toSwap);
+    toSwap = sequence.length - 1;
     while (first < toSwap) swap(sequence, first++, toSwap--);
     return true;
   }
-  
+
   static <T extends Comparable<? super T>> int getFirst(T[] sequence) {
     for (int i = sequence.length - 2; i >= 0; --i)
       if (sequence[i].compareTo(sequence[i + 1]) < 0) return i;
@@ -91,7 +88,7 @@ public class Permutations {
   }
 
   public static void main(String[] args) {
-    
+
     Integer[] sequence = {1, 1, 2, 3};
     generatePermutations(sequence);
     // prints:
@@ -125,8 +122,8 @@ public class Permutations {
 
       System.out.println(java.util.Arrays.toString(alpha));
 
-    // Loop while alpha is not at its highest permutation ordering
-    } while(nextPermutation(alpha));
+      // Loop while alpha is not at its highest permutation ordering
+    } while (nextPermutation(alpha));
     // prints:
     // [A, B, C, D]
     // [A, B, D, C]
@@ -154,5 +151,4 @@ public class Permutations {
     // [D, C, B, A]
 
   }
-
 }

@@ -1,5 +1,17 @@
 
 apply plugin: 'java'
+apply plugin: "com.github.sherter.google-java-format"
+
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.8"
+  }
+}
 
 // Assume Java 8
 sourceCompatibility = 1.8

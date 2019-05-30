@@ -1,16 +1,14 @@
 /**
- * This file shows you how to determine if a graph is bipartite or not.
- * This can be achieved in linear time by coloring the visited nodes.
+ * This file shows you how to determine if a graph is bipartite or not. This can be achieved in
+ * linear time by coloring the visited nodes.
  *
- * Time Complexity: O(V + E)
- * 
+ * <p>Time Complexity: O(V + E)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import com.williamfiset.algorithms.utils.graphutils.Utils;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class BipartiteGraphCheckAdjacencyList {
@@ -29,7 +27,7 @@ public class BipartiteGraphCheckAdjacencyList {
     this.graph = graph;
   }
 
-  // Checks whether the input graph is bipartite. 
+  // Checks whether the input graph is bipartite.
   public boolean isBipartite() {
     if (!solved) solve();
     return isBipartite;
@@ -48,7 +46,7 @@ public class BipartiteGraphCheckAdjacencyList {
     colors = new int[n];
     int nodesVisited = colorGraph(0, RED);
 
-    // The graph is not bipartite. Either not all the nodes were visited or the 
+    // The graph is not bipartite. Either not all the nodes were visited or the
     // colorGraph method returned -1 meaning the graph is not 2-colorable.
     isBipartite = (nodesVisited == n);
     solved = true;
@@ -60,7 +58,7 @@ public class BipartiteGraphCheckAdjacencyList {
   private int colorGraph(int i, int color) {
     colors[i] = color;
 
-    // Toggles the color between RED and BLACK by exploiting the binary representation 
+    // Toggles the color between RED and BLACK by exploiting the binary representation
     // of the constants and flipping the least significant bit on and off.
     int nextColor = (color ^ 1);
 
@@ -83,10 +81,10 @@ public class BipartiteGraphCheckAdjacencyList {
     return visitCount;
   }
 
-    /* Example usage */
+  /* Example usage */
 
   public static void main(String[] args) {
-    
+
     // Singleton (not bipartite)
     int n = 1;
     List<List<Integer>> graph = Utils.createEmptyAdjacencyList(n);
@@ -147,10 +145,10 @@ public class BipartiteGraphCheckAdjacencyList {
     // Square graph (bipartite)
     n = 4;
     graph = Utils.createEmptyAdjacencyList(n);
-    Utils.addUndirectedEdge(graph,0,1);
-    Utils.addUndirectedEdge(graph,1,2);
-    Utils.addUndirectedEdge(graph,2,3);
-    Utils.addUndirectedEdge(graph,3,0);
+    Utils.addUndirectedEdge(graph, 0, 1);
+    Utils.addUndirectedEdge(graph, 1, 2);
+    Utils.addUndirectedEdge(graph, 2, 3);
+    Utils.addUndirectedEdge(graph, 3, 0);
     displayGraph(graph);
 
     // Prints:
@@ -168,11 +166,11 @@ public class BipartiteGraphCheckAdjacencyList {
     // Square graph with additional edge (not bipartite)
     n = 4;
     graph = Utils.createEmptyAdjacencyList(n);
-    Utils.addUndirectedEdge(graph,0,1);
-    Utils.addUndirectedEdge(graph,1,2);
-    Utils.addUndirectedEdge(graph,2,3);
-    Utils.addUndirectedEdge(graph,3,0);
-    Utils.addUndirectedEdge(graph,0,2);
+    Utils.addUndirectedEdge(graph, 0, 1);
+    Utils.addUndirectedEdge(graph, 1, 2);
+    Utils.addUndirectedEdge(graph, 2, 3);
+    Utils.addUndirectedEdge(graph, 3, 0);
+    Utils.addUndirectedEdge(graph, 0, 2);
     displayGraph(graph);
 
     // Prints:
@@ -193,11 +191,9 @@ public class BipartiteGraphCheckAdjacencyList {
 
   private static void displayGraph(List<List<Integer>> graph) {
     final int n = graph.size();
-    
+
     System.out.println("Graph has " + n + " node(s) and the following edges:");
-    for (int f = 0; f < n; f++)
-      for (int t : graph.get(f))
-        System.out.println(f + " -> " + t);
+    for (int f = 0; f < n; f++) for (int t : graph.get(f)) System.out.println(f + " -> " + t);
 
     BipartiteGraphCheckAdjacencyList solver;
     solver = new BipartiteGraphCheckAdjacencyList(graph);
@@ -205,11 +201,4 @@ public class BipartiteGraphCheckAdjacencyList {
     System.out.println("This graph is bipartite: " + (solver.isBipartite()));
     System.out.println();
   }
-
 }
-
-
-
-
-
-

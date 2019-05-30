@@ -1,6 +1,4 @@
-/**
- * NOTE: This file is still in development!
- */ 
+/** NOTE: This file is still in development! */
 package com.williamfiset.algorithms.graphtheory;
 
 import java.util.*;
@@ -25,17 +23,17 @@ public class TwoSatSolverAdjacencyList {
     return isSatisfiable;
   }
 
-  public void solve() { 
+  public void solve() {
     if (solved) return;
 
     int[] sccs = sccSolver.getSccs();
     // System.out.println(Arrays.toString(sccs));
 
-    // Assume that this 2SAT problem is satisfiable and try to 
+    // Assume that this 2SAT problem is satisfiable and try to
     // disprove it by looking at which SCCs p and ~p belong to.
     isSatisfiable = true;
-    for(int i = 0; i < sccs.length; i += 2) {
-      if (sccs[i] == sccs[i^1]) {
+    for (int i = 0; i < sccs.length; i += 2) {
+      if (sccs[i] == sccs[i ^ 1]) {
         isSatisfiable = false;
         break;
       }
@@ -51,13 +49,13 @@ public class TwoSatSolverAdjacencyList {
 
   // Creates an implication graph.
   //
-  // NOTE: In the implication graph node i should be stored in position 2i 
+  // NOTE: In the implication graph node i should be stored in position 2i
   // and its negation in position 2i + 1. This is done so that we can quickly
-  // access the negation of a node by doing an xor operation. For example: 
+  // access the negation of a node by doing an xor operation. For example:
   // Node 4's negation is 5 since 4 ⊕ 1 = 5 and 5's negation is 4 since 5 ⊕ 1 = 4.
   public static List<List<Integer>> createImplicationGraph(int n) {
-    List<List<Integer>> graph = new ArrayList<>(2*n);
-    for(int i = 0; i < 2*n; i++) graph.add(new ArrayList<>());
+    List<List<Integer>> graph = new ArrayList<>(2 * n);
+    for (int i = 0; i < 2 * n; i++) graph.add(new ArrayList<>());
     return graph;
   }
 
@@ -80,10 +78,10 @@ public class TwoSatSolverAdjacencyList {
   }
 
   public static void main(String[] args) {
-    
+
     int n = 2;
     List<List<Integer>> graph = createImplicationGraph(n);
-    
+
     // addOrClause(graph, n, 0, negate(1, n));
     // addOrClause(graph, n, negate(0, n), 2);
     // addOrClause(graph, n, negate(1, n), negate(3, n));
@@ -95,31 +93,10 @@ public class TwoSatSolverAdjacencyList {
     // addOrClause(graph, n, 0, 1);
     // addOrClause(graph, n, 0^1, 1);
     // System.out.println(graph);
-    
+
     // TwoSatSolverAdjacencyList solver = new TwoSatSolverAdjacencyList(graph);
     // int[] sccs = solver.sccSolver.getSccs();
     // System.out.println(Arrays.toString(sccs));
 
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

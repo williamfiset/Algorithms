@@ -1,16 +1,16 @@
 /**
- * The graph isomorphism problem for general graphs can be quite difficult, however 
- * there exists an elegant solution to uniquely encode a graph if it is a tree.
- * Here is a brilliant explanation with animations:
+ * The graph isomorphism problem for general graphs can be quite difficult, however there exists an
+ * elegant solution to uniquely encode a graph if it is a tree. Here is a brilliant explanation with
+ * animations:
  *
- * http://webhome.cs.uvic.ca/~wendym/courses/582/16/notes/582_12_tree_can_form.pdf
+ * <p>http://webhome.cs.uvic.ca/~wendym/courses/582/16/notes/582_12_tree_can_form.pdf
  *
- * Tested code against: https://uva.onlinejudge.org/external/124/p12489.pdf
+ * <p>Tested code against: https://uva.onlinejudge.org/external/124/p12489.pdf
  *
- * Time Complexity: O(Elog(E))
+ * <p>Time Complexity: O(Elog(E))
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import java.util.*;
@@ -19,7 +19,7 @@ public class TreeCanonicalFormAdjacencyList {
 
   public static List<List<Integer>> createEmptyTree(int n) {
     List<List<Integer>> tree = new ArrayList<>(n);
-    for(int i = 0; i < n; i++) tree.add(new ArrayList<>());
+    for (int i = 0; i < n; i++) tree.add(new ArrayList<>());
     return tree;
   }
 
@@ -34,7 +34,7 @@ public class TreeCanonicalFormAdjacencyList {
 
     // Find all leaf nodes
     List<Integer> leaves = new ArrayList<>();
-    for(int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
       List<Integer> edges = tree.get(i);
       degrees[i] = edges.size();
       if (degrees[i] <= 1) leaves.add(i);
@@ -43,21 +43,19 @@ public class TreeCanonicalFormAdjacencyList {
     int processedLeafs = leaves.size();
 
     // Remove leaf nodes and decrease the degree of
-    // each node adding new leaf nodes progressively 
+    // each node adding new leaf nodes progressively
     // until only the centers remain.
-    while(processedLeafs < n) {
+    while (processedLeafs < n) {
       List<Integer> newLeaves = new ArrayList<>();
-      for(int node : leaves)
-        for (int neighbor : tree.get(node))
-          if (--degrees[neighbor] == 1)
-            newLeaves.add(neighbor);
+      for (int node : leaves)
+        for (int neighbor : tree.get(node)) if (--degrees[neighbor] == 1) newLeaves.add(neighbor);
       processedLeafs += newLeaves.size();
       leaves = newLeaves;
     }
 
     return leaves;
   }
-  
+
   // Encodes a tree as a string such that any isomorphic tree
   // also has the same encoding.
   public static String encodeTree(List<List<Integer>> tree) {
@@ -71,7 +69,7 @@ public class TreeCanonicalFormAdjacencyList {
     int[] parent = new int[n];
     boolean[] visited = new boolean[n];
     List<Integer> leafs = new ArrayList<>();
-    
+
     Queue<Integer> q = new ArrayDeque<>();
     visited[root] = true;
     parent[root] = -1; // unused.
@@ -94,13 +92,13 @@ public class TreeCanonicalFormAdjacencyList {
 
     List<Integer> newLeafs = new ArrayList<>();
     String[] map = new String[n];
-    for(int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
       visited[i] = false;
       map[i] = "()";
     }
 
     int treeSize = n;
-    while(treeSize > 2) {
+    while (treeSize > 2) {
       for (int leaf : leafs) {
 
         // Find parent of leaf node and check if the parent
@@ -114,15 +112,14 @@ public class TreeCanonicalFormAdjacencyList {
 
       // Update parent labels
       for (int p : newLeafs) {
-        
+
         List<String> labels = new ArrayList<>();
-        for(int child : tree.get(p))
+        for (int child : tree.get(p))
           // Recall edges are bidirectional so we don't want to
           // access the parent's parent here.
-          if (visited[child])
-            labels.add(map[child]);
+          if (visited[child]) labels.add(map[child]);
 
-        String parentInnerParentheses = map[p].substring(1, map[p].length()-1);
+        String parentInnerParentheses = map[p].substring(1, map[p].length() - 1);
         labels.add(parentInnerParentheses);
 
         Collections.sort(labels);
@@ -143,7 +140,7 @@ public class TreeCanonicalFormAdjacencyList {
     return (l1.compareTo(l2) < 0) ? (l1 + l2) : (l2 + l1);
   }
 
-    /* Example usage */
+  /* Example usage */
 
   public static void main(String[] args) {
     // Test if two tree are isomorphic, meaning they are structurally equivalent
@@ -151,15 +148,15 @@ public class TreeCanonicalFormAdjacencyList {
     List<List<Integer>> tree1 = createEmptyTree(5);
     List<List<Integer>> tree2 = createEmptyTree(5);
 
-    addUndirectedEdge(tree1,2,0);
-    addUndirectedEdge(tree1,3,4);
-    addUndirectedEdge(tree1,2,1);
-    addUndirectedEdge(tree1,2,3);
+    addUndirectedEdge(tree1, 2, 0);
+    addUndirectedEdge(tree1, 3, 4);
+    addUndirectedEdge(tree1, 2, 1);
+    addUndirectedEdge(tree1, 2, 3);
 
-    addUndirectedEdge(tree2,1,0);
-    addUndirectedEdge(tree2,2,4);
-    addUndirectedEdge(tree2,1,3);
-    addUndirectedEdge(tree2,1,2);
+    addUndirectedEdge(tree2, 1, 0);
+    addUndirectedEdge(tree2, 2, 4);
+    addUndirectedEdge(tree2, 1, 3);
+    addUndirectedEdge(tree2, 1, 2);
 
     String encoding1 = encodeTree(tree1);
     String encoding2 = encodeTree(tree2);
@@ -173,5 +170,4 @@ public class TreeCanonicalFormAdjacencyList {
     // Tree2 encoding: (()())(())
     // Trees are isomorphic: true
   }
-
 }

@@ -1,14 +1,15 @@
 /**
  * Finds all articulation points on an undirected graph.
  *
- * Tested against HackerEarth online judge at:
+ * <p>Tested against HackerEarth online judge at:
  * https://www.hackerearth.com/practice/algorithms/graphs/articulation-points-and-bridges/tutorial
- * 
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory;
 
 import static java.lang.Math.min;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +22,7 @@ public class ArticulationPointsAdjacencyList {
   private List<List<Integer>> graph;
 
   public ArticulationPointsAdjacencyList(List<List<Integer>> graph, int n) {
-    if (graph == null || n <= 0 || graph.size() != n)
-      throw new IllegalArgumentException();
+    if (graph == null || n <= 0 || graph.size() != n) throw new IllegalArgumentException();
     this.graph = graph;
     this.n = n;
   }
@@ -53,7 +53,7 @@ public class ArticulationPointsAdjacencyList {
   private void dfs(int root, int at, int parent) {
 
     if (parent == root) rootNodeOutcomingEdgeCount++;
-    
+
     visited[at] = true;
     low[at] = ids[at] = id++;
 
@@ -70,16 +70,14 @@ public class ArticulationPointsAdjacencyList {
         low[at] = min(low[at], ids[to]);
       }
     }
-
   }
 
   /* Graph helpers */
 
-
   // Initialize a graph with 'n' nodes.
   public static List<List<Integer>> createGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>(n);
-    for(int i = 0; i < n; i++) graph.add(new ArrayList<>());
+    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
     return graph;
   }
 
@@ -89,9 +87,7 @@ public class ArticulationPointsAdjacencyList {
     graph.get(to).add(from);
   }
 
-  
   /* Example usage: */
-
 
   public static void main(String[] args) {
     testExample2();
@@ -120,8 +116,7 @@ public class ArticulationPointsAdjacencyList {
     // Node 3 is an articulation
     // Node 5 is an articulation
     for (int i = 0; i < n; i++)
-      if (isArticulationPoint[i])
-        System.out.printf("Node %d is an articulation\n", i);
+      if (isArticulationPoint[i]) System.out.printf("Node %d is an articulation\n", i);
   }
 
   // Tests a graph with 3 nodes in a line: A - B - C
@@ -139,27 +134,6 @@ public class ArticulationPointsAdjacencyList {
     // Prints:
     // Node 1 is an articulation
     for (int i = 0; i < n; i++)
-      if (isArticulationPoint[i])
-        System.out.printf("Node %d is an articulation\n", i);
+      if (isArticulationPoint[i]) System.out.printf("Node %d is an articulation\n", i);
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

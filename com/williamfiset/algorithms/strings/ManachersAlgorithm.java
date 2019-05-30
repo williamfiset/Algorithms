@@ -1,15 +1,14 @@
 /**
- * An implementation of Manacher's algorithm which can be used
- * to find/count palindromic strings in linear time. In particular,
- * it finds the length of the maximal palindrome centered at each index.
- **/
+ * An implementation of Manacher's algorithm which can be used to find/count palindromic strings in
+ * linear time. In particular, it finds the length of the maximal palindrome centered at each index.
+ */
 package com.williamfiset.algorithms.strings;
 
 public class ManachersAlgorithm {
 
   // Manacher's algorithm finds the length of the longest palindrome
   // centered at a specific index. Since even length palindromes have
-  // a center in between two characters we expand the string to insert 
+  // a center in between two characters we expand the string to insert
   // those centers, for example "abba" becomes "^#a#b#b#a#$" where the
   // '#' sign represents the center of an even length string and '^' & '$'
   // are the front and the back of the string respectively. The output
@@ -45,19 +44,19 @@ public class ManachersAlgorithm {
     arr[arr.length - 2] = '#';
     arr[arr.length - 1] = '$';
     return arr;
-  }  
+  }
 
   // This method finds all the palindrome substrings found inside
-  // a string it uses Manacher's algorithm to find the diameter 
+  // a string it uses Manacher's algorithm to find the diameter
   // of each palindrome centered at each position.
-  public static java.util.TreeSet <String> findPalindromeSubstrings(String str) {
+  public static java.util.TreeSet<String> findPalindromeSubstrings(String str) {
 
     char[] S = str.toCharArray();
     int N = S.length;
     int[] centers = manachers(S);
-    java.util.TreeSet <String> palindromes = new java.util.TreeSet<>();
+    java.util.TreeSet<String> palindromes = new java.util.TreeSet<>();
 
-    for(int i = 0; i < centers.length; i++) {
+    for (int i = 0; i < centers.length; i++) {
 
       int diameter = centers[i];
 
@@ -65,37 +64,32 @@ public class ManachersAlgorithm {
 
         // Even palindrome substring
         if (i % 2 == 1) {
-          while( diameter > 1 ) {
+          while (diameter > 1) {
 
-            int index = (i-1)/2 - diameter/2;
-            palindromes.add( new String(S, index, diameter) );
+            int index = (i - 1) / 2 - diameter / 2;
+            palindromes.add(new String(S, index, diameter));
             diameter -= 2;
-
           }
-        // Odd palindrome substring
+          // Odd palindrome substring
         } else {
-          while(diameter >= 1) {
+          while (diameter >= 1) {
 
-            int index = (i-2)/2 - (diameter-1)/2;
-            palindromes.add( new String(S, index, diameter) );
+            int index = (i - 2) / 2 - (diameter - 1) / 2;
+            palindromes.add(new String(S, index, diameter));
             diameter -= 2;
-
           }
         }
       }
     }
-    
-    return palindromes;
 
+    return palindromes;
   }
 
   public static void main(String[] args) {
-    
+
     String s = "abbaabba";
 
     // Outputs: [a, aa, abba, abbaabba, b, baab, bb, bbaabb]
-    System.out.println( findPalindromeSubstrings(s) );
-
+    System.out.println(findPalindromeSubstrings(s));
   }
-
 }

@@ -1,26 +1,30 @@
 /**
- * An implementation of the eager version of Prim's algorithm which relies on 
- * using an indexed priority queue data structure to query the next best edge.
+ * An implementation of the eager version of Prim's algorithm which relies on using an indexed
+ * priority queue data structure to query the next best edge.
  *
- *  Time Complexity: O(ElogV)
+ * <p>Time Complexity: O(ElogV)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory;
 
 import static java.lang.Math.*;
+
 import java.util.*;
 
 public class EagerPrimsAdjacencyList {
 
   static class Edge implements Comparable<Edge> {
     int from, to, cost;
+
     public Edge(int from, int to, int cost) {
       this.from = from;
       this.to = to;
       this.cost = cost;
     }
-    @Override public int compareTo(Edge other) {
+
+    @Override
+    public int compareTo(Edge other) {
       return cost - other.cost;
     }
   }
@@ -67,8 +71,7 @@ public class EagerPrimsAdjacencyList {
       int destNodeIndex = edge.to;
 
       // Skip edges pointing to already visited nodes.
-      if (visited[destNodeIndex])
-        continue;
+      if (visited[destNodeIndex]) continue;
 
       if (ipq.contains(destNodeIndex)) {
         // Try and improve the cheapest edge at destNodeIndex with the current edge in the IPQ.
@@ -85,14 +88,14 @@ public class EagerPrimsAdjacencyList {
     if (solved) return;
     solved = true;
 
-    int m = n-1, edgeCount = 0;
+    int m = n - 1, edgeCount = 0;
     visited = new boolean[n];
     mstEdges = new Edge[m];
 
     // The degree of the d-ary heap supporting the IPQ can greatly impact performance, especially
-    // on dense graphs. The base 2 logarithm of n is a decent value based on my quick experiments 
+    // on dense graphs. The base 2 logarithm of n is a decent value based on my quick experiments
     // (even better than E/V in many cases).
-    int degree = (int) Math.ceil(Math.log(n)/Math.log(2));
+    int degree = (int) Math.ceil(Math.log(n) / Math.log(2));
     ipq = new MinIndexedDHeap<>(max(2, degree), n);
 
     // Add initial set of edges to the priority queue starting at node 0.
@@ -112,12 +115,12 @@ public class EagerPrimsAdjacencyList {
     mstExists = (edgeCount == m);
   }
 
-    /* Graph construction helpers. */
+  /* Graph construction helpers. */
 
   // Creates an empty adjacency list graph with n nodes.
   static List<List<Edge>> createEmptyGraph(int n) {
     List<List<Edge>> g = new ArrayList<>();
-    for(int i = 0; i < n; i++) g.add(new ArrayList<>());
+    for (int i = 0; i < n; i++) g.add(new ArrayList<>());
     return g;
   }
 
@@ -130,7 +133,7 @@ public class EagerPrimsAdjacencyList {
     addDirectedEdge(g, to, from, cost);
   }
 
-    /* Example usage. */
+  /* Example usage. */
 
   public static void main(String[] args) {
     // example1();
@@ -331,8 +334,8 @@ public class EagerPrimsAdjacencyList {
     addDirectedEdge(g, 6, 1, 4);
     addDirectedEdge(g, 6, 4, 6);
 
-    addDirectedEdge(g, 4, 1, 3);    
-    addDirectedEdge(g, 4, 6, 6);    
+    addDirectedEdge(g, 4, 1, 3);
+    addDirectedEdge(g, 4, 6, 6);
 
     EagerPrimsAdjacencyList solver = new EagerPrimsAdjacencyList(g);
     Long cost = solver.getMstCost();
@@ -347,12 +350,13 @@ public class EagerPrimsAdjacencyList {
     }
   }
 
-  static Random random = new Random(); 
+  static Random random = new Random();
+
   private static void lazyVsEagerAnalysis() {
     int n = 5000;
     List<List<EagerPrimsAdjacencyList.Edge>> g1 = EagerPrimsAdjacencyList.createEmptyGraph(n);
     List<List<LazyPrimsAdjacencyList.Edge>> g2 = LazyPrimsAdjacencyList.createEmptyGraph(n);
-    
+
     for (int i = 0; i < n; i++) {
       for (int j = i + 1; j < n; j++) {
         int r = random.nextInt() % 10;
@@ -377,12 +381,11 @@ public class EagerPrimsAdjacencyList {
     if (eagerCost.longValue() != lazyCost.longValue()) {
       System.out.println("Oh dear. " + eagerCost + " != " + lazyCost);
     }
-
   }
 
-    /* Supporting indexed priority queue implementation. */
+  /* Supporting indexed priority queue implementation. */
 
-  private static class MinIndexedDHeap <T extends Comparable<T>> {
+  private static class MinIndexedDHeap<T extends Comparable<T>> {
 
     // Current number of elements in the heap.
     private int sz;
@@ -396,7 +399,7 @@ public class EagerPrimsAdjacencyList {
     // Lookup arrays to track the child/parent indexes of each node.
     private final int[] child, parent;
 
-    // The Position Map (pm) maps Key Indexes (ki) to where the position of that 
+    // The Position Map (pm) maps Key Indexes (ki) to where the position of that
     // key is represented in the priority queue in the domain [0, sz).
     public final int[] pm;
 
@@ -405,7 +408,7 @@ public class EagerPrimsAdjacencyList {
     // 'im' and 'pm' are inverses of each other, so: pm[im[i]] = im[pm[i]] = i
     public final int[] im;
 
-    // The values associated with the keys. It is very important  to note 
+    // The values associated with the keys. It is very important  to note
     // that this array is indexed by the key indexes (aka 'ki').
     public final Object[] values;
 
@@ -414,7 +417,7 @@ public class EagerPrimsAdjacencyList {
       if (maxSize <= 0) throw new IllegalArgumentException("maxSize <= 0");
 
       D = max(2, degree);
-      N = max(D+1, maxSize);
+      N = max(D + 1, maxSize);
 
       im = new int[N];
       pm = new int[N];
@@ -423,8 +426,8 @@ public class EagerPrimsAdjacencyList {
       values = new Object[N];
 
       for (int i = 0; i < N; i++) {
-        parent[i] = (i-1) / D;
-        child[i] = i*D + 1;
+        parent[i] = (i - 1) / D;
+        child[i] = i * D + 1;
         pm[i] = im[i] = -1;
       }
     }
@@ -466,8 +469,7 @@ public class EagerPrimsAdjacencyList {
     }
 
     public void insert(int ki, T value) {
-      if (contains(ki))
-        throw new IllegalArgumentException("index already exists; received: " + ki);
+      if (contains(ki)) throw new IllegalArgumentException("index already exists; received: " + ki);
       valueNotNullOrThrow(value);
       pm[ki] = sz;
       im[sz] = ki;
@@ -524,10 +526,10 @@ public class EagerPrimsAdjacencyList {
       }
     }
 
-      /* Helper functions */
+    /* Helper functions */
 
     private void sink(int i) {
-      for(int j = minChild(i); j != -1;) {
+      for (int j = minChild(i); j != -1; ) {
         swap(i, j);
         i = j;
         j = minChild(i);
@@ -535,7 +537,7 @@ public class EagerPrimsAdjacencyList {
     }
 
     private void swim(int i) {
-      while(less(i, parent[i])) {
+      while (less(i, parent[i])) {
         swap(i, parent[i]);
         i = parent[i];
       }
@@ -544,9 +546,7 @@ public class EagerPrimsAdjacencyList {
     // From the parent node at index i find the minimum child below it
     private int minChild(int i) {
       int index = -1, from = child[i], to = min(sz, from + D);
-      for(int j = from; j < to; j++)
-        if (less(j, i))
-          index = i = j;
+      for (int j = from; j < to; j++) if (less(j, i)) index = i = j;
       return index;
     }
 
@@ -572,11 +572,11 @@ public class EagerPrimsAdjacencyList {
     @Override
     public String toString() {
       List<Integer> lst = new ArrayList<>(sz);
-      for(int i = 0; i < sz; i++) lst.add(im[i]);
+      for (int i = 0; i < sz; i++) lst.add(im[i]);
       return lst.toString();
     }
 
-      /* Helper functions to make the code more readable. */
+    /* Helper functions to make the code more readable. */
 
     private void isNotEmptyOrThrow() {
       if (isEmpty()) throw new NoSuchElementException("Priority queue underflow");
@@ -588,21 +588,19 @@ public class EagerPrimsAdjacencyList {
     }
 
     private void keyExistsOrThrow(int ki) {
-      if (!contains(ki)) 
-        throw new NoSuchElementException("Index does not exist; received: " + ki);
+      if (!contains(ki)) throw new NoSuchElementException("Index does not exist; received: " + ki);
     }
 
     private void valueNotNullOrThrow(Object value) {
-      if (value == null) 
-        throw new IllegalArgumentException("value cannot be null");
+      if (value == null) throw new IllegalArgumentException("value cannot be null");
     }
 
     private void keyInBoundsOrThrow(int ki) {
-      if (ki < 0 || ki >= N) 
+      if (ki < 0 || ki >= N)
         throw new IllegalArgumentException("Key index out of bounds; received: " + ki);
     }
 
-      /* Test functions */
+    /* Test functions */
 
     // Recursively checks if this heap is a min heap. This method is used
     // for testing purposes to validate the heap invariant.
@@ -612,15 +610,11 @@ public class EagerPrimsAdjacencyList {
 
     private boolean isMinHeap(int i) {
       int from = child[i], to = min(sz, from + D);
-      for(int j = from; j < to; j++) {
+      for (int j = from; j < to; j++) {
         if (!less(i, j)) return false;
         if (!isMinHeap(j)) return false;
       }
       return true;
     }
-
   }
-
 }
-
-

@@ -1,12 +1,13 @@
 /**
- * Computes Euler's totient function 
+ * Computes Euler's totient function
+ *
  * @author Steven & Felix Halim
- **/
+ */
 package com.williamfiset.algorithms.math;
 
 public class EulerTotientFunctionWithSieve {
 
-  // Set MAX to be the largest value you 
+  // Set MAX to be the largest value you
   // wish to compute the totient for.
   static int MAX = 1000000;
   static int[] PRIMES = sieve(MAX);
@@ -18,7 +19,7 @@ public class EulerTotientFunctionWithSieve {
 
     // Find an upper bound on the number of primes below our limit.
     // https://en.wikipedia.org/wiki/Prime-counting_function#Inequalities
-    final int numPrimes = (int)(1.25506 * limit / Math.log((double) limit));
+    final int numPrimes = (int) (1.25506 * limit / Math.log((double) limit));
     int[] primes = new int[numPrimes];
     int index = 0;
 
@@ -27,41 +28,35 @@ public class EulerTotientFunctionWithSieve {
     for (int i = 2; i <= sqrtLimit; i++) {
       if (!isComposite[i]) {
         primes[index++] = i;
-        for (int j = i * i; j < limit; j += i)
-          isComposite[j] = true;
+        for (int j = i * i; j < limit; j += i) isComposite[j] = true;
       }
     }
-    for (int i = sqrtLimit + 1; i < limit; i++)
-      if (!isComposite[i])
-        primes[index++] = i;
+    for (int i = sqrtLimit + 1; i < limit; i++) if (!isComposite[i]) primes[index++] = i;
     return java.util.Arrays.copyOf(primes, index);
-
   }
 
   // Returns the value of Euler's totient/phi function
   // which computes how many numbers are relativity
   // prime to n less than or equal to n
   public static int totient(int n) {
-    
-    if (n >= MAX-1) throw new IllegalStateException("MAX not large enough!");
+
+    if (n >= MAX - 1) throw new IllegalStateException("MAX not large enough!");
     int ans = n;
 
-    for (int i = 1, p = PRIMES[0]; p*p <= n; i++) {
+    for (int i = 1, p = PRIMES[0]; p * p <= n; i++) {
 
-      if (n % p == 0) ans -= ans/p;
-      while(n % p == 0) n /= p;
+      if (n % p == 0) ans -= ans / p;
+      while (n % p == 0) n /= p;
       p = PRIMES[i];
-
     }
 
     // Last factor
     if (n != 1) ans -= ans / n;
     return ans;
-
   }
 
   public static void main(String[] args) {
-    
+
     // Prints 8 because 1,2,4,7,8,11,13,14 are all
     // less than 15 and relatively prime with 15
     System.out.printf("phi(15) = %d\n", totient(15));
@@ -69,17 +64,7 @@ public class EulerTotientFunctionWithSieve {
     System.out.println();
 
     for (int x = 1; x <= 11; x++) {
-      System.out.printf("phi(%d) = %d\n", x, totient(x) );
+      System.out.printf("phi(%d) = %d\n", x, totient(x));
     }
-
   }
-
 }
-
-
-
-
-
-
-
-

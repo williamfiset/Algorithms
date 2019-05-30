@@ -2,15 +2,12 @@ package javatests.com.williamfiset.algorithms.graphtheory;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.collect.ImmutableList;
 import com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyList;
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.*;
 import org.junit.*;
 
 public class EulerianPathDirectedEdgesAdjacencyListTest {
-  
+
   EulerianPathDirectedEdgesAdjacencyList solver;
 
   @Before
@@ -21,8 +18,7 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
   // Initialize graph with 'n' nodes.
   public static List<List<Integer>> initializeEmptyGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>(n);
-    for (int i = 0; i < n; i++) 
-      graph.add(new ArrayList<>());
+    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
     return graph;
   }
 
@@ -36,7 +32,7 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
     solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
     int n = graph.size();
     int[] ordering = solver.getEulerianPath();
-    
+
     if (n == 0) {
       assertThat(ordering.length).isEqualTo(0);
       return;
@@ -53,7 +49,7 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
     Map<Long, Integer> map = new HashMap<>();
     for (int from = 0; from < n; from++) {
       for (int to : graph.get(from)) {
-        long hash = ((long)from) << 32 | to;
+        long hash = ((long) from) << 32 | to;
         Integer count = map.get(hash);
         if (count == null) count = 0;
         map.put(hash, count + 1);
@@ -61,11 +57,11 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
     }
 
     for (int i = 1; i < ordering.length; i++) {
-      int from = ordering[i-1];
+      int from = ordering[i - 1];
       int to = ordering[i];
-      
+
       // Make sure edge has not yet been taken
-      long hash = ((long)from) << 32 | to;
+      long hash = ((long) from) << 32 | to;
       Integer count = map.get(hash);
       assertThat(count).isNotNull();
       assertThat(count).isGreaterThan(0);
@@ -77,7 +73,6 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
       int count = map.get(hash);
       assertThat(count).isEqualTo(0);
     }
-
   }
 
   @Test
@@ -191,7 +186,6 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
     assertThat(solver.getEulerianPath()).isNull();
   }
 
-
   @Test
   public void testOneNodeSelfLoopGraph() {
     int n = 1;
@@ -216,7 +210,7 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
   public void testMultiPartDisconnectedGraph() {
     int n = 6;
     List<List<Integer>> graph = initializeEmptyGraph(n);
-    
+
     addDirectedEdge(graph, 2, 1);
     addDirectedEdge(graph, 1, 2);
 
@@ -233,7 +227,7 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
   public void testMultiPartDisconnectedGraph2() {
     int n = 4;
     List<List<Integer>> graph = initializeEmptyGraph(n);
-    
+
     addDirectedEdge(graph, 0, 1);
     addDirectedEdge(graph, 2, 3);
 
@@ -307,5 +301,4 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
 
     verifyEulerianPath(graph);
   }
-
 }

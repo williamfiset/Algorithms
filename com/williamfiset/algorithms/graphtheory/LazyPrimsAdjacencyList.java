@@ -1,11 +1,11 @@
 /**
- * An implementation of the lazy version of Prim's algorithm which relies on
- * using a traditional priority queue to query the next best edge.
+ * An implementation of the lazy version of Prim's algorithm which relies on using a traditional
+ * priority queue to query the next best edge.
  *
- *  Time Complexity: O(ElogE)
+ * <p>Time Complexity: O(ElogE)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory;
 
 import java.util.*;
@@ -14,12 +14,15 @@ public class LazyPrimsAdjacencyList {
 
   static class Edge implements Comparable<Edge> {
     int from, to, cost;
+
     public Edge(int from, int to, int cost) {
       this.from = from;
       this.to = to;
       this.cost = cost;
     }
-    @Override public int compareTo(Edge other) {
+
+    @Override
+    public int compareTo(Edge other) {
       return cost - other.cost;
     }
   }
@@ -73,7 +76,7 @@ public class LazyPrimsAdjacencyList {
     if (solved) return;
     solved = true;
 
-    int m = n-1, edgeCount = 0;
+    int m = n - 1, edgeCount = 0;
     pq = new PriorityQueue<>();
     visited = new boolean[n];
     mstEdges = new Edge[m];
@@ -87,8 +90,7 @@ public class LazyPrimsAdjacencyList {
       int nodeIndex = edge.to;
 
       // Skip any edge pointing to an already visited node.
-      if (visited[nodeIndex])
-        continue;
+      if (visited[nodeIndex]) continue;
 
       mstEdges[edgeCount++] = edge;
       minCostSum += edge.cost;
@@ -100,11 +102,11 @@ public class LazyPrimsAdjacencyList {
     mstExists = (edgeCount == m);
   }
 
-    /* Graph construction helpers. */
+  /* Graph construction helpers. */
 
   static List<List<Edge>> createEmptyGraph(int n) {
     List<List<Edge>> g = new ArrayList<>();
-    for(int i = 0; i < n; i++) g.add(new ArrayList<>());
+    for (int i = 0; i < n; i++) g.add(new ArrayList<>());
     return g;
   }
 
@@ -117,7 +119,7 @@ public class LazyPrimsAdjacencyList {
     addDirectedEdge(g, to, from, cost);
   }
 
-    /* Example usage. */
+  /* Example usage. */
 
   public static void main(String[] args) {
     // example1();
@@ -286,5 +288,4 @@ public class LazyPrimsAdjacencyList {
       }
     }
   }
-
 }

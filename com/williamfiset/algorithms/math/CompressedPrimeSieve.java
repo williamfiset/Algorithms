@@ -1,16 +1,14 @@
 /**
- * Generate a compressed prime sieve using bit manipulation. 
- * The idea is that each bit represents a boolean value indicating whether
- * a number is prime or not. This saves a lot of room when creating the sieve. 
- * In this implementation I store all odd numbers in individual longs meaning 
- * that for each long I use I can represent a range of 128 numbers 
- * (even numbers are omitted because they are not prime, with the exception of 
- * 2 which is handled as a special case).
+ * Generate a compressed prime sieve using bit manipulation. The idea is that each bit represents a
+ * boolean value indicating whether a number is prime or not. This saves a lot of room when creating
+ * the sieve. In this implementation I store all odd numbers in individual longs meaning that for
+ * each long I use I can represent a range of 128 numbers (even numbers are omitted because they are
+ * not prime, with the exception of 2 which is handled as a special case).
  *
- * Time Complexity: ~O(nloglogn)
+ * <p>Time Complexity: ~O(nloglogn)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.math;
 
 public class CompressedPrimeSieve {
@@ -38,7 +36,7 @@ public class CompressedPrimeSieve {
   // is prime or not. Use the isSet and setBit methods to toggle to bits for each number.
   static long[] primeSieve(int limit) {
 
-    final int num_chunks = (int) Math.ceil(limit / ((double)NUM_BITS) );
+    final int num_chunks = (int) Math.ceil(limit / ((double) NUM_BITS));
     final int sqrt_limit = (int) Math.sqrt(limit);
     // if (limit < 2) return 0; // uncomment for primeCount purposes
     // int primeCount = (int) Math.ceil(limit / 2.0); // Counts number of primes <= limit
@@ -55,14 +53,10 @@ public class CompressedPrimeSieve {
   }
 
   public static void main(String[] args) {
-    
+
     final int LIMIT = 101;
     long[] sieve = primeSieve(LIMIT);
-    
-    for (int i = 1; i <= LIMIT; i++ )
-      if (isSet(sieve, i))
-        System.out.printf("%d is prime!\n", i);
 
+    for (int i = 1; i <= LIMIT; i++) if (isSet(sieve, i)) System.out.printf("%d is prime!\n", i);
   }
-
 }

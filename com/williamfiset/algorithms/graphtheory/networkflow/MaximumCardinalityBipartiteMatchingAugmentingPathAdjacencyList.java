@@ -1,16 +1,15 @@
 /**
- * This is an implementation of the augmenting path algorithm to find the 
- * Maximum Cardinality Bipartite Matching (MCBM) on a bipartite graph.
- * To summarize, this means that given a bipartite graph we are able
- * to find the matching between two groups which yields the most 
- * number of edges used.
+ * This is an implementation of the augmenting path algorithm to find the Maximum Cardinality
+ * Bipartite Matching (MCBM) on a bipartite graph. To summarize, this means that given a bipartite
+ * graph we are able to find the matching between two groups which yields the most number of edges
+ * used.
  *
- * Code tested against: https://open.kattis.com/problems/gopher2
+ * <p>Code tested against: https://open.kattis.com/problems/gopher2
  *
- * Time Complexity: O(VE)
- * 
+ * <p>Time Complexity: O(VE)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import java.util.*;
@@ -20,16 +19,16 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
   static final int FREE = -1;
   static int visitToken = 1;
 
-  /** 
-   * This function counts what the Maximum Cardinality Bipartite
-   * Matching (MCBM) is a bipartite graph where the nodes 
-   * [0,n) are in the left set and [n, n+m) in right set
+  /**
+   * This function counts what the Maximum Cardinality Bipartite Matching (MCBM) is a bipartite
+   * graph where the nodes [0,n) are in the left set and [n, n+m) in right set
+   *
    * @param graph - An adjacency list representing an undirected bipartite graph.
-   **/
+   */
   public static int mcbm(List<List<Integer>> graph, int n, int m) {
-    
+
     int N = n + m, matches = 0;
-    
+
     int[] visited = new int[n];
     int[] next = new int[N];
     Arrays.fill(next, FREE);
@@ -49,7 +48,7 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
     visited[at] = visitToken;
 
     for (int node : graph.get(at)) {
-      // If the value of oppositeNode is FREE then it has not yet been 
+      // If the value of oppositeNode is FREE then it has not yet been
       // matched, otherwise the value refers to the index of the node
       // used to reach the oppositeNode.
       int oppositeNode = next[node];
@@ -62,8 +61,8 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
       }
 
       // We were able to find an alternating path
-      if(augment(graph, visited, next, oppositeNode) != 0) {
-        
+      if (augment(graph, visited, next, oppositeNode) != 0) {
+
         // Record which node we came from and return
         // 1 to indicate a path was found
         next[node] = at;
@@ -88,7 +87,7 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
   public static void main(String[] args) {
     int n = 8;
     List<List<Integer>> graph = createEmptyGraph(n);
-    
+
     // Left set includes {0,1,2,3} and right set {4,5,6,7}
     addEdge(graph, 0, 4);
     addEdge(graph, 1, 5);
@@ -97,29 +96,8 @@ public class MaximumCardinalityBipartiteMatchingAugmentingPathAdjacencyList {
     addEdge(graph, 4, 1);
     addEdge(graph, 5, 1);
     addEdge(graph, 6, 1);
-    
+
     // Prints '4' because that's the maximum matching.
-    System.out.println(mcbm(graph,4,4));
-
+    System.out.println(mcbm(graph, 4, 4));
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

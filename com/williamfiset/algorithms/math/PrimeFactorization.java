@@ -5,11 +5,11 @@ import java.util.PriorityQueue;
 
 public class PrimeFactorization {
 
-  static ArrayList <Long> primeFactorization(long n) {
-    ArrayList <Long> factors = new ArrayList<>();
+  static ArrayList<Long> primeFactorization(long n) {
+    ArrayList<Long> factors = new ArrayList<>();
     if (n <= 0) throw new IllegalArgumentException();
     else if (n == 1) return factors;
-    PriorityQueue <Long> divisorQueue = new PriorityQueue<>();
+    PriorityQueue<Long> divisorQueue = new PriorityQueue<>();
     divisorQueue.add(n);
     while (!divisorQueue.isEmpty()) {
       long divisor = divisorQueue.remove();
@@ -30,8 +30,8 @@ public class PrimeFactorization {
 
   static long pollardRho(long n) {
     if (n % 2 == 0) return 2;
-    long x = 2 + (long)(999999 * Math.random());
-    long c = 2 + (long)(999999 * Math.random());
+    long x = 2 + (long) (999999 * Math.random());
+    long c = 2 + (long) (999999 * Math.random());
     long y = x;
     long d = 1;
     while (d == 1) {
@@ -53,19 +53,15 @@ public class PrimeFactorization {
     if (n == 2 || n == 3) return true;
     if (n % 2 == 0 || n % 3 == 0) return false;
     long limit = (long) Math.sqrt(n);
-    for (long i = 5; i <= limit; i += 6)
-      if (n % i == 0 || n % (i + 2) == 0)
-        return false;
+    for (long i = 5; i <= limit; i += 6) if (n % i == 0 || n % (i + 2) == 0) return false;
     return true;
   }
 
   public static void main(String[] args) {
-    
-    System.out.println(primeFactorization(7));         // [7]
-    System.out.println(primeFactorization(100));       // [2,2,5,5]
-    System.out.println(primeFactorization(666));       // [2,3,3,37]
+
+    System.out.println(primeFactorization(7)); // [7]
+    System.out.println(primeFactorization(100)); // [2,2,5,5]
+    System.out.println(primeFactorization(666)); // [2,3,3,37]
     System.out.println(primeFactorization(872342345)); // [5, 7, 7, 67, 19, 2797]
-
   }
-
 }

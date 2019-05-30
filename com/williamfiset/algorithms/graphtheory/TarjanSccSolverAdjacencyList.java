@@ -1,13 +1,14 @@
 /**
- * An implementation of Tarjan's Strongly Connected Components algorithm
- * using an adjacency list.
+ * An implementation of Tarjan's Strongly Connected Components algorithm using an adjacency list.
  *
- * Time complexity: O(V+E)
+ * <p>Time complexity: O(V+E)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory;
 
 import static java.lang.Math.min;
+
 import java.util.*;
 
 public class TarjanSccSolverAdjacencyList {
@@ -28,13 +29,13 @@ public class TarjanSccSolverAdjacencyList {
     n = graph.size();
     this.graph = graph;
   }
-  
+
   // Returns the number of strongly connected components in the graph.
   public int sccCount() {
     if (!solved) solve();
     return sccCount;
   }
-  
+
   // Get the connected components of this graph. If two indexes
   // have the same value then they're in the same SCC.
   public int[] getSccs() {
@@ -44,48 +45,45 @@ public class TarjanSccSolverAdjacencyList {
 
   public void solve() {
     if (solved) return;
-    
+
     ids = new int[n];
     low = new int[n];
     onStack = new boolean[n];
     stack = new ArrayDeque<>();
     Arrays.fill(ids, UNVISITED);
 
-    for(int i = 0; i < n; i++)
-      if (ids[i] == UNVISITED)
-        dfs(i);
+    for (int i = 0; i < n; i++) if (ids[i] == UNVISITED) dfs(i);
 
     solved = true;
   }
-  
+
   private void dfs(int at) {
-    
+
     stack.push(at);
     onStack[at] = true;
     ids[at] = low[at] = id++;
 
-    for(int to : graph.get(at)) {
+    for (int to : graph.get(at)) {
       if (ids[to] == UNVISITED) dfs(to);
-      if (onStack[to]) low[at] = min(low[at], low[to]);  
+      if (onStack[to]) low[at] = min(low[at], low[to]);
     }
 
-    // On recursive callback, if we're at the root node (start of SCC) 
+    // On recursive callback, if we're at the root node (start of SCC)
     // empty the seen stack until back to root.
     if (ids[at] == low[at]) {
-      for(int node = stack.pop();;node = stack.pop()) {
+      for (int node = stack.pop(); ; node = stack.pop()) {
         onStack[node] = false;
         low[node] = ids[at];
         if (node == at) break;
       }
       sccCount++;
     }
-
   }
 
-  // Initializes adjacency list with n nodes. 
+  // Initializes adjacency list with n nodes.
   public static List<List<Integer>> createGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>(n);
-    for(int i = 0; i < n; i++) graph.add(new ArrayList<>());
+    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
     return graph;
   }
 
@@ -115,12 +113,11 @@ public class TarjanSccSolverAdjacencyList {
     addEdge(graph, 5, 0);
 
     TarjanSccSolverAdjacencyList solver = new TarjanSccSolverAdjacencyList(graph);
-    
+
     int[] sccs = solver.getSccs();
     Map<Integer, List<Integer>> multimap = new HashMap<>();
     for (int i = 0; i < n; i++) {
-      if (!multimap.containsKey(sccs[i]))
-        multimap.put(sccs[i], new ArrayList<>());
+      if (!multimap.containsKey(sccs[i])) multimap.put(sccs[i], new ArrayList<>());
       multimap.get(sccs[i]).add(i);
     }
 
@@ -128,30 +125,10 @@ public class TarjanSccSolverAdjacencyList {
     // Number of Strongly Connected Components: 3
     // Nodes: [0, 1, 2] form a Strongly Connected Component.
     // Nodes: [3, 7] form a Strongly Connected Component.
-    // Nodes: [4, 5, 6] form a Strongly Connected Component.    
+    // Nodes: [4, 5, 6] form a Strongly Connected Component.
     System.out.printf("Number of Strongly Connected Components: %d\n", solver.sccCount());
     for (List<Integer> scc : multimap.values()) {
       System.out.println("Nodes: " + scc + " form a Strongly Connected Component.");
     }
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

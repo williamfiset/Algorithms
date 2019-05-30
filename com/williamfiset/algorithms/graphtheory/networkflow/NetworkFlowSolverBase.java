@@ -1,9 +1,5 @@
-/**
- * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+/** @author William Fiset, william.alexandre.fiset@gmail.com */
 package com.williamfiset.algorithms.graphtheory.networkflow;
-
-import static java.lang.Math.min;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +14,7 @@ public abstract class NetworkFlowSolverBase {
     public Edge residual;
     public long flow, cost;
     public final long capacity, originalCost;
-    
+
     public Edge(int from, int to, long capacity) {
       this(from, to, capacity, 0 /* unused */);
     }
@@ -46,8 +42,9 @@ public abstract class NetworkFlowSolverBase {
     public String toString(int s, int t) {
       String u = (from == s) ? "s" : ((from == t) ? "t" : String.valueOf(from));
       String v = (to == s) ? "s" : ((to == t) ? "t" : String.valueOf(to));
-      return String.format("Edge %s -> %s | flow = %d | capacity = %d | is residual: %s", 
-        u, v, flow, capacity, isResidual());
+      return String.format(
+          "Edge %s -> %s | flow = %d | capacity = %d | is residual: %s",
+          u, v, flow, capacity, isResidual());
     }
   }
 
@@ -60,9 +57,9 @@ public abstract class NetworkFlowSolverBase {
   protected boolean[] minCut;
   protected List<Edge>[] graph;
 
-  // 'visited' and 'visitedToken' are variables used for graph sub-routines to 
-  // track whether a node has been visited or not. In particular, node 'i' was 
-  // recently visited if visited[i] == visitedToken is true. This is handy 
+  // 'visited' and 'visitedToken' are variables used for graph sub-routines to
+  // track whether a node has been visited or not. In particular, node 'i' was
+  // recently visited if visited[i] == visitedToken is true. This is handy
   // because to mark all nodes as unvisited simply increment the visitedToken.
   private int visitedToken = 1;
   private int[] visited;
@@ -72,15 +69,17 @@ public abstract class NetworkFlowSolverBase {
   private boolean solved;
 
   /**
-   * Creates an instance of a flow network solver. Use the {@link #addEdge}
-   * method to add edges to the graph.
+   * Creates an instance of a flow network solver. Use the {@link #addEdge} method to add edges to
+   * the graph.
    *
    * @param n - The number of nodes in the graph including source and sink nodes.
    * @param s - The index of the source node, 0 <= s < n
    * @param t - The index of the sink node, 0 <= t < n, t != s
    */
   public NetworkFlowSolverBase(int n, int s, int t) {
-    this.n = n; this.s = s; this.t = t; 
+    this.n = n;
+    this.s = s;
+    this.t = t;
     initializeGraph();
     minCut = new boolean[n];
     visited = new int[n];
@@ -89,15 +88,14 @@ public abstract class NetworkFlowSolverBase {
   // Construct an empty graph with n nodes including the source and sink nodes.
   private void initializeGraph() {
     graph = new List[n];
-    for (int i = 0; i < n; i++)
-      graph[i] = new ArrayList<Edge>();
+    for (int i = 0; i < n; i++) graph[i] = new ArrayList<Edge>();
   }
 
   /**
    * Adds a directed edge (and residual edge) to the flow graph.
    *
-   * @param from     - The index of the node the directed edge starts at.
-   * @param to       - The index of the node the directed edge ends at.
+   * @param from - The index of the node the directed edge starts at.
+   * @param to - The index of the node the directed edge ends at.
    * @param capacity - The capacity of the edge.
    */
   public void addEdge(int from, int to, long capacity) {
@@ -137,10 +135,9 @@ public abstract class NetworkFlowSolverBase {
   }
 
   /**
-   * Returns the graph after the solver has been executed. This allow you to
-   * inspect the {@link Edge#flow} compared to the {@link Edge#capacity} in 
-   * each edge. This is useful if you want to figure out which edges were 
-   * used during the max flow.
+   * Returns the graph after the solver has been executed. This allow you to inspect the {@link
+   * Edge#flow} compared to the {@link Edge#capacity} in each edge. This is useful if you want to
+   * figure out which edges were used during the max flow.
    */
   public List<Edge>[] getGraph() {
     execute();
@@ -161,7 +158,7 @@ public abstract class NetworkFlowSolverBase {
   }
 
   // Returns the min-cut of this flow network in which the nodes on the "left side"
-  // of the cut with the source are marked as true and those on the "right side" 
+  // of the cut with the source are marked as true and those on the "right side"
   // of the cut with the sink are marked as false.
   public boolean[] getMinCut() {
     execute();
@@ -170,24 +167,11 @@ public abstract class NetworkFlowSolverBase {
 
   // Wrapper method that ensures we only call solve() once
   private void execute() {
-    if (solved) return; 
+    if (solved) return;
     solved = true;
     solve();
   }
 
   // Method to implement which solves the network flow problem.
   public abstract void solve();
-
 }
-
-
-
-
-
-
-
-
-
-
-
-

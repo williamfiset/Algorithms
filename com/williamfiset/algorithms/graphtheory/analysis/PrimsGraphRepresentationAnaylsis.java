@@ -1,8 +1,8 @@
 /*
-Performs density analysis to figure out whether an adjacency list or an 
+Performs density analysis to figure out whether an adjacency list or an
 adjacency matrix is better for prims MST algorithm.
 
-Results seem to indicate that the adjacency matrix is better starting at 
+Results seem to indicate that the adjacency matrix is better starting at
 around ~33% edge percentage density:
 
 Percentage full: ~0%, Edges included: 0
@@ -94,21 +94,25 @@ Matrix: 154691124 nanos
 package com.williamfiset.algorithms.graphtheory.analysis;
 
 import static java.lang.Math.*;
-import java.util.*;
+
 import java.time.Duration;
 import java.time.Instant;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class PrimsGraphRepresentationAnaylsis {
 
   private static class Edge implements Comparable<Edge> {
     int from, to, cost;
+
     public Edge(int from, int to, int cost) {
       this.from = from;
       this.to = to;
       this.cost = cost;
     }
-    @Override public int compareTo(Edge other) {
+
+    @Override
+    public int compareTo(Edge other) {
       return cost - other.cost;
     }
   }
@@ -157,8 +161,7 @@ public class PrimsGraphRepresentationAnaylsis {
         int destNodeIndex = edge.to;
 
         // Skip edges pointing to already visited nodes.
-        if (visited[destNodeIndex])
-          continue;
+        if (visited[destNodeIndex]) continue;
 
         if (ipq.contains(destNodeIndex)) {
           // Try and improve the cheapest edge at destNodeIndex with the current edge in the IPQ.
@@ -175,14 +178,14 @@ public class PrimsGraphRepresentationAnaylsis {
       if (solved) return;
       solved = true;
 
-      int m = n-1, edgeCount = 0;
+      int m = n - 1, edgeCount = 0;
       visited = new boolean[n];
       mstEdges = new Edge[m];
 
       // The degree of the d-ary heap supporting the IPQ can greatly impact performance, especially
-      // on dense graphs. The base 2 logarithm of n is a decent value based on my quick experiments 
+      // on dense graphs. The base 2 logarithm of n is a decent value based on my quick experiments
       // (even better than E/V in many cases).
-      int degree = (int) Math.ceil(Math.log(n)/Math.log(2));
+      int degree = (int) Math.ceil(Math.log(n) / Math.log(2));
       ipq = new MinIndexedDHeap<>(max(2, degree), n);
 
       // Add initial set of edges to the priority queue starting at node 0.
@@ -202,12 +205,12 @@ public class PrimsGraphRepresentationAnaylsis {
       mstExists = (edgeCount == m);
     }
 
-      /* Graph construction helpers. */
+    /* Graph construction helpers. */
 
     // Creates an empty adjacency list graph with n nodes.
     static List<List<Edge>> createEmptyGraph(int n) {
       List<List<Edge>> g = new ArrayList<>();
-      for(int i = 0; i < n; i++) g.add(new ArrayList<>());
+      for (int i = 0; i < n; i++) g.add(new ArrayList<>());
       return g;
     }
 
@@ -238,7 +241,8 @@ public class PrimsGraphRepresentationAnaylsis {
     private Edge[] mstEdges;
 
     public PrimsAdjMatrix(Integer[][] graph) {
-      if (graph == null || graph.length == 0 || graph[0].length != graph.length) throw new IllegalArgumentException();
+      if (graph == null || graph.length == 0 || graph[0].length != graph.length)
+        throw new IllegalArgumentException();
       this.n = graph.length;
       this.graph = graph;
     }
@@ -261,12 +265,10 @@ public class PrimsGraphRepresentationAnaylsis {
       for (int to = 0; to < n; to++) {
         Integer cost = graph[currentNodeIndex][to];
         // Edge doesn't exist.
-        if (cost == null)
-          continue;
+        if (cost == null) continue;
 
         // Skip edges pointing to already visited nodes.
-        if (visited[to])
-          continue;
+        if (visited[to]) continue;
 
         if (ipq.contains(to)) {
           // Try and improve the cheapest edge at to with the current edge in the IPQ.
@@ -283,13 +285,13 @@ public class PrimsGraphRepresentationAnaylsis {
       if (solved) return;
       solved = true;
 
-      int m = n-1, edgeCount = 0;
+      int m = n - 1, edgeCount = 0;
       visited = new boolean[n];
 
       // The degree of the d-ary heap supporting the IPQ can greatly impact performance, especially
-      // on dense graphs. The base 2 logarithm of n is a decent value based on my quick experiments 
+      // on dense graphs. The base 2 logarithm of n is a decent value based on my quick experiments
       // (even better than E/V in many cases).
-      int degree = (int) Math.ceil(Math.log(n)/Math.log(2));
+      int degree = (int) Math.ceil(Math.log(n) / Math.log(2));
       ipq = new MinIndexedDHeap<>(max(2, degree), n);
 
       // Add initial set of edges to the priority queue starting at node 0.
@@ -309,7 +311,7 @@ public class PrimsGraphRepresentationAnaylsis {
       mstExists = (edgeCount == m);
     }
 
-      /* Graph construction helpers. */
+    /* Graph construction helpers. */
 
     // Creates an empty adjacency matrix graph with n nodes.
     static Integer[][] createEmptyGraph(int n) {
@@ -326,14 +328,14 @@ public class PrimsGraphRepresentationAnaylsis {
     }
   }
 
-
-    /* Example usage. */
+  /* Example usage. */
 
   public static void main(String[] args) throws InterruptedException {
     densityTest();
   }
 
-  static Random random = new Random(); 
+  static Random random = new Random();
+
   private static void densityTest() throws InterruptedException {
     String rows = "", header = "edge density percentage, adj list, adj matrix\n";
     for (int percentage = 5; percentage <= 100; percentage += 5) {
@@ -360,7 +362,8 @@ public class PrimsGraphRepresentationAnaylsis {
       PrimsAdjList adjListSolver = new PrimsAdjList(g1);
       PrimsAdjMatrix matrixSolver = new PrimsAdjMatrix(g2);
 
-      System.out.println("\nPercentage full: ~" + percentage + "%, Edges included: " + numEdgesIncluded);
+      System.out.println(
+          "\nPercentage full: ~" + percentage + "%, Edges included: " + numEdgesIncluded);
 
       Instant start = Instant.now();
       Long listCost = adjListSolver.getMstCost();
@@ -381,12 +384,11 @@ public class PrimsGraphRepresentationAnaylsis {
       rows += String.format("%d%%,%d,%d\n", percentage, listTimeMs, matrixTimeMs);
     }
     System.out.println("CSV printout:\n\n" + header + rows);
-
   }
 
-    /* Supporting indexed priority queue implementation. */
+  /* Supporting indexed priority queue implementation. */
 
-  private static class MinIndexedDHeap <T extends Comparable<T>> {
+  private static class MinIndexedDHeap<T extends Comparable<T>> {
 
     // Current number of elements in the heap.
     private int sz;
@@ -400,7 +402,7 @@ public class PrimsGraphRepresentationAnaylsis {
     // Lookup arrays to track the child/parent indexes of each node.
     private final int[] child, parent;
 
-    // The Position Map (pm) maps Key Indexes (ki) to where the position of that 
+    // The Position Map (pm) maps Key Indexes (ki) to where the position of that
     // key is represented in the priority queue in the domain [0, sz).
     public final int[] pm;
 
@@ -409,7 +411,7 @@ public class PrimsGraphRepresentationAnaylsis {
     // 'im' and 'pm' are inverses of each other, so: pm[im[i]] = im[pm[i]] = i
     public final int[] im;
 
-    // The values associated with the keys. It is very important  to note 
+    // The values associated with the keys. It is very important  to note
     // that this array is indexed by the key indexes (aka 'ki').
     public final Object[] values;
 
@@ -418,7 +420,7 @@ public class PrimsGraphRepresentationAnaylsis {
       if (maxSize <= 0) throw new IllegalArgumentException("maxSize <= 0");
 
       D = max(2, degree);
-      N = max(D+1, maxSize);
+      N = max(D + 1, maxSize);
 
       im = new int[N];
       pm = new int[N];
@@ -427,8 +429,8 @@ public class PrimsGraphRepresentationAnaylsis {
       values = new Object[N];
 
       for (int i = 0; i < N; i++) {
-        parent[i] = (i-1) / D;
-        child[i] = i*D + 1;
+        parent[i] = (i - 1) / D;
+        child[i] = i * D + 1;
         pm[i] = im[i] = -1;
       }
     }
@@ -470,8 +472,7 @@ public class PrimsGraphRepresentationAnaylsis {
     }
 
     public void insert(int ki, T value) {
-      if (contains(ki))
-        throw new IllegalArgumentException("index already exists; received: " + ki);
+      if (contains(ki)) throw new IllegalArgumentException("index already exists; received: " + ki);
       valueNotNullOrThrow(value);
       pm[ki] = sz;
       im[sz] = ki;
@@ -528,10 +529,10 @@ public class PrimsGraphRepresentationAnaylsis {
       }
     }
 
-      /* Helper functions */
+    /* Helper functions */
 
     private void sink(int i) {
-      for(int j = minChild(i); j != -1;) {
+      for (int j = minChild(i); j != -1; ) {
         swap(i, j);
         i = j;
         j = minChild(i);
@@ -539,7 +540,7 @@ public class PrimsGraphRepresentationAnaylsis {
     }
 
     private void swim(int i) {
-      while(less(i, parent[i])) {
+      while (less(i, parent[i])) {
         swap(i, parent[i]);
         i = parent[i];
       }
@@ -548,9 +549,7 @@ public class PrimsGraphRepresentationAnaylsis {
     // From the parent node at index i find the minimum child below it
     private int minChild(int i) {
       int index = -1, from = child[i], to = min(sz, from + D);
-      for(int j = from; j < to; j++)
-        if (less(j, i))
-          index = i = j;
+      for (int j = from; j < to; j++) if (less(j, i)) index = i = j;
       return index;
     }
 
@@ -576,11 +575,11 @@ public class PrimsGraphRepresentationAnaylsis {
     @Override
     public String toString() {
       List<Integer> lst = new ArrayList<>(sz);
-      for(int i = 0; i < sz; i++) lst.add(im[i]);
+      for (int i = 0; i < sz; i++) lst.add(im[i]);
       return lst.toString();
     }
 
-      /* Helper functions to make the code more readable. */
+    /* Helper functions to make the code more readable. */
 
     private void isNotEmptyOrThrow() {
       if (isEmpty()) throw new NoSuchElementException("Priority queue underflow");
@@ -592,21 +591,19 @@ public class PrimsGraphRepresentationAnaylsis {
     }
 
     private void keyExistsOrThrow(int ki) {
-      if (!contains(ki)) 
-        throw new NoSuchElementException("Index does not exist; received: " + ki);
+      if (!contains(ki)) throw new NoSuchElementException("Index does not exist; received: " + ki);
     }
 
     private void valueNotNullOrThrow(Object value) {
-      if (value == null) 
-        throw new IllegalArgumentException("value cannot be null");
+      if (value == null) throw new IllegalArgumentException("value cannot be null");
     }
 
     private void keyInBoundsOrThrow(int ki) {
-      if (ki < 0 || ki >= N) 
+      if (ki < 0 || ki >= N)
         throw new IllegalArgumentException("Key index out of bounds; received: " + ki);
     }
 
-      /* Test functions */
+    /* Test functions */
 
     // Recursively checks if this heap is a min heap. This method is used
     // for testing purposes to validate the heap invariant.
@@ -616,15 +613,11 @@ public class PrimsGraphRepresentationAnaylsis {
 
     private boolean isMinHeap(int i) {
       int from = child[i], to = min(sz, from + D);
-      for(int j = from; j < to; j++) {
+      for (int j = from; j < to; j++) {
         if (!less(i, j)) return false;
         if (!isMinHeap(j)) return false;
       }
       return true;
     }
-
   }
-
 }
-
-

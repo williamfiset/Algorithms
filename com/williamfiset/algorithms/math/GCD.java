@@ -1,10 +1,10 @@
 /**
  * An implementation of finding the GCD of two numbers
  *
- * Time Complexity ~O(log(a + b))
+ * <p>Time Complexity ~O(log(a + b))
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.math;
 
 public class GCD {
@@ -17,17 +17,15 @@ public class GCD {
 
   public static void main(String[] args) {
 
-    System.out.println(gcd(12, 18));  // 6
+    System.out.println(gcd(12, 18)); // 6
     System.out.println(gcd(-12, 18)); // 6
     System.out.println(gcd(12, -18)); // 6
-    System.out.println(gcd(-12,-18)); // 6
+    System.out.println(gcd(-12, -18)); // 6
 
-    System.out.println(gcd(5, 0));  // 5
-    System.out.println(gcd(0, 5));  // 5
+    System.out.println(gcd(5, 0)); // 5
+    System.out.println(gcd(0, 5)); // 5
     System.out.println(gcd(-5, 0)); // 5
-    System.out.println(gcd(0, -5)); // 5    
-    System.out.println(gcd(0, 0));  // 0
-
+    System.out.println(gcd(0, -5)); // 5
+    System.out.println(gcd(0, 0)); // 0
   }
-
 }

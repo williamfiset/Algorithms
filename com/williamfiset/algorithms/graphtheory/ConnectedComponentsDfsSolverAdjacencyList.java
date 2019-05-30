@@ -1,10 +1,10 @@
 /**
- * This file contains an algorithm to find all the connected components
- * of an undirected graph. If the graph you're dealing with is directed 
- * have a look at Tarjan's algorithm to find strongly connected components.
+ * This file contains an algorithm to find all the connected components of an undirected graph. If
+ * the graph you're dealing with is directed have a look at Tarjan's algorithm to find strongly
+ * connected components.
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory;
 
 import java.util.*;
@@ -19,9 +19,7 @@ public class ConnectedComponentsDfsSolverAdjacencyList {
   private boolean[] visited;
   private List<List<Integer>> graph;
 
-  /**
-   * @param graph - An undirected graph as an adjacency list.
-   */
+  /** @param graph - An undirected graph as an adjacency list. */
   public ConnectedComponentsDfsSolverAdjacencyList(List<List<Integer>> graph) {
     if (graph == null) throw new NullPointerException();
     this.n = graph.size();
@@ -56,12 +54,10 @@ public class ConnectedComponentsDfsSolverAdjacencyList {
   private void dfs(int at) {
     visited[at] = true;
     components[at] = componentCount;
-    for (int to : graph.get(at))
-      if (!visited[to])
-        dfs(to);
+    for (int to : graph.get(at)) if (!visited[to]) dfs(to);
   }
 
-    /* Finding connected components example */
+  /* Finding connected components example */
 
   public static List<List<Integer>> createGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>(n);
@@ -93,7 +89,7 @@ public class ConnectedComponentsDfsSolverAdjacencyList {
     solver = new ConnectedComponentsDfsSolverAdjacencyList(graph);
     int count = solver.countComponents();
     System.out.printf("Number of components: %d\n", count);
-    
+
     int[] components = solver.getComponents();
     for (int i = 0; i < n; i++)
       System.out.printf("Node %d is part of component %d\n", i, components[i]);
@@ -112,13 +108,4 @@ public class ConnectedComponentsDfsSolverAdjacencyList {
     // Node 9 is part of component 3
     // Node 10 is part of component 5
   }
-
 }
-
-
-
-
-
-
-
-

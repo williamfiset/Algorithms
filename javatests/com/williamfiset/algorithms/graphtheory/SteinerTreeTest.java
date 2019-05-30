@@ -11,7 +11,7 @@ public class SteinerTreeTest {
   static final double INF = Double.POSITIVE_INFINITY;
 
   ///////////////////////////////////
-  //                               // 
+  //                               //
   //  Visualization of the graph:  //
   //                               //
   //            [O]                //
@@ -23,18 +23,19 @@ public class SteinerTreeTest {
   //         5       6             //
   //         |       |             //
   //        [3]     [4]            //
-  //                               // 
+  //                               //
   ///////////////////////////////////
-  static double[][] matrix1 = new double[][] {
-    {  0,   3,   4, INF, INF},
-    {  3,   0, INF,   5, INF},
-    {  4, INF,   0, INF,   6},
-    {INF,   5, INF,   0, INF},
-    {INF, INF,   6, INF,   0}
-  };
+  static double[][] matrix1 =
+      new double[][] {
+        {0, 3, 4, INF, INF},
+        {3, 0, INF, 5, INF},
+        {4, INF, 0, INF, 6},
+        {INF, 5, INF, 0, INF},
+        {INF, INF, 6, INF, 0}
+      };
 
   ///////////////////////////////////
-  //                               // 
+  //                               //
   //  Visualization of the graph:  //
   //                               //
   //           [0]-3-[1]           //
@@ -48,14 +49,15 @@ public class SteinerTreeTest {
   //           [4]-2-[5]           //
   //                               //
   ///////////////////////////////////
-  static double[][] matrix2 = new double[][] {
-    {  0,   3,   5, INF, INF, INF},
-    {  3,   0, INF,   4, INF, INF},
-    {  5, INF,   0, INF,   7,   8},
-    {INF,   4, INF,   0, INF,   1},
-    {INF, INF,   7, INF,   0,   2},
-    {INF, INF,   8,   1,   2,   0}
-  };
+  static double[][] matrix2 =
+      new double[][] {
+        {0, 3, 5, INF, INF, INF},
+        {3, 0, INF, 4, INF, INF},
+        {5, INF, 0, INF, 7, 8},
+        {INF, 4, INF, 0, INF, 1},
+        {INF, INF, 7, INF, 0, 2},
+        {INF, INF, 8, 1, 2, 0}
+      };
 
   @Test
   public void testNoTerminalNodesGivesZero() {
@@ -98,5 +100,4 @@ public class SteinerTreeTest {
   private double testSteiner(double[][] distances, int... subsetToConnect) {
     return SteinerTree.minLengthSteinerTree(distances, subsetToConnect);
   }
-  
 }

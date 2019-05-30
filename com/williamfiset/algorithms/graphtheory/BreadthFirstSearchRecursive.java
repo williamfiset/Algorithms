@@ -1,18 +1,17 @@
 /**
- * This is an implementation of doing a breadth first search recursively with 
- * a slight cheat of passing in a queue as an argument to the function. A 
- * breadth first search 
+ * This is an implementation of doing a breadth first search recursively with a slight cheat of
+ * passing in a queue as an argument to the function. A breadth first search
  *
- * Time Complexity: O(V + E) 
+ * <p>Time Complexity: O(V + E)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.LinkedList;
 import java.util.ArrayList;
-import java.util.Queue;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class BreadthFirstSearchRecursive {
 
@@ -35,7 +34,7 @@ public class BreadthFirstSearchRecursive {
     int at = queue.poll();
 
     if (at == DEPTH_TOKEN) {
-      queue.offer(DEPTH_TOKEN); 
+      queue.offer(DEPTH_TOKEN);
       return 1;
     }
 
@@ -47,14 +46,11 @@ public class BreadthFirstSearchRecursive {
 
     // Add all neighbors to queue.
     List<Integer> neighbors = graph.get(at);
-    if (neighbors != null)
-      for (int next : neighbors)
-        if (!visited[next])
-          queue.add(next);
-    
+    if (neighbors != null) for (int next : neighbors) if (!visited[next]) queue.add(next);
+
     int depth = 0;
 
-    while(true) {
+    while (true) {
       // Stop when the queue is empty (i.e there's only one depth token remaining)
       if (queue.size() == 1 && queue.peek() == DEPTH_TOKEN) break;
 
@@ -68,7 +64,7 @@ public class BreadthFirstSearchRecursive {
   public static void main(String[] args) {
     int n = 14;
     List<List<Integer>> graph = new ArrayList<>();
-    for(int i = 0; i < n; i++) graph.add(new ArrayList<>());
+    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
 
     addUndirectedEdge(graph, 0, 1);
     addUndirectedEdge(graph, 0, 2);
@@ -92,6 +88,4 @@ public class BreadthFirstSearchRecursive {
     graph.get(from).add(to);
     graph.get(to).add(from);
   }
-
 }
-

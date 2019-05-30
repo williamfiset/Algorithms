@@ -1,37 +1,35 @@
 /**
  * Use the chinese remainder theorem to solve a set of congruence equations.
  *
- * The first method (eliminateCoefficient) is used to reduce an equation of the form
- * cx≡a(mod m)cx≡a(mod m) to the form x≡a_new(mod m_new)x≡anew(mod m_new), which gets
- * rids of the coefficient. A value of null is returned if the coefficient cannot be eliminated.
- * 
- * The second method (reduce) is used to reduce a set of equations so that the moduli become pairwise 
- * co-prime (which means that we can apply the Chinese Remainder Theorem). The input and output are 
- * of the form x≡a_0(mod m_0),...,x≡a_n−1(mod m_n−1)x≡a_0(mod m_0),...,x≡a_n−1(mod m_n−1).
- * Note that the number of equations may change during this process. A value of null 
- * is returned if the set of equations cannot be reduced to co-prime moduli.
- * 
- * The third method (crt) is the actual Chinese Remainder Theorem. 
- * It assumes that all pairs of moduli are co-prime to one another.
- * This solves a set of equations of the form 
- * x≡a_0(mod m_0),...,x≡v_n−1(mod m_n−1)x≡a_0(mod m_0),...,x≡v_n−1(mod m_n−1).
- * It's output is of the form x≡a_new(mod m_new)x≡a_new(mod m_new).
- * 
+ * <p>The first method (eliminateCoefficient) is used to reduce an equation of the form cx≡a(mod
+ * m)cx≡a(mod m) to the form x≡a_new(mod m_new)x≡anew(mod m_new), which gets rids of the
+ * coefficient. A value of null is returned if the coefficient cannot be eliminated.
+ *
+ * <p>The second method (reduce) is used to reduce a set of equations so that the moduli become
+ * pairwise co-prime (which means that we can apply the Chinese Remainder Theorem). The input and
+ * output are of the form x≡a_0(mod m_0),...,x≡a_n−1(mod m_n−1)x≡a_0(mod m_0),...,x≡a_n−1(mod
+ * m_n−1). Note that the number of equations may change during this process. A value of null is
+ * returned if the set of equations cannot be reduced to co-prime moduli.
+ *
+ * <p>The third method (crt) is the actual Chinese Remainder Theorem. It assumes that all pairs of
+ * moduli are co-prime to one another. This solves a set of equations of the form x≡a_0(mod
+ * m_0),...,x≡v_n−1(mod m_n−1)x≡a_0(mod m_0),...,x≡v_n−1(mod m_n−1). It's output is of the form
+ * x≡a_new(mod m_new)x≡a_new(mod m_new).
+ *
  * @author Micah Stairs
- **/
+ */
 package com.williamfiset.algorithms.math;
 
 import java.util.*;
 
 public class ChineseRemainderTheorem {
-  
+
   // eliminateCoefficient() takes cx≡a(mod m) and gives x≡a_new(mod m_new).
   static long[] eliminateCoefficient(long c, long a, long m) {
 
     long d = egcd(c, m)[0];
 
-    if (a % d != 0)
-      return null;
+    if (a % d != 0) return null;
 
     c /= d;
     a /= d;
@@ -41,11 +39,10 @@ public class ChineseRemainderTheorem {
     m = Math.abs(m);
     a = (((a * inv) % m) + m) % m;
 
-    return new long[] { a, m };
-
+    return new long[] {a, m};
   }
 
-  // reduce() takes a set of equations and reduces them to an equivalent 
+  // reduce() takes a set of equations and reduces them to an equivalent
   // set with pairwise co-prime moduli (or null if not solvable).
   static long[][] reduce(long[] a, long[] m) {
 
@@ -72,7 +69,6 @@ public class ChineseRemainderTheorem {
         aNew.add(a[i] % total);
         mNew.add(total);
       }
-
     }
 
     // Throw away repeated information and look for conflicts
@@ -106,18 +102,15 @@ public class ChineseRemainderTheorem {
     }
 
     return res;
-
   }
 
   static long[] crt(long[] a, long[] m) {
 
     long M = 1;
-    for (int i = 0; i < m.length; i++)
-      M *= m[i];
+    for (int i = 0; i < m.length; i++) M *= m[i];
 
     long[] inv = new long[a.length];
-    for (int i = 0; i < inv.length; i++)
-      inv[i] = egcd(M / m[i], m[i])[1];
+    for (int i = 0; i < inv.length; i++) inv[i] = egcd(M / m[i], m[i])[1];
 
     long x = 0;
     for (int i = 0; i < m.length; i++) {
@@ -125,8 +118,7 @@ public class ChineseRemainderTheorem {
       x = ((x % M) + M) % M;
     }
 
-    return new long[] { x, M };
-
+    return new long[] {x, M};
   }
 
   static ArrayList<Long> primeFactorization(long n) {
@@ -155,8 +147,8 @@ public class ChineseRemainderTheorem {
   static long pollardRho(long n) {
     if (n % 2 == 0) return 2;
     // Get a number in the range [2, 10^6]
-    long x = 2 + (long)(999999 * Math.random());
-    long c = 2 + (long)(999999 * Math.random());
+    long x = 2 + (long) (999999 * Math.random());
+    long c = 2 + (long) (999999 * Math.random());
     long y = x;
     long d = 1;
     while (d == 1) {
@@ -171,11 +163,13 @@ public class ChineseRemainderTheorem {
 
   // Extended euclidean algorithm
   static long[] egcd(long a, long b) {
-    if (b == 0) return new long[] { a, 1, 0 };
+    if (b == 0) return new long[] {a, 1, 0};
     else {
       long[] ret = egcd(b, a % b);
       long tmp = ret[1] - ret[2] * (a / b);
-      ret[1] = ret[2]; ret[2] = tmp; return ret;
+      ret[1] = ret[2];
+      ret[2] = tmp;
+      return ret;
     }
   }
 
@@ -185,21 +179,14 @@ public class ChineseRemainderTheorem {
 
   static boolean isPrime(long n) {
 
-    if (n < 2)
-      return false;
-    if (n == 2 || n == 3)
-      return true;
-    if (n % 2 == 0 || n % 3 == 0)
-      return false;
+    if (n < 2) return false;
+    if (n == 2 || n == 3) return true;
+    if (n % 2 == 0 || n % 3 == 0) return false;
 
     int limit = (int) Math.sqrt(n);
 
-    for (int i = 5; i <= limit; i += 6)
-      if (n % i == 0 || n % (i + 2) == 0)
-        return false;
+    for (int i = 5; i <= limit; i += 6) if (n % i == 0 || n % (i + 2) == 0) return false;
 
     return true;
-
   }
-
 }

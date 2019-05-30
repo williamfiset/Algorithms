@@ -2,18 +2,14 @@ package javatests.com.williamfiset.algorithms.graphtheory.networkflow;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.williamfiset.algorithms.graphtheory.networkflow.NetworkFlowSolverBase;
-import com.williamfiset.algorithms.graphtheory.networkflow.NetworkFlowSolverBase.Edge;
 import com.williamfiset.algorithms.graphtheory.networkflow.CapacityScalingSolverAdjacencyList;
 import com.williamfiset.algorithms.graphtheory.networkflow.Dinics;
 import com.williamfiset.algorithms.graphtheory.networkflow.EdmondsKarpAdjacencyList;
 import com.williamfiset.algorithms.graphtheory.networkflow.FordFulkersonDfsSolverAdjacencyList;
-import com.williamfiset.algorithms.graphtheory.networkflow.MinCostMaxFlowWithBellmanFord;
 import com.williamfiset.algorithms.graphtheory.networkflow.MinCostMaxFlowJohnsons;
-
-import com.google.common.collect.ImmutableList;
-import org.apache.commons.lang3.tuple.Pair;
-
+import com.williamfiset.algorithms.graphtheory.networkflow.MinCostMaxFlowWithBellmanFord;
+import com.williamfiset.algorithms.graphtheory.networkflow.NetworkFlowSolverBase;
+import com.williamfiset.algorithms.graphtheory.networkflow.NetworkFlowSolverBase.Edge;
 import java.util.*;
 import org.junit.*;
 
@@ -51,7 +47,7 @@ public class MaxFlowTests {
   public void lineGraphTest() {
     int n = 4, s = n - 1, t = n - 2;
     createAllSolvers(n, s, t);
-    
+
     addEdge(s, 0, 5);
     addEdge(0, 1, 3);
     addEdge(1, t, 7);
@@ -63,7 +59,7 @@ public class MaxFlowTests {
   public void testDisconnectedGraph() {
     int n = 4, s = n - 1, t = n - 2;
     createAllSolvers(n, s, t);
-    
+
     // There's no edge connecting 0 and 1
     addEdge(s, 0, 9);
     addEdge(1, t, 9);
@@ -108,18 +104,17 @@ public class MaxFlowTests {
     addEdge(1, t, k);
     addEdge(0, 1, 1);
 
-    assertFlow(2*k);
+    assertFlow(2 * k);
   }
 
   @Test
   public void evilNetwork1() {
     final int k = 250, t = 2 * k; // source  = 0
-    createAllSolvers(2*k + 1, 0, t);
+    createAllSolvers(2 * k + 1, 0, t);
 
-    for (int i = 0; i < k - 1; i++)
-      addEdge(i, i + 1, k);
+    for (int i = 0; i < k - 1; i++) addEdge(i, i + 1, k);
     for (int i = 0; i < k; i++) {
-      addEdge(k-1, k + i, 1);
+      addEdge(k - 1, k + i, 1);
       addEdge(k + i, t, 1);
     }
 
@@ -183,12 +178,12 @@ public class MaxFlowTests {
     addEdge(8, 9, 11);
     addEdge(8, t, 15);
     addEdge(9, t, 60);
-    
+
     for (NetworkFlowSolverBase solver : solvers) {
       List<Edge>[] g = solver.getGraph();
       int[] inFlows = new int[n];
       int[] outFlows = new int[n];
-      for(int i = 0; i < n; i++) {
+      for (int i = 0; i < n; i++) {
         List<Edge> edges = g[i];
         for (Edge e : edges) {
           inFlows[e.from] += e.flow;
@@ -202,18 +197,4 @@ public class MaxFlowTests {
       }
     }
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

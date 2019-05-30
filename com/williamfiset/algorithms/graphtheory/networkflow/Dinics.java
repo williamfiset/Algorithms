@@ -1,16 +1,15 @@
 /**
- * Implementation of Dinic's network flow algorithm. The algorithm works 
- * by first constructing a level graph using a BFS and then finding 
- * augmenting paths on the level graph using multiple DFSs.
+ * Implementation of Dinic's network flow algorithm. The algorithm works by first constructing a
+ * level graph using a BFS and then finding augmenting paths on the level graph using multiple DFSs.
  *
- * Time Complexity: O(EV²)
- * 
+ * <p>Time Complexity: O(EV²)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
-
+ */
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import static java.lang.Math.min;
+
 import java.util.*;
 
 public class Dinics extends NetworkFlowSolverBase {
@@ -18,8 +17,8 @@ public class Dinics extends NetworkFlowSolverBase {
   private int[] level;
 
   /**
-   * Creates an instance of a flow network solver. Use the {@link #addEdge}
-   * method to add edges to the graph.
+   * Creates an instance of a flow network solver. Use the {@link #addEdge} method to add edges to
+   * the graph.
    *
    * @param n - The number of nodes in the graph including source and sink nodes.
    * @param s - The index of the source node, 0 <= s < n
@@ -32,7 +31,7 @@ public class Dinics extends NetworkFlowSolverBase {
 
   @Override
   public void solve() {
-    // next[i] indicates the next unused edge index in the adjacency list for node i. This is part 
+    // next[i] indicates the next unused edge index in the adjacency list for node i. This is part
     // of the Shimon Even and Alon Itai optimization of pruning deads ends as part of the DFS phase.
     int[] next = new int[n];
 
@@ -44,9 +43,7 @@ public class Dinics extends NetworkFlowSolverBase {
       }
     }
 
-    for (int i = 0; i < n; i++)
-      if (level[i] != -1)
-        minCut[i] = true;
+    for (int i = 0; i < n; i++) if (level[i] != -1) minCut[i] = true;
   }
 
   // Do a BFS from source to sink and compute the depth/level of each node
@@ -72,8 +69,8 @@ public class Dinics extends NetworkFlowSolverBase {
   private long dfs(int at, int[] next, long flow) {
     if (at == t) return flow;
     final int numEdges = graph[at].size();
-    
-    for (;next[at] < numEdges; next[at]++) {
+
+    for (; next[at] < numEdges; next[at]++) {
       Edge edge = graph[at].get(next[at]);
       long cap = edge.remainingCapacity();
       if (cap > 0 && level[edge.to] == level[at] + 1) {
@@ -83,13 +80,12 @@ public class Dinics extends NetworkFlowSolverBase {
           edge.augment(bottleNeck);
           return bottleNeck;
         }
-
       }
     }
     return 0;
   }
 
-    /* Examples */
+  /* Examples */
 
   public static void main(String[] args) {
     testSmallFlowGraph();
@@ -100,8 +96,8 @@ public class Dinics extends NetworkFlowSolverBase {
   // http://crypto.cs.mcgill.ca/~crepeau/COMP251/KeyNoteSlides/07demo-maxflowCS-C.pdf
   private static void testSmallFlowGraph() {
     int n = 6;
-    int s = n-1;
-    int t = n-2;
+    int s = n - 1;
+    int t = n - 2;
 
     Dinics solver;
     solver = new Dinics(n, s, t);
@@ -126,8 +122,8 @@ public class Dinics extends NetworkFlowSolverBase {
 
   private static void testGraphFromSlides() {
     int n = 11;
-    int s = n-1;
-    int t = n-2;
+    int s = n - 1;
+    int t = n - 2;
 
     NetworkFlowSolverBase solver;
     solver = new Dinics(n, s, t);
@@ -158,5 +154,4 @@ public class Dinics extends NetworkFlowSolverBase {
 
     System.out.printf("Maximum flow %d\n", solver.getMaxFlow()); // 30
   }
-
 }

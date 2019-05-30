@@ -1,15 +1,13 @@
 /**
- * This file contains a recursive implementation of the TSP problem using 
- * dynamic programming. The main idea is that since we need to do all n!
- * permutations of nodes to find the optimal solution that caching the results 
- * of sub paths can improve performance.
+ * This file contains a recursive implementation of the TSP problem using dynamic programming. The
+ * main idea is that since we need to do all n! permutations of nodes to find the optimal solution
+ * that caching the results of sub paths can improve performance.
  *
- * For example, if one permutation is: '... D A B C' then later when we need
- * to compute the value of the permutation '... E B A C' we should already have 
- * cached the answer for the subgraph containing the nodes {A, B, C}.
- * 
- * Time Complexity: O(n^2 * 2^n)
- * Space Complexity: O(n * 2^n)
+ * <p>For example, if one permutation is: '... D A B C' then later when we need to compute the value
+ * of the permutation '... E B A C' we should already have cached the answer for the subgraph
+ * containing the nodes {A, B, C}.
+ *
+ * <p>Time Complexity: O(n^2 * 2^n) Space Complexity: O(n * 2^n)
  *
  * @author Steven & Felix Halim, William Fiset, Micah Stairs
  */
@@ -18,7 +16,7 @@ package com.williamfiset.algorithms.graphtheory;
 import java.util.*;
 
 public class TspDynamicProgrammingRecursive {
-  
+
   private final int N;
   private final int START_NODE;
   private final int FINISHED_STATE;
@@ -34,17 +32,21 @@ public class TspDynamicProgrammingRecursive {
   }
 
   public TspDynamicProgrammingRecursive(int startNode, double[][] distance) {
-    
+
     this.distance = distance;
     N = distance.length;
     START_NODE = startNode;
-    
+
     // Validate inputs.
     if (N <= 2) throw new IllegalStateException("TSP on 0, 1 or 2 nodes doesn't make sense.");
-    if (N != distance[0].length) throw new IllegalArgumentException("Matrix must be square (N x N)");
-    if (START_NODE < 0 || START_NODE >= N) throw new IllegalArgumentException("Starting node must be: 0 <= startNode < N");
-    if (N > 32) throw new IllegalArgumentException("Matrix too large! A matrix that size for the DP TSP problem with a time complexity of" +
-                                                   "O(n^2*2^n) requires way too much computation for any modern home computer to handle");
+    if (N != distance[0].length)
+      throw new IllegalArgumentException("Matrix must be square (N x N)");
+    if (START_NODE < 0 || START_NODE >= N)
+      throw new IllegalArgumentException("Starting node must be: 0 <= startNode < N");
+    if (N > 32)
+      throw new IllegalArgumentException(
+          "Matrix too large! A matrix that size for the DP TSP problem with a time complexity of"
+              + "O(n^2*2^n) requires way too much computation for any modern home computer to handle");
 
     // The finished state is when the finished state mask has all bits are set to
     // one (meaning all the nodes have been visited).
@@ -65,12 +67,12 @@ public class TspDynamicProgrammingRecursive {
 
   public void solve() {
 
-    // Run the solver    
+    // Run the solver
     int state = 1 << START_NODE;
     Double[][] memo = new Double[N][1 << N];
     Integer[][] prev = new Integer[N][1 << N];
     minTourCost = tsp(START_NODE, state, memo, prev);
-    
+
     // Regenerate path
     int index = START_NODE;
     while (true) {
@@ -86,20 +88,20 @@ public class TspDynamicProgrammingRecursive {
   }
 
   private double tsp(int i, int state, Double[][] memo, Integer[][] prev) {
-    
+
     // Done this tour. Return cost of going back to start node.
     if (state == FINISHED_STATE) return distance[i][START_NODE];
-    
+
     // Return cached answer if already computed.
     if (memo[i][state] != null) return memo[i][state];
-    
+
     double minCost = Double.POSITIVE_INFINITY;
     int index = -1;
     for (int next = 0; next < N; next++) {
-      
+
       // Skip if the next node has already been visited.
       if ((state & (1 << next)) != 0) continue;
-      
+
       int nextState = state | (1 << next);
       double newCost = distance[i][next] + tsp(next, nextState, memo, prev);
       if (newCost < minCost) {
@@ -107,7 +109,7 @@ public class TspDynamicProgrammingRecursive {
         index = next;
       }
     }
-    
+
     prev[i][state] = index;
     return memo[i][state] = minCost;
   }
@@ -135,5 +137,4 @@ public class TspDynamicProgrammingRecursive {
     // Print: 42.0
     System.out.println("Tour cost: " + solver.getTourCost());
   }
-  
 }

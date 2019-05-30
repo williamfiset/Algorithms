@@ -1,18 +1,17 @@
 package javatests.com.williamfiset.algorithms.graphtheory;
 
-import static java.lang.Math.min;
-import static java.lang.Math.max;
-import static java.lang.Math.random;
 import static com.google.common.truth.Truth.assertThat;
 import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.Edge;
 import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.addUnweightedUndirectedEdge;
 import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.createEmptyGraph;
+import static java.lang.Math.max;
+import static java.lang.Math.random;
 
-import com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative;
 import com.williamfiset.algorithms.graphtheory.BellmanFordAdjacencyMatrix;
+import com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,7 +24,7 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
     solver = null;
   }
 
-  @Test(expected=IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testNullGraphInput() {
     new BreadthFirstSearchAdjacencyListIterative(null);
   }
@@ -48,7 +47,7 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
     List<List<Edge>> graph = createEmptyGraph(n);
     addUnweightedUndirectedEdge(graph, 0, 1);
     solver = new BreadthFirstSearchAdjacencyListIterative(graph);
-    
+
     List<Integer> expected = new ArrayList<>();
     expected.add(0);
     expected.add(1);
@@ -57,14 +56,14 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
     assertThat(path).isEqualTo(expected);
   }
 
-  @Test 
+  @Test
   public void testThreeNodeGraph() {
     int n = 3;
     List<List<Edge>> graph = BreadthFirstSearchAdjacencyListIterative.createEmptyGraph(n);
     addUnweightedUndirectedEdge(graph, 0, 1);
     addUnweightedUndirectedEdge(graph, 2, 1);
     solver = new BreadthFirstSearchAdjacencyListIterative(graph);
-    
+
     List<Integer> expected = new ArrayList<>();
     expected.add(0);
     expected.add(1);
@@ -81,11 +80,11 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
       List<List<Edge>> graph = createEmptyGraph(n);
       double[][] graph2 = generateRandomGraph(graph, n);
 
-      int s = (int)(random()*n);
-      int e = (int)(random()*n);
+      int s = (int) (random() * n);
+      int e = (int) (random() * n);
       solver = new BreadthFirstSearchAdjacencyListIterative(graph);
       BellmanFordAdjacencyMatrix bfSolver = new BellmanFordAdjacencyMatrix(s, graph2);
-      
+
       List<Integer> p1 = solver.reconstructPath(s, e);
       List<Integer> p2 = bfSolver.reconstructShortestPath(e);
       assertThat(p1.size()).isEqualTo(p2.size());
@@ -96,11 +95,11 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
     boolean[][] edgeMatrix = new boolean[n][n];
     double[][] graph2 = new double[n][n];
     for (double[] r : graph2) Arrays.fill(r, Double.POSITIVE_INFINITY);
-    
-    int numEdges = max(1, (int)(random()*n*n));
+
+    int numEdges = max(1, (int) (random() * n * n));
     for (int i = 0; i < numEdges; i++) {
-      int u = (int)(random()*n);
-      int v = (int)(random()*n);
+      int u = (int) (random() * n);
+      int v = (int) (random() * n);
       if (!edgeMatrix[u][v]) {
         addUnweightedUndirectedEdge(graph1, u, v);
         graph2[u][v] = graph2[v][u] = 1;
@@ -110,19 +109,4 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
 
     return graph2;
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

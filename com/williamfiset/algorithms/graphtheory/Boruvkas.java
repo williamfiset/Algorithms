@@ -1,6 +1,4 @@
-/**
- * WIP
- **/
+/** WIP */
 package com.williamfiset.algorithms.graphtheory;
 
 import java.util.*;
@@ -9,15 +7,17 @@ public class Boruvkas {
 
   static class Edge {
     int u, v, cost;
+
     public Edge(int u, int v, int cost) {
       this.u = u;
       this.v = v;
       this.cost = cost;
     }
+
     public String toString() {
       return String.format("%d %d, cost: %d", u, v, cost);
     }
-    // @Override 
+    // @Override
     public int compareTo(Edge other) {
       int cmp = cost - other.cost;
       // Break ties by picking lexicographically smallest edge pair.
@@ -62,7 +62,7 @@ public class Boruvkas {
   }
 
   // Given a graph represented as an edge list this method finds
-  // the Minimum Spanning Tree (MST) cost if there exists 
+  // the Minimum Spanning Tree (MST) cost if there exists
   // a MST, otherwise it returns null.
   private void solve() {
     if (solved) return;
@@ -77,7 +77,7 @@ public class Boruvkas {
     // Repeat at most log(n) times or until we have a complete spanning tree.
     // for(int t = 1; t < N && index < n - 1; t = t + t) {
     // for(long t = 1; t <= n && mst.size() != n-1; t = t << 1) {
-    for(;mst.size() != n-1;) {
+    for (; mst.size() != n - 1; ) {
 
       // TODO: Remove
       Arrays.fill(cheapest, -1);
@@ -88,10 +88,18 @@ public class Boruvkas {
         if (e.u == e.v) continue;
         int uc = uf.id[e.u], vc = uf.id[e.v];
         if (uc == vc) continue;
-        // if (cheapest[vc] == -1 || e.compareTo(graph[cheapest[vc]]) < 0) { stop = false; cheapest[vc] = i; }
-        // if (cheapest[uc] == -1 || e.compareTo(graph[cheapest[uc]]) < 0) { stop = false; cheapest[uc] = i; }
-        if (cheapest[vc] == -1 || e.cost < graph[cheapest[vc]].cost) { stop = false; cheapest[vc] = i; }
-        if (cheapest[uc] == -1 || e.cost < graph[cheapest[uc]].cost) { stop = false; cheapest[uc] = i; }
+        // if (cheapest[vc] == -1 || e.compareTo(graph[cheapest[vc]]) < 0) { stop = false;
+        // cheapest[vc] = i; }
+        // if (cheapest[uc] == -1 || e.compareTo(graph[cheapest[uc]]) < 0) { stop = false;
+        // cheapest[uc] = i; }
+        if (cheapest[vc] == -1 || e.cost < graph[cheapest[vc]].cost) {
+          stop = false;
+          cheapest[vc] = i;
+        }
+        if (cheapest[uc] == -1 || e.cost < graph[cheapest[uc]].cost) {
+          stop = false;
+          cheapest[uc] = i;
+        }
       }
 
       if (stop) break;
@@ -100,7 +108,7 @@ public class Boruvkas {
         if (cheapest[i] == -1) continue;
         Edge e = graph[cheapest[i]];
         // cheapest[i] = -1;
-        if (uf.connected(e.u, e.v)) continue; 
+        if (uf.connected(e.u, e.v)) continue;
 
         mst.add(e);
         minCostSum += e.cost;
@@ -112,7 +120,7 @@ public class Boruvkas {
 
     // if ( (index==n-1) != (uf.size(0) == n) ) throw new NullPointerException();
 
-    mstExists = (mst.size() == n-1); // (uf.size(0) == n);
+    mstExists = (mst.size() == n - 1); // (uf.size(0) == n);
     solved = true;
 
     // if (!check()) throw new IllegalStateException();
@@ -135,11 +143,11 @@ public class Boruvkas {
 
     // check that it is a spanning forest
     for (Edge e : mst) {
-        int u = e.u, v = e.v;
-        if (!uf.connected(u, v)) {
-          System.err.println("Not a spanning forest");
-          return false;
-        }
+      int u = e.u, v = e.v;
+      if (!uf.connected(u, v)) {
+        System.err.println("Not a spanning forest");
+        return false;
+      }
     }
 
     // check that it is a minimal spanning forest (cut optimality conditions)
@@ -162,13 +170,12 @@ public class Boruvkas {
           }
         }
       }
-
     }
     return true;
   }
 
   public static void main(String[] args) {
-    
+
     int n = 10, m = 18, i = 0;
     Edge[] g = new Edge[m];
 
@@ -208,7 +215,7 @@ public class Boruvkas {
 
   }
 
-  // Union find data structure 
+  // Union find data structure
   private static class UnionFind {
     int components;
     int[] id, sz;
@@ -225,8 +232,7 @@ public class Boruvkas {
 
     public int find(int p) {
       int root = p;
-      while (root != id[root])
-        root = id[root];
+      while (root != id[root]) root = id[root];
       while (p != root) { // Do path compression
         int next = id[p];
         id[p] = root;
@@ -256,8 +262,4 @@ public class Boruvkas {
       components--;
     }
   }
-
 }
-
-
-

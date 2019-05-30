@@ -1,14 +1,12 @@
 /**
  * An implementation of Kruskal's MST algorithm with lazy sorting.
  *
- * Tested against: 
- * - https://open.kattis.com/problems/minspantree
+ * <p>Tested against: - https://open.kattis.com/problems/minspantree
  *
- * Time Complexity: O(Elog(E))
+ * <p>Time Complexity: O(Elog(E))
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
-
+ */
 package com.williamfiset.algorithms.graphtheory;
 
 import java.util.ArrayList;
@@ -26,7 +24,8 @@ public class KruskalsEdgeListPartialSortSolver {
       this.cost = cost;
     }
     // Sort edges based on cost.
-    @Override public int compareTo(Edge other) {
+    @Override
+    public int compareTo(Edge other) {
       return cost - other.cost;
     }
   }
@@ -71,10 +70,10 @@ public class KruskalsEdgeListPartialSortSolver {
     UnionFind uf = new UnionFind(n);
 
     int index = 0;
-    mst = new Edge[n-1];
+    mst = new Edge[n - 1];
 
     while (!pq.isEmpty()) {
-      // Use heap to poll the next cheapest edge. Polling avoids the need to sort 
+      // Use heap to poll the next cheapest edge. Polling avoids the need to sort
       // the edges before loop in the event that the algorithm terminates early.
       Edge edge = pq.poll();
 
@@ -94,7 +93,7 @@ public class KruskalsEdgeListPartialSortSolver {
     solved = true;
   }
 
-  // Union find data structure 
+  // Union find data structure
   private static class UnionFind {
     private int[] id, sz;
 
@@ -109,8 +108,7 @@ public class KruskalsEdgeListPartialSortSolver {
 
     public int find(int p) {
       int root = p;
-      while (root != id[root])
-        root = id[root];
+      while (root != id[root]) root = id[root];
       // Path compression
       while (p != root) {
         int next = id[p];
@@ -142,7 +140,7 @@ public class KruskalsEdgeListPartialSortSolver {
     }
   }
 
-    /* Usage example: */
+  /* Usage example: */
 
   public static void main(String[] args) {
     int numNodes = 10;
@@ -170,7 +168,7 @@ public class KruskalsEdgeListPartialSortSolver {
     KruskalsEdgeListPartialSortSolver solver;
     solver = new KruskalsEdgeListPartialSortSolver(edges, numNodes);
     Long cost = solver.getMstCost();
-    
+
     if (cost == null) {
       System.out.println("No MST does not exists");
     } else {
@@ -193,8 +191,4 @@ public class KruskalsEdgeListPartialSortSolver {
     // Used edge (1, 2) with cost: 4
 
   }
-
 }
-
-
-

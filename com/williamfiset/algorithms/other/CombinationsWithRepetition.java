@@ -1,25 +1,27 @@
 /**
- * Here I show how you can generate all the combinations of a sequence
- * of size r which are repeated at most k times.
+ * Here I show how you can generate all the combinations of a sequence of size r which are repeated
+ * at most k times.
  *
- * Time Complexity: O(n+r-1 choose r) = O((n+r-1)!/(r!(n-1)!)) 
+ * <p>Time Complexity: O(n+r-1 choose r) = O((n+r-1)!/(r!(n-1)!))
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.other;
 
 public class CombinationsWithRepetition {
-  
-  /** 
-   * Computes all combinations of elements of 'r' elements which 
-   * can be repeated at most 'k' times each.
-   * @param sequence   - The sequence containing all the elements we wish to take combinations from
-   * @param usedCount  - Tracks how many of each element we currently have selected
-   * @param at         - The current position we're at in the sequence
-   * @param r          - The number of elements we're choosing
-   * @param k          - The maximum number of times each element is allowed to be picked
-   **/
-  private static void combinationsWithRepetition(int[] sequence, int[] usedCount, int at, int r, int k) {
+
+  /**
+   * Computes all combinations of elements of 'r' elements which can be repeated at most 'k' times
+   * each.
+   *
+   * @param sequence - The sequence containing all the elements we wish to take combinations from
+   * @param usedCount - Tracks how many of each element we currently have selected
+   * @param at - The current position we're at in the sequence
+   * @param r - The number of elements we're choosing
+   * @param k - The maximum number of times each element is allowed to be picked
+   */
+  private static void combinationsWithRepetition(
+      int[] sequence, int[] usedCount, int at, int r, int k) {
 
     final int N = sequence.length;
 
@@ -32,10 +34,8 @@ public class CombinationsWithRepetition {
         // Print combination
         System.out.print("{ ");
         for (int i = 0; i < N; i++)
-          for (int j = 0; j < usedCount[i]; j++)
-            System.out.print(sequence[i] + " ");
+          for (int j = 0; j < usedCount[i]; j++) System.out.print(sequence[i] + " ");
         System.out.println("}");
-
       }
 
     } else {
@@ -46,10 +46,8 @@ public class CombinationsWithRepetition {
         // Try including this element itemCount number of times (this is possibly more than once)
         usedCount[at] = itemCount;
 
-        combinationsWithRepetition( sequence, usedCount, at + 1, r - itemCount, k);
-
+        combinationsWithRepetition(sequence, usedCount, at + 1, r - itemCount, k);
       }
-
     }
   }
 
@@ -63,15 +61,14 @@ public class CombinationsWithRepetition {
     if (k > r) throw new IllegalArgumentException("k must be <= r");
 
     int[] usedCount = new int[sequence.length];
-    combinationsWithRepetition( sequence, usedCount, 0, r, k );
-
+    combinationsWithRepetition(sequence, usedCount, 0, r, k);
   }
 
   public static void main(String[] args) {
-    
-    // Prints all combinations of size 3 where 
+
+    // Prints all combinations of size 3 where
     // each element is repeated at most twice
-    int[] seq = {1,2,3,4};
+    int[] seq = {1, 2, 3, 4};
     printCombinationsWithRepetition(seq, 3, 2);
     // prints:
     // { 3 4 4 }
@@ -92,5 +89,4 @@ public class CombinationsWithRepetition {
     // { 1 1 2 }
 
   }
-
 }

@@ -1,10 +1,10 @@
 /**
  * An implementation of BFS with an adjacency list.
- * 
- * Time Complexity: O(V + E)
- * 
+ *
+ * <p>Time Complexity: O(V + E)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory;
 
 import java.util.ArrayDeque;
@@ -14,9 +14,10 @@ import java.util.Deque;
 import java.util.List;
 
 public class BreadthFirstSearchAdjacencyListIterative {
-  
+
   public static class Edge {
     int from, to, cost;
+
     public Edge(int from, int to, int cost) {
       this.from = from;
       this.to = to;
@@ -35,17 +36,16 @@ public class BreadthFirstSearchAdjacencyListIterative {
   }
 
   /**
-   * Reconstructs the path (of nodes) from 'start' to 'end' inclusive. If the edges are 
-   * unweighted then this method returns the shortest path from 'start' to 'end'
+   * Reconstructs the path (of nodes) from 'start' to 'end' inclusive. If the edges are unweighted
+   * then this method returns the shortest path from 'start' to 'end'
    *
-   * @return An array of nodes indexes of the shortest path from 'start' to 'end'.
-   * If 'start' and 'end' are not connected then an empty array is returned.
+   * @return An array of nodes indexes of the shortest path from 'start' to 'end'. If 'start' and
+   *     'end' are not connected then an empty array is returned.
    */
   public List<Integer> reconstructPath(int start, int end) {
     bfs(start);
     List<Integer> path = new ArrayList<>();
-    for(Integer at = end; at != null; at = prev[at])
-      path.add(at);
+    for (Integer at = end; at != null; at = prev[at]) path.add(at);
     Collections.reverse(path);
     if (path.get(0) == start) return path;
     path.clear();
@@ -61,15 +61,15 @@ public class BreadthFirstSearchAdjacencyListIterative {
     // Start by visiting the 'start' node and add it to the queue.
     queue.offer(start);
     visited[start] = true;
-    
+
     // Continue until the BFS is done.
-    while(!queue.isEmpty()) {
+    while (!queue.isEmpty()) {
       int node = queue.poll();
       List<Edge> edges = graph.get(node);
 
-      // Loop through all edges attached to this node. Mark nodes as visited once they're 
+      // Loop through all edges attached to this node. Mark nodes as visited once they're
       // in the queue. This will prevent having duplicate nodes in the queue and speedup the BFS.
-      for(Edge edge : edges) {
+      for (Edge edge : edges) {
         if (!visited[edge.to]) {
           visited[edge.to] = true;
           prev[edge.to] = node;
@@ -96,35 +96,35 @@ public class BreadthFirstSearchAdjacencyListIterative {
     addDirectedEdge(graph, u, v, cost);
     addDirectedEdge(graph, v, u, cost);
   }
-  
+
   // Add an undirected unweighted edge between nodes 'u' and 'v'. The edge added
   // will have a weight of 1 since its intended to be unweighted.
   public static void addUnweightedUndirectedEdge(List<List<Edge>> graph, int u, int v) {
     addUndirectedEdge(graph, u, v, 1);
   }
 
-    /* BFS example. */
+  /* BFS example. */
 
   public static void main(String[] args) {
     // BFS example #1 from slides.
     final int n = 13;
     List<List<Edge>> graph = createEmptyGraph(n);
 
-    addUnweightedUndirectedEdge(graph, 0,  7);
-    addUnweightedUndirectedEdge(graph, 0,  9);
-    addUnweightedUndirectedEdge(graph, 0,  11);
-    addUnweightedUndirectedEdge(graph, 7,  11);
-    addUnweightedUndirectedEdge(graph, 7,  6);
-    addUnweightedUndirectedEdge(graph, 7,  3);
-    addUnweightedUndirectedEdge(graph, 6,  5);
-    addUnweightedUndirectedEdge(graph, 3,  4);
-    addUnweightedUndirectedEdge(graph, 2,  3);
-    addUnweightedUndirectedEdge(graph, 2,  12);
+    addUnweightedUndirectedEdge(graph, 0, 7);
+    addUnweightedUndirectedEdge(graph, 0, 9);
+    addUnweightedUndirectedEdge(graph, 0, 11);
+    addUnweightedUndirectedEdge(graph, 7, 11);
+    addUnweightedUndirectedEdge(graph, 7, 6);
+    addUnweightedUndirectedEdge(graph, 7, 3);
+    addUnweightedUndirectedEdge(graph, 6, 5);
+    addUnweightedUndirectedEdge(graph, 3, 4);
+    addUnweightedUndirectedEdge(graph, 2, 3);
+    addUnweightedUndirectedEdge(graph, 2, 12);
     addUnweightedUndirectedEdge(graph, 12, 8);
-    addUnweightedUndirectedEdge(graph, 8,  1);
-    addUnweightedUndirectedEdge(graph, 1,  10);
+    addUnweightedUndirectedEdge(graph, 8, 1);
+    addUnweightedUndirectedEdge(graph, 1, 10);
     addUnweightedUndirectedEdge(graph, 10, 9);
-    addUnweightedUndirectedEdge(graph, 9,  8);
+    addUnweightedUndirectedEdge(graph, 9, 8);
 
     BreadthFirstSearchAdjacencyListIterative solver;
     solver = new BreadthFirstSearchAdjacencyListIterative(graph);
@@ -138,19 +138,7 @@ public class BreadthFirstSearchAdjacencyListIterative {
   }
 
   private static String formatPath(List<Integer> path) {
-    return String.join(" -> ", path.stream()
-                                   .map(Object::toString)
-                                   .collect(java.util.stream.Collectors.toList()));
+    return String.join(
+        " -> ", path.stream().map(Object::toString).collect(java.util.stream.Collectors.toList()));
   }
-
 }
-
-
-
-
-
-
-
-
-
-

@@ -1,17 +1,16 @@
 /**
- * An implementation of the traveling salesman problem in Java using dynamic 
- * programming to improve the time complexity from O(n!) to O(n^2 * 2^n).
+ * An implementation of the traveling salesman problem in Java using dynamic programming to improve
+ * the time complexity from O(n!) to O(n^2 * 2^n).
  *
- * Time Complexity: O(n^2 * 2^n)
- * Space Complexity: O(n * 2^n)
+ * <p>Time Complexity: O(n^2 * 2^n) Space Complexity: O(n * 2^n)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class TspDynamicProgrammingIterative {
 
@@ -23,16 +22,18 @@ public class TspDynamicProgrammingIterative {
 
   public TspDynamicProgrammingIterative(double[][] distance) {
     this(0, distance);
-  } 
+  }
 
   public TspDynamicProgrammingIterative(int start, double[][] distance) {
     N = distance.length;
-    
+
     if (N <= 2) throw new IllegalStateException("N <= 2 not yet supported.");
     if (N != distance[0].length) throw new IllegalStateException("Matrix must be square (n x n)");
     if (start < 0 || start >= N) throw new IllegalArgumentException("Invalid start node.");
-    if (N > 32) throw new IllegalArgumentException("Matrix too large! A matrix that size for the DP TSP problem with a time complexity of" +
-                                                   "O(n^2*2^n) requires way too much computation for any modern home computer to handle");
+    if (N > 32)
+      throw new IllegalArgumentException(
+          "Matrix too large! A matrix that size for the DP TSP problem with a time complexity of"
+              + "O(n^2*2^n) requires way too much computation for any modern home computer to handle");
 
     this.start = start;
     this.distance = distance;
@@ -98,13 +99,13 @@ public class TspDynamicProgrammingIterative {
 
     // Reconstruct TSP path from memo table.
     for (int i = 1; i < N; i++) {
-      
+
       int index = -1;
       for (int j = 0; j < N; j++) {
         if (j == start || notIn(j, state)) continue;
         if (index == -1) index = j;
         double prevDist = memo[index][state] + distance[index][lastIndex];
-        double newDist  = memo[j][state] + distance[j][lastIndex];
+        double newDist = memo[j][state] + distance[j][lastIndex];
         if (newDist < prevDist) {
           index = j;
         }
@@ -125,7 +126,7 @@ public class TspDynamicProgrammingIterative {
     return ((1 << elem) & subset) == 0;
   }
 
-  // This method generates all bit sets of size n where r bits 
+  // This method generates all bit sets of size n where r bits
   // are set to one. The result is returned as a list of integer masks.
   public static List<Integer> combinations(int r, int n) {
     List<Integer> subsets = new ArrayList<>();
@@ -137,7 +138,7 @@ public class TspDynamicProgrammingIterative {
   // selected r elements (aka r = 0), otherwise if r != 0 then we still need to select
   // an element which is found after the position of our last selected element
   private static void combinations(int set, int at, int r, int n, List<Integer> subsets) {
-    
+
     // Return early if there are more elements left to select than what is available.
     int elementsLeftToPick = n - at;
     if (elementsLeftToPick < r) return;
@@ -171,8 +172,9 @@ public class TspDynamicProgrammingIterative {
     distanceMatrix[0][3] = 8;
 
     int startNode = 0;
-    TspDynamicProgrammingIterative solver = new TspDynamicProgrammingIterative(startNode, distanceMatrix);
-    
+    TspDynamicProgrammingIterative solver =
+        new TspDynamicProgrammingIterative(startNode, distanceMatrix);
+
     // Prints: [0, 3, 2, 4, 1, 5, 0]
     System.out.println("Tour: " + solver.getTour());
 
@@ -180,15 +182,3 @@ public class TspDynamicProgrammingIterative {
     System.out.println("Tour cost: " + solver.getTourCost());
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-

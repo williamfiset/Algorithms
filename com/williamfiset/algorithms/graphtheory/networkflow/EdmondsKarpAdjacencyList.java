@@ -1,13 +1,12 @@
 /**
- * An implementation of the Edmonds-Karp algorithm which is essentially
- * Ford-Fulkerson with a BFS as a method of finding augmenting paths. 
- * This Edmonds-Karp algorithm will allow you to find the max flow through
- * a directed graph and the min cut as a byproduct. 
+ * An implementation of the Edmonds-Karp algorithm which is essentially Ford-Fulkerson with a BFS as
+ * a method of finding augmenting paths. This Edmonds-Karp algorithm will allow you to find the max
+ * flow through a directed graph and the min cut as a byproduct.
  *
- * Time Complexity: O(VE^2)
- * 
+ * <p>Time Complexity: O(VE^2)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import static java.lang.Math.min;
@@ -17,8 +16,8 @@ import java.util.*;
 public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
 
   /**
-   * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)}
-   * method to add edges to the graph.
+   * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)} method to
+   * add edges to the graph.
    *
    * @param n - The number of nodes in the graph including source and sink nodes.
    * @param s - The index of the source node, 0 <= s < n
@@ -38,9 +37,7 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
       maxFlow += flow;
     } while (flow != 0);
 
-    for(int i = 0; i < n; i++)
-      if (visited(i))
-        minCut[i] = true;
+    for (int i = 0; i < n; i++) if (visited(i)) minCut[i] = true;
   }
 
   private long bfs() {
@@ -52,7 +49,7 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
     q.offer(s);
 
     // Perform BFS from source to sink
-    while(!q.isEmpty()) {
+    while (!q.isEmpty()) {
       int node = q.poll();
       if (node == t) break;
 
@@ -64,7 +61,6 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
           q.offer(edge.to);
         }
       }
-
     }
 
     // Sink not reachable!
@@ -73,18 +69,17 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
     long bottleNeck = Long.MAX_VALUE;
 
     // Find augmented path and bottle neck
-    for(Edge edge = prev[t]; edge != null; edge = prev[edge.from])
+    for (Edge edge = prev[t]; edge != null; edge = prev[edge.from])
       bottleNeck = min(bottleNeck, edge.remainingCapacity());
 
     // Retrace augmented path and update flow values.
-    for(Edge edge = prev[t]; edge != null; edge = prev[edge.from])
-      edge.augment(bottleNeck);
+    for (Edge edge = prev[t]; edge != null; edge = prev[edge.from]) edge.augment(bottleNeck);
 
     // Return bottleneck flow
     return bottleNeck;
   }
 
-    /* Example */
+  /* Example */
 
   public static void main(String[] args) {
     testSmallFlowGraph();
@@ -94,8 +89,8 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
   // http://crypto.cs.mcgill.ca/~crepeau/COMP251/KeyNoteSlides/07demo-maxflowCS-C.pdf
   private static void testSmallFlowGraph() {
     int n = 6;
-    int s = n-1;
-    int t = n-2;
+    int s = n - 1;
+    int t = n - 2;
 
     EdmondsKarpAdjacencyList solver;
     solver = new EdmondsKarpAdjacencyList(n, s, t);
@@ -117,20 +112,4 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
 
     System.out.println(solver.getMaxFlow()); // 19
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,10 +1,9 @@
 /**
- * An implementation of the Bellman-Ford algorithm. The algorithm finds
- * the shortest path between a starting node and all other nodes in the graph. 
- * The algorithm also detects negative cycles.
+ * An implementation of the Bellman-Ford algorithm. The algorithm finds the shortest path between a
+ * starting node and all other nodes in the graph. The algorithm also detects negative cycles.
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory;
 
 import java.util.*;
@@ -19,22 +18,21 @@ public class BellmanFordAdjacencyMatrix {
   private double[][] matrix;
 
   /**
-   * An implementation of the Bellman-Ford algorithm. The algorithm finds
-   * the shortest path between a starting node and all other nodes in the graph. 
-   * The algorithm also detects negative cycles. If a node is part of a negative 
-   * cycle then the minimum cost for that node is set to Double.NEGATIVE_INFINITY.
+   * An implementation of the Bellman-Ford algorithm. The algorithm finds the shortest path between
+   * a starting node and all other nodes in the graph. The algorithm also detects negative cycles.
+   * If a node is part of a negative cycle then the minimum cost for that node is set to
+   * Double.NEGATIVE_INFINITY.
    *
    * @param graph - An adjacency matrix containing directed edges forming the graph
    * @param start - The id of the starting node
-   **/
+   */
   public BellmanFordAdjacencyMatrix(int start, double[][] matrix) {
     this.n = matrix.length;
     this.start = start;
     this.matrix = new double[n][n];
 
     // Copy input adjacency matrix.
-    for (int i = 0; i < n; i++)
-      this.matrix[i] = matrix[i].clone();
+    for (int i = 0; i < n; i++) this.matrix[i] = matrix[i].clone();
   }
 
   public double[] getShortestPaths() {
@@ -46,11 +44,11 @@ public class BellmanFordAdjacencyMatrix {
     if (!solved) solve();
     LinkedList<Integer> path = new LinkedList<>();
     if (dist[end] == Double.POSITIVE_INFINITY) return path;
-    for(int at = end; prev[at] != null; at = prev[at]) {
+    for (int at = end; prev[at] != null; at = prev[at]) {
       // Return null since there are an infinite number of shortest paths.
       if (prev[at] == -1) return null;
       path.addFirst(at);
-    } 
+    }
     path.addFirst(start);
     return path;
   }
@@ -69,7 +67,7 @@ public class BellmanFordAdjacencyMatrix {
     prev = new Integer[n];
 
     // For each vertex, apply relaxation for all the edges
-    for (int k = 0; k < n-1; k++)
+    for (int k = 0; k < n - 1; k++)
       for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
           if (dist[i] + matrix[i][j] < dist[j]) {
@@ -78,9 +76,9 @@ public class BellmanFordAdjacencyMatrix {
           }
 
     // Run algorithm a second time to detect which nodes are part
-    // of a negative cycle. A negative cycle has occurred if we 
+    // of a negative cycle. A negative cycle has occurred if we
     // can find a better path beyond the optimal solution.
-    for (int k = 0; k < n-1; k++)
+    for (int k = 0; k < n - 1; k++)
       for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
           if (dist[i] + matrix[i][j] < dist[j]) {
@@ -92,7 +90,7 @@ public class BellmanFordAdjacencyMatrix {
   }
 
   public static void main(String[] args) {
-    
+
     int n = 9;
     double[][] graph = new double[n][n];
 
@@ -115,12 +113,12 @@ public class BellmanFordAdjacencyMatrix {
     graph[5][7] = 3;
 
     int start = 0;
-    BellmanFordAdjacencyMatrix solver; 
+    BellmanFordAdjacencyMatrix solver;
     solver = new BellmanFordAdjacencyMatrix(start, graph);
     double[] d = solver.getShortestPaths();
 
     for (int i = 0; i < n; i++)
-      System.out.printf("The cost to get from node %d to %d is %.2f\n", start, i, d[i] );
+      System.out.printf("The cost to get from node %d to %d is %.2f\n", start, i, d[i]);
 
     // Output:
     // The cost to get from node 0 to 0 is 0.00
@@ -133,7 +131,6 @@ public class BellmanFordAdjacencyMatrix {
     // The cost to get from node 0 to 7 is 8.00
     // The cost to get from node 0 to 8 is Infinity
     System.out.println();
-
 
     for (int i = 0; i < n; i++) {
       String strPath;
@@ -157,15 +154,4 @@ public class BellmanFordAdjacencyMatrix {
     // The shortest path from 0 to 7 is: [0 -> 1 -> 5 -> 7]
     // The shortest path from 0 to 8 is: []
   }
-
 }
-
-
-
-
-
-
-
-
-
-

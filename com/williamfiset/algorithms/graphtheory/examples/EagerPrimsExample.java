@@ -1,34 +1,28 @@
 /**
- * An implementation of the eager version of Prim's algorithm which relies on 
- * using an indexed priority queue data structure to query the next best edge.
+ * An implementation of the eager version of Prim's algorithm which relies on using an indexed
+ * priority queue data structure to query the next best edge.
  *
+ * <p>Download the code: $ git clone https://github.com/williamfiset/Algorithms
  *
- * Download the code:
- * $ git clone https://github.com/williamfiset/Algorithms
+ * <p>Change directory to the root of the Algorithms directory: $ cd Algorithms
  *
- * Change directory to the root of the Algorithms directory:
- * $ cd Algorithms
+ * <p>Compile: $ javac com/williamfiset/algorithms/graphtheory/examples/EagerPrimsExample.java
  *
- * Compile:
- * $ javac com/williamfiset/algorithms/graphtheory/examples/EagerPrimsExample.java
+ * <p>Run: $ java com/williamfiset/algorithms/graphtheory/examples/EagerPrimsExample
  *
- * Run:
- * $ java com/williamfiset/algorithms/graphtheory/examples/EagerPrimsExample
- *
- *
- * Time Complexity: O(ElogV)
+ * <p>Time Complexity: O(ElogV)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
-
+ */
 package com.williamfiset.algorithms.graphtheory.examples;
 
 import static java.lang.Math.*;
+
 import java.util.*;
 
 public class EagerPrimsExample {
 
-    /* Example from slides. */
+  /* Example from slides. */
 
   public static void main(String[] args) {
     int n = 7;
@@ -68,12 +62,12 @@ public class EagerPrimsExample {
     //   (1, 4, 3)
   }
 
-    /* Graph construction helpers. */
+  /* Graph construction helpers. */
 
   // Creates an empty adjacency list graph with n nodes.
   private static List<List<Edge>> createEmptyGraph(int n) {
     List<List<Edge>> g = new ArrayList<>();
-    for(int i = 0; i < n; i++) g.add(new ArrayList<>());
+    for (int i = 0; i < n; i++) g.add(new ArrayList<>());
     return g;
   }
 
@@ -89,12 +83,15 @@ public class EagerPrimsExample {
   // Directed Edge class.
   private static class Edge implements Comparable<Edge> {
     int from, to, cost;
+
     public Edge(int from, int to, int cost) {
       this.from = from;
       this.to = to;
       this.cost = cost;
     }
-    @Override public int compareTo(Edge other) {
+
+    @Override
+    public int compareTo(Edge other) {
       return cost - other.cost;
     }
   }
@@ -144,14 +141,14 @@ public class EagerPrimsExample {
       if (solved) return;
       solved = true;
 
-      int m = n-1, edgeCount = 0;
+      int m = n - 1, edgeCount = 0;
       visited = new boolean[n];
       mstEdges = new Edge[m];
 
       // The degree of the d-ary heap supporting the IPQ can greatly impact performance, especially
-      // on dense graphs. The base 2 logarithm of n is a decent value based on my quick experiments 
+      // on dense graphs. The base 2 logarithm of n is a decent value based on my quick experiments
       // (even better than E/V in many cases).
-      int degree = (int) Math.ceil(Math.log(n)/Math.log(2));
+      int degree = (int) Math.ceil(Math.log(n) / Math.log(2));
       ipq = new MinIndexedDHeap<>(max(2, degree), n);
 
       // Add initial set of edges to the indexed priority queue starting with node 0.
@@ -181,8 +178,7 @@ public class EagerPrimsExample {
         int destNodeIndex = edge.to;
 
         // Skip edges pointing to already visited nodes.
-        if (visited[destNodeIndex])
-          continue;
+        if (visited[destNodeIndex]) continue;
 
         if (ipq.contains(destNodeIndex)) {
           // Try and improve the cheapest edge at destNodeIndex with the current edge in the IPQ.
@@ -195,9 +191,9 @@ public class EagerPrimsExample {
     }
   }
 
-    /* Supporting indexed priority queue implementation using D-ary heap. */
+  /* Supporting indexed priority queue implementation using D-ary heap. */
 
-  private static class MinIndexedDHeap <T extends Comparable<T>> {
+  private static class MinIndexedDHeap<T extends Comparable<T>> {
 
     // Current number of elements in the heap.
     private int sz;
@@ -211,7 +207,7 @@ public class EagerPrimsExample {
     // Lookup arrays to track the child/parent indexes of each node.
     private final int[] child, parent;
 
-    // The Position Map (pm) maps Key Indexes (ki) to where the position of that 
+    // The Position Map (pm) maps Key Indexes (ki) to where the position of that
     // key is represented in the priority queue in the domain [0, sz).
     public final int[] pm;
 
@@ -220,7 +216,7 @@ public class EagerPrimsExample {
     // 'im' and 'pm' are inverses of each other, so: pm[im[i]] = im[pm[i]] = i
     public final int[] im;
 
-    // The values associated with the keys. It is very important  to note 
+    // The values associated with the keys. It is very important  to note
     // that this array is indexed by the key indexes (aka 'ki').
     public final Object[] values;
 
@@ -229,7 +225,7 @@ public class EagerPrimsExample {
       if (maxSize <= 0) throw new IllegalArgumentException("maxSize <= 0");
 
       D = max(2, degree);
-      N = max(D+1, maxSize);
+      N = max(D + 1, maxSize);
 
       im = new int[N];
       pm = new int[N];
@@ -238,8 +234,8 @@ public class EagerPrimsExample {
       values = new Object[N];
 
       for (int i = 0; i < N; i++) {
-        parent[i] = (i-1) / D;
-        child[i] = i*D + 1;
+        parent[i] = (i - 1) / D;
+        child[i] = i * D + 1;
         pm[i] = im[i] = -1;
       }
     }
@@ -281,8 +277,7 @@ public class EagerPrimsExample {
     }
 
     public void insert(int ki, T value) {
-      if (contains(ki))
-        throw new IllegalArgumentException("index already exists; received: " + ki);
+      if (contains(ki)) throw new IllegalArgumentException("index already exists; received: " + ki);
       valueNotNullOrThrow(value);
       pm[ki] = sz;
       im[sz] = ki;
@@ -339,10 +334,10 @@ public class EagerPrimsExample {
       }
     }
 
-      /* Helper functions */
+    /* Helper functions */
 
     private void sink(int i) {
-      for(int j = minChild(i); j != -1;) {
+      for (int j = minChild(i); j != -1; ) {
         swap(i, j);
         i = j;
         j = minChild(i);
@@ -350,7 +345,7 @@ public class EagerPrimsExample {
     }
 
     private void swim(int i) {
-      while(less(i, parent[i])) {
+      while (less(i, parent[i])) {
         swap(i, parent[i]);
         i = parent[i];
       }
@@ -359,9 +354,7 @@ public class EagerPrimsExample {
     // From the parent node at index i find the minimum child below it
     private int minChild(int i) {
       int index = -1, from = child[i], to = min(sz, from + D);
-      for(int j = from; j < to; j++)
-        if (less(j, i))
-          index = i = j;
+      for (int j = from; j < to; j++) if (less(j, i)) index = i = j;
       return index;
     }
 
@@ -387,11 +380,11 @@ public class EagerPrimsExample {
     @Override
     public String toString() {
       List<Integer> lst = new ArrayList<>(sz);
-      for(int i = 0; i < sz; i++) lst.add(im[i]);
+      for (int i = 0; i < sz; i++) lst.add(im[i]);
       return lst.toString();
     }
 
-      /* Helper functions to make the code more readable. */
+    /* Helper functions to make the code more readable. */
 
     private void isNotEmptyOrThrow() {
       if (isEmpty()) throw new NoSuchElementException("Priority queue underflow");
@@ -403,21 +396,19 @@ public class EagerPrimsExample {
     }
 
     private void keyExistsOrThrow(int ki) {
-      if (!contains(ki)) 
-        throw new NoSuchElementException("Index does not exist; received: " + ki);
+      if (!contains(ki)) throw new NoSuchElementException("Index does not exist; received: " + ki);
     }
 
     private void valueNotNullOrThrow(Object value) {
-      if (value == null) 
-        throw new IllegalArgumentException("value cannot be null");
+      if (value == null) throw new IllegalArgumentException("value cannot be null");
     }
 
     private void keyInBoundsOrThrow(int ki) {
-      if (ki < 0 || ki >= N) 
+      if (ki < 0 || ki >= N)
         throw new IllegalArgumentException("Key index out of bounds; received: " + ki);
     }
 
-      /* Test functions */
+    /* Test functions */
 
     // Recursively checks if this heap is a min heap. This method is used
     // for testing purposes to validate the heap invariant.
@@ -427,15 +418,11 @@ public class EagerPrimsExample {
 
     private boolean isMinHeap(int i) {
       int from = child[i], to = min(sz, from + D);
-      for(int j = from; j < to; j++) {
+      for (int j = from; j < to; j++) {
         if (!less(i, j)) return false;
         if (!isMinHeap(j)) return false;
       }
       return true;
     }
-
   }
-
 }
-
-

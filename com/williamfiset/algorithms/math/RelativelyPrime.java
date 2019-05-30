@@ -1,10 +1,10 @@
 /**
  * Test to see whether two numbers are relatively prime (coprime)
  *
- * Time Complexity: O(log(a+b))
- * 
+ * <p>Time Complexity: O(log(a+b))
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.math;
 
 public class RelativelyPrime {
@@ -20,8 +20,7 @@ public class RelativelyPrime {
   }
 
   public static void main(String[] args) {
-    System.out.println(areCoprime(5, 7));   // true
+    System.out.println(areCoprime(5, 7)); // true
     System.out.println(areCoprime(12, 18)); // false
   }
-
 }

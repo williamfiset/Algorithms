@@ -1,24 +1,23 @@
 /**
- * An implementation of the Ford-Fulkerson (FF) method with a DFS
- * as a method of finding augmenting paths. FF allows you to find
- * the max flow through a directed graph and the min cut as a byproduct.
+ * An implementation of the Ford-Fulkerson (FF) method with a DFS as a method of finding augmenting
+ * paths. FF allows you to find the max flow through a directed graph and the min cut as a
+ * byproduct.
  *
- * Time Complexity: O(fE), where f is the max flow and E is the number of edges
- * 
+ * <p>Time Complexity: O(fE), where f is the max flow and E is the number of edges
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import static java.lang.Math.min;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
 
   /**
-   * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)}
-   * method to add edges to the graph.
+   * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)} method to
+   * add edges to the graph.
    *
    * @param n - The number of nodes in the graph including source and sink nodes.
    * @param s - The index of the source node, 0 <= s < n
@@ -40,9 +39,7 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
     }
 
     // Find min cut.
-    for(int i = 0; i < n; i++)
-      if (visited(i))
-        minCut[i] = true;
+    for (int i = 0; i < n; i++) if (visited(i)) minCut[i] = true;
   }
 
   private long dfs(int node, long flow) {
@@ -62,13 +59,12 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
           edge.augment(bottleNeck);
           return bottleNeck;
         }
-
       }
     }
     return 0;
   }
 
-    /* Example */
+  /* Example */
 
   public static void main(String[] args) {
     // exampleFromSlides();
@@ -78,8 +74,8 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
 
   private static void exampleFromSlides2() {
     int n = 12;
-    int s = n-2;
-    int t = n-1;
+    int s = n - 2;
+    int t = n - 1;
 
     FordFulkersonDfsSolverAdjacencyList solver;
     solver = new FordFulkersonDfsSolverAdjacencyList(n, s, t);
@@ -112,11 +108,10 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
     System.out.println(solver.getMaxFlow());
 
     List<Edge>[] g = solver.getGraph();
-    for(List<Edge> edges : g) {
+    for (List<Edge> edges : g) {
       for (Edge e : edges) {
         if (e.to == s || e.from == t) continue;
-        if (e.from == s || e.to == t || e.from < e.to)
-          System.out.println(e.toString(s, t));
+        if (e.from == s || e.to == t || e.from < e.to) System.out.println(e.toString(s, t));
         // System.out.println(e.residual.toString(s, t));
       }
     }
@@ -124,25 +119,25 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
 
   private static void exampleFromSlides() {
     int n = 6;
-    int s = n-2;
-    int t = n-1;
+    int s = n - 2;
+    int t = n - 1;
 
     FordFulkersonDfsSolverAdjacencyList solver;
     solver = new FordFulkersonDfsSolverAdjacencyList(n, s, t);
 
     solver.addEdge(s, 1, 10);
     solver.addEdge(1, 3, 15);
-    solver.addEdge(3, 0,  6);
+    solver.addEdge(3, 0, 6);
     solver.addEdge(0, 2, 25);
     solver.addEdge(2, t, 10);
-    
+
     solver.addEdge(s, 0, 10);
     solver.addEdge(3, t, 10);
 
     System.out.println(solver.getMaxFlow());
 
     List<Edge>[] g = solver.getGraph();
-    for(List<Edge> edges : g) {
+    for (List<Edge> edges : g) {
       for (Edge e : edges) {
         System.out.println(e.toString(s, t));
         // System.out.println(e.residual.toString(s, t));
@@ -154,8 +149,8 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
   // http://crypto.cs.mcgill.ca/~crepeau/COMP251/KeyNoteSlides/07demo-maxflowCS-C.pdf
   private static void testSmallFlowGraph() {
     int n = 6;
-    int s = n-1;
-    int t = n-2;
+    int s = n - 1;
+    int t = n - 2;
 
     FordFulkersonDfsSolverAdjacencyList solver;
     solver = new FordFulkersonDfsSolverAdjacencyList(n, s, t);
@@ -177,6 +172,4 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
 
     System.out.println(solver.getMaxFlow()); // 19
   }
-
 }
-

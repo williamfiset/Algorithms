@@ -1,19 +1,19 @@
 /**
- * This file contains an implementation of the Floyd-Warshall algorithm to find
- * all pairs of shortest paths between nodes in a graph. We also demonstrate how
- * to detect negative cycles and reconstruct the shortest path.
+ * This file contains an implementation of the Floyd-Warshall algorithm to find all pairs of
+ * shortest paths between nodes in a graph. We also demonstrate how to detect negative cycles and
+ * reconstruct the shortest path.
  *
- * Time Complexity: O(V^3)
+ * <p>Time Complexity: O(V^3)
  *
  * @author Micah Stairs, William Fiset
- **/
+ */
 package com.williamfiset.algorithms.graphtheory;
 
-// Import Java's special constants ∞ and -∞ which behave 
+// Import Java's special constants ∞ and -∞ which behave
 // as you expect them to when you do arithmetic. For example,
 // ∞ + ∞ = ∞, ∞ + x = ∞, -∞ + x = -∞ and ∞ + -∞ = Nan
-import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Double.NEGATIVE_INFINITY;
+import static java.lang.Double.POSITIVE_INFINITY;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +28,12 @@ public class FloydWarshallSolver {
   private static final int REACHES_NEGATIVE_CYCLE = -1;
 
   /**
-   * As input, this class takes an adjacency matrix with edge weights between nodes, 
-   * where POSITIVE_INFINITY is used to indicate that two nodes are not connected.
+   * As input, this class takes an adjacency matrix with edge weights between nodes, where
+   * POSITIVE_INFINITY is used to indicate that two nodes are not connected.
    *
-   * NOTE: Usually the diagonal of the adjacency matrix is all zeros 
-   * (i.e. matrix[i][i] = 0 for all i) since there is typically no cost 
-   * to go from a node to itself, but this may depend on your graph and 
-   * the problem you are trying to solve.
+   * <p>NOTE: Usually the diagonal of the adjacency matrix is all zeros (i.e. matrix[i][i] = 0 for
+   * all i) since there is typically no cost to go from a node to itself, but this may depend on
+   * your graph and the problem you are trying to solve.
    */
   public FloydWarshallSolver(double[][] matrix) {
     n = matrix.length;
@@ -42,18 +41,18 @@ public class FloydWarshallSolver {
     next = new Integer[n][n];
 
     // Copy input matrix and setup 'next' matrix for path reconstruction.
-    for(int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
       for (int j = 0; j < n; j++) {
-        if (matrix[i][j] != POSITIVE_INFINITY)
-          next[i][j] = j;
+        if (matrix[i][j] != POSITIVE_INFINITY) next[i][j] = j;
         dp[i][j] = matrix[i][j];
       }
     }
   }
 
-  /** 
+  /**
    * Runs Floyd-Warshall to compute the shortest distance between every pair of nodes.
-   * @return The solved All Pairs Shortest Path (APSP) matrix. 
+   *
+   * @return The solved All Pairs Shortest Path (APSP) matrix.
    */
   public double[][] getApspMatrix() {
     solve();
@@ -92,16 +91,16 @@ public class FloydWarshallSolver {
   /**
    * Reconstructs the shortest path (of nodes) from 'start' to 'end' inclusive.
    *
-   * @return An array of nodes indexes of the shortest path from 'start' to 'end'.
-   * If 'start' and 'end' are not connected return an empty array. If the shortest 
-   * path from 'start' to 'end' are reachable by a negative cycle return -1.
+   * @return An array of nodes indexes of the shortest path from 'start' to 'end'. If 'start' and
+   *     'end' are not connected return an empty array. If the shortest path from 'start' to 'end'
+   *     are reachable by a negative cycle return -1.
    */
   public List<Integer> reconstructShortestPath(int start, int end) {
     solve();
     List<Integer> path = new ArrayList<>();
     if (dp[start][end] == POSITIVE_INFINITY) return path;
     int at = start;
-    for(;at != end; at = next[at][end]) {
+    for (; at != end; at = next[at][end]) {
       // Return null since there are an infinite number of shortest paths.
       if (at == REACHES_NEGATIVE_CYCLE) return null;
       path.add(at);
@@ -112,9 +111,9 @@ public class FloydWarshallSolver {
     return path;
   }
 
-    /* Example usage. */
+  /* Example usage. */
 
-  // Creates a graph with n nodes. The adjacency matrix is constructed 
+  // Creates a graph with n nodes. The adjacency matrix is constructed
   // such that the value of going from a node to itself is 0.
   public static double[][] createGraph(int n) {
     double[][] matrix = new double[n][n];
@@ -174,9 +173,12 @@ public class FloydWarshallSolver {
         } else if (path.size() == 0) {
           str = String.format("DOES NOT EXIST (node %d doesn't reach node %d)", i, j);
         } else {
-          str = String.join(" -> ", path.stream()
-                                        .map(Object::toString)
-                                        .collect(java.util.stream.Collectors.toList()));
+          str =
+              String.join(
+                  " -> ",
+                  path.stream()
+                      .map(Object::toString)
+                      .collect(java.util.stream.Collectors.toList()));
           str = "is: [" + str + "]";
         }
 
@@ -200,14 +202,6 @@ public class FloydWarshallSolver {
     // The shortest path from node 1 to node 5 HAS AN ∞ NUMBER OF SOLUTIONS! (negative cycle case)
     // The shortest path from node 1 to node 6 is: [1 -> 2 -> 6]
     // The shortest path from node 2 to node 0 DOES NOT EXIST (node 2 doesn't reach node 0)
-    // ... 
+    // ...
   }
 }
-
-
-
-
-
-
-
-

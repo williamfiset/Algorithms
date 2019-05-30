@@ -1,13 +1,13 @@
 /**
- * An implementation of Kruskal's MST algorithm using an edge list
- * Time Complexity: O(ElogE)
+ * An implementation of Kruskal's MST algorithm using an edge list Time Complexity: O(ElogE)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory;
 
 public class KruskalsEdgeList {
-  
-  // Union find data structure 
+
+  // Union find data structure
   static class UnionFind {
 
     private int[] id, sz;
@@ -23,8 +23,7 @@ public class KruskalsEdgeList {
 
     public int find(int p) {
       int root = p;
-      while (root != id[root])
-        root = id[root];
+      while (root != id[root]) root = id[root];
       while (p != root) { // Do path compression
         int next = id[p];
         id[p] = root;
@@ -53,23 +52,25 @@ public class KruskalsEdgeList {
         id[root2] = root1;
       }
     }
-
   }
 
-  static class Edge implements Comparable <Edge> {
+  static class Edge implements Comparable<Edge> {
     int from, to, cost;
+
     public Edge(int from, int to, int cost) {
       this.from = from;
       this.to = to;
       this.cost = cost;
     }
-    @Override public int compareTo(Edge other) {
+
+    @Override
+    public int compareTo(Edge other) {
       return cost - other.cost;
     }
   }
 
   // Given a graph represented as an edge list this method finds
-  // the Minimum Spanning Tree (MST) cost if there exists 
+  // the Minimum Spanning Tree (MST) cost if there exists
   // a MST, otherwise it returns null.
   static Long kruskals(Edge[] edges, int n) {
 
@@ -82,8 +83,7 @@ public class KruskalsEdgeList {
     for (Edge edge : edges) {
 
       // Skip this edge to avoid creating a cycle in MST
-      if (uf.connected(edge.from, edge.to))
-        continue;
+      if (uf.connected(edge.from, edge.to)) continue;
 
       // Include this edge
       uf.union(edge.from, edge.to);
@@ -92,17 +92,11 @@ public class KruskalsEdgeList {
       // Optimization to stop early if we found
       // a MST that includes all the nodes
       if (uf.size(0) == n) break;
-
     }
 
     // Make sure we have a MST that includes all the nodes
     if (uf.size(0) != n) return null;
 
     return sum;
-
   }
-
 }
-
-
-

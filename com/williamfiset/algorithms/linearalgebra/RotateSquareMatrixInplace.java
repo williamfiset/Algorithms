@@ -1,14 +1,14 @@
 /**
  * Rotate the entries of a square matrix 90 degrees clockwise.
  *
- * Time Complexity: O(n^2)
- * 
+ * <p>Time Complexity: O(n^2)
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.linearalgebra;
 
 public class RotateSquareMatrixInplace {
-  
+
   // Rotates the entries of a square matrix 90 degrees clockwise.
   static void rotate(int[][] matrix) {
     int n = matrix.length;
@@ -16,19 +16,19 @@ public class RotateSquareMatrixInplace {
       int invI = n - i - 1;
       for (int j = i; j < invI; j++) {
         int invJ = n - j - 1, tmp = matrix[i][j];
-        matrix[i][j]       = matrix[invJ][i];
-        matrix[invJ][i]    = matrix[invI][invJ];
+        matrix[i][j] = matrix[invJ][i];
+        matrix[invJ][i] = matrix[invI][invJ];
         matrix[invI][invJ] = matrix[j][invI];
-        matrix[j][invI]    = tmp;
+        matrix[j][invI] = tmp;
       }
     }
   }
 
   public static void main(String[] args) {
-    
+
     int[][] matrix = {
-      { 1,  2,  3,  4,  5},
-      { 6,  7,  8,  9, 10},
+      {1, 2, 3, 4, 5},
+      {6, 7, 8, 9, 10},
       {11, 12, 13, 14, 15},
       {16, 17, 18, 19, 20},
       {21, 22, 23, 24, 25}
@@ -53,7 +53,7 @@ public class RotateSquareMatrixInplace {
     // [5, 4, 3, 2, 1]
 
     rotate(matrix);
-    for (int[] row : matrix) System.out.println(java.util.Arrays.toString(row));      
+    for (int[] row : matrix) System.out.println(java.util.Arrays.toString(row));
     // prints:
     // [5, 10, 15, 20, 25]
     // [4, 9, 14, 19, 24]
@@ -71,15 +71,4 @@ public class RotateSquareMatrixInplace {
     // [21, 22, 23, 24, 25]
 
   }
-
 }
-
-
-
-
-
-
-
-
-
-

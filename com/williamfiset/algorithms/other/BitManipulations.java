@@ -1,8 +1,8 @@
 /**
- * Fundamental bit manipulation operations you must know
- * Time Complexity: O(1)
+ * Fundamental bit manipulation operations you must know Time Complexity: O(1)
+ *
  * @author Micah Stairs
- **/
+ */
 package com.williamfiset.algorithms.other;
 
 public class BitManipulations {
@@ -36,5 +36,4 @@ public class BitManipulations {
   public static boolean isPowerOfTwo(int n) {
     return n > 0 && (n & (n - 1)) == 0;
   }
-
 }

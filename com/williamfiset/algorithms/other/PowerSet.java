@@ -1,13 +1,12 @@
 /**
- * This code snippet shows how to generate the powerset of a set which is the 
- * set of all subsets of a set. There are two common ways of doing this which
- * are to use the binary representation of numbers on a computer or to 
- * do it recursively. Both methods are shown here, pick your flavor! 
- * 
- * Time Complexity: O( 2^n )
+ * This code snippet shows how to generate the powerset of a set which is the set of all subsets of
+ * a set. There are two common ways of doing this which are to use the binary representation of
+ * numbers on a computer or to do it recursively. Both methods are shown here, pick your flavor!
+ *
+ * <p>Time Complexity: O( 2^n )
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.other;
 
 public class PowerSet {
@@ -23,12 +22,10 @@ public class PowerSet {
       System.out.print("{ ");
       for (int i = 0; i < N; i++) {
         int mask = 1 << i;
-        if ((subset & mask) == mask)
-          System.out.print(set[i] + " ");
+        if ((subset & mask) == mask) System.out.print(set[i] + " ");
       }
       System.out.println("}");
     }
-
   }
 
   // Recursively generate the powerset (set of all subsets) of an array by maintaining
@@ -39,9 +36,7 @@ public class PowerSet {
 
       // Print found subset!
       System.out.print("{ ");
-      for (int i = 0; i < set.length; i++)
-        if (used[i])
-          System.out.print(set[i] + " ");
+      for (int i = 0; i < set.length; i++) if (used[i]) System.out.print(set[i] + " ");
       System.out.println("}");
 
     } else {
@@ -53,15 +48,13 @@ public class PowerSet {
       // Backtrack and don't include this element
       used[at] = false;
       powerSetRecursive(at + 1, set, used);
-
     }
-
   }
 
   public static void main(String[] args) {
-  
+
     // Example usage:
-    int[] set = {1, 2, 3 };
+    int[] set = {1, 2, 3};
 
     powerSetUsingBinary(set);
     // prints:
@@ -88,5 +81,4 @@ public class PowerSet {
     // { }
 
   }
-
 }

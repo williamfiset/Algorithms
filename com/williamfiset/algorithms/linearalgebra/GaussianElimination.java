@@ -1,14 +1,13 @@
 /**
- * Solve a system of linear equations using Gaussian elimination.
- * To work with this code the linear equations must be specified 
- * as a matrix augmented with the constants as the right-most column.
+ * Solve a system of linear equations using Gaussian elimination. To work with this code the linear
+ * equations must be specified as a matrix augmented with the constants as the right-most column.
  *
- * Time Complexity: O(c*r^2)
- **/
+ * <p>Time Complexity: O(c*r^2)
+ */
 package com.williamfiset.algorithms.linearalgebra;
 
 class GaussianElimination {
-  
+
   // Define a small value of epsilon to compare double values
   static final double EPS = 0.00000001;
 
@@ -47,10 +46,10 @@ class GaussianElimination {
   // Checks if the matrix is inconsistent
   static boolean isInconsistent(double[][] arr) {
     int nCols = arr[0].length;
-    outer: for (int y = 0; y < arr.length; y++) {
+    outer:
+    for (int y = 0; y < arr.length; y++) {
       if (Math.abs(arr[y][nCols - 1]) > EPS) {
-        for (int x = 0; x < nCols - 1; x++)
-          if (Math.abs(arr[y][x]) > EPS) continue outer;
+        for (int x = 0; x < nCols - 1; x++) if (Math.abs(arr[y][x]) > EPS) continue outer;
         return true;
       }
     }
@@ -60,32 +59,32 @@ class GaussianElimination {
   // Make sure your matrix is consistent as well
   static boolean hasMultipleSolutions(double[][] arr) {
     int nCols = arr[0].length, nEmptyRows = 0;
-    outer: for (int y = 0; y < arr.length; y++) {
-      for (int x = 0; x < nCols; x++)
-        if (Math.abs(arr[y][x]) > EPS) continue outer;
+    outer:
+    for (int y = 0; y < arr.length; y++) {
+      for (int x = 0; x < nCols; x++) if (Math.abs(arr[y][x]) > EPS) continue outer;
       nEmptyRows++;
     }
     return nCols - 1 > arr.length - nEmptyRows;
   }
 
   public static void main(String[] args) {
-    
+
     // Suppose we want to solve the following system for
     // the variables x, y, z:
-    // 
+    //
     // 2x - 3y + 5z = 10
     // x  + 2y - z  = 18
     // 6x -  y + 0  = 12
     // Then we would setup the following augment matrix:
 
     double[][] augmentedMatrix = {
-      {2, -3,  5, 10},
-      {1,  2, -1, 18},
-      {6, -1,  0, 12}
+      {2, -3, 5, 10},
+      {1, 2, -1, 18},
+      {6, -1, 0, 12}
     };
 
     solve(augmentedMatrix);
-    
+
     if (!hasMultipleSolutions(augmentedMatrix) && !isInconsistent(augmentedMatrix)) {
 
       double x = augmentedMatrix[0][3];
@@ -94,19 +93,6 @@ class GaussianElimination {
 
       // x ~ 3.755, y ~ 10.531, z ~ 6.816
       System.out.printf("x = %.3f, y = %.3f, z = %.3f\n", x, y, z);
-      
     }
-
   }
-
 }
-
-
-
-
-
-
-
-
-
-

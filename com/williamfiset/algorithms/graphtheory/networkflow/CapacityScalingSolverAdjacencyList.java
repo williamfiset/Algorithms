@@ -1,17 +1,16 @@
 /**
- * Implementation of the Capacity Scaling algorithm using a DFS
- * as a method of finding augmenting paths.
+ * Implementation of the Capacity Scaling algorithm using a DFS as a method of finding augmenting
+ * paths.
  *
- * Time Complexity: O(E^2log(U)), where E = num edges, U = max capacity
- * 
+ * <p>Time Complexity: O(E^2log(U)), where E = num edges, U = max capacity
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
-import static java.lang.Math.min;
 import static java.lang.Math.max;
+import static java.lang.Math.min;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
@@ -19,8 +18,8 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
   private long delta;
 
   /**
-   * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)}
-   * method to add edges to the graph.
+   * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)} method to
+   * add edges to the graph.
    *
    * @param n - The number of nodes in the graph including source and sink nodes.
    * @param s - The index of the source node, 0 <= s < n
@@ -33,8 +32,8 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
   /**
    * Adds a directed edge (and residual edge) to the flow graph.
    *
-   * @param from     - The index of the node the directed edge starts at.
-   * @param to       - The index of the node the directed edge end at.
+   * @param from - The index of the node the directed edge starts at.
+   * @param to - The index of the node the directed edge end at.
    * @param capacity - The capacity of the edge.
    */
   @Override
@@ -63,9 +62,7 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
     }
 
     // Find min cut.
-    for(int i = 0; i < n; i++)
-      if (visited(i))
-        minCut[i] = true;
+    for (int i = 0; i < n; i++) if (visited(i)) minCut[i] = true;
   }
 
   private long dfs(int node, long flow) {
@@ -86,13 +83,12 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
           edge.augment(bottleNeck);
           return bottleNeck;
         }
-
       }
     }
     return 0;
   }
 
-    /* Example */
+  /* Example */
 
   public static void main(String[] args) {
     testSmallFlowGraph();
@@ -103,8 +99,8 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
   // http://crypto.cs.mcgill.ca/~crepeau/COMP251/KeyNoteSlides/07demo-maxflowCS-C.pdf
   private static void testSmallFlowGraph() {
     int n = 6;
-    int s = n-1;
-    int t = n-2;
+    int s = n - 1;
+    int t = n - 2;
 
     CapacityScalingSolverAdjacencyList solver;
     solver = new CapacityScalingSolverAdjacencyList(n, s, t);
@@ -129,8 +125,8 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
 
   private static void testExampleFromMySlides() {
     int n = 6;
-    int s = n-1;
-    int t = n-2;
+    int s = n - 1;
+    int t = n - 2;
 
     CapacityScalingSolverAdjacencyList solver;
     solver = new CapacityScalingSolverAdjacencyList(n, s, t);
@@ -152,22 +148,4 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
 
     System.out.println(solver.getMaxFlow()); // 20
   }
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,15 +1,15 @@
 /**
  * This algorithm finds the center(s) of a tree.
  *
- * Time complexity: O(V+E)
+ * <p>Time complexity: O(V+E)
  *
  * @author Jeffrey Xiao, https://github.com/jeffrey-xiao
- **/
+ */
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 class TreeCenter {
 
@@ -19,7 +19,7 @@ class TreeCenter {
 
     // Find all leaf nodes
     List<Integer> leaves = new ArrayList<>();
-    for(int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
       List<Integer> edges = tree.get(i);
       degrees[i] = edges.size();
       if (degrees[i] <= 1) leaves.add(i);
@@ -28,14 +28,12 @@ class TreeCenter {
     int processedLeafs = leaves.size();
 
     // Remove leaf nodes and decrease the degree of
-    // each node adding new leaf nodes progressively 
+    // each node adding new leaf nodes progressively
     // until only the centers remain.
-    while(processedLeafs < n) {
+    while (processedLeafs < n) {
       List<Integer> newLeaves = new ArrayList<>();
-      for(int node : leaves)
-        for (int neighbor : tree.get(node))
-          if (--degrees[neighbor] == 1)
-            newLeaves.add(neighbor);
+      for (int node : leaves)
+        for (int neighbor : tree.get(node)) if (--degrees[neighbor] == 1) newLeaves.add(neighbor);
       processedLeafs += newLeaves.size();
       leaves = newLeaves;
     }
@@ -43,9 +41,7 @@ class TreeCenter {
     return leaves;
   }
 
-
-    /************ TESTING **********/
-
+  /** ********** TESTING ********* */
 
   // Create an empty tree as a adjacency list.
   public static List<List<Integer>> createEmptyTree(int n) {
@@ -96,7 +92,7 @@ class TreeCenter {
     addUndirectedEdge(graph5, 2, 3);
     System.out.println(findTreeCenters(graph5));
 
-    // Centers are 2,3 
+    // Centers are 2,3
     List<List<Integer>> graph6 = createEmptyTree(7);
     addUndirectedEdge(graph6, 0, 1);
     addUndirectedEdge(graph6, 1, 2);
@@ -106,18 +102,4 @@ class TreeCenter {
     addUndirectedEdge(graph6, 4, 6);
     System.out.println(findTreeCenters(graph6));
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

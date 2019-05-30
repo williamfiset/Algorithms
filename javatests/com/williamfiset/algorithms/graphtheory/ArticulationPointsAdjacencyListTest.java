@@ -3,9 +3,6 @@ package javatests.com.williamfiset.algorithms.graphtheory;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.williamfiset.algorithms.graphtheory.ArticulationPointsAdjacencyList;
-import com.google.common.collect.ImmutableList;
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.*;
 import org.junit.*;
 
@@ -14,7 +11,7 @@ public class ArticulationPointsAdjacencyListTest {
   // Initialize graph with 'n' nodes.
   public static List<List<Integer>> createGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>();
-    for(int i = 0; i < n; i++) graph.add(new ArrayList<>());
+    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
     return graph;
   }
 
@@ -195,7 +192,7 @@ public class ArticulationPointsAdjacencyListTest {
 
     ArticulationPointsAdjacencyList solver = new ArticulationPointsAdjacencyList(graph, n);
     boolean[] actual = solver.findArticulationPoints();
-    
+
     boolean[] expected = new boolean[n];
     assertThat(actual).isEqualTo(expected);
   }
@@ -208,7 +205,7 @@ public class ArticulationPointsAdjacencyListTest {
 
     ArticulationPointsAdjacencyList solver = new ArticulationPointsAdjacencyList(graph, n);
     boolean[] actual = solver.findArticulationPoints();
-    
+
     boolean[] expected = new boolean[n];
     assertThat(actual).isEqualTo(expected);
   }
@@ -244,7 +241,7 @@ public class ArticulationPointsAdjacencyListTest {
     List<List<Integer>> graph = createGraph(n);
     addEdge(graph, 0, 1);
     addEdge(graph, 1, 2);
-    
+
     ArticulationPointsAdjacencyList solver = new ArticulationPointsAdjacencyList(graph, n);
     boolean[] actual = solver.findArticulationPoints();
 
@@ -252,14 +249,4 @@ public class ArticulationPointsAdjacencyListTest {
     expected[1] = true; // middle node.
     assertThat(actual).isEqualTo(expected);
   }
-
 }
-
-
-
-
-
-
-
-
-

@@ -1,18 +1,19 @@
 /**
  * Finds all the bridges on an undirected graph.
  *
- * Test against HackerEarth online judge at:
+ * <p>Test against HackerEarth online judge at:
  * https://www.hackerearth.com/practice/algorithms/graphs/articulation-points-and-bridges/tutorial
- * 
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.graphtheory;
 
 import static java.lang.Math.min;
+
 import java.util.*;
 
 public class BridgesAdjacencyListIterative {
-  
+
   private int n, id;
   private int[] low, ids;
   private boolean solved;
@@ -23,14 +24,13 @@ public class BridgesAdjacencyListIterative {
   private static int CALLBACK_TOKEN = -2;
 
   public BridgesAdjacencyListIterative(List<List<Integer>> graph, int n) {
-    if (graph == null || n <= 0 || graph.size() != n) 
-      throw new IllegalArgumentException();
+    if (graph == null || n <= 0 || graph.size() != n) throw new IllegalArgumentException();
     this.graph = graph;
     this.n = n;
   }
 
   // Returns a list of pairs of nodes indicating which nodes form bridges.
-  // The returned list is always of even length and indexes (2*i, 2*i+1) form a 
+  // The returned list is always of even length and indexes (2*i, 2*i+1) form a
   // pair. For example, nodes are indexes (0, 1) are a pair, (2, 3) are another
   // pair, etc...
   public List<Integer> findBridges() {
@@ -46,13 +46,13 @@ public class BridgesAdjacencyListIterative {
     // Finds all bridges even if the graph is not one single connected component.
     for (int i = 0; i < n; i++) {
       if (visited[i]) continue;
-      
+
       Deque<Integer> stack = new ArrayDeque<>();
       Deque<Integer> parentStack = new ArrayDeque<>();
       stack.push(i);
       parentStack.push(-1);
 
-      while(!stack.isEmpty()) {
+      while (!stack.isEmpty()) {
         int at = stack.pop();
 
         if (at == CALLBACK_TOKEN) {
@@ -85,8 +85,7 @@ public class BridgesAdjacencyListIterative {
             }
           }
         }
-
-      }      
+      }
     }
 
     solved = true;
@@ -95,9 +94,8 @@ public class BridgesAdjacencyListIterative {
 
   /* Example usage: */
 
-
   public static void main(String[] args) {
-    
+
     int n = 10;
     List<List<Integer>> graph = createGraph(n);
 
@@ -117,17 +115,16 @@ public class BridgesAdjacencyListIterative {
     BridgesAdjacencyListIterative solver = new BridgesAdjacencyListIterative(graph, n);
     List<Integer> bridges = solver.findBridges();
     for (int i = 0; i < bridges.size() / 2; i++) {
-      int node1 = bridges.get(2*i);
-      int node2 = bridges.get(2*i+1);
+      int node1 = bridges.get(2 * i);
+      int node2 = bridges.get(2 * i + 1);
       System.out.printf("BRIDGE between nodes: %d and %d\n", node1, node2);
     }
-
   }
 
   // Initialize graph with 'n' nodes.
   public static List<List<Integer>> createGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>();
-    for(int i = 0; i < n; i++) graph.add(new ArrayList<>());
+    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
     return graph;
   }
 
@@ -136,24 +133,4 @@ public class BridgesAdjacencyListIterative {
     graph.get(from).add(to);
     graph.get(to).add(from);
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
