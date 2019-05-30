@@ -177,7 +177,8 @@ The procedure to add a new algorithm named **Foo** is the following:
 3) Add tests for Foo in javatests/com/williamfiset/algorithms/category/FooTest.java
 4) Edit the **build.gradle** file if you added a new category to the project.
 5) Test your algorithm thoroughly (see testing section below)
-6) Send pull request for review :open_mouth:
+6) Run 'gradle goJF' to format all Java code according to Google Style Guide.
+7) Send pull request for review :open_mouth:
 
 ### Testing
 
