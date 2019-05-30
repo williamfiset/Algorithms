@@ -19,13 +19,23 @@ public class ConvexHullGrahamScan {
     Arrays.sort(pts, new PointOrder());
     Arrays.sort(pts, 1, N, new PolarOrder(pts[0]));
     hull.push(pts[0]);
-    for (k1 = 1; k1 < N; k1++) if (!pts[0].equals(pts[k1])) break;
+    for (k1 = 1; k1 < N; k1++) {
+      if (!pts[0].equals(pts[k1])) {
+        break;
+      }
+    }
     if (k1 == N) return null;
-    for (k2 = k1 + 1; k2 < N; k2++) if (collinear(pts[0], pts[k1], pts[k2]) != 0) break;
+    for (k2 = k1 + 1; k2 < N; k2++) {
+      if (collinear(pts[0], pts[k1], pts[k2]) != 0) {
+        break;
+      }
+    }
     hull.push(pts[k2 - 1]);
     for (int i = k2; i < N; i++) {
       Point2D top = hull.pop();
-      while (collinear(hull.peek(), top, pts[i]) <= 0) top = hull.pop();
+      while (collinear(hull.peek(), top, pts[i]) <= 0) {
+        top = hull.pop();
+      }
       hull.push(top);
       hull.push(pts[i]);
     }

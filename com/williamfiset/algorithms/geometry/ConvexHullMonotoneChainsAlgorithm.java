@@ -65,7 +65,11 @@ public class ConvexHullMonotoneChainsAlgorithm {
     // Conserve only unique points.
     int index = 1;
     Point2D lastPt = hull[0];
-    for (int i = 1; i < k - 1; i++) if (!hull[i].equals(lastPt)) hull[index++] = lastPt = hull[i];
+    for (int i = 1; i < k - 1; i++) {
+      if (!hull[i].equals(lastPt)) {
+        hull[index++] = lastPt = hull[i];
+      }
+    }
 
     return Arrays.copyOfRange(hull, 0, index);
   }

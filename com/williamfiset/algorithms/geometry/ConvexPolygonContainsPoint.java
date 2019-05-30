@@ -53,10 +53,11 @@ public class ConvexPolygonContainsPoint {
   // to the left from the frame of reference of standing at point a
   // and facing point b.
   public static int collinear(Point2D a, Point2D b, Point2D c) {
-    double area =
-        (b.getX() - a.getX()) * (c.getY() - a.getY())
-            - (b.getY() - a.getY()) * (c.getX() - a.getX());
+    double ax = a.getX(), ay = a.getY();
+    double bx = b.getX(), by = b.getY();
+    double cx = c.getX(), cy = c.getY();
+    double area = (bx - ax) * (cy - ay) - (by - ay) * (cx - ax);
     if (abs(area) < EPS) return 0;
-    return (int) Math.signum(area);
+    return (int) signum(area);
   }
 }
