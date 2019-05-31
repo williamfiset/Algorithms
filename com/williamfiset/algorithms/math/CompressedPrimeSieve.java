@@ -7,24 +7,30 @@
  *
  * <p>Time Complexity: ~O(nloglogn)
  *
+ * Compile:
+ *   javac com/williamfiset/algorithms/math/CompressedPrimeSieve.java
+ *
+ * Run:
+ *   java com/williamfiset/algorithms/math/CompressedPrimeSieve
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.math;
 
 public class CompressedPrimeSieve {
+  private static final double NUM_BITS = 128.0;
+  private static final int NUM_BITS_SHIFT = 7; // 2^7 = 128
 
-  static final int NUM_BITS = 128;
-  static final int NUM_BITS_SHIFT = 7; // 2^7 = 128
-
-  // Sets the bit repesenting n to 1 indicating this number is not prime
-  static void setBit(long[] arr, int n) {
+  // Sets the bit representing n to 1 indicating this number is not prime
+  private static void setBit(long[] arr, int n) {
     if ((n & 1) == 0) return; // n is even
     arr[n >> NUM_BITS_SHIFT] |= 1L << ((n - 1) >> 1);
   }
 
-  // Returns true if a bit if turned on for the number n (AKA n is a prime)
-  // Make sure you DO NOT use this method to access numbers outside your prime sieve range!
-  static boolean isSet(long[] arr, int n) {
+  // Returns true if the bit for n is off (meaning n is a prime).
+  // Note: do use this method to access numbers outside your prime sieve range!
+  public static boolean isNotSet(long[] arr, int n) {
+    if (n < 2) return false; // n is not prime
     if (n == 2) return true; // two is prime
     if ((n & 1) == 0) return false; // n is even
     long chunk = arr[n >> NUM_BITS_SHIFT];
@@ -33,19 +39,18 @@ public class CompressedPrimeSieve {
   }
 
   // Returns an array of longs with each bit indicating whether a number
-  // is prime or not. Use the isSet and setBit methods to toggle to bits for each number.
-  static long[] primeSieve(int limit) {
-
-    final int num_chunks = (int) Math.ceil(limit / ((double) NUM_BITS));
-    final int sqrt_limit = (int) Math.sqrt(limit);
+  // is prime or not. Use the isNotSet and setBit methods to toggle to bits for each number.
+  public static long[] primeSieve(int limit) {
+    final int numChunks = (int) Math.ceil(limit / NUM_BITS);
+    final int sqrtLimit = (int) Math.sqrt(limit);
     // if (limit < 2) return 0; // uncomment for primeCount purposes
     // int primeCount = (int) Math.ceil(limit / 2.0); // Counts number of primes <= limit
-    long[] chunks = new long[num_chunks];
+    long[] chunks = new long[numChunks];
     chunks[0] = 1; // 1 as not prime
-    for (int i = 3; i <= sqrt_limit; i += 2)
-      if (isSet(chunks, i))
+    for (int i = 3; i <= sqrtLimit; i += 2)
+      if (isNotSet(chunks, i))
         for (int j = i * i; j <= limit; j += i)
-          if (isSet(chunks, j)) {
+          if (isNotSet(chunks, j)) {
             setBit(chunks, j);
             // primeCount--;
           }
@@ -53,10 +58,13 @@ public class CompressedPrimeSieve {
   }
 
   public static void main(String[] args) {
+    final int limit = 200;
+    long[] sieve = primeSieve(limit);
 
-    final int LIMIT = 101;
-    long[] sieve = primeSieve(LIMIT);
-
-    for (int i = 1; i <= LIMIT; i++) if (isSet(sieve, i)) System.out.printf("%d is prime!\n", i);
+    for (int i = 1; i <= limit; i++) {
+      if (isNotSet(sieve, i)) {
+        System.out.printf("%d is prime!\n", i);
+      }
+    }
   }
 }
