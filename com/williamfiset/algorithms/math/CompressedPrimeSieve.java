@@ -7,11 +7,8 @@
  *
  * <p>Time Complexity: ~O(nloglogn)
  *
- * Compile:
- *   javac com/williamfiset/algorithms/math/CompressedPrimeSieve.java
- *
- * Run:
- *   java com/williamfiset/algorithms/math/CompressedPrimeSieve
+ * <p>Compile: javac com/williamfiset/algorithms/math/CompressedPrimeSieve.java
+ * <p>Run: java com/williamfiset/algorithms/math/CompressedPrimeSieve
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
@@ -29,13 +26,18 @@ public class CompressedPrimeSieve {
 
   // Returns true if the bit for n is off (meaning n is a prime).
   // Note: do use this method to access numbers outside your prime sieve range!
-  public static boolean isNotSet(long[] arr, int n) {
+  private static boolean isNotSet(long[] arr, int n) {
     if (n < 2) return false; // n is not prime
     if (n == 2) return true; // two is prime
     if ((n & 1) == 0) return false; // n is even
     long chunk = arr[n >> NUM_BITS_SHIFT];
     long mask = 1L << ((n - 1) >> 1);
     return (chunk & mask) != mask;
+  }
+
+  // Returns true/false depending on whether n is prime.
+  public static boolean isPrime(long[] sieve, int n) {
+    return isNotSet(sieve, n);
   }
 
   // Returns an array of longs with each bit indicating whether a number
@@ -57,12 +59,14 @@ public class CompressedPrimeSieve {
     return chunks;
   }
 
+  /* Example usage. */
+
   public static void main(String[] args) {
     final int limit = 200;
-    long[] sieve = primeSieve(limit);
+    long[] sieve = CompressedPrimeSieve.primeSieve(limit);
 
-    for (int i = 1; i <= limit; i++) {
-      if (isNotSet(sieve, i)) {
+    for (int i = 0; i <= limit; i++) {
+      if (CompressedPrimeSieve.isPrime(sieve, i)) {
         System.out.printf("%d is prime!\n", i);
       }
     }
