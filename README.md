@@ -1,7 +1,7 @@
 
 [![Travis](https://img.shields.io/travis/williamfiset/Algorithms.svg)](https://travis-ci.org/williamfiset/Algorithms) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# Algorithms & Data Structures project
+# Algorithms & data structures project
 
 Algorithms and data structures are amongst the most fundamental ingredients in the recipe for efficient code and good software design; knowledge of how to create and design excellent algorithms is an essential skill required in becoming an exemplary programmer. The goal of this repository is to provide a complete and thorough explanation of the most common data structures and algorithms in the clearest possible way.
 
@@ -9,7 +9,7 @@ Algorithms and data structures are amongst the most fundamental ingredients in t
 * [:movie_camera:](https://www.youtube.com/watch?v=q4fnJZr8ztY)[Balanced Trees](https://github.com/williamfiset/algorithms/tree/master/com/williamfiset/algorithms/datastructures/balancedtree)
     * [Avl Tree (recursive)](https://github.com/williamfiset/algorithms/blob/master/com/williamfiset/algorithms/datastructures/balancedtree/AVLTreeRecursive.java)
     * [Avl Tree (recursive, mildly optimized)](https://github.com/williamfiset/algorithms/blob/master/com/williamfiset/algorithms/datastructures/balancedtree/AVLTreeRecursiveOptimized.java)
-    * [Red Black Tree(recursive)](https://github.com/williamfiset/algorithms/blob/master/com/williamfiset/algorithms/datastructures/balancedtree/RedBlackTree.java)
+    * [Red Black Tree (recursive)](https://github.com/williamfiset/algorithms/blob/master/com/williamfiset/algorithms/datastructures/balancedtree/RedBlackTree.java)
 * [:movie_camera:](https://www.youtube.com/watch?v=JfSdGQdAzq8)[Binary Search Tree](https://github.com/williamfiset/algorithms/blob/master/com/williamfiset/algorithms/datastructures/binarysearchtree/BinarySearchTree.java)
 * [Splay Tree](https://github.com/williamfiset/algorithms/blob/master/com/williamfiset/algorithms/datastructures/binarysearchtree/SplayTree.java)
 * [Bloom Filter](https://github.com/williamfiset/algorithms/tree/master/com/williamfiset/algorithms/datastructures/bloomfilter)

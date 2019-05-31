@@ -28,6 +28,10 @@ dependencies {
   // JUnit framework
   testCompile 'junit:junit:4.+'
   compile 'junit:junit:4.+'
+
+  // JUnit 5 / Jupiter
+  testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
+  testRuntime('org.junit.jupiter:junit-jupiter-engine:5.4.2')
    
   // Test mocking framework
   testCompile "org.mockito:mockito-core:1.+"
@@ -40,8 +44,6 @@ dependencies {
 
   // Apache commons lang
   compile 'org.apache.commons:commons-lang3:3.6'
-
-  
 }
 
 test {
@@ -58,6 +60,7 @@ sourceSets {
       srcDirs = [
         javaAlgorithmsPackage + '/ai',
         javaAlgorithmsPackage + '/dp',
+        javaAlgorithmsPackage + '/datastructures',
         javaAlgorithmsPackage + '/geometry',
         javaAlgorithmsPackage + '/graphtheory',
         javaAlgorithmsPackage + '/linearalgebra',
@@ -74,6 +77,7 @@ sourceSets {
     java {
       srcDirs = [
         javatestsAlgorithmsPackage + '/ai',
+        javatestsAlgorithmsPackage + '/datastructures',
         javatestsAlgorithmsPackage + '/dp',
         javatestsAlgorithmsPackage + '/geometry',
         javatestsAlgorithmsPackage + '/graphtheory',

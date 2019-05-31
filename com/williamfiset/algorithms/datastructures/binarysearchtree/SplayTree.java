@@ -1,6 +1,6 @@
 package com.williamfiset.algorithms.datastructures.binarysearchtree;
 
-import com.williamfiset.datastructures.utils.TreePrinter;
+import com.williamfiset.algorithms.datastructures.utils.TreePrinter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
