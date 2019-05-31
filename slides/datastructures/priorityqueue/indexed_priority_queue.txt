@@ -1,0 +1,285 @@
+[intro sound]
+Hello and welcome, my name is William, and today's data structure is the indexed priority queue. This is going to prove to be a very useful data structure that you wished you would have known about a long time ago. It also happens to be one of my personal favorites, so I'm quite excited.
+
+Just before we get started, this video builds off concepts from the previous priority queue videos which simply go over the basics. Strictly speaking, you can probably get by without watching all those as I will do a quick recap, but for those who want to know PQs in full detail please check out the description below for links to those videos.
+
+So what exactly is an IPQ? Well, it is a traditional priority queue variant which on top of having all the regular PQ operations it also supports quick updates and deletions of key-value pairs. So the big problem the IPQ solves is being able to quickly lookup and dynamically change the values in your PQ on the fly which is often useful.
+
+Let's look at an example, suppose a hospital has a waiting room with N people which need attention with different levels of priority. Each person in the waiting room has a certain condition that needs to be dealt with:
+- Mary is in Labour with priority of 9
+- Akarsh has a paper cut so he has a priority of 1
+- James has an arrow in his leg so he gets a priority of 7
+- Naida's stomach hurts so she gets a priority of 3
+- Richard fractured his wrist so priority of 5
+- and lastly Leah's stomach also hurts
+
+We want to process these patients by highest priority first. This means the hospital would serve Mary first.
+
+Followed by James.
+
+However, then something happens, suppose Naida’s stomach condition worsens as she starts vomiting. Her priority gets updated to 6
+
+Because of this, Naida gets served when the hospital is finished with James.
+
+During this time, Richard gets impatient and leaves. He goes to another clinic down the street, so he no longer needs to be accounted for.
+
+Further suppose that Akarsh goes to take a drink of water and slips on the floor. As a result he cracks his head and needs immediate attention increasing his priority to 10.
+
+Once Naida is dealt with, Akarsh is next.
+
+Followed by Leah.
+
+<press>
+
+In the hospital example, we saw that it was very important to be able to dynamically update the priority of certain people.
+The Indexed Priority Queue (IPQ) data structure which lets us do this efficiently. The first step to using an IPQ is to assign index values to all the keys, thus forming a bidirectional mapping.
+
+So if we're going to use an indexed priority queue to track who should get served next in our hospital we need to assign each person a unique key index value between 0 and N non-inclusive. Note this this mapping is intended to be bidirectional so I would advise using a bidirectional hashtable to be able to flip back and fourth between the key and its key-index. Basically any operation on the IPQ will require the associated key-index of a particular key.
+
+So you're probably wondering why I'm saying that we need to map the keys to indexes in the domain [0, N). The reason for doing this is that typically priority queues are implemented as heaps under the hood which internally use arrays, which we want to facilitate indexing into; this will become apparent shortly.
+I will say though, that often, and I mean very often, the keys themselves are integers in the range [0, N) so there’s no need to construct a mapping. However, it is handy to be able to support any type of keys such as names.
+
+We can think of the IPQ as an ADT with operations we want to support. There are about a dozen or so operations we want our IPQ to support which are:
+- deleting keys, 
+- getting the value associated with a key
+- checking if a key exists in the PQ
+- getting the key index with the smallest value
+- getting the smallest value in the PQ
+- being able to insert and update key-value pairs
+- and finally, the specialized update operations increase and decrease key which we will talk about later.
+For all these operations, you need the key-index associated with the particular key you're dealing with. Throughout these slides I will be denoting the key-index simply as the variable 'ki' to distinguish it from other index values.
+
+An IPQ can be implemented in several ways, some ways with really good time complexities using specialized heap structures, however we're going to cover the binary heap implementation for simplicity. You will notice that the time complexity for all the operations are either constant or logarithmic, which is really good. In a traditional PQ, the remove and update operations are linear because we are not maintaining a mapping to the position of where our values exist in the heap.
+
+---------------------------
+
+Before we dive into the IPQ per se, I want to spend a few slides giving a refresher on the traditional PQ data structure, which only supports values, not key-value pairs. Still, both DSs are very similar and most people would consider them the same although there is a key difference IMO.
+
+Recall that a very common way to represent a binary heap is with an array, since every node is indexed sequentially.
+
+So the first thing to recall is that a very common way to represent a binary heap is with an array since every node can be indexed sequentially.
+
+So if we were to represent the following binary heap in an array, we would gets this array of values. <pause>
+
+If we know the index of a node i, we can figure out what its left and right child nodes are using simple formulas. The left child is 2 times i plus 1 and the right child is 2 times i plus 2 assuming indexes are zero based.
+
+For example, what are children of the node at index 4?
+
+Well, we can just plug i into the two formulas I just gave you to obtain indexes 9 and 10. Of course, you can also run the math backwards to figure out what the parent of a given node is. both of these are especially useful when you're either walking up or down the tree.
+
+Whenever you want to insert a new value into the PQ you insert the new value at the insertion position at the bottom right of the binary tree.
+
+Suppose we want to insert the value 8. This would violate the heap invariant, so we bubble up the value until the invariant is met.
+
+So swap nodes 5 and 12. The heap invariant is still not satisfied so let's swap again.
+
+Now swap nodes 2 and 5. Now the tree is balanced.
+
+<press>
+
+Now let's review how removals are done. In a traditional PQ, to remove items, search for the element you want to remove and then swap with the last node, perform the removal and finally bubble up or down the swapped value.
+
+For this example, suppose we want to remove node the node with value 5.
+
+We don't know where the node with value 5 is within our PQ, so we have to search for it, this is one of the major differences between a PQ and an IPQ.
+
+So start at node 0 and process each node sequentially until a node with value 5 is found, if any.
+
+...
+
+So we found a node with a value of 5, so to actually remove it from the heap swap it with the rightmost bottom node.
+
+Once that is done, remove node 5 from the tree.
+
+Now the purple node we swapped into 5's position may not satisfy the heap invariant, so we need to either move it up or down the tree. In this case, since the purple node has a value of 1 which is smaller than its children and we're dealing with a max heap we'll want to move the node down.
+
+<press>
+
+So that was a quick recap of just about everything you need to know about the traditional PQ, now let's talk about implementing an IPQ with a binary heap.
+
+---------------------------
+
+For the following examples, suppose we're dealing with N people with different priorities we need to serve. Perhaps because we're prioritizing people for a queue at a hospital, a waiting line at a restaurant, or who knows what. The main thing is that we'll assume the values can dynamically change and that we always want to serve the person with the lowest priority.
+
+To figure out who to serve next we'll use a Min IPQ to sort by lowest value first.
+
+The first step as mentioned before is to assign each person a unique index value between [0, N), these are the key-index values in the second column beside each person's name.
+
+Then i'm going to give each person initial values to place inside IPQ. These will be maintained by the IPQ once inserted. Note that values can be any comparable value not only integers as shown here. This means we can have strings, objects or whatever type of data as a value, but for this example integers is a lot easier to visualize.
+
+If I was to build a min indexed priority queue out of the key-value pairs I had on the last slide this is the heap I would get. Remember that unlike the previous example we're sorting by smallest value first since we're dealing with a min heap, I did this just to switch things up. I also believe that in general, min heaps are more common than max heaps.
+
+If we want to access the value for any given key k, first you need to find its key index 'ki' and do a lookup in the vals array maintained by the IPQ.
+
+Here's a good question, what value does the key "Bella" have in the IPQ?
+
+Well, first find Bella's key-index value which is 1
+
+Then index into the values array at index 1 to find the corresponding value for the key in the IPQ.
+
+Awesome, now we know how to get the value for any particular key in the IPQ, but now we might wonder how to get the index of the node for a particular key.
+
+To do that, we need to maintain some additional information, namely a Position Map we can use to tell us the index of a node in the heap for any given key-index 'ki'. For convenience I will store the Position Map as an array called 'pm' inside the IPQ.
+
+As an example, let's find out which node represents the key "Dylan"
+
+First find the key-index for “Dylan” which happens to be 3
+
+Then lookup index 3 in the position map to tell you where Dylan is in the heap. It looks like Dylan is in the node at index 7 highlighted in orange.
+
+Here's a follow up question, where is "George" in the heap? I'll give you a quick moment to figure that out before I give the answer. <pause>
+
+Alright, so with just about every operation, the first step is to find the key-index for the key we care about which is George.
+
+Then we can use the key-index to do a lookup inside the Position Map and find that the node for George, which happens to be Node 1.
+
+Great, now we know how to lookup the node for a given key, but how do we find the key for a given node? This inverse lookup will prove to be a useful operation; say you want to know which key is associated with the root node at index 0, well you need to be able to do an inverse lookup to figure that out.
+
+To maintain the inverse lookup for nodes to keys, we'll need to maintain an inverse lookup table. I will denote this lookup table as 'im' short for Inverse Map.
+
+Let's see if we can figure out which person is represented in the node at index 2.
+
+To do that, simply do a lookup in the inverse map at index 2.
+
+That gives us information about which key-index is associated with that node.
+
+Knowing the key-index enables us to retrieve the actual key by doing a lookup in our bidirectional hashtable. In this case the node at position 2 represents the key "Anna". 
+<pause>
+
+Followup question, to make sure you're still paying attention, which key is being represented in the node at index position 3?
+
+Same as before, find the key-index through the Inverse Map.
+
+Then with the key-index figure out the actual key from the bidirectional hashtable.
+
+We can then conclude that the node at position 3 represents the key "Isaac"
+
+---------------------------------
+
+What we just covered was how an indexed PQ is structured internally, and what all the moving parts are, now we want to actually do some useful operations with this IPQ, such as inserting new key-value pairs, removing key-value pairs based on key, and also updating the value associated with a key. These are all possible and actually very similar to how you would do it in a regular PQ.
+
+Insertion is nearly the same except that we have to update the Position Map 'pm' and the Inverse Map 'im' to reflect the movement of the key-value pairs. Suppose we want to insert the key "Mary" with a value of 2 into the IPQ. What we first have to do is assign Mary a unique key-index value. Then we're going to insert the new key-value pair at the insertion position.
+
+Notice that upon insertion we updated all our arrays at index 12 to reflect that a new value was inserted.
+
+Currently the heap invariant is not satisfied since the new node at index 12 has a value less then node 5.
+
+To resolve this we're going to swap the newly inserted value upwards until the heap invariant is satisfied. When swapping nodes we need to update the Position Map and the Inverse Map by swapping the values of the two nodes we're exchanging. The values array does not need to be touched since it gets indexed by the key-index value that we get from the map and not the node index per se.
+
+It turn out that the heap invariant is still not satisfied so keep swapping upwards.
+
+<press & pause>
+
+<press>
+
+Let's have a look at some pseudo code for insertions. In this snippet the user calling this function needs to provide a valid key index as well as a non null value they want to insert.
+
+The first thing I do is store the value associated with the key inside the 'values' array.
+
+Then I update the Position Map and the Inverse Map to reflect the fact that a new key-value pair has been inserted into the IPQ.
+
+Finally I move the node up the heap until the heap invariant is satisfied. Let's take a closer look at this swim method to see how that happens.
+
+Here we are looking at the swim method, you'll notice that it has two supporting functions, 'swap' and 'less'. 'Swap' simply exchanges two nodes based on index, and 'less' determines if node i has a value less than node j.
+
+The logic for the swim function is fairly simple, it begins by finding the index of the parent node and walking up the tree.
+
+Every iteration we walk up one layer in the tree if the index of the current node is not the root node and the value of the current node is less than parent node. Remember that we're dealing with a min heap and want small values to be as high up as possible in our heap.
+
+To actually issue a node exchange, simply call the 'swap' function and provide the index of the current node and the parent node, and then update the current node and parent index value.
+
+I also want to talk about how the swapping actually occurs, because it's different from the traditional PQ. In this 'swap' method we're not actually moving around any values in the values array, we're only swapping around index values. Remember that the values array is indexed by the key-index, not the node index, so effectively the values array can remain constant while we update the Inverse Map and the Position Map.
+
+First we update the positions of where a particular key-index values are found in the IPQ, remember what the Position Map is: it is the position of which node index a given key-index is found at. So we can do a straight forward swap by indexing into the inverse map to find the key-index values and swap indexes i and j.
+
+Followed by this is, simply update the key-index values associated with nodes i and j in the Inverse Map, this consists of a straight forward exchange.
+
+-------------------------------
+
+Next up I want to talk about polling and removing elements from an IPQ. Polling and removing in a min indexed binary heap are both O(log(n)) operations rather than O(n) for a traditional PQ since node position lookups are constant, but repositioning is still O(log(n))
+
+Let's jump into an example. Suppose we want to poll the root node, this is something we often want to do often since it'll give use the key-value pair which has the lowest value in the heap.
+
+First step with removing is to exchange the root node with the bottom right node.
+
+As we do that remember to swap the index values. Now we can remove the red node from the tree.
+
+As we remove the value let's make sure we store the key-value pair we're removing to return it from the function we're calling.
+
+Cleanup the removed node.
+
+Finally restore the heap invariant by moving the swapped purple node down. Since the left the right child nodes have an equal value of 2 let's default to selecting the left one.
+
+<press>
+
+<press>
+
+Let's do a slightly more involved removal, by removing a specific key from the IPQ. In this example, we're going to remove "Laura".
+
+First thing we want to do is get the key-index for whatever key we're working with, so in this case 'ki' is equal to 11.
+
+Once we know the key-index we can use that information to locate the node in the heap by looking inside the position map.
+
+Then swap the node we want to remove, that is the node which contains the key-value pair for Laura and exchange it with the bottom rightmost node.
+
+Store the key-value pair before the actual removal.
+
+Cleanup the removed node.
+
+Finally restore heap invariant by moving the swapped purple node up or down. We're going to make the purple node move down because it has a large value.
+
+<press>
+
+<press><pause>
+
+Let's look at some pseudo code for removing key-value pairs. The code is also very short, only 5 lines plus three cleanup lines.
+
+The first thing to do is exchange the position of the node to remove and the bottom rightmost node which is always at index position 'sz', short for size of the heap.
+
+Once we've exchanged the nodes, the bottom rightmost node is now in the position where the node we wanted to remove was, we need to move it either up or down the heap to satisfy the heap invariant. We don't know which it will be, so we try moving the node up and down, hence the sink and swim.
+
+Lastly I just cleanup the values associated with the node we wanted to remove. You can also return the key-value pair being removed, but I didn't bother here.
+
+Let's also take a quick look at the sink method so we understand how that works. 
+
+To sink a node, we want to select the child node with the smallest value, and defaulting to the left node when there's a tie.
+
+In this next block I update the smallest of the left or the right child if the right child node index is within the size of the heap and its value is less than left node.
+
+The stopping condition is if there is no other left child node or we cannot sink the current node any further.
+
+Lastly we want to make sure we swap the current node with whichever was the node with the smallest value.
+
+
+------------------------
+
+
+The last core operation we can do on an IPQ is key-value pair updates. Similar to removals, updates in a min indexed binary heap also take logarithmic time due to constant time lookup time to find the node, and the logarithmic time to adjust where the key-value pair should appear in the heap.
+
+Let's just dive in, suppose we want to update the value of the key "Carly" to now have a value of 1.
+
+Like every operation, find the key-index for the key we want to work with. The 'ki' for "Carly" happens to be 2
+
+Then we can use that key-index value to update the values array with the new value.
+
+Of course the heap invariant may not be satisfied, so we need to move the node either up or down the heap.
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+The pseudocode for updating the value of a key is super simple, simply update the value in the values array and move the node either up or down the heap, it's that easy.
+
+Alright, so there was nothing too special about updates, but the part I really wanted to get to was increase and decrease key. In many applications such as Dijkstra’s or Prim's algorithm it is often useful to only update a given key to make its value either always smaller (or larger). In the event that a worse value is given the value in the IPQ should not be updated. In such situations it is useful to define a more restrictive form of update operation we call increaseKey(ki, v) or decreaseKey(ki, v) depending on whether you always want to increase the value associated with a key, or always try to decrease the value associated with a key.
+
+Both of these operations are very simple, they simply consist of doing an if statement before performing an update operation, which either increases or decreases the value associated with a key. So bottom line, these two functions are just convenience methods that wrap a get operation with an if statement to update a value.
+
+Well that's all I got for you on the IPQ, let me know if you have any questions, I do love answering those. Next video I should be showing you some source code for a min indexed binary heap. Remember you can always go see that source code on my data structures github repository, there should be a link in the description.
+
+As always, thanks for watching. Please like this video if you learned something and subscribe for more mathematics and computer science videos.
+
+[outro sound]

@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<meta charset="UTF-8">
+	<title>
+A walk through the SA-IS algorithm - 		Screwtape's Notepad
+	</title>
+        <link rel="stylesheet" href="typesetter.css">
+        <link rel="stylesheet" href="jottings.css">
+    </head>
+    <body>
+	<header>
+	    <h1>Screwtape's Notepad</h1>
+	    <nav>
+		<ul>
+		    <li><a href="./">Home</a>
+		    <li><a href="all_pages.html">All pages</a>
+		</ul>
+	    </nav>
+	</header>
+<h1>A walk through the SA-IS Suffix Array Construction Algorithm</h1>
+<p>Some time ago, while looking for solutions to some string-searching problem
+I was having, I stumbled across the <a href="http://en.wikipedia.org/wiki/Suffix_array">Suffix Array</a> data-structure. It
+seemed promising, so I looked up the algorithm Wikipedia recommended (the
+"SA-IS" algorithm from the paper "Linear Suffix Array Construction by Almost
+Pure Induced-Sorting" by G. Nong, S. Zhang and W. H. Chan). I downloaded the
+paper from <a href="https://code.google.com/p/ge-nong/">the authors' site</a> and I read through it.</p>
+<p>Unfortunately, the paper was aimed at an audience of Computer Science
+researchers well-versed in the literature of the field, rather than an industry
+programmer with some spare-time and curiosity, so it made almost no sense to
+me. I decided I would research this research, figure out how the SA-IS
+algorithm worked, and write up the most accessible explanation I could muster.</p>
+<p>Before we begin, though, some caveats:</p>
+<ul>
+<li>I will explain the ideas behind the SA-IS algorithm, but I won't go into
+   detail about <em>why</em> they work. For fully-worked proofs, see the original
+   paper.</li>
+<li>At any point where I have to choose between an efficiently-implemented
+   example and a simple-to-explain example, I'll pick simplicity. You can
+   probably come up with practical optimisations yourself.</li>
+<li>Although SA-IS can be generally applied to strings with an alphabet of any
+   size, the code shown here is specialised to strings of 8-bit bytes, because
+   in practice that's what most people will want to do.</li>
+<li>The SA-IS algorithm itself is simple enough, but requires storage for
+   intermediate values. To keep things simple I'll ignore storage costs, but G.
+   Nong's follow-up paper, "Practical Linear-Time O(1)-Workspace Suffix Sorting
+   for Constant Alphabets" discusses how to build a suffix-array in linear-time
+   and constant (working) space (obviously you need O(n) space to store the
+   resulting sorted array). It's basically the same as the SA-IS algorithm but
+   it's smarter about storing intermediate values.</li>
+<li>All the code examples are written to work with Python 3, and specifically
+   tested against Python 3.4.</li>
+</ul>
+<h2>What's a suffix array?</h2>
+<p>A suffix array is an index over a string that helps you find all the times
+some smaller string occurs inside it, if at all. A suffix array for a string
+with N characters will generally be an array of N integers, where each item of
+the array stores an offset into the string, representing the suffix of the
+string starting at that offset and continuing (as suffixes do) to the end.</p>
+<p>The important thing about a suffix-array is that it represents a <em>sorted</em>
+sequence of suffixes, so you can find some particular suffix—or all the
+suffixes beginning with some particular string—by using an ordinary binary
+search.</p>
+<p>Here's a simple Python function that generates a suffix array:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">naivelyMakeSuffixArray</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s">&quot;&quot;&quot;</span>
+<span class="s">...     A naive, slow suffix-array construction algorithm.</span>
+<span class="s">...     &quot;&quot;&quot;</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># Construct a list of suffixes of the source string.</span>
+<span class="o">...</span>     <span class="n">suffixes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">offset</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+<span class="o">...</span>         <span class="n">suffixes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source</span><span class="p">[</span><span class="n">offset</span><span class="p">:])</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># Sort the suffixes</span>
+<span class="o">...</span>     <span class="n">suffixes</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># Calculate the start offset of each suffix, storing them in</span>
+<span class="o">...</span>     <span class="c"># sorted order into the suffix array.</span>
+<span class="o">...</span>     <span class="n">suffixArray</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
+<span class="o">...</span>         <span class="n">offset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span>
+<span class="o">...</span>         <span class="n">suffixArray</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">suffixArray</span>
+</pre></div>
+
+
+<p>If we feed a string like <code>cabbage</code> into this algorithm, we get the correct
+suffix array in return:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">naivelyMakeSuffixArray</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;cabbage&#39;</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+</pre></div>
+
+
+<p>The string contains two instances of the character <code>a</code>, at indexes 1 and 4, and
+therefore two suffixes starting with <code>a</code>. Sure enough, the indexes 1 and 4 are
+grouped together in the suffix array. Index 1 comes first, because that suffix
+begins with <code>ab</code>, which is alphabetically before index 4's <code>ag</code>.</p>
+<p>Note that although the indexes of the characters run 0 to 6, for a total of
+seven characters, the suffix array has <em>eight</em> offsets. The suffix beginning
+just after the last character and continuing to the end of the string is the
+empty suffix, containing no characters. Because it's the shortest possible
+suffix, it always winds up sorted to the beginning of the suffix array. Most
+people who want to use suffix arrays don't care about the empty suffix, but it
+turns out to be important for the SA-IS algorithm.</p>
+<p>The naive algorithm above just re-uses a standard O(n log n) sorting algorithm,
+plus it adds the overhead of building a list of suffixes and building a new
+array of offsets at the end. SA-IS manages to do the whole thing in O(n) time,
+faster than just the standard sorting on its own, a massive improvement. To
+achieve this speed, SA-IS takes advantage of certain features of suffix arrays
+that are not necessarily true of any old array of strings. </p>
+<h1>Concepts in SA-IS</h1>
+<p>Before we get into the details of the SA-IS algorithm, we need to cover the
+concepts that SA-IS is built on.</p>
+<h2>S-type and L-type suffixes</h2>
+<p>When sorting an array of suffixes of some string, SA-IS divides them into two
+groups: "S-type" suffixes and "L-type" suffixes. S-type suffixes are <em>smaller</em>
+(in the sorting sense) than the suffix to their right (and so must appear
+closer to the start of the finished suffix array) and L-type suffixes are
+<em>larger</em> than the suffix to their right (and so appear closer to the end).</p>
+<p>Let's take the string <code>cabbage</code> again. The suffix starting at offset 1 is
+<code>abbage</code>; the suffix starting to the right of it is <code>bbage</code>, and <code>abbage</code> comes
+before <code>bbage</code> alphabetically, so <code>abbage</code> is an S-type suffix. Meanwhile, the
+suffix starting at offset 5 is <code>ge</code>; the suffix starting to the right is <code>e</code>,
+and <code>ge</code> comes after <code>e</code>, so <code>ge</code> is an L-type suffix.</p>
+<p>We can figure out whether the suffix starting at some particular place is
+S-type or L-type by comparing the character at that place with the character
+to the right, but what if both characters are the same? For example, the suffix
+at offset 2 is <code>bbage</code>, and the suffix to the right is <code>bage</code>. You could just
+use a normal string comparison, but imagine if one suffix was "a million <code>b</code>s
+followed by <code>age</code>" and the other suffix was "a million and one <code>b</code>s followed by
+<code>age</code>"—that comparison would get expensive quickly! However, because both are
+suffixes of the same string, it turns out that when a character is the same as
+the character to its right, then its type is the same as the other character
+too. <code>bage</code> turns out to be L-type, and so <code>bbage</code> is also L-type.</p>
+<p>Therefore, if we know whether the suffix at some offset is L-type or S-type, we
+can easily calculate the type of every suffix to the left of that offset by
+starting at that point and walking left, comparing characters and storing
+types. But what about the right-most suffix? It doesn't have a right-hand
+suffix to compare to, so we can't figure out whether it's larger or smaller!
+Well, in SA-IS the right-most suffix is always the empty suffix, and it's
+defined to always be S-type.</p>
+<p>Now we have a complete set of rules for determining the type of each suffix of
+a string:</p>
+<ol>
+<li>The empty suffix at the end of the string is S-type by definition, and
+   therefore the penultimate suffix (containing just the last character) is
+   always L-type (since it's alphabetically after the empty suffix).</li>
+<li>If the character at offset X is alphabetically larger than the character at
+   offset X+1, the suffix starting at offset X is L-type.</li>
+<li>If the character at offset X is the same as the character at offset X+1, and
+   the suffix starting at offset X+1 is L-type, then the suffix starting at
+   offset X is also L-type.</li>
+<li>Otherwise, the suffix starting at offset X is S-type.</li>
+</ol>
+<p>If we define some values to represent "S-type" and "L-type":</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">S_TYPE</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="s">&quot;S&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">L_TYPE</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="s">&quot;L&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>...we can make a function that takes a string and maps out whether each
+character of the source string as S-type or L-type, following the above rules.</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">buildTypeMap</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s">&quot;&quot;&quot;</span>
+<span class="s">...     Builds a map marking each suffix of the data as S_TYPE or L_TYPE.</span>
+<span class="s">...     &quot;&quot;&quot;</span>
+<span class="o">...</span>     <span class="c"># The map should contain one more entry than there are characters</span>
+<span class="o">...</span>     <span class="c"># in the string, because we also need to store the type of the</span>
+<span class="o">...</span>     <span class="c"># empty suffix between the last character and the end of the</span>
+<span class="o">...</span>     <span class="c"># string.</span>
+<span class="o">...</span>     <span class="n">res</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># The empty suffix after the last character is S_TYPE</span>
+<span class="o">...</span>     <span class="n">res</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">S_TYPE</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># If this is an empty string...</span>
+<span class="o">...</span>     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="o">...</span>         <span class="c"># ...there are no more characters, so we&#39;re done.</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="n">res</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># The suffix containing only the last character must necessarily</span>
+<span class="o">...</span>     <span class="c"># be larger than the empty suffix.</span>
+<span class="o">...</span>     <span class="n">res</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">L_TYPE</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># Step through the rest of the string from right to left.</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]:</span>
+<span class="o">...</span>             <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">L_TYPE</span>
+<span class="o">...</span>         <span class="k">elif</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">L_TYPE</span><span class="p">:</span>
+<span class="o">...</span>             <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">L_TYPE</span>
+<span class="o">...</span>         <span class="k">else</span><span class="p">:</span>
+<span class="o">...</span>             <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">S_TYPE</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">res</span>
+</pre></div>
+
+
+<p>The <code>buildTypeMap()</code> function stores its map as a <code>bytearray</code>, so if we want to
+print out a type-map we'll need to decode it into text first:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">showTypeMap</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">))</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">buildTypeMap</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">))</span>
+</pre></div>
+
+
+<p>If we look at the type map of <code>cabbage</code>, we can see the S-type and L-type
+suffixes are just as we expected:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">showTypeMap</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;cabbage&#39;</span><span class="p">)</span>
+<span class="n">cabbage</span>
+<span class="n">LSLLSLLS</span>
+</pre></div>
+
+
+<p>Note again that the type-map is longer than the input text, because it's
+storing an entry for the empty suffix.</p>
+<h2>LMS characters</h2>
+<p>Let's say that some particular character in our input string is an
+"S character" if an S-type suffix starts at that location (and likewise for
+an "L character"). A "left-most S character" (or "LMS character" for short), is
+just an S character that has an L character to its immediate left. The first
+character in the string can never be an LMS character (because there's no
+character to the immediate left, let alone an L character), but apart from that
+the definition is straightforward. Therefore, we can very easily write
+a function to implement this test:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">isLMSChar</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">typemap</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s">&quot;&quot;&quot;</span>
+<span class="s">...     Returns true if the character at offset is a left-most S-type.</span>
+<span class="s">...     &quot;&quot;&quot;</span>
+<span class="o">...</span>     <span class="k">if</span> <span class="n">offset</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="bp">False</span>
+<span class="o">...</span>     <span class="k">if</span> <span class="n">typemap</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span> <span class="o">==</span> <span class="n">S_TYPE</span> <span class="ow">and</span> <span class="n">typemap</span><span class="p">[</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">L_TYPE</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="bp">True</span>
+<span class="o">...</span> 
+<span class="o">...</span>     <span class="k">return</span> <span class="bp">False</span>
+</pre></div>
+
+
+<p>...and we can also extend our <code>showTypeMap()</code> function to point out which
+characters in the string are LMS characters:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">showTypeMap</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">typemap</span> <span class="o">=</span> <span class="n">buildTypeMap</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="o">...</span> 
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">))</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">typemap</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">))</span>
+<span class="o">...</span> 
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+<span class="o">...</span>             <span class="s">&quot;^&quot;</span> <span class="k">if</span> <span class="n">isLMSChar</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">typemap</span><span class="p">)</span> <span class="k">else</span> <span class="s">&quot; &quot;</span>
+<span class="o">...</span>             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">typemap</span><span class="p">))</span>
+<span class="o">...</span>         <span class="p">))</span>
+</pre></div>
+
+
+<p>Now we can see where the LMS characters are in <code>cabbage</code>:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">showTypeMap</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;cabbage&#39;</span><span class="p">)</span>
+<span class="n">cabbage</span>
+<span class="n">LSLLSLLS</span>
+ <span class="o">^</span>  <span class="o">^</span>  <span class="o">^</span>
+</pre></div>
+
+
+<p>Note that as a side-effect of our definition, the empty suffix is regarded as
+an LMS character, even though it's not a character as such.</p>
+<p>If we try a word that has consecutive S characters, we can see that only the
+left-most S character is marked as an LMS character:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">showTypeMap</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;caabage&#39;</span><span class="p">)</span>
+<span class="n">caabage</span>
+<span class="n">LSSLSLLS</span>
+ <span class="o">^</span>  <span class="o">^</span>  <span class="o">^</span>
+</pre></div>
+
+
+<h2>LMS substrings</h2>
+<p>Looking at the examples above, you can see that LMS characters are somewhat
+sparse throughout the input string. An "LMS substring" is a portion of the
+input string starting at one LMS character and continuing up to (but not
+including) the next LMS character. In the string <code>cabbage</code> examined above,
+there are two LMS substrings: <code>abb</code> and <code>age</code>. The SA-IS algorithm does its
+magic by sorting LMS substrings, but we can't use an ordinary string comparison
+function because we don't necessarily know how long each LMS string is. We'd
+need to walk along the string to find the beginning of the next LMS character,
+and if we're walking the string anyway, we might as well do the comparison at
+the same time.</p>
+<p>The rules for comparing LMS substrings are straightforward: they must have the
+same length and the same characters in the same order. Here's a function that,
+given an input string, its typemap and two offsets into that string, determines
+whether the LMS substrings starting at those offsets are equal:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">lmsSubstringsAreEqual</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">typemap</span><span class="p">,</span> <span class="n">offsetA</span><span class="p">,</span> <span class="n">offsetB</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s">&quot;&quot;&quot;</span>
+<span class="s">...     Return True if LMS substrings at offsetA and offsetB are equal.</span>
+<span class="s">...     &quot;&quot;&quot;</span>
+<span class="o">...</span>     <span class="c"># No other substring is equal to the empty suffix.</span>
+<span class="o">...</span>     <span class="k">if</span> <span class="n">offsetA</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="ow">or</span> <span class="n">offsetB</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="bp">False</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">...</span>     <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="o">...</span>         <span class="n">aIsLMS</span> <span class="o">=</span> <span class="n">isLMSChar</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">offsetA</span><span class="p">,</span> <span class="n">typemap</span><span class="p">)</span>
+<span class="o">...</span>         <span class="n">bIsLMS</span> <span class="o">=</span> <span class="n">isLMSChar</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">offsetB</span><span class="p">,</span> <span class="n">typemap</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="c"># If we&#39;ve found the start of the next LMS substrings...</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">aIsLMS</span> <span class="ow">and</span> <span class="n">bIsLMS</span><span class="p">):</span>
+<span class="o">...</span>             <span class="c"># ...then we made it all the way through our original LMS</span>
+<span class="o">...</span>             <span class="c"># substrings without finding a difference, so we can go</span>
+<span class="o">...</span>             <span class="c"># home now.</span>
+<span class="o">...</span>             <span class="k">return</span> <span class="bp">True</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="n">aIsLMS</span> <span class="o">!=</span> <span class="n">bIsLMS</span><span class="p">:</span>
+<span class="o">...</span>             <span class="c"># We found the end of one LMS substring before we reached</span>
+<span class="o">...</span>             <span class="c"># the end of the other.</span>
+<span class="o">...</span>             <span class="k">return</span> <span class="bp">False</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="n">string</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">offsetA</span><span class="p">]</span> <span class="o">!=</span> <span class="n">string</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">offsetB</span><span class="p">]:</span>
+<span class="o">...</span>             <span class="c"># We found a character difference, we&#39;re done.</span>
+<span class="o">...</span>             <span class="k">return</span> <span class="bp">False</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+
+
+<p>This function doesn't explicitly test for reaching the end of the string, but
+remember that the empty suffix at the end of the string is always regarded as
+an LMS character—if <code>i + offsetA</code> reaches the end of the string, then
+<code>aIsLMS</code> must be true, and the code will always take one of the first two <code>if</code>
+statements in the body of the <code>while</code> loop.</p>
+<p>Let's take a string with some repeated content:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">showTypeMap</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;rikki-tikki-tikka&#39;</span><span class="p">)</span>
+<span class="n">rikki</span><span class="o">-</span><span class="n">tikki</span><span class="o">-</span><span class="n">tikka</span>
+<span class="n">LSLLLSLSLLLSLSLLLS</span>
+ <span class="o">^</span>   <span class="o">^</span> <span class="o">^</span>   <span class="o">^</span> <span class="o">^</span>   <span class="o">^</span>
+</pre></div>
+
+
+<p>You can see the LMS substrings at offset 1 and offset 7 both have the same
+content (<code>ikki</code>) and the same types (<code>SLLL</code>). Therefore, those two LMS
+substrings should be equal:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;rikki-tikki-tikka&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">tm</span> <span class="o">=</span> <span class="n">buildTypeMap</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">lmsSubstringsAreEqual</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">tm</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="bp">True</span>
+</pre></div>
+
+
+<p>On the other hand, the LMS substring at offset 13 has the same length and the
+same types, but different content (<code>ikka</code>), so it should be reported as
+unequal:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">lmsSubstringsAreEqual</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">tm</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span>
+<span class="bp">False</span>
+</pre></div>
+
+
+<h2>Bucket sorting</h2>
+<p>Bucket sorting is a common operation even outside the world of suffix arrays,
+but since it's important to SA-IS here's a brief description. Since we're
+making a sorted suffix array, we know that all the suffixes beginning with the
+same character will wind up grouped together. The string <code>cabbage</code> has two
+<code>a</code>s, two <code>b</code>s, one <code>c</code>, and no <code>d</code>s, so we can already predict that the first
+two indexes in the suffix array will point at suffixes beginning with <code>a</code>, the
+<code>b</code>s will take the next two slots, then one for <code>c</code> and none for <code>d</code>.</p>
+<p>Given a string (and the size of its alphabet), the following function will
+figure out how many suffixes of the string begin with each character of the
+alphabet; colloquially, how many suffixes are in the "bucket" for each
+character:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">findBucketSizes</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">alphabetSize</span><span class="o">=</span><span class="mi">256</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">alphabetSize</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
+<span class="o">...</span>         <span class="n">res</span><span class="p">[</span><span class="n">char</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">res</span>
+</pre></div>
+
+
+<p>We could find the bucket sizes for <code>cabbage</code> using the traditional ASCII
+encoding for each letter, but ASCII is a 128-character alphabet, and that would
+make for an awkwardly-long list. Instead, let's make up our own encoding where
+<code>a</code> = 0, <code>b</code> = 1, <code>c</code> = 2, etc.:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">encoded_cabbage</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Because <code>g</code> is the alphabetically largest letter in our string, we only need
+7 characters in our alphabet to spell it. And so, our bucket sizes are:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">findBucketSizes</span><span class="p">(</span><span class="n">encoded_cabbage</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
+
+<p>As predicted, the <code>a</code> bucket has two suffixes, <code>b</code> has two, <code>c</code> has one, <code>d</code>
+has none, and so on.</p>
+<p>Now that we know how big each bucket is, it's simple to derive an array where
+each character's index points at the beginning of the corresponding bucket in
+the suffix array:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">findBucketHeads</span><span class="p">(</span><span class="n">bucketSizes</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">offset</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">...</span>     <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">bucketSizes</span><span class="p">:</span>
+<span class="o">...</span>         <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
+<span class="o">...</span>         <span class="n">offset</span> <span class="o">+=</span> <span class="n">size</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">res</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cabbage_buckets</span> <span class="o">=</span> <span class="n">findBucketSizes</span><span class="p">(</span><span class="n">encoded_cabbage</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">findBucketHeads</span><span class="p">(</span><span class="n">cabbage_buckets</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+</pre></div>
+
+
+<p>The empty suffix always winds up at the beginning of the suffix array in index
+0, so the <code>a</code> bucket begins at index 1. There's two <code>a</code>s so the <code>b</code> bucket
+begins at 3, and so on. Note that the buckets for <code>d</code> and <code>e</code> both begin at
+index 6, but there's no <code>d</code> suffixes so that won't cause a problem.</p>
+<p>We can easily find the indexes of the end of each bucket in a similar fashion:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">findBucketTails</span><span class="p">(</span><span class="n">bucketSizes</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">offset</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">...</span>     <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">bucketSizes</span><span class="p">:</span>
+<span class="o">...</span>         <span class="n">offset</span> <span class="o">+=</span> <span class="n">size</span>
+<span class="o">...</span>         <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">res</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">findBucketTails</span><span class="p">(</span><span class="n">cabbage_buckets</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+</pre></div>
+
+
+<p>And now, having covered all the background material, let's talk about the
+algorithm itself.</p>
+<h1>The SA-IS Algorithm</h1>
+<p>The SA-IS algorithm's name comes from the fact that it produces a Suffix Array
+by Induced Sorting. What is "Induced Sorting"? Well, the tricky part of
+building a suffix array turns out to be the LMS suffixes. If you imagine
+a simple string like "AAAAA", it's very easy to create a sorted suffix list
+because all the suffixes are L-type, so you can just list them out. LMS
+suffixes are the knots in the string that make the problem hard, so if you have
+them properly sorted it's easy to slot all the L-type and other S-type suffixes
+into place.</p>
+<p>At a very high level, the SA-IS algorithm looks like this (don't worry about
+the functions we haven't defined yet, we'll get to them in the following
+sections):</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">makeSuffixArrayByInducedSorting</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">alphabetSize</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s">&quot;&quot;&quot;</span>
+<span class="s">...     Compute the suffix array of &#39;string&#39; with the SA-IS algorithm.</span>
+<span class="s">...     &quot;&quot;&quot;</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># Classify each character of the string as S_TYPE or L_TYPE</span>
+<span class="o">...</span>     <span class="n">typemap</span> <span class="o">=</span> <span class="n">buildTypeMap</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># We&#39;ll be slotting suffixes into buckets according to what</span>
+<span class="o">...</span>     <span class="c"># character they start with, so let&#39;s precompute that info now.</span>
+<span class="o">...</span>     <span class="n">bucketSizes</span> <span class="o">=</span> <span class="n">findBucketSizes</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">alphabetSize</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># Use a simple bucket-sort to insert all the LMS suffixes into</span>
+<span class="o">...</span>     <span class="c"># approximately the right place the suffix array.</span>
+<span class="o">...</span>     <span class="n">guessedSuffixArray</span> <span class="o">=</span> <span class="n">guessLMSSort</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">bucketSizes</span><span class="p">,</span> <span class="n">typemap</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># Slot all the other suffixes into guessedSuffixArray, by using</span>
+<span class="o">...</span>     <span class="c"># induced sorting. This may move the LMS suffixes around.</span>
+<span class="o">...</span>     <span class="n">induceSortL</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">guessedSuffixArray</span><span class="p">,</span> <span class="n">bucketSizes</span><span class="p">,</span> <span class="n">typemap</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">induceSortS</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">guessedSuffixArray</span><span class="p">,</span> <span class="n">bucketSizes</span><span class="p">,</span> <span class="n">typemap</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># Create a new string that summarises the relative order of LMS</span>
+<span class="o">...</span>     <span class="c"># suffixes in the guessed suffix array.</span>
+<span class="o">...</span>     <span class="n">summaryString</span><span class="p">,</span> <span class="n">summaryAlphabetSize</span><span class="p">,</span> <span class="n">summarySuffixOffsets</span> <span class="o">=</span> \
+<span class="o">...</span>         <span class="n">summariseSuffixArray</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">guessedSuffixArray</span><span class="p">,</span> <span class="n">typemap</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># Make a sorted suffix array of the summary string.</span>
+<span class="o">...</span>     <span class="n">summarySuffixArray</span> <span class="o">=</span> <span class="n">makeSummarySuffixArray</span><span class="p">(</span>
+<span class="o">...</span>         <span class="n">summaryString</span><span class="p">,</span>
+<span class="o">...</span>         <span class="n">summaryAlphabetSize</span><span class="p">,</span>
+<span class="o">...</span>     <span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># Using the suffix array of the summary string, determine exactly</span>
+<span class="o">...</span>     <span class="c"># where the LMS suffixes should go in our final array.</span>
+<span class="o">...</span>     <span class="n">result</span> <span class="o">=</span> <span class="n">accurateLMSSort</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">bucketSizes</span><span class="p">,</span> <span class="n">typemap</span><span class="p">,</span>
+<span class="o">...</span>             <span class="n">summarySuffixArray</span><span class="p">,</span> <span class="n">summarySuffixOffsets</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># ...and once again, slot all the other suffixes into place with</span>
+<span class="o">...</span>     <span class="c"># induced sorting.</span>
+<span class="o">...</span>     <span class="n">induceSortL</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">bucketSizes</span><span class="p">,</span> <span class="n">typemap</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">induceSortS</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">bucketSizes</span><span class="p">,</span> <span class="n">typemap</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+
+
+<p>As an aid to illustrating the algorithm in action, we'll use the following
+function to show the state of a suffix array in progress. We'll store -1 in
+suffix array elements that are uninitialised, and since we'll be demonstrating
+this algorithm on short strings, we can get away with assuming each offset will
+be one or two digits long (the same length as "-1") and render intermediate
+states of a suffix array like this:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">showSuffixArray</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%02d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">each</span> <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">arr</span><span class="p">))</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">print</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+<span class="o">...</span>                 <span class="s">&quot;^^&quot;</span> <span class="k">if</span> <span class="n">each</span> <span class="o">==</span> <span class="n">pos</span> <span class="k">else</span> <span class="s">&quot;  &quot;</span>
+<span class="o">...</span>                 <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
+<span class="o">...</span>         <span class="p">))</span>
+</pre></div>
+
+
+<p>This shows all the offsets in a suffix array:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">showSuffixArray</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="mo">02</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">04</span>
+</pre></div>
+
+
+<p>...and it also allows an individual cell in the array to be highlighted, to
+show the progress of whatever part of the algorithm we're looking at:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">showSuffixArray</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+<span class="mo">02</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">04</span>
+      <span class="o">^^</span>
+</pre></div>
+
+
+<h2>The first guess</h2>
+<p>We don't yet know exactly where our LMS suffixes should go in our sufffix
+array, so we start by putting them in approximately the right place with
+a bucket sort. All else being equal, a longer suffix (one occurring earlier in
+the string) sorts after a shorter suffix (one occurring later), so we'll go
+through the string from left-to-right and stack each LMS suffix we find at the
+tail-end of its bucket.</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">guessLMSSort</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">bucketSizes</span><span class="p">,</span> <span class="n">typemap</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s">&quot;&quot;&quot;</span>
+<span class="s">...     Make a suffix array with LMS-substrings approximately right.</span>
+<span class="s">...     &quot;&quot;&quot;</span>
+<span class="o">...</span>     <span class="c"># Create a suffix array with room for a pointer to every suffix of</span>
+<span class="o">...</span>     <span class="c"># the string, including the empty suffix at the end.</span>
+<span class="o">...</span>     <span class="n">guessedSuffixArray</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="n">bucketTails</span> <span class="o">=</span> <span class="n">findBucketTails</span><span class="p">(</span><span class="n">bucketSizes</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># Bucket-sort all the LMS suffixes into their appropriate bucket.</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)):</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">isLMSChar</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">typemap</span><span class="p">):</span>
+<span class="o">...</span>             <span class="c"># Not the start of an LMS suffix</span>
+<span class="o">...</span>             <span class="k">continue</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="c"># Which bucket does this suffix go into?</span>
+<span class="o">...</span>         <span class="n">bucketIndex</span> <span class="o">=</span> <span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="o">...</span>         <span class="c"># Add the start position at the tail of the bucket...</span>
+<span class="o">...</span>         <span class="n">guessedSuffixArray</span><span class="p">[</span><span class="n">bucketTails</span><span class="p">[</span><span class="n">bucketIndex</span><span class="p">]]</span> <span class="o">=</span> <span class="n">i</span>
+<span class="o">...</span>         <span class="c"># ...and move the tail pointer down.</span>
+<span class="o">...</span>         <span class="n">bucketTails</span><span class="p">[</span><span class="n">bucketIndex</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="c"># Show the current state of the array</span>
+<span class="o">...</span>         <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">guessedSuffixArray</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># The empty suffix is defined to be an LMS-substring, and we know</span>
+<span class="o">...</span>     <span class="c"># it goes at the front.</span>
+<span class="o">...</span>     <span class="n">guessedSuffixArray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">guessedSuffixArray</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">guessedSuffixArray</span>
+</pre></div>
+
+
+<p>So now we can guess the positions of the LMS substrings in our string, leaving
+all the other positions set to -1:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">cabbage_buckets</span> <span class="o">=</span> <span class="n">findBucketSizes</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;cabbage&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cabbage_types</span> <span class="o">=</span> <span class="n">buildTypeMap</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;cabbage&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cabbage_guess</span> <span class="o">=</span> <span class="n">guessLMSSort</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;cabbage&#39;</span><span class="p">,</span> <span class="n">cabbage_buckets</span><span class="p">,</span> <span class="n">cabbage_types</span><span class="p">)</span>
+<span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span>
+<span class="o">-</span><span class="mi">1</span> <span class="mo">04</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span>
+<span class="mo">07</span> <span class="mo">04</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span>
+</pre></div>
+
+
+<p>Because <code>guessLMSSort()</code> calls <code>showSuffixArray()</code> at various points of the
+process, we can trace its operation:</p>
+<ul>
+<li>the first LMS suffix it finds is <code>abbage</code> at index 1 in the string, so it
+  puts that at the end of the <code>a</code> bucket</li>
+<li>the next LMS suffix it finds is <code>age</code> at index 4, so it puts that immediately
+  before <code>abbage</code></li>
+<li>we hit the end of the source string, so we add the empty suffix at position
+  0 in the suffix array</li>
+</ul>
+<p>To fill in the rest of the positions, we're going to use "induced sorting";
+that is, determining where to put the other suffixes based on what's already in
+the array.</p>
+<h2>Induced sorting: L-type suffixes</h2>
+<p>Now that we have the LMS suffixes in our suffix array, we can extrapolate where
+all the other suffixes go. We start by scanning through our temporary suffix
+array and for each listed suffix, we check the suffix to the <em>left</em> of it in
+the original string - if that's L-type, we'll bucket-sort that one too.</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">induceSortL</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">guessedSuffixArray</span><span class="p">,</span> <span class="n">bucketSizes</span><span class="p">,</span> <span class="n">typemap</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s">&quot;&quot;&quot;</span>
+<span class="s">...     Slot L-type suffixes into place.</span>
+<span class="s">...     &quot;&quot;&quot;</span>
+<span class="o">...</span>     <span class="n">bucketHeads</span> <span class="o">=</span> <span class="n">findBucketHeads</span><span class="p">(</span><span class="n">bucketSizes</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># For each cell in the suffix array....</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">guessedSuffixArray</span><span class="p">)):</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="n">guessedSuffixArray</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+<span class="o">...</span>             <span class="c"># No offset is recorded here.</span>
+<span class="o">...</span>             <span class="k">continue</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="c"># We&#39;re interested in the suffix that begins to the left of</span>
+<span class="o">...</span>         <span class="c"># the suffix this entry points at.</span>
+<span class="o">...</span>         <span class="n">j</span> <span class="o">=</span> <span class="n">guessedSuffixArray</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="o">...</span>             <span class="c"># There is no useful information in the typemap at this</span>
+<span class="o">...</span>             <span class="c"># location; skip it.</span>
+<span class="o">...</span>             <span class="k">continue</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="n">typemap</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="n">L_TYPE</span><span class="p">:</span>
+<span class="o">...</span>             <span class="c"># We&#39;re only interested in L-type suffixes right now.</span>
+<span class="o">...</span>             <span class="k">continue</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="c"># Which bucket does this suffix go into?</span>
+<span class="o">...</span>         <span class="n">bucketIndex</span> <span class="o">=</span> <span class="n">string</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+<span class="o">...</span>         <span class="c"># Add the start position at the head of the bucket...</span>
+<span class="o">...</span>         <span class="n">guessedSuffixArray</span><span class="p">[</span><span class="n">bucketHeads</span><span class="p">[</span><span class="n">bucketIndex</span><span class="p">]]</span> <span class="o">=</span> <span class="n">j</span>
+<span class="o">...</span>         <span class="c"># ...and move the head pointer up.</span>
+<span class="o">...</span>         <span class="n">bucketHeads</span><span class="p">[</span><span class="n">bucketIndex</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">guessedSuffixArray</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+</pre></div>
+
+
+<p>If we feed this function our guess from before, we can watch it propagate
+L-type suffixes into the array:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">induceSortL</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;cabbage&#39;</span><span class="p">,</span> <span class="n">cabbage_guess</span><span class="p">,</span> <span class="n">cabbage_buckets</span><span class="p">,</span> <span class="n">cabbage_types</span><span class="p">)</span>
+<span class="mo">07</span> <span class="mo">04</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">06</span> <span class="o">-</span><span class="mi">1</span>
+<span class="o">^^</span>                     
+<span class="mo">07</span> <span class="mo">04</span> <span class="mo">01</span> <span class="mo">03</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">06</span> <span class="o">-</span><span class="mi">1</span>
+   <span class="o">^^</span>                  
+<span class="mo">07</span> <span class="mo">04</span> <span class="mo">01</span> <span class="mo">03</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">00</span> <span class="mo">06</span> <span class="o">-</span><span class="mi">1</span>
+      <span class="o">^^</span>               
+<span class="mo">07</span> <span class="mo">04</span> <span class="mo">01</span> <span class="mo">03</span> <span class="mo">02</span> <span class="mo">00</span> <span class="mo">06</span> <span class="o">-</span><span class="mi">1</span>
+         <span class="o">^^</span>            
+<span class="mo">07</span> <span class="mo">04</span> <span class="mo">01</span> <span class="mo">03</span> <span class="mo">02</span> <span class="mo">00</span> <span class="mo">06</span> <span class="mo">05</span>
+                  <span class="o">^^</span>
+</pre></div>
+
+
+<p>Tracing through the output above, we can see what it's done:</p>
+<ul>
+<li>we start at the first cell in the suffix array, which represents the empty
+  suffix at the end of the string</li>
+<li>the character before the empty suffix is <code>e</code> at offset 6, so we slot 6 into
+  the <code>e</code> bucket</li>
+<li>the next cell has the suffix <code>age</code> at offset 4, and the suffix to the left of
+  it is the L-type suffix <code>bage</code> at offset 3, so we slot 3 into the <code>b</code> bucket</li>
+<li>next is <code>abbage</code> at offset 1, offset 0 has the L-type suffix <code>cabbage</code>, so we
+  slot 0 into the <code>c</code> bucket</li>
+<li>we find <code>bage</code> at offset 3, which we stored two steps ago - but the
+  suffix at offset 2 (<code>bbage</code>) is still L-type, so we slot it into the <code>b</code>
+  bucket</li>
+<li>we find <code>bbage</code> at offset 2, but the suffix to its left is not L-type so
+  we move on</li>
+<li>we find <code>cabbage</code> at offset 0, but there's nothing to its left, so we
+  move on</li>
+<li>we find <code>e</code> at offset 6, and the suffix at offset 5 (<code>ge</code>) is L-type, so
+  we slot it into the <code>g</code> bucket</li>
+<li>we find <code>ge</code> at offest 5, but the suffix to its left is not L-type, so we're
+  done</li>
+</ul>
+<p>If we compare the above output to the result of the naive algorithm...</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">naivelyMakeSuffixArray</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;cabbage&#39;</span><span class="p">))</span>
+<span class="mo">07</span> <span class="mo">01</span> <span class="mo">04</span> <span class="mo">03</span> <span class="mo">02</span> <span class="mo">00</span> <span class="mo">06</span> <span class="mo">05</span>
+</pre></div>
+
+
+<p>...we can see that we already have something fairly close to the correct
+answer. That's partially because of the power of induced sorting, but also
+because <code>cabbage</code> is a pretty easy string to begin with: it only has two S-type
+suffixes, and they're both LMS suffixes. Let's investigate a more complex
+string:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">baa</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;baabaabac&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">showTypeMap</span><span class="p">(</span><span class="n">baa</span><span class="p">)</span>
+<span class="n">baabaabac</span>
+<span class="n">LSSLSSLSLS</span>
+ <span class="o">^</span>  <span class="o">^</span>  <span class="o">^</span> <span class="o">^</span>
+</pre></div>
+
+
+<p>This string has six S-type suffixes, only four of which are LMS-suffixes. If
+we duplicate what we did with <code>cabbage</code> on this new string...</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">baa_buckets</span> <span class="o">=</span> <span class="n">findBucketSizes</span><span class="p">(</span><span class="n">baa</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">baa_types</span> <span class="o">=</span> <span class="n">buildTypeMap</span><span class="p">(</span><span class="n">baa</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">baa_guess</span> <span class="o">=</span> <span class="n">guessLMSSort</span><span class="p">(</span><span class="n">baa</span><span class="p">,</span> <span class="n">baa_buckets</span><span class="p">,</span> <span class="n">baa_types</span><span class="p">)</span>
+<span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span>
+<span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">04</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span>
+<span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">07</span> <span class="mo">04</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span>
+<span class="mi">09</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">07</span> <span class="mo">04</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">induceSortL</span><span class="p">(</span><span class="n">baa</span><span class="p">,</span> <span class="n">baa_guess</span><span class="p">,</span> <span class="n">baa_buckets</span><span class="p">,</span> <span class="n">baa_types</span><span class="p">)</span>
+<span class="mi">09</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">07</span> <span class="mo">04</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mi">08</span>
+<span class="o">^^</span>                           
+<span class="mi">09</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">07</span> <span class="mo">04</span> <span class="mo">01</span> <span class="mo">06</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mi">08</span>
+         <span class="o">^^</span>                  
+<span class="mi">09</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">07</span> <span class="mo">04</span> <span class="mo">01</span> <span class="mo">06</span> <span class="mo">03</span> <span class="o">-</span><span class="mi">1</span> <span class="mi">08</span>
+            <span class="o">^^</span>               
+<span class="mi">09</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">07</span> <span class="mo">04</span> <span class="mo">01</span> <span class="mo">06</span> <span class="mo">03</span> <span class="mo">00</span> <span class="mi">08</span>
+               <span class="o">^^</span>
+</pre></div>
+
+
+<p>Here, we can see that at this point, there's still some uninitialised cells in
+the suffix array. That's not suprising, we haven't touched the S-type suffixes
+yet.</p>
+<h2>Induced sorting: S-type suffixes</h2>
+<p>Having scanned through the suffix array from left-to-right slotting in L-type
+suffixes, we now scan from right-to-left slotting in S-type suffixes. This is
+basically a mirror-image of the previous function:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">induceSortS</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">guessedSuffixArray</span><span class="p">,</span> <span class="n">bucketSizes</span><span class="p">,</span> <span class="n">typemap</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s">&quot;&quot;&quot;</span>
+<span class="s">...     Slot S-type suffixes into place.</span>
+<span class="s">...     &quot;&quot;&quot;</span>
+<span class="o">...</span>     <span class="n">bucketTails</span> <span class="o">=</span> <span class="n">findBucketTails</span><span class="p">(</span><span class="n">bucketSizes</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">guessedSuffixArray</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+<span class="o">...</span>         <span class="n">j</span> <span class="o">=</span> <span class="n">guessedSuffixArray</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="o">...</span>             <span class="c"># There is no useful information in the typemap at this</span>
+<span class="o">...</span>             <span class="c"># location; skip it.</span>
+<span class="o">...</span>             <span class="k">continue</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="n">typemap</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="n">S_TYPE</span><span class="p">:</span>
+<span class="o">...</span>             <span class="c"># We&#39;re only interested in S-type suffixes right now.</span>
+<span class="o">...</span>             <span class="k">continue</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="c"># Which bucket does this suffix go into?</span>
+<span class="o">...</span>         <span class="n">bucketIndex</span> <span class="o">=</span> <span class="n">string</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+<span class="o">...</span>         <span class="c"># Add the start position at the tail of the bucket...</span>
+<span class="o">...</span>         <span class="n">guessedSuffixArray</span><span class="p">[</span><span class="n">bucketTails</span><span class="p">[</span><span class="n">bucketIndex</span><span class="p">]]</span> <span class="o">=</span> <span class="n">j</span>
+<span class="o">...</span>         <span class="c"># ...and move the tail pointer down.</span>
+<span class="o">...</span>         <span class="n">bucketTails</span><span class="p">[</span><span class="n">bucketIndex</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">guessedSuffixArray</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+</pre></div>
+
+
+<p>When we apply this next step to our old friend <code>cabbage</code>:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">induceSortS</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;cabbage&#39;</span><span class="p">,</span> <span class="n">cabbage_guess</span><span class="p">,</span> <span class="n">cabbage_buckets</span><span class="p">,</span> <span class="n">cabbage_types</span><span class="p">)</span>
+<span class="mo">07</span> <span class="mo">04</span> <span class="mo">04</span> <span class="mo">03</span> <span class="mo">02</span> <span class="mo">00</span> <span class="mo">06</span> <span class="mo">05</span>
+                     <span class="o">^^</span>
+<span class="mo">07</span> <span class="mo">01</span> <span class="mo">04</span> <span class="mo">03</span> <span class="mo">02</span> <span class="mo">00</span> <span class="mo">06</span> <span class="mo">05</span>
+            <span class="o">^^</span>
+</pre></div>
+
+
+<p><code>cabbage</code> only has two S-type suffixes, so we only get two rows of output. As
+the function sweeps through the suffix array, it winds up swapping the order of
+the LMS suffixes from "04 01" to "01 04", and this is enough to transform our
+guessed suffix array into the correct suffix array. That's just a happy
+coincidence, though. If we process our other example:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">induceSortS</span><span class="p">(</span><span class="n">baa</span><span class="p">,</span> <span class="n">baa_guess</span><span class="p">,</span> <span class="n">baa_buckets</span><span class="p">,</span> <span class="n">baa_types</span><span class="p">)</span>
+<span class="mi">09</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">07</span> <span class="mo">04</span> <span class="mo">07</span> <span class="mo">06</span> <span class="mo">03</span> <span class="mo">00</span> <span class="mi">08</span>
+                           <span class="o">^^</span>
+<span class="mi">09</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">07</span> <span class="mo">02</span> <span class="mo">07</span> <span class="mo">06</span> <span class="mo">03</span> <span class="mo">00</span> <span class="mi">08</span>
+                     <span class="o">^^</span>      
+<span class="mi">09</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">05</span> <span class="mo">02</span> <span class="mo">07</span> <span class="mo">06</span> <span class="mo">03</span> <span class="mo">00</span> <span class="mi">08</span>
+                  <span class="o">^^</span>         
+<span class="mi">09</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">01</span> <span class="mo">05</span> <span class="mo">02</span> <span class="mo">07</span> <span class="mo">06</span> <span class="mo">03</span> <span class="mo">00</span> <span class="mi">08</span>
+            <span class="o">^^</span>               
+<span class="mi">09</span> <span class="mo">04</span> <span class="mo">01</span> <span class="mo">05</span> <span class="mo">02</span> <span class="mo">07</span> <span class="mo">06</span> <span class="mo">03</span> <span class="mo">00</span> <span class="mi">08</span>
+         <span class="o">^^</span>
+</pre></div>
+
+
+<p>...it's shuffled around the LMS suffixes, but compare the result to the output
+of the naive algorithm:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">naivelyMakeSuffixArray</span><span class="p">(</span><span class="n">baa</span><span class="p">))</span>
+<span class="mi">09</span> <span class="mo">01</span> <span class="mo">04</span> <span class="mo">02</span> <span class="mo">05</span> <span class="mo">07</span> <span class="mo">00</span> <span class="mo">03</span> <span class="mo">06</span> <span class="mi">08</span>
+</pre></div>
+
+
+<p>There's still a few cells that need to be swapped around.</p>
+<h2>Summarise the guessed suffix array</h2>
+<p>We started with a string of characters in some alphabet, we made an approximate
+suffix array for that string, and now we will summarise that approximate suffix
+array with a <em>new</em> string, in a <em>new</em> alphabet, that represents just the most
+important bits of information: where the LMS suffixes ended up, after
+<code>induceSortL()</code> and <code>induceSortS()</code> did their thing.</p>
+<p>The summarising works like this: Each LMS suffix of the original string gets
+a name, based on the order in which those suffixes appear in the guessed suffix
+array. Or rather, the LMS substring at the <em>beginning</em> of each LMS suffix gets
+a name: if two LMS suffixes begin with the same LMS substring, they get the
+same name. These names are combined in the same order as the corresponding
+suffixes in the original string to form the summary string.</p>
+<p>Here's the corresponding implementation:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">summariseSuffixArray</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">guessedSuffixArray</span><span class="p">,</span> <span class="n">typemap</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s">&quot;&quot;&quot;</span>
+<span class="s">...     Construct a &#39;summary string&#39; of the positions of LMS-substrings.</span>
+<span class="s">...     &quot;&quot;&quot;</span>
+<span class="o">...</span>     <span class="c"># We will use this array to store the names of LMS substrings in</span>
+<span class="o">...</span>     <span class="c"># the positions they appear in the original string.</span>
+<span class="o">...</span>     <span class="n">lmsNames</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># Keep track of what names we&#39;ve allocated.</span>
+<span class="o">...</span>     <span class="n">currentName</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># Where in the original string was the last LMS suffix we checked?</span>
+<span class="o">...</span>     <span class="n">lastLMSSuffixOffset</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># We know that the first LMS-substring we&#39;ll see will always be</span>
+<span class="o">...</span>     <span class="c"># the one representing the empty suffix, and it will always be at</span>
+<span class="o">...</span>     <span class="c"># position 0 of suffixOffset.</span>
+<span class="o">...</span>     <span class="n">lmsNames</span><span class="p">[</span><span class="n">guessedSuffixArray</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">currentName</span>
+<span class="o">...</span>     <span class="n">lastLMSSuffixOffset</span> <span class="o">=</span> <span class="n">guessedSuffixArray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">lmsNames</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># For each suffix in the suffix array...</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">guessedSuffixArray</span><span class="p">)):</span>
+<span class="o">...</span>         <span class="c"># ...where does this suffix appear in the original string?</span>
+<span class="o">...</span>         <span class="n">suffixOffset</span> <span class="o">=</span> <span class="n">guessedSuffixArray</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="c"># We only care about LMS suffixes.</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">isLMSChar</span><span class="p">(</span><span class="n">suffixOffset</span><span class="p">,</span> <span class="n">typemap</span><span class="p">):</span>
+<span class="o">...</span>             <span class="k">continue</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="c"># If this LMS suffix starts with a different LMS substring</span>
+<span class="o">...</span>         <span class="c"># from the last suffix we looked at....</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">lmsSubstringsAreEqual</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">typemap</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="n">lastLMSSuffixOffset</span><span class="p">,</span> <span class="n">suffixOffset</span><span class="p">):</span>
+<span class="o">...</span>             <span class="c"># ...then it gets a new name</span>
+<span class="o">...</span>             <span class="n">currentName</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="c"># Record the last LMS suffix we looked at.</span>
+<span class="o">...</span>         <span class="n">lastLMSSuffixOffset</span> <span class="o">=</span> <span class="n">suffixOffset</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="c"># Store the name of this LMS suffix in lmsNames, in the same</span>
+<span class="o">...</span>         <span class="c"># place this suffix occurs in the original string.</span>
+<span class="o">...</span>         <span class="n">lmsNames</span><span class="p">[</span><span class="n">suffixOffset</span><span class="p">]</span> <span class="o">=</span> <span class="n">currentName</span>
+<span class="o">...</span>         <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">lmsNames</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># Now lmsNames contains all the characters of the suffix string in</span>
+<span class="o">...</span>     <span class="c"># the correct order, but it also contains a lot of unused indexes</span>
+<span class="o">...</span>     <span class="c"># we don&#39;t care about and which we want to remove. We also take</span>
+<span class="o">...</span>     <span class="c"># this opportunity to build summarySuffixOffsets, which tells</span>
+<span class="o">...</span>     <span class="c"># us which LMS-suffix each item in the summary string represents.</span>
+<span class="o">...</span>     <span class="c"># This will be important later.</span>
+<span class="o">...</span>     <span class="n">summarySuffixOffsets</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">...</span>     <span class="n">summaryString</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lmsNames</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+<span class="o">...</span>             <span class="k">continue</span>
+<span class="o">...</span>         <span class="n">summarySuffixOffsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+<span class="o">...</span>         <span class="n">summaryString</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># The alphabetically smallest character in the summary string</span>
+<span class="o">...</span>     <span class="c"># is numbered zero, so the total number of characters in our</span>
+<span class="o">...</span>     <span class="c"># alphabet is one larger than the largest numbered character.</span>
+<span class="o">...</span>     <span class="n">summaryAlphabetSize</span> <span class="o">=</span> <span class="n">currentName</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">summaryString</span><span class="p">,</span> <span class="n">summaryAlphabetSize</span><span class="p">,</span> <span class="n">summarySuffixOffsets</span>
+</pre></div>
+
+
+<p>That's a lot of code, and it's a little bit intricate, but let's look at some
+examples.</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="p">(</span>
+<span class="o">...</span>     <span class="n">cabbage_summary</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">cabbage_summary_alpha_size</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">cabbage_summary_suffix_offsets</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span> <span class="o">=</span> <span class="n">summariseSuffixArray</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;cabbage&#39;</span><span class="p">,</span> <span class="n">cabbage_guess</span><span class="p">,</span> <span class="n">cabbage_types</span><span class="p">)</span>
+<span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">00</span>
+<span class="o">-</span><span class="mi">1</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">00</span>
+<span class="o">-</span><span class="mi">1</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">02</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">00</span>
+</pre></div>
+
+
+<p>As we saw above, the guessed suffix array of <code>cabbage</code> looks like this:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">cabbage_guess</span><span class="p">)</span>
+<span class="mo">07</span> <span class="mo">01</span> <span class="mo">04</span> <span class="mo">03</span> <span class="mo">02</span> <span class="mo">00</span> <span class="mo">06</span> <span class="mo">05</span>
+</pre></div>
+
+
+<p>Of those suffixes, we know the first three are the LMS suffixes; in order,
+the empty suffix, <code>abbage</code> and <code>age</code>. Because all three LMS suffixes begin with
+different LMS substrings, they get three distinct names (0, 1 and 2). Those
+names are stored in <code>lmsNames</code> at the positions where the corresponding suffix
+occurs in the original string: at offsets 7, 1 and 4 respectively.</p>
+<p>After <code>lmsNames</code> is calculated, we throw away the unused indices of <code>lmsNames</code>
+to produce the summary string:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">cabbage_summary</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+
+<p>But that's not the only output from our function. We also know that the summary
+string is written in an alphabet with three distinct characters:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">cabbage_summary_alpha_size</span>
+<span class="mi">3</span>
+</pre></div>
+
+
+<p>...and we have a list that stores the suffix offset associated with each item
+in the summary string.</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">cabbage_summary_suffix_offsets</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+</pre></div>
+
+
+<p>But as noted previously, <code>cabbage</code> is a pretty simple string. Let's try our
+more complex example, <code>baabaabac</code>:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="p">(</span>
+<span class="o">...</span>     <span class="n">baa_summary</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">baa_summary_alpha_size</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">baa_summary_suffix_offsets</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span> <span class="o">=</span> <span class="n">summariseSuffixArray</span><span class="p">(</span><span class="n">baa</span><span class="p">,</span> <span class="n">baa_guess</span><span class="p">,</span> <span class="n">baa_types</span><span class="p">)</span>
+<span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">00</span>
+<span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">00</span>
+<span class="o">-</span><span class="mi">1</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">00</span>
+<span class="o">-</span><span class="mi">1</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">02</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">00</span>
+</pre></div>
+
+
+<p>For this string, two of the LMS suffixes start with the same LMS substring:
+<code>aabaabac</code> and <code>aabac</code> both start with <code>aab</code> and the types of those characters
+are <code>SSL</code> in both cases. Consequently, both suffixes get the same name (1) and
+our summary string contains two identical characters:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">baa_summary</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Although this summary string contains four characters, it still only contains
+three distinct characters, so the alphabet size is still 3:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">baa_summary_alpha_size</span>
+<span class="mi">3</span>
+</pre></div>
+
+
+<p>And we get the suffix offset map for the summary string again:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">baa_summary_suffix_offsets</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+</pre></div>
+
+
+<h2>Make a suffix array of the summary</h2>
+<p>We started with one string and wanted to build a suffix array, and in the
+process we've build a second string and now we have to make a suffix array of
+that one too? Isn't that circular reasoning?</p>
+<p>Well, almost: it's <em>recursive</em> reasoning.</p>
+<p>If we're going to do recursion, there needs to be a base case that's not
+recursive. If we look at our <code>cabbage</code> example above, we got a pretty simple
+summary string:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">cabbage_summary</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Yes, that particular example happens to be small enough that you could build
+the suffix array in your head, but there's another interesting feature: we've
+said it's a string in an alphabet of three characters, and every character in
+the alphabet appears exactly once, somewhere in that string. Which means we can
+create a suffix array with our trusty old bucket sort.</p>
+<p>If we look at our <code>baabaabac</code> example on the other hand, the outlook isn't
+nearly as rosy:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">baa_summary</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+
+<p>This string is still in an alphabet of three characters, but it's more than
+three characters long, which means at least one character must be repeated and
+we can't be sure a bucket sort will do the right thing - so in that situation
+we'll have to recurse.</p>
+<p>It's worth pointing out that while you could in theory have a three-character
+string in an alphabet of three characters that included repetition (say, <code>[1,
+1, 0]</code>), our <code>summariseSuffixArray()</code> function will never generate such
+a thing, since it always uses consecutive characters in the alphabet, and it
+always sets the alphabet size to the number of distinct characters it's used.</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">makeSummarySuffixArray</span><span class="p">(</span><span class="n">summaryString</span><span class="p">,</span> <span class="n">summaryAlphabetSize</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s">&quot;&quot;&quot;</span>
+<span class="s">...     Construct a sorted suffix array of the summary string.</span>
+<span class="s">...     &quot;&quot;&quot;</span>
+<span class="o">...</span>     <span class="k">if</span> <span class="n">summaryAlphabetSize</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">summaryString</span><span class="p">):</span>
+<span class="o">...</span>         <span class="c"># Every character of this summary string appears once and only</span>
+<span class="o">...</span>         <span class="c"># once, so we can make the suffix array with a bucket sort.</span>
+<span class="o">...</span>         <span class="n">summarySuffixArray</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">summaryString</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="c"># Always include the empty suffix at the beginning.</span>
+<span class="o">...</span>         <span class="n">summarySuffixArray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">summaryString</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">summaryString</span><span class="p">)):</span>
+<span class="o">...</span>             <span class="n">y</span> <span class="o">=</span> <span class="n">summaryString</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+<span class="o">...</span>             <span class="n">summarySuffixArray</span><span class="p">[</span><span class="n">y</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="k">else</span><span class="p">:</span>
+<span class="o">...</span>         <span class="c"># This summary string is a little more complex, so we&#39;ll have</span>
+<span class="o">...</span>         <span class="c"># to use recursion.</span>
+<span class="o">...</span>         <span class="n">summarySuffixArray</span> <span class="o">=</span> <span class="n">makeSuffixArrayByInducedSorting</span><span class="p">(</span>
+<span class="o">...</span>             <span class="n">summaryString</span><span class="p">,</span>
+<span class="o">...</span>             <span class="n">summaryAlphabetSize</span><span class="p">,</span>
+<span class="o">...</span>         <span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">summarySuffixArray</span>
+</pre></div>
+
+
+<p>We can't test this function on the <code>baabaabac</code> summary yet because we haven't
+finished the recursive implementation, but we can test it on the <code>cabbage</code>
+summary:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">cabbage_summary_suffix_array</span> <span class="o">=</span> <span class="n">makeSummarySuffixArray</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">cabbage_summary</span><span class="p">,</span> <span class="n">cabbage_summary_alpha_size</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">cabbage_summary_suffix_array</span><span class="p">)</span>
+<span class="mo">03</span> <span class="mo">02</span> <span class="mo">00</span> <span class="mo">01</span>
+</pre></div>
+
+
+<p>...and compare that with our naive implementation:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">naivelyMakeSuffixArray</span><span class="p">(</span><span class="n">cabbage_summary</span><span class="p">))</span>
+<span class="mo">03</span> <span class="mo">02</span> <span class="mo">00</span> <span class="mo">01</span>
+</pre></div>
+
+
+<h2>Build the real suffix array</h2>
+<p>At last we begin building the real, final suffix array, based on the suffix
+array of the summary string. As before, we start by placing the LMS suffixes
+into the suffix array, and then we can fill in all the others by induced
+sorting. Unlike before, we don't just bucket-sort them into place in whatever
+order we find them, we insert them in an order determined by the summary
+string's suffix array.</p>
+<p>Remember, when we built the summary string (where each character was
+a generated name for an LMS substring), we also built a corresponding
+<code>summarySuffixOffsets</code> array that maps characters from the summary string back
+to LMS substrings (and hence, LMS suffixes) from the original string, so that's
+what we're going to use.</p>
+<p>The process goes something like this: Each entry in the suffix array of the
+summary string points at a position in <code>summary</code>. We look at the same position
+in <code>summarySuffixOffsets</code> to find the offset of the corresponding LMS suffix of
+our original string. Then we put that LMS suffix into the correct bucket,
+trusting in the summary suffix array to put them in the correct order within
+the bucket.</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">accurateLMSSort</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">bucketSizes</span><span class="p">,</span> <span class="n">typemap</span><span class="p">,</span>
+<span class="o">...</span>         <span class="n">summarySuffixArray</span><span class="p">,</span> <span class="n">summarySuffixOffsets</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s">&quot;&quot;&quot;</span>
+<span class="s">...     Make a suffix array with LMS suffixes exactly right.</span>
+<span class="s">...     &quot;&quot;&quot;</span>
+<span class="o">...</span>     <span class="c"># A suffix for every character, plus the empty suffix.</span>
+<span class="o">...</span>     <span class="n">suffixOffsets</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># As before, we&#39;ll be adding suffixes to the ends of their</span>
+<span class="o">...</span>     <span class="c"># respective buckets, so to keep them in the right order we&#39;ll</span>
+<span class="o">...</span>     <span class="c"># have to iterate through summarySuffixArray in reverse order.</span>
+<span class="o">...</span>     <span class="n">bucketTails</span> <span class="o">=</span> <span class="n">findBucketTails</span><span class="p">(</span><span class="n">bucketSizes</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">summarySuffixArray</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+<span class="o">...</span>         <span class="n">stringIndex</span> <span class="o">=</span> <span class="n">summarySuffixOffsets</span><span class="p">[</span><span class="n">summarySuffixArray</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="c"># Which bucket does this suffix go into?</span>
+<span class="o">...</span>         <span class="n">bucketIndex</span> <span class="o">=</span> <span class="n">string</span><span class="p">[</span><span class="n">stringIndex</span><span class="p">]</span>
+<span class="o">...</span>         <span class="c"># Add the suffix at the tail of the bucket...</span>
+<span class="o">...</span>         <span class="n">suffixOffsets</span><span class="p">[</span><span class="n">bucketTails</span><span class="p">[</span><span class="n">bucketIndex</span><span class="p">]]</span> <span class="o">=</span> <span class="n">stringIndex</span>
+<span class="o">...</span>         <span class="c"># ...and move the tail pointer down.</span>
+<span class="o">...</span>         <span class="n">bucketTails</span><span class="p">[</span><span class="n">bucketIndex</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="o">...</span>
+<span class="o">...</span>         <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">suffixOffsets</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="c"># Always include the empty suffix at the beginning.</span>
+<span class="o">...</span>     <span class="n">suffixOffsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">suffixOffsets</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">suffixOffsets</span>
+</pre></div>
+
+
+<p>Note: to make sure our LMS suffixes survive the induced sorting later, we need
+to insert them at the <em>end</em> of their buckets, so we need to walk backward
+through <code>summarySuffixArray</code> as we insert the suffixes backwards, to maintain
+their relative order.</p>
+<p>Also, we don't process <em>every</em> entry in <code>summarySuffixArray</code>: the first entry
+corresponds to the empty suffix of the summary string, which does not
+correspond to any suffix of the original string. The second entry corresponds
+to the empty suffix of the original string, which we can't bucket-sort into
+place because it's empty. We already know it winds up at the beginning, though,
+so it's not a problem.</p>
+<p>Let's walk through the algorithm as it applies to our old friend <code>cabbage</code>. As
+a reminder, here's the inputs to <code>accurateLMSSort()</code>:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">cabbage_summary_suffix_array</span><span class="p">)</span>
+<span class="mo">03</span> <span class="mo">02</span> <span class="mo">00</span> <span class="mo">01</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">cabbage_summary</span><span class="p">)</span>
+<span class="mo">01</span> <span class="mo">02</span> <span class="mo">00</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">cabbage_summary_suffix_offsets</span><span class="p">)</span>
+<span class="mo">01</span> <span class="mo">04</span> <span class="mo">07</span>
+</pre></div>
+
+
+<p>And now, we can walk through the algorithm.</p>
+<ul>
+<li>The first entry we find in the summary's suffix array (the last entry, since
+  we're walking backwards) is <code>01</code>. If we look at offset 1 of
+  <code>summarySuffixOffsets</code>, we see this corresponds to the LMS suffix at position
+  4 of the original string (<code>age</code>) so we can slot in that suffix at the end of
+  the <code>a</code> bucket.</li>
+<li>The next entry in the summary's suffix array is <code>00</code>, offset 0 of
+  <code>summarySuffixOffsets</code> corresponds to the LMS suffix at position 1 of the
+  original string (<code>abbage</code>), so we slot that suffix into the <code>a</code> bucket just
+  before <code>age</code>.</li>
+<li>The second-last entry is skipped because it points at the empty suffix of the
+  original string and we can't bucket-sort that into place.</li>
+<li>The last entry is skipped because it represents the empty suffix at the end
+  of the summary string, it doesn't have a corresponding LMS suffix in the
+  original string.</li>
+<li>Finally, we know that the empty suffix (at position 7) will wind up at the
+  beginning of our final suffix array.</li>
+</ul>
+<p>When we run our function, we can see the same steps occurring:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">cabbage_real</span> <span class="o">=</span> <span class="n">accurateLMSSort</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;cabbage&#39;</span><span class="p">,</span> <span class="n">cabbage_buckets</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">cabbage_types</span><span class="p">,</span> <span class="n">cabbage_summary_suffix_array</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">cabbage_summary_suffix_offsets</span><span class="p">)</span>
+<span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">04</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span>
+<span class="o">-</span><span class="mi">1</span> <span class="mo">01</span> <span class="mo">04</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span>
+<span class="mo">07</span> <span class="mo">01</span> <span class="mo">04</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span>
+</pre></div>
+
+
+<p><code>04</code> is slotted in at the at the end of the <code>a</code> bucket, then <code>01</code> immediately
+before that, then finally the empty suffix gets its special place at the
+beginning.</p>
+<h2>Putting it all together</h2>
+<p>After putting the LMS suffixes into their correct places, all the other
+suffixes fall into place with a second round of induced sorting, just as
+before. We've now described all the functions that
+<code>makeSuffixArrayByInducedSorting()</code> calls, so we can invoke it to efficiently
+build a suffix array of any string we like... along with a detailed log of its
+inner calculations (omitted here for brevity):</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">makeSuffixArrayByInducedSorting</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;cabbage&#39;</span><span class="p">,</span> <span class="mi">256</span><span class="p">))</span>
+<span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span>
+<span class="o">...</span>
+<span class="mo">07</span> <span class="mo">01</span> <span class="mo">04</span> <span class="mo">03</span> <span class="mo">02</span> <span class="mo">00</span> <span class="mo">06</span> <span class="mo">05</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">showSuffixArray</span><span class="p">(</span><span class="n">makeSuffixArrayByInducedSorting</span><span class="p">(</span><span class="n">baa</span><span class="p">,</span> <span class="mi">256</span><span class="p">))</span>
+<span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mo">01</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span>
+<span class="o">...</span>
+<span class="mi">09</span> <span class="mo">01</span> <span class="mo">04</span> <span class="mo">02</span> <span class="mo">05</span> <span class="mo">07</span> <span class="mo">00</span> <span class="mo">03</span> <span class="mo">06</span> <span class="mi">08</span>
+</pre></div>
+
+
+<p>But since most people who want to build a sorted suffix array will have
+a string of bytes, rather than strings of an arbitrary-sized alphabet, let's
+make a wrapper function with a sensible default:</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">makeSuffixArray</span><span class="p">(</span><span class="n">bytestring</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">makeSuffixArrayByInducedSorting</span><span class="p">(</span><span class="n">bytestring</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+</pre></div>
+
+
+<p>And now we're done.</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">naivelyMakeSuffixArray</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;cabbage&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">makeSuffixArray</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;cabbage&#39;</span><span class="p">)</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">naivelyMakeSuffixArray</span><span class="p">(</span><span class="n">baa</span><span class="p">)</span> <span class="o">==</span> <span class="n">makeSuffixArray</span><span class="p">(</span><span class="n">baa</span><span class="p">)</span>
+<span class="bp">True</span>
+</pre></div>    </body>
+</html>

@@ -1,0 +1,235 @@
+
+
+Hello!
+
+Welcome back, today i'm going to introduce probably one of the most important types of trees in computer science which are Balanced Binary Search Trees. 
+
+BBSTs are very different from BSTs because they not only conform the BST tree invariant but are also balanced. What I mean by balanced is that they are self-adjusting to maintain a logarithmic height in proportion to the number of nodes they hold. This is very important because it keeps operations such as insertion and deletions blazing fast because the tree is much more squashed.
+
+In terms of complexity, a BST has average logarithmic operations which is quite good. However, the worst case still remains linear because the tree could degrade into a chain for some inputs. One such input is a sequence of increasing numbers. 
+
+To avoid this linear complexity we've invented BBST in which the worst case is logarithmic for all operations which is really appealing.
+
+Central to how nearly all BBST implementations keep themselves balanced is the concept of tree rotations which is going to be the main topic of this video. Later, we'll actually look at some specific types of BBST to see these rotations are used in action.
+
+So, the secret ingredient to most BBST implementations in the combination of two things. A clever tree invariant and tree rotations. 
+A tree invariant is a property/rule you impose on your tree that it must meet after every operation. To ensure that the invariant is always satisfied a series of tree rotations are normally applied. We'll get back to this concept of invariants in a later video don't worry about it for now.
+
+Let's look at how tree rotations work. Suppose our invariant is not satisfied and to fix it we need to do a right rotation about node A. Assuming node A has a left child B we can perform a right rotation to put B where node A was and push node A down to become B's right child. 
+When I first learnt about this in my undergrad I was mind-blow, literally! I thought it was absurd or even to the point of being illegal that you should be allowed to do this and just move nodes around in you tree. 
+But what i've realized since, is that a transformation like this is totally legitimate since we're not breaking the BST invariant. 
+If you inspect the left tree you'll discover that in terms of ordering and placement, node D is < node B is less then E is less than A is less than C. Then you inspect the right tree and remark that this is also true.
+
+A bit more detail on why performing tree rotations is a valid operation. First you have to remember that all BBSTs are BST, meaning that the BST invariant holds, so for every node n, the values in the left subtree are less than the value of n and the values in the right subtree are all greater than the value of n.
+So in this sense, it doesn't matter what the tree structure itself looks like, all that fundamentally matters is that the BST invariant holds. This means we can shuffle/transform or even rotate the values and nodes in the tree as we please as long as the BST invariant remains satisfied! 
+
+Now, let's look some how these tree rotations are done in great detail. For simplicity, since the rotations are symmetric I will only do the right rotation and you should be able to figure out the left rotation on your own.
+First have a look at the tree on the right. Notice that there are directed edges pointing downwards and another node P above A which may or may not exist, this is why there's a dotted line on that edge. If node A does have a parent node P, then it is important that we take it into account when doing the rotation.
+
+In either case, we start with a pointer reference to node A, this is what the orange arrow is. 
+
+Then we'll want a pointer to node B.
+
+After that set A's left pointer to point to B's right child.
+**press**
+
+Then change B's right pointer to point to A and we've successfully done a right rotation! If we rearrange the nodes this is what we'd end up with.
+
+**press**
+**press**
+**press**?
+
+However, notice that there's a slight problem, if node A had a parent node then either the parent's left or right pointer would still be referencing A. this is problematic since B is A's successor after the rotation. 
+
+So we change that link to now point to B. This step is usually done on the recursive callback using the return value of the rightRotate function.
+
+
+We just finished looking at the case where each node has a reference to the left and right child nodes, but in some BBST implementations it's more convenient for nodes to also have a reference to the parent ndoe. This complicates tree rotations because now instead of updating three pointers we need to update six pointers, let's have a look.
+
+So in this case, where we also have the parent link, every node is doubly linked. We start off with a pointer referencing node A and the first thing we'll want to do is also reference node B and P so we don't lose them as we shuffle pointers.
+
+Next, we'll adjust the left subtree of node A, so make A's left pointer reference B's right subtree. Of course throughout this example assume B's not null, if you're paranoid you can add an extra if statement to check for this condition.
+
+However, it would be a mistake to assume B's right subtree is not null, we actually have to check against this before setting B's right child's parent to reference A.
+
+Next let's make A the right subtree of B. Set B's right pointer to reference A.
+
+Now make A's parent pointer reference B.
+
+The last thing we need to do is adjust the reference to the Parent node P. So make B's parent pointer reference P.
+
+The very last thing to do is make P's left or right pointer reference the successor node B. Notice that we need to check if P is not null because it might node exist. This would be the case for the root node.
+
+If we readjust the tree we'll see that we correctly did a right rotation.
+There are a lot of steps to doing this right rotation. It's a very error prone process which is why I wanted to do it in such detail.
+
+In the next video we'll look at how tree rotations are used when inserting nodes into an AVL tree. 
+Thank you for watching, if you learned something please like this video, and subscribe for more mathematics and computer science videos.
+
+
+===========================================================================
+
+Hello!
+
+Today we're going to be looking at how to insert nodes into an AVL tree in great detail. We'll be making use of the tree rotation technique we looked at in the last video, so if you didn't watch that video make such you rollback one video.
+
+Alright, before we get too far I should mention what an AVL tree is. An AVL tree is one of many types of BBSTs which allow for logarithmic insertion, deletion and search operations.
+Something really special about the AVL tree is that it was the first type of BBST to be discovered, and then soon after a whole bunch of other BBSTs started to emerge including the 2-3 tree, the AA tree, the scapegoat tree and the AVL tree's main rival the red black tree.
+
+What you need to know about next is the property that keeps the AVL tree balanced, and this is the balance factor. Simply put, the balance factor of a node is the difference between the height of the right subtree and the left subtree.
+I'm pretty sure the balance factor can also be computed as the left subtree height minus the right subtree height, but don't quote me on that. It would also screw up a lot of what I'm about to say, and may also be the reason why you will find inconsistent ideas about what way to do tree rotations on various google search result pages. So for consistency let's keep the balance factor right subtree height minus left subtree height.
+For clarity, because people do get this wrong or define it differently, the height of a node x is calculated as the number of edges between x and the furthest leaf. So, if your tree only has one node, the tree has height 0, not height 1 because there are no edges.
+The invariant on the AVL tree that keep it balanced it forcing the balance factor of every node to be either -1, 0 or +1. If the balance factor of a node is anything else we need to resolve that with tree rotations.
+
+In terms of information we need to store in each node to actually make the AVL tree work what we'll need is:
+1) The actual value the node stores, this value must be comparable so we know how to insert it and in what position it goes in the tree. 
+2) Then we'll also need to store the balance factor and height of the node as well as the left and right child pointers. 
+As the algorithm executes we'll need to update all these values except for the node's actual value, so keep that in mind.
+
+So a slide back or so I said that the balance factor of a node must always be -1, 0 or +1. A natural question to ask is how do we handle the case where that's not true? The answer is that when this is not true the BF is either +2 or -2 which we can easily handle with tree rotations. The rotations we need to perform depending on the structure of the tree can be broken down into four distinct cases.
+The first such case is when the tree is left heavy and there are two left children. This is an easy case to fix because all we need to do is to perform a right rotation about the yellow node to balance.
+
+The next case is the left-right case where you have a left child but then that node has a right child. To fix this you do a left rotation about left child node, so the green one in the leftmost image. What then happens is that this transforms that case into the left-left case we just saw which we can solve with a right rotation to balance.
+
+The third case is the right-right case which is symmetric to the left-left case, so instead of doing a right rotation we do a left rotation about the green node.
+
+Last but not least is the right-left case which is symmetric to the left-right case. For this case you would perform a right rotation about the yellow node on the left most image to transform this case into the right-right case and then do a left rotation about the green node on the middle image.
+
+Next I want to show you some pseudocode for inserting elements with an AVL tree because it's not all that easy. This first method is the public facing insert method which returns true or false depending on whether the value was successfully inserted. For simplicity we're going to ban duplicate values in our AVL tree. So if the value already exists or the value is null this method returns false.
+If the node is not null and it doesn't already exist in the tree we call our private recursive insert method where we pass in a pointer to the root node and the value we want to insert.
+
+The private recursive method is also simple, if we hit the base case, a null node we simply return a new instance of a node with the value we want to insert, otherwise we get our comparator value with the value we're trying to insert against the current node to decide if we should go in the left or the right subtree. After that on the recursive callback we call the update method which updates the balance factor and height values for this node, and lastly we rebalance the tree with the balance method. Now let's take a closer look at what the update and balance methods are actually doing.
+
+The update method updates the balance factor and height values of our node. So, to calculate the height of the node we get the maximum height of the left and the right subtrees and add one. Notice that I initialize the left and right subtree heights to be -1 because this will cancel out with the +1 with the max function in the case where the node has no subtrees giving a correct height of 0 for leaf nodes. Then lastly I update the balance factor for this node by finding the difference between the right subtree and the left subtree heights.
+
+The balance method is slightly more involved, but not too crazy. Here we check if our balance factor has an illegal value of either -2 or +2. If the balance factor is -2 then we know that the node is left heavy, then we dig further into the left subtree to determine if we're dealing with a left-left case or a left-right case. We do a similar thing if the balance factor is +2 except we're dealing with the right-right or right-left case. If the balance factor is not +2 or -2 then we know that the balance factor is either +1, 0 or -1 and in either case of those cases we don't need to do anything.
+
+Inside the four cases we might run into you notice that all we have here are calls to the leftRotation and rightRotation methods that we saw in the last video. Also notice that the left-right and right-left cases call the leftLeftCase and rightRightCase method respectively since they reduce to those cases after a first rotation.
+
+In the last video we looked at this right rotation method, but since we're dealing with an AVL tree in this video we actually need to augment that method to update the heights and balance factor values for the nodes we're moving around when we do the rotations. This is a subtle detail you must not forget otherwise your height and balance factor values will be inconsistent. the left rotation case is symmetric to this one, you should be able to figure it out pretty easily.
+
+That is all for AVL tree insertions, in the next video we'll look at how to remove elements from an AVL tree, and in the video after that we'll look at some source code. 
+If you're keen to look at some source code now you can always check out my github repository where I host all my data structures at github dot com slash william fiset
+slash data dash structures. Thank you for watching, and if you learned something please like this video and subscribe for more mathematics and computer science videos.
+
+=========================================================================
+
+Welcome back,
+
+In this video we're going to look at how to remove elements from an AVL tree. What you'll discover is that removing elements from an AVL tree is almost identical to removing elements from a regular BST.
+
+Just for review I want to look at how we remove nodes from a BST before we see how to remove nodes from an AVL tree. The removal algorithm can be broken down into two steps: Finding and replacing.
+In the find phase you find the element you want to remove from the tree if it exists, and in the replace phase you find a successor node to replace the node you want to remove. The successor node is necessary to maintain the BST invariant.
+
+In the find phase when we're searching for an element four things can happen:
+1) We hit a null node in which case we know the value does not exists.
+2) The comparator value is equal to zero meaning we found the node we want to remove.
+3) The comparator value is less than 0, so the value if it exists is in the left subtree.
+4) The comparator value is greater than 0, so the value if it exists is in the right subtree.
+
+
+Let's do an example of finding nodes in a BST. Suppose we want to find the value 14.
+
+We'll we start at the root node which we should have a reference to. 
+
+Now we compare 20 with 14 and we know 14 is less than 20 so we go in the left subtree.
+
+14 is greater than 10 so we go in the right subtree.
+
+14 is less than 15 so we go in the left subtree.
+
+14 is greater than 12 so we go in the right subtree.
+
+And now we've found our node!
+
+Now let's see what happens when we try and find 26 in the tree.
+
+Again we start at the root and we would go down the right subtree because 26 is greater than 20.
+
+Now we'd head down the left subtree since 26 is less than 31.
+
+Now we'd go to the right subtree since 26 is greater than 25.
+
+At this point we would have reached a null node, the right child of 25 and we would know 26 is not in the tree.
+
+So once we know what node to remove we need to find a successor for the node we are going to remove. The motivation for this is that if we just removed the node without finding a successor then there'd be a gap in the tree.
+When looking for a successor node we're in one of four cases, either we're a leaf node and there are no subtrees, the node to remove has no left subtree, the node to remove has no right subtree, or the node to remove has both a left subtree and right subtree. We'll see how to handle each of these cases.
+
+In the first case where the node to remove is a leaf node you can simply remove it without any side effect. The successor node in this case would be a null node.
+
+Suppose we want to remove node 8 from this tree. The first thing we would do is find where 8 is in the tree.
+
+**press until node 8 is found**
+
+Once found we discover it is a leaf node since 8 has no subtrees so we can just remove it.
+
+**press**
+
+**press**
+
+For cases 2 and 3 which are symmetric there's only one subtree on either the left or the right side. In these cases, the successor node is the immediate child of that left or right subtree. The reason the successor is the immediate node down from the node we're removing is that it's the next node which is either just larger than it in the case of a right subtree or just less than it in the case of the left subtree.
+
+Let's do an example, suppose we want to remove node 9. The first thing we do is find where node 9 is in the subtree. 
+
+**press**
+
+**press**
+
+Once we find node 9 we discover that it only has a left subtree, so the successor node is it's left child, so 7 in this case.
+
+So we get ready to delete 9 and reference node 7
+
+then we remove 9 from the tree and make 7 the new successor.
+
+**press**
+
+**press**
+
+**press**
+
+The last case, case 4 is when there is both a left and a right subtree. The question in this case is in which subtree will the successor of the node we're trying to remove be in? 
+
+The answer is both! The successor can either be the largest value in the left subtree or the smallest value in the right subtree.
+
+Once the successor node has been found in either the left or the right subtree we replace the value of the node to remove with the value in the successor node. However, the story doesn't end there. We must not forget to remove the duplicate value of the successor node that still exists in the tree. One common strategy to resolve this is to recursively call the function again but with the value to remove as the value in the successor node.
+
+Let's see an example because this isn't totally trivial. Let's remove node 7 from this tree, the root node. Note that we're still doing a removal example for BSTs not an AVL tree per se, but I promise augmenting for AVL tree removals is trivial once you understand BST removals.
+
+So we start at the root node and discover that in fact this is the node we want to remove and notice that it has two non-empty subtrees, so we must choose a successor. 
+
+To choose the successor we can either pick the smallest value in the right subtree or the largest value in the left subtree. Let's find the smallest value in the right subtree. To do this you always go right once and then dig as far left as possible.
+
+**press**
+
+**press**
+
+**press**
+
+Now that we've found the successor node, 11 we want to copy its value into the node we're removing, node 7. 
+
+Notice that now we have two instances of 11 in our tree, so what we can do is recursively call the remove method but on 11 which lucky for us will always result in a Case 1, 2 or 3 removal.
+
+In this case, 11 only has a right subtree, so it's successor is its immediate right child.
+
+**press**
+
+**press**
+
+**press**
+
+**press**
+
+Alright the moment you've been waiting for. How do we augment the BST removal algorithm for AVL trees? The solution is super simple, you only need to add two lines of code to ensure that the tree remains balanced and that the balance factor and height values remain up to date.
+On the recursive callback you invoke the update method and the balance methods we saw in the insert video which will ensure that when you remove a node from the AVL tree that the tree remains balanced. Yes it's as easy as that. 
+
+We'll have a look at how this is actually implemented in code in the next video, so stay tuned for that. You can also find some source code for the AVL tree on github at github dot com slash william fiset slash data dash structures. Thank you for watching, if you learned something please like this video and subscribe for more computer science and mathematics videos.
+
+
+
+
+
+
+
+
+
+
