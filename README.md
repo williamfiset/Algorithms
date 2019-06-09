@@ -3,7 +3,7 @@
 
 # Algorithms & data structures project
 
-Algorithms and data structures are amongst the most fundamental ingredients in the recipe for efficient code and good software design; knowledge of how to create and design excellent algorithms is an essential skill required in becoming an exemplary programmer. The goal of this repository is to provide a complete and thorough explanation of the most common data structures and algorithms in the clearest possible way.
+Algorithms and data structures are amongst the most fundamental ingredients in the recipe for efficient code and good software design; knowledge of how to create and design excellent algorithms is an essential skill required in becoming an exemplary programmer. The goal of this repository is to demonstrate how to correctly implement the most common data structures and algorithms in the simplest and most elegant ways.
 
 # Data Structures
 * [:movie_camera:](https://www.youtube.com/watch?v=q4fnJZr8ztY)[Balanced Trees](https://github.com/williamfiset/algorithms/tree/master/com/williamfiset/algorithms/datastructures/balancedtree)
