@@ -205,7 +205,7 @@ Algorithms and data structures are amongst the most fundamental ingredients in t
 
 # Contributing
 
-This repository is contribution friendly :smiley:. If you're an algorithms enthusiast (like me!) and want to add or improve an algorithm your contribution is welcome! Please be sure to checkout the [Wiki](https://github.com/williamfiset/Algorithms/wiki) for instructions.
+This repository is contribution friendly :smiley:. If you're an algorithms enthusiast and want to add or improve an algorithm your contribution is welcome! Please be sure to checkout the [Wiki](https://github.com/williamfiset/Algorithms/wiki) for instructions.
 
 # License
 
