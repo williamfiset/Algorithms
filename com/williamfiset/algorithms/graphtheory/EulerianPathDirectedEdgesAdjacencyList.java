@@ -35,7 +35,6 @@ public class EulerianPathDirectedEdgesAdjacencyList {
   // null if no path exists or the graph is disconnected.
   public int[] getEulerianPath() {
     setUp();
-    if (edgeCount == 0) return null;
 
     if (!graphHasEulerianPath()) return null;
     dfs(findStartNode());
@@ -70,6 +69,7 @@ public class EulerianPathDirectedEdgesAdjacencyList {
   }
 
   private boolean graphHasEulerianPath() {
+    if (edgeCount == 0) return false;
     int startNodes = 0, endNodes = 0;
     for (int i = 0; i < n; i++) {
       if (out[i] - in[i] > 1 || in[i] - out[i] > 1) return false;
@@ -84,12 +84,12 @@ public class EulerianPathDirectedEdgesAdjacencyList {
     for (int i = 0; i < n; i++) {
       // Unique starting node.
       if (out[i] - in[i] == 1) return i;
-
       // Start at a node with an outgoing edge.
       if (out[i] > 0) start = i;
     }
     return start;
   }
+
   // Perform DFS to find Eulerian path.
   private void dfs(int at) {
     while (out[at] != 0) {
