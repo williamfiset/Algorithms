@@ -297,11 +297,11 @@ something and subscribe for more mathematics and computer science videos.
 -------------------------------------------------------------------------------
 
 @105.
-Hello and welcome back, my name is William and today we're talking about the 
-eager version of Prim's minimum spanning tree algorithm.
+Hello and welcome back, my name is William and today we're talking about finding 
+minimum spanning trees with Prim's algorithm.
 
 @106.
-In the previous video on Prim's algorithm I go over MST basics and the lazy
+In the previous video on Prim's we discussed MST basics and the lazy
 implementation of Prim's. This video builds off concepts explained there, so 
 please watch that video before this one, there should be a link in the
 description.
@@ -309,10 +309,10 @@ description.
 @107.
 The lazy implementation of Prim’s inserts E edges into the PQ. This results in
 each poll operation on the PQ to be O(log(E)).
-In the eager version we maintain the idea that instead of adding edges to the PQ
-which could later become outdated as the algorithm continues to visit nodes that
-we should instead track (node, edge) key-value pairs that can easily be updated
-and polled to determine the next best edge to add to the MST.
+In the eager version, we maintain the idea that instead of adding edges to the PQ
+which could later become stale,
+that instead we should track (node, edge) key-value pairs that can easily be 
+updated and polled to determine the next best edge to add to the MST.
 
 @108.
 For this all to make sense there's a key realization that needs to happen and 
@@ -328,18 +328,18 @@ Let's have a closer look at what I mean. Suppose we have this undirected graph.
 The equivalent directed version looks like this.
 
 @111.
-A possible MST starting at node 0 looks like the following.
+A possible MST starting at node 0 looks like the following highlighted in green.
 
 @112.
 Now notice that on this directed MST each node is paired with exactly one edge, 
-well except the starting node.
+except the starting node.
 
 @113.
 So in a sense, there seems to be a relationship we can take advantage of here 
 which is that each node is paired with exactly one incoming edge.
 
 @114.
-In the eager version we are trying to determine which of a node's incoming edges
+In the eager version, we are trying to determine which of a node's incoming edges
 we should select to include in the MST.
 The main difference coming from the lazy version is that instead of adding edges
 to the PQ as we iterate over the edges of node we’re going to relax (update) the
@@ -348,8 +348,8 @@ destination node’s most promising incoming edge.
 @115.
 So you might be asking yourself the question how are we going to efficiently 
 update and retrieve these (node, edge) pairs?
-Well one possible solution is to use an Indexed Priority Queue (IPQ) which can
-efficiently update and poll key-value pairs. Think of an indexed priority queue
+Well one possible solution is to use an Indexed Priority Queue (IPQ for short) 
+which can efficiently update and poll key-value pairs. Think of an IPQ
 as the data structure you'd get if a hashtable and a priority queue had a baby
 together. It supports sorted key-value pair update and poll operations in 
 logarithmic time.
@@ -365,22 +365,22 @@ subject. I will link it in the description if you need to catch up.
 The new implementation for the Eager version is slightly different, the 
 algorithm goes as follows:
 Maintain an indexed priority queue of size V that sorts vertex edge pairs 
-(v comma e) based on the minimum edge cost of e.
+(v , e) based on the minimum edge cost of e.
 Start the algorithm on any node s. Mark s as visited and relax all edges of s.
 Relaxing in this context refers to updating the entry for node v in the IPQ from
-(v comma old edge) to (v comma new edge) if the new edge has a better cost than 
+(v, old edge) to (v, new edge) if the new edge has a better cost than 
 the old edge.
 Then while the IPQ is not empty and a MST has not been formed, dequeue the next
-best (v, e) pair from the IPQ. Mark node v as visited and add edge e to the MST.
-Lastly, relax all edges of v while making sure not to relax any edge pointing to
-a node which has already been visited.
+best vertex edge pair (v, e) from the IPQ. Mark node v as visited and add edge e
+to the MST. Lastly, relax all edges of v while making sure not to relax any edge
+pointing to a node which has already been visited.
 
 @118.
 Alright, let's see an example. Suppose we have the following weighted undirected
 graph and we want to find any MST.
 
 @119.
-One thing to remember is that while we're dealing with an undirected graph I 
+One thing to remember is that while we're dealing with an undirected graph we 
 will be internally representing it as a directed graph where each undirected 
 edge is stored as two directed edges.
 
@@ -391,7 +391,8 @@ and update them accordingly as the algorithm executes.
 @121.
 Let's begin the algorithm on node 0 and start iterate over all the edges of 0
 and relax all of them. During the relaxing process add a (node, edge) pair to 
-the IPQ if it does not yet exist, or update the value if is has a better cost.
+the IPQ if it does not yet exist, otherwise update the value if the new edge
+has a better cost.
 
 @122.
 The first (node, edge) pair we add is node 2 with the incoming edge from 0 to 2
@@ -410,7 +411,7 @@ incoming edge from node 0.
 
 @129.
 Now iterate through all the edges of node 2 and relax all edges. Care to ignore
-edges pointing to already visited nodes like on this slide.
+edges pointing to already visited nodes like the one on this slide.
 
 @130.
 The edge (2, 5, 6) has a better cost going to node 5 than the edge from node 0 
@@ -444,7 +445,7 @@ From this point on I will let the animation play.
 ...
 
 @164.
-Alright, that's the algorithm, and the MST are the edges in green.
+Alright, that's the algorithm, and the MST consists of the edges in green.
 
 @165.
 If we collapse the graph back into the undirected edge view it becomes clear
@@ -455,15 +456,15 @@ You can also get the MST cost by adding all the edges of the spanning tree for
 a total cost of 9.
 
 @167.
-Let's have a look at some pseudo code for the eager implementation of Prim's
-MST algorithm. You'll notice that it's almost identical to the lazy version
-except for a few key details which I will highlight.
+Let's have a look at some pseudo code for the eager implementation of Prim's. 
+You'll notice that it's almost identical to the lazy version except for a 
+few key details which I will highlight.
 
 @168.
 First is n, this is still the number of nodes in the graph.
 
 @169.
-ipq represents that we're using an indexed priority queue instead of a 
+the variable ipq represents that we're using an indexed priority queue instead of a 
 traditional PQ to store (node index, edge object) pairs. Edge objects are still
 represented as {start node, end node, edge cost} triplets and the node index is
 simply an integer.
@@ -472,36 +473,35 @@ simply an integer.
 g is once again our graph adjacency list of weighted edges. In g, every 
 undirected edge is represented as two directed edges.
 There's also the whole story about whether we should be using an adjacency list
-or an adjacency matrix to represent our graph when using Prim's MST algorithm.
-I did some analysis comparing both graph representations and these are the 
-results I got
+or an adjacency matrix to represent our graph when using Prim's because this can
+greatly impact performance.
+So I did some analysis comparing using an adjacency list vs an adjacency matrix
+and the results I got were interesting
 
 @170 1/2.
-This line graph shows the performance of using an adjacency list in blue vs an 
-adjacency matrix in green. The x axis represents the graph edge density 
+This dotted line graph shows the performance of using an adjacency list in blue 
+vs an adjacency matrix in green. The x axis represents the graph edge density
 percentage used and the y axis indicates performance measured in milliseconds.
 As you can see, for graphs with fewer edges the adjacency list outperforms the
 adjacency matrix, but as the edge density increases the adjacency matrix becomes
-the better choice.
+the obvious choice.
 You may be wondering why the adjacency matrix's performance starts to increase
 after the middle mark where the graph has more edges.
-This is an excellent question.
-My best guess is that the denser the graph the less relaxation operations need 
-to be performed which is an expensive part of Prim's. Since the time to iterate
+This is an excellent question, and my
+guess is that the denser the graph fewer relaxation operations need 
+to be performed which is an expensive part of Prim's algorithm. Since the time
+to iterate
 over all the edges of a node is constant, but fewer relax operations are needed
-performance increases as a result.
-The takeaway is that the graph representation you choose can greatly impact your
-performance depending on whether your graph is sparse or dense.
+performance increases as a result, but I may be wrong.
+Even still, the results are interesting and the takeaway is that the graph
+representation you choose can greatly impact your performance depending on 
+whether your graph is sparse or dense.
 
 TODO(williamfiset): add adj matrix impl to README
-TODO(williamfiset): redo analysis with either same graph structure with 
-more/less edges to remove inbalances or compute percentage p with multiple graph
-x times and get average.
-
 
 @171.
-And lastly is a visited boolean array of size n which tracks whether node i has
-been visited or not.
+Alright, back to the pseudocode. The last variable is a visited boolean array of
+size n which tracks whether node i has been visited or not.
 
 @172.
 Now let's look at the actual algorithm for eager Prim's.

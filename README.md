@@ -3,7 +3,7 @@
 
 # Algorithms & data structures project
 
-Algorithms and data structures are amongst the most fundamental ingredients in the recipe for efficient code and good software design; knowledge of how to create and design excellent algorithms is an essential skill required in becoming an exemplary programmer. The goal of this repository is to provide a complete and thorough explanation of the most common data structures and algorithms in the clearest possible way.
+Algorithms and data structures are amongst the most fundamental ingredients in the recipe for efficient code and good software design; knowledge of how to create and design excellent algorithms is an essential skill required in becoming an exemplary programmer. The goal of this repository is to demonstrate how to correctly implement the most common data structures and algorithms in the simplest and most elegant ways.
 
 # Data Structures
 * [:movie_camera:](https://www.youtube.com/watch?v=q4fnJZr8ztY)[Balanced Trees](https://github.com/williamfiset/algorithms/tree/master/com/williamfiset/algorithms/datastructures/balancedtree)
@@ -127,9 +127,9 @@ Algorithms and data structures are amongst the most fundamental ingredients in t
 * [Graph diameter (adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/GraphDiameter.java) **- O(VE)**
 * [Kruskal's min spanning tree algorithm (edge list, union find)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/KruskalsEdgeList.java) **- O(Elog(E))**
 * [:movie_camera:](https://www.youtube.com/watch?v=JZBQLXgSGfs)[Kruskal's min spanning tree algorithm (edge list, union find, lazy sorting)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/KruskalsEdgeListPartialSortSolver.java) **- O(Elog(E))**
-* [Prim's min spanning tree algorithm (lazy version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/LazyPrimsAdjacencyList.java) **- O(Elog(E))**
+* [:movie_camera:](https://www.youtube.com/watch?v=jsmMtJpPnhU)[Prim's min spanning tree algorithm (lazy version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/LazyPrimsAdjacencyList.java) **- O(Elog(E))**
 * [Prim's min spanning tree algorithm (lazy version, adjacency matrix)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/LazyPrimsAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
-* [Prim's min spanning tree algorithm (eager version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/EagerPrimsAdjacencyList.java) **- O(Elog(V))**
+* [:movie_camera:](https://www.youtube.com/watch?v=xq3ABa-px_g)[Prim's min spanning tree algorithm (eager version, adjacency list)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/EagerPrimsAdjacencyList.java) **- O(Elog(V))**
 * [Steiner tree (minimum spanning tree generalization)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/SteinerTree.java) **- O(V<sup>3</sup> + V<sup>2</sup> * 2<sup>T</sup> + V * 3<sup>T</sup>)**
 * [:movie_camera:](https://www.youtube.com/watch?v=TyWtx7q2D7Y)[Tarjan's strongly connected components algorithm (adjacency list) ](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/TarjanSccSolverAdjacencyList.java) **- O(V+E)**
 * [Tarjan's strongly connected components algorithm (adjacency matrix) ](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/TarjanAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
@@ -205,7 +205,7 @@ Algorithms and data structures are amongst the most fundamental ingredients in t
 
 # Contributing
 
-This repository is contribution friendly :smiley:. If you're an algorithms enthusiast (like me!) and want to add or improve an algorithm your contribution is welcome! Please be sure to checkout the [Wiki](https://github.com/williamfiset/Algorithms/wiki) for instructions.
+This repository is contribution friendly :smiley:. If you're an algorithms enthusiast and want to add or improve an algorithm your contribution is welcome! Please be sure to checkout the [Wiki](https://github.com/williamfiset/Algorithms/wiki) for instructions.
 
 # License
 
