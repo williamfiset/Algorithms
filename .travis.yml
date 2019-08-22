@@ -1,5 +1,7 @@
 # Travis Continuous Integration script for travis-ci.org
 
+dist: trusty
+
 # Runs all unit tests and check for broken links
 language: java
 
