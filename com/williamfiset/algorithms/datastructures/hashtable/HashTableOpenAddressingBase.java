@@ -278,7 +278,7 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
     setupProbing(key);
     final int offset = normalizeIndex(key.hashCode());
 
-    // Start at the original hash value and probe until we find a spot where our key 
+    // Start at the original hash value and probe until we find a spot where our key
     // is or we hit a null element in which case our element does not exist.
     for (int i = offset, j = -1, x = 1; ; i = normalizeIndex(offset + probe(x++))) {
 
