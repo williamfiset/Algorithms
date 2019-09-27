@@ -14,7 +14,7 @@ public class InterpolationSearch {
    * @param nums - an ordered list containing uniformly distributed values.
    * @param val - the value we're looking for in 'nums'
    */
-  static int interpolationSearch(int[] nums, int val) {
+  public static int interpolationSearch(int[] nums, int val) {
     int lo = 0, mid = 0, hi = nums.length - 1;
     while (nums[lo] <= val && nums[hi] >= val) {
       mid = lo + ((val - nums[lo]) * (hi - lo)) / (nums[hi] - nums[lo]);
