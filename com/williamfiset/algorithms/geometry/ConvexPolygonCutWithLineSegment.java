@@ -14,7 +14,7 @@ public class ConvexPolygonCutWithLineSegment {
   private static final double EPS = 1e-9;
 
   // Simple 2D point class.
-  static class Pt {
+  public static class Pt {
     double x, y;
 
     public Pt(double x, double y) {
@@ -31,7 +31,7 @@ public class ConvexPolygonCutWithLineSegment {
   // Cuts a convex polygon by a specified line and returns one part
   // of the polygon (swapping the endpoints p1 and p2 of the line
   // will return the other part of the polygon).
-  static Pt[] cut(Pt[] poly, Pt p1, Pt p2) {
+  public static Pt[] cut(Pt[] poly, Pt p1, Pt p2) {
     int n = poly.length;
     List<Pt> res = new ArrayList<>();
     for (int i = 0, j = n - 1; i < n; j = i++) {
@@ -44,7 +44,7 @@ public class ConvexPolygonCutWithLineSegment {
     return res.toArray(new Pt[res.size()]);
   }
 
-  static Pt intersect(
+  private static Pt intersect(
       double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
     double a1 = y2 - y1, a2 = y4 - y3, b1 = x1 - x2, b2 = x3 - x4;
     double c1 = -(x1 * y2 - x2 * y1), c2 = -(x3 * y4 - x4 * y3);
@@ -53,7 +53,7 @@ public class ConvexPolygonCutWithLineSegment {
     return new Pt(x, y);
   }
 
-  static int orientation(double ax, double ay, double bx, double by, double cx, double cy) {
+  private static int orientation(double ax, double ay, double bx, double by, double cx, double cy) {
     bx -= ax;
     by -= ay;
     cx -= ax;

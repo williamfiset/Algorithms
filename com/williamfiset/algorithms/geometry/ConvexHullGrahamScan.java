@@ -13,7 +13,7 @@ import java.util.*;
 public class ConvexHullGrahamScan {
 
   // Construct a convex hull and return it as a stack of points
-  static Stack<Point2D> createConvexHull(Point2D[] pts) {
+  public static Stack<Point2D> createConvexHull(Point2D[] pts) {
     int k1, k2, N = pts.length;
     Stack<Point2D> hull = new Stack<Point2D>();
     Arrays.sort(pts, new PointOrder());
@@ -43,7 +43,7 @@ public class ConvexHullGrahamScan {
   }
 
   // Compare other points relative to polar angle (between 0 and 2*PI) they make with this point
-  static class PolarOrder implements Comparator<Point2D> {
+  private static class PolarOrder implements Comparator<Point2D> {
     Point2D pt;
 
     public PolarOrder(Point2D pt) {
@@ -65,7 +65,7 @@ public class ConvexHullGrahamScan {
   }
 
   // Put lower Y co-ordinates first, with a lower X value in the case of ties
-  static class PointOrder implements Comparator<Point2D> {
+  private static class PointOrder implements Comparator<Point2D> {
     @Override
     public int compare(Point2D q1, Point2D q2) {
       if (q1.getY() < q2.getY()) return -1;
@@ -80,7 +80,7 @@ public class ConvexHullGrahamScan {
 
   // Check to see whether the points are ordered clockwise or counter-clockwise (0 indicates that
   // they are collinear)
-  static int collinear(Point2D a, Point2D b, Point2D c) {
+  private static int collinear(Point2D a, Point2D b, Point2D c) {
     double area =
         (b.getX() - a.getX()) * (c.getY() - a.getY())
             - (b.getY() - a.getY()) * (c.getX() - a.getX());

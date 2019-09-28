@@ -70,7 +70,7 @@ public class CircularSegmentArea {
   }
 
   // Return the smaller of the two angles between two 2D vectors in radians
-  static double angleBetweenVectors(double v1x, double v1y, double v2x, double v2y) {
+  private static double angleBetweenVectors(double v1x, double v1y, double v2x, double v2y) {
 
     // To determine the angle between two vectors v1 and v2 we can use
     // the following formula: dot(v1,v2) = len(v1)*len(v2)*cosθ and solve
