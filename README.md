@@ -76,7 +76,7 @@ Algorithms and data structures are amongst the most fundamental ingredients in t
 * [Convex polygon area](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/ConvexPolygonArea.java) **- O(n)**
 * [Convex polygon cut](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/ConvexPolygonCutWithLineSegment.java) **- O(n)**
 * [Convex polygon contains points](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/ConvexPolygonContainsPoint.java) **- O(log(n))**
-* [Coplanar points test (are four 3D points on the same plane)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/CoplanarPointsTest.java) **- O(1)**
+* [Coplanar points test (are four 3D points on the same plane)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/CoplanarPoints.java) **- O(1)**
 * [Line class (handy infinite line class)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/Line.java) **- O(1)**
 * [Line-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/LineCircleIntersection.js) **- O(1)**
 * [Line segment-circle intersection point(s)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/geometry/LineSegmentCircleIntersection.js) **- O(1)**
