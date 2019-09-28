@@ -10,7 +10,7 @@ package com.williamfiset.algorithms.math;
 public class SieveOfEratosthenes {
 
   // Gets all primes up to, but NOT including limit (returned as a list of primes)
-  static int[] sieve(int limit) {
+  public static int[] sieve(int limit) {
 
     if (limit <= 2) return new int[0];
 

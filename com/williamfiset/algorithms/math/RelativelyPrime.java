@@ -10,12 +10,12 @@ package com.williamfiset.algorithms.math;
 public class RelativelyPrime {
 
   // Find the greatest common factor between two numbers
-  static long gcf(long a, long b) {
+  private static long gcf(long a, long b) {
     return b == 0 ? a : gcf(b, a % b);
   }
 
   // Test to see whether two numbers are relatively prime (coprime)
-  static boolean areCoprime(long a, long b) {
+  public static boolean areCoprime(long a, long b) {
     return gcf(a, b) == 1;
   }
 

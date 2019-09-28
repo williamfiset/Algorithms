@@ -4,7 +4,12 @@ import java.util.*;
 
 public class EulerTotientFunction {
 
-  static ArrayList<Long> primeFactorization(long n) {
+  public static long eulersTotient(long n) {
+    for (long p : new HashSet<Long>(primeFactorization(n))) n -= (n / p);
+    return n;
+  }
+
+  private static ArrayList<Long> primeFactorization(long n) {
     ArrayList<Long> factors = new ArrayList<Long>();
     if (n <= 0) throw new IllegalArgumentException();
     else if (n == 1) return factors;
@@ -27,7 +32,7 @@ public class EulerTotientFunction {
     return factors;
   }
 
-  static long pollardRho(long n) {
+  private static long pollardRho(long n) {
     if (n % 2 == 0) return 2;
     // Get a number in the range [2, 10^6]
     long x = 2 + (long) (999999 * Math.random());
@@ -44,11 +49,11 @@ public class EulerTotientFunction {
     return d;
   }
 
-  static long gcf(long a, long b) {
+  private static long gcf(long a, long b) {
     return b == 0 ? a : gcf(b, a % b);
   }
 
-  static boolean isPrime(long n) {
+  private static boolean isPrime(long n) {
 
     if (n < 2) return false;
     if (n == 2 || n == 3) return true;
@@ -59,11 +64,6 @@ public class EulerTotientFunction {
     for (int i = 5; i <= limit; i += 6) if (n % i == 0 || n % (i + 2) == 0) return false;
 
     return true;
-  }
-
-  static long eulersTotient(long n) {
-    for (long p : new HashSet<Long>(primeFactorization(n))) n -= (n / p);
-    return n;
   }
 
   public static void main(String[] args) {

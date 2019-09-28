@@ -25,7 +25,7 @@ import java.util.*;
 public class ChineseRemainderTheorem {
 
   // eliminateCoefficient() takes cx≡a(mod m) and gives x≡a_new(mod m_new).
-  static long[] eliminateCoefficient(long c, long a, long m) {
+  public static long[] eliminateCoefficient(long c, long a, long m) {
 
     long d = egcd(c, m)[0];
 
@@ -44,7 +44,7 @@ public class ChineseRemainderTheorem {
 
   // reduce() takes a set of equations and reduces them to an equivalent
   // set with pairwise co-prime moduli (or null if not solvable).
-  static long[][] reduce(long[] a, long[] m) {
+  public static long[][] reduce(long[] a, long[] m) {
 
     List<Long> aNew = new ArrayList<Long>();
     List<Long> mNew = new ArrayList<Long>();
@@ -104,7 +104,7 @@ public class ChineseRemainderTheorem {
     return res;
   }
 
-  static long[] crt(long[] a, long[] m) {
+  public static long[] crt(long[] a, long[] m) {
 
     long M = 1;
     for (int i = 0; i < m.length; i++) M *= m[i];
@@ -121,7 +121,7 @@ public class ChineseRemainderTheorem {
     return new long[] {x, M};
   }
 
-  static ArrayList<Long> primeFactorization(long n) {
+  private static ArrayList<Long> primeFactorization(long n) {
     ArrayList<Long> factors = new ArrayList<Long>();
     if (n <= 0) throw new IllegalArgumentException();
     else if (n == 1) return factors;
@@ -144,7 +144,7 @@ public class ChineseRemainderTheorem {
     return factors;
   }
 
-  static long pollardRho(long n) {
+  private static long pollardRho(long n) {
     if (n % 2 == 0) return 2;
     // Get a number in the range [2, 10^6]
     long x = 2 + (long) (999999 * Math.random());
@@ -162,7 +162,7 @@ public class ChineseRemainderTheorem {
   }
 
   // Extended euclidean algorithm
-  static long[] egcd(long a, long b) {
+  private static long[] egcd(long a, long b) {
     if (b == 0) return new long[] {a, 1, 0};
     else {
       long[] ret = egcd(b, a % b);
@@ -173,12 +173,11 @@ public class ChineseRemainderTheorem {
     }
   }
 
-  static long gcf(long a, long b) {
+  private static long gcf(long a, long b) {
     return b == 0 ? a : gcf(b, a % b);
   }
 
-  static boolean isPrime(long n) {
-
+  private static boolean isPrime(long n) {
     if (n < 2) return false;
     if (n == 2 || n == 3) return true;
     if (n % 2 == 0 || n % 3 == 0) return false;

@@ -8,7 +8,7 @@ public class ExtendedEuclideanAlgorithm {
   // that ax + by = gcd(a,b). This calculation is important in number theory
   // and can be used for several things such as finding modular inverses and
   // solutions to linear Diophantine equations.
-  static long[] egcd(long a, long b) {
+  public static long[] egcd(long a, long b) {
     if (b == 0) return new long[] {a, 1, 0};
     else {
       long[] ret = egcd(b, a % b);

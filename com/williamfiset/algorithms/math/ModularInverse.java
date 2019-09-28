@@ -8,7 +8,7 @@ public class ModularInverse {
   // that ax + by = gcd(a,b). This calculation is important in number theory
   // and can be used for several things such as finding modular inverses and
   // solutions to linear Diophantine equations.
-  static long[] egcd(long a, long b) {
+  private static long[] egcd(long a, long b) {
     if (b == 0) return new long[] {a, 1L, 0L};
     long[] v = egcd(b, a % b);
     long tmp = v[1] - v[2] * (a / b);
@@ -19,7 +19,7 @@ public class ModularInverse {
 
   // Returns the modular inverse of 'a' mod 'm' if it exists.
   // Make sure m > 0 and 'a' & 'm' are relatively prime.
-  static Long modInv(long a, long m) {
+  public static Long modInv(long a, long m) {
 
     if (m <= 0) throw new ArithmeticException("mod must be > 0");
 

@@ -1,29 +1,13 @@
 /**
  * This snippet multiplies 2 complex polynomials very efficiently using the Fast Fourier Transform.
  *
- * <p>Time Complexity: O( nlogn )
+ * <p>Time Complexity: O(nlogn)
  */
 package com.williamfiset.algorithms.math;
 
 public class FastFourierTransformComplexNumbers {
 
-  static Complex[] polyMult(Complex[] a, Complex[] b) {
-    int exp = 32 - Integer.numberOfLeadingZeros(a.length + b.length - 2);
-    int length = (int) Math.pow(2, exp);
-    a = pad(a, length);
-    b = pad(b, length);
-    Complex[] c = fft(a), d = fft(b), e = new Complex[length];
-    for (int i = 0; i < length; i++) e[i] = c[i].times(d[i]);
-    return ifft(e);
-  }
-
-  static Complex[] pad(Complex[] arr, int n) {
-    Complex[] padded = new Complex[n];
-    for (int i = 0; i < n; i++) padded[i] = (i < arr.length) ? arr[i] : new Complex(0, 0);
-    return padded;
-  }
-
-  static Complex[] fft(Complex[] x) {
+  public static Complex[] fft(Complex[] x) {
     int n = x.length;
     if (n == 1) return new Complex[] {x[0]};
     Complex[] arr = new Complex[n / 2];
@@ -41,7 +25,23 @@ public class FastFourierTransformComplexNumbers {
     return y;
   }
 
-  static Complex[] ifft(Complex[] x) {
+  private static Complex[] polyMult(Complex[] a, Complex[] b) {
+    int exp = 32 - Integer.numberOfLeadingZeros(a.length + b.length - 2);
+    int length = (int) Math.pow(2, exp);
+    a = pad(a, length);
+    b = pad(b, length);
+    Complex[] c = fft(a), d = fft(b), e = new Complex[length];
+    for (int i = 0; i < length; i++) e[i] = c[i].times(d[i]);
+    return ifft(e);
+  }
+
+  private static Complex[] pad(Complex[] arr, int n) {
+    Complex[] padded = new Complex[n];
+    for (int i = 0; i < n; i++) padded[i] = (i < arr.length) ? arr[i] : new Complex(0, 0);
+    return padded;
+  }
+
+  private static Complex[] ifft(Complex[] x) {
     int n = x.length;
     Complex[] y = new Complex[n];
     for (int i = 0; i < n; i++) y[i] = x[i].conjugate();
@@ -51,7 +51,7 @@ public class FastFourierTransformComplexNumbers {
     return y;
   }
 
-  static class Complex {
+  public static class Complex {
     double r, i;
 
     public Complex(double real, double imag) {

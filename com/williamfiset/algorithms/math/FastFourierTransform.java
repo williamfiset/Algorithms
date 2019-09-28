@@ -9,21 +9,21 @@
  */
 package com.williamfiset.algorithms.math;
 
-class FFT {
+public class FastFourierTransform {
 
   // p is a prime number set to be larger than 2^31-1
-  static long p = 4300210177L;
+  private static long p = 4300210177L;
 
   // q is 2^64 mod p used to compute x*y mod p
   // Note: If x*y mod p is negative it is because 2^64
   // has been subtracted and so it must be added again.
-  static long q = 857728777;
+  private static long q = 857728777;
 
   // A number that has order 2^20 modulo p
-  static long zeta = 3273;
+  private static long zeta = 3273;
 
-  static int exp = 20;
-  static long[] powers;
+  private static int exp = 20;
+  private static long[] powers;
 
   static {
     powers = new long[(1 << exp) + 1];
@@ -31,21 +31,8 @@ class FFT {
     for (int i = 1; i < powers.length; i++) powers[i] = mult(zeta, powers[i - 1]);
   }
 
-  static long mult(long x, long y) {
-    long z = x * y;
-    if (z < 0) {
-      z = z % p + q;
-      return z < 0 ? z + p : z;
-    }
-    if (z < (1L << 56) && x > (1 << 28) && y > (1 << 28)) {
-      z = z % p + q;
-      return z < p ? z : z - p;
-    }
-    return z % p;
-  }
-
   // Computes the polynomial product modulo p
-  static long[] multiply(long[] x, long[] y) {
+  public static long[] multiply(long[] x, long[] y) {
 
     // If the coefficients are negative place them in the range of [0, p)
     for (int i = 0; i < x.length; i++) if (x[i] < 0) x[i] += p;
@@ -71,7 +58,20 @@ class FFT {
     return z;
   }
 
-  static long[] transform(long[] v, int logN, boolean inverse) {
+  private static long mult(long x, long y) {
+    long z = x * y;
+    if (z < 0) {
+      z = z % p + q;
+      return z < 0 ? z + p : z;
+    }
+    if (z < (1L << 56) && x > (1 << 28) && y > (1 << 28)) {
+      z = z % p + q;
+      return z < p ? z : z - p;
+    }
+    return z % p;
+  }
+
+  private static long[] transform(long[] v, int logN, boolean inverse) {
     int n = 1 << logN;
     long[] w = new long[n];
     for (int i = 0; i < v.length; i++) w[Integer.reverse(i) >>> 32 - logN] = v[i];
@@ -100,9 +100,8 @@ class FFT {
     }
     return w;
   }
-}
 
-public class FastFourierTransform {
+    /* Example usage */
 
   public static void main(String[] args) {
 
