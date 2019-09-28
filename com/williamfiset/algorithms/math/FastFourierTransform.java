@@ -112,7 +112,7 @@ public class FastFourierTransform {
     long[] polynomial2 = {0, 0, 6, 2, 5};
 
     // Multiply the polynomials using the FFT algorithm
-    long[] result = FFT.multiply(polynomial1, polynomial2);
+    long[] result = FastFourierTransform.multiply(polynomial1, polynomial2);
 
     // Prints [0, 0, 6, 32, 33, 43, 19, 10] or equivalently
     // 6*x^2 + 32*x^3 + 33*x^4 + 43*x^5 + 19*x^6 + 10*x^7
