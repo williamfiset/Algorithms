@@ -11,7 +11,7 @@ public class EditDistance {
 
   // Computes the cost to convert a string 'a' into a string 'b' using dynamic
   // programming given the insertionCost, deletionCost and substitutionCost, O(nm)
-  static int editDistance(
+  public static int editDistance(
       String a, String b, int insertionCost, int deletionCost, int substitutionCost) {
 
     final int AL = a.length(), BL = b.length();
