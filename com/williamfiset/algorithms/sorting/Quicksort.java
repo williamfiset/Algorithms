@@ -46,7 +46,6 @@ public class Quicksort {
     ar[j] = tmp;
   }
 
-  /* TESTING BELOW */
 
   public static void main(String[] args) {
 
@@ -54,8 +53,12 @@ public class Quicksort {
     quicksort(array);
     System.out.println(java.util.Arrays.toString(array));
 
+    // TODO(williamfiset): Move to test file
     runTests();
   }
+
+  /* TESTING BELOW */
+
 
   static Random RANDOM = new Random();
 

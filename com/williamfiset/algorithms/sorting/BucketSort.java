@@ -50,6 +50,7 @@ public class BucketSort {
     bucketSort(array, 10, 10);
     System.out.println(java.util.Arrays.toString(array));
 
+  // TODO(williamfiset): move to javatests/...
     runTests();
   }
 

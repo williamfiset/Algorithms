@@ -14,7 +14,6 @@ public class BubbleSort {
   // are out of place and interchange their elements
   // until the entire array is sorted.
   public static void bubbleSort(int[] ar) {
-
     if (ar == null) return;
 
     final int N = ar.length;
@@ -46,6 +45,7 @@ public class BubbleSort {
     bubbleSort(array);
     System.out.println(java.util.Arrays.toString(array));
 
+    // TODO(williamfiset): move to javatests/...
     runTests();
   }
 

@@ -10,7 +10,6 @@ import java.util.Random;
 public class SelectionSort {
 
   public static void selectionSort(int[] array) {
-
     if (array == null) return;
     final int N = array.length;
 
@@ -38,6 +37,8 @@ public class SelectionSort {
 
     runTests();
   }
+
+  // TODO(williamfiset): move this to a test file.
 
   static Random RANDOM = new Random();
 

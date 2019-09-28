@@ -2,6 +2,7 @@
 package com.williamfiset.algorithms.sorting;
 
 public class RadixSort {
-
-  public static void radixSort(int[] ar) {}
+  public static void radixSort(int[] ar) {
+    // TODO: https://github.com/williamfiset/Algorithms/issues/5
+  }
 }
