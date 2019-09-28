@@ -20,7 +20,7 @@ public class CircleCircleIntersectionArea {
   // Due to double rounding precision the value passed into the acos
   // function may be outside its domain of [-1, +1] which would return
   // the value Double.NaN which we do not want.
-  static double arccosSafe(double x) {
+  private static double arccosSafe(double x) {
     if (x >= +1.0) return 0;
     if (x <= -1.0) return PI;
     return acos(x);
@@ -142,7 +142,7 @@ public class CircleCircleIntersectionArea {
   // Rotate point 'pt' a certain number of radians clockwise
   // relative to some fixed point 'fp'. Note that the angle
   // should be specified in radians, not degrees.
-  public static Point2D rotatePoint(Point2D fp, Point2D pt, double angle) {
+  private static Point2D rotatePoint(Point2D fp, Point2D pt, double angle) {
 
     double fpx = fp.getX();
     double fpy = fp.getY();

@@ -8,27 +8,25 @@
 package com.williamfiset.algorithms.geometry;
 
 import static java.lang.Math.*;
-
 import java.util.*;
-
-// Custom point class
-class PT {
-  double x, y;
-
-  public PT(double xx, double yy) {
-    x = xx;
-    y = yy;
-  }
-
-  public double dist(PT pt) {
-    double dx = x - pt.x, dy = y - pt.y;
-    return sqrt(dx * dx + dy * dy);
-  }
-}
 
 public class ClosestPairOfPoints {
 
-  static final double EPS = 1e-9;
+  private static final double EPS = 1e-9;
+
+  public class PT {
+    double x, y;
+
+    public PT(double xx, double yy) {
+      x = xx;
+      y = yy;
+    }
+
+    public double dist(PT pt) {
+      double dx = x - pt.x, dy = y - pt.y;
+      return sqrt(dx * dx + dy * dy);
+    }
+  }
 
   // Sorts points by X coordinate
   private static class X_Sort implements Comparator<PT> {

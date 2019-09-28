@@ -21,7 +21,7 @@ public class PointCircleTangent {
   // Due to double rounding precision the value passed into the asin
   // function may be outside its domain of [-1, +1] which would return
   // the value Double.NaN which we do not want.
-  public static double arcsinSafe(double x) {
+  private static double arcsinSafe(double x) {
     if (x <= -1.0) return -PI / 2.0;
     if (x >= +1.0) return +PI / 2.0;
     return asin(x);

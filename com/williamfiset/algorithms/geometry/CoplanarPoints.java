@@ -9,12 +9,12 @@ package com.williamfiset.algorithms.geometry;
 
 import static java.lang.Math.*;
 
-public class CoplanarPointsTest {
+public class CoplanarPoints {
 
   private static final double EPS = 1e-7;
 
   // A simple 3D vector class
-  static class Vector {
+  public static class Vector {
     double x, y, z;
 
     public Vector(double xx, double yy, double zz) {
@@ -22,19 +22,6 @@ public class CoplanarPointsTest {
       y = yy;
       z = zz;
     }
-  }
-
-  // Cross product of two vectors
-  static Vector cross(Vector v1, Vector v2) {
-    double v3x = v1.y * v2.z - v1.z * v2.y;
-    double v3y = v1.z * v2.x - v1.x * v2.z;
-    double v3z = v1.x * v2.y - v1.y * v2.x;
-    return new Vector(v3x, v3y, v3z);
-  }
-
-  // 3D vector dot product
-  static double dot(Vector v1, Vector v2) {
-    return (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
   }
 
   // Determine is four points (ax,ay,az), (bx,by,bz), (cx,cy,cz),
@@ -73,6 +60,19 @@ public class CoplanarPointsTest {
 
     // Check whether to dot product of v3 and v4 is zero
     return abs(dot(v3, v4)) < EPS;
+  }
+
+  // Cross product of two vectors
+  private static Vector cross(Vector v1, Vector v2) {
+    double v3x = v1.y * v2.z - v1.z * v2.y;
+    double v3y = v1.z * v2.x - v1.x * v2.z;
+    double v3z = v1.x * v2.y - v1.y * v2.x;
+    return new Vector(v3x, v3y, v3z);
+  }
+
+  // 3D vector dot product
+  private static double dot(Vector v1, Vector v2) {
+    return (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
   }
 
   // Examples

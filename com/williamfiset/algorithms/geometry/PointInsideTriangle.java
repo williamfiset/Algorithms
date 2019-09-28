@@ -59,7 +59,7 @@ public class PointInsideTriangle {
   // it is on the line, -1 if c is to the right of the line and +1 if it's
   // to the left from the frame of reference of standing at point a
   // and facing point b.
-  public static int collinear(Point2D a, Point2D b, Point2D c) {
+  private static int collinear(Point2D a, Point2D b, Point2D c) {
     double ax = a.getX(), ay = a.getY();
     double bx = b.getX(), by = b.getY();
     double cx = c.getX(), cy = c.getY();

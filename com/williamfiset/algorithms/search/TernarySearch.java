@@ -17,12 +17,12 @@ import java.util.function.DoubleFunction;
 public class TernarySearch {
 
   // Define a very small epsilon value to compare double values
-  static final double EPS = 0.000000001;
+  private static final double EPS = 0.000000001;
 
   // Perform a ternary search on the interval low to high.
   // Remember that your function must be a continuous unimodal
   // function, this means a function which decreases then increases (U shape)
-  static double ternarySearch(double low, double high, DoubleFunction<Double> function) {
+  public static double ternarySearch(double low, double high, DoubleFunction<Double> function) {
     Double best = null;
     while (true) {
       double mid1 = (2 * low + high) / 3, mid2 = (low + 2 * high) / 3;

@@ -20,7 +20,7 @@ import java.util.List;
 public class LineSegmentLineSegmentIntersection {
 
   // Small epsilon used for double value comparison.
-  private static final double EPS = 1e-5;
+  private static final double EPS = 1e-7;
 
   // 2D Point class.
   public static class Pt {
@@ -34,77 +34,6 @@ public class LineSegmentLineSegmentIntersection {
     public boolean equals(Pt pt) {
       return abs(x - pt.x) < EPS && abs(y - pt.y) < EPS;
     }
-  }
-
-  // Finds the orientation of point 'c' relative to the line segment (a, b)
-  // Returns  0 if all three points are collinear.
-  // Returns -1 if 'c' is clockwise to segment (a, b), i.e right of line formed by the segment.
-  // Returns +1 if 'c' is counter clockwise to segment (a, b), i.e left of line
-  // formed by the segment.
-  public static int orientation(Pt a, Pt b, Pt c) {
-    double value = (b.y - a.y) * (c.x - b.x) - (b.x - a.x) * (c.y - b.y);
-    if (abs(value) < EPS) return 0;
-    return (value > 0) ? -1 : +1;
-  }
-
-  // Tests whether point 'c' is on the line segment (a, b).
-  // Ensure first that point c is collinear to segment (a, b) and
-  // then check whether c is within the rectangle formed by (a, b)
-  public static boolean pointOnLine(Pt a, Pt b, Pt c) {
-    return orientation(a, b, c) == 0
-        && min(a.x, b.x) <= c.x
-        && c.x <= max(a.x, b.x)
-        && min(a.y, b.y) <= c.y
-        && c.y <= max(a.y, b.y);
-  }
-
-  // Determines whether two segments intersect.
-  public static boolean segmentsIntersect(Pt p1, Pt p2, Pt p3, Pt p4) {
-
-    // Get the orientation of points p3 and p4 in relation
-    // to the line segment (p1, p2)
-    int o1 = orientation(p1, p2, p3);
-    int o2 = orientation(p1, p2, p4);
-    int o3 = orientation(p3, p4, p1);
-    int o4 = orientation(p3, p4, p2);
-
-    // If the points p1, p2 are on opposite sides of the infinite
-    // line formed by (p3, p4) and conversly p3, p4 are on opposite
-    // sides of the infinite line formed by (p1, p2) then there is
-    // an intersection.
-    if (o1 != o2 && o3 != o4) return true;
-
-    // Collinear special cases (perhaps these if checks can be simplified?)
-    if (o1 == 0 && pointOnLine(p1, p2, p3)) return true;
-    if (o2 == 0 && pointOnLine(p1, p2, p4)) return true;
-    if (o3 == 0 && pointOnLine(p3, p4, p1)) return true;
-    if (o4 == 0 && pointOnLine(p3, p4, p2)) return true;
-
-    return false;
-  }
-
-  public static List<Pt> getCommonEndpoints(Pt p1, Pt p2, Pt p3, Pt p4) {
-
-    List<Pt> points = new ArrayList<>();
-
-    if (p1.equals(p3)) {
-      points.add(p1);
-      if (p2.equals(p4)) points.add(p2);
-
-    } else if (p1.equals(p4)) {
-      points.add(p1);
-      if (p2.equals(p3)) points.add(p2);
-
-    } else if (p2.equals(p3)) {
-      points.add(p2);
-      if (p1.equals(p4)) points.add(p1);
-
-    } else if (p2.equals(p4)) {
-      points.add(p2);
-      if (p1.equals(p3)) points.add(p1);
-    }
-
-    return points;
   }
 
   // Finds the intersection point(s) of two line segments. Unlike regular line
@@ -176,6 +105,78 @@ public class LineSegmentLineSegmentIntersection {
     double y = (m1 * b2 - m2 * b1) / (m1 - m2);
 
     return new Pt[] {new Pt(x, y)};
+  }
+
+
+  // Finds the orientation of point 'c' relative to the line segment (a, b)
+  // Returns  0 if all three points are collinear.
+  // Returns -1 if 'c' is clockwise to segment (a, b), i.e right of line formed by the segment.
+  // Returns +1 if 'c' is counter clockwise to segment (a, b), i.e left of line
+  // formed by the segment.
+  private static int orientation(Pt a, Pt b, Pt c) {
+    double value = (b.y - a.y) * (c.x - b.x) - (b.x - a.x) * (c.y - b.y);
+    if (abs(value) < EPS) return 0;
+    return (value > 0) ? -1 : +1;
+  }
+
+  // Tests whether point 'c' is on the line segment (a, b).
+  // Ensure first that point c is collinear to segment (a, b) and
+  // then check whether c is within the rectangle formed by (a, b)
+  private static boolean pointOnLine(Pt a, Pt b, Pt c) {
+    return orientation(a, b, c) == 0
+        && min(a.x, b.x) <= c.x
+        && c.x <= max(a.x, b.x)
+        && min(a.y, b.y) <= c.y
+        && c.y <= max(a.y, b.y);
+  }
+
+  // Determines whether two segments intersect.
+  private static boolean segmentsIntersect(Pt p1, Pt p2, Pt p3, Pt p4) {
+
+    // Get the orientation of points p3 and p4 in relation
+    // to the line segment (p1, p2)
+    int o1 = orientation(p1, p2, p3);
+    int o2 = orientation(p1, p2, p4);
+    int o3 = orientation(p3, p4, p1);
+    int o4 = orientation(p3, p4, p2);
+
+    // If the points p1, p2 are on opposite sides of the infinite
+    // line formed by (p3, p4) and conversly p3, p4 are on opposite
+    // sides of the infinite line formed by (p1, p2) then there is
+    // an intersection.
+    if (o1 != o2 && o3 != o4) return true;
+
+    // Collinear special cases (perhaps these if checks can be simplified?)
+    if (o1 == 0 && pointOnLine(p1, p2, p3)) return true;
+    if (o2 == 0 && pointOnLine(p1, p2, p4)) return true;
+    if (o3 == 0 && pointOnLine(p3, p4, p1)) return true;
+    if (o4 == 0 && pointOnLine(p3, p4, p2)) return true;
+
+    return false;
+  }
+
+  private static List<Pt> getCommonEndpoints(Pt p1, Pt p2, Pt p3, Pt p4) {
+
+    List<Pt> points = new ArrayList<>();
+
+    if (p1.equals(p3)) {
+      points.add(p1);
+      if (p2.equals(p4)) points.add(p2);
+
+    } else if (p1.equals(p4)) {
+      points.add(p1);
+      if (p2.equals(p3)) points.add(p2);
+
+    } else if (p2.equals(p3)) {
+      points.add(p2);
+      if (p1.equals(p4)) points.add(p1);
+
+    } else if (p2.equals(p4)) {
+      points.add(p2);
+      if (p1.equals(p3)) points.add(p1);
+    }
+
+    return points;
   }
 
   public static void main(String[] args) {

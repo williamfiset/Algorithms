@@ -12,7 +12,7 @@ import static java.lang.Math.*;
 public class AngleBetweenVectors3D {
 
   // Return the smaller of the two angles between two 3D vectors in radians
-  static double angleBetweenVectors(
+  public static double angleBetweenVectors(
       double v1x, double v1y, double v1z, double v2x, double v2y, double v2z) {
     // To determine the angle between two vectors v1 and v2 we can use
     // the following formula: dot(v1,v2) = len(v1)*len(v2)*cosθ and solve

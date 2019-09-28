@@ -66,10 +66,12 @@ public class BinarySearch {
     System.out.printf("sqrt(%.2f) = %.5f, x^2 = %.5f\n", target, sqrtVal, (sqrtVal * sqrtVal));
 
     // EXAMPLE #2
-    // Suppose we want to find the radius of a sphere with
-    // volume 100m^3 using a binary search. We know that
-    // for a sphere the volume is given by V = (4/3)*pi*r^3,
-    // so all we have to do is binary search on the radius
+    // Suppose we want to find the radius of a sphere with volume 100m^3 using
+    // a binary search. We know that for a sphere the volume is given by
+    // V = (4/3)*pi*r^3, so all we have to do is binary search on the radius.
+    //
+    // Note: this is a silly example because you could just solve for r, but it
+    // shows how binary search can be a powerful technique.
 
     double radiusLowerBound = 0;
     double radiusUpperBound = 1000;
