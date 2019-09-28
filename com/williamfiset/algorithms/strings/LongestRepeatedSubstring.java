@@ -27,7 +27,7 @@ public class LongestRepeatedSubstring {
     System.out.printf("LRS(s) of %s is/are: %s\n", str, sa.lrs());
   }
 
-  static class SuffixArray {
+  public static class SuffixArray {
 
     // ALPHABET_SZ is the default alphabet size, this may need to be much larger
     int ALPHABET_SZ = 256, N;

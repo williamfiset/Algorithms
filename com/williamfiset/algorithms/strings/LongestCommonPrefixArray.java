@@ -22,7 +22,7 @@ public class LongestCommonPrefixArray {
     System.out.println("The LCP array is: " + Arrays.toString(sa.lcp));
   }
 
-  static class SuffixArray {
+  public static class SuffixArray {
 
     // ALPHABET_SZ is the default alphabet size, this may need to be much
     // larger if you're using the LCS method with multiple sentinels

@@ -9,8 +9,7 @@ public class KMP {
 
   // Given a pattern and a text kmp finds all the places that the pattern
   // is found in the text (even overlapping pattern matches)
-  static java.util.List<Integer> kmp(String txt, String pat) {
-
+  public static java.util.List<Integer> kmp(String txt, String pat) {
     java.util.List<Integer> matches = new java.util.ArrayList<>();
     if (txt == null || pat == null) return matches;
 
@@ -38,7 +37,7 @@ public class KMP {
 
   // For each index i compute the longest match between the proper
   // prefix starting at 0 and the proper suffix starting at i
-  static int[] kmpHelper(String pat, int m) {
+  private static int[] kmpHelper(String pat, int m) {
     int[] arr = new int[m];
     for (int i = 1, len = 0; i < m; ) {
       if (pat.charAt(i) == pat.charAt(len)) {
@@ -52,7 +51,6 @@ public class KMP {
   }
 
   public static void main(String[] args) {
-
     java.util.List<Integer> matches = kmp("abababa", "aba");
     System.out.println(matches); // [0, 2, 4]
 

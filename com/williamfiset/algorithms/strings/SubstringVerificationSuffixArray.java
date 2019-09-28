@@ -25,7 +25,7 @@ public class SubstringVerificationSuffixArray {
     System.out.println(sa.contains("this pattern does not exist"));
   }
 
-  static class SuffixArray {
+  public static class SuffixArray {
 
     // ALPHABET_SZ is the default alphabet size, this may need to be much
     // larger if you're using the LCS method with multiple sentinels

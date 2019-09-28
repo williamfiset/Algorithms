@@ -43,7 +43,7 @@ public class LongestCommonSubstring {
     return t;
   }
 
-  abstract static class SuffixArray {
+  public abstract static class SuffixArray {
 
     // Length of the suffix array
     protected final int N;

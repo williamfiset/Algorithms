@@ -50,22 +50,18 @@ public class ManachersAlgorithm {
   // a string it uses Manacher's algorithm to find the diameter
   // of each palindrome centered at each position.
   public static java.util.TreeSet<String> findPalindromeSubstrings(String str) {
-
     char[] S = str.toCharArray();
     int N = S.length;
     int[] centers = manachers(S);
     java.util.TreeSet<String> palindromes = new java.util.TreeSet<>();
 
     for (int i = 0; i < centers.length; i++) {
-
       int diameter = centers[i];
-
       if (diameter >= 1) {
 
         // Even palindrome substring
         if (i % 2 == 1) {
           while (diameter > 1) {
-
             int index = (i - 1) / 2 - diameter / 2;
             palindromes.add(new String(S, index, diameter));
             diameter -= 2;
@@ -73,7 +69,6 @@ public class ManachersAlgorithm {
           // Odd palindrome substring
         } else {
           while (diameter >= 1) {
-
             int index = (i - 2) / 2 - (diameter - 1) / 2;
             palindromes.add(new String(S, index, diameter));
             diameter -= 2;
@@ -81,12 +76,10 @@ public class ManachersAlgorithm {
         }
       }
     }
-
     return palindromes;
   }
 
   public static void main(String[] args) {
-
     String s = "abbaabba";
 
     // Outputs: [a, aa, abba, abbaabba, b, baab, bb, bbaabb]
