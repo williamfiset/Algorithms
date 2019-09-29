@@ -101,7 +101,7 @@ public class FastFourierTransform {
     return w;
   }
 
-    /* Example usage */
+  /* Example usage */
 
   public static void main(String[] args) {
 

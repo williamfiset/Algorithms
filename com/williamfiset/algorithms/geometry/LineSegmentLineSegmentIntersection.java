@@ -107,7 +107,6 @@ public class LineSegmentLineSegmentIntersection {
     return new Pt[] {new Pt(x, y)};
   }
 
-
   // Finds the orientation of point 'c' relative to the line segment (a, b)
   // Returns  0 if all three points are collinear.
   // Returns -1 if 'c' is clockwise to segment (a, b), i.e right of line formed by the segment.

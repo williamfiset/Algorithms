@@ -53,10 +53,10 @@ public class Mergesort {
     array = mergesort(array);
     System.out.println(java.util.Arrays.toString(array));
 
-  // TODO(williamfiset): move to javatests/...
+    // TODO(williamfiset): move to javatests/...
     runTests();
   }
-  
+
   static Random RANDOM = new Random();
 
   public static void runTests() {

@@ -46,7 +46,6 @@ public class Quicksort {
     ar[j] = tmp;
   }
 
-
   public static void main(String[] args) {
 
     int[] array = {10, 4, 6, 4, 8, -13, 2, 3};
@@ -58,7 +57,6 @@ public class Quicksort {
   }
 
   /* TESTING BELOW */
-
 
   static Random RANDOM = new Random();
 

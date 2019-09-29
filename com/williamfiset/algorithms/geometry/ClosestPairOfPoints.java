@@ -8,6 +8,7 @@
 package com.williamfiset.algorithms.geometry;
 
 import static java.lang.Math.*;
+
 import java.util.*;
 
 public class ClosestPairOfPoints {
