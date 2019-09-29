@@ -1,0 +1,33 @@
+Trees are a special form of graph
+
+They come in directed and undirected flavors
+
+Definitions:
+An acyclic connected graph
+A connected graph with N-1 edges
+A graph in which any two vertices are connected by exactly one path
+
+
+Rooted trees
+
+
+child, parent
+
+root node
+
+Only the root node in a rooted tree doesn't have a parent, although sometimes it
+could be useful for the root node to have itself as a parent (e.g filesystem).
+
+leaf node - nodes with no children
+
+subtrees
+
+Binary tree is a tree for which every node has at most two child nodes
+
+(steal examples from binary tree slides)
+
+
+
+>>> Solve simple tree problem
+
+
