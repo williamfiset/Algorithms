@@ -31,3 +31,19 @@ Binary tree is a tree for which every node has at most two child nodes
 >>> Solve simple tree problem
 
 
+function Height(node):
+
+
+    public boolean isValidBST(TreeNode root) {
+        return validate(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    public boolean validate(TreeNode node, long min, long max) {
+        // Reached bottom of tree
+        if (node == null) return true;
+        
+        // Verify invariant 
+        if (min >= node.val || max <= node.val) return false;
+        
+        return validate(node.left, min, node.val) && validate(node.right, node.val, max);
+    }
