@@ -49,6 +49,12 @@ function Height(node):
     }
 
 
+Root tree:
+  select a node to be the root node
+  recursively do a BFS and attach children while making sure not to
+    point back to the parent
+  starting from any node 
+
 
 
 
