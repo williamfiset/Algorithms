@@ -47,3 +47,9 @@ function Height(node):
         
         return validate(node.left, min, node.val) && validate(node.right, node.val, max);
     }
+
+
+
+
+
+
