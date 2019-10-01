@@ -35,11 +35,18 @@ public class TreeHeight {
 
   // Returns the height of the binary tree which is the number of edges from the
   // root to the deepest leaf node, or -1 if the input is an empty tree.
-  public static int treeHeight(TreeNode node) {
+  public static int treeHeight1(TreeNode node) {
+    if (node == null) return -1;
+    return Math.max(treeHeight1(node.left), treeHeight1(node.right)) + 1;    
+  } 
+
+  // Returns the height of the binary tree which is the number of edges from the
+  // root to the deepest leaf node, or -1 if the input is an empty tree.
+  public static int treeHeight2(TreeNode node) {
     // Handle empty tree edge case.
     if (node == null) return -1;
     if (isLeafNode(node)) return 0;
-    return Math.max(treeHeight(node.left), treeHeight(node.right)) + 1;
+    return Math.max(treeHeight2(node.left), treeHeight2(node.right)) + 1;
   }
 
   private static boolean isLeafNode(TreeNode node) {
@@ -49,9 +56,24 @@ public class TreeHeight {
   /* Examples */
 
   public static void main(String[] args) {
-    System.out.printf("Singleton height: %d\n", treeHeight(new TreeNode(0)));
+    testTreeHeight1();
+    testTreeHeight2();
+  }
+
+  private static void testTreeHeight1() {
+    System.out.printf("Singleton height: %d\n", treeHeight1(new TreeNode(0)));
     TreeNode root = makeTree();
-    System.out.printf("Tree height: %d\n", treeHeight(root));
+    System.out.printf("Tree height: %d\n", treeHeight1(root));
+
+    // Prints:
+    // Singleton height: 0
+    // Tree height: 3
+  }
+
+  private static void testTreeHeight2() {
+    System.out.printf("Singleton height: %d\n", treeHeight2(new TreeNode(0)));
+    TreeNode root = makeTree();
+    System.out.printf("Tree height: %d\n", treeHeight2(root));
 
     // Prints:
     // Singleton height: 0
