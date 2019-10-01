@@ -61,6 +61,7 @@ public class TreeHeight {
   }
 
   private static void testTreeHeight1() {
+    System.out.printf("Empty tree: %d\n", treeHeight1(null));
     System.out.printf("Singleton height: %d\n", treeHeight1(new TreeNode(0)));
     TreeNode root = makeTree();
     System.out.printf("Tree height: %d\n", treeHeight1(root));
@@ -71,6 +72,7 @@ public class TreeHeight {
   }
 
   private static void testTreeHeight2() {
+    System.out.printf("Empty tree: %d\n", treeHeight2(null));
     System.out.printf("Singleton height: %d\n", treeHeight2(new TreeNode(0)));
     TreeNode root = makeTree();
     System.out.printf("Tree height: %d\n", treeHeight2(root));
