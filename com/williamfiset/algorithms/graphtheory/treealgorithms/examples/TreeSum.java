@@ -1,3 +1,18 @@
+/**
+ * Tree sum example
+ *
+ * <p>Download the code: $ git clone https://github.com/williamfiset/Algorithms
+ *
+ * <p>Change directory to the root of the Algorithms directory: $ cd Algorithms
+ *
+ * <p>Compile: $ javac com/williamfiset/algorithms/graphtheory/treealgorithms/examples/TreeSum.java
+ *
+ * <p>Run: $ java com/williamfiset/algorithms/graphtheory/treealgorithms/examples/TreeSum
+ *
+ * <p>Time Complexity: O(n)
+ *
+ * @author William Fiset, william.alexandre.fiset@gmail.com
+ */
 package com.williamfiset.algorithms.graphtheory.treealgorithms.examples;
 
 import java.util.*;
@@ -7,6 +22,7 @@ public class TreeSum {
   public static class TreeNode {
     int value;
     List<TreeNode> children = new ArrayList<>();
+
     public TreeNode(int value) {
       this.value = value;
     }
@@ -27,16 +43,14 @@ public class TreeSum {
   }
 
   public static int treeSum(TreeNode node) {
-    if (node == null)
-      return 0;
+    if (node == null) return 0;
     int total = 0;
-    for (TreeNode child : node.getChildren())
-      total += treeSum(child);
+    for (TreeNode child : node.getChildren()) total += treeSum(child);
     total += node.getValue();
     return total;
   }
 
-    /* Examples */
+  /* Examples */
 
   public static void main(String[] args) {
     TreeNode root = makeTree();
@@ -53,7 +67,7 @@ public class TreeSum {
     TreeNode node1 = new TreeNode(1);
     TreeNode nodem6 = new TreeNode(-6);
     node4.addChild(node1, nodem6);
-    
+
     TreeNode node0 = new TreeNode(0);
     TreeNode node7 = new TreeNode(7);
     TreeNode nodem4 = new TreeNode(-4);
@@ -68,5 +82,4 @@ public class TreeSum {
 
     return root;
   }
-
 }

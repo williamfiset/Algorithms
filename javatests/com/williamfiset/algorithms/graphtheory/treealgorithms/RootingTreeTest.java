@@ -5,7 +5,6 @@ import static com.google.common.truth.Truth.assertThat;
 import com.williamfiset.algorithms.graphtheory.treealgorithms.RootingTree;
 import com.williamfiset.algorithms.graphtheory.treealgorithms.RootingTree.TreeNode;
 import java.util.*;
-import java.util.stream.Collectors;
 import org.junit.*;
 
 public class RootingTreeTest {
