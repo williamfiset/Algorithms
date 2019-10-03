@@ -67,6 +67,7 @@ public class TreeHeight {
     System.out.printf("Tree height: %d\n", treeHeight1(root));
 
     // Prints:
+    // Empty tree: -1
     // Singleton height: 0
     // Tree height: 3
   }
@@ -78,6 +79,7 @@ public class TreeHeight {
     System.out.printf("Tree height: %d\n", treeHeight2(root));
 
     // Prints:
+    // Empty tree: -1
     // Singleton height: 0
     // Tree height: 3
   }
