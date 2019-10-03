@@ -11,7 +11,7 @@ public class InterpolationSearchTest {
         int nums[] = {1, 3, 5, 100};
         int val = 1;
 
-        assertEquals(0, new InterpolationSearch().find(nums, val));
+        assertEquals(0, new InterpolationSearch().interpolationSearch(nums, val));
     }
 
     @Test
@@ -19,7 +19,7 @@ public class InterpolationSearchTest {
         int nums[] = {1, 3, 5, 100};
         int val = 100;
 
-        assertEquals(2, new InterpolationSearch().find(nums, val));
+        assertEquals(2, new InterpolationSearch().interpolationSearch(nums, val));
     }
 	
     @Test
@@ -27,7 +27,7 @@ public class InterpolationSearchTest {
         int nums[] = {1, 3, 5, 100};
         int val = 5;
 
-        assertEquals(1, new InterpolationSearch().find(nums, val));
+        assertEquals(1, new InterpolationSearch().interpolationSearch(nums, val));
 
     }
 	//Array searches are not sorted
@@ -36,14 +36,14 @@ public class InterpolationSearchTest {
         int nums[] = {3, 1, 5, 100};
         int val = 1;
 
-        assertEquals(-1, new InterpolationSearch().find(nums, val));
+        assertEquals(-1, new InterpolationSearch().interpolationSearch(nums, val));
     }
     @Test
     public void emptyNums() {
         int nums[] = {};
         int val = 4;
 
-        assertEquals(-1, new InterpolationSearch().find(nums, val));
+        assertEquals(-1, new InterpolationSearch().interpolationSearch(nums, val));
     }
 
     @Test
@@ -51,13 +51,13 @@ public class InterpolationSearchTest {
         int nums[] = null;
         int val = 4;
 
-        assertEquals(-1, new InterpolationSearch().find(nums, val));
+        assertEquals(-1, new InterpolationSearch().interpolationSearch(nums, val));
     }
     @Test
     public void findKeyIsnotInNums() {
         int nums[] = {1, 3, 5, 100};
         int val = 50;
 
-        assertEquals(-1, new InterpolationSearch().find(nums, val));
+        assertEquals(-1, new InterpolationSearch().interpolationSearch(nums, val));
     }
 }
