@@ -32,8 +32,13 @@ class TreeCenter {
     // until only the centers remain.
     while (processedLeafs < n) {
       List<Integer> newLeaves = new ArrayList<>();
-      for (int node : leaves)
-        for (int neighbor : tree.get(node)) if (--degrees[neighbor] == 1) newLeaves.add(neighbor);
+      for (int node : leaves) {
+        for (int neighbor : tree.get(node)) {
+          if (--degrees[neighbor] == 1) {
+            newLeaves.add(neighbor);
+          }
+        }
+      }
       processedLeafs += newLeaves.size();
       leaves = newLeaves;
     }
