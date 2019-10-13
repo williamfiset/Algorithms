@@ -7,8 +7,6 @@
  *
  * <p>Tested code against: https://uva.onlinejudge.org/external/124/p12489.pdf
  *
- * <p>Time Complexity: O(Elog(E))
- *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.graphtheory.treealgorithms;

@@ -37,8 +37,8 @@ public class TreeHeight {
   // root to the deepest leaf node, or -1 if the input is an empty tree.
   public static int treeHeight1(TreeNode node) {
     if (node == null) return -1;
-    return Math.max(treeHeight1(node.left), treeHeight1(node.right)) + 1;    
-  } 
+    return Math.max(treeHeight1(node.left), treeHeight1(node.right)) + 1;
+  }
 
   // Returns the height of the binary tree which is the number of edges from the
   // root to the deepest leaf node, or -1 if the input is an empty tree.
