@@ -197,6 +197,7 @@ This repository is contribution friendly :smiley:. If you're an algorithms enthu
 * [Mergesort](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/sorting/Mergesort.java) **- O(nlog(n))**
 * [Quicksort (in-place, Hoare partitioning)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/sorting/Quicksort.java) **- Θ(nlog(n))**
 * [Selection sort](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/sorting/SelectionSort.java) **- O(n<sup>2</sup>)**
+* [Shell sort](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/sorting/ShellSort.java) **- O(n<sup>2</sup>)**
 
 # String algorithms
 * [Booth's algorithm (finds lexicographically smallest string rotation)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/strings/BoothsAlgorithm.java) **- O(n)**
