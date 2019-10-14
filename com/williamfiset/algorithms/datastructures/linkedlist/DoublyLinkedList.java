@@ -170,9 +170,10 @@ public class DoublyLinkedList<T> implements Iterable<T> {
         trav = trav.next;
       }
       // Search from the back of the list
-    } else for (i = size - 1, trav = tail; i != index; i--) {
-      trav = trav.prev;
-    }
+    } else
+      for (i = size - 1, trav = tail; i != index; i--) {
+        trav = trav.prev;
+      }
 
     return remove(trav);
   }
@@ -214,11 +215,12 @@ public class DoublyLinkedList<T> implements Iterable<T> {
         }
       }
       // Search for non null object
-    } else for (; trav != null; trav = trav.next, index++) {
-      if (obj.equals(trav.data)) {
-        return index;
+    } else
+      for (; trav != null; trav = trav.next, index++) {
+        if (obj.equals(trav.data)) {
+          return index;
+        }
       }
-    }
 
     return -1;
   }
