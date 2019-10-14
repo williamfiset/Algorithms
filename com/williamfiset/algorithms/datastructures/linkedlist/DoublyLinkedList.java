@@ -11,9 +11,9 @@ public class DoublyLinkedList<T> implements Iterable<T> {
   private Node<T> tail = null;
 
   // Internal node class to represent data
-  private class Node<T> {
-    T data;
-    Node<T> prev, next;
+  private static class Node<T> {
+    private T data;
+    private Node<T> prev, next;
 
     public Node(T data, Node<T> prev, Node<T> next) {
       this.data = data;
@@ -157,9 +157,10 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
   // Remove a node at a particular index, O(n)
   public T removeAt(int index) {
-
     // Make sure the index provided is valid
-    if (index < 0 || index >= size) throw new IllegalArgumentException();
+    if (index < 0 || index >= size) {
+      throw new IllegalArgumentException();
+    }
 
     int i;
     Node<T> trav;
