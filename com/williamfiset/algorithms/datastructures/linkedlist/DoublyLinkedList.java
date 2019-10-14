@@ -6,7 +6,6 @@
 package com.williamfiset.algorithms.datastructures.linkedlist;
 
 public class DoublyLinkedList<T> implements Iterable<T> {
-
   private int size = 0;
   private Node<T> head = null;
   private Node<T> tail = null;
@@ -58,8 +57,6 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
   // Add a node to the tail of the linked list, O(1)
   public void addLast(T elem) {
-
-    // The linked list is empty
     if (isEmpty()) {
       head = tail = new Node<T>(elem, null, null);
     } else {
@@ -71,15 +68,12 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
   // Add an element to the beginning of this linked list, O(1)
   public void addFirst(T elem) {
-
-    // The linked list is empty
     if (isEmpty()) {
       head = tail = new Node<T>(elem, null, null);
     } else {
       head.prev = new Node<T>(elem, null, head);
       head = head.prev;
     }
-
     size++;
   }
 
@@ -97,8 +91,7 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
   // Remove the first value at the head of the linked list, O(1)
   public T removeFirst() {
-
-    // Can't remove data from an empty list -_-
+    // Can't remove data from an empty list
     if (isEmpty()) throw new RuntimeException("Empty list");
 
     // Extract the data at the head and move
@@ -119,8 +112,7 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
   // Remove the last value at the tail of the linked list, O(1)
   public T removeLast() {
-
-    // Can't remove data from an empty list -_-
+    // Can't remove data from an empty list
     if (isEmpty()) throw new RuntimeException("Empty list");
 
     // Extract the data at the tail and move
@@ -141,7 +133,6 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
   // Remove an arbitrary node from the linked list, O(1)
   private T remove(Node<T> node) {
-
     // If the node to remove is somewhere either at the
     // head or the tail handle those independently
     if (node.prev == null) return removeFirst();
@@ -167,7 +158,7 @@ public class DoublyLinkedList<T> implements Iterable<T> {
   // Remove a node at a particular index, O(n)
   public T removeAt(int index) {
 
-    // Make sure the index provided is valid -_-
+    // Make sure the index provided is valid
     if (index < 0 || index >= size) throw new IllegalArgumentException();
 
     int i;
@@ -175,17 +166,19 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
     // Search from the front of the list
     if (index < size / 2) {
-      for (i = 0, trav = head; i != index; i++) trav = trav.next;
-
+      for (i = 0, trav = head; i != index; i++) {
+        trav = trav.next;
+      }
       // Search from the back of the list
-    } else for (i = size - 1, trav = tail; i != index; i--) trav = trav.prev;
+    } else for (i = size - 1, trav = tail; i != index; i--) {
+      trav = trav.prev;
+    }
 
     return remove(trav);
   }
 
   // Remove a particular value in the linked list, O(n)
   public boolean remove(Object obj) {
-
     Node<T> trav = head;
 
     // Support searching for null
@@ -210,16 +203,22 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
   // Find the index of a particular value in the linked list, O(n)
   public int indexOf(Object obj) {
-
     int index = 0;
     Node<T> trav = head;
 
     // Support searching for null
     if (obj == null) {
-      for (; trav != null; trav = trav.next, index++) if (trav.data == null) return index;
-
+      for (; trav != null; trav = trav.next, index++) {
+        if (trav.data == null) {
+          return index;
+        }
+      }
       // Search for non null object
-    } else for (; trav != null; trav = trav.next, index++) if (obj.equals(trav.data)) return index;
+    } else for (; trav != null; trav = trav.next, index++) {
+      if (obj.equals(trav.data)) {
+        return index;
+      }
+    }
 
     return -1;
   }
