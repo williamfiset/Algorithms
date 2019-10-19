@@ -1,4 +1,5 @@
-/** Determines if two rooted trees are isomorphic. */
+/** Determines if two rooted trees are isomorphic with high probability. */
+
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import java.util.*;
