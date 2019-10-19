@@ -1,64 +1,64 @@
-Trees are a special form of graph
 
-They come in directed and undirected flavors
+Hello and welcome back, in today's video we're going to start tackling trees which are a very common type of graph. In particular, we're going to look at how we computationally represent and store trees as well as a few simple algorithms to get started.
 
-Definitions:
-An acyclic connected graph
-A connected graph with N-1 edges
-A graph in which any two vertices are connected by exactly one path
+Conceptually it's fair to say most people know what I mean when I say I'm working with a tree, or that something is structured as a tree. Below are four graphs, but one of them is not a tree, do you know which one?
 
+Only the last graph isn't a tree, but why is it not a tree?
 
-Rooted trees
+It's because we define a tree as being an undirected graph with no cycles, and that's the key thing to remember. You can see that the rightmost graph has a cycle and is therefore not a tree. However, there's an even easier way to check whether a graph is a tree or not.
 
-
-child, parent
-
-root node
-
-Only the root node in a rooted tree doesn't have a parent, although sometimes it
-could be useful for the root node to have itself as a parent (e.g filesystem).
-
-leaf node - nodes with no children
-
-subtrees
-
-Binary tree is a tree for which every node has at most two child nodes
-
-(steal examples from binary tree slides)
+Each tree has exactly n nodes and n-1 edges. If we count up all the nodes and edges of each graph you can see that all the trees have one less edge than the number of nodes except for the rightmost graph which is not a tree.
 
 
+Now we need to talk about how we actually store and represent these undirected trees. First, you will need to label the nodes of your tree by indexing it, preferably from 0 to n non-inclusive like the one on the left of this slide.
+A simple way to store a tree is as an edge list, which is simply a list of undirected edges indicating which two nodes have an edge between them. The great thing about this representation is that it's super fast to iterate over and cheap to store.
 
->>> Solve simple tree problem
+The downside however is that storing your tree as a list lacks the structure to efficiently query all the neighbors of a node.
 
+An alternative and more popular representation is to store an undirected tree as an adjacency list which maps nodes to all its neighbors.
 
-function Height(node):
+For example, node 4 has the neighbors 1, 5 and 8. In reality we're actually representing these undirected edges as pairs of directed edges.
 
+You could also so a tree as an adjacency matrix where having a 1 in a particular cell means that the nodes which correspond to the row and column value have an edge between them.
 
-    public boolean isValidBST(TreeNode root) {
-        return validate(root, Long.MIN_VALUE, Long.MAX_VALUE);
-    }
-
-    public boolean validate(TreeNode node, long min, long max) {
-        // Reached bottom of tree
-        if (node == null) return true;
-        
-        // Verify invariant 
-        if (min >= node.val || max <= node.val) return false;
-        
-        return validate(node.left, min, node.val) && validate(node.right, node.val, max);
-    }
+However, in practice I would say to always avoid storing trees an an adjacency matrix because it's a huge waste of space to use n squared memory and only use roughly 2n of the matrix cells.
 
 
-Root tree:
-  select a node to be the root node
-  recursively do a BFS and attach children while making sure not to
-    point back to the parent
-  starting from any node 
+I can't keep talking about trees without mentioning rooted trees which are trees with a designated root node. On most rooted trees the edges point away from the root node although it's also possible to have edges that point towards the root node, but that's much rarer from my experience.
+Generally speaking, rooted trees are far easier to work with than undirected tree because they have a well defined structure and allow for recursive algorithm implementations.
+
+Related to rooted trees are binary trees which are trees for which every node has at most two child nodes. The first two trees on this slide are binary trees, but the last one is not because it has a node with more than 2 child nodes.
+You don't often see binary tree manifest themselves in the real world, for the most part binary trees are artificially created and integrated as part of data structures to guarantee efficient access and queries on data.
+
+Now related to binary trees are binary search trees which are trees which satisfy the BST invariant. The BST invariant states that for every node x the values in the left subtree are less than or equal to x and that the values in the right subtree are greater than or equal to x. This nice little property enables you to quickly search through a tree and retrieve a certain value if it exists which is particularly handy. All the trees on this slide are BSTs except for the last one because 1 is not greater than or equal to 3.
+
+It's often common to require uniqueness on the values of your tree so that you don't end up with duplicate values. To resolve this issue change the invariant to be strictly less than rather than less than or equal to.
+
+Now let's talk about how to store these rooted trees. Rooted trees are naturally defined recursively in a top down manner.
+
+In practice, you always maintain a pointer reference to the root node so that you can access the tree and its contents.
+
+Then each node also has access to a list of all its children, which are also called child nodes. In this slides, the orange node is the current node we have a reference to and the purple nodes are its children. All the bottom or leaf nodes don't have any children.
+
+It's also sometimes useful to maintain a pointer to a node’s parent node in case you need to traverse up the tree. This effectively makes the edges in the tree bidirectional. Again, if the current node is the orange node than the purple node in the case in the parent node.
+
+However, maintaining an explicit reference to the parent node isn’t usually necessary because you can access a node’s parent on a recursive function's callback.
+
+
+Another really neat way of storing a rooted tree if it is a binary tree is in a flattened array.
+
+In the flattened array representation, each node has an assigned index position based on where it is in the tree. For example, the node with value 5 in orange is associated with the index 4 in the array. The tree is actually an array, the diagrams here is just a visual representation of what the tree would look like.
+
+Similarly, this node with a value of 2 has an index of 6.
+
+Even nodes which aren’t currently present have an index because they can be
+mapped back to a unique position in the "index tree" (gray tree).
+
+In this format, the root node is always at index 0 in the array, so you always know where your starting point is. Another advantage of this format is that the child nodes of node i can be access relative to position i.
+
+For example, if we're at position 2 in the array, we know that the left and right children of the node at index 2 is given by 2 times i plus 1 and 2 times i plus 2. Therefore the children of the node at index 2 can be found at positions 5 and 6. Reciprocally, this means if we have a node we know what the index of the parent node should be.
 
 
 
 
 
-Reminder: Avatar tonight @ 6:30
-
-I'll be making some food if you want to spare yourself cooking :)
