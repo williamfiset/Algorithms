@@ -148,6 +148,44 @@ For example, if we're at position 2 in the array, we know that the left and righ
   finally compute the height of the final node by taking the max and adding 1
 
   And there you have it, how the find the height of a tree. Let's have a look at some pseudocode shall we.
+
+  <pause and press>
+
+  This is the treeHeight function, and it is responsible for computing the height of the tree. You would start by calling this function by passing in the tree's root node like we did for the leafSum function.
+
+  The first thing we do is handle the empty tree case. The height of an empty tree is undefined so return -1.
+
+  Next we check whether the current node is a leaf node by checking if both its left and right child are null and return zero. If either of them are not null then we know this node has more children and we need to keep digging down the tree.
+
+  In the event we haven't found a leaf node, return the maximum height of the left subtree and the right subtree plus 1.
+
+  Let's go back to the previous statement. What happens if we remove checking whether a node is a leaf node or not, would the algorithm still behave correctly? Pause the video and take a moment to think about this.
+
+  Removing the leaf node check still makes the algorithm work correctly, but it changes the meaning of our base case. Instead of the base case checking for leaf nodes, it's now checking whether a node is null and returning -1. Returning -1 now not only checks for the empty tree case, but it also helps in correcting for the right height.
+
+  Let's see what I mean by correcting for the right height. If our new base case is now checking for null nodes instead of the leaf nodes, then our tree one unit taller, so we need to correct for this.
+
+  For the sake of being through, let's see how the height is calculated with this new base case.
+
+  <press>
+
+  <press>
+
+  <press>
+
+  <press>
+
+  Once we reach a null node, return -1
+
+  On the recursive callback recall that we always all +1
+
+  <press>
+
+  <press>
+
+  <press>
+
+  So when we add up the counts you see that we get the correct height of three. Effectively, returning -1 cancels itself with the leaf node's return value computing the correct number of edges for the height function.    
 </problem2>
 
 
