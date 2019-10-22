@@ -221,15 +221,19 @@ Alright folks, thanks for watching, please like and subscribe if you learned som
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 
+Hello and welcome, my name is William, today we're looking at how to root a tree. This is a very basic transformation that's handy to have in your toolkit in case you need to or want to work with a rooted tree.
 
+The motivation for rooting a tree is that often it can help add structure and simplify the problem you're trying to solve. Rooting the tree enables you to easily perform recursive algorithms and transforms the tree to have directed edges instead of undirected edges which is also generally easier to work with.
 
+To root the tree, first you need to select a root node. I'm going to pick node 0.
 
+Conceptually, rooting a tree is like "picking up" the tree by a specific node and having all the edges point downwards. 
 
+You can root a tree using any of its nodes. However, be cautious because not every node you select will result in a well balanced tree, so we may have to be more selective.
 
+In some situations it’s also useful to keep have a reference to the parent node in order to walk up the tree. I illustrated parent node pointers as dotted lines on this slide.
 
-
-
-
+Let's look at an example of how to 
 
 
 
