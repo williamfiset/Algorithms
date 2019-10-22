@@ -233,13 +233,51 @@ You can root a tree using any of its nodes. However, be cautious because not eve
 
 In some situations it’s also useful to keep have a reference to the parent node in order to walk up the tree. I illustrated parent node pointers as dotted lines on this slide.
 
-Let's look at an example of how to 
+Let's look at an example of how to root a tree. One of the best ways to do this is with a depth first search through the original tree and to create the rooted tree during the traversal.
 
+The algorithm starts on the designed root node. The new rooted tree is being displayed on the right.
 
+From the root node, begin the depth first search and add nodes to the rooted tree as the algorithm proceeds. I'll let the animation play and it should be clear what's going on.
 
+<animate>
 
+And that's rooting a tree in a nutshell
 
+Let's have a look at some pseudo code for this.
 
+On this slide I define a data object I will be using to describe a tree node.
+
+Each node has a unique integer id
+
+As well as a reference to its parent pointer. This member is generally optional, but I thought I should include it for completeness. Take note that every node will have a parent pointer except the root node whose parent pointer will be null.
+
+Additionally, each tree node will also have a list of all the child tree nodes it has a reference to.
+
+Here's the algorithm itself, it's relatively short and sweet. The input to the rootTree function takes a graph g as input which is the tree we want to root, the other input is the id of the designated root node. By default this is node 0, but it can be any other node. We assume that the root node exists in g and that the id is valid, otherwise i'm pretty sure this algorithm breaks.
+
+The first line in the rootTree method creates the root tree node object with the id rootId, a parent reference of null and no child nodes.
+
+Then I call the build tree method to start the depth first traversal to root the tree. As input parameters I pass in the graph g, the root node as the current node and the root's parent which is null.
+
+The build tree takes exactly three parameters we just talked about: the graph, the current node, and the current node's parent node reference.
+
+Next we enter a for loop that loops over all the neighbors of the current node, which in turn will become the children of the current node.
+
+Because edges are undirected in the original tree, we absolutely need to avoid a situation where we add a directed edge pointing back to the parent.
+
+So if the parent is null, meaning we're dealing with the root node.
+
+Or the child id is equal to the parent id skip this node.
+
+Otherwise we're dealing with a proper child node, so create a new node and add the child tree node to the list of the current node's children
+
+Afterwards, dig deeper into the tree and do the same thing but for the newly created child node.
+
+Once we have finished iterating over all the neighbors of this node return the current node.
+
+And that's rooting a tree
+
+goodnight.
 
 
 
