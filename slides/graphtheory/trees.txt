@@ -74,30 +74,32 @@ In this format, the root node is always at index 0 in the array, so you always k
 
 For example, if we're at position 2 in the array, we know that the left and right children of the node at index 2 is given by 2 times i plus 1 and 2 times i plus 2. Therefore the children of the node at index 2 can be found at positions 5 and 6. Reciprocally, this means if we have a node we know what the index of the parent node should be which is also very useful.
 
+Alright, that's all I have for this video, thank you for watching, please like and subscribe and I'll see you in the next one.
 
 
 
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
 
 
-
-
-
-
-
+Hello and welcome, my name is William, and in today's video we're going to look at some simple tree algorithms. This video is aimed at all you beginner's just starting computer science who are still learning how to write recursive code.
+We're going to have a look at two pretty classic problems today, these are the types of problems you might encounter as warm up problems in an interview.
 
 <problem1>
-  Alright, I want to start looking at how to write some useful tree algorithms.
-  For this first problem, let's find the sum of all the leaf nodes of a tree.
+  Alright, let's start with our first problem. For this problem we need to find the sum of all the leaf node values in a tree.
 
-  So given a tree such as this one we want to sum up all the bottom node values
+  For instance, given this tree we want to sum up all the bottom nodes which have no children.
 
-  That would be all these nodes in red for a total of 9. If you're keen you can
+  That would be all these nodes in red for a total of 9. If you're keen, you can
   pause this video and give it a try.
 
   <press>
 
-  Like all rooted tree problems we start with a reference to the root node. To solve this problem all we need to do is perform a tree traversal and identify leaf nodes while we do the traversal. It's pretty simple, watch how the animation does it.
+  Like all rooted tree problems we start with a reference to the root node. To solve this problem all we need to do is perform a tree traversal and identify leaf nodes while we do the traversal. 
+  Two popular traversal algorithms are doing a Breadth First Search and Depth First Search. On trees, the preferred traversal method is typically a DFS because it lends itself to be easily implemented recursively. 
+  It's pretty simple, watch how the animation does it. You start at the root and plunge down the tree depth first.
 
   <do animation>
 
@@ -111,42 +113,42 @@ For example, if we're at position 2 in the array, we know that the left and righ
 
   The next thing we do is check if the current node is a leaf node, and if it is we return the value stored in the leaf node.
 
-  The isLeaf method checks if a node is a leaf node by counting all its children. If the number of child nodes is zero then we know the node is a child node.
+  The isLeaf method checks if a node is a leaf node by counting all its children. If the number of child nodes is zero then we know the node is a leaf node.
 
-  If the node is node a leaf node then we iterate over all the children and all the leafSum method recursively summing over the return values. This ensures that we traverse the entire tree and properly accumulate values.
+  If the node is not a leaf node then we iterate over all the children and call the leafSum method recursively summing over the return values. This ensures that we traverse the entire tree and properly accumulate values.
 
-  Finally, once we have finished computing the total for this node and its subtree return the total.
+  Finally, once we have finished computing the sum for this node and its subtree return the total.
 
   And that's all for summing up the leaf node values.
 </problem1>
 
 <problem2>
-  Our second problem today is a classic problem in computer science which is to find the height of a binary tree. The height of a tree is defined as the number of edges from the root to the lowest leaf. So the leftmost tree has a height of zero because it has no edges, the middle tree has a height of 1 and the rightmost tree has a height of 3 because the longest path from the root to a leaf node is 3.
+  Our second problem today is a classic problem in computer science which is to find the height of a binary tree. The height of a tree is defined as the number of edges from the root to the lowest leaf. Here the leftmost tree has a height of zero because it has no edges, the middle tree has a height of 1, and the rightmost tree has a height of 3 because the longest path from the root to the lowest leaf is 3.
 
-  To solve this problem we're going to break it down and define a new function h of x which returns the height of the subtree rooted at node x.
+  To solve this problem we're going to break it down and define a new function "h of x" which returns the height of the subtree rooted at node x.
   This new function allows us to start thinking not only about the height of the tree as a whole but also the height of the subtrees within our tree which are going to help us find the overall height.
 
-  For example, on this slide h of x has a value of 3, but h of b has a value of 2 and h of e has a value of zero.
+  For example, on this slide "h of a" has a value of 3, but "h of b" has a value of 2 and "h of e" has a value of zero.
 
   By themselves, leaf nodes such as node e don't have children, so they don’t add any additional height to the tree. So we can conclude that as a base case the height of any leaf node should be zero.
 
-  Now, assuming node x is not a leaf node, we're able to formulate a recurrence relation for the height which is that the height of the subtree rooted at node x is the maximum of the height of x's left and right children plus one.
+  Now, assuming node x is not a leaf node, we're able to formulate a recurrence relation for the height, which is that the height of the subtree rooted at node x is the maximum of the height of x's left and right children plus one.
 
-  Let's look at an example of how this works. Suppose we have this tree and we want to compute its height.
+  Let's have a closer look at how this works with an example. Suppose we have this tree and we want to compute its height.
 
   So we start at the root
 
   and then we start traversing down the tree depth first
 
-  If we encounter a leaf node we mark it as having a height of zero and return
+  When we encounter a leaf node, we give it a height of zero and return
 
   We can't compute the height of a node until we know the height of all its children, so we visit the right node.
 
-  The right node is also a leaf node so it has a height of zero
+  The right node is also a leaf node so it gets a height of zero
 
   On the callback we have visited both children of the current node so we take the maximum heights of the left and the right children and add 1 for a total of 1.
 
-  We just finished exploring the right half of the tree, now let's finished the left side. It doesn't matter which side you do first as long as you explore the whole tree while doing your DFS.
+  We just finished exploring the right half of the tree, now let's finish the left side. It doesn't matter which side you do first as long as you explore the whole tree while doing your DFS.
 
   <press>
 
@@ -160,7 +162,7 @@ For example, if we're at position 2 in the array, we know that the left and righ
 
   <press>
 
-  leaf node
+  and another leaf node
 
   take the max and add 1
 
@@ -168,7 +170,7 @@ For example, if we're at position 2 in the array, we know that the left and righ
 
   finally compute the height of the final node by taking the max and adding 1
 
-  And there you have it, how the find the height of a tree. Let's have a look at some pseudocode shall we.
+  And there you have it, how the find the height of a tree. Let's have a look at some pseudocode, shall we.
 
   <pause and press>
 
@@ -178,15 +180,16 @@ For example, if we're at position 2 in the array, we know that the left and righ
 
   Next we check whether the current node is a leaf node by checking if both its left and right child are null and return zero. If either of them are not null then we know this node has more children and we need to keep digging down the tree.
 
-  In the event we haven't found a leaf node, return the maximum height of the left subtree and the right subtree plus 1.
+  In the event we haven't found a leaf node, return the maximum height of the left subtree and the right subtree plus 1. <pause>
 
-  Let's go back to the previous statement. What happens if we remove checking whether a node is a leaf node or not, would the algorithm still behave correctly? Pause the video and take a moment to think about this.
+  I want to take a moment and go back to the previous statement and remark on a simplification we can exploit. 
+  What do you reckon happens if we remove checking whether a node is a leaf node or not, do you think the algorithm would still behave correctly? Pause the video and think this over.
 
-  Removing the leaf node check still makes the algorithm work correctly, but it changes the meaning of our base case. Instead of the base case checking for leaf nodes, it's now checking whether a node is null and returning -1. Returning -1 now not only checks for the empty tree case, but it also helps in correcting for the right height.
+  Oddly enough, removing the leaf node check still makes the algorithm work correctly. This works because the base case has adopted a new meaning, instead of the base case checking for leaf nodes, it's now checking whether a node is null and returning -1. Returning -1 now not only checks for the empty tree case, but it also helps in correcting for the right height.
 
   Let's see what I mean by correcting for the right height. If our new base case is now checking for null nodes instead of the leaf nodes, then our tree one unit taller, so we need to correct for this.
 
-  For the sake of being through, let's see how the height is calculated with this new base case.
+  For the sake of being thorough, let's see how the height is calculated with this new base case.
 
   <press>
 
@@ -198,7 +201,7 @@ For example, if we're at position 2 in the array, we know that the left and righ
 
   Once we reach a null node, return -1
 
-  On the recursive callback recall that we always all +1
+  On the recursive callback remember that we always add +1
 
   <press>
 
@@ -206,13 +209,17 @@ For example, if we're at position 2 in the array, we know that the left and righ
 
   <press>
 
-  So when we add up the counts you see that we get the correct height of three. Effectively, returning -1 cancels itself with the leaf node's return value computing the correct number of edges for the height function.    
+  So when we add up the counts, you see that we get the correct height of 3.
+
+  And that's how you compute the height of a tree. In practice, if you're designing a data structure where tree height is important you can dynamically keep track of the height as you create the tree instead of computing it fully like we're doing here, but of course, that it's always doable.
 </problem2>
 
+Alright folks, thanks for watching, please like and subscribe if you learned something and i'll catch you next time.
 
 
-But why does this work? Suppose we want to find the height at node a, the root node, then we can do so by 
-
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
 
 
