@@ -44,41 +44,46 @@ Alright, I can't keep talking about trees without mentioning rooted trees which 
 Generally speaking, rooted trees are far easier to work with than undirected trees because they have a well defined structure and allow for recursive algorithm implementations.
 
 Related to rooted trees are binary trees which are trees for which every node has at most two child nodes. The first two trees on this slide are binary trees, but the last one is not because it has a node with more than 2 child nodes.
-You don't often see binary tree manifest themselves in the real world, for the most part binary trees are artificially created and integrated as part of data structures to guarantee efficient access and queries on data.
+You don't often see binary trees manifest themselves in the real world, for the most part binary trees are artificially created and integrated as part of data structures to guarantee efficient insertions, removals and access to data.
 
-Now related to binary trees are binary search trees which are trees which satisfy the BST invariant. The BST invariant states that for every node x the values in the left subtree are less than or equal to x and that the values in the right subtree are greater than or equal to x. This nice little property enables you to quickly search through a tree and retrieve a certain value if it exists which is particularly handy. All the trees on this slide are BSTs except for the last one because 1 is not greater than or equal to 3.
+Now related to binary trees are binary search trees which are trees which satisfy the BST invariant. The BST invariant states that for every node x the values in the left subtree are less than or equal to x and that the values in the right subtree are greater than or equal to x. This nice little property enables you to quickly search through a tree and retrieve the values you want, which is particularly handy. All the trees on this slide are BSTs except for the last one, because 1 is *not* greater than or equal to 3.
 
-It's often common to require uniqueness on the values of your tree so that you don't end up with duplicate values. To resolve this issue change the invariant to be strictly less than rather than less than or equal to.
+It's often useful to require uniqueness on the values of your tree so that you don't end up with duplicate values in the tree. To resolve this issue of duplicate values you can change the invariant to be strictly less than rather than less than or equal to.
 
 Now let's talk about how to store these rooted trees. Rooted trees are naturally defined recursively in a top down manner.
 
 In practice, you always maintain a pointer reference to the root node so that you can access the tree and its contents.
 
-Then each node also has access to a list of all its children, which are also called child nodes. In this slides, the orange node is the current node we have a reference to and the purple nodes are its children. All the bottom or leaf nodes don't have any children.
+Then each node also has access to a list of all its children -- which are also called "child nodes". In this slides, the orange node is the current node we have a reference to, and the purple nodes are all its children. All the bottom or leaf nodes don't have any children.
 
-It's also sometimes useful to maintain a pointer to a node’s parent node in case you need to traverse up the tree. This effectively makes the edges in the tree bidirectional. Again, if the current node is the orange node than the purple node in the case in the parent node.
+It's also sometimes useful to also maintain a pointer to a node’s parent node in case you need to traverse up the tree. This effectively makes the edges in the tree bidirectional. Again, if the current node is the orange node, than the pink node in the case in the parent node.
 
 However, maintaining an explicit reference to the parent node isn’t usually necessary because you can access a node’s parent on a recursive function's callback.
 
 
 Another really neat way of storing a rooted tree if it is a binary tree is in a flattened array.
 
-In the flattened array representation, each node has an assigned index position based on where it is in the tree. For example, the node with value 5 in orange is associated with the index 4 in the array. The tree is actually an array, the diagrams here is just a visual representation of what the tree would look like.
+In the flattened array representation, each node has an assigned index position based on where it is in the tree. The thing to understand here is that the tree is actually an array, the diagrams are just a visual representation of what the tree looks like.For instance, the node with value 5 in orange is associated with the index 4 in the array. 
 
 Similarly, this node with a value of 2 has an index of 6.
 
 Even nodes which aren't currently present have an index because they can be
-mapped back to a unique position in the "index tree" (gray tree).
+mapped back to a unique position in the "index tree" as I call it.
 
 In this format, the root node is always at index 0 in the array, so you always know where your starting point is. Another advantage of this format is that the child nodes of node i can be access relative to position i.
 
-For example, if we're at position 2 in the array, we know that the left and right children of the node at index 2 is given by 2 times i plus 1 and 2 times i plus 2. Therefore the children of the node at index 2 can be found at positions 5 and 6. Reciprocally, this means if we have a node we know what the index of the parent node should be.
+For example, if we're at position 2 in the array, we know that the left and right children of the node at index 2 is given by 2 times i plus 1 and 2 times i plus 2. Therefore the children of the node at index 2 can be found at positions 5 and 6. Reciprocally, this means if we have a node we know what the index of the parent node should be which is also very useful.
 
-<trees in the wild>
 
-  Do I want this section?
 
-</trees in the wild>
+
+
+
+
+
+
+
+
 
 
 <problem1>
