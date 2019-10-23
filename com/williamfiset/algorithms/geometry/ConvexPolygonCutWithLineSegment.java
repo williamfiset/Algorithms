@@ -1,5 +1,5 @@
 /**
- * This algorithm cuts a convex polygon with a line segment and returns the two resulting pieces.
+ * This algorithm cuts a orederd convex polygon with a line segment and returns the two resulting pieces.
  *
  * <p>Time Complexity: O(n)
  *
@@ -64,8 +64,8 @@ public class ConvexPolygonCutWithLineSegment {
 
   // Example usage
   public static void main(String[] args) {
-
-    Pt[] squarePolygon = {new Pt(0, 0), new Pt(0, 4), new Pt(4, 0), new Pt(4, 4)};
+    //Input points should be ordered in terms of the geometrical shape of the polygon.
+    Pt[] squarePolygon = {new Pt(0, 0), new Pt(0, 4), new Pt(4, 4), new Pt(4, 0)};
     Pt p1 = new Pt(-1, -1);
     Pt p2 = new Pt(5, 5);
 
@@ -79,14 +79,12 @@ public class ConvexPolygonCutWithLineSegment {
     // (4.0,4.0)
     // (0.0,0.0)
     // (0.0,4.0)
-    // (2.0,2.0) <-- Probably should not be here?
 
     System.out.println("\nSecond polygon:");
     for (Pt pt : poly2) System.out.println(pt);
     // Second polygon:
     // (4.0,4.0)
     // (0.0,0.0)
-    // (2.0,2.0) <-- Probably should not be here?
     // (4.0,0.0)
 
   }
