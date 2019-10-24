@@ -8,6 +8,7 @@
 package com.williamfiset.algorithms.geometry;
 
 import java.util.*;
+import java.lang.*; 
 
 public class ConvexPolygonCutWithLineSegment {
 
@@ -27,16 +28,33 @@ public class ConvexPolygonCutWithLineSegment {
       return "(" + x + "," + y + ")";
     }
   }
+  
+  
+  //sorts the points in CW direction.
+  public static List<Pt> sortCW(List<Pt> poly){
+      
+      int l = poly.size();
+      double centroidX = 0;
+      double centroidY = 0;
+      for(int i = 0; i<l; i++){
+          centroidX+= poly.get(i).x;
+          centroidY+= poly.get(i).y;
+      }
+      centroidX = centroidX/l;
+      centroidY = centroidY/l;
+      Pt center = new Pt(centroidX, centroidY);
+      
+      Collections.sort(poly, (a, b) -> {
+        double a1 = (Math.toDegrees(Math.atan2(a.x - center.x, a.y - center.y)) + 360) % 360;
+        double a2 = (Math.toDegrees(Math.atan2(b.x - center.x, b.y - center.y)) + 360) % 360;
+        return (int) (a1 - a2);
+    });
+    return poly;
+  }
 
   // Cuts a convex polygon by a specified line and returns one part
   // of the polygon (swapping the endpoints p1 and p2 of the line
   // will return the other part of the polygon).
-  //Input points should be ordered in terms of the geometrical shape of the polygon.
-  //If the points generating the polygon are [(3, 4), (0, 0), (2, 4), (4, 0), (0, 2)],
-  //Then the possible input orders(For first argument of the cut function)
-  //              can be [(0, 0), (0, 2), (2, 4), (3, 4), (4, 0)],
-  //                  OR [(4, 0), (0, 0), (0, 2), (2, 4), (3, 4)], 
-  //                  OR [(0, 0), (4, 0), (3, 4), (2, 4), (0, 2)] and likewise.
   public static Pt[] cut(Pt[] poly, Pt p1, Pt p2) {
     int n = poly.length;
     List<Pt> res = new ArrayList<>();
@@ -67,14 +85,36 @@ public class ConvexPolygonCutWithLineSegment {
     double cross = bx * cy - by * cx;
     return cross < -EPS ? -1 : cross > EPS ? 1 : 0;
   }
+  
+  public static List<Pt> makeList(Pt[] squarePolygon){
+    List<Pt> list = new ArrayList<Pt>();
+    for (int i=0; i<squarePolygon.length; i++){
+        list.add(squarePolygon[i]);
+    }
+    return list;
+  }
+  
+  public static Pt[] makeArray(List<Pt> list){
+      int l = list.size();
+      Pt[] temp = new Pt[l];
+      for (int i=0; i<l; i++){
+        temp[i] = list.get(i);
+    }
+    return temp;
+  }
 
   // Example usage
   public static void main(String[] args) {
     
-    Pt[] squarePolygon = {new Pt(0, 0), new Pt(0, 4), new Pt(4, 4), new Pt(4, 0)};
+    Pt[] squarePolygon = {new Pt(0, 0), new Pt(0, 4), new Pt(4, 0), new Pt(4, 4), new Pt(0, 2)};
     Pt p1 = new Pt(-1, -1);
     Pt p2 = new Pt(5, 5);
-
+    
+    int l = squarePolygon.length;
+    List list = makeList(squarePolygon);
+    list = sortCW(list);
+    squarePolygon = makeArray(list);
+    
     Pt[] poly1 = cut(squarePolygon, p1, p2);
     Pt[] poly2 = cut(squarePolygon, p2, p1);
 
@@ -82,16 +122,18 @@ public class ConvexPolygonCutWithLineSegment {
     for (Pt pt : poly1) System.out.println(pt);
     // Prints:
     // First polygon:
+    // (0.0,4.0)
     // (4.0,4.0)
     // (0.0,0.0)
-    // (0.0,4.0)
+    // (0.0,2.0)
 
     System.out.println("\nSecond polygon:");
     for (Pt pt : poly2) System.out.println(pt);
+    //Prints:
     // Second polygon:
     // (4.0,4.0)
-    // (0.0,0.0)
     // (4.0,0.0)
+    // (0.0,0.0)
 
   }
 }
