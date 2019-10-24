@@ -84,34 +84,34 @@ Alright, that's all I have for this video, thank you for watching, please like a
 
 
 
-Hello and welcome, my name is William, and in today's video we're going to look at some simple tree algorithms. This video is aimed at all you beginner's just starting computer science who are still learning how to write recursive code.
-We're going to have a look at two pretty classic problems today, these are the types of problems you might encounter as warm up problems in an interview.
+Hello and welcome, my name is William, and in today's video we're going to look at some simple tree algorithms. This video is aimed at all you beginner's just starting out who are still learning how to write code and especially recursive code. We're going to have a look at two problems today, and these are the types of problems which you might encounter as warm up questions in a job interview.
 
 <problem1>
   Alright, let's start with our first problem. For this problem we need to find the sum of all the leaf node values in a tree.
 
-  For instance, given this tree we want to sum up all the bottom nodes which have no children.
+  For instance, given this tree we want to sum up all the bottom nodes.
 
-  That would be all these nodes in red for a total of 9. If you're keen, you can
-  pause this video and give it a try.
+  That would be all these nodes in red for a total of 9. If you're keen, you 
+  pause this video and give this problem a try.
 
   <press>
 
-  Like all rooted tree problems we start with a reference to the root node. To solve this problem all we need to do is perform a tree traversal and identify leaf nodes while we do the traversal. 
+  Like all rooted tree problems we start with a reference to the root node. To solve this problem all we need to do is perform a tree traversal and sum up the value of the leaf nodes while we do the traversal. 
   Two popular traversal algorithms are doing a Breadth First Search and Depth First Search. On trees, the preferred traversal method is typically a DFS because it lends itself to be easily implemented recursively. 
   It's pretty simple, watch how the animation does it. You start at the root and plunge down the tree depth first.
 
   <do animation>
 
-  At the end when we sum up all the values we can see that the sum of the leaf nodes should be 9. Now let's have a look at some pseudo-code
+<after the slide with "= 9" appears>
+  At the end when we sum up all the values, and we can see that the sum of the leaf nodes is 9. Now let's have a look at some pseudo-code for how this is implemented.
 
-  The algorithm is pretty simple, but it may look strange at first if you haven't seen much recursive code.
+  The algorithm is quite short, but it may look strange at first if you haven't seen much recursive code.
 
   We call the leafSum function by passing in a reference to the root node as a starting point.
 
-  We begin by handling the special case where the tree is empty and return zero in such a situation.
+  The first thing we do is handle the special case where the tree is empty and return zero in such a situation.
 
-  The next thing we do is check if the current node is a leaf node, and if it is we return the value stored in the leaf node.
+  next we check if the current node is a leaf node, and if it is we return the value stored in the leaf node.
 
   The isLeaf method checks if a node is a leaf node by counting all its children. If the number of child nodes is zero then we know the node is a leaf node.
 
@@ -130,9 +130,9 @@ We're going to have a look at two pretty classic problems today, these are the t
 
   For example, on this slide "h of a" has a value of 3, but "h of b" has a value of 2 and "h of e" has a value of zero.
 
-  By themselves, leaf nodes such as node e don't have children, so they don’t add any additional height to the tree. So we can conclude that as a base case the height of any leaf node should be zero.
+  By themselves, leaf nodes such as node e don't have children, so they don’t add any additional height to the tree. So we can conclude that as a base case, the height of any leaf node should be zero.
 
-  Now, assuming node x is not a leaf node, we're able to formulate a recurrence relation for the height, which is that the height of the subtree rooted at node x is the maximum of the height of x's left and right children plus one.
+  Now, assuming node x is not a leaf node, we're able to formulate a recurrence relation for the height, which is that the height of the subtree rooted at node x is the maximum of the height of x's left and right subtrees plus one.
 
   Let's have a closer look at how this works with an example. Suppose we have this tree and we want to compute its height.
 
@@ -185,7 +185,7 @@ We're going to have a look at two pretty classic problems today, these are the t
   I want to take a moment and go back to the previous statement and remark on a simplification we can exploit. 
   What do you reckon happens if we remove checking whether a node is a leaf node or not, do you think the algorithm would still behave correctly? Pause the video and think this over.
 
-  Oddly enough, removing the leaf node check still makes the algorithm work correctly. This works because the base case has adopted a new meaning, instead of the base case checking for leaf nodes, it's now checking whether a node is null and returning -1. Returning -1 now not only checks for the empty tree case, but it also helps in correcting for the right height.
+  Oddly enough, removing the leaf node check still makes the algorithm work correctly. This works because the base case has adopted a new meaning, instead of the base case checking for leaf nodes, it's now checking whether a node is null and returning -1. Returning -1 now not only checks for the empty tree case, but it also helps in correcting for the right tree height.
 
   Let's see what I mean by correcting for the right height. If our new base case is now checking for null nodes instead of the leaf nodes, then our tree one unit taller, so we need to correct for this.
 
@@ -201,7 +201,7 @@ We're going to have a look at two pretty classic problems today, these are the t
 
   Once we reach a null node, return -1
 
-  On the recursive callback remember that we always add +1
+  On the recursive callback remember that we always add +1 with our recurrence.
 
   <press>
 
