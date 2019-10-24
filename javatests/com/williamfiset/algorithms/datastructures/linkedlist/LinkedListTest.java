@@ -65,7 +65,7 @@ public class LinkedListTest {
   }
   
   @Test
-  public void testAddAt() {
+  public void testAddAt() throws Exception {
 	  list.addAt(0,1);
 	  assertEquals(list.size(), 1);
 	  list.addAt(1,2);
