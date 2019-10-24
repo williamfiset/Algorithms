@@ -96,9 +96,8 @@ public class DoublyLinkedList<T> implements Iterable<T> {
     for (int i = 0; i < index - 1; i++) {
       temp = temp.next;
     }
-    Node<T> newNode = new Node(data, null, null);
-    newNode.next = temp.next;
-    newNode.prev = temp.prev;
+    Node<T> newNode = new Node(data, temp, temp.next);
+    temp.next.prev = newNode;
     temp.next = newNode;
 
     size++;
