@@ -31,6 +31,12 @@ public class ConvexPolygonCutWithLineSegment {
   // Cuts a convex polygon by a specified line and returns one part
   // of the polygon (swapping the endpoints p1 and p2 of the line
   // will return the other part of the polygon).
+  //Input points should be ordered in terms of the geometrical shape of the polygon.
+  //If the points generating the polygon are [(3, 4), (0, 0), (2, 4), (4, 0), (0, 2)],
+  //Then the possible input orders(For first argument of the cut function)
+  //              can be [(0, 0), (0, 2), (2, 4), (3, 4), (4, 0)],
+  //                  OR [(4, 0), (0, 0), (0, 2), (2, 4), (3, 4)], 
+  //                  OR [(0, 0), (4, 0), (3, 4), (2, 4), (0, 2)] and likewise.
   public static Pt[] cut(Pt[] poly, Pt p1, Pt p2) {
     int n = poly.length;
     List<Pt> res = new ArrayList<>();
@@ -64,7 +70,7 @@ public class ConvexPolygonCutWithLineSegment {
 
   // Example usage
   public static void main(String[] args) {
-    //Input points should be ordered in terms of the geometrical shape of the polygon.
+    
     Pt[] squarePolygon = {new Pt(0, 0), new Pt(0, 4), new Pt(4, 4), new Pt(4, 0)};
     Pt p1 = new Pt(-1, -1);
     Pt p2 = new Pt(5, 5);
