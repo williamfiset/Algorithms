@@ -1,5 +1,5 @@
 /**
- * This algorithm cuts a orederd convex polygon with a line segment and returns the two resulting pieces.
+ * This algorithm cuts a ordered convex polygon with a line segment and returns the two resulting pieces.
  *
  * <p>Time Complexity: O(n)
  *
