@@ -2,6 +2,7 @@ package javatests.com.williamfiset.algorithms.datastructures.linkedlist;
 
 import static org.junit.Assert.*;
 
+
 import com.williamfiset.algorithms.datastructures.linkedlist.DoublyLinkedList;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,6 +62,20 @@ public class LinkedListTest {
     assertEquals(list.size(), 1);
     list.addLast(5);
     assertEquals(list.size(), 2);
+  }
+  
+  @Test
+  public void testAddAt() {
+	  list.addAt(0,1);
+	  assertEquals(list.size(), 1);
+	  list.addAt(1,2);
+	  assertEquals(list.size(), 2);
+	  list.addAt(1,3);
+	  assertEquals(list.size(), 3);
+	  list.addAt(2,4);
+	  assertEquals(list.size(), 4);
+	  list.addAt(1,8);
+	  assertEquals(list.size(), 5); 	  
   }
 
   @Test
