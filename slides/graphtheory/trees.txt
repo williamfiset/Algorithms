@@ -1,11 +1,11 @@
 
-Hello and welcome back, my name is William, and in today's video we're going to start tackling trees. In particular, we're going to look at what trees are and how we computationally store and represent trees.
+Hello and welcome back, my name is William, and in today's video we're going to start tackling the topic of trees. In particular, we're going to look at what trees are and how we computationally store and represent trees.
 
 Conceptually it's fair to say most people know what I mean when I say I'm working with a tree, or that something is structured as a tree. Below are four graphs, but one of them is not a tree, do you know which one?
 
-Only the last graph is not a tree, but why is it not a tree?
+Only the last graph is not a tree, but why, why is it not a tree?
 
-It is because we define a tree as being an undirected graph with no cycles, and that's the key thing to remember. You can see that the rightmost graph has a cycle, and is therefore not a tree. However, there's an even easier way to check whether a graph is a tree or not.
+That is because we define a tree as being an undirected graph with no cycles, and that's the key thing to remember -- trees cannot have cycles. You can see that the rightmost graph has a cycle, and is therefore not a tree. However, there's an even easier way to check whether a graph is a tree or not.
 
 Each tree has exactly n nodes and n-1 edges. If we count up all the nodes and edges of each graph you can see that all the trees have one less edge than the number of nodes, except for the rightmost graph which is not a tree.
 
@@ -15,13 +15,13 @@ We now know what trees are, but where do they appear in computer science and in 
 
   Another place you see trees are in social hierarchies where you often see CEO's, kings, priests and generals at the top; and interns, servants, children and the lower class at the bottom.
 
-  Trees are used to decompose source code and mathematical expressions into abstract syntax trees for easy evaluation. For example, the math expression you see on this slides can be broken down into a tree structure.
+  Trees are used to decompose source code and mathematical expressions into what are called abstract syntax trees for easy evaluation. For example, the math expression you see on this slides can be broken down into a tree structure.
 
-  Every webpage you visit can be throught of as a tree structure due to HTML's nested tag structure. This structure is used to tell your browser how to easily render the page.
+  Every webpage you visit can be throught of as a tree due to HTML's nested tag structure. This structure is used to tell your browser how to easily render the page and how it should be displayed.
 
-  Another large application of trees is in game theory to model decisions and courses of action. On this slide is the famous prisoner's dilemma problem and it's four different outcomes.
+  Another large application of trees is in game theory to model decisions and courses of action. On this slide is the famous prisoner's dilemma problem and it's four different outcomes for whether each prisoner chooses to confess or defect.
 
-  There are many many more applications of trees in computer science and in the real world, but we're not going to cover them all today. However, it's worth mentioning that in computer science the place you'll most often see trees are as part of data structures, many of which are listed below.
+  There are many many more applications of trees in computer science and in the real world, but we're not going to cover them all today. However, it's worth mentioning that in computer science, the place you'll most often encounter trees is as part of data structures, many of which are listed on this slide.
 
 Now we need to talk about how we actually store and represent these undirected trees.
 
