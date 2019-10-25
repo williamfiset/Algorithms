@@ -1,7 +1,7 @@
 /**
  * This algorithm cuts a ordered convex polygon with a line segment and returns the two resulting pieces.
  *
- * <p>Time Complexity: O(n)
+ * <p>Time Complexity: O(nlogn)
  *
  * @author Finn Lidbetter
  */
