@@ -86,6 +86,7 @@ public class ConvexPolygonCutWithLineSegment {
     return cross < -EPS ? -1 : cross > EPS ? 1 : 0;
   }
   
+  //takes Pt[] as an argument and returns List<Pt>
   public static List<Pt> makeList(Pt[] squarePolygon){
     List<Pt> list = new ArrayList<Pt>();
     for (int i=0; i<squarePolygon.length; i++){
@@ -94,6 +95,7 @@ public class ConvexPolygonCutWithLineSegment {
     return list;
   }
   
+  //takes List<Pt> as an argument and returns Pt[]
   public static Pt[] makeArray(List<Pt> list){
       int l = list.size();
       Pt[] temp = new Pt[l];
