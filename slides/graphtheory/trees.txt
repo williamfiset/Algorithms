@@ -263,11 +263,11 @@ The build tree takes exactly three parameters we just talked about: the graph, t
 
 Next we enter a for loop that loops over all the neighbors of the current node, which in turn will become the children of the current node.
 
-Because edges are undirected in the original tree, we absolutely need to avoid a situation where we add a directed edge pointing back to the parent.
+Because edges are undirected in the original tree, we absolutely need to avoid a situation where we add a directed edge pointing back to the current node's parent.
 
-So if the parent is null, meaning we're dealing with the root node.
+First check that the parent is not null so we don't get a null pointer exception when trying to access the parent's id.
 
-Or the child id is equal to the parent id skip this node.
+then check that the child id is equal to the parent id and skip this node if true.
 
 Otherwise we're dealing with a proper child node, so create a new node and add the child tree node to the list of the current node's children
 
