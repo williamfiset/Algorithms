@@ -54,7 +54,7 @@ public class IntArray implements Iterable<Integer> {
     arr[index] = elem;
   }
 
-  // An an element to this dynamic array
+  // Add an element to this dynamic array
   public void add(int elem) {
     if (len + 1 >= capacity) {
       if (capacity == 0) capacity = 1;
