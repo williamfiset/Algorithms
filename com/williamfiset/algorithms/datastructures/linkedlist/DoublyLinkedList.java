@@ -77,6 +77,32 @@ public class DoublyLinkedList<T> implements Iterable<T> {
     size++;
   }
 
+  // Add an element at a specified index
+  public void addAt(int index, T data) throws Exception {
+    if (index < 0) {
+      throw new Exception("Illegal Index");
+    }
+    if (index == 0) {
+      addFirst(data);
+      return;
+    }
+
+    if (index == size) {
+      addLast(data);
+      return;
+    }
+
+    Node<T> temp = head;
+    for (int i = 0; i < index - 1; i++) {
+      temp = temp.next;
+    }
+    Node<T> newNode = new Node(data, temp, temp.next);
+    temp.next.prev = newNode;
+    temp.next = newNode;
+
+    size++;
+  }
+	
   // Check the value of the first node if it exists, O(1)
   public T peekFirst() {
     if (isEmpty()) throw new RuntimeException("Empty list");
