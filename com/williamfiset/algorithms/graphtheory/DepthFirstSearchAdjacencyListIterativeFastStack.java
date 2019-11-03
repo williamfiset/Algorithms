@@ -93,6 +93,17 @@ public class DepthFirstSearchAdjacencyListIterativeFastStack {
   public static void main(String[] args) {
 
     // Create a fully connected graph
+    //           (0)
+    //           / \
+    //        5 /   \ 4
+    //         /     \
+    // 10     <   -2  >
+    //   +->(2)<------(1)      (4)
+    //   +--- \       /
+    //         \     /
+    //        1 \   / 6
+    //           > <
+    //           (3)
     int numNodes = 5;
     Map<Integer, List<Edge>> graph = new HashMap<>();
     addDirectedEdge(graph, 0, 1, 4);
