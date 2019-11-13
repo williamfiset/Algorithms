@@ -288,14 +288,14 @@ public class DoublyLinkedList<T> implements Iterable<T> {
       Iterator<T> itr = iterator();
       if (!itr.hasNext())
           return "[]";
-      StringBuilder sb1 = new StringBuilder();
-      sb1.append("[ ");
+      StringBuilder sb = new StringBuilder();
+      sb.append("[ ");
       for (;;) {
           T t = itr.next();
           if (!itr.hasNext()) {
-              return sb1.append(t + " ]").toString();
+              return sb.append(t + " ]").toString();
           }
-          sb1.append(t + (itr.hasNext() ? ", " : " ]"));
+          sb.append(t + (itr.hasNext() ? ", " : " ]"));
       }
   }
 }
