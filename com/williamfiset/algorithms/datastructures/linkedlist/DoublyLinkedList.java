@@ -5,6 +5,8 @@
  */
 package com.williamfiset.algorithms.datastructures.linkedlist;
 
+import java.util.Iterator;
+
 public class DoublyLinkedList<T> implements Iterable<T> {
   private int size = 0;
   private Node<T> head = null;
@@ -283,14 +285,17 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("[ ");
-    Node<T> trav = head;
-    while (trav != null) {
-      sb.append(trav.data + ", ");
-      trav = trav.next;
-    }
-    sb.append(" ]");
-    return sb.toString();
+      Iterator<T> itr = iterator();
+      if (!itr.hasNext())
+          return "[]";
+      StringBuilder sb1 = new StringBuilder();
+      sb1.append("[ ");
+      for (;;) {
+          T t = itr.next();
+          if (!itr.hasNext()) {
+              return sb1.append(t + " ]").toString();
+          }
+          sb1.append(t + (itr.hasNext() ? ", " : " ]"));
+      }
   }
 }
