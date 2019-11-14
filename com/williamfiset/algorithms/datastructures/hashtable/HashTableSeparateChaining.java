@@ -33,7 +33,7 @@ class Entry<K, V> {
 }
 
 @SuppressWarnings("unchecked")
-public class HashTableSeperateChaining<K, V> implements Iterable<K> {
+public class HashTableSeparateChaining<K, V> implements Iterable<K> {
 
   private static final int DEFAULT_CAPACITY = 3;
   private static final double DEFAULT_LOAD_FACTOR = 0.75;
@@ -42,16 +42,16 @@ public class HashTableSeperateChaining<K, V> implements Iterable<K> {
   private int capacity, threshold, size = 0;
   private LinkedList<Entry<K, V>>[] table;
 
-  public HashTableSeperateChaining() {
+  public HashTableSeparateChaining() {
     this(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR);
   }
 
-  public HashTableSeperateChaining(int capacity) {
+  public HashTableSeparateChaining(int capacity) {
     this(capacity, DEFAULT_LOAD_FACTOR);
   }
 
   // Designated constructor
-  public HashTableSeperateChaining(int capacity, double maxLoadFactor) {
+  public HashTableSeparateChaining(int capacity, double maxLoadFactor) {
     if (capacity < 0) throw new IllegalArgumentException("Illegal capacity");
     if (maxLoadFactor <= 0 || Double.isNaN(maxLoadFactor) || Double.isInfinite(maxLoadFactor))
       throw new IllegalArgumentException("Illegal maxLoadFactor");
