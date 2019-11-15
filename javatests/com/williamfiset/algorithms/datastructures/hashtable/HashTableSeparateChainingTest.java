@@ -2,11 +2,11 @@ package javatests.com.williamfiset.algorithms.datastructures.hashtable;
 
 import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.datastructures.hashtable.HashTableSeperateChaining;
+import com.williamfiset.algorithms.datastructures.hashtable.HashTableSeparateChaining;
 import java.util.*;
 import org.junit.*;
 
-public class HashTableSeperateChainingTest {
+public class HashTableSeparateChainingTest {
 
   // You can set the hash value of this object to be whatever you want
   // This makes it great for testing special cases.
@@ -39,11 +39,11 @@ public class HashTableSeperateChainingTest {
     MAX_RAND_NUM = randInt(1, 350);
   }
 
-  HashTableSeperateChaining<Integer, Integer> map;
+  HashTableSeparateChaining<Integer, Integer> map;
 
   @Before
   public void setup() {
-    map = new HashTableSeperateChaining<>();
+    map = new HashTableSeparateChaining<>();
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -53,22 +53,22 @@ public class HashTableSeperateChainingTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testIllegalCreation1() {
-    new HashTableSeperateChaining<>(-3, 0.5);
+    new HashTableSeparateChaining<>(-3, 0.5);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testIllegalCreation2() {
-    new HashTableSeperateChaining<>(5, Double.POSITIVE_INFINITY);
+    new HashTableSeparateChaining<>(5, Double.POSITIVE_INFINITY);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testIllegalCreation3() {
-    new HashTableSeperateChaining<>(6, -0.5);
+    new HashTableSeparateChaining<>(6, -0.5);
   }
 
   @Test
   public void testLegalCreation() {
-    new HashTableSeperateChaining<>(6, 0.9);
+    new HashTableSeparateChaining<>(6, 0.9);
   }
 
   @Test
@@ -95,7 +95,7 @@ public class HashTableSeperateChainingTest {
       map2.clear();
       assertTrue(map.isEmpty());
 
-      map = new HashTableSeperateChaining<>();
+      map = new HashTableSeparateChaining<>();
 
       List<Integer> rand_nums = genRandList(MAX_SIZE);
       for (Integer key : rand_nums) assertEquals(map.add(key, key), map2.put(key, key));
@@ -140,11 +140,11 @@ public class HashTableSeperateChainingTest {
   @Test
   public void randomRemove() {
 
-    HashTableSeperateChaining<Integer, Integer> map;
+    HashTableSeparateChaining<Integer, Integer> map;
 
     for (int loop = 0; loop < LOOPS; loop++) {
 
-      map = new HashTableSeperateChaining<>();
+      map = new HashTableSeparateChaining<>();
       map.clear();
 
       // Add some random values
@@ -167,7 +167,7 @@ public class HashTableSeperateChainingTest {
   @Test
   public void removeTest() {
 
-    HashTableSeperateChaining<Integer, Integer> map = new HashTableSeperateChaining<>(7);
+    HashTableSeparateChaining<Integer, Integer> map = new HashTableSeparateChaining<>(7);
 
     // Add three elements
     map.put(11, 0);
@@ -193,7 +193,7 @@ public class HashTableSeperateChainingTest {
   @Test
   public void removeTestComplex1() {
 
-    HashTableSeperateChaining<HashObject, Integer> map = new HashTableSeperateChaining<>();
+    HashTableSeparateChaining<HashObject, Integer> map = new HashTableSeparateChaining<>();
 
     HashObject o1 = new HashObject(88, 1);
     HashObject o2 = new HashObject(88, 2);
@@ -224,7 +224,7 @@ public class HashTableSeperateChainingTest {
       jmap.clear();
       assertEquals(jmap.size(), map.size());
 
-      map = new HashTableSeperateChaining<>();
+      map = new HashTableSeparateChaining<>();
 
       final double probability1 = Math.random();
       final double probability2 = Math.random();
@@ -255,7 +255,7 @@ public class HashTableSeperateChainingTest {
   @Test
   public void randomIteratorTests() {
 
-    HashTableSeperateChaining<Integer, LinkedList<Integer>> m = new HashTableSeperateChaining<>();
+    HashTableSeparateChaining<Integer, LinkedList<Integer>> m = new HashTableSeparateChaining<>();
     HashMap<Integer, LinkedList<Integer>> hm = new HashMap<>();
 
     for (int loop = 0; loop < LOOPS; loop++) {
@@ -265,7 +265,7 @@ public class HashTableSeperateChainingTest {
       assertEquals(m.size(), hm.size());
 
       int sz = randInt(1, MAX_SIZE);
-      m = new HashTableSeperateChaining<>(sz);
+      m = new HashTableSeparateChaining<>(sz);
       hm = new HashMap<>(sz);
 
       final double probability = Math.random();
