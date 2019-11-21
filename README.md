@@ -29,7 +29,7 @@ This repository is contribution friendly :smiley:. If you're an algorithms enthu
     * [Hashtable (double hashing)](https://github.com/williamfiset/algorithms/blob/master/com/williamfiset/algorithms/datastructures/hashtable/HashTableDoubleHashing.java)
     * [Hashtable (linear probing)](https://github.com/williamfiset/algorithms/blob/master/com/williamfiset/algorithms/datastructures/hashtable/HashTableLinearProbing.java)
     * [Hashtable (quadratic probing)](https://github.com/williamfiset/algorithms/blob/master/com/williamfiset/algorithms/datastructures/hashtable/HashTableQuadraticProbing.java)
-    * [Hashtable (separate chaining)](https://github.com/williamfiset/algorithms/blob/master/com/williamfiset/algorithms/datastructures/hashtable/HashTableSeperateChaining.java)
+    * [Hashtable (separate chaining)](https://github.com/williamfiset/algorithms/blob/master/com/williamfiset/algorithms/datastructures/hashtable/HashTableSeparateChaining.java)
 * [:movie_camera:](https://www.youtube.com/watch?v=-Yn5DU0_-lw)[Linked List](https://github.com/williamfiset/algorithms/blob/master/com/williamfiset/algorithms/datastructures/linkedlist/DoublyLinkedList.java)
 * [:movie_camera:](https://www.youtube.com/watch?v=wptevk0bshY)[Priority Queue](https://github.com/williamfiset/algorithms/tree/master/com/williamfiset/algorithms/datastructures/priorityqueue)
     * [Min Binary Heap](https://github.com/williamfiset/algorithms/blob/master/com/williamfiset/algorithms/datastructures/priorityqueue/BinaryHeap.java)
