@@ -3,11 +3,11 @@
 
 # Algorithms & data structures project
 
-Algorithms and data structures are amongst the most fundamental ingredients in the recipe for efficient code and good software design; knowledge of how to create and design excellent algorithms is an essential skill required in becoming an exemplary programmer. The goal of this repository is to demonstrate how to correctly implement the most common data structures and algorithms in the simplest and most elegant ways.
+Algorithms and data structures are fundamental to efficient code and good software design. Creating and designing excellent algorithms is required for being an exemplary programmer. This repository's goal is to demonstrate how to correctly implement common data structures and algorithms in the simplest and most elegant ways.
 
 # Contributing
 
-This repository is contribution friendly :smiley:. If you're an algorithms enthusiast and want to add or improve an algorithm your contribution is welcome! Please be sure to checkout the [Wiki](https://github.com/williamfiset/Algorithms/wiki) for instructions.
+This repository is contribution friendly :smiley:. If you'd like to add or improve an algorithm, your contribution is welcome! Please be sure to checkout the [Wiki](https://github.com/williamfiset/Algorithms/wiki) for instructions.
 
 
 # Data Structures
