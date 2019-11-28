@@ -31,10 +31,12 @@ public class DynamicArray<T> implements Iterable<T> {
   }
 
   public T get(int index) {
+    if (index >= len || index < 0) throw new IndexOutOfBoundsException();
     return arr[index];
   }
 
   public void set(int index, T elem) {
+    if (index >= len || index < 0) throw new IndexOutOfBoundsException();
     arr[index] = elem;
   }
 
