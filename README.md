@@ -97,7 +97,7 @@ This repository is contribution friendly :smiley:. If you'd like to add or impro
 # Graph theory
 
 ### Tree algorithms
-* [Tree canonical form (tree isomorphism, tree encoding)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/treealgorithms/TreeCanonicalFormAdjacencyList.java) **- O(Elog(E))**
+* [Tree isomorphism](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/treealgorithms/TreeIsomorphism.java) **- O(Elog(E))**
 * [Tree center(s)](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/treealgorithms/TreeCenter.java) **- O(V+E)**
 * [Tree diameter](https://github.com/williamfiset/Algorithms/blob/master/com/williamfiset/algorithms/graphtheory/treealgorithms/TreeDiameter.java) **- O(V+E)**
 
