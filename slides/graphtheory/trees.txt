@@ -451,13 +451,6 @@ goodnight.
 Tree Isomorphisms and canonical form
 
 
-Rooted or unrooted tree?
--> In the event of multiple roots which do you pick?
-
-Deterministic or probabilistic answer?
-> There also exist hashing algorithms which can verify equality with high probability.
-
-
 
 
 
