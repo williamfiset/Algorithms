@@ -1,13 +1,11 @@
-/** 
- * Determines if two unrooted trees are isomorphic. This algorithm
- * can easily be modified to support checking if two rooted trees are
- * isomorphic.
+/**
+ * Determines if two unrooted trees are isomorphic. This algorithm can easily be modified to support
+ * checking if two rooted trees are isomorphic.
  *
  * <p>Tested code against: https://uva.onlinejudge.org/external/124/p12489.pdf
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
-
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import java.util.*;

@@ -1,11 +1,11 @@
 // To run this test in isolation from root folder:
 //
-// $ gradle test --tests javatests.com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismTest
+// $ gradle test --tests
+// javatests.com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismTest
 
 package javatests.com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import static com.google.common.truth.Truth.assertThat;
-
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.addUndirectedEdge;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.createGraph;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.treesAreIsomorphic;
@@ -125,5 +125,4 @@ public class TreeIsomorphismTest {
 
     assertThat(treesAreIsomorphic(tree1, tree2)).isEqualTo(false);
   }
-
 }

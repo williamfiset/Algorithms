@@ -102,7 +102,7 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
     size++;
   }
-	
+
   // Check the value of the first node if it exists, O(1)
   public T peekFirst() {
     if (isEmpty()) throw new RuntimeException("Empty list");
