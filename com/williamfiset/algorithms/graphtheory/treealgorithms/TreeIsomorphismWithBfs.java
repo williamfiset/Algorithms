@@ -5,6 +5,9 @@
  *
  * <p>http://webhome.cs.uvic.ca/~wendym/courses/582/16/notes/582_12_tree_can_form.pdf
  *
+ * This implementation uses a breadth first search on an undirected graph to generate the tree's
+ * canonical encoding.
+ *
  * <p>Tested code against: https://uva.onlinejudge.org/external/124/p12489.pdf
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
@@ -13,7 +16,7 @@ package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import java.util.*;
 
-public class TreeCanonicalFormAdjacencyList {
+public class TreeIsomorphismWithBfs {
 
   public static List<List<Integer>> createEmptyTree(int n) {
     List<List<Integer>> tree = new ArrayList<>(n);
@@ -26,7 +29,7 @@ public class TreeCanonicalFormAdjacencyList {
     tree.get(to).add(from);
   }
 
-  public static List<Integer> findTreeCenters(List<List<Integer>> tree) {
+  private static List<Integer> findTreeCenters(List<List<Integer>> tree) {
     final int n = tree.size();
     int[] degrees = new int[n];
 
@@ -56,6 +59,7 @@ public class TreeCanonicalFormAdjacencyList {
 
   // Encodes a tree as a string such that any isomorphic tree
   // also has the same encoding.
+  // TODO(william): make this method private and test only with the treesAreIsomorphic method
   public static String encodeTree(List<List<Integer>> tree) {
     if (tree == null || tree.size() == 0) return "";
     if (tree.size() == 1) return "()";
@@ -136,6 +140,10 @@ public class TreeCanonicalFormAdjacencyList {
     // Two nodes remain and we need to combine their labels
     String l2 = map[leafs.get(1)];
     return (l1.compareTo(l2) < 0) ? (l1 + l2) : (l2 + l1);
+  }
+
+  public static boolean treesAreIsomorphic(List<List<Integer>> tree1, List<List<Integer>> tree2) {
+    return encodeTree(tree1).equals(encodeTree(tree2));
   }
 
   /* Example usage */

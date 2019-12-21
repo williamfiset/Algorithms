@@ -1,35 +1,32 @@
 package javatests.com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCanonicalFormAdjacencyList.addUndirectedEdge;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCanonicalFormAdjacencyList.createEmptyTree;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCanonicalFormAdjacencyList.encodeTree;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.addUndirectedEdge;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.createEmptyTree;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.treesAreIsomorphic;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.encodeTree;
 
 import java.util.*;
 import org.junit.*;
 
-public class TreeCanonicalFormAdjacencyListTest {
+public class TreeIsomorphismWithBfsTest {
 
   @Test
   public void testSingleton() {
     List<List<Integer>> tree1 = createEmptyTree(1);
     List<List<Integer>> tree2 = createEmptyTree(1);
-    String encoding1 = encodeTree(tree1);
-    String encoding2 = encodeTree(tree2);
-    assertThat(encoding1).isEqualTo(encoding2);
-    assertThat(encoding1).isEqualTo("()");
+    assertThat(treesAreIsomorphic(tree1, tree2)).isEqualTo(true);
   }
 
   @Test
   public void testTwoNodeTree() {
     List<List<Integer>> tree1 = createEmptyTree(2);
     List<List<Integer>> tree2 = createEmptyTree(2);
+
     addUndirectedEdge(tree1, 0, 1);
     addUndirectedEdge(tree2, 1, 0);
-    String encoding1 = encodeTree(tree1);
-    String encoding2 = encodeTree(tree2);
-    assertThat(encoding1).isEqualTo(encoding2);
-    assertThat(encoding1).isEqualTo("()()");
+
+    assertThat(treesAreIsomorphic(tree1, tree2)).isEqualTo(true);
   }
 
   @Test
@@ -47,10 +44,7 @@ public class TreeCanonicalFormAdjacencyListTest {
     addUndirectedEdge(tree2, 1, 2);
     addUndirectedEdge(tree2, 2, 4);
 
-    String encoding1 = encodeTree(tree1);
-    String encoding2 = encodeTree(tree2);
-    assertThat(encoding1).isEqualTo(encoding2);
-    assertThat(encoding1).isEqualTo("(()())(())");
+    assertThat(treesAreIsomorphic(tree1, tree2)).isEqualTo(true);
   }
 
   @Test
@@ -91,12 +85,9 @@ public class TreeCanonicalFormAdjacencyListTest {
     addUndirectedEdge(tree3, 7, 2);
     addUndirectedEdge(tree3, 2, 9);
 
-    String encoding1 = encodeTree(tree1);
-    String encoding2 = encodeTree(tree2);
-    String encoding3 = encodeTree(tree3);
-    assertThat(encoding1).isNotEqualTo(encoding2);
-    assertThat(encoding1).isEqualTo(encoding3);
-    assertThat(encoding2).isNotEqualTo(encoding3);
+    assertThat(treesAreIsomorphic(tree1, tree2)).isEqualTo(false);
+    assertThat(treesAreIsomorphic(tree1, tree3)).isEqualTo(true);
+    assertThat(treesAreIsomorphic(tree2, tree3)).isEqualTo(false);
   }
 
   @Test

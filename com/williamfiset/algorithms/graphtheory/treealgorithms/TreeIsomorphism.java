@@ -34,6 +34,10 @@ public class TreeIsomorphism {
       }
     }
 
+    public int id() {
+      return id;
+    }
+
     public boolean isLeaf() {
       return children.size() == 0;
     }
