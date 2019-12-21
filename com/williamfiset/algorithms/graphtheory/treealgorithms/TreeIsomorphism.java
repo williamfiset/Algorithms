@@ -13,6 +13,7 @@ package com.williamfiset.algorithms.graphtheory.treealgorithms;
 import java.util.*;
 
 public class TreeIsomorphism {
+
   public static class TreeNode {
     private int id;
     private TreeNode parent;
@@ -103,6 +104,10 @@ public class TreeIsomorphism {
 
   // Determines if two unrooted trees are isomorphic
   public static boolean treesAreIsomorphic(List<List<Integer>> tree1, List<List<Integer>> tree2) {
+    if (tree1.isEmpty() || tree2.isEmpty()) {
+      throw new IllegalArgumentException("Empty tree input");
+    }
+
     List<Integer> centers1 = findTreeCenters(tree1);
     List<Integer> centers2 = findTreeCenters(tree2);
 
@@ -121,7 +126,7 @@ public class TreeIsomorphism {
 
   // Constructs the canonical form representation of a tree as a string.
   private static String encode(TreeNode node) {
-    if (node == null || node.isLeaf()) {
+    if (node == null) {
       return "()";
     }
     List<String> labels = new LinkedList<>();
@@ -137,13 +142,13 @@ public class TreeIsomorphism {
   }
 
   // Create a graph as a adjacency list
-  private static List<List<Integer>> createGraph(int n) {
+  public static List<List<Integer>> createGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>(n);
     for (int i = 0; i < n; i++) graph.add(new LinkedList<>());
     return graph;
   }
 
-  private static void addUndirectedEdge(List<List<Integer>> graph, int from, int to) {
+  public static void addUndirectedEdge(List<List<Integer>> graph, int from, int to) {
     graph.get(from).add(to);
     graph.get(to).add(from);
   }
@@ -170,5 +175,4 @@ public class TreeIsomorphism {
       System.out.println("Oops something is not right.");
     }
   }
-
 }
