@@ -5,7 +5,7 @@
  *
  * <p>http://webhome.cs.uvic.ca/~wendym/courses/582/16/notes/582_12_tree_can_form.pdf
  *
- * This implementation uses a breadth first search on an undirected graph to generate the tree's
+ * <p>This implementation uses a breadth first search on an undirected graph to generate the tree's
  * canonical encoding.
  *
  * <p>Tested code against: https://uva.onlinejudge.org/external/124/p12489.pdf

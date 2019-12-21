@@ -9,7 +9,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.addUndirectedEdge;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.createGraph;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.treesAreIsomorphic;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.TreeNode;
 
 import java.util.*;
 import org.junit.*;
@@ -135,7 +134,9 @@ public class TreeIsomorphismTest {
         List<List<Integer>> tree2 = generateRandomTree(n);
 
         boolean impl1 = treesAreIsomorphic(tree1, tree2);
-        boolean impl2 = com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.treesAreIsomorphic(tree1, tree2);
+        boolean impl2 =
+            com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs
+                .treesAreIsomorphic(tree1, tree2);
         if (impl1 != impl2) {
           System.err.println("TreeIsomorphism algorithms disagree!");
           System.err.println(tree1);
@@ -148,29 +149,14 @@ public class TreeIsomorphismTest {
 
   public static List<List<Integer>> generateRandomTree(int n) {
     List<Integer> nodes = new ArrayList<>();
-    nodes.add(0);    
+    nodes.add(0);
 
     List<List<Integer>> g = createGraph(n);
-    for(int nextNode = 1; nodes.size() != n; nextNode++) {
-      int randomNode = nodes.get((int)(Math.random() * nodes.size()));
+    for (int nextNode = 1; nodes.size() != n; nextNode++) {
+      int randomNode = nodes.get((int) (Math.random() * nodes.size()));
       addUndirectedEdge(g, randomNode, nextNode);
       nodes.add(nextNode);
     }
     return g;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

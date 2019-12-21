@@ -3,8 +3,8 @@ package javatests.com.williamfiset.algorithms.graphtheory.treealgorithms;
 import static com.google.common.truth.Truth.assertThat;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.addUndirectedEdge;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.createEmptyTree;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.treesAreIsomorphic;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.encodeTree;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.treesAreIsomorphic;
 
 import java.util.*;
 import org.junit.*;
