@@ -127,7 +127,7 @@ public class TreeIsomorphism {
   }
 
   // Constructs the canonical form representation of a tree as a string.
-  private static String encode(TreeNode node) {
+  public static String encode(TreeNode node) {
     if (node == null) {
       return "()";
     }

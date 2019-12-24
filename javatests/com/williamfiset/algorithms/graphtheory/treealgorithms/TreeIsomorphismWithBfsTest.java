@@ -1,3 +1,8 @@
+// To run this test in isolation from root folder:
+//
+// $ gradle test --tests
+// javatests.com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfsTest
+
 package javatests.com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -5,6 +10,7 @@ import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorp
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.createEmptyTree;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.encodeTree;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.treesAreIsomorphic;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.TreeNode;
 
 import java.util.*;
 import org.junit.*;
@@ -119,4 +125,59 @@ public class TreeIsomorphismWithBfsTest {
     String expectedEncoding = "(((()())(()())())((())()()())(()()()))";
     assertThat(treeEncoding).isEqualTo(expectedEncoding);
   }
+
+  @Test
+  public void t() {
+    List<List<Integer>> tree = createEmptyTree(10);
+
+    TreeNode node0 = new TreeNode(0);
+    TreeNode node1 = new TreeNode(1);
+    TreeNode node2 = new TreeNode(2);
+    TreeNode node3 = new TreeNode(3);
+    TreeNode node4 = new TreeNode(4);
+    TreeNode node5 = new TreeNode(5);
+    TreeNode node6 = new TreeNode(6);
+    TreeNode node7 = new TreeNode(7);
+    TreeNode node8 = new TreeNode(8);
+    TreeNode node9 = new TreeNode(9);
+
+    node0.addChildren(node1, node2, node3);
+    node1.addChildren(node4, node5);
+    node5.addChildren(node9);
+    node2.addChildren(node6, node7);
+    node3.addChildren(node8);
+
+    System.out.println(com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.encode(node0));
+    
+    // (((())())(()())(()))
+    //  ((())())               
+    //          (()())
+    //                (())
+    //             
+
+    // (()())
+    // (())
+    // (())
+
+    // ((()())(()))
+    // ((())())
+    // 
+    // ((()())(()))((())())
+
+
+    // (((()())(()))((())()))
+    //   (()())
+    //         (())
+    //      
+    //             ((())())
+    //
+  }
 }
+
+
+
+
+
+
+
+

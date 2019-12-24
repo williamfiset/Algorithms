@@ -139,7 +139,7 @@ public class TreeIsomorphismWithBfs {
 
     // Two nodes remain and we need to combine their labels
     String l2 = map[leafs.get(1)];
-    return (l1.compareTo(l2) < 0) ? (l1 + l2) : (l2 + l1);
+    return ((l1.compareTo(l2) < 0) ? (l1 + l2) : (l2 + l1));
   }
 
   public static boolean treesAreIsomorphic(List<List<Integer>> tree1, List<List<Integer>> tree2) {
