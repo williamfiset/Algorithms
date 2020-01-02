@@ -128,7 +128,7 @@ public class TreeIsomorphismTest {
 
   @Test
   public void testIsomorphismEquivilanceAgainstOtherImpl() {
-    for (int n = 4; n < 50; n++) {
+    for (int n = 1; n < 50; n++) {
       for (int loops = 0; loops < 1000; loops++) {
         List<List<Integer>> tree1 = generateRandomTree(n);
         List<List<Integer>> tree2 = generateRandomTree(n);

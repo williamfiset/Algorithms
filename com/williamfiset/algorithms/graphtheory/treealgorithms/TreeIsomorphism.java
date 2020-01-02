@@ -129,7 +129,7 @@ public class TreeIsomorphism {
   // Constructs the canonical form representation of a tree as a string.
   public static String encode(TreeNode node) {
     if (node == null) {
-      return "()";
+      return "";
     }
     List<String> labels = new LinkedList<>();
     for (TreeNode child : node.children()) {
@@ -143,6 +143,8 @@ public class TreeIsomorphism {
     return "(" + sb.toString() + ")";
   }
 
+    /* Graph/Tree creation helper methods. */
+
   // Create a graph as a adjacency list
   public static List<List<Integer>> createGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>(n);
@@ -155,9 +157,14 @@ public class TreeIsomorphism {
     graph.get(to).add(from);
   }
 
-  /* Example usage */
+    /* Example usage */
 
   public static void main(String[] args) {
+    simpleIsomorphismTest();
+    testEncodingTreeFromSlides();
+  }
+
+  private static void simpleIsomorphismTest() {
     // Test if two tree are isomorphic, meaning they are structurally equivalent
     // but are labeled differently.
     List<List<Integer>> tree1 = createGraph(5);
@@ -176,5 +183,23 @@ public class TreeIsomorphism {
     if (!treesAreIsomorphic(tree1, tree2)) {
       System.out.println("Oops something is not right.");
     }
+  }
+
+  private static void testEncodingTreeFromSlides() {
+    List<List<Integer>> tree = createGraph(10);
+    addUndirectedEdge(tree, 0, 2);
+    addUndirectedEdge(tree, 0, 1);
+    addUndirectedEdge(tree, 0, 3);
+    addUndirectedEdge(tree, 2, 6);
+    addUndirectedEdge(tree, 2, 7);
+    addUndirectedEdge(tree, 1, 4);
+    addUndirectedEdge(tree, 1, 5);
+    addUndirectedEdge(tree, 5, 9);
+    addUndirectedEdge(tree, 3, 8);
+
+    TreeNode root0 = rootTree(tree, 0);
+
+    System.out.println("Tree from slides encoding:");
+    System.out.println(encode(root0));
   }
 }
