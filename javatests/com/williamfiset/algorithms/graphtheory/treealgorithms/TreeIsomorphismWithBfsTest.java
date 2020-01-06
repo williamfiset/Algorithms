@@ -6,11 +6,11 @@
 package javatests.com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.TreeNode;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.addUndirectedEdge;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.createEmptyTree;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.encodeTree;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.treesAreIsomorphic;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.TreeNode;
 
 import java.util.*;
 import org.junit.*;
@@ -147,13 +147,15 @@ public class TreeIsomorphismWithBfsTest {
     node2.addChildren(node6, node7);
     node3.addChildren(node8);
 
-    System.out.println(com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.encode(node0));
-    
+    // TODO(william): finish this test to check for "(((())())(()())(()))" encoding
+    // System.out.println(
+    // com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.encode(node0));
+
     // (((())())(()())(()))
-    //  ((())())               
+    //  ((())())
     //          (()())
     //                (())
-    //             
+    //
 
     // (()())
     // (())
@@ -161,23 +163,14 @@ public class TreeIsomorphismWithBfsTest {
 
     // ((()())(()))
     // ((())())
-    // 
+    //
     // ((()())(()))((())())
-
 
     // (((()())(()))((())()))
     //   (()())
     //         (())
-    //      
+    //
     //             ((())())
     //
   }
 }
-
-
-
-
-
-
-
-

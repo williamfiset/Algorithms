@@ -143,7 +143,7 @@ public class TreeIsomorphism {
     return "(" + sb.toString() + ")";
   }
 
-    /* Graph/Tree creation helper methods. */
+  /* Graph/Tree creation helper methods. */
 
   // Create a graph as a adjacency list
   public static List<List<Integer>> createGraph(int n) {
@@ -157,7 +157,7 @@ public class TreeIsomorphism {
     graph.get(to).add(from);
   }
 
-    /* Example usage */
+  /* Example usage */
 
   public static void main(String[] args) {
     simpleIsomorphismTest();
@@ -199,7 +199,8 @@ public class TreeIsomorphism {
 
     TreeNode root0 = rootTree(tree, 0);
 
-    System.out.println("Tree from slides encoding:");
-    System.out.println(encode(root0));
+    if (!encode(root0).equals("(((())())(()())(()))")) {
+      System.out.println("Tree encoding is wrong: " + encode(root0));
+    }
   }
 }
