@@ -1,10 +1,5 @@
 package com.williamfiset.algorithms.dp;
 
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
-
 /**
  * Cloud computing companies, like Amazon, have a lot of virtual machines in their disposal, which
  * they offer to users for a price for the total time of the VM usage. There are quite a few
@@ -14,35 +9,45 @@ import java.util.Scanner;
  * speeds but is considerably more expensive. The problem that arises is how to assign the processes
  * to the VMs efficiently and we achieve that with dynamic programming.
  *
- * <p>We have a complex process that consists of N steps in a chain: P1 -> P2 -> P3 -> ... -> Pn We
- * also have M different VMs.
+ * We have a complex process that consists of N steps in a chain: P1 -> P2 -> P3 -> ... -> Pn We also have M different VMs.
+ * As an input we have 2 arrays, one being NxM showing the cost of a process running in a VM, and the other being MxM showing the cost of sending data from one VM to an other.
  *
- * <p>As an input we have 2 arrays, one being NxM showing the cost of a process running in a VM, and
- * the other being MxM showing the cost of sending data from one VM to an other.
+ * E.g
  *
- * <p>E.g
+ * 4 Processes 3 Virtual Machines
  *
- * <p>4 Processes 3 Virtual Machines
+ * 5 6 3      Each process has 4 steps and there are 3 VMs.
+ * 7 8 5      The first VM runs the 4 processes with 5, 7, 7, 2 cost respectively and so on.
+ * 7 8 3
+ * 2 7 6
  *
- * <p>5 6 3 Each process has 4 steps and there are 3 VMs. 7 8 5 The first VM runs the 4 processes
- * with 5, 7, 7, 2 cost respectively and so on. 7 8 3 2 7 6
+ * 0 7 2
+ * 7 0 2
+ * 2 2 0
  *
- * <p>0 7 2 7 0 2 2 2 0
+ * The Algorithm fills an array Costs NxM, where each cell Cost(i, j) contains the minimum total cost of the complex process until step i when it runs on VM-j. In order for step i to run on VM-j, the results from i-1 step must already be on VM-j or sent on VM-j including the communication cost between VMs.
  *
- * <p>The Algorithm fills an array Costs NxM, where each cell Cost(i, j) contains the minimum total
- * cost of the complex process until step i when it runs on VM-j. In order for step i to run on
- * VM-j, the results from i-1 step must already be on VM-j or sent on VM-j including the
- * communication cost between VMs.
+ * For the example above the Cost array is the following:
  *
- * <p>For the example above the Cost array is the following:
+ * 5 6 3
+ * 12 13 8
+ * 17 18 11
+ * 15 20 17
  *
- * <p>5 6 3 12 13 8 17 18 11 15 20 17
+ * This means that the least expensive execution costs 15 and is achieved when the last process is on the first VM.
  *
- * <p>This means that the least expensive execution costs 15 and is achieved when the last process
- * is on the first VM.
+ *
+ * In order to run the program create a jar file and give as input a text file with 2 arrays in it, in the format as the arrays in the example above separated with a blank line.
+ * Or change scheduler.scanFile(args[0]) to scheduler.scanFile("<filename>.txt") and run it in an IDE. (IntelliJ IDEA preferably)
  *
  * @author Dragatis Nikolas, nikosdraga@gmail.com
  */
+
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
 public class VirtualMachinesScheduler {
   public static void main(String[] args) throws Exception {
     double time = System.currentTimeMillis();
