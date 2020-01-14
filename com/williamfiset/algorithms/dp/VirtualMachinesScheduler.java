@@ -1,0 +1,177 @@
+package com.williamfiset.algorithms.dp;
+
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+/**
+ * Cloud computing companies, like Amazon, have a lot of virtual machines in their disposal, which
+ * they offer to users for a price for the total time of the VM usage. There are quite a few
+ * different types of VMs with different CPU and Disk speeds as well as storage sizes, which all
+ * have different costs. For example VM-A has faster CPUs than VM-B, but VM-B has faster storage
+ * read/write. Then, there is VM-C which is faster than both VM-A and VM-B in both CPU and Disk
+ * speeds but is considerably more expensive. The problem that arises is how to assign the processes
+ * to the VMs efficiently and we achieve that with dynamic programming.
+ *
+ * <p>We have a complex process that consists of N steps in a chain: P1 -> P2 -> P3 -> ... -> Pn We
+ * also have M different VMs.
+ *
+ * <p>As an input we have 2 arrays, one being NxM showing the cost of a process running in a VM, and
+ * the other being MxM showing the cost of sending data from one VM to an other.
+ *
+ * <p>E.g
+ *
+ * <p>4 Processes 3 Virtual Machines
+ *
+ * <p>5 6 3 Each process has 4 steps and there are 3 VMs. 7 8 5 The first VM runs the 4 processes
+ * with 5, 7, 7, 2 cost respectively and so on. 7 8 3 2 7 6
+ *
+ * <p>0 7 2 7 0 2 2 2 0
+ *
+ * <p>The Algorithm fills an array Costs NxM, where each cell Cost(i, j) contains the minimum total
+ * cost of the complex process until step i when it runs on VM-j. In order for step i to run on
+ * VM-j, the results from i-1 step must already be on VM-j or sent on VM-j including the
+ * communication cost between VMs.
+ *
+ * <p>For the example above the Cost array is the following:
+ *
+ * <p>5 6 3 12 13 8 17 18 11 15 20 17
+ *
+ * <p>This means that the least expensive execution costs 15 and is achieved when the last process
+ * is on the first VM.
+ *
+ * @author Dragatis Nikolas, nikosdraga@gmail.com
+ */
+public class VirtualMachinesScheduler {
+  public static void main(String[] args) throws Exception {
+    double time = System.currentTimeMillis();
+    Scheduler scheduler = new Scheduler();
+
+    scheduler.scanFile(args[0]);
+
+    System.out.println("\nTime: " + (System.currentTimeMillis() - time) / 1000.0 + " seconds.");
+  }
+
+  /**
+   * This is the class that contains the methods for producing the final array of the dynamic
+   * programming after reading and storing the data from a txt file.
+   */
+  public static class Scheduler {
+    private int virtualMachines = 0;
+    private int processes = 0;
+
+    /**
+     * This function is used to scan the txt file, with the data, and initialize the dimensions of
+     * the array with the processes costs and the array with the communication costs.
+     *
+     * @param pathname is the name of the txt file containing the data.
+     * @throws Exception
+     */
+    public void scanFile(String pathname) throws Exception {
+      Scanner scanner = new Scanner(new FileReader(pathname));
+
+      processes = scanner.nextInt();
+      virtualMachines = scanner.nextInt();
+
+      int[][] processesCost = new int[processes][virtualMachines];
+      int[][] communicationsCost = new int[virtualMachines][virtualMachines];
+
+      initializeArrays(scanner, processesCost, processes, virtualMachines);
+
+      initializeArrays(scanner, communicationsCost, virtualMachines, virtualMachines);
+
+      Scheduling(processesCost, communicationsCost);
+    }
+
+    /**
+     * This function is used to produce the final array of the dynamic programming with the results.
+     *
+     * @param processesCost is the array which contains each process cost on each virtual machine.
+     * @param communicationsCost is the array which contains the costs to transfer data from one
+     *     virtual machine to another.
+     */
+    public void Scheduling(int[][] processesCost, int[][] communicationsCost) {
+      int[][] Cost = new int[processes][virtualMachines];
+
+      for (int i = 0; i < virtualMachines; i++) {
+        Cost[0][i] = processesCost[0][i];
+      }
+
+      for (int i = 1; i < processes; i++) {
+        for (int j = 0; j < virtualMachines; j++) {
+          Cost[i][j] = findMin(i, j, Cost, processesCost, communicationsCost, virtualMachines);
+        }
+      }
+
+      printArray(Cost, processes, virtualMachines);
+    }
+
+    /**
+     * This function returns the minimum cost for executing a particular process on different
+     * virtual machines considering the communication cost and the cost of the previous process.
+     *
+     * @param x is the number of processes.
+     * @param y is the number of virtual machines.
+     * @param Cost is the final array of the dynamic programming.
+     * @param processesCost is the array that contains the costs of each process for each virtual
+     *     machine.
+     * @param communicationsCost is the array that contains the costs for transferring the results
+     *     of the last process to the next virtual machine.
+     * @param virtualMachines is the number of virtual machines.
+     * @return returns the minimum cost for executing a process on every virtual machine.
+     */
+    private int findMin(
+        int x,
+        int y,
+        int[][] Cost,
+        int[][] processesCost,
+        int[][] communicationsCost,
+        int virtualMachines) {
+
+      ArrayList<Integer> tempArray2 = new ArrayList<>();
+
+      for (int i = 0; i < virtualMachines; i++) {
+        int temp = Cost[x - 1][i] + processesCost[x][y] + communicationsCost[y][i];
+        tempArray2.add(temp);
+      }
+
+      Collections.sort(tempArray2);
+
+      return tempArray2.get(0);
+    }
+
+    /**
+     * This function is used to store the two arrays (processCost and communicationCost) that are
+     * read from the input file.
+     *
+     * @param scanner scans the file for the next integer.
+     * @param array
+     * @param x is the number of processes as read from the txt file.
+     * @param y is the number of virtual machines as read from the txt file.
+     */
+    private void initializeArrays(Scanner scanner, int[][] array, int x, int y) {
+      for (int i = 0; i < x; i++) {
+        for (int j = 0; j < y; j++) {
+          array[i][j] = scanner.nextInt();
+        }
+      }
+    }
+
+    /**
+     * This function is used to print an array with x * y dimensions.
+     *
+     * @param array
+     * @param x is the number of rows of the array.
+     * @param y is the number of columns of the array.
+     */
+    private void printArray(int[][] array, int x, int y) {
+      for (int i = 0; i < x; i++) {
+        for (int j = 0; j < y; j++) {
+          System.out.printf("%d ", array[i][j]);
+        }
+        System.out.println();
+      }
+    }
+  }
+}
