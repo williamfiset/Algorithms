@@ -348,31 +348,34 @@ like we're doing here, but of course, that it's always doable. </problem2>
 Alright folks, thanks for watching, please like and subscribe if you learned
 something and i'll catch you next time.
 
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+--------------------------------------------------------------------
 
-
+ROOTING A TREE
 
 Hello and welcome, my name is William, today we're looking at how to root a
 tree. This is a very basic transformation that's handy to have in your toolkit
 in case you need to or want to work with a rooted tree.
 
-The motivation for rooting a tree is that often it can help add structure and
-simplify the problem you're trying to solve. Rooting the tree enables you to
-easily perform recursive algorithms and transforms the tree to have directed
-edges instead of undirected edges which is also generally easier to work with.
+The motivation for rooting a tree is that often it can help to add structure and
+simplify the problem you're trying to solve. Rooting a tree enables you to
+easily perform recursive algorithms, it also transforms a tree to have
+directed edges instead of undirected edges which are generally easier to
+work with.
 
-To root the tree, first you need to select a root node. I'm going to pick node
-0.
+To root a tree, first you need to select a root node. I'm going to pick node 0.
 
-Conceptually, rooting a tree is like "picking up" the tree by a specific node
+Conceptually, rooting a tree is like "picking up" a tree by a specific node
 and having all the edges point downwards.
 
 You can root a tree using any of its nodes. However, be cautious because not
-every node you select will result in a well balanced tree, so we may have to be
-more selective.
+every node you select will result in a well balanced tree, if that's your 
+objective you may need to be more selective.
 
 In some situations it’s also useful to keep have a reference to the parent node
-in order to walk up the tree. I illustrated parent node pointers as dotted lines
-on this slide.
+in order to be able to walk up the tree. I illustrated parent node pointers as
+dotted lines on this slide.
 
 Let's look at an example of how to root a tree. One of the best ways to do this
 is with a depth first search through the original tree and to create the rooted
@@ -407,7 +410,7 @@ Here's the algorithm itself, it's relatively short and sweet. The input to the
 rootTree function takes a graph g as input which is the tree we want to root,
 the other input is the id of the designated root node. By default this is node
 0, but it can be any other node. We assume that the root node exists in g and
-that the id is valid, otherwise i'm pretty sure this algorithm breaks.
+that the id is valid.
 
 The first line in the rootTree method creates the root tree node object with the
 id rootId, a parent reference of null and no child nodes.
@@ -441,12 +444,62 @@ created child node.
 Once we have finished iterating over all the neighbors of this node return the
 current node.
 
-And that's rooting a tree
+And that's how you root a tree.
 
-goodnight.
+Please give this video a thumbs up if you learned something, and subscribe for 
+more mathematics and computer science videos.
 
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+--------------------------------------------------------------------
 
+Center(s) of a tree
 
+Hello and welcome, my name is William, today we're looking at how to find the
+center of a tree. This is the sort of problem you might encounter during 
+an interview or in a competitive programming setting.
+
+Finding the center of a tree can be a handy algorithm to have in your toolkit,
+you'll see it from time to time as a subroutine in other algorithms, it can also
+be useful as a way of selecting a root node when you want to root a tree.
+
+One thing to be aware of when finding the center of a tree is that there can be
+more than one center! Either you'll run into the case with a unique center which
+is nice, or you'll bump into a tree like the one of the right where there are
+two centers. However, there can't be more than 2 centers, take a moment and 
+think about why that's true..
+
+Our approach to finding the center or centers of a tree is going to be to 
+repeatedly remove the outer layer of leaf nodes. This process resembles that of
+peeling an onion, you start outside in.
+
+For this tree, we first identify all the leaf nodes.
+
+Then we prune them.
+
+After that, repeat the same process. Find identify the leaf nodes.
+
+And prune them.
+
+If you keep doing this you'll eventually reach the center of the tree.
+
+Let's do another example
+
+Identify all the leaf nodes.
+
+Prune them
+
+Find the new set of leaf nodes, these are all the nodes with 1 alive child.
+
+Then prune them.
+
+When you're left with either 1 or 2 nodes you've found the center or centers.
+
+I really love this algorithm which 
+
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+--------------------------------------------------------------------
 
 Tree Isomorphisms and canonical form
 
