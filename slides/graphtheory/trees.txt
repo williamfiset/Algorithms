@@ -473,25 +473,33 @@ Our approach to finding the center or centers of a tree is going to be to
 repeatedly remove the outer layer of leaf nodes. This process resembles that of
 peeling an onion, you start outside in.
 
-For this tree, we first identify all the leaf nodes.
+The first thing we're going to do it compute the degree of each node, that is 
+the number of node's it's connected to. You'll notice that each leaf node will
+have a degree of 1 since leaf nodes can only be connected to one other node.
 
-Then we prune them.
+For this tree, the leaf nodes are those in red.
+
+Once we know what the leaf nodes are we can prune them and update the degree
+of each of the nodes.
 
 After that, repeat the same process. Find identify the leaf nodes.
 
-And prune them.
+Prune them and update the degree values.
 
 If you keep doing this you'll eventually reach the center of the tree.
 
-Let's do another example
+It's a simple concept, let's do another example. Feel free to pause the video
+and find the center yourself using the algorithm I just described.
 
-Identify all the leaf nodes.
+First compute all the node degree values.
 
-Prune them
+Identify all the leaf nodes with a degree of 1
 
-Find the new set of leaf nodes, these are all the nodes with 1 alive child.
+Prune them, and update the degree values.
 
-Then prune them.
+Find the new set of leaf nodes, these are all the nodes with a degree of 1.
+
+Then prune them, and update the degree values.
 
 When you're left with either 1 or 2 nodes you've found the center or centers.
 
