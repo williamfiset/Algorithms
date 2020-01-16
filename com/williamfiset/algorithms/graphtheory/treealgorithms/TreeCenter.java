@@ -3,7 +3,8 @@
  *
  * <p>Time complexity: O(V+E)
  *
- * @author Jeffrey Xiao, https://github.com/jeffrey-xiao
+ * @author Original author: Jeffrey Xiao, https://github.com/jeffrey-xiao
+ * @author Modifications by: William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-class TreeCenter {
+public class TreeCenter {
 
   public static List<Integer> findTreeCenters(List<List<Integer>> tree) {
     final int n = tree.size();
