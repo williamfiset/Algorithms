@@ -503,7 +503,48 @@ Then prune them, and update the degree values.
 
 When you're left with either 1 or 2 nodes you've found the center or centers.
 
-I really love this algorithm which 
+Ok, let's have a look at some pseudo-code. Real code can be found in the 
+description. 
+
+The tree centers function takes as input a tree represented as an undirected 
+graph stored in the variable 'g'.
+
+The variable 'n' represents the number of nodes in our tree.
+
+After this, I define two arrays. The first one is 'degree' of length 'n' which
+will capture the degree of each node, and 'leaves' is an array that contains the
+most recent layer of leaf nodes.
+
+Then for the first bit of logic simply loop through all the nodes and compute 
+the degree of each one. I do this by inspecting the adjacency list and counting
+the number of edges coming out of each node. 
+
+Then, if the node has a degree of 0, meaning we're dealing with a single node
+tree or the node is a leaf node because it has a degree of 1 then add the node
+to the leaves array.
+
+The way we're going to know when we've found the center or centers is when we
+have processed all the nodes in the tree. The variable count is going to keep
+track how many nodes we've processed so far. Every iteration we're going to
+increment count by the number of leaves we found in the last layer.
+
+Entering the loop, 'new_leaves' is a new array that will contain the new leaf
+nodes on the next layer. I'm using a new array to avoid interfering with the
+leaf nodes on the current layer.
+
+So for every leaf node on the current layer,
+
+process all the neighbors of those nodes
+
+and decrement the degree of the neighbor nodes. Since we're removing the current
+node this means that the degree of the neighboring node needs to go down. If the
+neighbor node after being decremented has a degree of 1 then we know it will be
+in the next layer of leaf nodes so add it to the new leaves array.
+
+When we've finished processing the current layer increment the count variable
+and replaces the leaves array with the new leaves.
+
+And finally return the centers
 
 --------------------------------------------------------------------
 --------------------------------------------------------------------
