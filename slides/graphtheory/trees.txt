@@ -546,6 +546,9 @@ and replaces the leaves array with the new leaves.
 
 And finally return the centers
 
+THanks for watching, if you learned something please give this video a thumbs
+up, and subscribe for more mathematics and computer science videos.
+
 --------------------------------------------------------------------
 --------------------------------------------------------------------
 --------------------------------------------------------------------
