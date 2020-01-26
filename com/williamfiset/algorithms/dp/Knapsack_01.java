@@ -11,6 +11,9 @@
  */
 package com.williamfiset.algorithms.dp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Knapsack_01 {
 
   /**
@@ -48,7 +51,7 @@ public class Knapsack_01 {
     }
 
     int sz = capacity;
-    java.util.List<Integer> itemsSelected = new java.util.ArrayList<>();
+    List<Integer> itemsSelected = new ArrayList<>();
 
     // Using the information inside the table we can backtrack and determine
     // which items were selected during the dynamic programming phase. The idea
