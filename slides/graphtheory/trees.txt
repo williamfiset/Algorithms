@@ -707,12 +707,36 @@ After that I root tree1 using the first center node, which there will always be
 at least 1 of. The rootTree method is the same one we covered in the last
 video, check the description if you missed it.
 
-As a reminder, rooted trees are stored recursively in tree node objects. This is
-to facilitate writing recursive algorithms and keeping our tree data organized.
+As a reminder, rooted trees are stored recursively in tree node objects. We do
+this to facilitate writing recursive algorithms, but also to keep our tree data
+structure organized.
 
+Once we have rooted our tree we can serialize it with the encode method. Let's
+take a closer look at what's going on in there.
 
+The encode method is the one which generates the unique string for our tree.
 
+The first thing I do is handle the base case where we have a null node. For this
+we can return an empty string which will cause all leaf nodes to have a Knuth
+tuple as a starting value on the callback.
 
+For each node we maintain a list of labels for all this nodes subtrees.
+Iterate through all the children of this node and recursively call the encode
+method and add the result to the labels list.
+
+After the recursive calls return and the labels list of populated sort
+the labels.
+
+Afterwards, concatenate the labels and wrap the result in brackets.
+
+Coming back to the main method. Now the next thing we want to do is encode the
+second tree and compare the encoded results, but if the tree has 2 centers we
+don't know which center node in the second tree is the correct one, so we need
+to try both. For this iterate over both centers and root the tree comparing the
+encoded result with the one from the first tree. If there's any match then we 
+know the trees are isomorphic.
+
+<press>
 
 
 
