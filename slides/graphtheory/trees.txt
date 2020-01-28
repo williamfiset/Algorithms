@@ -469,12 +469,25 @@ is nice, or you'll bump into a tree like the one of the right where there are
 two centers. However, there can't be more than 2 centers, take a moment and 
 think about why that's true..
 
-Our approach to finding the center or centers of a tree is going to be to 
+You will notice that the center is always the middle vertex or the middle two
+vertices along the longest path of a tree.
+
+For example, in pink is one of the possible longest paths on this tree
+
+and the center of the tree is the middle vertex along this path.
+
+<press>
+
+if we repeat this process and select another longest path
+
+you'll see that we again end up with the correct center node.
+
+Another approach to finding the center or centers of a tree is going to be to 
 repeatedly remove the outer layer of leaf nodes. This process resembles that of
 peeling an onion, you start outside in.
 
 The first thing we're going to do it compute the degree of each node, that is 
-the number of node's it's connected to. You'll notice that each leaf node will
+the number of node's it is connected to. You'll notice that each leaf node will
 have a degree of 1 since leaf nodes can only be connected to one other node.
 
 For this tree, the leaf nodes are those in red.
@@ -553,7 +566,44 @@ up, and subscribe for more mathematics and computer science videos.
 --------------------------------------------------------------------
 --------------------------------------------------------------------
 
-Tree Isomorphisms and canonical form
+Isomorphisms in trees
+
+Hello and welcome, my name is William, and today we're discussing isomorphisms
+in trees -- a question of tree equality and what that means.
+
+When we're talking about general graphs and ask whether two graphs are 
+isomorphic we're asking whether they're structurally the same. In the middle,
+even though graphs G1 and G2 are labeled differently and may appear different
+they are structurally the same graph. You could for example conceptually unfold
+the graph on the right to match the one of the left and relabel the vertices'
+and you would have two identical graphs.
+
+We can also define the notion of a graph isomorphism more rigorously because
+simply saying that two graphs have the same structure is not well defined.
+
+  If we
+define a graph G1 as a set of edges E1 and vertices V1 and another graph G2 in
+the same manner, 
+
+So we can say that two graph g1 and g2 are isomorphic is there exists a
+bijection between the sets v1 and v2 such that:
+For all pairs of vertices which form an edge in g1, applying the function phi to
+the nodes of all those edges results in an edge which is present in the 
+graph g2.
+In simple terms, for an isomorphism to exist there needs to be a function which
+can map all the nodes/edges in G1 to G2 and vice-versa.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
