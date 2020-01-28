@@ -354,9 +354,10 @@ something and i'll catch you next time.
 
 ROOTING A TREE
 
-Hello and welcome, my name is William, today we're looking at how to root a
+Hello and welcome, welcome back for more tree videos, my name is William, and 
+today we're looking at how to root a
 tree. This is a very basic transformation that's handy to have in your toolkit
-in case you need to or want to work with a rooted tree.
+in case you want to or need to work with a rooted tree.
 
 The motivation for rooting a tree is that often it can help to add structure and
 simplify the problem you're trying to solve. Rooting a tree enables you to
@@ -370,7 +371,7 @@ Conceptually, rooting a tree is like "picking up" a tree by a specific node
 and having all the edges point downwards.
 
 You can root a tree using any of its nodes. However, be cautious because not
-every node you select will result in a well balanced tree, if that's your 
+every node you select will result in a well balanced tree, and if that's your 
 objective you may need to be more selective.
 
 In some situations it’s also useful to keep have a reference to the parent node
@@ -394,7 +395,7 @@ And that's rooting a tree in a nutshell
 
 Let's have a look at some pseudo code for this.
 
-On this slide I define a data object I will be using to describe a tree node.
+On this slide I define an object I will be using to describe a tree node.
 
 Each node has a unique integer id
 
@@ -403,19 +404,17 @@ but I thought I should include it for completeness. Take note that every node
 will have a parent pointer except the root node whose parent pointer will be
 null.
 
-Additionally, each tree node will also have a list of all the child tree nodes
-it has a reference to.
+Additionally, each node also has a list of all its child nodes.
 
-Here's the algorithm itself, it's relatively short and sweet. The input to the
+Here's the algorithm to root a tree, it's relatively short and sweet. The input to the
 rootTree function takes a graph g as input which is the tree we want to root,
 the other input is the id of the designated root node. By default this is node
-0, but it can be any other node. We assume that the root node exists in g and
-that the id is valid.
+0, but it can be any other node.
 
 The first line in the rootTree method creates the root tree node object with the
 id rootId, a parent reference of null and no child nodes.
 
-Then I call the build tree method to start the depth first traversal to root the
+Then I call the buildTree method to start the depth first traversal to root the
 tree. As input parameters I pass in the graph g, the root node as the current
 node and the root's parent which is null.
 
@@ -425,14 +424,14 @@ the current node, and the current node's parent node reference.
 Next we enter a for loop that loops over all the neighbors of the current node,
 which in turn will become the children of the current node.
 
-Because edges are undirected in the original tree, we absolutely need to avoid a
+Because edges are undirected in the original tree, we absolutely need to avoid the
 situation where we add a directed edge pointing back to the current node's
 parent.
 
 First check that the parent is not null so we don't get a null pointer exception
 when trying to access the parent's id.
 
-then check that the child id is equal to the parent id and skip this node if
+then check if the child id is equal to the parent id and skip this node if
 true.
 
 Otherwise we're dealing with a proper child node, so create a new node and add
@@ -446,7 +445,8 @@ current node.
 
 And that's how you root a tree.
 
-Please give this video a thumbs up if you learned something, and subscribe for 
+Alright, thank you for watching, please give this video a thumbs up if you 
+learned something, and subscribe for 
 more mathematics and computer science videos.
 
 --------------------------------------------------------------------
