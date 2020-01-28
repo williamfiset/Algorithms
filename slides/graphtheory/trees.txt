@@ -593,14 +593,122 @@ graph g2.
 In simple terms, for an isomorphism to exist there needs to be a function which
 can map all the nodes/edges in G1 to G2 and vice-versa.
 
+As it turns out, determining if two graphs are isomorphic is not only not
+obvious to the human eye, but also a difficult problem for computers.
+It is still an open question as to whether the graph isomorphism problem is NP
+complete. However, many polynomial time isomorphism algorithms exist for 
+specialized graphs in including trees.
 
+Let's have a look at a few examples, I'm going to show you two trees are you
+have to tell me if they're isomorphic or not.
 
+Are tree1 and tree2 isomorphic? [small pause]
 
+No, they're structually different.
 
+what about tree3 and tree4? [small pause]
 
+Yup, they're isomorphic.
 
+In terms of writing an algorithm for identifying isomorphic trees, there are
+several very quick probabilistic, usually hash or heuristic based algorithms
+for identifying isomorphic trees. These tend to be very fast, but also more
+error prone due to hash collisions in a limited integer space. However,
+they do have a place when it comes to absolutely enormous trees and in
+a competitive programming setting.
+The method we'll be looking at today involves serializing a tree into a unique
+encoding. The encoding is simply a string that represents a tree, and if
+another tree has the same encoding then both trees are isomorphic.
 
+When going about encoding a tree, you can directly serialize an unrooted tree,
+but in practice I find it easier to write code to serialize a rooted tree, just
+my personal preference.
+However, one small caveat to watch out for if your going for the rooted tree
+approach is to make sure you root your two trees T1 and T2 with the same root
+node before you begin the serialization process, otherwise you'll get two
+different encodings.
 
+One trick we can use to help ourselves select a common node between both trees,
+is to reuse what we learned in the last video on finding the center(s) of a tree
+
+Let's have a look at the entire flow of how encoding a tree is going to work.
+First we start out with two trees, T1 and T2, which may or may not be
+isomorphic, that's what we're trying to figure out.
+
+From here, find the center of both trees, don't worry about the case where one of
+the trees has more than one center, we'll see how to handle that later.
+
+Next, root the trees where their center nodes are.
+
+Then generate the encoding for each tree and compare the serialized tree values
+for equality.
+
+The tree encoding is simply a sequence of left '(' and right ')' brackets.
+However, you can also think of them as 1’s and 0’s which is just a really large
+number if you prefer.
+
+From this encoding is should also be possible to reconstruct the original tree 
+solely based on the encoding. I will leave this as an exercise to the reader.
+
+The AHU, short for the three authors of the algorithm, is a clever serialization
+technique for representing a tree as a unique string.
+Unlike many tree isomorphism invariants and heuristics, AHU is able to capture
+a complete history of a tree’s degree spectrum and structure. In turn this
+ensures a deterministic method of checking for tree isomorphisms. Let's take a
+closer look at how it works.
+
+Suppose we have this tree we wish to serialize.
+
+The first thing we do is assign all leaf nodes Knuth tuples which are a pair of
+left and right brackets.
+
+After that, for all nodes with all grayed out children combine their children's
+labels and wrap them in a new pair of brackets.
+
+It's clearer if I highlight how the brackets were combined. If you look at the
+leftmost branch, you can see that we combined the labels from node 6 and node 7
+and then wrapped them in a new bracket set to create the label for node 2.
+
+<press>
+
+Let's continue and process all nodes with grayed out children which is just
+node 1, then you see that we've combined the labels from node 4 and node 5.
+
+One thing you'll notice is that in the combining phase the child labels need to
+get sorted, this is very important.
+
+<press>
+
+and now we get to process the last node
+
+here we combine and sort the labels from nodes 2, 1 and 3 to create the final 
+serialized encoding which will always be at the root node. In hindsight this
+algorithm isn't too complicated, but I find it extremely clever. Props to the
+original authors.
+
+<press>
+
+In summary of what we just looked at:
+1) First, leaf nodes are assigned Knuth tuples consisting of a left and right
+bracket to begin with.
+2) Every time you move up a layer the labels of the previous subtrees get sorted
+lexicographically and wrapped in brackets.
+3) You cannot process a node until you have processed all its children.
+
+Alright, let's have a look at some pseudocode.
+
+The treesAreIsomorphioc method takes in as input two undirected trees, tree1 and
+tree2 stored as adjacency lists.
+
+The first thing we do is find the center node or nodes of these two trees.
+This is a method i'm borrowing from two slide decks ago.
+
+After that I root tree1 using the first center node, which there will always be
+at least 1 of. The rootTree method is the same one we covered in the last
+video, check the description if you missed it.
+
+As a reminder, rooted trees are stored recursively in tree node objects. This is
+to facilitate writing recursive algorithms and keeping our tree data organized.
 
 
 
