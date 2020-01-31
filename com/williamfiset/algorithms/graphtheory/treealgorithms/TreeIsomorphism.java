@@ -38,8 +38,8 @@ public class TreeIsomorphism {
       return id;
     }
 
-    public boolean isLeaf() {
-      return children.size() == 0;
+    public TreeNode parent() {
+      return parent;
     }
 
     public List<TreeNode> children() {
@@ -52,58 +52,6 @@ public class TreeIsomorphism {
     }
   }
 
-  private static TreeNode rootTree(List<List<Integer>> graph, int rootId) {
-    TreeNode root = new TreeNode(rootId);
-    return buildTree(graph, root, /*parent=*/ null);
-  }
-
-  // Do dfs to construct rooted tree.
-  private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node, TreeNode parent) {
-    for (int childId : graph.get(node.id)) {
-      // Ignore adding an edge pointing back to parent.
-      if (parent != null && childId == parent.id) continue;
-
-      TreeNode child = new TreeNode(childId, node);
-      node.addChildren(child);
-
-      buildTree(graph, child, node);
-    }
-    return node;
-  }
-
-  private static List<Integer> findTreeCenters(List<List<Integer>> tree) {
-    final int n = tree.size();
-    int[] degrees = new int[n];
-
-    // Find all leaf nodes
-    List<Integer> leaves = new ArrayList<>();
-    for (int i = 0; i < n; i++) {
-      List<Integer> edges = tree.get(i);
-      degrees[i] = edges.size();
-      if (degrees[i] <= 1) leaves.add(i);
-    }
-
-    int processedLeafs = leaves.size();
-
-    // Remove leaf nodes and decrease the degree of
-    // each node adding new leaf nodes progressively
-    // until only the centers remain.
-    while (processedLeafs < n) {
-      List<Integer> newLeaves = new ArrayList<>();
-      for (int node : leaves) {
-        for (int neighbor : tree.get(node)) {
-          if (--degrees[neighbor] == 1) {
-            newLeaves.add(neighbor);
-          }
-        }
-      }
-      processedLeafs += newLeaves.size();
-      leaves = newLeaves;
-    }
-
-    return leaves;
-  }
-
   // Determines if two unrooted trees are isomorphic
   public static boolean treesAreIsomorphic(List<List<Integer>> tree1, List<List<Integer>> tree2) {
     if (tree1.isEmpty() || tree2.isEmpty()) {
@@ -114,8 +62,13 @@ public class TreeIsomorphism {
     List<Integer> centers2 = findTreeCenters(tree2);
 
     TreeNode rootedTree1 = rootTree(tree1, centers1.get(0));
+    String tree1Encoding = encode(rootedTree1);
+
     for (int center : centers2) {
-      if (areIsomorphic(rootedTree1, rootTree(tree2, center))) {
+      TreeNode rootedTree2 = rootTree(tree2, center);
+      String tree2Encoding = encode(rootedTree2);
+
+      if (tree1Encoding.equals(tree2Encoding)) {
         return true;
       }
     }
@@ -141,6 +94,56 @@ public class TreeIsomorphism {
       sb.append(label);
     }
     return "(" + sb.toString() + ")";
+  }
+
+  private static List<Integer> findTreeCenters(List<List<Integer>> tree) {
+    final int n = tree.size();
+    int[] degrees = new int[n];
+
+    // Find all leaf nodes
+    List<Integer> leaves = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+      List<Integer> edges = tree.get(i);
+      degrees[i] = edges.size();
+      if (degrees[i] <= 1) leaves.add(i);
+    }
+
+    int processedLeafs = leaves.size();
+
+    // Iteratively remove all leaf nodes layer by layer until only the centers remain.
+    while (processedLeafs < n) {
+      List<Integer> newLeaves = new ArrayList<>();
+      for (int node : leaves) {
+        for (int neighbor : tree.get(node)) {
+          if (--degrees[neighbor] == 1) {
+            newLeaves.add(neighbor);
+          }
+        }
+      }
+      processedLeafs += newLeaves.size();
+      leaves = newLeaves;
+    }
+
+    return leaves;
+  }
+
+  private static TreeNode rootTree(List<List<Integer>> graph, int rootId) {
+    TreeNode root = new TreeNode(rootId);
+    return buildTree(graph, root, /*parent=*/ null);
+  }
+
+  // Do dfs to construct rooted tree.
+  private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node, TreeNode parent) {
+    for (int childId : graph.get(node.id)) {
+      // Ignore adding an edge pointing back to parent.
+      if (parent != null && childId == parent.id) continue;
+
+      TreeNode child = new TreeNode(childId, node);
+      node.addChildren(child);
+
+      buildTree(graph, child, node);
+    }
+    return node;
   }
 
   /* Graph/Tree creation helper methods. */

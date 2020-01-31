@@ -756,15 +756,55 @@ and subscribe for more mathematics and computer science videos.
 
 Isomorphism source code
 
+Hello and welcome, my name is William, today we're going to take a 
+look at some source code for identifying isomorphic trees.
+
+In the previous video, we talked about identifying isomorphic trees by first
+serializing the tree into a string and then using that as a means for equality.
+Today we will be looking at the same approach in more details, so make sure
+you've given the previous video a watch if you haven't done so. There should be
+a link in the description below.
+
+All the source code you see today can be found on Github at github dot com slash
+william fiset slash algorithms. Alright, let's jump in.
+
+Alright, here we are in the source code for identifying isomorphic trees written
+in Java.
+
+The first thing I do is define a TreeNode object we'll be using to represent our
+rooted trees. TreeNode's are straightforward, they only contain three members,
+a unique id, a parent node reference and a list of references to all its children.
+
+To create a TreeNode, all you need is to give that TreeNode a unique id, you can
+also optionally create a TreeNode with an id and a parent node.
+
+The one useful method I've added to this class is the ability to add children
+to this TreeNode. Simply pass in any number of TreeNodes you wish to add as child
+node to this node and they'll get added to the children's list.
+
+The rest of the methods in this class are just getter methods.
+
+The next interesting method is the treesAreIsomorphic method which takes as
+input two undirected tree stored as adjacency lists tree1 and tree2.
+
+Just so that we don't have to worry about it, I check if either trees are empty
+and throw an exception.
+
+After that, I find the center or centers of both trees.
+
+TODO(waf): descripbe the whole flow here before moving on,
 
 
+Then I root tree1 using its first center node.
+Afterwhich I loop through bot of tree2's centers and do the isomorphism check.
+You need to 
 
-
-
-
-
-
-
+Now the next thing we want to do is encode the
+second tree and compare the encoded results, but if the tree has 2 centers we
+don't know which center node in the second tree is the correct one, so we need
+to try both. For this, iterate over both centers and root the tree comparing the
+encoded result with the one from the first tree. If there's any match then we 
+know the trees are isomorphic.
 
 
 
