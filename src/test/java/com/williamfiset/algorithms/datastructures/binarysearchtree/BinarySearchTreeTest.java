@@ -82,7 +82,7 @@ class TestTreeNode {
 
 public class BinarySearchTreeTest {
 
-  static final int LOOPS = 1000;
+  static final int LOOPS = 100;
 
   @Before
   public void setup() {}

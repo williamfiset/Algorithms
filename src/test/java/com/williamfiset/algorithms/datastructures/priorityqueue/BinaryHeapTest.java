@@ -10,7 +10,7 @@ import org.junit.*;
 
 public class BinaryHeapTest {
 
-  static final int LOOPS = 1000;
+  static final int LOOPS = 100;
   static final int MAX_SZ = 100;
 
   @Before

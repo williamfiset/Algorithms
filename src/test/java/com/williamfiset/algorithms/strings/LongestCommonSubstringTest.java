@@ -310,7 +310,7 @@ public class LongestCommonSubstringTest {
 
   @Test
   public void randomLcssWithBruteForceSolver1() {
-    for (int len = 2; len < 50; len++) {
+    for (int len = 2; len < 20; len++) {
       String[] strings = createRandomStrings(len, 12, 20, 3);
       for (int k = 2; k <= len; k++) {
         LcsSolver solver = new LcsSolver(strings);
@@ -342,7 +342,7 @@ public class LongestCommonSubstringTest {
 
   @Test
   public void randomLcssWithBruteForceSolver3() {
-    for (int len = 2; len < 100; len++) {
+    for (int len = 2; len < 10; len++) {
       String[] strings = createRandomStrings(len, 6, 10, 15);
       for (int k = 2; k <= len; k++) {
         LcsSolver solver = new LcsSolver(strings);
@@ -375,7 +375,7 @@ public class LongestCommonSubstringTest {
   // TODO(williamfiset): crank up the numbers once implementation is faster.
   @Test
   public void testLargeAlphabet() {
-    for (int k = 2; k <= 100; k++) {
+    for (int k = 2; k <= 10; k++) {
       String[] strs = new String[k];
       for (int i = 0; i < k; i++) strs[i] = "ABABAB";
 

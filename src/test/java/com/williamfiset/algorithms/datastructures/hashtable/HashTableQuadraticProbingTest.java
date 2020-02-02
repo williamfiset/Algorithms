@@ -33,7 +33,7 @@ public class HashTableQuadraticProbingTest {
   static int LOOPS, MAX_SIZE, MAX_RAND_NUM;
 
   static {
-    LOOPS = randInt(25000, 75000);
+    LOOPS = 500;
     MAX_SIZE = randInt(1, 750);
     MAX_RAND_NUM = randInt(1, 350);
   }
