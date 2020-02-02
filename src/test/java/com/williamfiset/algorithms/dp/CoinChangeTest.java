@@ -3,7 +3,6 @@ package com.williamfiset.algorithms.dp;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.primitives.Ints;
-import com.williamfiset.algorithms.dp.CoinChange;
 import com.williamfiset.algorithms.utils.TestUtils;
 import java.util.*;
 import org.junit.*;

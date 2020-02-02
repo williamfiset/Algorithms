@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.datastructures.priorityqueue;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

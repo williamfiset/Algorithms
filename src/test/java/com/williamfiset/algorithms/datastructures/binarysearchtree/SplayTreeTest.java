@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.datastructures.binarysearchtree;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.williamfiset.algorithms.datastructures.binarysearchtree.SplayTree;
 import com.williamfiset.algorithms.datastructures.utils.TestUtils;
 import java.util.*;
 import org.junit.jupiter.api.Test;

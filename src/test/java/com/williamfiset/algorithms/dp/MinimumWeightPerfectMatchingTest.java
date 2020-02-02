@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.dp;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.williamfiset.algorithms.dp.MinimumWeightPerfectMatching;
 import java.util.*;
 import org.junit.*;
 

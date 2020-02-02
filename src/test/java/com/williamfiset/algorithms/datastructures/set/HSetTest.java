@@ -3,7 +3,6 @@ package com.williamfiset.algorithms.datastructures.set;
 import static java.lang.Math.*;
 import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.datastructures.set.HSet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;

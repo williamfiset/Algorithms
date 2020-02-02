@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.datastructures.balancedtree;
 
 import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.datastructures.balancedtree.AVLTreeRecursive;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

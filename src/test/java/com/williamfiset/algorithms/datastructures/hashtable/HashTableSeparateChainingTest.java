@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.datastructures.hashtable;
 
 import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.datastructures.hashtable.HashTableSeparateChaining;
 import java.util.*;
 import org.junit.*;
 

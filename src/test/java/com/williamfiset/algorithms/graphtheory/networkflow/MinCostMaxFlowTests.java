@@ -2,8 +2,6 @@ package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.williamfiset.algorithms.graphtheory.networkflow.MinCostMaxFlowJohnsons;
-import com.williamfiset.algorithms.graphtheory.networkflow.NetworkFlowSolverBase;
 import java.util.*;
 import org.junit.*;
 

@@ -2,9 +2,6 @@ package com.williamfiset.algorithms.datastructures.hashtable;
 
 import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.datastructures.hashtable.DoubleHashingTestObject; // Move to test
-                                                                                     // dir?
-import com.williamfiset.algorithms.datastructures.hashtable.HashTableDoubleHashing;
 import java.util.*;
 import org.junit.*;
 

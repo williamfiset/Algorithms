@@ -2,10 +2,6 @@ package com.williamfiset.algorithms.datastructures.suffixarray;
 
 import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.datastructures.suffixarray.SuffixArray;
-import com.williamfiset.algorithms.datastructures.suffixarray.SuffixArrayFast;
-import com.williamfiset.algorithms.datastructures.suffixarray.SuffixArrayMed;
-import com.williamfiset.algorithms.datastructures.suffixarray.SuffixArraySlow;
 import java.security.SecureRandom;
 import java.util.Random;
 import org.junit.*;

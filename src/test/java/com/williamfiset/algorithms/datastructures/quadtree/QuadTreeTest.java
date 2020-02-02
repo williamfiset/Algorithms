@@ -3,7 +3,6 @@ package com.williamfiset.algorithms.datastructures.quadtree;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.datastructures.quadtree.QuadTree;
 import java.util.*;
 import org.junit.Before;
 import org.junit.Test;

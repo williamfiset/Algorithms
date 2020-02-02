@@ -3,7 +3,6 @@ package com.williamfiset.algorithms.datastructures.stack;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.williamfiset.algorithms.datastructures.stack.Stack;
 import org.junit.Before;
 import org.junit.Test;
 

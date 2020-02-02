@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.other;
 
 import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.other.SlidingWindowMaximum;
 import java.util.*;
 import org.junit.*;
 

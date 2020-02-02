@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.graphtheory;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.williamfiset.algorithms.graphtheory.ArticulationPointsAdjacencyList;
 import java.util.*;
 import org.junit.*;
 

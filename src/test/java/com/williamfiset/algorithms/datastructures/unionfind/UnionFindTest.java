@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.datastructures.unionfind;
 
 import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.datastructures.unionfind.UnionFind;
 import org.junit.*;
 
 public class UnionFindTest {

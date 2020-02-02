@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.search;
 
 import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.search.InterpolationSearch;
 import org.junit.Test;
 
 public class InterpolationSearchTest {

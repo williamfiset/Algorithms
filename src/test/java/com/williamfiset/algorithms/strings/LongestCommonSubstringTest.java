@@ -1,6 +1,5 @@
 /**
- * Run like: $ gradle test --tests
- * "com.williamfiset.algorithms.strings.LongestCommonSubstringTest"
+ * Run like: $ gradle test --tests "com.williamfiset.algorithms.strings.LongestCommonSubstringTest"
  */
 package com.williamfiset.algorithms.strings;
 

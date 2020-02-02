@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.datastructures.hashtable;
 
 import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbing;
 import java.util.*;
 import org.junit.*;
 

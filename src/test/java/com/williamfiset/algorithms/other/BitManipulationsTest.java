@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.other;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.williamfiset.algorithms.other.BitManipulations;
 import org.junit.*;
 
 public class BitManipulationsTest {

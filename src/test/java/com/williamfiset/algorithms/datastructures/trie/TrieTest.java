@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.datastructures.trie;
 
 import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.datastructures.trie.Trie;
 import org.junit.*;
 
 public class TrieTest {

@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.datastructures.balancedtree;
 
 import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTree;
 import java.util.*;
 import org.junit.Before;
 import org.junit.Test;

@@ -3,9 +3,11 @@
  *
  * <p>Change directory to the root of the Algorithms directory: $ cd Algorithms
  *
- * <p>Build: $ javac com/williamfiset/algorithms/graphtheory/networkflow/examples/MiceAndOwls.java
+ * <p>Build: $ javac
+ * src/main/java/com/williamfiset/algorithms/graphtheory/networkflow/examples/MiceAndOwls.java
  *
- * <p>Run: $ java com/williamfiset/algorithms/graphtheory/networkflow/examples/MiceAndOwls
+ * <p>Run: $ java -cp src/main/java/
+ * com/williamfiset/algorithms/graphtheory/networkflow/examples/MiceAndOwls
  */
 package com.williamfiset.algorithms.graphtheory.networkflow.examples;
 

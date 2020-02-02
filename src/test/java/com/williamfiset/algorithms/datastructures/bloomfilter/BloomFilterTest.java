@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.datastructures.bloomfilter;
 
 import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.datastructures.bloomfilter.StringSet;
 import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.Random;

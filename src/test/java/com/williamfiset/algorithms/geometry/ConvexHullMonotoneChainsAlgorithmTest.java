@@ -3,7 +3,6 @@ package com.williamfiset.algorithms.geometry;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableList;
-import com.williamfiset.algorithms.geometry.ConvexHullMonotoneChainsAlgorithm;
 import java.awt.geom.*;
 import java.util.*;
 import org.junit.*;

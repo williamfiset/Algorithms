@@ -2,8 +2,6 @@ package com.williamfiset.algorithms.datastructures.binarysearchtree;
 
 import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTree;
-import com.williamfiset.algorithms.datastructures.binarysearchtree.TreeTraversalOrder;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
