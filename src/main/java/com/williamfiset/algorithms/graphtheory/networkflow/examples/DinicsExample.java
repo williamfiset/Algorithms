@@ -8,11 +8,9 @@
  *
  * <p>Change directory to the root of the Algorithms directory: $ cd Algorithms
  *
- * <p>Build: $ javac
- * src/main/java/com/williamfiset/algorithms/graphtheory/networkflow/examples/DinicsExample.java
+ * <p>Build: $ javac -d src/main/java src/main/java/com/williamfiset/algorithms/graphtheory/networkflow/examples/DinicsExample.java
  *
- * <p>Run: $ java -cp src/main/java/
- * com/williamfiset/algorithms/graphtheory/networkflow/examples/DinicsExample
+ * <p>Run: $ java -cp src/main/java com/williamfiset/algorithms/graphtheory/networkflow/examples/DinicsExample
  */
 package com.williamfiset.algorithms.graphtheory.networkflow.examples;
 

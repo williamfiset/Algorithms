@@ -6,9 +6,9 @@
  *
  * <p>Change directory to the root of the Algorithms directory: $ cd Algorithms
  *
- * <p>Compile: $ javac com/williamfiset/algorithms/graphtheory/examples/EagerPrimsExample.java
+ * <p>Compile: $ javac -d src/main/java src/main/java/com/williamfiset/algorithms/graphtheory/examples/EagerPrimsExample.java
  *
- * <p>Run: $ java com/williamfiset/algorithms/graphtheory/examples/EagerPrimsExample
+ * <p>Run: $ java -cp src/main/java com/williamfiset/algorithms/graphtheory/examples/EagerPrimsExample
  *
  * <p>Time Complexity: O(ElogV)
  *

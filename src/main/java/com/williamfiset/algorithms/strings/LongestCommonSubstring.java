@@ -3,9 +3,11 @@
  *
  * <p>Video: https://youtu.be/Ic80xQFWevc Time complexity: O(nlog^2(n))
  *
- * <p>Run on command line: Algorithms$ javac
- * com/williamfiset/algorithms/strings/LongestCommonSubstring.java Algorithms$ java
- * com/williamfiset/algorithms/strings/LongestCommonSubstring
+ * <p>Run on command line:
+ *
+ * <p>Compile: $ javac -d src/main/java src/main/java/com/williamfiset/algorithms/strings/LongestCommonSubstring.java
+ *
+ * <p>Run: $ java -cp src/main/java com/williamfiset/algorithms/strings/LongestCommonSubstring
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */

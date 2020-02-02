@@ -5,9 +5,9 @@
  *
  * <p>Change directory to the root of the Algorithms directory: $ cd Algorithms
  *
- * <p>Compile: $ javac com/williamfiset/algorithms/graphtheory/treealgorithms/examples/TreeSum.java
+ * <p>Compile: $ javac -d src/main/java src/main/java/com/williamfiset/algorithms/graphtheory/treealgorithms/examples/TreeSum.java
  *
- * <p>Run: $ java com/williamfiset/algorithms/graphtheory/treealgorithms/examples/TreeSum
+ * <p>Run: $ java -cp src/main/java com/williamfiset/algorithms/graphtheory/treealgorithms/examples/TreeSum
  *
  * <p>Time Complexity: O(n)
  *

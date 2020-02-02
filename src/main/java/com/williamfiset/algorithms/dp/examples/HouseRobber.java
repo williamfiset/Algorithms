@@ -1,15 +1,16 @@
 /**
  * Problem: https://leetcode.com/problems/house-robber
  *
- * <p>Time Complexity: O(n) Space Complexity: O(n)
+ * <p>Time Complexity: O(n), space Complexity: O(n)
  *
  * <p>Download the code: $ git clone https://github.com/williamfiset/Algorithms
  *
- * <p>Change directory to the root of the Algorithms directory: $ cd Algorithms
+ * <p>Change directory to the root of the Algorithms directory: 
+ * <p> $ cd Algorithms
  *
- * <p>Build: $ javac com/williamfiset/algorithms/dp/examples/HouseRobber.java
+ * <p>Build: $ javac -d src/main/java src/main/java/com/williamfiset/algorithms/dp/examples/HouseRobber.java
  *
- * <p>Run: $ java com/williamfiset/algorithms/dp/examples/HouseRobber
+ * <p>Run: $ java -cp src/main/java com/williamfiset/algorithms/dp/examples/HouseRobber
  */
 package com.williamfiset.algorithms.dp.examples;
 

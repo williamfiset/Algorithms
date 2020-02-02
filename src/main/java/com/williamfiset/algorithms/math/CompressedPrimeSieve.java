@@ -7,9 +7,9 @@
  *
  * <p>Time Complexity: ~O(nloglogn)
  *
- * <p>Compile: javac com/williamfiset/algorithms/math/CompressedPrimeSieve.java
+ * <p>Compile: javac -d src/main/java src/main/java/com/williamfiset/algorithms/math/CompressedPrimeSieve.java
  *
- * <p>Run: java com/williamfiset/algorithms/math/CompressedPrimeSieve
+ * <p>Run: java -cp src/main/java com/williamfiset/algorithms/math/CompressedPrimeSieve
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
