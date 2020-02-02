@@ -1,3 +1,5 @@
+package com.williamfiset.algorithms.dp.examples;
+
 import java.util.Scanner;
 
 public class NarrowArtGalleryRecursive {

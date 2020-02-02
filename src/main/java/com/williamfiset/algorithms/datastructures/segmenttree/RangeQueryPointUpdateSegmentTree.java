@@ -1,4 +1,6 @@
 /** NOTE: This file is a current WIP */
+package com.williamfiset.algorithms.datastructures.segmenttree;
+
 public class RangeQueryPointUpdateSegmentTree {
 
   // Tree values
