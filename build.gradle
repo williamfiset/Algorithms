@@ -50,49 +50,6 @@ test {
   testLogging.showStandardStreams = true
 }
 
-String javaAlgorithmsPackage = "com/williamfiset/algorithms";
-String javatestsAlgorithmsPackage = "javatests/com/williamfiset/algorithms";
-
-sourceSets {
-  main {
-    java {
-      srcDirs = [
-        javaAlgorithmsPackage + '/ai',
-        javaAlgorithmsPackage + '/dp',
-        javaAlgorithmsPackage + '/datastructures',
-        javaAlgorithmsPackage + '/geometry',
-        javaAlgorithmsPackage + '/graphtheory',
-        javaAlgorithmsPackage + '/linearalgebra',
-        javaAlgorithmsPackage + '/math',
-        javaAlgorithmsPackage + '/other',
-        javaAlgorithmsPackage + '/search',
-        javaAlgorithmsPackage + '/sorting',
-        javaAlgorithmsPackage + '/strings',
-        javaAlgorithmsPackage + '/utils'
-      ]
-    }
-  }
-  test {
-    java {
-      srcDirs = [
-        javatestsAlgorithmsPackage + '/ai',
-        javatestsAlgorithmsPackage + '/datastructures',
-        javatestsAlgorithmsPackage + '/dp',
-        javatestsAlgorithmsPackage + '/geometry',
-        javatestsAlgorithmsPackage + '/graphtheory',
-        javatestsAlgorithmsPackage + '/linearalgebra',
-        javatestsAlgorithmsPackage + '/math',
-        javatestsAlgorithmsPackage + '/other',
-        javatestsAlgorithmsPackage + '/search',
-        javatestsAlgorithmsPackage + '/sorting',
-        javatestsAlgorithmsPackage + '/strings',
-        javatestsAlgorithmsPackage + '/utils'
-      ]
-    }
-  }
-}
-
-
 task buildDependenciesFolder(type: Copy) {
   from configurations.compile
   into './dependencies'

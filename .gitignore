@@ -13,3 +13,9 @@ gradle-app.setting
 .gradletasknamecache
 
 dependencies
+/bin/
+
+# Eclipse IDE metadata
+.classpath
+.project
+.settings/
