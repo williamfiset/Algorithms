@@ -40,7 +40,7 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 
 ## Running with Gradle
 
-This project supports the [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). The Gradle wrapper automatically downloads Gradle at the first time it runs, so expect a delay when running the firt command below.
+This project supports the [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). The Gradle wrapper automatically downloads Gradle at the first time it runs, so expect a delay when running the first command below.
 
 If you are on Windows, use `gradlew.bat` instead of `./gradlew` below.
 
@@ -48,13 +48,13 @@ If you are on Windows, use `gradlew.bat` instead of `./gradlew` below.
 Run a single algorithm like this:
 
 ```
-./gradlew -q run -Palgorithm=<algorithm-subpackage>.<algorithm-class>
+./gradlew run -Palgorithm=<algorithm-subpackage>.<algorithm-class>
 ```
 
 
 Alternatively, you can run a single algorithm specifying the full class name
 ```
-./gradlew -q run -Pmain=<algorithm-fully-qualified-class-name>
+./gradlew run -Pmain=<algorithm-fully-qualified-class-name>
 
 ```
 
