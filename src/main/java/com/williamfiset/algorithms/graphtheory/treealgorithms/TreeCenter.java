@@ -23,7 +23,10 @@ public class TreeCenter {
     for (int i = 0; i < n; i++) {
       List<Integer> edges = tree.get(i);
       degrees[i] = edges.size();
-      if (degrees[i] <= 1) leaves.add(i);
+      if (degrees[i] <= 1) {
+        leaves.add(i);
+        degrees[i] = 0;
+      }
     }
 
     int processedLeafs = leaves.size();
@@ -39,6 +42,7 @@ public class TreeCenter {
             newLeaves.add(neighbor);
           }
         }
+        degrees[node] = 0;
       }
       processedLeafs += newLeaves.size();
       leaves = newLeaves;
@@ -74,29 +78,29 @@ public class TreeCenter {
     addUndirectedEdge(graph, 6, 8);
 
     // Centers are 2
-    System.out.println(findTreeCenters(graph));
+    System.out.println(findTreeCenters(graph) + "\n");
 
     // Centers are 0
     List<List<Integer>> graph2 = createEmptyTree(1);
-    System.out.println(findTreeCenters(graph2));
+    System.out.println(findTreeCenters(graph2) + "\n");
 
     // Centers are 0,1
     List<List<Integer>> graph3 = createEmptyTree(2);
     addUndirectedEdge(graph3, 0, 1);
-    System.out.println(findTreeCenters(graph3));
+    System.out.println(findTreeCenters(graph3) + "\n");
 
     // Centers are 1
     List<List<Integer>> graph4 = createEmptyTree(3);
     addUndirectedEdge(graph4, 0, 1);
     addUndirectedEdge(graph4, 1, 2);
-    System.out.println(findTreeCenters(graph4));
+    System.out.println(findTreeCenters(graph4) + "\n");
 
     // Centers are 1,2
     List<List<Integer>> graph5 = createEmptyTree(4);
     addUndirectedEdge(graph5, 0, 1);
     addUndirectedEdge(graph5, 1, 2);
     addUndirectedEdge(graph5, 2, 3);
-    System.out.println(findTreeCenters(graph5));
+    System.out.println(findTreeCenters(graph5) + "\n");
 
     // Centers are 2,3
     List<List<Integer>> graph6 = createEmptyTree(7);
@@ -106,6 +110,6 @@ public class TreeCenter {
     addUndirectedEdge(graph6, 3, 4);
     addUndirectedEdge(graph6, 4, 5);
     addUndirectedEdge(graph6, 4, 6);
-    System.out.println(findTreeCenters(graph6));
+    System.out.println(findTreeCenters(graph6) + "\n");
   }
 }
