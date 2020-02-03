@@ -75,33 +75,13 @@ public class TreeIsomorphism {
     return false;
   }
 
-  private static boolean areIsomorphic(TreeNode root1, TreeNode root2) {
-    return encode(root1).equals(encode(root2));
-  }
-
-  // Constructs the canonical form representation of a tree as a string.
-  public static String encode(TreeNode node) {
-    if (node == null) {
-      return "";
-    }
-    List<String> labels = new LinkedList<>();
-    for (TreeNode child : node.children()) {
-      labels.add(encode(child));
-    }
-    Collections.sort(labels);
-    StringBuilder sb = new StringBuilder();
-    for (String label : labels) {
-      sb.append(label);
-    }
-    return "(" + sb.toString() + ")";
-  }
-
   private static List<Integer> findTreeCenters(List<List<Integer>> tree) {
-    final int n = tree.size();
-    int[] degree = new int[n];
+    int n = tree.size();
 
-    // Find all leaf nodes
+    int[] degree = new int[n];
     List<Integer> leaves = new ArrayList<>();
+
+    // Find the first outer layer of leaf nodes.
     for (int i = 0; i < n; i++) {
       List<Integer> edges = tree.get(i);
       degree[i] = edges.size();
@@ -113,8 +93,7 @@ public class TreeIsomorphism {
 
     int processedLeafs = leaves.size();
 
-    // Remove leaf nodes and decrease the degree of each node adding new leaf nodes progressively
-    // until only the centers remain.
+    // Iteratively remove leaf nodes layer by layer until only the centers remain.
     while (processedLeafs < n) {
       List<Integer> newLeaves = new ArrayList<>();
       for (int node : leaves) {
@@ -134,21 +113,40 @@ public class TreeIsomorphism {
 
   private static TreeNode rootTree(List<List<Integer>> graph, int rootId) {
     TreeNode root = new TreeNode(rootId);
-    return buildTree(graph, root, /*parent=*/ null);
+    return buildTree(graph, root);
   }
 
   // Do dfs to construct rooted tree.
-  private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node, TreeNode parent) {
-    for (int childId : graph.get(node.id)) {
+  private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node) {
+    for (int neighbor : graph.get(node.id())) {
       // Ignore adding an edge pointing back to parent.
-      if (parent != null && childId == parent.id) continue;
+      if (node.parent() != null && neighbor == node.parent().id()) {
+        continue;
+      }
 
-      TreeNode child = new TreeNode(childId, node);
+      TreeNode child = new TreeNode(neighbor, node);
       node.addChildren(child);
 
-      buildTree(graph, child, node);
+      buildTree(graph, child);
     }
     return node;
+  }
+
+  // Constructs the canonical form representation of a tree as a string.
+  public static String encode(TreeNode node) {
+    if (node == null) {
+      return "";
+    }
+    List<String> labels = new LinkedList<>();
+    for (TreeNode child : node.children()) {
+      labels.add(encode(child));
+    }
+    Collections.sort(labels);
+    StringBuilder sb = new StringBuilder();
+    for (String label : labels) {
+      sb.append(label);
+    }
+    return "(" + sb.toString() + ")";
   }
 
   /* Graph/Tree creation helper methods. */

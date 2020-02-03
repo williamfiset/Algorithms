@@ -13,7 +13,6 @@ import java.util.*;
 public class RootingTree {
 
   public static class TreeNode {
-
     private int id;
     private TreeNode parent;
     private List<TreeNode> children;
@@ -29,8 +28,10 @@ public class RootingTree {
       children = new LinkedList<>();
     }
 
-    public void addChild(TreeNode child) {
-      children.add(child);
+    public void addChildren(TreeNode... nodes) {
+      for (TreeNode node : nodes) {
+        children.add(node);
+      }
     }
 
     public int id() {
@@ -43,10 +44,6 @@ public class RootingTree {
 
     public List<TreeNode> children() {
       return children;
-    }
-
-    public boolean leaf() {
-      return children.size() == 0;
     }
 
     @Override
@@ -66,19 +63,21 @@ public class RootingTree {
 
   public static TreeNode rootTree(List<List<Integer>> graph, int rootId) {
     TreeNode root = new TreeNode(rootId);
-    return buildTree(graph, root, /*parent=*/ null);
+    return buildTree(graph, root);
   }
 
   // Do dfs to construct rooted tree.
-  private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node, TreeNode parent) {
-    for (int childId : graph.get(node.id)) {
+  private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node) {
+    for (int childId : graph.get(node.id())) {
       // Ignore adding an edge pointing back to parent.
-      if (parent != null && childId == parent.id) continue;
+      if (node.parent() != null && childId == node.parent().id()) {
+        continue;
+      }
 
       TreeNode child = new TreeNode(childId, node);
-      node.addChild(child);
+      node.addChildren(child);
 
-      buildTree(graph, child, node);
+      buildTree(graph, child);
     }
     return node;
   }

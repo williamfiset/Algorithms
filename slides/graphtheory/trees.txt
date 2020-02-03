@@ -762,26 +762,118 @@ and subscribe for more mathematics and computer science videos.
 Isomorphism source code
 
 Hello and welcome, my name is William, today we're going to take a 
-look at some source code for identifying isomorphic trees.
+look at some source code for identifying isomorphic trees which will also
+include the source code for rooting a tree and finding the center of a tree.
 
 In the previous video, we talked about identifying isomorphic trees by first
 serializing the tree into a string and then using that as a means for equality.
-Today we will be looking at the same approach in more details, so make sure
+Today we will be looking at the same approach in more detail, so make sure
 you've given the previous video a watch if you haven't done so. There should be
 a link in the description below.
 
 All the source code you see today can be found on Github at github dot com slash
-william fiset slash algorithms. Alright, let's jump in.
+william fiset slash algorithms. Alright, buckle up because even though we'll 
+only be looking at around 150 lines of code there's a lot going on, 
+let's jump in.
 
-Alright, here we are in the source code for identifying isomorphic trees written
+So here we are in the source code for identifying isomorphic trees written 
 in Java.
 
-The first thing I do is define a TreeNode object we'll be using to represent our
+
+---
+
+treesAreIsomorphic
+
+The first interesting method is the treesAreIsomorphic method which takes as
+input two undirected trees stored as adjacency lists: tree1 and tree2.
+
+Just so that we don't have to worry about it, I check if either trees are empty
+and throw an exception.
+
+After that, we begin the whole tree serialzation process, it's pretty simple, 
+start by finding the center or centers of both trees.
+
+Then encode the first tree into a string. The encode method takes as input a 
+rooted tree instead of an undirected tree so make sure you root the tree first.
+After the encode method has finished processing it will return a unique string
+for tree1.
+
+Now the next thing we want to do is encode the second tree so that we can 
+compare it to the first one. However, if the second tree has 2 centers we
+don't know which center node in the second tree is the correct one, so we need
+to try both. 
+For this, iterate over both centers and root the tree comparing the
+encoded result with the first tree . If there's any match then we 
+know that the trees are isomorphic.
+Awesome so that's the algorithm from a bird's eye view, now let's dig into the
+details and figure out what the heck is going on inside the findTreeCenters, 
+rootTree and encode methods.
+
+---
+
+findTreeCenters
+
+Let's begin with the findTreeCenters method, this is the source code from one
+video ago. To refresh your memory, the approach we're taking to find the center
+or centers of a tree is to iteratively remove leaf nodes layer by layer. This is
+analogous to peeling the layers of an onion, when we're finished removing all 
+the layers what's left is the middle.
+
+The integer 'n' represents the number of nodes in our tree.
+
+After this, I define two variables. The first one is 'degree' with size 'n' 
+which will capture the degree of each node, followed by 'leaves' which is a
+dynamic array that will contains most recent layer of leaf nodes.
+
+Then for the first bit of logic, simply loop through all the nodes and compute 
+the degree of each one. I do this by inspecting the adjacency list and counting
+the number of edges coming out of each node. 
+
+Then, if the node has a degree less than or equal to 1, meaning we're either 
+dealing with a single node tree or a leaf node then add the node to the leaves
+array. After this, set the degree of the leaf node to be zero as though we 
+removed it from the tree.
+
+The way we're going to know when we've found the center or centers is when we
+have processed all the nodes in the tree. The variable processedLeafs is going
+to keep track how many nodes we've processed so far. Every iteration we're going
+to increment processedLeafs by the number of leaves we found in the last layer.
+
+Entering the loop, 'new_leaves' is a new array that will contain the new leaf
+nodes on the next layer. I'm using a new array to avoid interfering with the
+leaf nodes on the current layer.
+
+So for every leaf node on the current layer,
+
+process all the neighbors of those nodes
+
+and decrement the degree of the neighbor nodes. Since we're removing the current
+node this means that the degree of the neighboring nodes needs to go down by 1.
+If the neighbor node after being decremented has a degree of 1 then we know it
+will be in the next layer of leaf nodes so add it to the new_leaves array.
+
+Every time we finish processing a former leaf node, give it a degree of zero to 
+mark it as removed.
+
+When we've finished processing the current layer, increment the processedLeafs
+variable and replace the leaves array with the new leaves.
+
+And finally return the centers which are stored in the leaves array.
+
+So that's how the findTreeCenters method works, now before we take a look at how
+to root a tree we should look at the TreeNode class which gets used by the 
+rootTree method.
+
+---
+
+TreeNode class
+
+The first thing I do is define this TreeNode object we'll be using to represent our
 rooted trees. TreeNode's are straightforward, they only contain three members,
 a unique id, a parent node reference and a list of references to all its children.
 
 To create a TreeNode, all you need is to give that TreeNode a unique id, you can
-also optionally create a TreeNode with an id and a parent node.
+also optionally create a TreeNode with an id and a specified parent node.
 
 The one useful method I've added to this class is the ability to add children
 to this TreeNode. Simply pass in any number of TreeNodes you wish to add as child
@@ -789,34 +881,53 @@ node to this node and they'll get added to the children's list.
 
 The rest of the methods in this class are just getter methods.
 
-The next interesting method is the treesAreIsomorphic method which takes as
-input two undirected tree stored as adjacency lists tree1 and tree2.
+---
 
-Just so that we don't have to worry about it, I check if either trees are empty
-and throw an exception.
+rootTree
 
-After that, I find the center or centers of both trees.
+Coming back to the rootTree method...
 
-TODO(waf): describe the whole flow here before moving on,
+You'll see that this function takes as input our tree represented as an 
+adjacency list and the id of the root we want to root the tree by. At lot of the
+time the root id is going to be zero, but it's nice to be able to choose which 
+node will be the root in situations where it matters such as this tree 
+isomorphism problem.
 
+The first line in the rootTree method creates the root TreeNode.
 
-Then I root tree1 using its first center node.
-Afterwhich I loop through bot of tree2's centers and do the isomorphism check.
-You need to 
+Then I call the buildTree method to start the depth first traversal to root the
+tree. As input parameters I pass in the graph and the root node as the current
+node.
 
-Now the next thing we want to do is encode the
-second tree and compare the encoded results, but if the tree has 2 centers we
-don't know which center node in the second tree is the correct one, so we need
-to try both. For this, iterate over both centers and root the tree comparing the
-encoded result with the one from the first tree. If there's any match then we 
-know the trees are isomorphic.
+Inside the buildTree method we enter a for loop that loops over all the 
+neighbors of the current node. All these neighbor nodes are going to become the
+children of the current node, except for the last parent node.
 
+One thing we need to be aware of is that edges are undirected in the original 
+tree meaning we absolutely need to avoid the situation where we add a directed
+edge pointing back to the current node's parent, every other neighbor node will
+become a child of the current node.
 
+To check if the neighbor node is the parent node first check that the parent is
+not null so we don't get a null pointer exception, then access the parent's id
+and check if the child id is equal to the parent id and skip this node if true.
 
+Otherwise we're dealing with a proper child node, so create a new node and add
+the child TreeNode to the list of the current node's children.
 
+Afterwards, dig deeper into the tree and do the same thing but for the newly
+created child node.
 
+Once we have finished iterating over all the neighbors of this node return the
+current node.
 
+---
 
+encode
+
+---
+
+testing.
 
 
 
