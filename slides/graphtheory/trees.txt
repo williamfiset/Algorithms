@@ -772,9 +772,7 @@ you've given the previous video a watch if you haven't done so. There should be
 a link in the description below.
 
 All the source code you see today can be found on Github at github dot com slash
-william fiset slash algorithms. Alright, buckle up because even though we'll 
-only be looking at around 150 lines of code there's a lot going on, 
-let's jump in.
+william fiset slash algorithms.
 
 So here we are in the source code for identifying isomorphic trees written 
 in Java. Let's start by taking a look at an example of what this code does in 
@@ -791,20 +789,18 @@ fundamentally different trees.
 
 ---
 
-treesAreIsomorphic
-
-The first interesting method is the treesAreIsomorphic method which takes as
+Going back up to the treesAreIsomorphic method, you'll see that it takes as
 input two undirected trees stored as adjacency lists: tree1 and tree2.
 
-Just so that we don't have to worry about it, I check if either trees are empty
-and throw an exception.
+Just so that we don't have to worry about it, the first thing I do is check if
+either trees are empty and throw an exception.
 
-After that, we begin the whole tree serialzation process, it's pretty simple, 
+After that, we begin the whole tree serialization process, it's pretty simple, 
 start by finding the center or centers of both trees.
 
 Then encode the first tree into a string. The encode method takes as input a 
-rooted tree instead of an undirected tree so make sure you root the tree first.
-After the encode method has finished processing it will return a unique string
+rooted tree instead of an undirected tree, so make sure you root the tree first.
+After the encode method has finished processing, it will return a unique string
 for tree1.
 
 Now the next thing we want to do is encode the second tree so that we can 
@@ -812,10 +808,10 @@ compare it to the first one. However, if the second tree has 2 centers we
 don't know which center node in the second tree is the correct one, so we need
 to try both. 
 For this, iterate over both centers and root the tree comparing the
-encoded result with the first tree . If there's any match then we 
+encoded result with the first tree. If there's any match then we 
 know that the trees are isomorphic.
-Awesome so that's the algorithm from a bird's eye view, now let's dig into the
-details and figure out what the heck is going on inside the findTreeCenters, 
+Awesome, so that's the algorithm from a bird's eye view, now let's dig into the
+details and figure out what is going on inside the findTreeCenters, 
 rootTree and encode methods.
 
 ---
