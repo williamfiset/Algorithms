@@ -191,7 +191,7 @@ public class TreeIsomorphism {
   }
 
   private static void testEncodingTreeFromSlides() {
-    List<List<Integer>> tree = createGraph(10);
+    List<List<Integer>> tree = createEmptyGraph(10);
     addUndirectedEdge(tree, 0, 2);
     addUndirectedEdge(tree, 0, 1);
     addUndirectedEdge(tree, 0, 3);

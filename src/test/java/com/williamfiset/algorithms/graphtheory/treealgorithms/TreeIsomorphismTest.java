@@ -7,7 +7,7 @@ package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.addUndirectedEdge;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.createGraph;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.createEmptyGraph;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.treesAreIsomorphic;
 
 import java.util.*;
@@ -17,18 +17,18 @@ public class TreeIsomorphismTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void emptyTreeThrowsException() {
-    treesAreIsomorphic(createGraph(0), createGraph(1));
+    treesAreIsomorphic(createEmptyGraph(0), createEmptyGraph(1));
   }
 
   @Test
   public void singletonTreesAreIsomorphic() {
-    assertThat(treesAreIsomorphic(createGraph(1), createGraph(1))).isEqualTo(true);
+    assertThat(treesAreIsomorphic(createEmptyGraph(1), createEmptyGraph(1))).isEqualTo(true);
   }
 
   @Test
   public void testTwoNodeTree() {
-    List<List<Integer>> tree1 = createGraph(2);
-    List<List<Integer>> tree2 = createGraph(2);
+    List<List<Integer>> tree1 = createEmptyGraph(2);
+    List<List<Integer>> tree2 = createEmptyGraph(2);
     addUndirectedEdge(tree1, 0, 1);
     addUndirectedEdge(tree2, 1, 0);
     assertThat(treesAreIsomorphic(tree1, tree2)).isEqualTo(true);
@@ -36,8 +36,8 @@ public class TreeIsomorphismTest {
 
   @Test
   public void testSmall() {
-    List<List<Integer>> tree1 = createGraph(5);
-    List<List<Integer>> tree2 = createGraph(5);
+    List<List<Integer>> tree1 = createEmptyGraph(5);
+    List<List<Integer>> tree2 = createEmptyGraph(5);
 
     addUndirectedEdge(tree1, 2, 0);
     addUndirectedEdge(tree1, 2, 1);
@@ -56,9 +56,9 @@ public class TreeIsomorphismTest {
   public void testSimilarChains() {
     // Trees 1 and 3 are equal
     int n = 10;
-    List<List<Integer>> tree1 = createGraph(n);
-    List<List<Integer>> tree2 = createGraph(n);
-    List<List<Integer>> tree3 = createGraph(n);
+    List<List<Integer>> tree1 = createEmptyGraph(n);
+    List<List<Integer>> tree2 = createEmptyGraph(n);
+    List<List<Integer>> tree3 = createEmptyGraph(n);
 
     addUndirectedEdge(tree1, 0, 1);
     addUndirectedEdge(tree1, 1, 3);
@@ -97,8 +97,8 @@ public class TreeIsomorphismTest {
 
   @Test
   public void simpleTest() {
-    List<List<Integer>> tree1 = createGraph(5);
-    List<List<Integer>> tree2 = createGraph(5);
+    List<List<Integer>> tree1 = createEmptyGraph(5);
+    List<List<Integer>> tree2 = createEmptyGraph(5);
 
     addUndirectedEdge(tree1, 2, 0);
     addUndirectedEdge(tree1, 3, 4);
@@ -115,8 +115,8 @@ public class TreeIsomorphismTest {
 
   @Test
   public void differentNumberOfNodes() {
-    List<List<Integer>> tree1 = createGraph(2);
-    List<List<Integer>> tree2 = createGraph(3);
+    List<List<Integer>> tree1 = createEmptyGraph(2);
+    List<List<Integer>> tree2 = createEmptyGraph(3);
 
     addUndirectedEdge(tree1, 0, 1);
 
@@ -151,7 +151,7 @@ public class TreeIsomorphismTest {
     List<Integer> nodes = new ArrayList<>();
     nodes.add(0);
 
-    List<List<Integer>> g = createGraph(n);
+    List<List<Integer>> g = createEmptyGraph(n);
     for (int nextNode = 1; nodes.size() != n; nextNode++) {
       int randomNode = nodes.get((int) (Math.random() * nodes.size()));
       addUndirectedEdge(g, randomNode, nextNode);
