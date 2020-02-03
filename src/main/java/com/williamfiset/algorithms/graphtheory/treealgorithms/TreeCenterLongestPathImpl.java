@@ -14,7 +14,8 @@ import java.util.*;
 
 public class TreeCenterLongestPathImpl {
 
-  private static int[] dfs(List<List<Integer>> graph, boolean[] visited, int[] prev, int at, int parent) {
+  private static int[] dfs(
+      List<List<Integer>> graph, boolean[] visited, int[] prev, int at, int parent) {
 
     // Already visited this node
     if (visited[at]) return new int[] {0, parent};
@@ -40,7 +41,7 @@ public class TreeCenterLongestPathImpl {
     return new int[] {bestDist, index};
   }
 
-  public static List<Integer> treeCenter(List<List<Integer>> graph) {
+  public static List<Integer> findTreeCenters(List<List<Integer>> graph) {
     List<Integer> centers = new ArrayList<>();
     if (graph == null) return centers;
 
@@ -68,13 +69,13 @@ public class TreeCenterLongestPathImpl {
     }
 
     if (path.size() % 2 == 0) {
-      centers.add(path.get(path.size()/2-1));
+      centers.add(path.get(path.size() / 2 - 1));
     }
-    centers.add(path.get(path.size()/2));
+    centers.add(path.get(path.size() / 2));
     return centers;
   }
 
-    /** ********** TESTING ********* */
+  /** ********** TESTING ********* */
 
   // Create an empty tree as a adjacency list.
   public static List<List<Integer>> createEmptyTree(int n) {
@@ -101,29 +102,29 @@ public class TreeCenterLongestPathImpl {
     addUndirectedEdge(graph, 6, 8);
 
     // Centers are 2
-    System.out.println(treeCenter(graph)+"\n");
+    System.out.println(findTreeCenters(graph) + "\n");
 
     // Centers are 0
     List<List<Integer>> graph2 = createEmptyTree(1);
-    System.out.println(treeCenter(graph2)+"\n");
+    System.out.println(findTreeCenters(graph2) + "\n");
 
     // Centers are 0,1
     List<List<Integer>> graph3 = createEmptyTree(2);
     addUndirectedEdge(graph3, 0, 1);
-    System.out.println(treeCenter(graph3)+"\n");
+    System.out.println(findTreeCenters(graph3) + "\n");
 
     // Centers are 1
     List<List<Integer>> graph4 = createEmptyTree(3);
     addUndirectedEdge(graph4, 0, 1);
     addUndirectedEdge(graph4, 1, 2);
-    System.out.println(treeCenter(graph4)+"\n");
+    System.out.println(findTreeCenters(graph4) + "\n");
 
     // Centers are 1,2
     List<List<Integer>> graph5 = createEmptyTree(4);
     addUndirectedEdge(graph5, 0, 1);
     addUndirectedEdge(graph5, 1, 2);
     addUndirectedEdge(graph5, 2, 3);
-    System.out.println(treeCenter(graph5)+"\n");
+    System.out.println(findTreeCenters(graph5) + "\n");
 
     // Centers are 2,3
     List<List<Integer>> graph6 = createEmptyTree(7);
@@ -133,6 +134,6 @@ public class TreeCenterLongestPathImpl {
     addUndirectedEdge(graph6, 3, 4);
     addUndirectedEdge(graph6, 4, 5);
     addUndirectedEdge(graph6, 4, 6);
-    System.out.println(treeCenter(graph6)+"\n");
+    System.out.println(findTreeCenters(graph6) + "\n");
   }
 }

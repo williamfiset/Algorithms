@@ -1,19 +1,19 @@
 // To run this test in isolation from root folder:
 //
 // $ gradle test --tests
-// com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterTest
+// com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImplTest
 
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenter.addUndirectedEdge;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenter.createEmptyTree;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenter.findTreeCenters;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImpl.addUndirectedEdge;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImpl.createEmptyTree;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImpl.findTreeCenters;
 
 import java.util.*;
 import org.junit.*;
 
-public class TreeCenterTest {
+public class TreeCenterLongestPathImplTest {
 
   @Test
   public void simpleTest1() {
@@ -68,34 +68,5 @@ public class TreeCenterTest {
     addUndirectedEdge(graph, 4, 5);
     addUndirectedEdge(graph, 4, 6);
     assertThat(findTreeCenters(graph)).containsExactly(2, 3);
-  }
-
-  @Test
-  public void testTreeCenterVsOtherImpl() {
-    for (int n = 1; n < 500; n++) {
-      for (int loops = 0; loops < 100; loops++) {
-        List<List<Integer>> tree = generateRandomTree(n);
-
-        List<Integer> impl1 = findTreeCenters(tree);
-        List<Integer> impl2 =
-            com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImpl
-                .findTreeCenters(tree);
-
-        assertThat(impl1).containsExactlyElementsIn(impl2);
-      }
-    }
-  }
-
-  public static List<List<Integer>> generateRandomTree(int n) {
-    List<Integer> nodes = new ArrayList<>();
-    nodes.add(0);
-
-    List<List<Integer>> g = createEmptyTree(n);
-    for (int nextNode = 1; nodes.size() != n; nextNode++) {
-      int randomNode = nodes.get((int) (Math.random() * nodes.size()));
-      addUndirectedEdge(g, randomNode, nextNode);
-      nodes.add(nextNode);
-    }
-    return g;
   }
 }

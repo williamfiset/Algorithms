@@ -8,9 +8,11 @@
  *
  * <p>Change directory to the root of the Algorithms directory: $ cd Algorithms
  *
- * <p>Build: $ javac  -d src/main/java src/main/java/com/williamfiset/algorithms/graphtheory/networkflow/examples/FordFulkersonExample.java
+ * <p>Build: $ javac -d src/main/java
+ * src/main/java/com/williamfiset/algorithms/graphtheory/networkflow/examples/FordFulkersonExample.java
  *
- * <p>Run: $ java -cp src/main/java com/williamfiset/algorithms/graphtheory/networkflow/examples/FordFulkersonExample
+ * <p>Run: $ java -cp src/main/java
+ * com/williamfiset/algorithms/graphtheory/networkflow/examples/FordFulkersonExample
  */
 package com.williamfiset.algorithms.graphtheory.networkflow.examples;
 

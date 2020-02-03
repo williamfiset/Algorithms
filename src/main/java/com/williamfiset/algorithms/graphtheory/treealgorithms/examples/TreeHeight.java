@@ -5,9 +5,11 @@
  *
  * <p>Change directory to the root of the Algorithms directory: $ cd Algorithms
  *
- * <p>Compile: $ javac -d src/main/java src/main/java/com/williamfiset/algorithms/graphtheory/treealgorithms/examples/TreeHeight.java
+ * <p>Compile: $ javac -d src/main/java
+ * src/main/java/com/williamfiset/algorithms/graphtheory/treealgorithms/examples/TreeHeight.java
  *
- * <p>Run: $ java -cp src/main/java com/williamfiset/algorithms/graphtheory/treealgorithms/examples/TreeHeight
+ * <p>Run: $ java -cp src/main/java
+ * com/williamfiset/algorithms/graphtheory/treealgorithms/examples/TreeHeight
  *
  * <p>Time Complexity: O(n)
  *

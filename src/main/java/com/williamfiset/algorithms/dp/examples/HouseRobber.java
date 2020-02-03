@@ -5,10 +5,12 @@
  *
  * <p>Download the code: $ git clone https://github.com/williamfiset/Algorithms
  *
- * <p>Change directory to the root of the Algorithms directory: 
- * <p> $ cd Algorithms
+ * <p>Change directory to the root of the Algorithms directory:
  *
- * <p>Build: $ javac -d src/main/java src/main/java/com/williamfiset/algorithms/dp/examples/HouseRobber.java
+ * <p>$ cd Algorithms
+ *
+ * <p>Build: $ javac -d src/main/java
+ * src/main/java/com/williamfiset/algorithms/dp/examples/HouseRobber.java
  *
  * <p>Run: $ java -cp src/main/java com/williamfiset/algorithms/dp/examples/HouseRobber
  */
