@@ -98,27 +98,32 @@ public class TreeIsomorphism {
 
   private static List<Integer> findTreeCenters(List<List<Integer>> tree) {
     final int n = tree.size();
-    int[] degrees = new int[n];
+    int[] degree = new int[n];
 
     // Find all leaf nodes
     List<Integer> leaves = new ArrayList<>();
     for (int i = 0; i < n; i++) {
       List<Integer> edges = tree.get(i);
-      degrees[i] = edges.size();
-      if (degrees[i] <= 1) leaves.add(i);
+      degree[i] = edges.size();
+      if (degree[i] <= 1) {
+        leaves.add(i);
+        degree[i] = 0;
+      }
     }
 
     int processedLeafs = leaves.size();
 
-    // Iteratively remove all leaf nodes layer by layer until only the centers remain.
+    // Remove leaf nodes and decrease the degree of each node adding new leaf nodes progressively
+    // until only the centers remain.
     while (processedLeafs < n) {
       List<Integer> newLeaves = new ArrayList<>();
       for (int node : leaves) {
         for (int neighbor : tree.get(node)) {
-          if (--degrees[neighbor] == 1) {
+          if (--degree[neighbor] == 1) {
             newLeaves.add(neighbor);
           }
         }
+        degree[node] = 0;
       }
       processedLeafs += newLeaves.size();
       leaves = newLeaves;

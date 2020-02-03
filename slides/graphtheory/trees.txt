@@ -537,6 +537,8 @@ the number of edges coming out of each node.
 Then, if the node has a degree of 0, meaning we're dealing with a single node
 tree or the node is a leaf node because it has a degree of 1 then add the node
 to the leaves array.
+We're also going to set the degree of the leaf node to be zero so we don't 
+process it again later.
 
 The way we're going to know when we've found the center or centers is when we
 have processed all the nodes in the tree. The variable count is going to keep
@@ -555,6 +557,9 @@ and decrement the degree of the neighbor nodes. Since we're removing the current
 node this means that the degree of the neighboring node needs to go down. If the
 neighbor node after being decremented has a degree of 1 then we know it will be
 in the next layer of leaf nodes so add it to the new_leaves array.
+
+Everytime we finish processing a former leaf node, feel free to explicitly give
+it a degree of zero to mark it as done. 
 
 When we've finished processing the current layer increment the count variable
 and replaces the leaves array with the new leaves.
@@ -792,7 +797,7 @@ and throw an exception.
 
 After that, I find the center or centers of both trees.
 
-TODO(waf): descripbe the whole flow here before moving on,
+TODO(waf): describe the whole flow here before moving on,
 
 
 Then I root tree1 using its first center node.
