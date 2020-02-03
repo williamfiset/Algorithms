@@ -777,7 +777,16 @@ only be looking at around 150 lines of code there's a lot going on,
 let's jump in.
 
 So here we are in the source code for identifying isomorphic trees written 
-in Java.
+in Java. Let's start by taking a look at an example of what this code does in 
+the main method...
+
+<scroll to main method>
+
+In this method we create two trees, tree1 and tree2 which are structurally the
+same but have different labels. Today what we're going to take a look at is the
+implementation behind the 'treesAreIsomorphic' method which is able to check 
+whether tree1 and tree2 are truly isomorphic or if they are actually two
+fundamentally different trees.
 
 
 ---
@@ -925,9 +934,36 @@ current node.
 
 encode
 
+After we've finished rooting our tree, remember that the next thing we do is 
+encode it into a unique string so that we can easily compare two trees to see
+if they're isomorphic.
+
+The first thing I do is handle the base case where we have a null node. For this
+we can return an empty string which will cause all leaf nodes to have a
+left and right bracket as a starting value upon the callback.
+
+For each node, we maintain a list of labels for all the subtrees. To generate
+the labels,
+Iterate through all the children of this node and recursively call the encode
+method adding the results to the labels list.
+
+After the for loop, the recursive calls have returned and the labels list
+is populated and ready to be sorted.
+
+Afterwards, concatenate the labels and wrap the result in brackets.
+
 ---
 
-testing.
+Awesome, that's a wrap for this video, I hope you have had a large enough dose
+of tree algorithms for the day. Please like this video if you learned something,
+and subscribe for more mathematics and computer science videos.
+
+
+
+
+
+
+
 
 
 

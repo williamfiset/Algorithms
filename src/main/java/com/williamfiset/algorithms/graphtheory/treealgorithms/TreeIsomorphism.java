@@ -151,8 +151,8 @@ public class TreeIsomorphism {
 
   /* Graph/Tree creation helper methods. */
 
-  // Create a graph as a adjacency list
-  public static List<List<Integer>> createGraph(int n) {
+  // Create a graph as a adjacency list with 'n' nodes.
+  public static List<List<Integer>> createEmptyGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>(n);
     for (int i = 0; i < n; i++) graph.add(new LinkedList<>());
     return graph;
@@ -170,24 +170,23 @@ public class TreeIsomorphism {
     testEncodingTreeFromSlides();
   }
 
+  // Test if two tree are isomorphic, meaning they are structurally equivalent
+  // but are labeled differently.
   private static void simpleIsomorphismTest() {
-    // Test if two tree are isomorphic, meaning they are structurally equivalent
-    // but are labeled differently.
-    List<List<Integer>> tree1 = createGraph(5);
-    List<List<Integer>> tree2 = createGraph(5);
-
+    List<List<Integer>> tree1 = createEmptyGraph(5);
     addUndirectedEdge(tree1, 2, 0);
     addUndirectedEdge(tree1, 3, 4);
     addUndirectedEdge(tree1, 2, 1);
     addUndirectedEdge(tree1, 2, 3);
 
+    List<List<Integer>> tree2 = createEmptyGraph(5);
     addUndirectedEdge(tree2, 1, 0);
     addUndirectedEdge(tree2, 2, 4);
     addUndirectedEdge(tree2, 1, 3);
     addUndirectedEdge(tree2, 1, 2);
 
     if (!treesAreIsomorphic(tree1, tree2)) {
-      System.out.println("Oops something is not right.");
+      System.out.println("Oops, these tree should be isomorphic!");
     }
   }
 
