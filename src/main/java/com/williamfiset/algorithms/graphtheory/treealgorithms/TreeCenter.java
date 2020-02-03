@@ -23,13 +23,15 @@ public class TreeCenter {
     for (int i = 0; i < n; i++) {
       List<Integer> edges = tree.get(i);
       degrees[i] = edges.size();
-      if (degrees[i] <= 1) leaves.add(i);
+      if (degrees[i] <= 1) {
+        leaves.add(i);
+        degrees[i] = 0;
+      }
     }
 
     int processedLeafs = leaves.size();
 
-    // Remove leaf nodes and decrease the degree of
-    // each node adding new leaf nodes progressively
+    // Remove leaf nodes and decrease the degree of each node adding new leaf nodes progressively
     // until only the centers remain.
     while (processedLeafs < n) {
       List<Integer> newLeaves = new ArrayList<>();
@@ -39,6 +41,7 @@ public class TreeCenter {
             newLeaves.add(neighbor);
           }
         }
+        degrees[node] = 0;
       }
       processedLeafs += newLeaves.size();
       leaves = newLeaves;
