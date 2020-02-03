@@ -9,6 +9,67 @@ Algorithms and data structures are fundamental to efficient code and good softwa
 
 This repository is contribution friendly :smiley:. If you'd like to add or improve an algorithm, your contribution is welcome! Please be sure to checkout the [Wiki](https://github.com/williamfiset/Algorithms/wiki) for instructions.
 
+# Running an algorithm implementation
+
+To compile and run any of the algorithms here, you need at least JDK version 8. Gradle can make things more convenient for you, but it is not required. 
+
+## Compiling and running with only a JDK
+
+
+### Create a classes folder
+```
+cd Algorithms
+mkdir classes
+```
+
+### Compile the algorithm 
+```
+javac -sourcepath src/main/java -d classes src/main/java/ <relative-path-to-java-source-file>
+```
+
+### Run the algorithm 
+```
+java -cp classes <class-fully-qualified-name>
+```
+
+### Example
+```
+$ javac -d classes -sourcepath src/main/java src/main/java/com/williamfiset/algorithms/search/BinarySearch.java
+$ java -cp classes com.williamfiset.algorithms.search.BinarySearch
+```
+
+## Running with Gradle
+
+This project supports the [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). The Gradle wrapper automatically downloads Gradle at the first time it runs, so expect a delay when running the firt command below.
+
+If you are on Windows, use `gradlew.bat` instead of `./gradlew` below.
+
+
+Run a single algorithm like this:
+
+```
+./gradlew -q run -Palgorithm=<algorithm-subpackage>.<algorithm-class>
+```
+
+
+Alternatively, you can run a single algorithm specifying the full class name
+```
+./gradlew -q run -Pmain=<algorithm-fully-qualified-class-name>
+
+```
+
+For instance:
+
+```
+./gradlew run -Palgorithm=search.BinarySearch
+```
+
+or 
+
+```
+./gradlew run -Pmain=com.williamfiset.algorithms.search.BinarySearch
+```
+
 # Data Structures
 * [:movie_camera:](https://www.youtube.com/watch?v=q4fnJZr8ztY)[Balanced Trees](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/balancedtree)
     * [Avl Tree (recursive)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/balancedtree/AVLTreeRecursive.java)
