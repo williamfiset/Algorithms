@@ -42,18 +42,17 @@ package com.williamfiset.algorithms.dp;
  *
  * @author Dragatis Nikolas, nikosdraga@gmail.com
  */
-
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Scanner;
+
 
 public class VirtualMachinesScheduler {
   public static void main(String[] args) throws Exception {
+
     double time = System.currentTimeMillis();
     Scheduler scheduler = new Scheduler();
 
-    scheduler.scanFile(args[0]);
+    scheduler.scanInput(args);
 
     System.out.println("\nTime: " + (System.currentTimeMillis() - time) / 1000.0 + " seconds.");
   }
@@ -67,26 +66,24 @@ public class VirtualMachinesScheduler {
     private int processes = 0;
 
     /**
-     * This function is used to scan the txt file, with the data, and initialize the dimensions of
+     * This function is used to scan the txt file, with the data, initialize the dimensions of
      * the array with the processes costs and the array with the communication costs.
+     * In the end it prints the results to the user.
      *
-     * @param pathname is the name of the txt file containing the data.
+     * @param input The string array of arguments goven to the program.
      * @throws Exception
      */
-    public void scanFile(String pathname) throws Exception {
-      Scanner scanner = new Scanner(new FileReader(pathname));
+    public void scanInput(String input[]) throws Exception {
 
-      processes = scanner.nextInt();
-      virtualMachines = scanner.nextInt();
+      processes = Integer.parseInt(input[0]);
+      virtualMachines = Integer.parseInt(input[1]);
 
       int[][] processesCost = new int[processes][virtualMachines];
       int[][] communicationsCost = new int[virtualMachines][virtualMachines];
 
-      initializeArrays(scanner, processesCost, processes, virtualMachines);
+      initializeArrays(input, processesCost, communicationsCost, processes, virtualMachines);
 
-      initializeArrays(scanner, communicationsCost, virtualMachines, virtualMachines);
-
-      Scheduling(processesCost, communicationsCost);
+      printArray(Scheduling(processesCost, communicationsCost), processes, virtualMachines);
     }
 
     /**
@@ -96,11 +93,11 @@ public class VirtualMachinesScheduler {
      * @param communicationsCost is the array which contains the costs to transfer data from one
      *     virtual machine to another.
      */
-    public void Scheduling(int[][] processesCost, int[][] communicationsCost) {
+    public int[][] Scheduling(int[][] processesCost, int[][] communicationsCost) {
       int[][] Cost = new int[processes][virtualMachines];
 
-      for (int i = 0; i < virtualMachines; i++) {
-        Cost[0][i] = processesCost[0][i];
+      if (virtualMachines >= 0) {
+        System.arraycopy(processesCost[0], 0, Cost[0], 0, virtualMachines);
       }
 
       for (int i = 1; i < processes; i++) {
@@ -108,8 +105,7 @@ public class VirtualMachinesScheduler {
           Cost[i][j] = findMin(i, j, Cost, processesCost, communicationsCost, virtualMachines);
         }
       }
-
-      printArray(Cost, processes, virtualMachines);
+      return Cost;
     }
 
     /**
@@ -150,23 +146,29 @@ public class VirtualMachinesScheduler {
      * This function is used to store the two arrays (processCost and communicationCost) that are
      * read from the input file.
      *
-     * @param scanner scans the file for the next integer.
-     * @param array
-     * @param x is the number of processes as read from the txt file.
-     * @param y is the number of virtual machines as read from the txt file.
+     * @param input The String of arguments given to the program.
+     * @param processes is the number of processes as read from the txt file.
+     * @param virtualMachines is the number of virtual machines as read from the txt file.
      */
-    private void initializeArrays(Scanner scanner, int[][] array, int x, int y) {
-      for (int i = 0; i < x; i++) {
-        for (int j = 0; j < y; j++) {
-          array[i][j] = scanner.nextInt();
+    private void initializeArrays(String input[], int[][] processesCost, int[][] communicationsCost, int processes, int virtualMachines) {
+      int i;
+      int j = 0;
+
+      for (i = 0; i < processes; i++) {
+        for (j = 0; j < virtualMachines; j++) {
+          processesCost[i][j] = Integer.parseInt(input[i + j + 2]);
         }
       }
+
+      for (int k = 0; k < virtualMachines; k++)
+        for (int l = 0; l < virtualMachines; l++)
+          communicationsCost[k][l] = Integer.parseInt(input[i + j + 2 + k + l]);
     }
 
     /**
      * This function is used to print an array with x * y dimensions.
      *
-     * @param array
+     * @param array An array to be printed.
      * @param x is the number of rows of the array.
      * @param y is the number of columns of the array.
      */
