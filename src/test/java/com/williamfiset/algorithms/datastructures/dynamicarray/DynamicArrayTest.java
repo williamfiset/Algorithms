@@ -50,6 +50,48 @@ public class DynamicArrayTest {
     list.removeAt(-66);
   }
 
+  @Test(expected = IndexOutOfBoundsException.class)
+  public void testIndexOutOfBounds5() {
+    DynamicArray<Integer> list = new DynamicArray<>();
+    for (int i = 0; i < 10; i++) list.add(12);
+    list.set(-1, 3);
+  }
+
+  @Test(expected = IndexOutOfBoundsException.class)
+  public void testIndexOutOfBounds6() {
+    DynamicArray<Integer> list = new DynamicArray<>();
+    for (int i = 0; i < 10; i++) list.add(12);
+    list.set(10, 3);
+  }
+
+  @Test(expected = IndexOutOfBoundsException.class)
+  public void testIndexOutOfBounds7() {
+    DynamicArray<Integer> list = new DynamicArray<>();
+    for (int i = 0; i < 10; i++) list.add(12);
+    list.set(15, 3);
+  }
+
+  @Test(expected = IndexOutOfBoundsException.class)
+  public void testIndexOutOfBounds8() {
+    DynamicArray<Integer> list = new DynamicArray<>();
+    for (int i = 0; i < 10; i++) list.add(12);
+    list.get(-2);
+  }
+
+  @Test(expected = IndexOutOfBoundsException.class)
+  public void testIndexOutOfBounds9() {
+    DynamicArray<Integer> list = new DynamicArray<>();
+    for (int i = 0; i < 10; i++) list.add(12);
+    list.get(10);
+  }
+
+  @Test(expected = IndexOutOfBoundsException.class)
+  public void testIndexOutOfBounds10() {
+    DynamicArray<Integer> list = new DynamicArray<>();
+    for (int i = 0; i < 10; i++) list.add(12);
+    list.get(15);
+  }
+
   @Test
   public void testRemoving() {
 
