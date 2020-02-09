@@ -65,10 +65,39 @@ public class LowestCommonAncestor {
     return node;
   }
 
+  private TreeNode lcaNode = null;
+
   // Finds the lowest common ancestor of the nodes with id1 and id2.
-  public static TreeNode lca(TreeNode root, int id1, int id2) {
-    // TODO(william): implement.
-    return root;
+  public TreeNode lca(TreeNode root, int id1, int id2) {
+    lcaNode = null;
+    helper(root, id1, id2);
+    return lcaNode;
+  }
+
+  private boolean helper(TreeNode node, int id1, int id2) {
+    if (node == null) {
+      return false;
+    }
+    int count = 0;
+    if (node.id() == id1) {
+      count++;
+    }
+    if (node.id() == id2) {
+      count++;
+    }
+    for (TreeNode child : node.children()) {
+      if (helper(child, id1, id2)) {
+        count++;
+      }
+    }
+    if (count == 2) {
+      lcaNode = node;
+    }
+    return count > 0;
+  }
+
+  private static boolean match(TreeNode node, int id1, int id2) {
+    return node != null && (node.id() == id1 || node.id() == id2);
   }
 
   /* Graph/Tree creation helper methods. */
@@ -86,7 +115,33 @@ public class LowestCommonAncestor {
   }
 
   public static void main(String[] args) {
-    
+    LowestCommonAncestor solver = new LowestCommonAncestor();
+    TreeNode root = createFirstTreeFromSlides();
+    System.out.println(solver.lca(root, 10, 15).id());
+  }
+
+  private static TreeNode createFirstTreeFromSlides() {
+    int n = 17;
+    List<List<Integer>> tree = createEmptyGraph(n);
+
+    addUndirectedEdge(tree, 0, 1);
+    addUndirectedEdge(tree, 0, 2);
+    addUndirectedEdge(tree, 1, 3);
+    addUndirectedEdge(tree, 1, 4);
+    addUndirectedEdge(tree, 2, 5);
+    addUndirectedEdge(tree, 2, 6);
+    addUndirectedEdge(tree, 2, 7);
+    addUndirectedEdge(tree, 3, 8);
+    addUndirectedEdge(tree, 3, 9);
+    addUndirectedEdge(tree, 5, 10);
+    addUndirectedEdge(tree, 5, 11);
+    addUndirectedEdge(tree, 7, 12);
+    addUndirectedEdge(tree, 7, 13);
+    addUndirectedEdge(tree, 11, 14);
+    addUndirectedEdge(tree, 11, 15);
+    addUndirectedEdge(tree, 11, 16);
+
+    return LowestCommonAncestor.rootTree(tree, 0);
   }
 
 }

@@ -1,7 +1,6 @@
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.LowestCommonAncestor.lca;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.LowestCommonAncestor.createEmptyGraph;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.LowestCommonAncestor.addUndirectedEdge;
 
@@ -12,6 +11,13 @@ import java.util.*;
 import org.junit.*;
 
 public class LowestCommonAncestorTest {
+
+  private LowestCommonAncestor solver;
+
+  @Before
+  public void setup() {
+    solver = new LowestCommonAncestor();
+  }
 
   private TreeNode createFirstTreeFromSlides() {
     int n = 17;
@@ -39,21 +45,22 @@ public class LowestCommonAncestorTest {
 
   @Test
   public void testLcaTreeFromSlides1() {
+    assertThat(solver).isNotNull();
     TreeNode root = createFirstTreeFromSlides();
-    assertThat(lca(root, 14, 13).id()).isEqualTo(2);
-    assertThat(lca(root, 10, 16).id()).isEqualTo(5);
-    assertThat(lca(root, 9, 11).id()).isEqualTo(0);
+    assertThat(solver.lca(root, 14, 13).id()).isEqualTo(2);
+    assertThat(solver.lca(root, 10, 16).id()).isEqualTo(5);
+    assertThat(solver.lca(root, 9, 11).id()).isEqualTo(0);
   }
 
   @Test
   public void testLcaTreeFromSlides2() {
     TreeNode root = createFirstTreeFromSlides();
-    assertThat(lca(root, 8, 9).id()).isEqualTo(3);
-    assertThat(lca(root, 4, 8).id()).isEqualTo(1);
-    assertThat(lca(root, 6, 13).id()).isEqualTo(2);
-    assertThat(lca(root, 7, 13).id()).isEqualTo(7);
-    assertThat(lca(root, 10, 5).id()).isEqualTo(5);
-    assertThat(lca(root, 2, 16).id()).isEqualTo(2);
+    assertThat(solver.lca(root, 8, 9).id()).isEqualTo(3);
+    assertThat(solver.lca(root, 4, 8).id()).isEqualTo(1);
+    assertThat(solver.lca(root, 6, 13).id()).isEqualTo(2);
+    assertThat(solver.lca(root, 7, 13).id()).isEqualTo(7);
+    assertThat(solver.lca(root, 10, 5).id()).isEqualTo(5);
+    assertThat(solver.lca(root, 2, 16).id()).isEqualTo(2);
   }
 
   @Test
@@ -62,7 +69,7 @@ public class LowestCommonAncestorTest {
     TreeNode root = createFirstTreeFromSlides();
     // Try all nodes
     for (int id = 0; id < n; id++) {
-      assertThat(lca(root, id, id).id()).isEqualTo(id);
+      assertThat(solver.lca(root, id, id).id()).isEqualTo(id);
     }
   }
 
