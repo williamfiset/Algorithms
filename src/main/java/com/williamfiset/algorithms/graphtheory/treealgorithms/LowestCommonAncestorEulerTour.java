@@ -2,7 +2,7 @@ package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import java.util.*;
 
-public class LowestCommonAncestor {
+public class LowestCommonAncestorEulerTour {
 
   public static class TreeNode {
     private int id;
@@ -65,36 +65,52 @@ public class LowestCommonAncestor {
     return node;
   }
 
-  private TreeNode lcaNode = null;
+  private boolean preprocessed;
+
+  private int index;
+  private TreeNode[] nodes;
+  private int[] heights;
+
+  private void preprocess(TreeNode root, int n) {
+    index = 0;
+    nodes = new TreeNode[n];
+    heights = new int[n];
+
+    dfs(root, 0);
+
+    System.out.println(java.util.Arrays.toString(heights));
+    System.out.println(java.util.Arrays.toString(nodes));
+
+    // TODO(william): Implement RMQ data structure that supporting returning the index of the 
+    // min value in the original array.
+  }
 
   // Finds the lowest common ancestor of the nodes with id1 and id2.
-  public TreeNode lca(TreeNode root, int id1, int id2) {
-    lcaNode = null;
-    helper(root, id1, id2);
-    return lcaNode;
+  public TreeNode lca(TreeNode root, int id1, int id2, int n) {
+    if (!preprocessed) {
+      preprocess(root, n);
+      preprocessed = true;
+    }
+
+    // TODO(william): to RMQ
+
+    return null;
   }
 
-  private boolean helper(TreeNode node, int id1, int id2) {
+  // Do Euler tour (preorder traversal)
+  private void dfs(TreeNode node, int height) {
     if (node == null) {
-      return false;
+      return;
     }
-    int count = 0;
-    if (node.id() == id1) {
-      count++;
-    }
-    if (node.id() == id2) {
-      count++;
-    }
+    nodes[index] = node;
+    heights[index] = height;
+    index++;
+
     for (TreeNode child : node.children()) {
-      if (helper(child, id1, id2)) {
-        count++;
-      }
+      dfs(child, height+1);
     }
-    if (count == 2) {
-      lcaNode = node;
-    }
-    return count > 0;
   }
+
 
   /* Graph/Tree creation helper methods. */
 
@@ -111,9 +127,9 @@ public class LowestCommonAncestor {
   }
 
   public static void main(String[] args) {
-    LowestCommonAncestor solver = new LowestCommonAncestor();
+    LowestCommonAncestorEulerTour solver = new LowestCommonAncestorEulerTour();
     TreeNode root = createFirstTreeFromSlides();
-    System.out.println(solver.lca(root, 10, 15).id());
+    System.out.println(solver.lca(root, 10, 15, 17));
   }
 
   private static TreeNode createFirstTreeFromSlides() {
@@ -137,7 +153,7 @@ public class LowestCommonAncestor {
     addUndirectedEdge(tree, 11, 15);
     addUndirectedEdge(tree, 11, 16);
 
-    return LowestCommonAncestor.rootTree(tree, 0);
+    return LowestCommonAncestorEulerTour.rootTree(tree, 0);
   }
 
 }
