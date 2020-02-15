@@ -43,9 +43,6 @@ public class SparseTable {
     return Math.abs(gcd);
   };
 
-
-  // Supply an array of values and an associative binary function. The function
-  // is usually min, max sum, gcd, etc... see pre-made ones below.
   public SparseTable(int[] v, Operation op) {
     this.op = op;
     init(v);
@@ -85,22 +82,26 @@ public class SparseTable {
     print(t);
   }
 
+  // Queries [l, r] for the operation set on this Sparse table.
   public int query(int l, int r) {
     if (op == Operation.MIN) {
-      return minQuery(l, r);
+      return query(l, r, minFn);
     } else if (op == Operation.MAX) {
-      return maxQuery(l, r);
+      return query(l, r, maxFn);
     }
+    // TODO(william): add query for gcd
     return sumQuery(l, r);
   }
 
-  // Do sum query [l, r] in O(lg(n))
+  // Do sum query [l, r] in O(lg(n)). Does a cascading query which shrinks the left endpoint
+  // while summing over all the intervals which are powers of 2 between [l, r].
+  // TODO(william): use longs?
   public int sumQuery(int l, int r) {
     int sum = 0;
     for (int p = P; p >= 0; p--) {
-      // System.out.println(l + " " + r);
       int rangeLength = r - l + 1;
       if ((1 << p) <= rangeLength) {
+        // System.out.printf("power = 2^%d = %d, l = %d, value = %d\n", p, 1<<p, l, t[p][l]);
         sum += t[p][l];
         l += (1 << p);
       }
@@ -108,30 +109,58 @@ public class SparseTable {
     return sum;
   }
 
-  // Do min query [l, r] in O(1)
-  private int minQuery(int l, int r) {
+  // Do either a min, max or gcd query on the interval [l, r] in O(1). 
+  // 
+  // We can get O(1) query by finding the smallest power of 2 that fits within the interval length
+  // which we'll call k. Then we can query the intervals [l, l+k] and [r-k+1, r] (which likely
+  // overlap) and apply the function again. Some functions (like min and max) don't care about
+  // overlapping intervals so this trick works, but for a function like sum this would return the
+  // wrong result.
+  private int query(int l, int r, BinaryOperator<Integer> fn) {
+    int len = r - l + 1;
     int p = log2[r - l + 1];
-    return Math.min(t[p][l], t[p][r - (1 << p) + 1]);
+    return fn.apply(t[p][l], t[p][r - (1 << p) + 1]);
   }
 
-  // Do max query [l, r] in O(1)
-  private int maxQuery(int l, int r) {
-    int p = log2[r - l + 1];
-    return Math.max(t[p][l], t[p][r - (1 << p) + 1]);
-  }
-
-  private void print(int[][] t) {
-    for (int[] r : t) {
-      System.out.println(java.util.Arrays.toString(r));
+  private static void print(int[][] t) {
+    for (int i = 0; i < t.length; i++) {
+      for (int j = 0; j < t[0].length; j++) {
+        System.out.printf("%3d,", t[i][j]);
+      }
+      System.out.println();
     }
     System.out.println();
   }
 
   public static void main(String[] args) {
-    int[] v = {1,8,5,6,7,2,7,1,8,5,6,7,2,4,3};
-    System.out.println(v.length);
-    SparseTable st = new SparseTable(v, Operation.MIN);
+    int[] v = {1,2,3,4,5,6,7,8};
+    SparseTable st = new SparseTable(v, Operation.SUM);
+    System.out.println(st.query(1, 7));
+    simpleTest();
+  }
+
+  private static void simpleTest() {
+    int[] v = {1,2,3,4,5,6,7,8};
+    SparseTable st = new SparseTable(v, Operation.SUM);
+    for (int i = 0; i < v.length; i++) {
+      for (int j = i; j < v.length; j++) {
+        int trueSum = 0;
+        for (int k = i; k <= j; k++) {
+          trueSum += v[k];
+        }
+        if (st.query(i, j) != trueSum) {
+          System.out.printf("Ooopse, got %d instead of %d!\n", st.query(i, j), trueSum);
+        }
+      }
+    }
   }
 
 }
+
+
+
+
+
+
+
 
