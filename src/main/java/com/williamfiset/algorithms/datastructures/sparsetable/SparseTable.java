@@ -93,8 +93,12 @@ public class SparseTable {
     return sumQuery(l, r);
   }
 
-  // Do sum query [l, r] in O(lg(n)). Does a cascading query which shrinks the left endpoint
-  // while summing over all the intervals which are powers of 2 between [l, r].
+  // Do sum query [l, r] in O(log2(n)).
+  // 
+  // Perform a cascading query which shrinks the left endpoint while summing over all the intervals
+  // which are powers of 2 between [l, r].
+  // NOTE: You can  achieve a faster time complexity with less memory using a simple prefix array...
+  // 
   // TODO(william): use longs?
   public int sumQuery(int l, int r) {
     int sum = 0;
