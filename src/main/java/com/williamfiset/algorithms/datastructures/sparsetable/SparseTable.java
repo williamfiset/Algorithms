@@ -24,7 +24,7 @@ public class SparseTable {
   // The sprase table values.
   private long[][] t;
 
-  // Sparse Index Table (IT) values (doesn't apply to every operation type)/
+  // Index Table (IT) associated with the values in the sparse table.
   private int[][] it;
 
   // The various supported query operations on this sprase table.
@@ -76,26 +76,27 @@ public class SparseTable {
     // Build sparse table combining the values of the previous intervals.
     for (int p = 1; p <= P; p++) {
       for (int i = 0; i + (1 << p) <= n; i++) {
+        long leftInterval = t[p - 1][i], rightInterval = t[p - 1][i + (1 << (p - 1))];
         if (op == Operation.MIN) {
-          t[p][i] = minFn.apply(t[p - 1][i], t[p - 1][i + (1 << (p - 1))]);
+          t[p][i] = minFn.apply(leftInterval, rightInterval);
           // Propagate the index of the best value
-          if (t[p - 1][i] <= t[p - 1][i + (1 << (p - 1))]) {
+          if (leftInterval <= rightInterval) {
             it[p][i] = it[p - 1][i];
           } else {
             it[p][i] = it[p - 1][i + (1 << (p - 1))];
           }
         } else if (op == Operation.MAX) {
-          t[p][i] = maxFn.apply(t[p - 1][i], t[p - 1][i + (1 << (p - 1))]);
+          t[p][i] = maxFn.apply(leftInterval, rightInterval);
           // Propagate the index of the best value
-          if (t[p - 1][i] >= t[p - 1][i + (1 << (p - 1))]) {
+          if (leftInterval >= rightInterval) {
             it[p][i] = it[p - 1][i];
           } else {
             it[p][i] = it[p - 1][i + (1 << (p - 1))];
           }
         } else if (op == Operation.SUM) {
-          t[p][i] = sumFn.apply(t[p - 1][i], t[p - 1][i + (1 << (p - 1))]);
+          t[p][i] = sumFn.apply(leftInterval, rightInterval);
         } else if (op == Operation.GCD) {
-          t[p][i] = gcdFn.apply(t[p - 1][i], t[p - 1][i + (1 << (p - 1))]);
+          t[p][i] = gcdFn.apply(leftInterval, rightInterval);
         }
       }
     }
@@ -182,10 +183,10 @@ public class SparseTable {
   public static void main(String[] args) {
     long[] v = {2, -3, 4, 1, 0, -1, 5, 6};
     SparseTable st = new SparseTable(v, Operation.MIN);
-    System.out.println(st.query(1, 7));
-    System.out.println(st.queryIndex(1, 7));
+    System.out.println(st.query(2, 7));
+    System.out.println(st.queryIndex(2, 7));
 
-    // simpleTest();
+    simpleTest();
     simpleMinQueryTest();
   }
 
