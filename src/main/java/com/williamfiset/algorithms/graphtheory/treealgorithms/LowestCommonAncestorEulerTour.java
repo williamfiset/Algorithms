@@ -81,7 +81,7 @@ public class LowestCommonAncestorEulerTour {
     System.out.println(java.util.Arrays.toString(heights));
     System.out.println(java.util.Arrays.toString(nodes));
 
-    // TODO(william): Implement RMQ data structure that supporting returning the index of the 
+    // TODO(william): Implement RMQ data structure that supporting returning the index of the
     // min value in the original array.
   }
 
@@ -107,10 +107,9 @@ public class LowestCommonAncestorEulerTour {
     index++;
 
     for (TreeNode child : node.children()) {
-      dfs(child, height+1);
+      dfs(child, height + 1);
     }
   }
-
 
   /* Graph/Tree creation helper methods. */
 
@@ -155,5 +154,4 @@ public class LowestCommonAncestorEulerTour {
 
     return LowestCommonAncestorEulerTour.rootTree(tree, 0);
   }
-
 }

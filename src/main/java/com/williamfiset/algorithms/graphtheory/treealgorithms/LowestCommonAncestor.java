@@ -139,5 +139,4 @@ public class LowestCommonAncestor {
 
     return LowestCommonAncestor.rootTree(tree, 0);
   }
-
 }

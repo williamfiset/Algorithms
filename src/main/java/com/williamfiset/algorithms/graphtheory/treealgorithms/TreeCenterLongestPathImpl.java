@@ -1,11 +1,11 @@
 /**
  * Finds the center(s) of a tree by finding the longest path through the tree.
  *
- * ./gradlew run -Pmain=com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImpl
+ * <p>./gradlew run
+ * -Pmain=com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImpl
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
-
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import java.util.*;
