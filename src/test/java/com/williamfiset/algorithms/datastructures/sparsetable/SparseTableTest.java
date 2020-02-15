@@ -7,11 +7,12 @@ import org.junit.*;
 
 public class SparseTableTest {
 
-  private void queryResultTest(long[] values, int l, int r, long actual, SparseTable.Operation op) {
+  private void queryResultTest(
+      long[] values, int l, int r, long actual, int index, SparseTable.Operation op) {
     if (op == SparseTable.Operation.MIN) {
-      minQuery(values, l, r, actual);
+      minQuery(values, l, r, actual, index);
     } else if (op == SparseTable.Operation.MAX) {
-      maxQuery(values, l, r, actual);
+      maxQuery(values, l, r, actual, index);
     } else if (op == SparseTable.Operation.SUM) {
       sumQuery(values, l, r, actual);
     } else if (op == SparseTable.Operation.GCD) {
@@ -19,16 +20,18 @@ public class SparseTableTest {
     }
   }
 
-  private void minQuery(long[] values, int l, int r, long actual) {
+  private void minQuery(long[] values, int l, int r, long actual, int index) {
     long m = Long.MAX_VALUE;
     for (int i = l; i <= r; i++) m = Math.min(m, values[i]);
-    assertThat(m).isEqualTo(actual);
+    assertThat(actual).isEqualTo(m);
+    assertThat(values[index]).isEqualTo(m);
   }
 
-  private void maxQuery(long[] values, int l, int r, long actual) {
+  private void maxQuery(long[] values, int l, int r, long actual, int index) {
     long m = Long.MIN_VALUE;
     for (int i = l; i <= r; i++) m = Math.max(m, values[i]);
-    assertThat(m).isEqualTo(actual);
+    assertThat(actual).isEqualTo(m);
+    assertThat(values[index]).isEqualTo(m);
   }
 
   private void sumQuery(long[] values, int l, int r, long actual) {
@@ -57,10 +60,14 @@ public class SparseTableTest {
 
     for (int i = 0; i < values.length; i++) {
       for (int j = i; j < values.length; j++) {
-        queryResultTest(values, i, j, min_st.query(i, j), SparseTable.Operation.MIN);
-        queryResultTest(values, i, j, max_st.query(i, j), SparseTable.Operation.MAX);
-        queryResultTest(values, i, j, sum_st.query(i, j), SparseTable.Operation.SUM);
-        queryResultTest(values, i, j, gcd_st.query(i, j), SparseTable.Operation.GCD);
+        queryResultTest(
+            values, i, j, min_st.query(i, j), min_st.queryIndex(i, j), SparseTable.Operation.MIN);
+        queryResultTest(
+            values, i, j, max_st.query(i, j), max_st.queryIndex(i, j), SparseTable.Operation.MAX);
+        queryResultTest(
+            values, i, j, sum_st.query(i, j), -1 /* unused */, SparseTable.Operation.SUM);
+        queryResultTest(
+            values, i, j, gcd_st.query(i, j), -1 /* unused */, SparseTable.Operation.GCD);
       }
     }
   }

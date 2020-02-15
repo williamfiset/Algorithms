@@ -21,8 +21,11 @@ public class SparseTable {
   // Fast log base 2 logarithm lookup table, 1 <= i <= n
   private int[] log2;
 
-  // The sprase table.
+  // The sprase table values.
   private long[][] t;
+
+  // Sparse Index Table (IT) values (doesn't apply to every operation type)/
+  private int[][] it;
 
   // The various supported query operations on this sprase table.
   public enum Operation {
@@ -58,9 +61,11 @@ public class SparseTable {
     n = v.length;
     P = (int) (Math.log(n) / Math.log(2));
     t = new long[P + 1][n];
+    it = new int[P + 1][n];
 
     for (int i = 0; i < n; i++) {
       t[0][i] = v[i];
+      it[0][i] = i;
     }
 
     log2 = new int[n + 1];
@@ -73,8 +78,20 @@ public class SparseTable {
       for (int i = 0; i + (1 << p) <= n; i++) {
         if (op == Operation.MIN) {
           t[p][i] = minFn.apply(t[p - 1][i], t[p - 1][i + (1 << (p - 1))]);
+          // Propagate the index of the best value
+          if (t[p - 1][i] <= t[p - 1][i + (1 << (p - 1))]) {
+            it[p][i] = it[p - 1][i];
+          } else {
+            it[p][i] = it[p - 1][i + (1 << (p - 1))];
+          }
         } else if (op == Operation.MAX) {
           t[p][i] = maxFn.apply(t[p - 1][i], t[p - 1][i + (1 << (p - 1))]);
+          // Propagate the index of the best value
+          if (t[p - 1][i] >= t[p - 1][i + (1 << (p - 1))]) {
+            it[p][i] = it[p - 1][i];
+          } else {
+            it[p][i] = it[p - 1][i + (1 << (p - 1))];
+          }
         } else if (op == Operation.SUM) {
           t[p][i] = sumFn.apply(t[p - 1][i], t[p - 1][i + (1 << (p - 1))]);
         } else if (op == Operation.GCD) {
@@ -96,6 +113,40 @@ public class SparseTable {
     return sumQuery(l, r);
   }
 
+  public int queryIndex(int l, int r) {
+    if (op == Operation.MIN) {
+      return minQueryIndex(l, r);
+    } else if (op == Operation.MAX) {
+      return maxQueryIndex(l, r);
+    }
+    throw new UnsupportedOperationException(
+        "Operation type: " + op + " doesn't support index queries :/");
+  }
+
+  private int minQueryIndex(int l, int r) {
+    int len = r - l + 1;
+    int p = log2[r - l + 1];
+    long leftInterval = t[p][l];
+    long rightInterval = t[p][r - (1 << p) + 1];
+    if (leftInterval <= rightInterval) {
+      return it[p][l];
+    } else {
+      return it[p][r - (1 << p) + 1];
+    }
+  }
+
+  private int maxQueryIndex(int l, int r) {
+    int len = r - l + 1;
+    int p = log2[r - l + 1];
+    long leftInterval = t[p][l];
+    long rightInterval = t[p][r - (1 << p) + 1];
+    if (leftInterval >= rightInterval) {
+      return it[p][l];
+    } else {
+      return it[p][r - (1 << p) + 1];
+    }
+  }
+
   // Do sum query [l, r] in O(log2(n)).
   //
   // Perform a cascading query which shrinks the left endpoint while summing over all the intervals
@@ -103,7 +154,7 @@ public class SparseTable {
   //
   // NOTE: You can  achieve a faster time complexity with less memory using a simple prefix array...
   // WARNING: This method can easily produces values that overflow.
-  public long sumQuery(int l, int r) {
+  private long sumQuery(int l, int r) {
     long sum = 0;
     for (int p = P; p >= 0; p--) {
       int rangeLength = r - l + 1;
@@ -129,15 +180,36 @@ public class SparseTable {
   }
 
   public static void main(String[] args) {
-    long[] v = {1, 2, 3, 4, 5, 6, 7, 8};
-    SparseTable st = new SparseTable(v, Operation.SUM);
+    long[] v = {2, -3, 4, 1, 0, -1, 5, 6};
+    SparseTable st = new SparseTable(v, Operation.MIN);
     System.out.println(st.query(1, 7));
+    System.out.println(st.queryIndex(1, 7));
 
-    simpleTest();
+    // simpleTest();
+    simpleMinQueryTest();
+  }
+
+  private static void simpleMinQueryTest() {
+    long[] v = {2, -3, 4, 1, 0, -1, 5, 6};
+    SparseTable st = new SparseTable(v, Operation.MIN);
+    for (int i = 0; i < v.length; i++) {
+      for (int j = i; j < v.length; j++) {
+        long m = Long.MAX_VALUE;
+        for (int k = i; k <= j; k++) {
+          m = Math.min(m, v[k]);
+        }
+        if (st.query(i, j) != m) {
+          System.out.println("Sparse table value incorrect.");
+        }
+        if (v[st.queryIndex(i, j)] != m) {
+          System.out.println("SparseTable index incorrect. Got index: " + st.queryIndex(i, j));
+        }
+      }
+    }
   }
 
   private static void simpleTest() {
-    long[] v = {1, 2, 3, 4, 5, 6, 7, 8};
+    long[] v = {2, -3, 4, 1, 0, -1, 5, 6};
     SparseTable st = new SparseTable(v, Operation.SUM);
     for (int i = 0; i < v.length; i++) {
       for (int j = i; j < v.length; j++) {
