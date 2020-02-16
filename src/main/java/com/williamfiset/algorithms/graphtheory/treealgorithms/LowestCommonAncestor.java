@@ -5,6 +5,9 @@ import java.util.*;
 public class LowestCommonAncestor {
 
   public static class TreeNode {
+    // Number of nodes in the subtree. Computed when tree is built.
+    private int n;
+
     private int id;
     private TreeNode parent;
     private List<TreeNode> children;
@@ -24,6 +27,15 @@ public class LowestCommonAncestor {
       for (TreeNode node : nodes) {
         children.add(node);
       }
+    }
+
+    public void setSize(int n) {
+      this.n = n;
+    }
+
+    // Number of nodes in the subtree (including the node itself)
+    public int size() {
+      return n;
     }
 
     public int id() {
@@ -51,6 +63,7 @@ public class LowestCommonAncestor {
 
   // Do dfs to construct rooted tree.
   private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node) {
+    int subtreeNodeCount = 1;
     for (int neighbor : graph.get(node.id())) {
       // Ignore adding an edge pointing back to parent.
       if (node.parent() != null && neighbor == node.parent().id()) {
@@ -61,14 +74,21 @@ public class LowestCommonAncestor {
       node.addChildren(child);
 
       buildTree(graph, child);
+      subtreeNodeCount += child.size();
     }
+    node.setSize(subtreeNodeCount);
     return node;
   }
 
   private TreeNode lcaNode = null;
+  private TreeNode root;
+
+  public LowestCommonAncestor(TreeNode root) {
+    this.root = root;
+  }
 
   // Finds the lowest common ancestor of the nodes with id1 and id2.
-  public TreeNode lca(TreeNode root, int id1, int id2) {
+  public TreeNode lca(int id1, int id2) {
     lcaNode = null;
     helper(root, id1, id2);
     return lcaNode;
@@ -111,9 +131,9 @@ public class LowestCommonAncestor {
   }
 
   public static void main(String[] args) {
-    LowestCommonAncestor solver = new LowestCommonAncestor();
     TreeNode root = createFirstTreeFromSlides();
-    System.out.println(solver.lca(root, 10, 15).id());
+    LowestCommonAncestor solver = new LowestCommonAncestor(root);
+    System.out.println(solver.lca(10, 15).id());
   }
 
   private static TreeNode createFirstTreeFromSlides() {

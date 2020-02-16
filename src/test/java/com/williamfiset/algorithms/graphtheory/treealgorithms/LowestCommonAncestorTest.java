@@ -10,13 +10,6 @@ import org.junit.*;
 
 public class LowestCommonAncestorTest {
 
-  private LowestCommonAncestor solver;
-
-  @Before
-  public void setup() {
-    solver = new LowestCommonAncestor();
-  }
-
   private TreeNode createFirstTreeFromSlides() {
     int n = 17;
     List<List<Integer>> tree = createEmptyGraph(n);
@@ -43,31 +36,32 @@ public class LowestCommonAncestorTest {
 
   @Test
   public void testLcaTreeFromSlides1() {
-    assertThat(solver).isNotNull();
     TreeNode root = createFirstTreeFromSlides();
-    assertThat(solver.lca(root, 14, 13).id()).isEqualTo(2);
-    assertThat(solver.lca(root, 10, 16).id()).isEqualTo(5);
-    assertThat(solver.lca(root, 9, 11).id()).isEqualTo(0);
+    LowestCommonAncestor solver = new LowestCommonAncestor(root);
+    assertThat(solver.lca(14, 13).id()).isEqualTo(2);
+    assertThat(solver.lca(10, 16).id()).isEqualTo(5);
+    assertThat(solver.lca(9, 11).id()).isEqualTo(0);
   }
 
   @Test
   public void testLcaTreeFromSlides2() {
     TreeNode root = createFirstTreeFromSlides();
-    assertThat(solver.lca(root, 8, 9).id()).isEqualTo(3);
-    assertThat(solver.lca(root, 4, 8).id()).isEqualTo(1);
-    assertThat(solver.lca(root, 6, 13).id()).isEqualTo(2);
-    assertThat(solver.lca(root, 7, 13).id()).isEqualTo(7);
-    assertThat(solver.lca(root, 10, 5).id()).isEqualTo(5);
-    assertThat(solver.lca(root, 2, 16).id()).isEqualTo(2);
+    LowestCommonAncestor solver = new LowestCommonAncestor(root);
+    assertThat(solver.lca(8, 9).id()).isEqualTo(3);
+    assertThat(solver.lca(4, 8).id()).isEqualTo(1);
+    assertThat(solver.lca(6, 13).id()).isEqualTo(2);
+    assertThat(solver.lca(7, 13).id()).isEqualTo(7);
+    assertThat(solver.lca(10, 5).id()).isEqualTo(5);
+    assertThat(solver.lca(2, 16).id()).isEqualTo(2);
   }
 
   @Test
   public void testLcaOfTheSameNodeIsItself() {
-    int n = 17;
     TreeNode root = createFirstTreeFromSlides();
+    LowestCommonAncestor solver = new LowestCommonAncestor(root);
     // Try all nodes
-    for (int id = 0; id < n; id++) {
-      assertThat(solver.lca(root, id, id).id()).isEqualTo(id);
+    for (int id = 0; id < root.size(); id++) {
+      assertThat(solver.lca(id, id).id()).isEqualTo(id);
     }
   }
 }
