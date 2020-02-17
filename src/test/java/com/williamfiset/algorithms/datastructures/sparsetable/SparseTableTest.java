@@ -94,6 +94,63 @@ public class SparseTableTest {
     }
   }
 
+  @Test
+  public void verifyIndexIsAlwaysLeftmostPositionWhenThereAreCollisions() {
+    long[] values = {5, 4, 3, 3, 3, 3, 3, 5, 6, 7};
+    SparseTable st = new SparseTable(values, SparseTable.Operation.MIN);
+
+    for (int i = 0; i < values.length; i++) {
+      for (int j = i; j < values.length; j++) {
+        long min = Long.MAX_VALUE;
+        int minIndex = 0;
+        for (int k = i; k <= j; k++) {
+          if (values[k] < min) {
+            min = values[k];
+            minIndex = k;
+          }
+        }
+
+        assertThat(st.query(i, j)).isEqualTo(min);
+        assertThat(i <= minIndex && minIndex <= j).isEqualTo(true);
+        assertThat(st.queryIndex(i, j)).isEqualTo(minIndex);
+      }
+    }
+  }
+
+  @Test
+  public void verifyIndexIsAlwaysLeftmostPosition_randomized() {
+    for (int loop = 2; loop < 100; loop++) {
+      long[] values = genRandArray(loop, -100, +100);
+      SparseTable min_st = new SparseTable(values, SparseTable.Operation.MIN);
+      SparseTable max_st = new SparseTable(values, SparseTable.Operation.MAX);
+
+      for (int i = 0; i < values.length; i++) {
+        for (int j = i; j < values.length; j++) {
+          long min = Long.MAX_VALUE, max = Long.MIN_VALUE;
+          int minIndex = 0, maxIndex = 0;
+          ;
+          for (int k = i; k <= j; k++) {
+            if (values[k] < min) {
+              min = values[k];
+              minIndex = k;
+            }
+            if (values[k] > max) {
+              max = values[k];
+              maxIndex = k;
+            }
+          }
+          assertThat(min_st.query(i, j)).isEqualTo(min);
+          assertThat(i <= minIndex && minIndex <= j).isEqualTo(true);
+          assertThat(min_st.queryIndex(i, j)).isEqualTo(minIndex);
+
+          assertThat(max_st.query(i, j)).isEqualTo(max);
+          assertThat(i <= maxIndex && maxIndex <= j).isEqualTo(true);
+          assertThat(max_st.queryIndex(i, j)).isEqualTo(maxIndex);
+        }
+      }
+    }
+  }
+
   private static long[] genRandArray(int n, int lo, int hi) {
     return new Random().longs(n, lo, hi).toArray();
   }

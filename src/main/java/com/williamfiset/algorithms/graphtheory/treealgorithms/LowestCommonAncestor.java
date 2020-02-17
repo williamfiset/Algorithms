@@ -50,34 +50,34 @@ public class LowestCommonAncestor {
       return children;
     }
 
+    public static TreeNode rootTree(List<List<Integer>> graph, int rootId) {
+      TreeNode root = new TreeNode(rootId);
+      return buildTree(graph, root);
+    }
+
+    // Do dfs to construct rooted tree.
+    private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node) {
+      int subtreeNodeCount = 1;
+      for (int neighbor : graph.get(node.id())) {
+        // Ignore adding an edge pointing back to parent.
+        if (node.parent() != null && neighbor == node.parent().id()) {
+          continue;
+        }
+
+        TreeNode child = new TreeNode(neighbor, node);
+        node.addChildren(child);
+
+        buildTree(graph, child);
+        subtreeNodeCount += child.size();
+      }
+      node.setSize(subtreeNodeCount);
+      return node;
+    }
+
     @Override
     public String toString() {
       return String.valueOf(id);
     }
-  }
-
-  public static TreeNode rootTree(List<List<Integer>> graph, int rootId) {
-    TreeNode root = new TreeNode(rootId);
-    return buildTree(graph, root);
-  }
-
-  // Do dfs to construct rooted tree.
-  private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node) {
-    int subtreeNodeCount = 1;
-    for (int neighbor : graph.get(node.id())) {
-      // Ignore adding an edge pointing back to parent.
-      if (node.parent() != null && neighbor == node.parent().id()) {
-        continue;
-      }
-
-      TreeNode child = new TreeNode(neighbor, node);
-      node.addChildren(child);
-
-      buildTree(graph, child);
-      subtreeNodeCount += child.size();
-    }
-    node.setSize(subtreeNodeCount);
-    return node;
   }
 
   private TreeNode lcaNode = null;
@@ -157,6 +157,6 @@ public class LowestCommonAncestor {
     addUndirectedEdge(tree, 11, 15);
     addUndirectedEdge(tree, 11, 16);
 
-    return LowestCommonAncestor.rootTree(tree, 0);
+    return TreeNode.rootTree(tree, 0);
   }
 }

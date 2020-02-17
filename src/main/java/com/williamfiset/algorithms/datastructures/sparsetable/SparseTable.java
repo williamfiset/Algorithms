@@ -1,6 +1,6 @@
 /**
  * Implementation of a sprase table which is a data structure that can very quickly query a range on
- * a static array in O(1) for operations like min, max and gcd using O(n*logn) memory.
+ * a static array in O(1) for (idempotent) operations like min, max and gcd using O(n*logn) memory.
  *
  * <p>Main inspiration: https://cp-algorithms.com/data_structures/sparse-table.html
  *

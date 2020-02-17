@@ -28,7 +28,7 @@ public class LowestCommonAncestorEulerTourTest {
     LowestCommonAncestorEulerTour.addUndirectedEdge(tree, 11, 15);
     LowestCommonAncestorEulerTour.addUndirectedEdge(tree, 11, 16);
 
-    return LowestCommonAncestorEulerTour.rootTree(tree, 0);
+    return LowestCommonAncestorEulerTour.TreeNode.rootTree(tree, 0);
   }
 
   @Test
@@ -68,8 +68,9 @@ public class LowestCommonAncestorEulerTourTest {
     for (int n = 1; n < 1000; n++) {
       List<List<Integer>> g = generateRandomTree(n);
 
-      LowestCommonAncestor.TreeNode root1 = LowestCommonAncestor.rootTree(g, 0);
-      LowestCommonAncestorEulerTour.TreeNode root2 = LowestCommonAncestorEulerTour.rootTree(g, 0);
+      LowestCommonAncestor.TreeNode root1 = LowestCommonAncestor.TreeNode.rootTree(g, 0);
+      LowestCommonAncestorEulerTour.TreeNode root2 =
+          LowestCommonAncestorEulerTour.TreeNode.rootTree(g, 0);
 
       LowestCommonAncestor slowSolver = new LowestCommonAncestor(root1);
       LowestCommonAncestorEulerTour fastSolver = new LowestCommonAncestorEulerTour(root2);

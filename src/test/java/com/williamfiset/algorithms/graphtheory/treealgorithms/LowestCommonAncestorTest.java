@@ -31,7 +31,7 @@ public class LowestCommonAncestorTest {
     addUndirectedEdge(tree, 11, 15);
     addUndirectedEdge(tree, 11, 16);
 
-    return LowestCommonAncestor.rootTree(tree, 0);
+    return LowestCommonAncestor.TreeNode.rootTree(tree, 0);
   }
 
   @Test

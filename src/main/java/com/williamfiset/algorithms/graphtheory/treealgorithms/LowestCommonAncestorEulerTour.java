@@ -50,34 +50,34 @@ public class LowestCommonAncestorEulerTour {
       return children;
     }
 
+    public static TreeNode rootTree(List<List<Integer>> graph, int rootId) {
+      TreeNode root = new TreeNode(rootId);
+      return buildTree(graph, root);
+    }
+
+    // Do dfs to construct rooted tree.
+    private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node) {
+      int subtreeNodeCount = 1;
+      for (int neighbor : graph.get(node.id())) {
+        // Ignore adding an edge pointing back to parent.
+        if (node.parent() != null && neighbor == node.parent().id()) {
+          continue;
+        }
+
+        TreeNode child = new TreeNode(neighbor, node);
+        node.addChildren(child);
+
+        buildTree(graph, child);
+        subtreeNodeCount += child.size();
+      }
+      node.setSize(subtreeNodeCount);
+      return node;
+    }
+
     @Override
     public String toString() {
       return String.valueOf(id);
     }
-  }
-
-  public static TreeNode rootTree(List<List<Integer>> graph, int rootId) {
-    TreeNode root = new TreeNode(rootId);
-    return buildTree(graph, root);
-  }
-
-  // Do dfs to construct rooted tree.
-  private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node) {
-    int subtreeNodeCount = 1;
-    for (int neighbor : graph.get(node.id())) {
-      // Ignore adding an edge pointing back to parent.
-      if (node.parent() != null && neighbor == node.parent().id()) {
-        continue;
-      }
-
-      TreeNode child = new TreeNode(neighbor, node);
-      node.addChildren(child);
-
-      buildTree(graph, child);
-      subtreeNodeCount += child.size();
-    }
-    node.setSize(subtreeNodeCount);
-    return node;
   }
 
   private TreeNode root;
@@ -89,7 +89,8 @@ public class LowestCommonAncestorEulerTour {
   private long[] heights;
   private TreeNode[] nodes;
 
-  // First and last occurrence mappings.
+  // First and last occurrence mappings. These keep track of the first/last occurrence of
+  // a TreeNode in the Euler tour for easy indexing.
   private Integer[] first, last;
 
   private MinSparseTable sparseTable;
@@ -100,9 +101,9 @@ public class LowestCommonAncestorEulerTour {
   }
 
   private void preprocess() {
-    index = 0;
-    nodes = new TreeNode[2 * n - 1];
-    heights = new long[2 * n - 1];
+    int eulerTourSize = 2 * n - 1;
+    nodes = new TreeNode[eulerTourSize];
+    heights = new long[eulerTourSize];
     first = new Integer[n];
     last = new Integer[n];
 
@@ -309,7 +310,7 @@ public class LowestCommonAncestorEulerTour {
     addUndirectedEdge(tree, 2, 4);
     addUndirectedEdge(tree, 2, 5);
 
-    return LowestCommonAncestorEulerTour.rootTree(tree, 0);
+    return TreeNode.rootTree(tree, 0);
   }
 
   private static TreeNode createFirstTreeFromSlides() {
@@ -333,7 +334,7 @@ public class LowestCommonAncestorEulerTour {
     addUndirectedEdge(tree, 11, 15);
     addUndirectedEdge(tree, 11, 16);
 
-    return LowestCommonAncestorEulerTour.rootTree(tree, 0);
+    return TreeNode.rootTree(tree, 0);
   }
 
   public static void main(String[] args) {
