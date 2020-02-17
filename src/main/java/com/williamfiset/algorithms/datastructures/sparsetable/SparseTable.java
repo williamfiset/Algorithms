@@ -4,6 +4,10 @@
  *
  * <p>Main inspiration: https://cp-algorithms.com/data_structures/sparse-table.html
  *
+ * <p>To run this file:
+ *
+ * <p>./gradlew run -Pmain=com.williamfiset.algorithms.datastructures.sparsetable.SparseTable
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.datastructures.sparsetable;
@@ -22,7 +26,7 @@ public class SparseTable {
   private int[] log2;
 
   // The sprase table values.
-  private long[][] t;
+  private long[][] dp;
 
   // Index Table (IT) associated with the values in the sparse table.
   private int[][] it;
@@ -53,6 +57,7 @@ public class SparseTable {
       };
 
   public SparseTable(long[] values, Operation op) {
+    // TODO(william): Lazily call init in query methods instead of initializing in constructor?
     this.op = op;
     init(values);
   }
@@ -60,11 +65,11 @@ public class SparseTable {
   private void init(long[] v) {
     n = v.length;
     P = (int) (Math.log(n) / Math.log(2));
-    t = new long[P + 1][n];
+    dp = new long[P + 1][n];
     it = new int[P + 1][n];
 
     for (int i = 0; i < n; i++) {
-      t[0][i] = v[i];
+      dp[0][i] = v[i];
       it[0][i] = i;
     }
 
@@ -76,9 +81,10 @@ public class SparseTable {
     // Build sparse table combining the values of the previous intervals.
     for (int p = 1; p <= P; p++) {
       for (int i = 0; i + (1 << p) <= n; i++) {
-        long leftInterval = t[p - 1][i], rightInterval = t[p - 1][i + (1 << (p - 1))];
+        long leftInterval = dp[p - 1][i];
+        long rightInterval = dp[p - 1][i + (1 << (p - 1))];
         if (op == Operation.MIN) {
-          t[p][i] = minFn.apply(leftInterval, rightInterval);
+          dp[p][i] = minFn.apply(leftInterval, rightInterval);
           // Propagate the index of the best value
           if (leftInterval <= rightInterval) {
             it[p][i] = it[p - 1][i];
@@ -86,7 +92,7 @@ public class SparseTable {
             it[p][i] = it[p - 1][i + (1 << (p - 1))];
           }
         } else if (op == Operation.MAX) {
-          t[p][i] = maxFn.apply(leftInterval, rightInterval);
+          dp[p][i] = maxFn.apply(leftInterval, rightInterval);
           // Propagate the index of the best value
           if (leftInterval >= rightInterval) {
             it[p][i] = it[p - 1][i];
@@ -94,9 +100,9 @@ public class SparseTable {
             it[p][i] = it[p - 1][i + (1 << (p - 1))];
           }
         } else if (op == Operation.SUM) {
-          t[p][i] = sumFn.apply(leftInterval, rightInterval);
+          dp[p][i] = sumFn.apply(leftInterval, rightInterval);
         } else if (op == Operation.GCD) {
-          t[p][i] = gcdFn.apply(leftInterval, rightInterval);
+          dp[p][i] = gcdFn.apply(leftInterval, rightInterval);
         }
       }
     }
@@ -127,8 +133,8 @@ public class SparseTable {
   private int minQueryIndex(int l, int r) {
     int len = r - l + 1;
     int p = log2[r - l + 1];
-    long leftInterval = t[p][l];
-    long rightInterval = t[p][r - (1 << p) + 1];
+    long leftInterval = dp[p][l];
+    long rightInterval = dp[p][r - (1 << p) + 1];
     if (leftInterval <= rightInterval) {
       return it[p][l];
     } else {
@@ -139,8 +145,8 @@ public class SparseTable {
   private int maxQueryIndex(int l, int r) {
     int len = r - l + 1;
     int p = log2[r - l + 1];
-    long leftInterval = t[p][l];
-    long rightInterval = t[p][r - (1 << p) + 1];
+    long leftInterval = dp[p][l];
+    long rightInterval = dp[p][r - (1 << p) + 1];
     if (leftInterval >= rightInterval) {
       return it[p][l];
     } else {
@@ -153,14 +159,16 @@ public class SparseTable {
   // Perform a cascading query which shrinks the left endpoint while summing over all the intervals
   // which are powers of 2 between [l, r].
   //
-  // NOTE: You can  achieve a faster time complexity with less memory using a simple prefix array...
   // WARNING: This method can easily produces values that overflow.
+  //
+  // NOTE: You can achieve a faster time complexity and use less memory with a simple prefix sum
+  // array. This method is here more as a proof of concept than for its usefulness.
   private long sumQuery(int l, int r) {
     long sum = 0;
     for (int p = P; p >= 0; p--) {
       int rangeLength = r - l + 1;
       if ((1 << p) <= rangeLength) {
-        sum += t[p][l];
+        sum += dp[p][l];
         l += (1 << p);
       }
     }
@@ -173,55 +181,26 @@ public class SparseTable {
   // which we'll call k. Then we can query the intervals [l, l+k] and [r-k+1, r] (which likely
   // overlap) and apply the function again. Some functions (like min and max) don't care about
   // overlapping intervals so this trick works, but for a function like sum this would return the
-  // wrong result.
+  // wrong result since it is not an idempotent binary function.
   private long query(int l, int r, BinaryOperator<Long> fn) {
     int len = r - l + 1;
     int p = log2[r - l + 1];
-    return fn.apply(t[p][l], t[p][r - (1 << p) + 1]);
+    return fn.apply(dp[p][l], dp[p][r - (1 << p) + 1]);
   }
+
+  /* Example usage: */
 
   public static void main(String[] args) {
-    long[] v = {2, -3, 4, 1, 0, -1, 5, 6};
-    SparseTable st = new SparseTable(v, Operation.MIN);
-    System.out.println(st.query(2, 7));
-    System.out.println(st.queryIndex(2, 7));
+    long[] values = {2, -3, 4, 1, 0, -1, -1, 5, 6};
 
-    simpleTest();
-    simpleMinQueryTest();
-  }
+    // Initialize sparse table to do range minimum queries.
+    SparseTable sparseTable = new SparseTable(values, Operation.MIN);
 
-  private static void simpleMinQueryTest() {
-    long[] v = {2, -3, 4, 1, 0, -1, 5, 6};
-    SparseTable st = new SparseTable(v, Operation.MIN);
-    for (int i = 0; i < v.length; i++) {
-      for (int j = i; j < v.length; j++) {
-        long m = Long.MAX_VALUE;
-        for (int k = i; k <= j; k++) {
-          m = Math.min(m, v[k]);
-        }
-        if (st.query(i, j) != m) {
-          System.out.println("Sparse table value incorrect.");
-        }
-        if (v[st.queryIndex(i, j)] != m) {
-          System.out.println("SparseTable index incorrect. Got index: " + st.queryIndex(i, j));
-        }
-      }
-    }
-  }
+    // Prints: "Min value between [2, 7] = -1"
+    System.out.printf("Min value between [2, 7] = %d\n", sparseTable.query(2, 7));
 
-  private static void simpleTest() {
-    long[] v = {2, -3, 4, 1, 0, -1, 5, 6};
-    SparseTable st = new SparseTable(v, Operation.SUM);
-    for (int i = 0; i < v.length; i++) {
-      for (int j = i; j < v.length; j++) {
-        long trueSum = 0;
-        for (int k = i; k <= j; k++) {
-          trueSum += v[k];
-        }
-        if (st.query(i, j) != trueSum) {
-          System.out.printf("Ooopse, got %d instead of %d!\n", st.query(i, j), trueSum);
-        }
-      }
-    }
+    // Prints: "Index of min value between [2, 7] = 5". Returns the leftmost index in the
+    // event that there are duplicates.
+    System.out.printf("Index of min value between [2, 7] = %d\n", sparseTable.queryIndex(2, 7));
   }
 }

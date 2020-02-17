@@ -104,6 +104,7 @@ or
     * [Segment tree (array based, compact)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/segmenttree/CompactSegmentTree.java)
     * [Segment tree (pointer implementation)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/segmenttree/Node.java)
 * [Skip List [UNTESTED]](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/skiplist/SkipList.java)
+* [Sparse Table](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/sparsetable/SparseTable.java)
 * [:movie_camera:](https://www.youtube.com/watch?v=L3ud3rXpIxA)[Stack](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/stack)
     * [Stack (integer only, fixed size, fast)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/stack/IntStack.java)
     * [Stack (linked list, generic)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/stack/Stack.java)
