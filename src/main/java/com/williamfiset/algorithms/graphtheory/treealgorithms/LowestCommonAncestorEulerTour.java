@@ -80,89 +80,72 @@ public class LowestCommonAncestorEulerTour {
     }
   }
 
+  private int n;
   private TreeNode root;
   private boolean preprocessed;
 
-  private int n;
-  private int index;
-
+  // Populated during Euler Tour.
   private long[] heights;
-  private TreeNode[] nodes;
+  private TreeNode[] nodeOrder;
 
-  // First and last occurrence mappings. These keep track of the first/last occurrence of
-  // a TreeNode in the Euler tour for easy indexing.
-  private Integer[] first, last;
+  // The last occurrence mapping. This mapping keeps track of the last occurrence of a TreeNode in
+  // the Euler tour for easy indexing. You could also keep track of the first occurrence of a node
+  // and use that instead.
+  private int[] last;
 
   private MinSparseTable sparseTable;
 
   public LowestCommonAncestorEulerTour(TreeNode root) {
-    n = root.size();
+    this.n = root.size();
     this.root = root;
   }
 
   private void preprocess() {
     int eulerTourSize = 2 * n - 1;
-    nodes = new TreeNode[eulerTourSize];
+    nodeOrder = new TreeNode[eulerTourSize];
     heights = new long[eulerTourSize];
-    first = new Integer[n];
-    last = new Integer[n];
+    last = new int[n];
 
-    dfs(root, 0);
+    dfs(root, 0, 0);
 
-    // int[] indx = new int[2*n-1];
-    // for (int i = 0; i < n; i++) indx[i] = i;
-
-    // p(indx);
-    // p(heights);
-    // p(nodes);
-
-    // System.out.println(java.util.Arrays.toString(first));
-    // System.out.println(java.util.Arrays.toString(last));
-    // System.out.println(nodes.size());
-    // System.out.println(n);
-
-    // Initialize and build sparse table on the heights.
+    // Initialize and build sparse table on the heights which will allow us to
+    // index into the nodeOrder array to return the LCA.
     sparseTable = new MinSparseTable(heights);
   }
 
-  // Finds the lowest common ancestor of the nodes with id1 and id2.
+  // Finds the lowest common ancestor of the nodeOrder with id1 and id2.
   public TreeNode lca(int id1, int id2) {
     // Lazily preprocess here instead of in constructor.
     if (!preprocessed) {
       preprocess();
       preprocessed = true;
     }
-    // System.out.println(java.util.Arrays.toString(first));
-    // System.out.println(java.util.Arrays.toString(last));
 
-    int i = Math.min(first[id1], last[id2]);
-    int j = Math.max(first[id1], last[id2]);
-    // System.out.printf("first = %d, last = %d\n", i, j);
-    int k = sparseTable.queryIndex(i, j);
-    return nodes[k];
-    // return null;
+    int l = Math.min(last[id1], last[id2]);
+    int r = Math.max(last[id1], last[id2]);
+    int i = sparseTable.queryIndex(l, r);
+    return nodeOrder[i];
   }
 
-  // Do Euler tour.
-  private void dfs(TreeNode node, long height) {
+  // Construct Euler Tour by populating the 'heights' and 'nodeOrder' arrays.
+  private int dfs(TreeNode node, long height, int index) {
     if (node == null) {
-      return;
+      return index;
     }
-    // System.out.printf("id = %d, n = %d\n", node.id(), node.size());
-    nodes[index] = node;
+    nodeOrder[index] = node;
     heights[index] = height;
-    if (first[node.id()] == null) first[node.id()] = index;
     last[node.id()] = index;
     index++;
 
     for (TreeNode child : node.children()) {
-      dfs(child, height + 1);
+      index = dfs(child, height + 1, index);
 
-      nodes[index] = node;
+      nodeOrder[index] = node;
       heights[index] = height;
       last[node.id()] = index;
       index++;
     }
+    return index;
   }
 
   // Sparse table for efficient minimum range queries in O(1) with O(nlogn) space
@@ -178,7 +161,7 @@ public class LowestCommonAncestorEulerTour {
     private int[] log2;
 
     // The sprase table values.
-    private long[][] t;
+    private long[][] dp;
 
     // Index Table (IT) associated with the values in the sparse table.
     private int[][] it;
@@ -198,11 +181,11 @@ public class LowestCommonAncestorEulerTour {
     private void init(long[] v) {
       n = v.length;
       P = (int) (Math.log(n) / Math.log(2));
-      t = new long[P + 1][n];
+      dp = new long[P + 1][n];
       it = new int[P + 1][n];
 
       for (int i = 0; i < n; i++) {
-        t[0][i] = v[i];
+        dp[0][i] = v[i];
         it[0][i] = i;
       }
 
@@ -214,8 +197,9 @@ public class LowestCommonAncestorEulerTour {
       // Build sparse table combining the values of the previous intervals.
       for (int p = 1; p <= P; p++) {
         for (int i = 0; i + (1 << p) <= n; i++) {
-          long leftInterval = t[p - 1][i], rightInterval = t[p - 1][i + (1 << (p - 1))];
-          t[p][i] = Math.min(leftInterval, rightInterval);
+          long leftInterval = dp[p - 1][i];
+          long rightInterval = dp[p - 1][i + (1 << (p - 1))];
+          dp[p][i] = Math.min(leftInterval, rightInterval);
 
           // Propagate the index of the best value
           if (leftInterval <= rightInterval) {
@@ -231,8 +215,8 @@ public class LowestCommonAncestorEulerTour {
     public int queryIndex(int l, int r) {
       int len = r - l + 1;
       int p = log2[r - l + 1];
-      long leftInterval = t[p][l];
-      long rightInterval = t[p][r - (1 << p) + 1];
+      long leftInterval = dp[p][l];
+      long rightInterval = dp[p][r - (1 << p) + 1];
       if (leftInterval <= rightInterval) {
         return it[p][l];
       } else {
@@ -337,14 +321,35 @@ public class LowestCommonAncestorEulerTour {
     return TreeNode.rootTree(tree, 0);
   }
 
+  private static TreeNode makeTestTree() {
+    int n = 11;
+    List<List<Integer>> tree = createEmptyGraph(n);
+
+    addUndirectedEdge(tree, 0, 1);
+    addUndirectedEdge(tree, 0, 7);
+    addUndirectedEdge(tree, 1, 2);
+    addUndirectedEdge(tree, 1, 3);
+    addUndirectedEdge(tree, 3, 4);
+    addUndirectedEdge(tree, 3, 5);
+    addUndirectedEdge(tree, 3, 6);
+    addUndirectedEdge(tree, 7, 8);
+    addUndirectedEdge(tree, 7, 9);
+    addUndirectedEdge(tree, 9, 10);
+
+    return TreeNode.rootTree(tree, 0);
+  }
+
   public static void main(String[] args) {
     TreeNode root = createSimpleTree();
     LowestCommonAncestorEulerTour solver = new LowestCommonAncestorEulerTour(root);
-    System.out.println(root.size());
     System.out.println(solver.lca(4, 5));
 
     root = createFirstTreeFromSlides();
     solver = new LowestCommonAncestorEulerTour(root);
     System.out.println(solver.lca(10, 15)); // should be 5
+
+    root = makeTestTree();
+    solver = new LowestCommonAncestorEulerTour(root);
+    System.out.println(solver.lca(2, 5)); // should be 1
   }
 }
