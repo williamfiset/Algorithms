@@ -4,7 +4,9 @@
  * obtained from the Euler tour can then be used in combination with a sprase table to find the LCA
  * in O(1).
  *
- * <p>Time Complexity: O(1) Space Complexity: O(n*log2(n))
+ * <p>Time Complexity: O(1)
+ *
+ * <p>Space Complexity: O(n*log2(n))
  *
  * <p>To run script:
  *
@@ -99,7 +101,7 @@ public class LowestCommonAncestorEulerTour {
   private TreeNode root;
   private boolean preprocessed;
 
-  // Populated during Euler Tour.
+  // Populated when constructing Euler Tour.
   private long[] heights;
   private TreeNode[] nodeOrder;
 
@@ -108,6 +110,7 @@ public class LowestCommonAncestorEulerTour {
   // and use that instead.
   private int[] last;
 
+  // Sparse table impl which can efficiently do Range Min Queries (RMQ).
   private MinSparseTable sparseTable;
 
   public LowestCommonAncestorEulerTour(TreeNode root) {
@@ -121,6 +124,7 @@ public class LowestCommonAncestorEulerTour {
     heights = new long[eulerTourSize];
     last = new int[n];
 
+    // Do depth first search to construct Euler tour.
     dfs(root, 0, 0);
 
     // Initialize and build sparse table on the heights which will allow us to
