@@ -1,3 +1,18 @@
+/**
+ * Implementation of finding the Lowest Common Ancestor (LCA) of a tree. This impl first finds an
+ * Euler tour from the root node which visits all the nodes in the tree. The node height values
+ * obtained from the Euler tour can then be used in combination with a sprase table to find the LCA
+ * in O(1).
+ *
+ * <p>Time Complexity: O(1) Space Complexity: O(n*log2(n))
+ *
+ * <p>To run script:
+ *
+ * <p>./gradlew run
+ * -Pmain=com.williamfiset.algorithms.graphtheory.treealgorithms.LowestCommonAncestorEulerTour
+ *
+ * @author William Fiset, william.alexandre.fiset@gmail.com
+ */
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import java.util.*;
@@ -239,62 +254,10 @@ public class LowestCommonAncestorEulerTour {
     graph.get(to).add(from);
   }
 
-  private static void p(int[] a) {
-    System.out.print("[");
-    for (int i = 0; i < a.length; i++) {
-      System.out.printf("% 3d,", a[i]);
-    }
-    System.out.print("]");
-    System.out.println();
-  }
+  /* Example usage: */
 
-  private static void p(long[] a) {
-    System.out.print("[");
-    for (int i = 0; i < a.length; i++) {
-      System.out.printf("% 3d,", a[i]);
-    }
-    System.out.print("]");
-    System.out.println();
-  }
-
-  private static void p(TreeNode[] a) {
-    System.out.print("[");
-    for (int i = 0; i < a.length; i++) {
-      System.out.printf("%3s,", a[i].toString());
-    }
-    System.out.print("]");
-    System.out.println();
-  }
-
-  private static void pl(List<Long> a) {
-    System.out.print("[");
-    for (int i = 0; i < a.size(); i++) {
-      System.out.printf("%3d,", a.get(i));
-    }
-    System.out.print("]");
-    System.out.println();
-  }
-
-  private static void ptn(List<TreeNode> a) {
-    System.out.print("[");
-    for (int i = 0; i < a.size(); i++) {
-      System.out.printf("%3s,", a.get(i).toString());
-    }
-    System.out.print("]");
-    System.out.println();
-  }
-
-  private static TreeNode createSimpleTree() {
-    int n = 6;
-    List<List<Integer>> tree = createEmptyGraph(n);
-
-    addUndirectedEdge(tree, 0, 1);
-    addUndirectedEdge(tree, 0, 2);
-    addUndirectedEdge(tree, 0, 3);
-    addUndirectedEdge(tree, 2, 4);
-    addUndirectedEdge(tree, 2, 5);
-
-    return TreeNode.rootTree(tree, 0);
+  public static void main(String[] args) {
+    example1();
   }
 
   private static TreeNode createFirstTreeFromSlides() {
@@ -321,35 +284,31 @@ public class LowestCommonAncestorEulerTour {
     return TreeNode.rootTree(tree, 0);
   }
 
-  private static TreeNode makeTestTree() {
-    int n = 11;
-    List<List<Integer>> tree = createEmptyGraph(n);
+  private static void example1() {
+    // Prints:
+    // LCA of 10 and 15 = 5
+    // LCA of 13 and 14 = 2
+    // LCA of 9 and 11 = 0
 
-    addUndirectedEdge(tree, 0, 1);
-    addUndirectedEdge(tree, 0, 7);
-    addUndirectedEdge(tree, 1, 2);
-    addUndirectedEdge(tree, 1, 3);
-    addUndirectedEdge(tree, 3, 4);
-    addUndirectedEdge(tree, 3, 5);
-    addUndirectedEdge(tree, 3, 6);
-    addUndirectedEdge(tree, 7, 8);
-    addUndirectedEdge(tree, 7, 9);
-    addUndirectedEdge(tree, 9, 10);
-
-    return TreeNode.rootTree(tree, 0);
-  }
-
-  public static void main(String[] args) {
-    TreeNode root = createSimpleTree();
+    TreeNode root = createFirstTreeFromSlides();
     LowestCommonAncestorEulerTour solver = new LowestCommonAncestorEulerTour(root);
-    System.out.println(solver.lca(4, 5));
 
-    root = createFirstTreeFromSlides();
-    solver = new LowestCommonAncestorEulerTour(root);
-    System.out.println(solver.lca(10, 15)); // should be 5
+    TreeNode lca = solver.lca(10, 15);
+    System.out.printf("LCA of 10 and 15 = %s\n", lca);
+    if (lca.id() != 5) {
+      System.out.println("Error, expected lca to be 5");
+    }
 
-    root = makeTestTree();
-    solver = new LowestCommonAncestorEulerTour(root);
-    System.out.println(solver.lca(2, 5)); // should be 1
+    lca = solver.lca(13, 14);
+    System.out.printf("LCA of 13 and 14 = %s\n", lca);
+    if (lca.id() != 2) {
+      System.out.println("Error, expected lca to be 2");
+    }
+
+    lca = solver.lca(9, 11);
+    System.out.printf("LCA of 9 and 11 = %s\n", lca);
+    if (lca.id() != 0) {
+      System.out.println("Error, expected lca to be 0");
+    }
   }
 }
