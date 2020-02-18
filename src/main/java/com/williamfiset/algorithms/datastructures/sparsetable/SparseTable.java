@@ -4,6 +4,8 @@
  *
  * <p>Main inspiration: https://cp-algorithms.com/data_structures/sparse-table.html
  *
+ * <p>Tested against: https://www.spoj.com/problems/RMQSQ
+ *
  * <p>To run this file:
  *
  * <p>./gradlew run -Pmain=com.williamfiset.algorithms.datastructures.sparsetable.SparseTable
@@ -168,6 +170,7 @@ public class SparseTable {
     for (int p = P; p >= 0; p--) {
       int rangeLength = r - l + 1;
       if ((1 << p) <= rangeLength) {
+        System.out.printf("[%d, %d)\n", l, l + (1<<p));
         sum += dp[p][l];
         l += (1 << p);
       }
@@ -191,16 +194,50 @@ public class SparseTable {
   /* Example usage: */
 
   public static void main(String[] args) {
+    example3();
+  }
+
+  private static void example1() {
     long[] values = {2, -3, 4, 1, 0, -1, -1, 5, 6};
 
     // Initialize sparse table to do range minimum queries.
-    SparseTable sparseTable = new SparseTable(values, Operation.MIN);
+    SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.MIN);
 
     // Prints: "Min value between [2, 7] = -1"
     System.out.printf("Min value between [2, 7] = %d\n", sparseTable.query(2, 7));
 
     // Prints: "Index of min value between [2, 7] = 5". Returns the leftmost index in the
     // event that there are duplicates.
-    System.out.printf("Index of min value between [2, 7] = %d\n", sparseTable.queryIndex(2, 7));
+    System.out.printf("Index of min value between [2, 7] = %d\n", sparseTable.queryIndex(2, 7));    
+  }
+
+  private static void example2() {
+    long[] values = {4, 2, 3, 7, 1, 5, 3, 3, 9, 6, 7, -1, 4};
+    System.out.println(values.length);
+
+    // Initialize sparse table to do range minimum queries.
+    SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.MIN);
+
+    // Prints: "Min value between [2, 7] = -1"
+    System.out.printf("Min value between [2, 7] = %d\n", sparseTable.query(2, 7));
+
+    // Prints: "Index of min value between [2, 7] = 5". Returns the leftmost index in the
+    // event that there are duplicates.
+    System.out.printf("Index of min value between [2, 7] = %d\n", sparseTable.queryIndex(2, 7));    
+  }
+
+  private static void example3() {
+    long[] values = {4, 2, 3, 7, 1, 5, 3, 3, 9, 6, 7, -1, 4,1,1,1,1,2,1111,1,1};
+    System.out.println(values[17]);
+
+    // Initialize sparse table to do range minimum queries.
+    SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.SUM);
+
+    // Prints: "Min value between [2, 7] = -1"
+    System.out.printf("Min value between [5, 17] = %d\n", sparseTable.query(5, 17));
+
+    // Prints: "Index of min value between [5, 17] = 5". Returns the leftmost index in the
+    // event that there are duplicates.
+    // System.out.printf("Index of min value between [5, 17] = %d\n", sparseTable.queryIndex(2, 7));    
   }
 }
