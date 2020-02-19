@@ -112,7 +112,7 @@ public class SparseTable {
   }
 
   // For debugging, testing and slides.
-  private static void printTable() {
+  private void printTable() {
     for (long[] r : dp) {
       for (int i = 0; i < r.length; i++) {
         System.out.printf("%02d, ", r[i]);
