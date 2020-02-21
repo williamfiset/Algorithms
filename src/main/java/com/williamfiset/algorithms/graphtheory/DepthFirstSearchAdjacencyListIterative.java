@@ -30,20 +30,18 @@ public class DepthFirstSearchAdjacencyListIterative {
 
     // Start by visiting the starting node
     stack.push(start);
+    visited[start] = true;
 
     while (!stack.isEmpty()) {
       int node = stack.pop();
-      if (!visited[node]) {
+      count++;
+      List<Edge> edges = graph.get(node);
 
-        count++;
-        visited[node] = true;
-        List<Edge> edges = graph.get(node);
-
-        if (edges != null) {
-          for (Edge edge : edges) {
-            if (!visited[edge.to]) {
-              stack.push(edge.to);
-            }
+      if (edges != null) {
+        for (Edge edge : edges) {
+          if (!visited[edge.to]) {
+            stack.push(edge.to);
+            visited[edge.to] = true;
           }
         }
       }
