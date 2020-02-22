@@ -24,7 +24,7 @@ public class SparseTable {
   // The maximum power of 2 needed. This value is floor(log2(n))
   private int P;
 
-  // Fast log base 2 logarithm lookup table, 1 <= i <= n
+  // Fast log base 2 logarithm lookup table for i, 1 <= i <= n
   private int[] log2;
 
   // The sprase table values.
@@ -66,6 +66,9 @@ public class SparseTable {
 
   private void init(long[] v) {
     n = v.length;
+
+    // Tip: to get the floor of the logarithm base 2 in Java you can also do:
+    // Integer.numberOfTrailingZeros(Integer.highestOneBit(n)).
     P = (int) (Math.log(n) / Math.log(2));
     dp = new long[P + 1][n];
     it = new int[P + 1][n];
