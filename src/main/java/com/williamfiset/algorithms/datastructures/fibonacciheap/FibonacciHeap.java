@@ -1,8 +1,12 @@
-package com.williamfiset.algorithms.datastructures.fibonacciheap;
+/**
+ * FibonacciHeap data structure implementation.
+ *
+ *  Disclaimer: implementation based on:
+ *  http://staff.ustc.edu.cn/~csli/graduate/algorithms/book6/chap21.htm
+ *  Implementation credits to the respective code owners.
+ */
 
-// Disclaimer: implementation based on
-// "http://staff.ustc.edu.cn/~csli/graduate/algorithms/book6/chap21.htm"
-// Credits to the respective owner for code
+package com.williamfiset.algorithms.datastructures.fibonacciheap;
 
 import static java.lang.Math.floor;
 import static java.lang.Math.log;

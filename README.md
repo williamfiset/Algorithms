@@ -84,6 +84,7 @@ or
 * [:movie_camera:](https://www.youtube.com/watch?v=RgITNht_f4Q)[Fenwick Tree](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/fenwicktree)
     * [Fenwick Tree (range query, point updates)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/fenwicktree/FenwickTreeRangeQueryPointUpdate.java)
     * [Fenwick Tree (range update, point query)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/fenwicktree/FenwickTreeRangeUpdatePointQuery.java)
+* [Fibonacci Heap](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/fibonacciheap)
 * [Set](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/set)
 * [:movie_camera:](https://www.youtube.com/watch?v=2E54GqF0H4s)[Hashtable](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/hashtable)
     * [Hashtable (double hashing)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/hashtable/HashTableDoubleHashing.java)
