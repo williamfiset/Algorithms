@@ -1,9 +1,7 @@
 package com.williamfiset.algorithms.datastructures.fibonacciheap;
 
+import static com.google.common.truth.Truth.assertThat;
 import static java.util.Collections.sort;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,14 +12,13 @@ import java.util.Random;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.nnsoft.trudeau.collections.fibonacciheap.FibonacciHeap;
 
 // Disclaimer: Based by help of
 // "http://langrsoft.com/jeff/2011/11/test-driving-a-heap-based-priority-queue/">Test-Driving a
 // Heap-Based Priority Queue</a>
 // Credits to the respecti owner for code
 
-public final class FibonacciHeapTestCase {
+public final class FibonacciHeapTest {
 
   private Queue<Integer> queue;
 
@@ -37,22 +34,22 @@ public final class FibonacciHeapTestCase {
 
   @Test
   public void emptyWhenCreated() {
-    assertThat(queue.isEmpty(), is(true));
-    assertThat(queue.poll(), nullValue());
+    assertThat(queue.isEmpty()).isEqualTo(true);
+    assertThat(queue.poll()).isEqualTo(null);
   }
 
   @Test
   public void noLongerEmptyAfterAdd() {
     queue.add(50);
 
-    assertThat(queue.isEmpty(), is(false));
+    assertThat(queue.isEmpty()).isFalse();
   }
 
   @Test
   public void singletonQueueReturnsSoleItemOnPoll() {
     queue.add(50);
 
-    assertThat(queue.poll(), is(50));
+    assertThat(queue.poll()).isEqualTo(50);
   }
 
   @Test
@@ -60,7 +57,7 @@ public final class FibonacciHeapTestCase {
     queue.add(50);
     queue.poll();
 
-    assertThat(queue.isEmpty(), is(true));
+    assertThat(queue.isEmpty()).isEqualTo(true);
   }
 
   @Test
@@ -68,17 +65,17 @@ public final class FibonacciHeapTestCase {
     queue.add(100);
     queue.add(50);
 
-    assertThat(queue.poll(), is(50));
-    assertThat(queue.poll(), is(100));
-    assertThat(queue.isEmpty(), is(true));
+    assertThat(queue.poll()).isEqualTo(50);
+    assertThat(queue.poll()).isEqualTo(100);
+    assertThat(queue.isEmpty()).isEqualTo(true);
   }
 
   @Test
   public void insertSingleItem() {
     queue.add(50);
 
-    assertThat(queue.poll(), is(50));
-    assertThat(queue.isEmpty(), is(true));
+    assertThat(queue.poll()).isEqualTo(50);
+    assertThat(queue.isEmpty()).isEqualTo(true);
   }
 
   @Test
@@ -87,10 +84,10 @@ public final class FibonacciHeapTestCase {
     queue.add(100);
     queue.add(50);
 
-    assertThat(queue.poll(), is(50));
-    assertThat(queue.poll(), is(50));
-    assertThat(queue.poll(), is(100));
-    assertThat(queue.isEmpty(), is(true));
+    assertThat(queue.poll()).isEqualTo(50);
+    assertThat(queue.poll()).isEqualTo(50);
+    assertThat(queue.poll()).isEqualTo(100);
+    assertThat(queue.isEmpty()).isEqualTo(true);
   }
 
   @Test
@@ -101,17 +98,16 @@ public final class FibonacciHeapTestCase {
     for (int i = 0; i < 1000; i++) {
       Integer number = new Integer(r.nextInt(10000));
       expected.add(number);
-
       queue.add(number);
     }
     sort(expected);
 
     for (Integer integer : expected) {
       Integer i = queue.poll();
-      assertThat(i, is(integer));
+      assertThat(i).isEqualTo(integer);
     }
 
-    assertThat(queue.isEmpty(), is(true));
+    assertThat(queue.isEmpty()).isEqualTo(true);
   }
 
   @Test
@@ -125,13 +121,13 @@ public final class FibonacciHeapTestCase {
 
     queue.addAll(c);
 
-    assertThat(queue.isEmpty(), is(false));
-    assertThat(queue.containsAll(c), is(true));
+    assertThat(queue.isEmpty()).isEqualTo(false);
+    assertThat(queue.containsAll(c)).isEqualTo(true);
 
-    assertThat(queue.contains(100), is(true));
-    assertThat(queue.contains(21), is(true));
-    assertThat(queue.contains(50), is(true));
-    assertThat(queue.contains(20), is(true));
+    assertThat(queue.contains(100)).isEqualTo(true);
+    assertThat(queue.contains(21)).isEqualTo(true);
+    assertThat(queue.contains(50)).isEqualTo(true);
+    assertThat(queue.contains(20)).isEqualTo(true);
   }
 
   @Test
@@ -142,9 +138,9 @@ public final class FibonacciHeapTestCase {
       queue.add(number);
     }
 
-    assertThat(queue.isEmpty(), is(false));
+    assertThat(queue.isEmpty()).isEqualTo(false);
     queue.clear();
-    assertThat(queue.isEmpty(), is(true));
+    assertThat(queue.isEmpty()).isEqualTo(true);
   }
 
   @Test
@@ -154,10 +150,11 @@ public final class FibonacciHeapTestCase {
     queue.offer(20);
     queue.offer(21);
 
-    assertThat(queue.isEmpty(), is(false));
-    assertThat(queue.peek(), is(20));
-    assertThat(queue.element(), is(20));
-    assertThat(queue.size(), is(4));
+    assertThat(queue.isEmpty()).isFalse();
+    ;
+    assertThat(queue.peek()).isEqualTo(20);
+    assertThat(queue.element()).isEqualTo(20);
+    assertThat(queue.size()).isEqualTo(4);
   }
 
   @Test(expected = NoSuchElementException.class)
