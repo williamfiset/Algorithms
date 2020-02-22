@@ -81,34 +81,34 @@ public class SparseTable {
     }
 
     // Build sparse table combining the values of the previous intervals.
-    for (int p = 1; p <= P; p++) {
-      for (int i = 0; i + (1 << p) <= n; i++) {
-        long leftInterval = dp[p - 1][i];
-        long rightInterval = dp[p - 1][i + (1 << (p - 1))];
+    for (int i = 1; i <= P; i++) {
+      for (int j = 0; j + (1 << i) <= n; j++) {
+        long leftInterval = dp[i - 1][j];
+        long rightInterval = dp[i - 1][j + (1 << (i - 1))];
         if (op == Operation.MIN) {
-          dp[p][i] = minFn.apply(leftInterval, rightInterval);
+          dp[i][j] = minFn.apply(leftInterval, rightInterval);
           // Propagate the index of the best value
           if (leftInterval <= rightInterval) {
-            it[p][i] = it[p - 1][i];
+            it[i][j] = it[i - 1][j];
           } else {
-            it[p][i] = it[p - 1][i + (1 << (p - 1))];
+            it[i][j] = it[i - 1][j + (1 << (i - 1))];
           }
         } else if (op == Operation.MAX) {
-          dp[p][i] = maxFn.apply(leftInterval, rightInterval);
+          dp[i][j] = maxFn.apply(leftInterval, rightInterval);
           // Propagate the index of the best value
           if (leftInterval >= rightInterval) {
-            it[p][i] = it[p - 1][i];
+            it[i][j] = it[i - 1][j];
           } else {
-            it[p][i] = it[p - 1][i + (1 << (p - 1))];
+            it[i][j] = it[i - 1][j + (1 << (i - 1))];
           }
         } else if (op == Operation.SUM) {
-          dp[p][i] = sumFn.apply(leftInterval, rightInterval);
+          dp[i][j] = sumFn.apply(leftInterval, rightInterval);
         } else if (op == Operation.GCD) {
-          dp[p][i] = gcdFn.apply(leftInterval, rightInterval);
+          dp[i][j] = gcdFn.apply(leftInterval, rightInterval);
         }
       }
     }
-    // printTable()
+    // printTable();
   }
 
   // For debugging, testing and slides.
@@ -219,7 +219,7 @@ public class SparseTable {
 
     // Prints: "Index of min value between [2, 7] = 5". Returns the leftmost index in the
     // event that there are duplicates.
-    System.out.printf("Index of min value between [2, 7] = %d\n", sparseTable.queryIndex(2, 7));    
+    System.out.printf("Index of min value between [2, 7] = %d\n", sparseTable.queryIndex(2, 7));
   }
 
   private static void example2() {
@@ -227,18 +227,18 @@ public class SparseTable {
     System.out.println(values.length);
 
     // Initialize sparse table to do range minimum queries.
-    SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.SUM);
+    SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.MIN);
 
     // Prints: "Min value between [2, 7] = -1"
     System.out.printf("Min value between [2, 7] = %d\n", sparseTable.query(2, 7));
 
     // Prints: "Index of min value between [2, 7] = 5". Returns the leftmost index in the
     // event that there are duplicates.
-    // System.out.printf("Index of min value between [2, 7] = %d\n", sparseTable.queryIndex(2, 7));    
+    // System.out.printf("Index of min value between [2, 7] = %d\n", sparseTable.queryIndex(2, 7));
   }
 
   private static void example3() {
-    long[] values = {4, 2, 3, 7, 1, 5, 3, 3, 9, 6, 7, -1, 4,1,1,1,1,2,1111,1,1};
+    long[] values = {4, 2, 3, 7, 1, 5, 3, 3, 9, 6, 7, -1, 4, 1, 1, 1, 1, 2, 1111, 1, 1};
     System.out.println(values[17]);
 
     // Initialize sparse table to do range minimum queries.
@@ -249,6 +249,6 @@ public class SparseTable {
 
     // Prints: "Index of min value between [5, 17] = 5". Returns the leftmost index in the
     // event that there are duplicates.
-    // System.out.printf("Index of min value between [5, 17] = %d\n", sparseTable.queryIndex(2, 7));    
+    // System.out.printf("Index of min value between [5, 17] = %d\n", sparseTable.queryIndex(2, 7));
   }
 }
