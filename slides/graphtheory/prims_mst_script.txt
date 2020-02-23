@@ -509,7 +509,7 @@ Now let's look at the actual algorithm for eager Prim's.
 @173.
 In this first block I define a few more variables we'll need:
 'm' the number of expected edges in the MST.
-'edgeCount' the number of edges we have currently included in the MST. This
+'edgeCount' the number of edges we have currently have included in the MST. This
 variable is used to make sure the tree spans the whole graph.
 'mstCost' tracks the total cost of the MST
 and finally, 'mstEdges' is an array which holds edges which we have included in
@@ -541,7 +541,7 @@ this is the node the edge is pointing at.
 Next, skip edges which point at already visited nodes.
 
 @180.
-Now here's the bit where we actually relax the edge. First I check if the IPQ
+Now here's the bit where we actually relax the edge. First, check if the IPQ
 contains the key with the value of the destination node.
 
 @181.
