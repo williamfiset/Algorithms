@@ -38,6 +38,7 @@ public class SparseTable {
     MIN,
     MAX,
     SUM,
+    MULT,
     GCD
   };
 
@@ -47,6 +48,7 @@ public class SparseTable {
   private BinaryOperator<Long> sumFn = (a, b) -> a + b;
   private BinaryOperator<Long> minFn = (a, b) -> Math.min(a, b);
   private BinaryOperator<Long> maxFn = (a, b) -> Math.max(a, b);
+  private BinaryOperator<Long> multFn = (a, b) -> a * b;
   private BinaryOperator<Long> gcdFn =
       (a, b) -> {
         long gcd = a;
@@ -106,6 +108,8 @@ public class SparseTable {
           }
         } else if (op == Operation.SUM) {
           dp[i][j] = sumFn.apply(leftInterval, rightInterval);
+        } else if (op == Operation.MULT) {
+          dp[i][j] = multFn.apply(leftInterval, rightInterval);
         } else if (op == Operation.GCD) {
           dp[i][j] = gcdFn.apply(leftInterval, rightInterval);
         }
@@ -126,6 +130,7 @@ public class SparseTable {
 
   // Queries [l, r] for the operation set on this sparse table.
   public long query(int l, int r) {
+    // Fast queries types, O(1)
     if (op == Operation.MIN) {
       return query(l, r, minFn);
     } else if (op == Operation.MAX) {
@@ -133,7 +138,13 @@ public class SparseTable {
     } else if (op == Operation.GCD) {
       return query(l, r, gcdFn);
     }
-    return sumQuery(l, r);
+
+    // Slower query types, O(log2(n))
+    if (op == Operation.SUM) {
+      return sumQuery(l, r);
+    } else {
+      return multQuery(l, r);
+    }
   }
 
   public int queryIndex(int l, int r) {
@@ -148,7 +159,7 @@ public class SparseTable {
 
   private int minQueryIndex(int l, int r) {
     int len = r - l + 1;
-    int p = log2[r - l + 1];
+    int p = log2[len];
     long leftInterval = dp[p][l];
     long rightInterval = dp[p][r - (1 << p) + 1];
     if (leftInterval <= rightInterval) {
@@ -160,7 +171,7 @@ public class SparseTable {
 
   private int maxQueryIndex(int l, int r) {
     int len = r - l + 1;
-    int p = log2[r - l + 1];
+    int p = log2[len];
     long leftInterval = dp[p][l];
     long rightInterval = dp[p][r - (1 << p) + 1];
     if (leftInterval >= rightInterval) {
@@ -184,12 +195,23 @@ public class SparseTable {
     for (int p = P; p >= 0; p--) {
       int rangeLength = r - l + 1;
       if ((1 << p) <= rangeLength) {
-        // System.out.printf("[%d, %d)\n", l, l + (1<<p));
         sum += dp[p][l];
         l += (1 << p);
       }
     }
     return sum;
+  }
+
+  private long multQuery(int l, int r) {
+    long result = 1;
+    for (int p = P; p >= 0; p--) {
+      int rangeLength = r - l + 1;
+      if ((1 << p) <= rangeLength) {
+        result *= dp[p][l];
+        l += (1 << p);
+      }
+    }
+    return result;
   }
 
   // Do either a min, max or gcd query on the interval [l, r] in O(1).
@@ -201,7 +223,7 @@ public class SparseTable {
   // wrong result since it is not an idempotent binary function.
   private long query(int l, int r, BinaryOperator<Long> fn) {
     int len = r - l + 1;
-    int p = log2[r - l + 1];
+    int p = log2[len];
     return fn.apply(dp[p][l], dp[p][r - (1 << p) + 1]);
   }
 
@@ -217,27 +239,16 @@ public class SparseTable {
     // Initialize sparse table to do range minimum queries.
     SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.MIN);
 
-    // Prints: "Min value between [2, 7] = -1"
     System.out.printf("Min value between [2, 7] = %d\n", sparseTable.query(2, 7));
-
-    // Prints: "Index of min value between [2, 7] = 5". Returns the leftmost index in the
-    // event that there are duplicates.
-    System.out.printf("Index of min value between [2, 7] = %d\n", sparseTable.queryIndex(2, 7));
   }
 
   private static void example2() {
     long[] values = {4, 2, 3, 7, 1, 5, 3, 3, 9, 6, 7, -1, 4};
-    System.out.println(values.length);
 
     // Initialize sparse table to do range minimum queries.
     SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.MIN);
 
-    // Prints: "Min value between [2, 7] = -1"
     System.out.printf("Min value between [2, 7] = %d\n", sparseTable.query(2, 7));
-
-    // Prints: "Index of min value between [2, 7] = 5". Returns the leftmost index in the
-    // event that there are duplicates.
-    // System.out.printf("Index of min value between [2, 7] = %d\n", sparseTable.queryIndex(2, 7));
   }
 
   private static void example3() {
@@ -247,11 +258,6 @@ public class SparseTable {
     // Initialize sparse table to do range minimum queries.
     SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.SUM);
 
-    // Prints: "Min value between [2, 7] = -1"
     System.out.printf("Min value between [5, 17] = %d\n", sparseTable.query(5, 17));
-
-    // Prints: "Index of min value between [5, 17] = 5". Returns the leftmost index in the
-    // event that there are duplicates.
-    // System.out.printf("Index of min value between [5, 17] = %d\n", sparseTable.queryIndex(2, 7));
   }
 }

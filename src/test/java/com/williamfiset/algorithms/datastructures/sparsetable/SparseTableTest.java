@@ -15,9 +15,11 @@ public class SparseTableTest {
       maxQuery(values, l, r, actual, index);
     } else if (op == SparseTable.Operation.SUM) {
       sumQuery(values, l, r, actual);
+    } else if (op == SparseTable.Operation.MULT) {
+      multQuery(values, l, r, actual);
     } else if (op == SparseTable.Operation.GCD) {
       gcdQuery(values, l, r, actual);
-    }
+    } 
   }
 
   private void minQuery(long[] values, int l, int r, long actual, int index) {
@@ -40,6 +42,12 @@ public class SparseTableTest {
     assertThat(m).isEqualTo(actual);
   }
 
+  private void multQuery(long[] values, int l, int r, long actual) {
+    long m = 1;
+    for (int i = l; i <= r; i++) m *= values[i];
+    assertThat(m).isEqualTo(actual);
+  }
+
   // Computes the Greatest Common Divisor (GCD) of a & b
   // This method ensures that the value returned is non negative
   public static long gcd(long a, long b) {
@@ -56,6 +64,7 @@ public class SparseTableTest {
     SparseTable min_st = new SparseTable(values, SparseTable.Operation.MIN);
     SparseTable max_st = new SparseTable(values, SparseTable.Operation.MAX);
     SparseTable sum_st = new SparseTable(values, SparseTable.Operation.SUM);
+    SparseTable mult_st = new SparseTable(values, SparseTable.Operation.MULT);
     SparseTable gcd_st = new SparseTable(values, SparseTable.Operation.GCD);
 
     for (int i = 0; i < values.length; i++) {
@@ -66,6 +75,8 @@ public class SparseTableTest {
             values, i, j, max_st.query(i, j), max_st.queryIndex(i, j), SparseTable.Operation.MAX);
         queryResultTest(
             values, i, j, sum_st.query(i, j), -1 /* unused */, SparseTable.Operation.SUM);
+        queryResultTest(
+            values, i, j, mult_st.query(i, j), -1 /* unused */, SparseTable.Operation.MULT);
         queryResultTest(
             values, i, j, gcd_st.query(i, j), -1 /* unused */, SparseTable.Operation.GCD);
       }
