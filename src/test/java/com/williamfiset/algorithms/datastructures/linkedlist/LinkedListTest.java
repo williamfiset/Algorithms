@@ -309,6 +309,21 @@ public class LinkedListTest {
     }
   }
 
+  @Test
+  public void testToString() {
+    DoublyLinkedList<String> strs = new DoublyLinkedList<>();
+    assertEquals(strs.toString(), "[  ]");
+    strs.add("a");
+    assertEquals(strs.toString(), "[ a ]");
+    strs.add("b");
+    assertEquals(strs.toString(), "[ a, b ]");
+    strs.add("c");
+    strs.add("d");
+    strs.add("e");
+    strs.add("f");
+    assertEquals(strs.toString(), "[ a, b, c, d, e, f ]");
+  }
+
   // Generate a list of random numbers
   static List<Integer> genRandList(int sz) {
     List<Integer> lst = new ArrayList<>(sz);
