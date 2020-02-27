@@ -115,7 +115,7 @@ public class SparseTable {
         }
       }
     }
-    // printTable();
+    printTable();
   }
 
   // For debugging, testing and slides.
@@ -230,19 +230,19 @@ public class SparseTable {
   /* Example usage: */
 
   public static void main(String[] args) {
-    example2();
+    example1();
   }
 
   private static void example1() {
-    long[] values = {2, -3, 4, 1, 0, -1, -1, 5, 6};
+    long[] values = {1, 2, -3, 2, 4, -1, 5};
 
     // Initialize sparse table to do range minimum queries.
-    SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.MIN);
+    SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.MULT);
 
-    System.out.printf("Min value between [2, 7] = %d\n", sparseTable.query(2, 7));
+    System.out.println(sparseTable.query(2, 3));
   }
 
-  private static void example2() {
+  private static void exampleFromSlides() {
     long[] values = {4, 2, 3, 7, 1, 5, 3, 3, 9, 6, 7, -1, 4};
 
     // Initialize sparse table to do range minimum queries.
