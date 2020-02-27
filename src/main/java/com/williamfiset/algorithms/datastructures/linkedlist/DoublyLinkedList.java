@@ -287,7 +287,10 @@ public class DoublyLinkedList<T> implements Iterable<T> {
     sb.append("[ ");
     Node<T> trav = head;
     while (trav != null) {
-      sb.append(trav.data + ", ");
+      sb.append(trav.data);
+      if (trav.next != null) {
+        sb.append(", ");
+      }
       trav = trav.next;
     }
     sb.append(" ]");
