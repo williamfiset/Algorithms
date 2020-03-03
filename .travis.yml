@@ -1,5 +1,4 @@
 # Travis Continuous Integration script for travis-ci.org
-
 dist: trusty
 
 # Runs all unit tests and check for broken links
@@ -18,7 +17,7 @@ before_install:
 before_script:
   - gem install awesome_bot
 
-# Run maven tests and broken link check
+# Run broken link check and tests
 script:
   - awesome_bot README.md --allow-dupe --allow-redirect
   - gradle test
