@@ -130,7 +130,7 @@ public class BreadthFirstSearchAdjacencyListIterative {
     solver = new BreadthFirstSearchAdjacencyListIterative(graph);
 
     int start = 10, end = 5;
-    List<Integer> path = solver.reconstructPath(10, 5);
+    List<Integer> path = solver.reconstructPath(start, end);
     System.out.printf("The shortest path from %d to %d is: [%s]\n", start, end, formatPath(path));
     // Prints:
     // The shortest path from 10 to 5 is: [10 -> 9 -> 0 -> 7 -> 6 -> 5]
