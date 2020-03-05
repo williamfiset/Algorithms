@@ -1,4 +1,4 @@
-package javatests.com.williamfiset.algorithms.strings;
+package com.williamfiset.algorithms.strings;
 
 import static com.google.common.truth.Truth.assertThat;
 
