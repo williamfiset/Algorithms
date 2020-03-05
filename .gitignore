@@ -19,3 +19,6 @@ dependencies
 .classpath
 .project
 .settings/
+
+# Mac files
+.DS_Store

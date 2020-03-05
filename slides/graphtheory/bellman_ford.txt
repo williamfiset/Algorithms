@@ -1,0 +1,114 @@
+
+Of all the shortest path algorithms in graph theory, Bellman-Ford is definitively one of the simplest, yet I really struggled as an undergrad student trying to learn this algorithm, which is part of the reason I am making this video.
+
+So what is the BF algorithm? In short, it's a Single Source Shortest Path algorithm, this means that it can find the shortest path from a starting node to all other nodes in a graph. As you can imagine this is very useful. However, BF is not ideal for single source short path algorithms because it has a much worst Time complexity then Dykstra's algorithm. In practice, Bellman-ford runs in a time complexity proportional to the product of the number of edges times the number of vertices, while Dijkstra can do much better, at around big O of E plus V log V with a binary heap.
+
+So, when would we ever use the BF algorithm? The answer is when Dijkstra's fails, and this can happen when a graph has negative edge weights. When a graph has negative edge weights it's possible that a negative cycle can manifest itself, and when it does, it is of critical importance that we are able to detect it. If this happens and we're using Dijkstra's to find the shortest path we'll get stuck in an infinite loop because the algorithm will keep finding a better and better path.
+A neat application of Bellman Ford and negative cycles is in finance and economics when performing an arbitrage between two or more markets. I'm not an expert, but this is when prices between different markets are such that you can cycle through each market with a security such as a stock or a currency and end up with more profit than you started with, essentially getting risk free gains.
+
+So let's look at how negative cycles can arise because that seems important. 
+
+Here is a graph I made with directed edges, some of which are negative. I've labeled our starting node to be node 0 and our goal would be to find the distance from zero to every other node in a SSSP context, but we're only interested in negative cycles for now. I will label blue nodes as regular nodes, red nodes as nodes directly involved in a negative cycle and yellow nodes as those reachable from a negative cycle.
+
+One way negative cycles can emerge is through negative self loops. What happens is that once we reach a self loop we can stay in that loop for a near infinite amount of time before exiting, as a result everywhere reachable by the cycle has a best cost of negative infinity, which depending on your problem may either be good or bad.
+
+In this graph, nodes 2,3,4,5 are all reachable by node 1, so they all have a best cost of negative infinity with regards to the single source shortest path problem.
+
+Let's look at another example..
+
+In this graph, a negative cycle manifests itself, but not as the result of a negative self loop, instead through a cycle of nodes whose net gain is less than zero. If you add up the edge values 1, 4 and -6 attached to nodes 1,2 and 3 the net change is -1.
+
+If we look at where this cycle can reach we see that the entire right side of the graph is affected, so hardly any nodes are safe from this cycle.
+
+Now let's look at the actual steps involved in the Bellman-Ford algorithm, first we'll need to define a few variables. 
+Let E be the number of edges in the graph, 
+Let V be the number of vertices,
+Let S be the id of the starting node, S is short for start, 
+and lastly, let D be an array of size V that tracks the best distance from S to each node.
+
+The first thing we'll want to do is set every entry in D to positive infinity. This is because the distance to each node is initially infinity because we have no idea how far each node is. Next, we'll want to set the distance to the starting node to be zero because we're already there. 
+The last part of the algorithm is to relax each edge V-1 times. Relaxing an edge simply means taking an edge and trying to update the value from where the edge starts to where it ends.
+
+In terms of code, this is all we do. We loop V-1 times, then for each edge we relax the edge. In the relaxing step, what we do is we look at the value of where the edge starts, add the edge cost and see if that's better than where we're trying to go and if so update with the shorter path value.
+
+To actually detect negative cycles, we don't do anything special, all we do is run the algorithm a second time. What we're doing in this second pass is checking for any nodes that update to a better value than the known best value, and if they do then they're part of a negative cycle and we give that node a value of negative infinity. 
+
+Let's look at a full example, here is a graph I made. Again, we will be start at node 0 and find the shortest path to every other node. On the right, I have illustrated the distance array D, watch the values in this array change as the algorithm executes. Right now, all values in the array are set to positive infinity as per the first step of the algorithm.
+
+In the second step, we set the starting node's value to 0. Now, the algorithm actually starts and we are on the first iteration where we attempt to relax each edge. Before we continue, I have an important note at the bottom of the screen which says that the edges do not need to be processed in any particular order. I may process the edges with one ordering and you process them with another ordering and we many not end up the same values on each iteration, but we will get the same end result in the distance array.
+
+I will highlight the edge currently being processed in orange and update the distance array whenever appropriate. Right now, the best value to node 1 is 5 because a distance of 5 is better than a distance of positive infinity.
+
+Then Node 2 gets its value updated to 25 because node 1 had a value of 5 from the last turn, and the edge from node 1 to node 2 is 20 making for a total of 25.
+
+Then node 5 has a similar thing happen to it
+
+and node 6 as well.
+
+BTW, an edge is dark gray if it has already been processed in this iteration. Next, node 3 gets its value updated from infinity to 35 because the best value in node 2 so far is 25 plus the edge cost of 10 is 35.
+
+Then, the edge from 2 to 4 updates to a best value of 100.
+
+Up next is an interesting edge because it was able to update node 2's best value from 25 to 20 by taking the value in node 3 which is currently 35 adding a weight of -15 and giving us a better value of 20. So this is all the algorithm does, it processes each edge performing relaxation operation, I'll let the animation play finishing of the rest this iteration.
+
+...
+
+So iteration one is over and there are 8 more to go, but for simplicity i'll just play one more iteration to give you an idea of how the algorithm works.
+
+We reset all the edges and start processing the edges again. You'll notice that a lot less updating happens in the distance array this round, particularly because I unintentionally selected the edges to be processed in a more or less optimal way.
+
+...
+
+So that's the end of the second iteration, if we fast forward to the end here's the resulting distance array.
+
+However, we're not done, we still need to find the negative cycles. Let's execute the algorithm a second time.
+
+Same procedure as usual, just relax each edge, but when we are able to relax an edge update that node's value to negative infinity instead. Let's process some edges until something interesting happens.
+
+...
+
+So it appears that when we went from node 2 to node 3 we were able to relax the edge and obtain a better value for node 3 then was there previously, so node 3 is part of some negative cycle so I will mark it red.
+
+Similarly, node 4 is connected to a negative, although indirectly. In the distance table I do not distinguish between nodes which are reachable by a negative cycle and those which are primarily involved in one, so there's no way to tell them apart, feel free to add some logic in the BF algorithm if you need to make the distinction.
+
+Continuing on, node 2 is also trapped in the cycle.
+
+And the last node also affected by the cycle is node 9 on the right. Now let's finish up with this iteration by processing the rest of the edges.
+
+...
+
+So that's it for the first iteration there are another 8 iterations to perform. In this example we happened to detect all cycles on the first iteration but this was a coincidence, in general you really need another 8 iterations. This is because you want the negative cycle minus infinity values to propagate throughout the graph, the propagation is highly dependent on the order in which the edges are being processed, but having V-1 iterations ensures that this propagation occurs correctly.
+
+
+---------------------------------------------------------
+
+if time_status is good:
+  
+  Alright time to finally see some source code,
+  you can find what i'm about to show you on github dot com
+  slash williamfiset slash algorithms, there should be a 
+  link in the description below.
+
+else
+
+  Thank you for watching, we'll cover the source code in the next
+  video. There will be a link to the code in the description for those who are curious.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

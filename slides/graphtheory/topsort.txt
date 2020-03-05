@@ -1,0 +1,130 @@
+
+
+*Play 2 sec intro sound*
+
+Welcome back! Today's topic is topological sort also called topsort for short. We're going to dicuss what is topsort, where it's used and how to find a topological ordering with some animation.
+
+Let's begin with an example, suppose you're a university student and you really want to take class H.
+
+Well before you can enroll in class H you must first take classes D and E.
+
+But before taking class D you must take classes A and B which have no prerequisites.
+
+So in a sense, there appears to be some sort of ordering on the nodes of the graph. If we needed to take all these classes Topsort is an algorithm which would be capable of telling us the order in which we should enroll in courses such that we never enroll in a course which we do not have the prerequisites for.
+
+Another canonical example of an application of topsort is for program build dependencies. A program cannot be built unless all its dependencies are first built. 
+
+For example, consider this graph where each node represents a program and the edges represent that one program depends on another to run. Well if we're trying to build program J on the right then we must first build program H and G, but to build those we need E and F, but to build those we need, and so on... So the idea is to first build the programs without any dependencies and move onwards from there. How do we find a valid ordering in which to build the programs? Well this is when topsort comes into play. One possible ordering might be:
+
+...
+
+Notice that there are unused dependencies in this case, and that will happen from time to time.
+
+In conclusion, topsort is an algorithm which will give us a topological ordering on a directed graph. A topological ordering is an ordering of nodes where for each edge from node A to node B, node A appears before node B in the ordering. If it helps, this is a fancy way of saying that we can align all the nodes in line and have all the edges pointing to the right. An important note to make about topological orderings is that they are not unique. As you can imagine there are multiple valid ways to enroll in courses and still graduate, or compile your program and its dependencies in a different order than you previously did.
+
+
+Sadly not every type of graph can have a topological ordering. For example, any graph which contains a directed cycle cannot have a valid ordering.
+
+Think of why this might be true, there cannot be an order if there is a cyclic dependency since there is no where to start. Every node in the cycle depends on another. So any graph with a directed cycle is forbidden.
+
+The only graphs that have valid topological orderings are Directed Acyclic Graphs, that is graphs with directed edges and no cycles.
+
+A natural question to ask is how do I verify that my graph does not contain a directed cycle? One method is to use Tarjan's strongly connected component algorithm which can be used to find these cycles.
+
+Another neat thing definitely worth mentioning is that every tree has a topological ordering since by definition trees do no contain any cycles! An easy way to find a topological ordering with trees is to iteratively pick off the leaf nodes. It's like you're cherry picking from the bottom, it doesn't matter the order you do it. Once the root of a subtree has all grayed out children it them becomes available. 
+This procedure continues until no more nodes are left...
+
+...
+
+So we know how it works for trees, how about general directed acyclic graphs? Well the algorithm is also simple. Just repeat the following steps:
+1) First find an unvisited node, it doesn't matter which.
+2) From this node do a Depth First Search exploring only reachable unvisited nodes.
+3) On recursive callbacks add the current node to the topological ordering in reverse order.
+Let's do an example, things will become much clearer.
+
+Here's a directed acyclic graph we want to find one of many topological orderings for. As the algorithm executes i'll be keeping track of the call stack on the left hand side in case you're curious as well as the topological ordering at the bottom of the screen, ok so let's get going. The first step is to pick an unvisited node, i'm going to pick node H.
+
+Now we do a DFS outwards from H in all possible directions exploring what we can.
+
+I'm going to go towards J
+
+<press>
+
+Now from J i'm going to keep exploring
+
+<press>
+
+Let's go to M.
+
+<press>
+
+Not at M there's no where to go, so we backtrack and add M as the last element in the topological order.
+
+Still at J we need to go towards L.
+
+<press>
+
+<press>
+
+Backtrack at L, nowhere left to go.
+
+Also backtrack at J and add it to the ordering. Notice that stack frames are being popped off the call stack when I recurse.
+
+Now we're back at H and we still need to visit node I.
+
+<press>
+
+<press>
+
+From node I we try and visit L
+
+but it turns out L is always visited, so we recurse.
+
+Add I to the ordering
+
+And finally H. As you saw, selecting a random unvisited node made us visit a subsection of the graph, we continue this process until all nodes are visited.
+
+The next node I will chose is node E. In the interest of time and simplicity, I will let the animation play and you can follow along. Note that if you try and predict the next few values you may not get the same values as me since the ordering is not unique, but this does not mean you're incorrect!
+
+...
+
+The next node I will chose is node C.
+
+...
+
+So that's one possible topological ordering, now let's look at some code!
+
+Here's some pseudo code for topsort. Let's walk through it real quick. 
+
+1) The first thing I do is I get the number of nodes from the graph which I assume is passed into the function as an adjacency list. 
+
+2) Then I declare an array called V, short for visited which tracks whether a node has been visited or not. 
+
+3) The next array called 'ordering' is the result we'll be returning in this function.
+
+4) Associated with ordering is the index i which tracks the insertion position of the next element in our topological ordering. As you've been seeing in the slides we insert elements backwards which is why i starts at position N - 1.
+
+5) Next we're ready to enter a for loop to iterate over all the nodes in our graph. The loop variable called 'at' tracks the id of the nodes we're currently processing. 
+
+6) I then check if we're on an unvisited node, because those are the only ones we care about.
+
+7) Then I start the depth first search. Notice that before I do I initialize an array called visitedNodes which I pass into the method to track which nodes were visited, and after the method is done I add the found nodes to the ordering.
+
+Now let's look at the depth first search method.
+
+
+The DFS method is very simple, all I do is mark the node we're currently at to be visited, then for each edge going outwards from the node we're at I make sure the destination node is unvisited and then call the method again but on that destination node. On the call back when the method returns, that is when we're stuck and need to backtrack I add the current node to the visited nodes array. 
+
+
+Back to the topsort method. Now that we understand how the topsort algorithm works there's a neat optimization we can do to improve performance in terms of both time and space.
+
+Notice that every time the inner if statement block gets executed we allocate memory for an array, that array gets filled and then we iterate through the found nodes to place them inside the ordering array. How about we just directly insert found nodes inside the orderings array instead of doing all this additional work?
+
+Well that's exactly what we're going to do. I got rid of the unnecessary array and modified the DFS method to return the next valid insertion position in the orderings array. Now we need to pass in index i and the orderings array so it can be filled directly inside the DFS method.
+
+Inside the new DFS method one thing that changed is that now we have a return value and we're passing in some additional variables. Notice that instead of adding the current node to the visitedNodes array as we were doing before now we simply insert the node we are currently at directly inside the orderings array. The last thing to do is to return i-1 because the next insertion position is no longer at index i, but i - 1.
+
+As always there's some source code for the topological sort algorithm which can be found on my github account at github dot com slash william fiset slash algorithms. Thank you very much for watching, if you have any questions just leave a comment, please like this video and subscribe to my channel for more computer science and mathematics videos. See you next time.
+
+*Play multi second outro sound*
+

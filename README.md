@@ -269,7 +269,8 @@ or
 * [:movie_camera:](https://www.youtube.com/watch?v=Ic80xQFWevc)[Longest Common Substring (LCS)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/strings/LongestCommonSubstring.java) **- O(nlog(n)) bounded by SA construction, otherwise O(n)**
 * [:movie_camera:](https://www.youtube.com/watch?v=OptoHwC3D-Y)[Longest Repeated Substring (LRS)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/strings/LongestRepeatedSubstring.java) **- O(nlog(n))**
 * [Manacher's algorithm (finds all palindromes in text)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/strings/ManachersAlgorithm.java) **- O(n)**
-* [Rabin-Karp algorithm (finds pattern matches in text)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/strings/RabinKarp.java) **- O(n+m)**
+* [Rabin-Karp algorithm (finds pattern match positions in text)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/strings/RabinKarp.java) **- O(n+m)**
+* [Boyer-Moore (finds pattern match positions in text)[UNTESTED]](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/strings/BoyerMooreStringSearch.java) **- O(n+m)**
 * [Substring verification with suffix array](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/strings/SubstringVerificationSuffixArray.java) **- O(nlog(n)) SA construction and O(mlog(n)) per query**
 
 # License
