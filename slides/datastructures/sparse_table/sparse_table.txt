@@ -1,0 +1,9 @@
+
+Hello and welcome! My name is William and today we're taking a looking at sparse tables, a nieche data structure with a great time complexity for answering range queries.
+
+Let's talk in what type of situation you might want to use a sparse table. Sparse tables
+are all about doing efficent range queires on a static array. Usually we're dealing
+with an integer array with immutable data that does not change. Some common types of range queires we're often iterested in answering include: finding the minimum value in a certain range, the sum of all values between two endpoints, the product of the values in an interval, and etc... 
+
+
+
