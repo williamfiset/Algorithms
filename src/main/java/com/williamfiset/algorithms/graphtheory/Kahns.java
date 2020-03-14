@@ -8,7 +8,7 @@ public class Kahns {
 
   public int[] kahns(List<List<Integer>> g) {
     int n = g.size();
-    Stack<Integer> startNodes = new Stack<>();
+    Stack<Integer> nodesWithNoIncomingEdges = new Stack<>();
     int[] inDegree = new int[n];
     for (List<Integer> edges : g) {
       for (int to : edges) {
@@ -17,18 +17,18 @@ public class Kahns {
     }
     for (int i = 0; i < n; i++) {
       if (inDegree[i] == 0) {
-        startNodes.push(i);
+        nodesWithNoIncomingEdges.push(i);
       }
     }
     int[] order = new int[n];
     int index = 0;
-    while (!startNodes.isEmpty()) {
-      int at = startNodes.pop();
+    while (!nodesWithNoIncomingEdges.isEmpty()) {
+      int at = nodesWithNoIncomingEdges.pop();
       order[index++] = at;
       for (int to : g.get(at)) {
         inDegree[to]--;
         if (inDegree[to] == 0) {
-          startNodes.push(to);
+          nodesWithNoIncomingEdges.push(to);
         }
       }
     }
