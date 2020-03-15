@@ -4,6 +4,7 @@
  * <p>Time Complexity: O(n^3)
  */
 package com.williamfiset.algorithms.linearalgebra;
+import org.checkerframework.checker.nullness.qual.*;
 
 class MatrixInverse {
 
@@ -11,7 +12,13 @@ class MatrixInverse {
   static final double EPS = 0.00000001;
 
   // Invert the specified matrix. Assumes invertibility. Time Complexity: O(r²c)
-  static double[][] inverse(double[][] matrix) {
+
+  // As specified above, if invertibility is not satisfied, then null will be
+  // returned
+
+  // the method may return a null value if matrix is not a square matrix because
+  // inverse exits only for a square matrix
+  static double @Nullable[][] inverse(double[][] matrix) {
     if (matrix.length != matrix[0].length) return null;
     int n = matrix.length;
     double[][] augmented = new double[n][n * 2];
@@ -90,7 +97,12 @@ class MatrixInverse {
       {2, 2, -2}
     };
 
-    double[][] inv = inverse(matrix);
-    for (double[] row : inv) System.out.println(java.util.Arrays.toString(row));
+    // if the matrix passed is not a square matrix, then return value
+    // value from inverse method will be null
+    double @Nullable[][] inv = inverse(matrix);
+
+    // dereferencing a possible null matrix inv may throw Nullness error
+    if(inv != null)
+      for (double[] row : inv) System.out.println(java.util.Arrays.toString(row));
   }
 }

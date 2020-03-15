@@ -5,6 +5,7 @@
  * <p>Time Complexity: O(c*r^2)
  */
 package com.williamfiset.algorithms.linearalgebra;
+import org.checkerframework.checker.nullness.qual.*;
 
 class GaussianElimination {
 

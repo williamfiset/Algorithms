@@ -6,6 +6,7 @@
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.linearalgebra;
+import org.checkerframework.checker.nullness.qual.*;
 
 public class MatrixPower {
 
@@ -35,7 +36,9 @@ public class MatrixPower {
   // return null and if p is zero return the identity.
   // NOTE: Make sure the matrix is a square matrix and
   // also watch out for overflow as the numbers climb quickly!
-  static long[][] matrixPower(long[][] matrix, long p) {
+
+  // the result may be null if power passed is negative
+  static long @Nullable[][] matrixPower(long[][] matrix, long p) {
 
     if (p < 0) return null;
 
@@ -70,13 +73,37 @@ public class MatrixPower {
 
     long[][] matrix = {{2}};
 
-    System.out.println(matrixPower(matrix, 0)[0][0]); // 1
-    System.out.println(matrixPower(matrix, 1)[0][0]); // 2
-    System.out.println(matrixPower(matrix, 2)[0][0]); // 4
-    System.out.println(matrixPower(matrix, 3)[0][0]); // 8
-    System.out.println(matrixPower(matrix, 4)[0][0]); // 16
-    System.out.println(matrixPower(matrix, 5)[0][0]); // 32
-    System.out.println(matrixPower(matrix, 6)[0][0]); // 64
+    // the ans may be null if power passed is negative
+    long @Nullable[][] ans;
+
+    // nullability check before dereferencing
+    ans = matrixPower(matrix, 0);
+    if(ans != null)
+      System.out.println(ans[0][0]); // 1
+
+    ans = matrixPower(matrix, 1);
+    if(ans != null)
+      System.out.println(ans[0][0]); // 2
+
+    ans = matrixPower(matrix, 2);
+    if(ans != null)
+      System.out.println(ans[0][0]); // 4
+
+    ans = matrixPower(matrix, 3);
+    if(ans != null)
+      System.out.println(ans[0][0]); // 8
+
+    ans = matrixPower(matrix, 4);
+    if(ans != null)
+      System.out.println(ans[0][0]); // 16
+
+    ans = matrixPower(matrix, 5);
+    if(ans != null)
+      System.out.println(ans[0][0]); // 32
+
+    ans = matrixPower(matrix, 6);
+    if(ans != null)
+      System.out.println(ans[0][0]); // 64
 
     long[][] matrix2 = {
       {1, 2},
@@ -116,8 +143,11 @@ public class MatrixPower {
 
   }
 
-  static void print2DMatrix(long[][] M) {
-    for (long[] m : M) System.out.println(java.util.Arrays.toString(m));
+  // the passed matrix M can be null
+  static void print2DMatrix(long @Nullable[][] M) {
+    // nullability check before printing the matrix M
+    if(M != null)
+      for (long[] m : M) System.out.println(java.util.Arrays.toString(m));
     System.out.println();
   }
 }

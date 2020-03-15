@@ -1,5 +1,6 @@
 /** Solve a system of linear equations in a finite field Time Complexity: O(r^2c) */
 package com.williamfiset.algorithms.linearalgebra;
+import org.checkerframework.checker.nullness.qual.*;
 
 class ModularLinearAlgebra {
 
@@ -41,7 +42,10 @@ class ModularLinearAlgebra {
 
   // Finds the inverse of a non-augmented matrix in the finite field
   // with order equal to the given prime.
-  static int[][] inverse(int[][] arr, int prime, int[] modInv) {
+
+  // if the matrix is not a square matrix, inverse will not exist
+  // and null value will be return
+  static int @Nullable[][] inverse(int[][] arr, int prime, int[] modInv) {
     if (arr.length != arr[0].length) return null;
     int n = arr.length;
     int[][] augmented = new int[n][n * 2];

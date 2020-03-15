@@ -14,6 +14,7 @@
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.linearalgebra;
+import org.checkerframework.checker.nullness.qual.*;
 
 class LinearRecurrenceSolver {
 
@@ -43,7 +44,10 @@ class LinearRecurrenceSolver {
   // return null and if p is zero return the identity.
   // NOTE: Make sure the matrix is a square matrix and
   // also watch out for overflow as the numbers climb quickly!
-  static long[][] matrixPower(long[][] matrix, long p) {
+
+  // The method returns a null value if power p is negative,
+  // hence return type can be null
+  static long @Nullable[][] matrixPower(long[][] matrix, long p) {
 
     if (p < 0) return null;
 
@@ -114,16 +118,22 @@ class LinearRecurrenceSolver {
     final int size = initialValues.length + 1;
 
     long[][] T = createTransformationMatrix(coefficients, size);
-    long[][] result = matrixPower(T, n);
+
+    // the result may be null if power passed is negative
+    long @Nullable[][] result = matrixPower(T, n);
 
     // Find answer by multiplying resultant matrix with multiplication
     // vector, that is the initial values appended with the constant k
     long ans = 0L;
-    for (int j = 0; j < size; j++) {
-      if (j == size - 1) {
-        ans = ans + result[0][j] * k;
-      } else {
-        ans = ans + result[0][j] * initialValues[j];
+
+    // if nullability for result is not checked, dereferencing result may throw an error
+    if(result != null){
+      for (int j = 0; j < size; j++) {
+        if (j == size - 1) {
+          ans = ans + result[0][j] * k;
+        } else {
+          ans = ans + result[0][j] * initialValues[j];
+        }
       }
     }
 
