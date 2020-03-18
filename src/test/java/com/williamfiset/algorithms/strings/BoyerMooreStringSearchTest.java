@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.strings;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.williamfiset.algorithms.strings.BoyerMooreStringSearch;
 import org.junit.Before;
 import org.junit.Test;
 

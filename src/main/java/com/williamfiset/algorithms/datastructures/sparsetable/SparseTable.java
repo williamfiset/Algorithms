@@ -115,7 +115,8 @@ public class SparseTable {
         }
       }
     }
-    printTable();
+    // Uncomment for debugging
+    // printTable();
   }
 
   // For debugging, testing and slides.
@@ -192,24 +193,18 @@ public class SparseTable {
   // array. This method is here more as a proof of concept than for its usefulness.
   private long sumQuery(int l, int r) {
     long sum = 0;
-    for (int p = P; p >= 0; p--) {
-      int rangeLength = r - l + 1;
-      if ((1 << p) <= rangeLength) {
-        sum += dp[p][l];
-        l += (1 << p);
-      }
+    for (int p = log2[r - l + 1]; l <= r; p = log2[r - l + 1]) {
+      sum += dp[p][l];
+      l += (1 << p);
     }
     return sum;
   }
 
   private long multQuery(int l, int r) {
     long result = 1;
-    for (int p = P; p >= 0; p--) {
-      int rangeLength = r - l + 1;
-      if ((1 << p) <= rangeLength) {
-        result *= dp[p][l];
-        l += (1 << p);
-      }
+    for (int p = log2[r - l + 1]; l <= r; p = log2[r - l + 1]) {
+      result *= dp[p][l];
+      l += (1 << p);
     }
     return result;
   }
@@ -231,6 +226,8 @@ public class SparseTable {
 
   public static void main(String[] args) {
     example1();
+    // example2();
+    // example3();
   }
 
   private static void example1() {
@@ -252,12 +249,10 @@ public class SparseTable {
   }
 
   private static void example3() {
-    long[] values = {4, 2, 3, 7, 1, 5, 3, 3, 9, 6, 7, -1, 4, 1, 1, 1, 1, 2, 1111, 1, 1};
-    System.out.println(values[17]);
-
+    long[] values = {4, 4, 4, 4, 4, 4};
     // Initialize sparse table to do range minimum queries.
     SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.SUM);
 
-    System.out.printf("Min value between [5, 17] = %d\n", sparseTable.query(5, 17));
+    System.out.printf("%d\n", sparseTable.query(0, values.length - 1));
   }
 }

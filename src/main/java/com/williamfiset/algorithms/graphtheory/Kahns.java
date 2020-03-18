@@ -20,8 +20,8 @@ public class Kahns {
         nodesWithNoIncomingEdges.push(i);
       }
     }
-    int[] order = new int[n];
     int index = 0;
+    int[] order = new int[n];
     while (!nodesWithNoIncomingEdges.isEmpty()) {
       int at = nodesWithNoIncomingEdges.pop();
       order[index++] = at;
@@ -36,9 +36,9 @@ public class Kahns {
       throw new IllegalStateException("Detected cycle in graph!");
     }
     return order;
-  }  
+  }
 
-	  // Initialize graph with 'n' nodes.
+  // Initialize graph with 'n' nodes.
   public static List<List<Integer>> createGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>();
     for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
@@ -66,7 +66,7 @@ public class Kahns {
     addDirectedEdge(g, 2, 4);
     addDirectedEdge(g, 4, 5);
     Kahns solver = new Kahns();
-    System.out.println(java.util.Arrays.toString(solver.kahns(g)));    
+    System.out.println(java.util.Arrays.toString(solver.kahns(g)));
   }
 
   private static void test2() {
@@ -81,34 +81,16 @@ public class Kahns {
     addDirectedEdge(g, 3, 4);
     addDirectedEdge(g, 5, 4);
     Kahns solver = new Kahns();
-    System.out.println(java.util.Arrays.toString(solver.kahns(g)));    
+    System.out.println(java.util.Arrays.toString(solver.kahns(g)));
   }
 
   private static void cycleTest() {
     List<List<Integer>> g = createGraph(4);
-    addDirectedEdge(g, 0, 1);    
-    addDirectedEdge(g, 1, 2);    
-    addDirectedEdge(g, 2, 3);    
-    addDirectedEdge(g, 3, 0);    
+    addDirectedEdge(g, 0, 1);
+    addDirectedEdge(g, 1, 2);
+    addDirectedEdge(g, 2, 3);
+    addDirectedEdge(g, 3, 0);
     Kahns solver = new Kahns();
     System.out.println(java.util.Arrays.toString(solver.kahns(g)));
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -19,7 +19,7 @@ public class SparseTableTest {
       multQuery(values, l, r, actual);
     } else if (op == SparseTable.Operation.GCD) {
       gcdQuery(values, l, r, actual);
-    } 
+    }
   }
 
   private void minQuery(long[] values, int l, int r, long actual, int index) {
