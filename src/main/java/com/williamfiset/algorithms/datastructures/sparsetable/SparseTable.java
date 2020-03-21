@@ -1,5 +1,5 @@
 /**
- * Implementation of a sprase table which is a data structure that can very quickly query a range on
+ * Implementation of a sparse table which is a data structure that can very quickly query a range on
  * a static array in O(1) for (idempotent) operations like min, max and gcd using O(n*logn) memory.
  *
  * <p>Main inspiration: https://cp-algorithms.com/data_structures/sparse-table.html
@@ -27,13 +27,13 @@ public class SparseTable {
   // Fast log base 2 logarithm lookup table for i, 1 <= i <= n
   private int[] log2;
 
-  // The sprase table values.
+  // The sparse table values.
   private long[][] dp;
 
   // Index Table (IT) associated with the values in the sparse table.
   private int[][] it;
 
-  // The various supported query operations on this sprase table.
+  // The various supported query operations on this sparse table.
   public enum Operation {
     MIN,
     MAX,
@@ -225,9 +225,9 @@ public class SparseTable {
   /* Example usage: */
 
   public static void main(String[] args) {
-    example1();
+    // example1();
     // example2();
-    // example3();
+    example3();
   }
 
   private static void example1() {

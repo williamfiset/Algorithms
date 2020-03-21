@@ -1,7 +1,7 @@
 /**
  * Implementation of finding the Lowest Common Ancestor (LCA) of a tree. This impl first finds an
  * Euler tour from the root node which visits all the nodes in the tree. The node height values
- * obtained from the Euler tour can then be used in combination with a sprase table to find the LCA
+ * obtained from the Euler tour can then be used in combination with a sparse table to find the LCA
  * in O(1).
  *
  * <p>Time Complexity: O(1)
@@ -179,7 +179,7 @@ public class LowestCommonAncestorEulerTour {
     // Fast log base 2 logarithm lookup table, 1 <= i <= n
     private int[] log2;
 
-    // The sprase table values.
+    // The sparse table values.
     private long[][] dp;
 
     // Index Table (IT) associated with the values in the sparse table.
