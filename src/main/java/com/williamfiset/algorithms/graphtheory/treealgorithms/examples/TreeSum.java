@@ -1,15 +1,11 @@
 /**
  * Tree sum example
  *
- * <p>Download the code: $ git clone https://github.com/williamfiset/Algorithms
+ * <p>Download the code: <br>
+ * $ git clone https://github.com/williamfiset/Algorithms
  *
- * <p>Change directory to the root of the Algorithms directory: $ cd Algorithms
- *
- * <p>Compile: $ javac -d src/main/java
- * src/main/java/com/williamfiset/algorithms/graphtheory/treealgorithms/examples/TreeSum.java
- *
- * <p>Run: $ java -cp src/main/java
- * com/williamfiset/algorithms/graphtheory/treealgorithms/examples/TreeSum
+ * <p>Run: <br>
+ * $ ./gradlew run -Palgorithm=graphtheory.treealgorithms.examples.TreeSum
  *
  * <p>Time Complexity: O(n)
  *
