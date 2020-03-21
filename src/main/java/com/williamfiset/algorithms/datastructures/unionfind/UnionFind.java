@@ -83,11 +83,12 @@ public class UnionFind {
   // Unify the components/sets containing elements 'p' and 'q'
   public void unify(int p, int q) {
 
+    
+    // These elements are already in the same group!
+    if(connected(p, q)) return;
+
     int root1 = find(p);
     int root2 = find(q);
-
-    // These elements are already in the same group!
-    if (root1 == root2) return;
 
     // Merge smaller component/set into the larger one.
     if (sz[root1] < sz[root2]) {
