@@ -2,7 +2,7 @@
  * Min sparse table example
  *
  * <p>Download the code: <br>
- * $ git clone https://github.com/williamfiset/Algorithms
+ * $ git clone https://github.com/williamfiset/algorithms
  *
  * <p>Run: <br>
  * $ ./gradlew run -Palgorithm=datastructures.sparsetable.examples.MinSparseTable
@@ -28,7 +28,10 @@ public class MinSparseTable {
   // The sparse table values.
   private long[][] dp;
 
-  // Index Table (IT) associated with the values in the sparse table.
+  // Index Table (IT) associated with the values in the sparse table. This table
+  // is only useful when we want to query the index of the min (or max) element
+  // in the range [l, r] rather than the value itself. The index table doesn’t
+  // make sense for most other range query types like gcd or sum.
   private int[][] it;
 
   public MinSparseTable(long[] values) {
@@ -85,7 +88,6 @@ public class MinSparseTable {
 
   // Returns the index of the minimum element in the range [l, r].
   public int queryMinIndex(int l, int r) {
-    int len = r - l + 1;
     int p = log2[r - l + 1];
     long leftInterval = dp[p][l];
     long rightInterval = dp[p][r - (1 << p) + 1];
