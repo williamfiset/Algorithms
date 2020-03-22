@@ -51,13 +51,13 @@ public class MinSparseTable {
   private int[][] it;
 
   public MinSparseTable(long[] values) {
-    n = v.length;
+    n = values.length;
     P = (int) (Math.log(n) / Math.log(2));
     dp = new long[P + 1][n];
     it = new int[P + 1][n];
 
     for (int i = 0; i < n; i++) {
-      dp[0][i] = v[i];
+      dp[0][i] = values[i];
       it[0][i] = i;
     }
 
