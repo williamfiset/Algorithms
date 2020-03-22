@@ -1,10 +1,11 @@
 
 
 Hello everyone, my name is William, today we're taking a look at some source
-code on how to implement a SparseTable. In the last video we looked at what a
-sparse table is, how it can be used to do fast range queries and how to build
-one. This video is a follow up to that video, so make sure to give that video
-a watch, I'll make sure to put a link in the description below.
+code on how to implement a SparseTable. In the last video, we looked at what a
+sparse table is, how it can be used to do fast range queries and what's involved
+in building one. This video is a follow up to that video, so make sure to give
+the other video a watch before proceeding, I'll make sure to put a link in the
+description below.
 
 Awesome, so here we are in the source code written in Java. In this header I put
 some instructions on how you can download this code and run it yourself.
@@ -12,44 +13,56 @@ some instructions on how you can download this code and run it yourself.
 This particular implementation I'm about to show you is for a min sparse table
 that can do minimum range queries. If you want to do any other type of range 
 query such as a max range query or a product range query you will need to modify
-this code. I also have another more generic sparse table on github which support
-different query operations if you're interested in that.
+this code. I also have another more generic sparse table implementation on 
+github which can support different query operations if that interested you.
 
-Alright, let's dig into the details. The sparse table class has a few instance
-variables you'll want to know about.
+Right here in the main method, I have a few examples of how this script works. 
+First you start out with an array of values, then you feed that array to the min 
+sparse table class, and afterwards you can start doing minimum range queries. In the first
+example I query the minimum element in the range 1 to 5 inclusive, which prints the
+answer negative 3 with an index position of '2'.
+
+<scroll>
+
+Alright, let's dig into the details of what's going on inside the min sparse 
+table class. The first thing you will notice is that there are a few instance
+variables to know about.
 
 The first is 'n', the number of elements in the input array.
 
 Then there's capital P, the floor of the base 2 logarithm of n, this is 
 effectively the number of rows in the sparse table.
 
-After there's the log2 array, this array is simply used to do fast lookups for
+After, there's the log2 array, this array is simply used to do fast lookups for
 the floor of the base 2 logarithm so that we don't need to do any calculations
-when we need the value. We could technically since the value of capital P using
-this array if we wanted to.
+when we need the value.
 
 Then dp is just the sparse table with P plus 1 rows and n columns.
 
 Following this is the variable 'it', short for index table. This is the table
-that keeps track of the index of the selected minimum or maximum element in the
+that keeps track of the index of the selected minimum element in the
 range we're querying. I briefly mentioned this in the last video, but this table
-is super handy to have around as we'll hopefully see in a future video ;P
+is super handy to have around, and we will hopefully make use of it in a future video ;P
+
+<scroll all to way until ocnstructor is at the top line>
 
 So when you want to create a MinSparseTable, you need to provide the input 
 values to do range queries on. However, remember that this input array can only 
 contain immutable values, if the data changes after the sparse table is built
 then the queries on the sparse table will be wrong.
 
-The MinSparseTable constructor calls the init method which actually builds the
-sparse table. Doing work in the constructor isn't considered a best practice, 
-but this is just a simple proof of concept example.
+when you pass in the values array to the MinSparseTable constructor, the 
+constructor actually builds the sparse table. Doing work in the constructor
+isn't considered a best practice, but this is just a simple proof of
+concept example.
 
-Inside the init method we start by getting the value of 'n', the number of
+We start by getting the value of 'n', the number of
 elements in the values array. Then we compute capitol P from the value of 'n'.
-After we know those values, we can go ahead and allocate memory for our sparse
-table and our index table which are both have P+1 rows and 'n' columns.
 
-Then the next thing we want to do is simply populate the first row of both the
+After we know those values, we can go ahead and allocate some memory for our
+sparse table, and our index table which both have P+1 rows and 'n' columns.
+
+Then, the next thing we want to do is simply populate the first row of both the
 sparse table with the input values, and the index table with the indeces 0 to N
 
 After that, populate the log2 array with all the values for the floor of the
@@ -67,36 +80,34 @@ the index table so that we don’t lose track of it. You can think of the index
 table as an identical sparse table that tracks of index values instead of 
 minimum values.
 
-If we scroll further below you see that we have two more methods to look at.
-Once we have finished building the sparse table we can start calling the two
-methods below to query the minimum value in the given range, and the query
+If we scroll further below , you see that we have two more methods to look at,
+these two methods are used to query the minimum value in a given range, and query
 the index of the minimum value in a given range.
 
 This first method 'queryMin' calculates the value of the smallest element in the
 range l to r inclusive in constant time. This method works by finding two 
-overlapping ranges which cover the entire between l and r and taking the minimum
-of both intervals.
+overlapping ranges which cover the entire interval between l and r and taking 
+the minimum of both intervals.
 
-The first thing we do is calculate p, the floor of the base 2 log corresponding 
-row in the sparse table. 
+The first thing we do is calculate the length of the interval which is 
+subsequently used to find the value of p, the floor of the base 2 logarithm. 
+Intuitively, you can think of 'p' as the row in the sparse table we want to
+query, and k as the largest power of 2 that fits in the interval.
 
 Then, simply do a lookup to get the left and the right cell values and take the
 minimum. The left cell is found at row `p`, column `l`, and the right cell at
-row `p` and column `r - k plus 1`. Here, `k` is just calculated dynamically as
-1 shifted `p` times for simplicity.
+row `p` and column `r - k plus 1`.
 
-
-The last method 'queryMinIndex' is used to find the index of the minium element
+The last method 'queryMinIndex' is used to find the index of the minimum element
 in the range `l` to `r` inclusive. 
 
 If there are multiple smallest elements, the index of leftmost one is returned.
 
-To do this we’re basically going to do the same thing as when we were finding 
-the minimum query value; we’re going to find the values of the left and the
+To do this, we’re basically going to do the same thing as when we were finding 
+the minimum value; we’re going to find the values of the left and the
 right cell, but rather than returning the minimum of the two, we’re going to
-compare them and find the smaller one and return the index stored in the 
+compare them, find the smaller one, and return the index stored in the 
 Index Table.
-
 
 And that's all I have on sparse tables for now, folks thank you very much for
 watching and please subscribe for more content.

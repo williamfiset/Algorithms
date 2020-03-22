@@ -16,6 +16,22 @@ package com.williamfiset.algorithms.datastructures.sparsetable.examples;
 // Sparse table for efficient minimum range queries in O(1) with O(nlogn) space
 public class MinSparseTable {
 
+  // Example usage:
+  public static void main(String[] args) {
+    // index values: 0, 1,  2, 3, 4,  5, 6
+    long[] values = {1, 2, -3, 2, 4, -1, 5};
+    MinSparseTable sparseTable = new MinSparseTable(values);
+
+    System.out.println(sparseTable.queryMin(1, 5)); // prints -3
+    System.out.println(sparseTable.queryMinIndex(1, 5)); // prints 2
+
+    System.out.println(sparseTable.queryMin(3, 3)); // prints 2
+    System.out.println(sparseTable.queryMinIndex(3, 3)); // prints 3
+
+    System.out.println(sparseTable.queryMin(3, 6)); // prints -1
+    System.out.println(sparseTable.queryMinIndex(3, 6)); // prints 5
+  }
+
   // The number of elements in the original input array.
   private int n;
 
@@ -35,10 +51,6 @@ public class MinSparseTable {
   private int[][] it;
 
   public MinSparseTable(long[] values) {
-    init(values);
-  }
-
-  private void init(long[] v) {
     n = v.length;
     P = (int) (Math.log(n) / Math.log(2));
     dp = new long[P + 1][n];
@@ -79,30 +91,25 @@ public class MinSparseTable {
   // again. Some functions (like min and max) don't care about overlapping
   // intervals so this trick works, but for a function like sum this would
   // return the wrong result since it is not an idempotent binary function
-  // (overlap friendly functions).
+  // (aka an overlap friendly function).
   private long queryMin(int l, int r) {
-    int len = r - l + 1;
-    int p = log2[len];
-    return Math.min(dp[p][l], dp[p][r - (1 << p) + 1]);
+    int length = r - l + 1;
+    int p = log2[length];
+    int k = 1 << p; // 2 to the power of p
+    return Math.min(dp[p][l], dp[p][r - k + 1]);
   }
 
   // Returns the index of the minimum element in the range [l, r].
   public int queryMinIndex(int l, int r) {
-    int p = log2[r - l + 1];
+    int length = r - l + 1;
+    int p = log2[length];
+    int k = 1 << p; // 2 to the power of p
     long leftInterval = dp[p][l];
-    long rightInterval = dp[p][r - (1 << p) + 1];
+    long rightInterval = dp[p][r - k + 1];
     if (leftInterval <= rightInterval) {
       return it[p][l];
     } else {
-      return it[p][r - (1 << p) + 1];
+      return it[p][r - k + 1];
     }
-  }
-
-  // Example usage:
-  public static void main(String[] args) {
-    long[] values = {1, 2, -3, 2, 4, -1, 5};
-    MinSparseTable sparsetable = new MinSparseTable(values);
-    System.out.println(sparsetable.queryMin(1, 5)); // prints -3
-    System.out.println(sparsetable.queryMinIndex(1, 5)); // prints -3
   }
 }
