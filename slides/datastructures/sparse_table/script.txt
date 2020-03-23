@@ -113,7 +113,14 @@ And that's all I have on sparse tables for now, folks thank you very much for
 watching and please subscribe for more content.
 
 
+==============
 
+16 down to 35
+static image @ 35
+
+35 -> 53
+static image @ 53
+53 -> bottom
 
 
 
