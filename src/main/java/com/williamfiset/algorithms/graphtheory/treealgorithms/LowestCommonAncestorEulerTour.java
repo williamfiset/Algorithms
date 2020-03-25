@@ -10,8 +10,7 @@
  *
  * <p>To run script:
  *
- * <p>./gradlew run
- * -Pmain=com.williamfiset.algorithms.graphtheory.treealgorithms.LowestCommonAncestorEulerTour
+ * <p>./gradlew run -Palgorithm=graphtheory.treealgorithms.LowestCommonAncestorEulerTour
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
@@ -69,7 +68,11 @@ public class LowestCommonAncestorEulerTour {
 
     public static TreeNode rootTree(List<List<Integer>> graph, int rootId) {
       TreeNode root = new TreeNode(rootId);
-      return buildTree(graph, root);
+      TreeNode rootedTree = buildTree(graph, root);
+      if (rootedTree.size() < graph.size()) {
+        System.out.println("WARNING: Input graph malformed. Did you forget to include all n-1 edges?");
+      }
+      return rootedTree;
     }
 
     // Do dfs to construct rooted tree.
@@ -262,7 +265,8 @@ public class LowestCommonAncestorEulerTour {
   /* Example usage: */
 
   public static void main(String[] args) {
-    example1();
+    // example1();
+    example2();
   }
 
   private static TreeNode createFirstTreeFromSlides() {
@@ -287,6 +291,32 @@ public class LowestCommonAncestorEulerTour {
     addUndirectedEdge(tree, 11, 16);
 
     return TreeNode.rootTree(tree, 0);
+  }
+
+  private static TreeNode createTreeFromSlides() {
+    int n = 7;
+    List<List<Integer>> tree = createEmptyGraph(n);
+
+    addUndirectedEdge(tree, 0, 1);
+    addUndirectedEdge(tree, 0, 2);
+    addUndirectedEdge(tree, 1, 3);
+    addUndirectedEdge(tree, 2, 4);
+    addUndirectedEdge(tree, 2, 5);
+    addUndirectedEdge(tree, 4, 6);
+
+    return TreeNode.rootTree(tree, 0);
+  }
+
+  private static void example2() {
+    TreeNode root = createTreeFromSlides();
+    LowestCommonAncestorEulerTour solver = new LowestCommonAncestorEulerTour(root);
+
+    TreeNode lca = solver.lca(6, 5);
+    System.out.printf("LCA of 6 and 5 = %s\n", lca);
+
+    System.out.println(java.util.Arrays.toString(solver.heights));
+    System.out.println(java.util.Arrays.toString(solver.nodeOrder));
+    System.out.println(java.util.Arrays.toString(solver.last));
   }
 
   private static void example1() {
