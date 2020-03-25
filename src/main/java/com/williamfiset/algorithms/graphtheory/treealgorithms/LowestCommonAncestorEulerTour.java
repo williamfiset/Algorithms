@@ -97,8 +97,10 @@ public class LowestCommonAncestorEulerTour {
     }
   }
 
-  private int n;
-  private TreeNode root;
+  private final int n;
+  private final TreeNode root;
+
+  private int index = 0;
   private boolean preprocessed;
 
   // Populated when constructing Euler Tour.
@@ -125,14 +127,34 @@ public class LowestCommonAncestorEulerTour {
     last = new int[n];
 
     // Do depth first search to construct Euler tour.
-    dfs(root, 0, 0);
+    dfs(root, 0);
 
     // Initialize and build sparse table on the heights which will allow us to
     // index into the nodeOrder array to return the LCA.
     sparseTable = new MinSparseTable(heights);
   }
 
-  // Finds the lowest common ancestor of the nodeOrder with id1 and id2.
+  private void visit(TreeNode node, long height) {
+    nodeOrder[index] = node;
+    heights[index] = height;
+    last[node.id()] = index;
+    index++;
+  }
+
+  // Construct Euler Tour by populating the 'heights' and 'nodeOrder' arrays.
+  private void dfs(TreeNode node, long height) {
+    if (node == null) {
+      return;
+    }
+
+    visit(node, height);
+    for (TreeNode child : node.children()) {
+      dfs(child, height + 1);
+      visit(node, height);
+    }
+  }
+
+  // Finds the lowest common ancestor of the nodes id1 and id2.
   public TreeNode lca(int id1, int id2) {
     // Lazily preprocess here instead of in constructor.
     if (!preprocessed) {
@@ -144,27 +166,6 @@ public class LowestCommonAncestorEulerTour {
     int r = Math.max(last[id1], last[id2]);
     int i = sparseTable.queryIndex(l, r);
     return nodeOrder[i];
-  }
-
-  // Construct Euler Tour by populating the 'heights' and 'nodeOrder' arrays.
-  private int dfs(TreeNode node, long height, int index) {
-    if (node == null) {
-      return index;
-    }
-    nodeOrder[index] = node;
-    heights[index] = height;
-    last[node.id()] = index;
-    index++;
-
-    for (TreeNode child : node.children()) {
-      index = dfs(child, height + 1, index);
-
-      nodeOrder[index] = node;
-      heights[index] = height;
-      last[node.id()] = index;
-      index++;
-    }
-    return index;
   }
 
   // Sparse table for efficient minimum range queries in O(1) with O(nlogn) space
