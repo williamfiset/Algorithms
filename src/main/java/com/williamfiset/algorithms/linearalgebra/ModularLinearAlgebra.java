@@ -1,6 +1,6 @@
 /** Solve a system of linear equations in a finite field Time Complexity: O(r^2c) */
 package com.williamfiset.algorithms.linearalgebra;
-import org.checkerframework.checker.nullness.qual.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 class ModularLinearAlgebra {
 

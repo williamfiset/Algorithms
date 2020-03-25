@@ -6,7 +6,7 @@
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.linearalgebra;
-import org.checkerframework.checker.nullness.qual.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class MatrixPower {
 

@@ -6,7 +6,6 @@
  * @author Thomas Finn Lidbetter
  */
 package com.williamfiset.algorithms.linearalgebra;
-import org.checkerframework.checker.nullness.qual.*;
 
 public class Simplex {
 

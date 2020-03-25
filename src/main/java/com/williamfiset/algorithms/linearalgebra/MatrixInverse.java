@@ -4,7 +4,7 @@
  * <p>Time Complexity: O(n^3)
  */
 package com.williamfiset.algorithms.linearalgebra;
-import org.checkerframework.checker.nullness.qual.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 class MatrixInverse {
 
