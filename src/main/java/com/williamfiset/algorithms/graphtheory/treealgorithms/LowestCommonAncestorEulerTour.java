@@ -70,7 +70,8 @@ public class LowestCommonAncestorEulerTour {
       TreeNode root = new TreeNode(rootId);
       TreeNode rootedTree = buildTree(graph, root);
       if (rootedTree.size() < graph.size()) {
-        System.out.println("WARNING: Input graph malformed. Did you forget to include all n-1 edges?");
+        System.out.println(
+            "WARNING: Input graph malformed. Did you forget to include all n-1 edges?");
       }
       return rootedTree;
     }
@@ -107,7 +108,7 @@ public class LowestCommonAncestorEulerTour {
   private boolean preprocessed;
 
   // Populated when constructing Euler Tour.
-  private long[] heights;
+  private long[] nodeDepth;
   private TreeNode[] nodeOrder;
 
   // The last occurrence mapping. This mapping keeps track of the last occurrence of a TreeNode in
@@ -126,34 +127,34 @@ public class LowestCommonAncestorEulerTour {
   private void preprocess() {
     int eulerTourSize = 2 * n - 1;
     nodeOrder = new TreeNode[eulerTourSize];
-    heights = new long[eulerTourSize];
+    nodeDepth = new long[eulerTourSize];
     last = new int[n];
 
     // Do depth first search to construct Euler tour.
     dfs(root, 0);
 
-    // Initialize and build sparse table on the heights which will allow us to
+    // Initialize and build sparse table on the nodeDepth which will allow us to
     // index into the nodeOrder array to return the LCA.
-    sparseTable = new MinSparseTable(heights);
+    sparseTable = new MinSparseTable(nodeDepth);
   }
 
-  private void visit(TreeNode node, long height) {
+  private void visit(TreeNode node, long depth) {
     nodeOrder[index] = node;
-    heights[index] = height;
+    nodeDepth[index] = depth;
     last[node.id()] = index;
     index++;
   }
 
-  // Construct Euler Tour by populating the 'heights' and 'nodeOrder' arrays.
-  private void dfs(TreeNode node, long height) {
+  // Construct Euler Tour by populating the 'depth' and 'nodeOrder' arrays.
+  private void dfs(TreeNode node, long depth) {
     if (node == null) {
       return;
     }
 
-    visit(node, height);
+    visit(node, depth);
     for (TreeNode child : node.children()) {
-      dfs(child, height + 1);
-      visit(node, height);
+      dfs(child, depth + 1);
+      visit(node, depth);
     }
   }
 
@@ -191,14 +192,6 @@ public class LowestCommonAncestorEulerTour {
 
     public MinSparseTable(long[] values) {
       init(values);
-    }
-
-    public MinSparseTable(List<Long> values) {
-      long[] v = new long[values.size()];
-      for (int i = 0; i < values.size(); i++) {
-        v[i] = values.get(i);
-      }
-      init(v);
     }
 
     private void init(long[] v) {
@@ -314,7 +307,7 @@ public class LowestCommonAncestorEulerTour {
     TreeNode lca = solver.lca(6, 5);
     System.out.printf("LCA of 6 and 5 = %s\n", lca);
 
-    System.out.println(java.util.Arrays.toString(solver.heights));
+    System.out.println(java.util.Arrays.toString(solver.nodeDepth));
     System.out.println(java.util.Arrays.toString(solver.nodeOrder));
     System.out.println(java.util.Arrays.toString(solver.last));
   }
