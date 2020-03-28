@@ -1,5 +1,8 @@
-// ./gradlew run -Palgorithm=graphtheory.Kahns
-
+/**
+ * Implementation of Kahn's algorithm
+ *
+ * <p>./gradlew run -Palgorithm=graphtheory.Kahns
+ */
 package com.williamfiset.algorithms.graphtheory;
 
 import java.util.*;
