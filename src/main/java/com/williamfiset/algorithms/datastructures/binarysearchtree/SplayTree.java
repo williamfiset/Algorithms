@@ -283,14 +283,14 @@ class SplayTreeRun {
     SplayTree<Integer> splayTree = new SplayTree<>();
     Scanner sc = new Scanner(System.in);
     int[] data = {2, 29, 26, -1, 10, 0, 2, 11};
-
+    int c = 0;
     for (int i : data) {
       splayTree.insert(i);
     }
 
-    while (true) {
-      System.out.println("1. Insert 2. Delete 3. Search 4.FindMin 5.FindMax 6. PrintTree");
-      int c = sc.nextInt();
+    while (c!=7) {
+      System.out.println("1. Insert 2. Delete 3. Search 4.FindMin 5.FindMax 6. PrintTree 7. Exit");
+      c = sc.nextInt();
       switch (c) {
         case 1:
           System.out.println("Enter Data :");
@@ -312,6 +312,9 @@ class SplayTreeRun {
           break;
         case 6:
           System.out.println(splayTree);
+          break;
+        case 7:
+        sc.close();
           break;
       }
     }
