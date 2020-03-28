@@ -12,11 +12,24 @@ import java.util.*;
 
 public class TreeCenterLongestPathImpl {
 
-  private static int[] dfs(
+  private static class DfsResult {
+    // The distance to the furthest node (from where the DFS started)
+    int distance;
+
+    // The index of the furthest node (from where the DFS started)
+    int index;
+
+    public DfsResult(int distance, int index) {
+      this.distance = distance;
+      this.index = index;
+    }
+  }
+
+  private static DfsResult dfs(
       List<List<Integer>> graph, boolean[] visited, int[] prev, int at, int parent) {
 
     // Already visited this node
-    if (visited[at]) return new int[] {0, parent};
+    if (visited[at]) return new DfsResult(0, parent);
 
     // Visit this node
     visited[at] = true;
@@ -28,15 +41,15 @@ public class TreeCenterLongestPathImpl {
     List<Integer> edges = graph.get(at);
 
     for (int to : edges) {
-      int[] tuple = dfs(graph, visited, prev, to, at);
-      int dist = tuple[0] + 1;
+      DfsResult result = dfs(graph, visited, prev, to, at);
+      int dist = result.distance + 1;
       if (dist > bestDist) {
         bestDist = dist;
-        index = tuple[1];
+        index = result.index;
       }
     }
 
-    return new int[] {bestDist, index};
+    return new DfsResult(bestDist, index);
   }
 
   public static List<Integer> findTreeCenters(List<List<Integer>> graph) {
@@ -48,7 +61,8 @@ public class TreeCenterLongestPathImpl {
     int[] prev = new int[n];
 
     // Do DFS to find furthest node from the start
-    int furthestNode1 = dfs(graph, visited, prev, 0, -1)[1];
+    DfsResult result = dfs(graph, visited, prev, 0, -1);
+    int furthestNode1 = result.index;
 
     // Singleton
     if (furthestNode1 == -1) {
@@ -59,7 +73,9 @@ public class TreeCenterLongestPathImpl {
     // Do another DFS, but this time from the furthest node.
     Arrays.fill(visited, false);
     Arrays.fill(prev, 0);
-    int furthestNode2 = dfs(graph, visited, prev, furthestNode1, -1)[1];
+
+    result = dfs(graph, visited, prev, furthestNode1, -1);
+    int furthestNode2 = result.index;
 
     List<Integer> path = new LinkedList<>();
     for (int i = furthestNode2; i != -1; i = prev[i]) {
