@@ -15,6 +15,11 @@ import java.util.*;
 
 public class Kahns {
 
+  // Kahn's algorithm finds a topological ordering by iteratively removing nodes
+  // in the graph which have no incoming edges. When a node is removed from the
+  // graph, it is added to the topological ordering and all its edges are
+  // removed allowing for the next set of nodes with no incoming edges to be
+  // selected.
   public int[] kahns(List<List<Integer>> g) {
     int n = g.size();
     Stack<Integer> nodesWithNoIncomingEdges = new Stack<>();
