@@ -1,3 +1,7 @@
+// javac -d classes -sourcepath src/main/java
+// src/main/java/com/williamfiset/algorithms/datastructures/binarysearchtree/SplayTree.java
+// java -cp classes com.williamfiset.algorithms.datastructures.binarysearchtree.SplayTreeRun
+
 package com.williamfiset.algorithms.datastructures.binarysearchtree;
 
 import com.williamfiset.algorithms.datastructures.utils.TreePrinter;
@@ -288,7 +292,7 @@ class SplayTreeRun {
       splayTree.insert(i);
     }
 
-    while (c!=7) {
+    while (c != 7) {
       System.out.println("1. Insert 2. Delete 3. Search 4.FindMin 5.FindMax 6. PrintTree 7. Exit");
       c = sc.nextInt();
       switch (c) {
@@ -314,7 +318,7 @@ class SplayTreeRun {
           System.out.println(splayTree);
           break;
         case 7:
-        sc.close();
+          sc.close();
           break;
       }
     }

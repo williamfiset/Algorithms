@@ -1,7 +1,13 @@
 /**
  * Implementation of Kahn's algorithm
  *
+ * <p>Verified against: https://open.kattis.com/problems/builddeps
+ *
  * <p>./gradlew run -Palgorithm=graphtheory.Kahns
+ *
+ * <p>Time complexity: O(V+E)
+ *
+ * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.graphtheory;
 
