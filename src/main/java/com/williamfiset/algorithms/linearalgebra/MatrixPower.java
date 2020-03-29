@@ -7,6 +7,7 @@
  */
 package com.williamfiset.algorithms.linearalgebra;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class MatrixPower {
 
@@ -73,37 +74,33 @@ public class MatrixPower {
 
     long[][] matrix = {{2}};
 
-    // the ans may be null if power passed is negative
-    long @Nullable[][] ans;
+    @SuppressWarnings("nullness")
+    long @NonNull[][] ans0 = matrixPower(matrix, 0);
+    System.out.println(ans0[0][0]); // 1
 
-    // nullability check before dereferencing
-    ans = matrixPower(matrix, 0);
-    if(ans != null)
-      System.out.println(ans[0][0]); // 1
+    @SuppressWarnings("nullness")
+    long @NonNull[][] ans1 = matrixPower(matrix, 1);
+    System.out.println(ans1[0][0]); // 2
 
-    ans = matrixPower(matrix, 1);
-    if(ans != null)
-      System.out.println(ans[0][0]); // 2
+    @SuppressWarnings("nullness")
+    long @NonNull[][] ans2 = matrixPower(matrix, 2);
+    System.out.println(ans2[0][0]); // 4
 
-    ans = matrixPower(matrix, 2);
-    if(ans != null)
-      System.out.println(ans[0][0]); // 4
+    @SuppressWarnings("nullness")
+    long @NonNull[][] ans3 = matrixPower(matrix, 3);
+    System.out.println(ans3[0][0]); // 8
 
-    ans = matrixPower(matrix, 3);
-    if(ans != null)
-      System.out.println(ans[0][0]); // 8
+    @SuppressWarnings("nullness")
+    long @NonNull[][] ans4 = matrixPower(matrix, 4);
+    System.out.println(ans4[0][0]); // 16
 
-    ans = matrixPower(matrix, 4);
-    if(ans != null)
-      System.out.println(ans[0][0]); // 16
+    @SuppressWarnings("nullness")
+    long @NonNull[][] ans5 = matrixPower(matrix, 5);
+    System.out.println(ans5[0][0]); // 32
 
-    ans = matrixPower(matrix, 5);
-    if(ans != null)
-      System.out.println(ans[0][0]); // 32
-
-    ans = matrixPower(matrix, 6);
-    if(ans != null)
-      System.out.println(ans[0][0]); // 64
+    @SuppressWarnings("nullness")
+    long @NonNull[][] ans6 = matrixPower(matrix, 6);
+    System.out.println(ans6[0][0]); // 64
 
     long[][] matrix2 = {
       {1, 2},
