@@ -40,6 +40,17 @@ public class KahnsTest {
     return true;
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void cycleInGraph() {
+    List<List<Integer>> g = createGraph(4);
+    addDirectedEdge(g, 0, 1);
+    addDirectedEdge(g, 1, 2);
+    addDirectedEdge(g, 2, 3);
+    addDirectedEdge(g, 3, 0);
+    Kahns solver = new Kahns();
+    solver.kahns(g);
+  }
+
   @Test
   public void verifyIsTopsortOrdering() {
     List<List<Integer>> g = Utils.createEmptyAdjacencyList(3);

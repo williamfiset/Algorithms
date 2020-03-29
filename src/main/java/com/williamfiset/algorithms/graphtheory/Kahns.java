@@ -1,5 +1,10 @@
 /**
- * Implementation of Kahn's algorithm
+ * Implementation of Kahn's algorithm to find a topological ordering
+ *
+ * <p>Kahn's algorithm finds a topological ordering by iteratively removing nodes in the graph which
+ * have no incoming edges. When a node is removed from the graph, it is added to the topological
+ * ordering and all its edges are removed allowing for the next set of nodes with no incoming edges
+ * to be selected.
  *
  * <p>Verified against: https://open.kattis.com/problems/builddeps
  *
@@ -11,15 +16,13 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
+import static com.williamfiset.algorithms.utils.graphutils.Utils.addDirectedEdge;
+import static com.williamfiset.algorithms.utils.graphutils.Utils.createEmptyAdjacencyList;
+
 import java.util.*;
 
 public class Kahns {
 
-  // Kahn's algorithm finds a topological ordering by iteratively removing nodes
-  // in the graph which have no incoming edges. When a node is removed from the
-  // graph, it is added to the topological ordering and all its edges are
-  // removed allowing for the next set of nodes with no incoming edges to be
-  // selected.
   public int[] kahns(List<List<Integer>> g) {
     int n = g.size();
     Stack<Integer> nodesWithNoIncomingEdges = new Stack<>();
@@ -47,23 +50,12 @@ public class Kahns {
       }
     }
     if (index != n) {
-      throw new IllegalStateException("Detected cycle in graph!");
+      throw new IllegalArgumentException("Graph is not acyclic! Detected a cycle.");
     }
     return order;
   }
 
-  // Initialize graph with 'n' nodes.
-  public static List<List<Integer>> createGraph(int n) {
-    List<List<Integer>> graph = new ArrayList<>();
-    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
-    return graph;
-  }
-
-  // Add undirected edge to graph.
-  public static void addDirectedEdge(List<List<Integer>> graph, int from, int to) {
-    graph.get(from).add(to);
-  }
-
+  // Example usage:
   public static void main(String[] args) {
     test1();
     test2();
@@ -71,7 +63,7 @@ public class Kahns {
   }
 
   private static void test1() {
-    List<List<Integer>> g = createGraph(6);
+    List<List<Integer>> g = createEmptyAdjacencyList(6);
     addDirectedEdge(g, 0, 1);
     addDirectedEdge(g, 0, 2);
     addDirectedEdge(g, 1, 2);
@@ -84,7 +76,7 @@ public class Kahns {
   }
 
   private static void test2() {
-    List<List<Integer>> g = createGraph(6);
+    List<List<Integer>> g = createEmptyAdjacencyList(6);
     addDirectedEdge(g, 0, 1);
     addDirectedEdge(g, 0, 2);
     addDirectedEdge(g, 0, 5);
@@ -99,7 +91,7 @@ public class Kahns {
   }
 
   private static void cycleTest() {
-    List<List<Integer>> g = createGraph(4);
+    List<List<Integer>> g = createEmptyAdjacencyList(4);
     addDirectedEdge(g, 0, 1);
     addDirectedEdge(g, 1, 2);
     addDirectedEdge(g, 2, 3);
