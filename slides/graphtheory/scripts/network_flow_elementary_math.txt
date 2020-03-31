@@ -1,0 +1,184 @@
+Hello and welcome,
+My name is William, we're still talking about Network Flow, and today's topic is
+one or my all time favorite flow problems which is called elementary math. This
+problem is so interesting because its solution uses flow, but it really doesn't 
+hit you as a flow problem to begin with. One of the hardest things about network 
+flow is beleive it or not first identifying that the problem is a flow problem 
+and then setting it up as so. This is why I'm spending a few videos solving some
+flow problems so you really start understanding the approach in how they are 
+solved.
+
+Let's dive into the elementary math problem. This problem is actually on Kattis
+should you want to attempt it, the link is at the bottom of this slide and also
+in the description. Here's the problem statement:
+"Ellen is a math teacher who is preparing n (1 ≤ n ≤ 2500) questions for her math
+exam. In each question, the students have to add (+), subtract (−) or multiply 
+(*) a pair of numbers."
+"Ellen has already chosen the n pairs of numbers. All that remains is to decide 
+for each pair which of the three possible operations the students should 
+perform. To avoid students getting bored, Ellen wants to make sure that the n
+correct answers to her exam are all different."
+
+"For each pair of numbers (a,b) in the same order as in the input, output a line
+containing a valid equation. Each equation should consist of five parts: a, one
+of the three operators, b, an equals sign (=), and the result of the expression.
+All the n expression results must be different.
+If there are multiple valid answers, output any of them. If there is no valid
+answer, output a single line with the string “impossible” instead."
+
+Let's have a look at an example. So Ellen goes and she picks 4 pairs of numbers,
+say: 1 and 5, 3 and 3, 4 and 5 and lastly -1 and -6. She wants to assign
+operators either plus, minus or multiply to yield unique answers on the right 
+hand side of the equation.
+
+One assignment might be the following operators.
+
+However, this assignment of operators doesn't quite work because the answers are
+not unique on the right hand side.
+
+Here's another way of assigning operators to the same pairs of numbers.
+
+This assignment works because the answers are unique. 
+
+So we just saw that not all assignment of operators yields a valid answer, but 
+it's also possible for no answer to exist. Consider the following pairs of 
+numbers:
+
+In this case there can be no solution because not enough unique answers can be 
+generated using only the operators plus, minus and multiply.
+
+This problem presents itself as a network flow problem, even though that might 
+not be obvious at first. Take a moment, and attempt to set up a flow graph that
+can solve this problem, it's actually a really great exercise.
+
+Along the way while you're doing this, there are a few questions you should ask
+yourself, or at least that I ask myself, this first is:
+1) Is there a way that this problem can be simplified as a bipartite graph?
+- I ask myself this because I know that solving a flow problem with a bipartite
+graph can be done efficiently, and also because bipartite graphs are easy to 
+setup.
+
+2) Then I ask myself, how am I going to detect impossible sets of pairs? Will my
+flow graph be able to handle that, or do I need to do some pre or post 
+processing to determine that.
+
+3) Another question is thinking about edge cases, like how do I handle multiple
+repeated input pairs, how is that going to change the flow graph.
+
+- These are all super important questions you need to ask yourself when solving
+this problem. This slide deck explains the first two, the third is left as an 
+exercise; I don't want to give away a full solution to this awesome problem.
+
+Thinking about how we're going to solve this problem a little more, a key 
+realization to make is that for every input pair, at most three unique solutions
+are produced.
+Think about the input pair, 2 and 3. Well for that pair, we can either:
+add 2 and 3, subtract 2 and 3, or multiply 2 and 3, so there will be at most
+three unique results. There may be less if there are collisions, think of the
+input pair: zero zero, zero plus zero is zero and zero multiplied by zero is
+also zero, so we may end up with less than 3 unique solutions but that's fine.
+The great thing about this is that we can easily set this up as a bipartite flow
+graph, with input pairs on one side and solutions on the other.
+
+Let’s see if we can setup the flow graph to solve this set of input pairs. We 
+have the pairs: 1, 5; 3, 3; -1, -6; and 2, 2
+
+We're going to setup the bipartite graph with input pair nodes on the left and
+answer nodes on the right.
+
+For our first input pair 1, 5; if we compute 1 - 5, 1 + 5 and 1 * 5 we get -4, 6
+and 5 which become our answer nodes on the right. Attach and edge between the 
+input pair and the answer.
+
+Do the same thing for the next input pair: make an input pair node and attach 
+edges to the answer nodes. However, don't create another answer node if there
+already exists one with the value needed. In this example for instance, 3 + 3 is
+6, and we already have an answer node for 6, so attach an edge to the 6 node, do
+not create another one. This is the ensure that our answers are unique.
+
+Do the same thing for the two other remaining input pairs.
+
+<press>
+
+You'll notice that the last input pair only produced two outgoing edges and not 
+three, this is because there was a collision; in particular 2 + 2 equal 4, but 
+2 multiplied by 2 is also 4.
+
+Then like every bipartite graph you're trying to find a matching for, you'll 
+want to add a source s and a sink t; and a matching is really what we're after
+here. If we can match input pairs to answers, then we've solved the problem.
+
+The next step after adding the source and the sink is to actually assign 
+capacities to the edges of the flow graph. 
+Let's start on the right side; the capacities from the answer nodes to sink 
+should all have a capacity of one since answers need to be unique, and limiting
+the edge capacity to 1 ensures that.
+
+Capacities from input pairs to answers also have capacity one since only one of
+‘+’, ‘-‘ or ‘*' operators can be matched with an answer.
+
+Capacities from source to input pairs should reflect the frequency of the input 
+pair. In this example, all frequencies are 1, but as we know, this isn’t always the case.
+
+And finally the capacity on the edges from the source to the input pairs should
+reflect the frequency of the input pair. By this I mean how many times that input
+pair is present in the input. In this example, all frequencies are 1, but as we
+know, this isn’t always the case.
+
+Now the flow graph is set up, so let's run a max-flow algorithm on it!
+
+The flow algorithm does its thing and some edges are filled with flow. These are
+the edges that were selected to be part oft he maximum flow. From this we can 
+derive what the matching was.
+
+More specifically, we're interested in the middle edges, those are the edges 
+which give us information about the matching. Every edge in the middle, with one 
+unit of flow represents a matching from an input pair (a,b) to its answer.
+For example, the input pair 1,5 was matching with the answer node 6.
+
+From this we can even deduce the operator used for each matching (which is needed
+for final output). This can be done by trying which of (+, -, or *) results in 
+the found matching. Basically we first solve the problem by figuring out which 
+answers we get and then work backwards to figure out which operator was used. In
+theory we could tag each middle edge with the operator used, but I didn't bother.
+
+Let's wrap up this problem, the last thing we need to do is look at the 
+matchings we have and figure out which operator to use.
+
+The first matching is the input pair 1,5 matched to 6. So we ask ourselves which
+of the three operators plus, minus or multiply results in 1,5 equaling 6?
+
+So we try all three options and we figure out the answer is plus because 1 + 5 
+equals 6.
+
+Then we move on to the next pair and do the same thing.
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+If there are multiple operators that result in the right answer, pick any of them
+
+<press>
+
+<press>
+
+And that's basically it, we can verify that all our operators yield the correct 
+result and that all our answer are unique. 
+I didn't go into great detail on how to support multiple repeated pairs, but 
+i'll leave that as an exercise to the listener.
+
+Thank you so much for watching, please this this video if you learned something,
+and subscribe for more mathematics and computer science videos.
+
+
+
+
+
+
+
+

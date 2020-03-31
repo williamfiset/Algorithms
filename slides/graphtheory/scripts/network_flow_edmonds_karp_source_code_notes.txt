@@ -1,0 +1,76 @@
+Hello and welcome,
+My name is William, today we're going to have a look at some source code for the
+Edmonds-Karp algorithm. 
+
+In the previous video, I explained what Edmonds-Karp algorithm is, how it works
+and why you would want to use it, so I highly recommend watching that video
+before proceeding, I'll leave a link in the description, and all the source code
+for this can be found on Github at github.com slash william fiset slash algorithms
+
+Alright, here we are in the source code written in Java, I have laid out some
+instructions here in case you wanted to download the code, play around with it
+and run it yourself.
+
+If I scroll down, you can see that we still have the same setup as before with 
+an Edge class and the NetworkFlowSolverBase we inherit from. I have already 
+previously covered these so I will not cover them with great detail, but there 
+is one important change I have made since the FordFulkerson video. I have added
+three methods to abstract away
+visiting nodes and marking all nodes as unvisited. Now this is all done 
+efficiently internally through this class with a visitedToken
+you don't have to worry about. It also helps readability for anyone new to the 
+code. Alright, let's now have a look at the EdmondsKarpSolver.
+
+First, notice that the EdmondsKarpSolver extends the NetworkFlowSolverBase, so 
+we get a whole bunch of things for free from that, including the ability to 
+easily construct a flow graph before we push any flow through it.
+In the constructor for the EdmondsKarpSolver, all I do is call the super class's
+constructor. This performs various initializations, including allocating memory
+for the flow graph, and registering which nodes are the source and the sink.
+
+The most important method in the edmonds karp solver is the solve method which
+gets called to find the maximum flow.
+This method is really short, all we do is repeatedly find augmenting paths from
+the source to the sink until the flow we get is zero, at which point we know that
+the graph is fully saturated and no more augmenting paths can be found.
+Line by line, what we do is mark all nodes as unvisited bfore each iteration,
+run the breadth first search form the source to the sink and finally sum up all
+bottleneck values to compute the max flow.
+
+Let's take a closer look at what the BFS method is doing.
+
+The first thing I do is initialize an empty queue data structure because I know
+we'll need one to do a BFS. After the creation of the queue I visit the source
+node and add it to the queue so that it's the starting node for the BFS.
+
+Then do your standard BFS, loop while there are still nodes in the queue, remove
+the first node found in the queue, if it's the sink, stop, otherwise, iterate 
+through all valid adjacent neighbors. We can add a node to queue if we have not
+already visited it, and the edge leading to the node has a capacity greater than
+zero. However, before we add a node to the queue, we visit it, and track where 
+we came from by placing an edge in the prev array to rebuilt the augmenting path
+later.
+
+Moving on, we know the BFS did not actually make it to the sink if we have no 
+entry at the index of the sink in the prev array so we can return early. After
+this point we know that there exists an augmenting path.
+
+First, we find the bottleneck value, that is, the smallest remaining edge 
+capacity along the path. We do that by starting at the sink, and reconstructing
+the augmenting path going backwards by repeatedly reaching into the prev array
+until we are back at the source.
+
+Then we need to update the flow along the augmenting path to adjust the flow 
+values. So once again loop through the edges forming the augmenting path. The 
+augment method takes care of increasing the flow along the forward edge and 
+decreasing the flow along the residual edge. The very last thing to do is to
+return the bottleneck value so we can sum the maxFlow in the solve method.
+
+And that's basically it for Edmonds-Karp. To actually build a flow graph have a
+look at the example in the main class, it sets up the flow graph from the 
+previous video and pushes flow though it. 
+
+Awesome, thank you for watching, please like this video if you learned something
+and subscribe for more mathematics and computer science videos.
+
+

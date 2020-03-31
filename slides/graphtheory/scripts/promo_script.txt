@@ -1,0 +1,30 @@
+
+Hello and welcome to this Graph Theory algorithms course, my name is William, 
+and I will be your instructor throughout these videos!
+
+Graph theory is the Mathematical study of networks; any type of network, whether
+it is a social network, a transportation network, a biology ancestor tree or an
+in memory database.
+Graph theory is how applications such as Google Maps, Facebook and Uber help you
+navigate the world and connect you with your closed friends.
+Graph theory is one of the most applicable topics on Mathematics and computer
+science. This course focuses on graph theory algorithms in computer science and
+how they are used and applied in the real world to do something useful.
+
+[Display all the topics covered on one page]?
+
+ 1) How graphs are represented and stored on a computer
+ 2) Common graph theory problems
+ 3) Breadth first search algorithm
+ 4) Depth first search algorithm
+ 5) Dijkstra's algorithm
+ 6) Topological sort algorithm
+ 7) Shortest/longest path on a acyclic graph
+ 8) Bellman Ford's algorithm
+ 9) Floyd-Warshall all pairs shortest path algorithm
+10) Finding bridges/articulation points
+11) Finding strongly connected components (Tarjan's)
+12) Travelling salesman problem (TSP)
+
+Q: Is the course free? Where can users find it?
+

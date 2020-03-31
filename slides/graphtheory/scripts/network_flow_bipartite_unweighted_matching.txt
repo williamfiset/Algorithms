@@ -1,0 +1,191 @@
+Hello my name is William,
+Today we're going to start diving a little deeper into network flow.
+We're going to talk about unweighted bipartite graph matching, and specifically
+how we can use max flow to find a matching for us.
+
+Before we get started though, I should mention what a bipartite graph is. A 
+bipartite graph is one whose vertices can be split into two independent groups
+U, V such that every edge connects between U and V.
+Other definitions exist such as: The graph is two colourable or there is no
+cycle with an odd length.
+Bipartite graphs often arise when we're trying to match one group of items to 
+another.
+  Think of situations like matching suitable candidates to jobs; there
+could be multiple jobs and multiple candidates, but not every candidate is
+suitable for each job. If jobs are red nodes and candidates white nodes then
+there would be an edge between the two if the candidate is a good fit.
+  Another situation could be matching surfers to surf boards. Suppose there are
+multiple surfers and surf boards, but the surfers have preferences and 
+requirements for their boards, such as color, size and so on. Then the same 
+thing happens: we place an edge between the surfer and the surf board to 
+indicate that they are ABLE to be matched. 
+
+Generally when we're setting up a bipartite graph, we’re interested in what’s
+called a Maximum Cardinality Bipartite Matching. This is when we’ve maximized
+the pairs that can be matched with each other. 
+For example, we've maximized the number of candidates that can be matched to 
+jobs, or the number of surfers to surf boards.
+
+Finding a matching is not unique to bipartite graphs, you can also have a
+matching on a non-bipartite graph -- this variant is a lot harder to solve and
+also much less common. Another variant is finding a maximum matching on a
+weighted graph where you either minimize or maximize the cost of the maximum
+matching, this variant is also much much harder to solve than the unweighted
+version. In the unweighted version no edge is "better" in any sense than any
+other edge so it makes finding a matching much easier.
+
+We're mostly going to focus on this top left box which is the easiest
+of the four variants, but hopefully we'll take poke at some of the other ones
+too. So if you want to find a maximum matching on an unweighted bipartite graph
+you have lots of options. You can either setup the graph as a flow problem and
+push flow through it, which is what we'll look at in this video, but you can also
+repeatedly find augmenting paths which maximize the matching using a DFS or you
+can use the Hopcroft-Karp algorithm.
+
+If your edges are weighted and your graph is still bipartite, you also have a
+lot of options. You can use a min-cost max-flow algorithm, or run the Hungarian
+algorithm, and lastly there's the more sophisticated network simplex algorithm
+using linear programming.
+
+If however your graph is not bipartite but you edges are unweighted you can use
+Edmond's blossom algorithm.
+
+And lastly, the hardest of the four variants is when your graph is non-bipartite
+and the edges are weighted. I didn't find much information about this online,
+but the recommendation seems to be to use dynamic programming for small graphs.
+
+Let's now take a look at an example. This is going to be for the unweighted
+bipartite case, the easiest of the four. So, I want you to imagine that there
+are 5 people and 5 books in library, and some people express interest in some
+books.
+
+This results in a bipartite graph with people on one side and books on the other.
+So far so good. Now suppose we want to find Maximum Cardinality Bipartite Matching,
+or in other words, we want to match as many people with as many books as we can.
+
+Let's try a greedy approach to this matching problem.
+
+Let's start with person green
+
+Their first edge connects to the second book on the right side
+
+The second book is unallocated, so person green is matched with what is now
+the green book.
+
+Next up is person orange.
+
+The first book they want is the same as the book person green is already matched
+to, so they cannot select that book.
+
+Their next choice is the third book which is unallocated.
+
+So they get matched.
+
+Next up is person purple.
+
+<press>
+
+They insistently match to an unallocated book.
+
+Now person red.
+
+Person red only has one edge, meaning they're only willing to read that one book,
+however, that book has already been allocated to person orange, so person red
+cannot have it.
+
+Next is person brown
+
+They also want person orange's book but they also cannot have it, fortunately
+they have other options of books to read.
+
+<press>
+
+So person brown gets matched with one of those books.
+
+In the end of greedy approach only found 4 matchings, but can we do better?
+Is this the true Maximum Cardinality matching? Turns out it's not, a greedy
+approach to maximum matching does not work as we just saw, we need to be more
+sophisticated.
+
+We're going to solve this maximum matching problem by turning our problem into
+a network flow problem and finding the maximum flow.
+
+The first thing we're going to do is make every edge directed and add unit
+capacities to each edge. The 0 slash 1 beside each edge means 0 flow and a
+maximum capacity of 1.
+
+Next we're going to introduce two new nodes, the source and the sink and hook up
+edges outwards from the source to the people with a capacity of 1 and hook up
+edges from the books to the sink also with a capacity of one.
+
+Once that's all setup, use any max flow algorithm to push flow through the
+network. What this'll do is show us what edges get populated with flow; with
+that information we will be able to reconstruct the maximum matching.
+
+Here's the graph after the flow algorithm has ran. You can see that some of the
+edges have one unit of flow, those were the edges selected by the max flow
+algorithm. The most interesting edges here are middle edges with one unit of
+flow, these are the edges which form the maximum cardinality matching.
+
+If we color in the middle edges with one unit of flow you can see that this time
+everybody goes home with a book and no one is left empty handed. 
+TODO(waf): explain a bit why max flow *works*
+
+Ok, so we now understand this basic setup and how it leads to a matching. Let's
+play around with this model to truly understand what all the weights here mean.
+So, we originally set the capacity of each edge from the source to each person
+to be 1, what constraint is that enforcing? I'll let you think about it for a
+second.
+
+The answer is that the capacity of 1 ensures that each person can get up to one
+book and no more.
+
+If we increase this number for some people, we can now allow them to possibly
+pick up more than one book.
+
+If we run max-flow again through the network we see that it’s now possible for
+one person to be matched with multiple books.
+
+The next thing we want to do is change the flow network to allow a book to be 
+selected multiple times. Pause the video and think about how we can modify the
+network to support having multiple copies of the same book in the library, i'll 
+give you a short moment.
+
+The number of "copies" of a book is controlled by the capacity of the edges
+leading to the sink t. Increasing this value will allow more flow to run
+through the designated edge, this effectively limits or "controls" the number
+of book copies.
+
+Let’s change the capacity of some of the edges leading to the sink to allow
+having multiple copies of the same book to see what happens.
+
+If we re-run the algorithm on the network, we see that we now have people
+matched with the same books because multiple copies exist. For example, book 3
+and book 5 both have two people grabbing a copy of them.
+
+The actual assignment of people to books would be as follows, i'll let the
+animation play.
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+After the flow algorithm has ran, if you want to know how many copies of each
+book were actually given out you can inspect the flow value on the edge leading
+to the sink.
+
+Currently, each person is only allowed to pick up one copy of each book (even
+though there are multiple copies of each book). How do we modify the flow
+network to support this?
+
+You've guessed it, we need to modify the edge capacity between a person and a
+book to allow that person to pick up multiple copies of that book.
+
+Awesome, that's all I got for this video, thank you for watching, please like
+this video if you learned something and please subscribe for more mathematics
+and computer science videos.
+

@@ -1,0 +1,248 @@
+Hello and welcome,
+My name is William, and today we're still talking about network flow, and in
+particular we're looking at finding the maximum flow and a new very efficient 
+method of solving the unweighted bipartite matching problem.
+Dinic's algorithm is one of those extremely fast and revolutionary algorithms
+which really pushed the field of network flow forwards. It was one, if not the
+first algorithm to introduce a bunch of new concepts like building a level 
+graph, combining multiple graph traversal techniques together and the concept
+of a blocking flow, which we will all get to.
+
+So, what is Dinic's algorithm? It's a fast strongly polynomial maximum flow
+algorithm. The fact that it's a strongly polynomial is important, it means that
+the runtime doesn't depend on the capacity values of the flow graph, which for
+all we know could be very large.
+What's remarkable about Dinic's is that not only is it fast in practice for 
+general graphs, but it also boasts performance on bipartite graphs running in a
+time complexity of big O of sqrt root V times E. The importance of this cannot
+be over stated: it makes it possible to handle bipartite graphs of a RIDICULOUS
+size. If you are doing competitive programming, Dinic's is the defacto standard
+algorithm to solve maximum flow problems.
+The algorithm was conceived in 69 by Yee-fim Dinitz and published in 1970. The 
+algorithm was later modified slightly and popularized by Shy-mon Even, 
+mispronouncing Dinitz algorithm as Dinics algorithm.
+
+Let's start talking about the algorithm itself, but first beginning with an
+analogy. Suppose you and a friend planned to meet up at a coffee shop a few 
+streets east of where you are. You have never been to this coffee shop and you
+don't exactly know where it is, but you know it is somewhere east, how would 
+you get there?
+
+Q: With the information you have, would it make sense to head south? What 
+about north west?
+
+The only sensible directions are: east, north east and south east, this is
+because you know that those directions guarantee that you make positive progress
+towards the coffee shop.
+
+This form of heuristic ensures that we continuously make progress towards
+whatever place of interest we desire to go. How can we apply this to solving
+for the maximum flow?
+
+In this analogy, you are the source and the coffee shop is the sink. The main
+idea behind Dinic’s algorithm is to GUIDE augmenting paths from s -> t using a
+level graph, and in doing so greatly reducing the runtime.
+
+The way Dinic’s determines which edges make progress towards the sink T and
+which do not is by building what is called a level graph.
+
+The levels of the graph are those obtained by doing a BFS from the source.
+
+Furthermore, an edge is only part of the level graph if it makes progress 
+towards the sink. That is, the edge must go from a node at level L to another
+at level L+1.
+
+The requirement that edges must go from L to L+1 prunes backwards and "sideways"
+edges (grey edges in this slide).
+
+As yourself, if we're trying to go from s -> t as quickly as possible, does it
+make sense to take the red edge going in the backwards direction?
+
+No, taking the red edge doesn’t bring you closer to the sink, so it should only
+be taken if a detour is required. This is why backwards edges are omitted in
+the level graph.
+
+The same thing can be said about edges which cut across sideways across the same
+level since no progress is made.
+
+It’s also worth mentioning that residual edges can be made part of the level
+graph, but they must have a remaining capacity, greater than 0.
+
+So that's the level graph. The actual steps to executing Dinic's are as follow:
+Step1: Construct a level graph by doing a BFS from the source to label all the
+levels of the current flow graph.
+Step 2: If the sink was never reached while building the level graph, then stop
+and return the max flow.
+Step 3: Using only valid edges in the level graph, do multiple DFSs from s -> t
+until a blocking flow is reached, and sum over the bottleneck values of all the
+augmenting paths to calculate the max flow.
+Then repeat steps 1 to 3
+A blocking flow is when we cannot find any more paths from the source to the 
+sink because too many edges in the level graph have been saturated.
+
+This will all become clear with an example. Let's use Dinic's algorithm to find
+the maximum flow. If this were a bipartite graph, we would also be able to get a
+maximum matching.
+
+Step 1 is to figure out which edges are part of the current level graph. You 
+don't need to think of the level graph as a totally separate graph, you can 
+think of it rather as a valid subset of the edges. So start at the source and
+do a BFS outwards.
+
+The first layer includes all the red nodes
+
+Then is the second layer
+
+and so on
+
+until we reach the sink.
+
+[309] Now if we focus on the edges which form the level graph we see that they 
+are all edges which go from L to L+1 in level and have remaining capacity > 0.
+
+Step 2 of the algorithm is to find paths from s -> t until a blocking flow is
+reached, that is, we cannot find any more paths.
+
+So we start at the source and do a DFS on the edges of the level graph until the
+sink is reached.
+
+<press>
+
+<press>
+
+<press>
+
+We found our first augmenting path, and the bottleneck value along this path is
+5 since 5 is the smallest remaining capacity.
+
+So update the flow values along the path by 5.
+
+If you inspect the graph, the blocking flow has not yet been reached since there
+are still exists paths from s -> t.
+
+Start once again at the source and do a DFS.
+
+<press>
+
+<press>
+
+<press>
+
+We found another path, and this one has a bottleneck value of 15.
+
+Augment the flow values along the path by 15
+
+Let's try and find another path from s -> t
+
+<press>
+
+<press>
+
+<press>
+
+What happens now is that we get stuck while performing the DFS. There are
+no edges in the level graph with a remaining capacity greater than 0 which
+can lead us to the sink, so the blocking flow has been reached.
+
+We just finished the first blocking flow iteration.
+
+Now we reset and rebuild the level graph. This time it should look different
+because the remaining capacities of multiple edges has changed.
+
+Start at the source
+
+Expand outwards taking all edges with a remaining capacity greater than 0, which
+in this case is only the middle edge leading to the red node. The top edge going
+outwards from the source is saturated, and so is the one going downwards.
+
+We keeping doing this and building the level graph layer by layer.
+
+<press>
+
+<press>
+
+<press>
+
+Awesome, so this is our new level graph, you can see that this time we have one
+extra layer to play with
+
+Let's try and find a path from s -> t
+
+Once again we start at the source and probe forwards taking only edges part of 
+the level graph.
+
+<press>
+
+<press>
+
+Oops, we reached a dead end in our DFS because we can no longer go forwards, so
+we need to backtrack and keep going until we reach the sink.
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+Perfect we made it to the sink.
+
+The current path has a bottleneck value of 10 since the minimum remaining 
+capacity along the paths
+
+Next, augment the flow by 10
+
+<press>
+
+The blocking flow has once again been reached. No more flow can be pushed 
+through the network when we build the level graph, so the algorithm terminates.
+
+The max flow is the sum of the bottleneck values, which is you recall were 5, 15
+and 10 for a maximum flow of 30.
+
+The max flow can also be calculated by looking at the flow values of the edges
+leading into the sink highlighted in red.
+
+One of the pitfalls of the current implementation of Dinic’s algorithm at the 
+moment is that the algorithm may encounter multiple dead ends during the
+DFS phase.
+
+The issue with dead ends is that they are highly undesirable because they extend
+the length of the journey from the source to the sink, especially if the same 
+dead end is taken multiple times during a blocking flow iteration.
+
+In his original paper, Dinitz’s suggested "cleaning" the level graph ridding it
+of all dead ends before starting each blocking flow phase.
+Laster 1975, Shimon Even and Alon Itai suggested pruning dead ends when backtracking
+during the DFS phase, effectively getting rid of dead ends on the fly as the
+algorithm executes.
+This trick greatly speeds up (and simplifies) the algorithm because dead ends
+are only ever encountered once.
+
+Awesome, that's basically everything you need to know.
+Let's summarize what we have learned. First we talked about the motivation behind
+Dinic's, and why having a guiding heuristic can greatly speed up you algorithm.
+
+Then we learned about the intuition and practicality behind having a level 
+graph that directs edges towards the sink.
+
+Then we talked about the concept of a blocking flow, which is achieved by doing
+multiple DFSs on the level graph until it is saturated.
+
+Afterwards we looked at The process of rebuilding the level graph and finding 
+the blocking flow repeatedly until no more augmenting paths exist and the
+max flow is found.
+
+And lastly that a critical optimization of Dinitz’s algorithm is pruning dead
+ends so that you do not encounter them again. 
+
+Thank you so much for watching, next video we'll look at some source code. 
+Please drop a comment and let me know how I did, like this video if you learned
+something and subscribe for more mathematics and computer science videos.
+
+
+
+
+
+

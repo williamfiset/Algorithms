@@ -1,0 +1,684 @@
+Hello everybody, what's happening? My name is William and today we're talking 
+about minimum spanning trees, and in particular how to use Prim's algorithm to
+find them.
+
+@3.
+So, what is a minimum spanning tree? On a weighted graph, a minimum spanning 
+tree (or MST for short) is a tree which spans the whole graph connecting all 
+nodes together while minimizing the total edge cost. It's important to note that
+your spanning tree cannot contain any cycles, otherwise it's not a tree.
+
+@4.
+Here's a weighted graph with nodes labeled 0 through 6 with various edges of 
+different weights connecting them.
+
+@5.
+One possible minimum spanning tree is the following edges highlighted in green
+whose edge costs sum to 9. There's no way to cannot all the nodes together and 
+get a lower cost than this. Note that even though the minimum spanning tree in
+this graph is unique in general it's possible for a graph to have multiple MSTs
+of equal costs.
+
+@6.
+Hopefully you've been paying attention because now it's your turn. I'm going to
+present you some weighted graphs and you need to identify any possible MST you
+can. Let's begin with this graph; take a moment and find any MST on this graph.
+
+<pause>
+
+@7.
+One possible MST is the following with a cost of 14. Again, MSTs are not unique
+so there could be other valid minimum spanning trees, but they'll all have a 
+cost of 14.
+
+@8. 
+Let's do another one, can you find a minimum spanning tree here? I'll give 
+you a moment, but feel free to pause the video if you need.
+
+<pause>
+
+@9.
+Here's a possible answer with the MST highlighted in green and a cost of 39
+
+@10.
+What about this graph? I promise it's the last one.
+
+@11.
+This is a bit of a trick question because there's no MST. All nodes must to 
+connected on a single component for a spanning tree to exist.
+
+@12.
+Let's change focus and start talking about Prim's algorithm. Prim's is one of my
+favorite MST algorithms because of how simple and intuitive it is. By nature its
+a greedy algorithm which always selects the next best edge to add to the MST and
+it works very well on dense graphs with lots of edges.
+However, a few the downsides of Prim's is that it's not as easily parallelizable
+as other well know MST algorithms and it's slightly harder but not impossible to
+find the minimum spanning forest of a graph.
+There are two well known versions of Prim's I want to discuss, the first is the 
+more common lazy version which runs in big O of E log E, and then there's the
+improved eager version which runs in big O of E log V but requires a slightly
+different data structure.
+
+@13.
+Let's start by looking at the lazy version because it's easier to implement. 
+Here's the general idea:
+Maintain a PQ that sorts edges based on minimum edge cost. This PQ is used to 
+tell you which node to go to next and what edge was used to get there.
+Then the algorithm begins and we start on any starting node s and mark s as
+visited and iterate over all its edges and add them to the PQ.
+From this point on, while the PQ is not empty and a MST has not been formed,
+dequeue the next best edge from the PQ. If the dequeued edge is not outdated
+which it could be if we visit the node it points to via another path before 
+getting to this edge then mark the current node as visited and add the selected
+edge to the PQ. If you selected a stale outdated edge simply poll again.
+Then repeat the process of iterating over the current node's edges and adding 
+them to the PQ. While doing this care not to add edges which point to already
+visited nodes, this will reduce the number of outdated edges in the PQ.
+
+@14.
+Let's have a look at an example, suppose we have this weighted undirected graph
+and we want to find any MST. 
+
+@15.
+An important thing to keep in mind is that while the graph above represents an
+undirected graph, our internal adjacency list representation has each undirected
+edge stored as two directed edges.
+
+@16.
+The actual internal representation typically looks like this which is a lot
+easier to work with.
+
+@17.
+Along with the graph, I will also be keeping track of the edges in the PQ on the
+right. The edges objects in the PQ will be stored as triplets containing the
+start node, end node and edge cost.
+
+@18.
+Lastly, I will be coloring nodes nodes has either blue for unvisited, orange for
+visiting and gray for visited.
+
+@19.
+Let's begin Prim's on node 0.
+
+@20.
+Iterate over all outgoing edges and add them to the PQ
+
+@21.
+The first edge to go into the PQ is the edge from 0 to 1 with cost 10.
+
+@22.
+Then edge 0 to 2 with cost 1
+
+@23.
+And finally edge 0 to 3 with cost 4
+
+@24. <nothing>
+@25. <nothing>
+
+@26.
+Now we look in our PQ and poll the next most promising edge and add it to the 
+MST. The edge from 0 to 2 with a cost of 1 has the lowest value in the PQ so it
+gets added to the MST. This also means that the next node we process is node 2.
+
+@27. <nothing>
+
+@28.
+Next, iterate through all the edges of node 2 and add them to the PQ.
+
+@29. <nothing>
+@30. <nothing>
+
+@31.
+While iterating over the outgoing edges of node 2 realize that we may encounter
+edges which point to already visited nodes. We do NOT want to add these to the
+PQ because they're of no use.
+
+@32.
+The reason we don't include edges which point to already visited nodes is that
+either they overlap with an edge already part of the MST as is the case with the
+edge on this slide or they would introduce a cycle in the MST if included.
+
+@33. <nothing>
+
+@34.
+So the next best edge in the PQ is the edge from 2 to 3 with cost 2 so it gets
+add to the MST. This also means that the next node we process is node 3.
+
+@35. <nothing>
+
+@36.
+The same process of adding edges to the PQ and polling the smallest edge 
+continues until the MST is complete. I'll let the animation play until something
+interesting happens.
+
+...
+
+@62.
+Notice that the next best edge we poll from the PQ is an edge which points to 
+node 1 which is already visited. This means that the edge is outdated and stale
+because we found a better cheaper path to node 1 already so we can safely ignore
+this edge and poll again.
+
+@63.
+The next edge is also stale, so keep polling.
+
+...
+
+@71.
+So what happens when we have two edges which have the same minimum cost in the 
+PQ, which gets polled first? In practice it doesn't matter so let's assume it's
+edge (2, 5, 8) because it was added to the PQ first.
+
+@72.
+That edge was stale so poll again.
+
+@73.
+The next edge is from 4 to 7 with cost 8.
+
+@74. <nothing>
+@75. <nothing>
+@76. <nothing>
+@77. <nothing>
+@78. <nothing>
+
+@79.
+We can now stop Prim’s since the MST is complete. We know the MST is complete 
+because the number of edges in the tree is one less than the number of nodes in
+the graph; this is precisely the definition of a tree.
+
+@80.
+If we collapse the graph back into the undirected edge view it becomes clear 
+which edges are included in the MST.
+
+@81. <nothing>
+
+@82.
+To find the MST cost simply sum up the cost of all the edges which were selected
+which totals to 20.
+
+@83.
+Great, now that we understand the gist of the lazy implementation of Prim's lets
+have a look at some pseudo code. Let me first define a few variables we'll need:
+
+@84.
+First is 'n' the number of nodes in the graph.
+
+@85.
+The variable 'pq' represents the PQ data structure, it stores edge objects 
+based on minimum edge cost. Each edge object consists of a start node, an end
+node, and an edge cost.
+
+@86.
+Next is 'g' which represents the graph we're working with. 'g' represents an
+adjacency list of weighted edges. In g, every undirected edge is represented as
+two directed edges.
+As a side node, if your graph is extremely dense you should probably prefer 
+using an adjacency matrix instead of an adjacency list for efficiency.
+
+@87.
+And lastly is a visited boolean array of size n which tracks whether node i has
+been visited or not.
+
+@88.
+So this is the whole algorithm for the lazy implementation, let's go over it
+step by step.
+
+@89.
+The function takes one argument s which is the start node index, by default s is
+set to node 0.
+
+@90.
+Then I define a few more variables we'll need:
+'m' is a constant representing the number of expected edges in the MST
+'edgeCount' is the number of edges we have currently included in the MST. This
+variable is used to make sure the tree spans the whole graph.
+'mstCost' tracks the total cost of the MST
+and finally, 'mstEdges' is an array which holds edges which we have included in
+the MST.
+
+@91.
+The first actual bit of logic we do is add all outgoing edges from s to the pq
+with the addEdges method, let's have a look...
+
+@92.
+Here we are at the addEdges function.
+
+@93.
+The first thing I do is mark the current node as visited.
+
+@94.
+Next, I iterate over all the outgoing edges of the current node.
+
+@95.
+If the destination node of the edge is unvisited add it to the PQ.
+
+@96. <nothing>
+
+@97.
+Once we've added the first set of edges to the PQ the algorithm really begins 
+and we enter a while loop. While the PQ is not empty and the minimum spanning
+tree is not complete keep iterating.
+
+@98.
+Then inside the loop we poll the next best edge out of the PQ and grab a 
+reference to the destination node index, this is the node the edge is 
+pointing at.
+
+@99.
+This next line is very important, it's the logic that skips adding an edge to 
+the PQ if that edge points to an already visited node. Again, edges can become
+stale or outdated in the PQ if the node they're pointing to becomes visited
+via another path.
+
+@100.
+Next, actually add the edge to the MST by adding it to the mstEdges array. While
+we're adding the edge to the tree also sum over the edge costs.
+
+@101.
+The last thing we want to do is call the addEdges method with the new current 
+node. Recall that this will add all outgoing edges pointing to unvisited nodes
+to the PQ.
+
+@102
+The very last thing is to make sure our tree spans the whole graph and return 
+the edges comprising the MST along with the MST cost.
+
+@103
+So that's all for the lazy implementation, in the next video we'll be talking
+about the eager version and what optimizations we can do there. Thank you so
+much for watching!
+Implementation source code and slides can be found at github.com slash
+williamfiset slash algorithms. Please give this video a thumbs up if you learned
+something and subscribe for more mathematics and computer science videos.
+
+
+
+-------------------------------------------------------------------------------
+
+@105.
+Hello and welcome back, my name is William and today we're talking about finding 
+minimum spanning trees with Prim's algorithm.
+
+@106.
+In the previous video on Prim's we discussed MST basics and the lazy
+implementation of Prim's. This video builds off concepts explained there, so 
+please watch that video before this one, there should be a link in the
+description.
+
+@107.
+The lazy implementation of Prim’s inserts E edges into the PQ. This results in
+each poll operation on the PQ to be O(log(E)).
+In the eager version, we maintain the idea that instead of adding edges to the PQ
+which could later become stale,
+that instead we should track (node, edge) key-value pairs that can easily be 
+updated and polled to determine the next best edge to add to the MST.
+
+@108.
+For this all to make sense there's a key realization that needs to happen and 
+that is: for any MST with directed edges, each node is paired with
+exactly one of its incoming edges (except for the start node).
+One way to see this is on a MST with possibly multiple edges leaving a node, but
+only ever one edge entering a node.
+
+@109.
+Let's have a closer look at what I mean. Suppose we have this undirected graph.
+
+@110.
+The equivalent directed version looks like this.
+
+@111.
+A possible MST starting at node 0 looks like the following highlighted in green.
+
+@112.
+Now notice that on this directed MST each node is paired with exactly one edge, 
+except the starting node.
+
+@113.
+So in a sense, there seems to be a relationship we can take advantage of here 
+which is that each node is paired with exactly one incoming edge.
+
+@114.
+In the eager version, we are trying to determine which of a node's incoming edges
+we should select to include in the MST.
+The main difference coming from the lazy version is that instead of adding edges
+to the PQ as we iterate over the edges of node we’re going to relax (update) the
+destination node’s most promising incoming edge.
+
+@115.
+So you might be asking yourself the question how are we going to efficiently 
+update and retrieve these (node, edge) pairs?
+Well one possible solution is to use an Indexed Priority Queue (IPQ for short) 
+which can efficiently update and poll key-value pairs. Think of an IPQ
+as the data structure you'd get if a hashtable and a priority queue had a baby
+together. It supports sorted key-value pair update and poll operations in 
+logarithmic time.
+Using this new approach would reduce the overall time complexity from O(E*logE)
+to O(E*logV) since there can only be V (node, edge) pairs in the IPQ.
+
+@116.
+If you're interested in learning more about what an indexed priority queue is 
+and how it's implemented I highly recommend my data structures video on the
+subject. I will link it in the description if you need to catch up.
+
+@117.
+The new implementation for the Eager version is slightly different, the 
+algorithm goes as follows:
+Maintain an indexed priority queue of size V that sorts vertex edge pairs 
+(v , e) based on the minimum edge cost of e.
+Start the algorithm on any node s. Mark s as visited and relax all edges of s.
+Relaxing in this context refers to updating the entry for node v in the IPQ from
+(v, old edge) to (v, new edge) if the new edge has a better cost than 
+the old edge.
+Then while the IPQ is not empty and a MST has not been formed, dequeue the next
+best vertex edge pair (v, e) from the IPQ. Mark node v as visited and add edge e
+to the MST. Lastly, relax all edges of v while making sure not to relax any edge
+pointing to a node which has already been visited.
+
+@118.
+Alright, let's see an example. Suppose we have the following weighted undirected
+graph and we want to find any MST.
+
+@119.
+One thing to remember is that while we're dealing with an undirected graph we 
+will be internally representing it as a directed graph where each undirected 
+edge is stored as two directed edges.
+
+@120.
+I will also be keeping track of all (node, edge) key-value pairs on the right
+and update them accordingly as the algorithm executes.
+
+@121.
+Let's begin the algorithm on node 0 and start iterate over all the edges of 0
+and relax all of them. During the relaxing process add a (node, edge) pair to 
+the IPQ if it does not yet exist, otherwise update the value if the new edge
+has a better cost.
+
+@122.
+The first (node, edge) pair we add is node 2 with the incoming edge from 0 to 2
+with cost 0 and similarly for the rest of node 0's edges.
+
+@123. <press>
+@124. <press>
+@125. <press>
+@126. <press>
+
+@127.
+The next best (node, edge) pair based on minimum edge cost is node 2 with the
+incoming edge from node 0.
+
+@128. <press>
+
+@129.
+Now iterate through all the edges of node 2 and relax all edges. Care to ignore
+edges pointing to already visited nodes like the one on this slide.
+
+@130.
+The edge (2, 5, 6) has a better cost going to node 5 than the edge from node 0 
+to node 5 with cost 7, so update the IPQ with the new edge. I will denote IPQ
+updates with a purple box around the edge being updated.
+
+@131. <press>
+
+@132.
+The next best node-edge pair is node 3 with the edge coming from node 0 with a 
+cost of 5.
+
+@133. 
+Now iterate through all the edges of node 3 and relax all edges. 
+
+@134. <press>
+
+@135.
+The edge coming from node 3 offers a better value so update the value for node 1
+in the IPQ with the new edge.
+
+@136.
+Add the new key-value pair entry for node 6
+
+@137.
+Update the value for node 5 with the new better edge.
+
+@138.
+From this point on I will let the animation play.
+
+...
+
+@164.
+Alright, that's the algorithm, and the MST consists of the edges in green.
+
+@165.
+If we collapse the graph back into the undirected edge view it becomes clear
+which edges are included in the MST.
+
+@166.
+You can also get the MST cost by adding all the edges of the spanning tree for
+a total cost of 9.
+
+@167.
+Let's have a look at some pseudo code for the eager implementation of Prim's. 
+You'll notice that it's almost identical to the lazy version except for a 
+few key details which I will highlight.
+
+@168.
+First is n, this is still the number of nodes in the graph.
+
+@169.
+the variable ipq represents that we're using an indexed priority queue instead of a 
+traditional PQ to store (node index, edge object) pairs. Edge objects are still
+represented as {start node, end node, edge cost} triplets and the node index is
+simply an integer.
+
+@170.
+g is once again our graph adjacency list of weighted edges. In g, every 
+undirected edge is represented as two directed edges.
+There's also the whole story about whether we should be using an adjacency list
+or an adjacency matrix to represent our graph when using Prim's because this can
+greatly impact performance.
+So I did some analysis comparing using an adjacency list vs an adjacency matrix
+and the results I got were interesting
+
+@170 1/2.
+This dotted line graph shows the performance of using an adjacency list in blue 
+vs an adjacency matrix in green. The x axis represents the graph edge density
+percentage used and the y axis indicates performance measured in milliseconds.
+As you can see, for graphs with fewer edges the adjacency list outperforms the
+adjacency matrix, but as the edge density increases the adjacency matrix becomes
+the obvious choice.
+You may be wondering why the adjacency matrix's performance starts to increase
+after the middle mark where the graph has more edges.
+This is an excellent question, and my
+guess is that the denser the graph fewer relaxation operations need 
+to be performed which is an expensive part of Prim's algorithm. Since the time
+to iterate
+over all the edges of a node is constant, but fewer relax operations are needed
+performance increases as a result, but I may be wrong.
+Even still, the results are interesting and the takeaway is that the graph
+representation you choose can greatly impact your performance depending on 
+whether your graph is sparse or dense.
+
+TODO(williamfiset): add adj matrix impl to README
+
+@171.
+Alright, back to the pseudocode. The last variable is a visited boolean array of
+size n which tracks whether node i has been visited or not.
+
+@172.
+Now let's look at the actual algorithm for eager Prim's.
+
+@173.
+In this first block I define a few more variables we'll need:
+'m' the number of expected edges in the MST.
+'edgeCount' the number of edges we have currently have included in the MST. This
+variable is used to make sure the tree spans the whole graph.
+'mstCost' tracks the total cost of the MST
+and finally, 'mstEdges' is an array which holds edges which we have included in
+the MST.
+
+@174.
+Then I call the relaxEdgesAtNode method passing the start node as an argument.
+Let's have a look inside the relaxEdgesAtNode method to understand what's 
+happening.
+
+@175.
+Here we are. You'll notice that this method takes a single argument which is the
+current node we care about.
+
+@176.
+The first thing we do is mark the current node as visited so that we don't visit
+it again in the future.
+
+@177.
+Then I reach into our graph adjacency list and get all edges going outwards from
+the current node.
+
+@178.
+As we enter the loop and start iterating over all the outgoing edges the first
+thing I do inside the loop is grab a reference to the destination node index, 
+this is the node the edge is pointing at.
+
+@179.
+Next, skip edges which point at already visited nodes.
+
+@180.
+Now here's the bit where we actually relax the edge. First, check if the IPQ
+contains the key with the value of the destination node.
+
+@181.
+If it doesn't then add the edge to the IPQ for the first time.
+
+@182.
+Otherwise, try and improve the cheapest edge at destNodeIndex with the current
+edge in the IPQ.
+
+@183. <nothing>
+
+@184.
+We're back inside the main method.
+
+@185.
+Next up, keeping looping while the IPQ is not empty and the MST is not complete.
+
+@186.
+After, extract the next best (node index, edge object) pair from the IPQ based 
+on minimum edge cost.
+
+@187.
+Include the selected edge as part of the MST and sum over the edge cost.
+
+@188.
+Lastly, relax all the edges of the new current node and repeat until the 
+loop breaks.
+
+@189.
+Outside the main loop, check if we have successfully created a spanning tree, 
+this might not be the case if some of the nodes are unreachable. But assuming
+that's not the case return the MST cost and the edges which make up the spanning
+tree.
+
+@190.
+And that concludes the pseudo code for Prim's algorithm, thank you so much for
+watching! Implementation source code and slides can be found at github.com slash
+williamfiset slash algorithms.
+There should be a link in the description below. Please give this video a thumbs
+up if you learned something and subscribe for more mathematics and computer
+science videos.
+
+@191.
+Next video we'll be looking at some source code for the eager implementation of
+Prim's MST algorithm, so stick around if you want to see more.
+
+
+
+-------------------------------------------------------------------------------
+
+Hello and welcome, my name is William and today we're looking at some source 
+code for Prim's minimum spanning tree algorithm.
+
+If you haven't done so already, please be sure to check out my previous video on
+Prim's which goes over implementation details, animations on how the algorithm works. You can find a link in the description below.
+
+All the source code you see today can be found on github at github.com slash william fiset slash algorithms, so without further ado, let's dive right in.
+
+
+
+Alright, here we are in the source code for Prim's implemented in Java. At the top here I posted some instructions on how to download and run this script in case you wanted to play around with it a little bit.
+
+Let's begin by taking a look at the main method.
+
+The first thing I do is setup a graph we want to find the MST of, in fact it's the same graph we had in the slides in the previous video.
+To create the graph I call the helper method createEmptyGraph to initialize an adjacency list of size n and then add various undirected edges of different weights to the graph.
+
+Once the graph is setup I create a minimum spanning tree solver and pass it the graph we just created. The solver is able to tell us whether a MST exists, what the minimum spanning tree cost is as well as get all the edges which make up the minimum spanning tree. The three key methods we'll be looking at today include the mstExists() function, getMstCost() and lastly getMst()
+
+The output of running this script is illustrated below.
+
+<scroll>
+
+If you were curious as to how the graph adjacency list gets initialized and how I add edges to the graph here's the code that does that.
+
+<scroll>
+
+Next up is a class struct which represents a directed edge used in the graph. One important thing to note about this class is that it implements the Comparable interface and overrides the compareTo method, this simply means that edges are able to be sorted in reference to one another based on minimum edge cost. This is important for the IPQ because it needs to know how to compare edge objects with one another.
+
+<scroll>
+
+After the Edge class is the MinimumSpanningTreeSolver where all the interesting logic happens. In this class I store a whole bunch of variables to help us out.
+
+The first two are inputs which are:
+'n' the number of nodes in the graph which I get this from the constructor.
+and then there's the graph adjacency list itself.
+
+Internally I store a boolean solved variable to track whether we have already computed the MST so that we don't do it again once we've already solved the problem. 
+The 'mstExists' variable tells you whether a MST was found in the input graph, by default this value is false.
+The visited boolean array is used to keep track of whether node i has been visited or not.
+Lastly is the variable ipq which is an Indexed Priority queue data structure defined below.
+
+The outputs to this class include the minimum spanning tree cost and the edges which make up the minimum spanning tree, if one exists.
+
+<scroll past constructor>
+
+After the constructor initialization there are two important methods to know about, these are the getMst() method for retrieving the MST edges and getMstCost which gets the spanning tree cost. Both of these methods work in the same manner, they both call the solve() method and then check whether the MST exists and return a value or null. Therefore, the real method we care about is the solve method, so let's have a look at that.
+
+<scroll>
+
+The solve method is only ever executed once because we mark the solved boolean value as true the first time solve() is called and the other times the method returns early.
+
+The first thing I do in the solve method is initialize some more variables and allocate some memory for the arrays we will be using.
+'m' is the expected number of edges in the minimum spanning tree, and edgeCount is the current number of edges we have included in the MST so far.
+
+Next, I initialize an indexed priority queue of size n. This particular IPQ is implemented with a d-ary heap so we need to provide a node degree for the underlying supporting heap structure. I arbitrary choose the base 2 logarithm of the number of nodes which actually seems to give a pretty good performance. Typically this is an implementation detail isn't something you don't need to worry about.
+
+The first actual bit of logic we're going to do is call the relaxEdgesAtNode method on node 0. This adds the initial set of edges to the IPQ.
+
+Let's look at that method right now.
+
+<scroll>
+
+The first thing we do is mark the current node as visited so that we don't visit it again in the future. Then I reach into our graph adjacency list and get all the outgoing edges from the current node. As we enter the loop and start iterating over all the outgoing edges the first thing I do inside the loop is grab a reference to the destination node index, this is the node the edge is pointing at. Next, skip edges which point at already visited nodes.
+
+Now here's the bit where we actually relax the edge. First check if the IPQ contains the key with the value of the destination node. If it doesn't, then add the edge to the IPQ for the first time. Otherwise, try and improve the cheapest edge at destNodeIndex with the current edge in the IPQ by calling the decrease function.
+
+Let's go back to the solve method.
+
+<scroll>
+
+After we add the initial set of edges, iterate while the IPQ is not empty and the MST has not been formed.
+Inside the loop, pull out the next best node index, edge pair. The destination node can also be found by checking which node the directed edge we just polled is pointing at.
+
+After that, add the polled edge to the MST by placing it in the mstEdges array and sum over the edge costs.
+
+Finally, relax all the edges of the new current node. This process continues and we keep polling the best edge and slowly build our MST until eventually the loop breaks.
+
+The last thing we need to do is set the mstExists variable to check if we actually found a minimum spanning tree. If the edge count is equal to m then we successfully computed a spanning tree, otherwise the graph is disconnected in some way and no spanning tree exists.
+
+So that's all for the eager implementation of Prim's MST algorithm. The only piece of the puzzle that might still be unclear is how the IPQ implementation works.
+
+<scroll>
+
+Here's the IPQ implementation, however this data structure merits a video on its own which is why if you're still struggling to understand the IPQ you should check out my data structures video on the subject, and I will leave it at that.
+
+Thank you so much for watching! Please give this video a thumbs up if you learned something and subscribe for more mathematics and computer science videos.
+
+
+

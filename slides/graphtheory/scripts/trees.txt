@@ -1,0 +1,966 @@
+
+Hello and welcome back, my name is William, and in today's video we're going to
+start tackling the topic of trees. In particular, we're going to look at what
+trees are and how we computationally store and represent trees.
+
+Conceptually it's fair to say most people know what I mean when I say I'm
+working with a tree, or that something is structured as a tree. Below are four
+graphs, but one of them is not a tree, do you know which one?
+
+Only the last graph is not a tree, but why, why is it not a tree?
+
+That is because we define a tree as being an undirected graph with no cycles,
+and that's the key thing to remember -- trees cannot have cycles. You can see
+that the rightmost graph has a cycle, and is therefore not a tree. However,
+there's an even easier way to check whether a graph is a tree or not.
+
+Each tree has exactly n nodes and n-1 edges. If we count up all the nodes and
+edges of each graph you can see that all the trees have one less edge than the
+number of nodes, except for the rightmost graph which is not a tree.
+
+We now know what trees are, but where do they appear in computer science and in
+the real world? Here are a few examples where you might encounter a tree
+structure:
+
+  First is your computer's file system which consists of directories,
+  subdirectories and files which is inherently a tree.
+
+  Another place you see trees are in social hierarchies where you often see
+  CEO's, kings, priests and generals at the top; and interns, servants, children
+  and the lower class at the bottom.
+
+  Trees are used to decompose source code and mathematical expressions into what
+  are called abstract syntax trees for easy evaluation. For example, the math
+  expression you see on this slides can be broken down into a tree structure.
+
+  Every webpage you visit can be throught of as a tree due to HTML's nested tag
+  structure. This structure is used to tell your browser how to easily render
+  the page and how it should be displayed.
+
+  Another large application of trees is in game theory to model decisions and
+  courses of action. On this slide is the famous prisoner's dilemma problem and
+  it's four different outcomes for whether each prisoner chooses to confess or
+  defect.
+
+  There are many many more applications of trees in computer science and in the
+  real world, but we're not going to cover them all today. However, it's worth
+  mentioning that in computer science, the place you'll most often encounter
+  trees is as part of data structures, many of which are listed on this slide.
+
+Now we need to talk about how we actually store and represent these undirected
+trees.
+
+First, you should label the nodes of your tree by indexing them from 0 to n non-
+inclusive like the tree on the left of this slide.
+
+A simple way to store a tree is as an edge list, which is simply a list of
+undirected edges indicating which two nodes have an edge between them. The great
+thing about this representation is that it's super fast to iterate over and
+cheap to store.
+
+The downside however, is that storing your tree as a list lacks the structure to
+efficiently query all the neighbors of a node.
+
+This is why the adjacency list is usually a more popular representation for
+storing an undirected tree. In this representation, you store a mapping between
+a node and all its neighbors.
+
+For example, node 4 has the neighbors 1, 5 and 8 so in the adjacency list, node
+4 maps to the list containing 1, 5 and 8 respectively.
+
+You could also store a tree as an adjacency matrix of size n by n where having a
+1 in a particular cell means that the nodes which corresponding to the
+row/column values have an edge between them.
+
+However, in practice I would say to always avoid storing a tree as an adjacency
+matrix because it's a huge waste of space. You would not ever want to allocate n
+squared memory and only use roughly 2n of the matrix cells, it just doesn't make
+sense.
+
+
+Alright, I can't keep talking about trees without mentioning rooted trees which
+are trees with a designated root node. I have highlighted the root node in
+orange, and most rooted trees as you'll notice have directed edges which point
+away from the root node, however it's also possible to have edges which point
+towards the root node, but those trees are much rarer from my experience.
+Generally speaking, rooted trees are far easier to work with than undirected
+trees because they have this well defined structure that allows for easy
+recursive algorithm implementations.
+
+Related to rooted trees are binary trees which are trees for which every node
+has at most two child nodes. The first two trees on this slide are binary trees,
+but the last one is not because it has a node with more than 2 child nodes. You
+don't often see binary trees manifest themselves in the real world, for the most
+part binary trees are artificially created and integrated as part of data
+structures to guarantee efficient insertions, removals and access to data.
+
+Now related to binary trees are binary search trees which are trees which
+satisfy the BST invariant. The BST invariant states that for every node x the
+values in the left subtree are less than or equal to x and that the values in
+the right subtree are greater than or equal to x. This nice little property
+enables you to quickly search through a tree and retrieve the values you want,
+which is particularly handy. All the trees on this slide are BSTs except for the
+last one, because 1 is *not* greater than or equal to 3.
+
+It's often useful to require uniqueness on the values of your binary search tree
+so that you don't end up with duplicate values. To resolve this issue of
+duplicate values you can change the invariant to be strictly less than rather
+than less than or equal to.
+
+Now let's talk about how to store these rooted trees. Rooted trees are naturally
+defined recursively in a top down manner.
+
+In practice, you always maintain a pointer reference to the root node so that
+you can access the tree and its contents.
+
+Then each node also has access to a list of all its children -- which are also
+called "child nodes". In this slides, the orange node is the current node we
+have a reference to, and the purple nodes are all its children. All the bottom
+or leaf nodes don't have any children.
+
+It's also sometimes useful to also maintain a pointer to a node’s parent node in
+case you need to traverse up the tree. This effectively makes the edges in the
+tree bidirectional. Again, if the current node is the orange node, than the pink
+node in the case in the parent node of the orange node.
+
+However, maintaining an explicit reference to the parent node isn’t usually
+necessary because you can access a node’s parent on a recursive function's
+callback as you pop frames off the stack.
+
+
+Another really neat way of storing a rooted tree if it is a binary tree is in a
+flattened array.
+
+In the flattened array representation, each node has an assigned index position
+based on where it is in the tree. The thing to understand here is that the tree
+is actually an array, the diagrams are just a visual representation of what the
+tree looks like.For instance, the node with value 5 in orange is associated with
+the index 4 in the array.
+
+Similarly, this node with a value of 2 has an index of 6.
+
+Even nodes which aren't currently present have an index because they can be
+mapped back to a unique position in the "index tree" as I call it.
+
+In this format, the root node is always at index 0 in the array, so you always
+know where your starting point is. Another advantage of this format is that the
+child nodes of node i can be access relative to position i.
+
+For example, if we're at position 2 in the array, we know that the left and
+right children of the node at index 2 is given by 2 times i plus 1 and 2 times i
+plus 2. Therefore the children of the node at index 2 can be found at positions
+5 and 6. Reciprocally, this means if we have a node we know what the index of
+the parent node should be, which is also very useful.
+
+Alright, that's all I have for this video, thank you for watching, please like
+and subscribe and I'll see you in the next one.
+
+
+
+
+
+
+
+Hello and welcome, my name is William, and in today's video we're going to look
+at some simple tree algorithms. This video is aimed at all you beginner's just
+starting out who are still learning how to write code and especially recursive
+code. We're going to have a look at two problems today, and these are the types
+of problems which you might encounter as warm up questions in a job interview.
+
+<problem1>   Alright, let's start with our first problem. For this problem we
+need to find the sum of all the leaf node values in a tree.
+
+  For instance, given this tree we want to sum up all the bottom nodes.
+
+  That would be all these nodes in red for a total of 9. If you're keen, you
+  pause this video and give this problem a try.
+
+  <press>
+
+  Like all rooted tree problems we start with a reference to the root node. To
+  solve this problem all we need to do is perform a tree traversal and sum up
+  the value of the leaf nodes while we do the traversal.  Two popular traversal
+  algorithms are doing a Breadth First Search and Depth First Search. On trees,
+  the preferred traversal method is typically a DFS because it lends itself to
+  be easily implemented recursively.  It's pretty simple, watch how the
+  animation does it. You start at the root and plunge down the tree depth first.
+
+  <do animation>
+
+<after the slide with "= 9" appears>   At the end when we sum up all the values,
+and we can see that the sum of the leaf nodes is 9. Now let's have a look at
+some pseudo-code for how this is implemented.
+
+  The algorithm is quite short, but it may look strange at first if you haven't
+  seen much recursive code.
+
+  We call the leafSum function by passing in a reference to the root node as a
+  starting point.
+
+  The first thing we do is handle the special case where the tree is empty and
+  return zero in such a situation.
+
+  next we check if the current node is a leaf node, and if it is we return the
+  value stored in the leaf node.
+
+  The isLeaf method checks if a node is a leaf node by counting all its
+  children. If the number of child nodes is zero then we know the node is a leaf
+  node.
+
+  If the node is not a leaf node then we iterate over all the children and call
+  the leafSum method recursively summing over the return values. This ensures
+  that we traverse the entire tree and properly accumulate values.
+
+  Finally, once we have finished computing the sum for this node and its subtree
+  return the total.
+
+  And that's all for summing up the leaf node values. </problem1>
+
+<problem2>   Our second problem today is a classic problem in computer science
+which is to find the height of a binary tree. The height of a tree is defined as
+the number of edges from the root to the lowest leaf. Here the leftmost tree has
+a height of zero because it has no edges, the middle tree has a height of 1, and
+the rightmost tree has a height of 3 because the longest path from the root to
+the lowest leaf is 3.
+
+  To solve this problem we're going to break it down and define a new function
+  "h of x" which returns the height of the subtree rooted at node x. This new
+  function allows us to start thinking not only about the height of the tree as
+  a whole but also the height of the subtrees within our tree which are going to
+  help us find the overall height.
+
+  For example, on this slide "h of a" has a value of 3, but "h of b" has a value
+  of 2 and "h of e" has a value of zero.
+
+  By themselves, leaf nodes such as node e don't have children, so they don’t
+  add any additional height to the tree. So we can conclude that as a base case,
+  the height of any leaf node should be zero.
+
+  Now, assuming node x is not a leaf node, we're able to formulate a recurrence
+  relation for the height, which is that the height of the subtree rooted at
+  node x is the maximum of the height of x's left and right subtrees plus one.
+
+  Let's have a closer look at how this works with an example. Suppose we have
+  this tree and we want to compute its height.
+
+  So we start at the root
+
+  and then we start traversing down the tree depth first
+
+  When we encounter a leaf node, we give it a height of zero and return
+
+  We can't compute the height of a node until we know the height of all its
+  children, so we visit the right node.
+
+  The right node is also a leaf node so it gets a height of zero
+
+  On the callback we have visited both children of the current node so we take
+  the maximum heights of the left and the right children and add 1 for a total
+  of 1.
+
+  We just finished exploring the right half of the tree, now let's finish the
+  left side. It doesn't matter which side you do first as long as you explore
+  the whole tree while doing your DFS.
+
+  <press>
+
+  We found another leaf node so it gets a height of zero
+
+  <press>
+
+  <press>
+
+  leaf node
+
+  <press>
+
+  and another leaf node
+
+  take the max and add 1
+
+  take the max and add 1 again
+
+  finally compute the height of the final node by taking the max and adding 1
+
+  And there you have it, how the find the height of a tree. Let's have a look at
+  some pseudocode, shall we.
+
+  <pause and press>
+
+  This is the treeHeight function, and it is responsible for computing the
+  height of the tree. You would start by calling this function by passing in the
+  tree's root node like we did for the leafSum function.
+
+  The first thing we do is handle the empty tree case. The height of an empty
+  tree is undefined so return -1.
+
+  Next we check whether the current node is a leaf node by checking if both its
+  left and right child are null and return zero. If either of them are not null
+  then we know this node has more children and we need to keep digging down the
+  tree.
+
+  In the event we haven't found a leaf node, return the maximum height of the
+  left subtree and the right subtree plus 1. <pause>
+
+  I want to take a moment and go back to the previous statement and remark on a
+  simplification we can exploit.  What do you reckon happens if we remove
+  checking whether a node is a leaf node or not, do you think the algorithm
+  would still behave correctly? Pause the video and think this over.
+
+  Oddly enough, removing the leaf node check still makes the algorithm work
+  correctly. This works because the base case has adopted a new meaning, instead
+  of the base case checking for leaf nodes, it's now checking whether a node is
+  null and returning -1. Returning -1 now not only checks for the empty tree
+  case, but it also helps in correcting for the right tree height.
+
+  Let's see what I mean by correcting for the right height. If our new base case
+  is now checking for null nodes instead of the leaf nodes, then our tree one
+  unit taller, so we need to correct for this.
+
+  For the sake of being thorough, let's see how the height is calculated with
+  this new base case.
+
+  <press>
+
+  <press>
+
+  <press>
+
+  <press>
+
+  Once we reach a null node, return -1
+
+  On the recursive callback remember that we always add +1 with our recurrence.
+
+  <press>
+
+  <press>
+
+  <press>
+
+  So when we add up the counts, you see that we get the correct height of 3.
+
+  And that's how you compute the height of a tree. In practice, if you're
+designing a data structure where tree height is important you can dynamically
+keep track of the height as you create the tree instead of computing it fully
+like we're doing here, but of course, that it's always doable. </problem2>
+
+Alright folks, thanks for watching, please like and subscribe if you learned
+something and i'll catch you next time.
+
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+
+ROOTING A TREE
+
+Hello and welcome for more tree videos, my name is William, and 
+today we're looking at how to root a
+tree. This is one of those a very basic fundemental transformations
+that's handy to have in your toolkit
+in case you want to or need to work with a rooted tree.
+
+The motivation for rooting a tree is that often it can help to add structure and
+simplify the problem you're trying to solve. Rooting a tree enables you to
+easily perform recursive algorithms, it also transforms a tree to have
+directed edges instead of undirected edges which are generally easier to
+work with.
+
+To root a tree, first you need to select one of the tree's nodes to be the
+root node. I'm going to pick node 0.
+
+Conceptually, rooting a tree is like "picking up" a tree by a specific node
+and having all the edges point downwards.
+
+You can root a tree using any of its nodes. However, be cautious because not
+every node you select will result in a well balanced tree, and if that's your 
+objective you may need to be more selective.
+
+In some situations it’s also useful to keep have a reference to the parent node
+in order to be able to walk up the tree. I illustrated parent node pointers as
+dotted lines on this slide.
+
+Let's look at an example of how to root a tree. One of the best ways to do this
+is with a depth first search through the original tree and to create the rooted
+tree during the traversal.
+
+The algorithm starts on the designed root node. The new rooted tree is being
+displayed on the right.
+
+From the root node, begin the depth first search and add nodes to the rooted
+tree as the algorithm proceeds. I'll let the animation play and it should be
+clear what's going on.
+
+<animate>
+
+And that's rooting a tree in a nutshell
+
+Let's have a look at some pseudo code for this.
+
+On this slide I define an object I will be using to describe a tree node.
+
+Each node has a unique integer id
+
+As well as a reference to its parent pointer. This member is generally optional,
+but I thought I should include it for completeness. Take note that every node
+will have a parent pointer except the root node whose parent pointer will be
+null.
+
+Additionally, each node also has a list of all its child nodes.
+
+Here's the algorithm to root a tree, it's relatively short and sweet. The input to the
+rootTree function takes a graph g as input which is the tree we want to root,
+the other input is the id of the designated root node. By default this is node
+0, but it can be any other node.
+
+The first line in the rootTree method creates the root tree node object with the
+id rootId, a parent reference of null and no child nodes.
+
+Then I call the buildTree method to start the depth first traversal to root the
+tree. As input parameters I pass in the graph g, the root node as the current
+node and the root's parent which is null.
+
+The build tree takes exactly three parameters we just talked about: the graph,
+the current node, and the current node's parent node reference.
+
+Next we enter a for loop that loops over all the neighbors of the current node,
+which in turn will become the children of the current node.
+
+Because edges are undirected in the original tree, we absolutely need to avoid the
+situation where we add a directed edge pointing back to the current node's
+parent.
+
+First check that the parent is not null so we don't get a null pointer exception
+when trying to access the parent's id.
+
+then check if the child id is equal to the parent id and skip this node if
+true.
+
+Otherwise we're dealing with a proper child node, so create a new node and add
+the child tree node to the list of the current node's children
+
+Afterwards, dig deeper into the tree and do the same thing but for the newly
+created child node.
+
+Once we have finished iterating over all the neighbors of this node return the
+current node.
+
+And that's how you root a tree.
+
+Alright, thank you for watching, please give this video a thumbs up if you 
+learned something, and subscribe for 
+more mathematics and computer science videos.
+
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+
+Center(s) of a tree
+
+Hello and welcome, my name is William, today we're looking at how to find the
+center of a tree. This is the sort of problem you might encounter during 
+an interview or in a competitive programming setting.
+
+Finding the center of a tree can be a handy algorithm to have in your toolkit,
+you'll see it from time to time as a subroutine in other algorithms, it can also
+be useful as a way of selecting a root node when you want to root a tree.
+
+One thing to be aware of when finding the center of a tree is that there can be
+more than one center! Either you'll run into the case with a unique center, which
+is nice, or you'll bump into a tree like the one of the right where there are
+two centers. However, there can't be more than 2 centers, take a moment and 
+think about why that's true..
+
+You will notice that the center is always the middle vertex or the middle two
+vertices along the longest path of a tree.
+
+For example, this pink path is one of the possible longest paths on this tree
+
+and the center of the tree is the middle vertex along the path.
+
+<press>
+
+if we repeat this process and select another longest path
+
+you'll see that we again end up with the correct center node.
+
+Another approach to finding the center or centers of a tree is going to be to 
+repeatedly remove the outer layer of leaf nodes. This process resembles that of
+peeling an onion, you start outside in.
+
+The first thing we're going to do it compute the degree of each node, that is 
+the number of node's it is connected to. You'll notice that each leaf node will
+have a degree of 1 since leaf nodes can only be connected to one other node.
+
+For this tree, the leaf nodes are those in red.
+
+Once we know what the leaf nodes are we can prune them and update the degree
+of each of the nodes.
+
+After that, repeat the same process. Find identify the leaf nodes.
+
+Prune them and update the degree values.
+
+If you keep doing this, you will eventually reach the center of the tree.
+
+It's a simple concept, let's do another example. Feel free to pause the video
+and find the center yourself using the algorithm I just described.
+
+First compute all the node degree values.
+
+Identify all the leaf nodes with a degree of 1
+
+Prune them, and update the degree values.
+
+Find the new set of leaf nodes, these are all the nodes with a degree of 1.
+
+Then prune them, and update the degree values.
+
+When you're left with either 1 or 2 nodes you've found the center or centers.
+
+Ok, let's have a look at some pseudo-code. Real code can be found in the 
+description. 
+
+The tree centers function takes as input a tree represented as an undirected 
+graph stored in the variable 'g'.
+
+The variable 'n' represents the number of nodes in our tree.
+
+After this, I define two arrays. The first one is 'degree' of length 'n' which
+will capture the degree of each node, and 'leaves' is an array that contains the
+most recent layer of leaf nodes.
+
+Then for the first bit of logic, simply loop through all the nodes and compute 
+the degree of each one. I do this by inspecting the adjacency list and counting
+the number of edges coming out of each node. 
+
+Then, if the node has a degree of 0, meaning we're dealing with a single node
+tree or the node is a leaf node because it has a degree of 1 then add the node
+to the leaves array.
+We're also going to set the degree of the leaf node to be zero so we don't 
+process it again later.
+
+The way we're going to know when we've found the center or centers is when we
+have processed all the nodes in the tree. The variable count is going to keep
+track how many nodes we've processed so far. Every iteration we're going to
+increment count by the number of leaves we found in the last layer.
+
+Entering the loop, 'new_leaves' is a new array that will contain the new leaf
+nodes on the next layer. I'm using a new array to avoid interfering with the
+leaf nodes on the current layer.
+
+So for every leaf node on the current layer,
+
+process all the neighbors of those nodes
+
+and decrement the degree of the neighbor nodes. Since we're removing the current
+node this means that the degree of the neighboring node needs to go down. If the
+neighbor node after being decremented has a degree of 1 then we know it will be
+in the next layer of leaf nodes so add it to the new_leaves array.
+
+Everytime we finish processing a former leaf node, feel free to explicitly give
+it a degree of zero to mark it as done. 
+
+When we've finished processing the current layer increment the count variable
+and replaces the leaves array with the new leaves.
+
+And finally return the centers
+
+Alright, thanks for watching, if you learned something please give this video a thumbs
+up, and subscribe for more mathematics and computer science videos.
+
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+
+Isomorphisms in trees
+
+Hello and welcome, my name is William, and today we're diving into isomorphisms
+in trees -- a question of tree equality and what that means.
+
+When we're talking about general graphs and ask whether two graphs are 
+isomorphic we're asking whether they're structurally the same. In the middle,
+even though graphs G1 and G2 are labeled differently and may appear different
+they are structurally the same graph. You could for example conceptually unfold
+the graph on the right to match the one of the left and relabel its vertices'
+and you would have two identical graphs.
+
+We can also define the notion of a graph isomorphism more rigorously because
+simply saying that two graphs have the same structure is not well defined.
+  If we define a graph G1 as a set of edges E1 and vertices V1 and another graph G2 in
+the same manner, we can say that two graph g1 and g2 are isomorphic if there exists a
+bijection between the sets v1 and v2 such that:
+For all pairs of vertices which form an edge in g1, applying a function phi to
+the nodes of all those edges always results in an edge which is present in the 
+graph g2.
+In simple terms, for an isomorphism to exist there needs to be a function which
+can map all the nodes/edges in G1 to G2 and vice-versa.
+
+As it turns out, determining if two graphs are isomorphic is not only not
+obvious to the human eye, but also a difficult problem for computers.
+It is still an open question as to whether the graph isomorphism problem is NP
+complete. However, many polynomial time algorithms exist for 
+specialized graph types in including trees.
+
+Let's have a look at a few examples, I'm going to show you two trees are you
+have to tell me if they're isomorphic or not.
+
+Are tree1 and tree2 isomorphic? [small pause]
+
+No, they're structually different.
+
+what about tree3 and tree4? [small pause]
+
+Yup, they're isomorphic.
+
+In terms of writing an algorithm for identifying isomorphic trees, there are
+several very quick probabilistic, usually hash or heuristic based algorithms
+for identifying isomorphic trees. These tend to be very fast, but also more
+error prone due to hash collisions in a limited integer space. However,
+they do have a place when it comes to competitive programming and testing
+the equality of absolutely enormous trees.
+The method we'll be looking at today involves serializing a tree into a unique
+encoding. This encoding is simply a string that represents the tree, and if
+another tree has the same encoding then both trees are isomorphic.
+
+When going about encoding a tree, you can directly serialize an unrooted tree,
+but in practice I find it easier to write code to serialize a rooted tree, just
+my personal preference.
+However, one small caveat to watch out for if your going for the rooted tree
+approach is to make sure you root both your two trees T1 and T2 with the same root
+node before you begin the serialization process, otherwise you'll get two
+different encodings.
+
+One trick we can use to help ourselves select a common node between both trees,
+is to reuse what we learned in the last video on finding the center(s) of a tree
+
+Let's have a look at the entire flow of how encoding a tree is going to work.
+First we start out with two trees, T1 and T2, which may or may not be
+isomorphic, that's what we're trying to figure out.
+
+From here, find the center of both trees, don't worry about the case where one of
+the trees has more than one center, we'll see how to handle that later.
+
+Next, root the trees at their center nodes.
+
+Then generate the encoding for each tree and compare the serialized tree values
+for equality.
+
+The tree encoding is simply a sequence of left '(' and right ')' brackets.
+However, you can also think of them as 1’s and 0’s which is just a really large
+number if you prefer.
+
+From this encoding it should also be possible to reconstruct the original tree 
+solely based on the encoding. I will leave this as an exercise to the reader.
+
+The AHU algorithm, short for the initials of the three authors who created the
+algorithm, is a clever serialization technique for representing a tree as a unique string.
+Unlike many tree isomorphism invariants and heuristics, AHU is able to capture
+a complete history of a tree’s degree spectrum and structure. In turn, this
+ensures a deterministic method of checking tree isomorphisms. Let's take a
+closer look at how it works.
+
+Suppose we have this tree that we wish to serialize.
+
+The first thing we do is assign all leaf nodes Knuth tuples which are a pair of
+left and right brackets.
+
+<press>
+
+After that, for all nodes with all grayed out children combine their children's
+labels and wrap them in a new pair of brackets.
+
+It's clearer if I highlight how the brackets were combined. If you look at the
+leftmost branch, you can see that we combined the labels from node 6 and node 7
+and then wrapped them in a new bracket set to create the label for node 2.
+
+<press>
+
+If we continue and process all nodes which have all grayed out children which is
+currently only node 1, then you see that we've combined the labels from
+node 4 and node 5 to create node 1's new label.
+
+One thing you'll notice is that in the combining phase the child labels need to
+get sorted, this is very important because it is what ensures uniqueness.
+
+<press>
+
+and now we get to process the last node
+
+here we combine and sort the labels from nodes 2, 1 and 3 to create the final 
+serialized encoding which will always be at the root node. In hindsight this
+algorithm isn't too complicated, but I find it extremely clever. Props to the
+original authors who created it.
+
+<press>
+
+In summary of what we just looked at:
+1) One, leaf nodes are assigned Knuth tuples consisting of a left and right
+bracket to begin with.
+2) Two, every time you move up a layer, the labels of the previous subtrees get sorted
+lexicographically and wrapped in brackets.
+3) Three, you cannot process a node until you have processed all its children.
+
+Alright, let's have a look at some pseudocode.
+
+The treesAreIsomorphioc method takes in as input two undirected trees, tree1 and
+tree2 stored as adjacency lists.
+
+The first thing we do is find the center node or nodes of these two trees.
+This is a method i'm borrowing from 1 slide deck ago.
+
+After that, I root tree1 using the first center node, which there will always be
+at least 1 of. The rootTree method is the same one we covered 2 videos ago,
+check the description if you missed it.
+
+As a reminder, I'm storing the rooted trees in this code as tree node objects 
+as defined on this slide.
+We do this to facilitate writing recursive algorithms, but also to keep our tree data
+structure organized.
+
+Once we have rooted our tree, we can serialize it with the encode method. Let's
+take a closer look at what's going on in there.
+
+The encode method is the one which generates the unique string for our tree.
+
+The first thing I do is handle the base case where we have a null node. For this
+we can return an empty string which will cause all leaf nodes to have a
+left and right bracket as a starting value upon the callback.
+
+For each node, we maintain a list of labels for all the subtrees. To generate
+the labels,
+Iterate through all the children of this node and recursively call the encode
+method adding the results to the labels list.
+
+After the for loop, the recursive calls have returned and the labels list
+is populated and ready to be sorted.
+
+Afterwards, concatenate the labels and wrap the result in brackets.
+
+Coming back to the main method. Now the next thing we want to do is encode the
+second tree and compare the encoded results, but if the tree has 2 centers we
+don't know which center node in the second tree is the correct one, so we need
+to try both. For this, iterate over both centers and root the tree comparing the
+encoded result with the one from the first tree. If there's any match then we 
+know the trees are isomorphic.
+
+<press>
+
+Thank you for watching, if you learned something please give this video a thumbs up
+and subscribe for more mathematics and computer science videos.
+
+
+
+
+
+
+
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+
+Isomorphism source code
+
+Hello and welcome, my name is William, today we're going to take a 
+look at some source code for identifying isomorphic trees which will also
+include the source code for rooting a tree and finding the center of a tree.
+
+In the previous video, we talked about identifying isomorphic trees by first
+serializing the tree into a string and then using that as a means for equality.
+Today we will be looking at the same approach in more detail, so make sure
+you've given the previous video a watch if you haven't done so. There should be
+a link in the description below.
+
+All the source code you see today can be found on Github at github dot com slash
+william fiset slash algorithms.
+
+So here we are in the source code for identifying isomorphic trees written 
+in Java. Let's start by taking a look at an example of what this code does in 
+the main method...
+
+<scroll to main method>
+
+In this method we create two trees, tree1 and tree2 which are structurally the
+same but have different labels. Today what we're going to take a look at is the
+implementation behind the 'treesAreIsomorphic' method which is able to check 
+whether tree1 and tree2 are truly isomorphic or if they are actually two
+fundamentally different trees.
+
+
+---
+
+Going back up to the treesAreIsomorphic method, you'll see that it takes as
+input two undirected trees stored as adjacency lists: tree1 and tree2.
+
+Just so that we don't have to worry about it, the first thing I do is check if
+either trees are empty and throw an exception.
+
+After that, we begin the whole tree serialization process, it's pretty simple, 
+start by finding the center or centers of both trees.
+
+Then encode the first tree into a string. The encode method takes as input a 
+rooted tree instead of an undirected tree, so make sure you root the tree first.
+After the encode method has finished processing, it will return a unique string
+for tree1.
+
+Now the next thing we want to do is encode the second tree so that we can 
+compare it to the first one. However, if the second tree has 2 centers we
+don't know which center node in the second tree is the correct one, so we need
+to try both. 
+For this, iterate over both centers and root the tree comparing the
+encoded result with the first tree. If there's any match then we 
+know that the trees are isomorphic.
+Awesome, so that's the algorithm from a bird's eye view, now let's dig into the
+details and figure out what is going on inside the findTreeCenters, 
+rootTree and encode methods.
+
+---
+
+findTreeCenters
+
+Let's begin with the findTreeCenters method, this is the source code from one
+video ago. To refresh your memory, the approach we're taking to find the center
+or centers of a tree is to iteratively remove leaf nodes layer by layer. This is
+analogous to peeling the layers of an onion, when we're finished removing all 
+the layers what's left is the middle.
+
+The integer 'n' represents the number of nodes in our tree.
+
+After this, I define two variables. The first one is 'degree' with size 'n' 
+which will capture the degree of each node, followed by 'leaves' which is a
+dynamic array that will contains most recent layer of leaf nodes.
+
+Then for the first bit of logic, simply loop through all the nodes and compute 
+the degree of each one. I do this by inspecting the adjacency list and counting
+the number of edges coming out of each node. 
+
+Then, if the node has a degree less than or equal to 1, meaning we're either 
+dealing with a single node tree or a leaf node then add the node to the leaves
+array. After this, set the degree of the leaf node to be zero as though we 
+removed it from the tree.
+
+The way we're going to know when we've found the center or centers is when we
+have processed all the nodes in the tree. The variable processedLeafs is going
+to keep track how many nodes we've processed so far. Every iteration we're going
+to increment processedLeafs by the number of leaves we found in the last layer.
+
+Entering the loop, 'new_leaves' is a new array that will contain the new leaf
+nodes on the next layer. I'm using a new array to avoid interfering with the
+leaf nodes on the current layer.
+
+So for every leaf node on the current layer,
+
+process all the neighbors of those nodes
+
+and decrement the degree of the neighbor nodes. Since we're removing the current
+node this means that the degree of the neighboring nodes needs to go down by 1.
+If the neighbor node after being decremented has a degree of 1 then we know it
+will be in the next layer of leaf nodes so add it to the new_leaves array.
+
+Every time we finish processing a former leaf node, give it a degree of zero to 
+mark it as removed.
+
+When we've finished processing the current layer, increment the processedLeafs
+variable and replace the leaves array with the new leaves.
+
+And finally return the centers which are stored in the leaves array.
+
+So that's how the findTreeCenters method works, now before we take a look at how
+to root a tree we should look at the TreeNode class which gets used by the 
+rootTree method.
+
+---
+
+TreeNode class
+
+The first thing I do is define this TreeNode object we'll be using to represent our
+rooted trees. TreeNode's are straightforward, they only contain three members,
+a unique id, a parent node reference and a list of references to all its children.
+
+To create a TreeNode, all you need is to give that TreeNode a unique id, you can
+also optionally create a TreeNode with an id and a specified parent node.
+
+The one useful method I've added to this class is the ability to add children
+to this TreeNode. Simply pass in any number of TreeNodes you wish to add as child
+node to this node and they'll get added to the children's list.
+
+The rest of the methods in this class are just getter methods.
+
+---
+
+rootTree
+
+Coming back to the rootTree method...
+
+You'll see that this function takes as input our tree represented as an 
+adjacency list and the id of the root we want to root the tree by. At lot of the
+time the root id is going to be zero, but it's nice to be able to choose which 
+node will be the root in situations where it matters such as this tree 
+isomorphism problem.
+
+The first line in the rootTree method creates the root TreeNode.
+
+Then I call the buildTree method to start the depth first traversal to root the
+tree. As input parameters I pass in the graph and the root node as the current
+node.
+
+Inside the buildTree method we enter a for loop that loops over all the 
+neighbors of the current node. All these neighbor nodes are going to become the
+children of the current node, except for the last parent node.
+
+One thing we need to be aware of is that edges are undirected in the original 
+tree meaning we absolutely need to avoid the situation where we add a directed
+edge pointing back to the current node's parent, every other neighbor node will
+become a child of the current node.
+
+To check if the neighbor node is the parent node first check that the parent is
+not null so we don't get a null pointer exception, then access the parent's id
+and check if the child id is equal to the parent id and skip this node if true.
+
+Otherwise we're dealing with a proper child node, so create a new node and add
+the child TreeNode to the list of the current node's children.
+
+Afterwards, dig deeper into the tree and do the same thing but for the newly
+created child node.
+
+Once we have finished iterating over all the neighbors of this node return the
+current node.
+
+---
+
+encode
+
+After we've finished rooting our tree, remember that the next thing we do is 
+encode it into a unique string so that we can easily compare two trees to see
+if they're isomorphic.
+
+The first thing I do is handle the base case where we have a null node. For this
+we can return an empty string which will cause all leaf nodes to have a
+left and right bracket as a starting value upon the callback.
+
+For each node, we maintain a list of labels for all the subtrees. To generate
+the labels,
+Iterate through all the children of this node and recursively call the encode
+method adding the results to the labels list.
+
+After the for loop, the recursive calls have returned and the labels list
+is populated and ready to be sorted.
+
+Afterwards, concatenate the labels and wrap the result in brackets.
+
+---
+
+Awesome, that's a wrap for this video, I hope you have had a large enough dose
+of tree algorithms for the day. Please like this video if you learned something,
+and subscribe for more mathematics and computer science videos.
+
+
+
+
+
+
+
+
+
+
+

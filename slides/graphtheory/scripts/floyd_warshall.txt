@@ -1,0 +1,135 @@
+Hello and welcome, my name is william and today's topic is the floyd-warshall all pairs shortest path algorithm. We will be covering how the algorithm works, how to reconstruct shortest paths, the handling of negative cycles followed by some code, so let's get started.
+
+In Graph theory, the FW algorithm is an APSP algorithm, this means it can find the shortest path between all pairs of nodes. This is very important for many applications across several fields.
+The time complexity to run Floyd-Warshall is big O of V cubed, V being the number of vertices in the graph. This makes the algorithm ideal for graphs with no more than a couple hundred nodes but not much more.
+
+Before we dive too deeply into the FW algorithm I want to address when you should and should NOT use this algorithm.
+This table gives information about various types of graphs and/or constraints in the leftmost column and the performance or outcome of common SP algorithms. For example, you can see in the second row that a BFS and Dijkstra's can handle large graphs with lots of nodes while Bellman-Ford and Floyd-Warshall not so much. I suggest you pause the video and REALLY go through this table and make sure you understand why each cell has the value it does. Feel free to drop a comment if you're uncertain about anything and i'll be glad to answer.
+
+What I want to highlight is the rightmost column since we're talking about the Floyd-Warshall algorithm. The Floyd-Warshall algorithm really shines in three places and those are: On small graphs, solving the APSP problem and detecting negative cycles. You can use the algorithm for other tasks but there are likely better algorithms out there.
+
+With FW, the optimal way to represent our graph is with a 2D adjacency matrix which I will denote as 'm'. The cell m[i][j] represents the edge weight of going from node i to node j. So in the image below I transformed the graph with nodes A,B,C and D into an adjacency matrix on the right.
+
+An important note I should mention is that I assume that the distance from a node to itself is zero which is usually the case. This is why the diagonal has all zero values.
+
+When there is no edge between nodes i and j set the value in the matrix at m i j to be positive infinity. This indicates that the two nodes are not directly connected to each other.
+
+A very important note to make here is that if your programming language doesn't support a special constant in the standard library for positive infinity such that infinity + infinity equals infinity and infinity + x = infinity then avoid using 2 to the 31 - 1 as infinity. If you do this you will get integer overflow. Simply use a large constant instead.
+
+As we will see the main idea with the floyd-warshall algorithm builds off this notion that you want to compute all intermediate routes between two nodes to find the optimal path.
+
+Suppose our adjacency matrix tells us that the distance from a to b is: m[a][b] = 11
+
+Now suppose there exists a third node c. If the distance from a to c and then from c to b is less then the distance from a to b then it's better to go though c!
+
+Again the goal is to consider all the possible intermediate paths between triplets of nodes.
+
+This means we can have something like this where the optimal path from a to b is first going to c then going from c to b but in the process we actually route though another node which I labeled with a question mark because we've already computed the optimal path from b to c and know that it involves an intermediate node.
+
+Similarly, we can start getting longer paths with more intermediate nodes between a and c and c and b with a smaller cost.
+
+We are also not just limited to one intermediate node in between a and c and c and b, we can have several, as like in the graph below.
+
+16) Now the question comes of how do we actually compute all intermediate paths? The answer is we will use dynamic programming to cache previous optimal solutions. Let dp be a three dimensional matrix of size n by n by n which acts as a memo table. We're going to say that the cell at dp k i j in our table gives us the shortest path from node i to node j routing through nodes 0 through k.
+What we'll do is start by computing k = 0, then k = 1 then k = 2 and so on. This gradually builds up the optimal solution routing through 0, then all optimal solutions routing through 0 and 1, then all optimal solutions routing through 0, 1, 2, etc… up until we covered all the nodes at which point we've solved the APSP problem.
+
+17) Let's talk a bit more about how to populate the dp table. In the beginning the optimal solution from i to j is simply the distance in the adjacency matrix. 
+So when k = 0 dp of k i j is equal to m i j, the value of the edge from i to j.
+
+18) Otherwise, in general dp k i j can be summed up with the following recurrence relation. I'm going to break it down so we understand all the components going on here because this may look scary to some people.
+
+19) The left hand side of the recurrence simply says "reuse the best distance so far from i to j routing through nodes 0 to k-1". It's important to note that the solution using nodes 0 to k-1 is a partial solution, not the whole picture. This is part of the dynamic programming aspect of the floyd warshall algorithm.
+
+20) The right hand side of the recurrence finds the best distance from i to j but routing through node k reusing the best solutions from 0 to k-1.
+
+21) If we analyze the right side of the min function in English is basically says "go from i to k" and then "go from k to j".
+
+22) Visually this is what it looks like. You start at i, route through some nodes to get to k and then from k route back to j
+
+23) Currently our algorithm uses big O of V cubed memory, since our memo table dp has one dimension for each of k, i and j, this isn't great. 
+Notice that we will be looping over k starting from 0, then 1, then 2… and so fourth. The important thing to note here is that previous result builds off the last since we need the state of k-1 to compute state k. With that being said, it is possible to compute the solution for k in-place saving us a dimension of memory and reducing the space complexity to O(V²)!
+
+24) Now we have a new recurrence relation which no longer involves the k dimension, this has been replaced by the fact that we're computing the k + 1th solution in-place inside the matrix.
+
+25) Ok that's all the theory we need for now, let's get our hands dirty and look at some pseudo code. Below is the function that performs the FW algorithm.
+
+26) But just before we get to that let's look at some of the variables in the global or class scope.
+
+27) The first variable is n the number of nodes in our graph
+28) Then is the 2D memo table that will contain our APSP solution.
+29) Last is another 2D table that we will use to reconstruct our shortest paths.
+
+30) Now moving to the floyd-Warshall function you see that it takes one parameter, this is the 2D adjacency matrix representing our graph.
+
+31) The first thing I do in this method is call the setup function so let's take a look at that real quick.
+
+32) Here we are inside the setup method.
+
+33)Here all I do is I allocate memory for our tables. The dp matrix should have the same type as the input adjacency matrix. So if your edges are represented as real numbers then your dp matrix should hold real numbers. The 'next' matrix will contain indexes of nodes to reconstruct the shortest paths found from running the FW algorithm. It is important that initially this matrix be populated with null values.
+
+34) Inside the for loops all I do is copy the input matrix into the dp matrix. Think of this as the base case or rather the k = 0 case.
+
+35) For the next matrix if the distance from i to j is not positive infinity then the next node you want to go to from node i is node j by default.
+
+36) Back to the floyd warshall function
+
+37) In here after the setup, loop over k on the exterior loop. It's important that k is on the exterior loop since we want to gradually build up the best solutions for k = 0 then k = 1 then k = 2 and so on..
+
+38) Followed by this, loop over all pairs of nodes i and j.
+
+39) Inside the main body actually test for our condition to improve the shortest path from i to j and update the value at dp i j if it is better to route through k.
+
+40) also inside here update the next array at i j to point to the next index at next of i k
+
+41) The last thing I want to do is detect and propagate negative cycles. This is an optional step if you know that negative cycles will not manifest themselves.
+
+42) But before we get too far, I want to discuss negative cycles and what they entail because it isn't entirely obvious.
+
+43) Consider the following graph. There are basically two types of nodes to consider: nodes directly in negative cycles, and nodes unaffected by the negative cycle.
+
+44) This red node is the cause of a negative cycle because it can endlessly loop on itself and obtain smaller and smaller costs.
+
+45) While all these blue nodes are not directly in a negative cycle. This however doesn't mean they're necessarily safe from the negative cycles as we will see.
+
+46) NEgative cycles can also manifest themselves as a cycles of multiple nodes like the following.
+
+47) <press/>
+
+48) The important thing to ask ourselves is does the optimal path from node i to node j go through a red node? If so, the path is affected by the negative cycle and is compromised. For example, the shortest path from 0 to 5 is negative infinity because I can go from 0 to 2 and indefinitely loop in the negative cycle consisting of nodes 1, 2 and 3 obtaining better and better costs before going to 5. This is a consequence of traversing a red node on the way to 5. Some shortest paths avoid red nodes all together, consider the shortest path from 4 to 6, this doesn't involve any red nodes so we can safely conclude that the shortest path from 4 to 6 is indeed 2.
+
+49) So to identify whether or not the optimal path from i to j is affected by a negative cycle re-run the floyd-warshall algorithm a second time. If the best distance is better than the already known best distance then set the value in the matrix from i to j to be negative infinity. Also mark the next matrix with a -1 to indicate that the path is affected by a negative cycle.
+
+50) Back in the floydWarshall function all we need to do is to return the dp matrix which contains the shortest distance from any node to any other node.
+
+51) A last thing I want to cover is how to reconstruct the shortest path between any two pairs of nodes. This method returns the path of nodes between the start and end nodes or null if there's a negative cycle.
+First check if the distance between the start and end nodes is positive infinity, if so then return the empty path. Then to reconstruct the path I created a variable called 'at' to track the current node and loop through the next array adding the current node to the path as I go. During this process I check if the current node has the value -1. If it does, then this means that the optimal path encountered a red node and is trapped in a negative cycle so return null. 
+Notice that in reality this method has three key return values: an empty path which means that the start and end nodes are not connected, a null value meaning a negative cycle and lastly a non empty path of nodes indeces to mean an actual shortest path was found.
+
+So I think that's about everything you need to know about the floyd warshall algorithm. Next video I'm covering real source code for this so sick around for that. You can also go get the real source code on my github page at github dot com slash william fiset slash algorithms; there should also be a link in the description. Thanks for watching and sticking around, please subscribe for more computer science and mathematics videos. Cheers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

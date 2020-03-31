@@ -1,0 +1,51 @@
+
+26) Hello and welcome back, my name is William and today I want to talk about some common problems in graph theory. A lot of problems you will encounter can often be reduced to a famous or well known problem or a variant thereof, so it's important to familiarize ourselves with common graph theory problems and their solution.
+
+27) Just before we get started, following off what we learned in the last video about ways of representing graphs, I want you to think about how you would store and represent the graphs in the problems i'm describing. In particular:
+1) Is the graph in the problem i'm describing directed or undirected?
+2) Are the edges of the graph weighted or unweighted
+3) Is the common use-case a graph that is likely to be sparse or dense with edges?
+4) and lastly: should I use an adjacency matrix, adjacency list, an edge list or other structure to represent the graph efficiently? 
+
+28) One of the most, if not the most common problem in graph theory is the shortest path problem. Given a weighted graph, find the shortest path of edges from node A to node B.
+
+29) So if we pretend this graph represents a road system and we're at node A and want to get to node H then our shortest path algorithm should be able to find us a list of edges to follow that will lead us from A to H with minimal cost. Lucky for us many algorithms exist to solve the shortest path problem including: A BFS on an unweighted graph, Dijkstras algorithms, Bellman-Ford, A* and many others.
+
+30) As simple as it sounds, connectivity is a big issue in graph theory. The problem can be simplified to: does there exist a path from node A to node B? In this scenario I don't care about the minimum cost, we just want to know if one node can reach another node.
+
+31) A typical solution to this is to use a union find data structure or any basic search algorithm such as a DFS or BFS.
+
+32) Another problem is finding and detecting negative cycles in a directed graph. Sometimes we're dealing with graphs that can have negative edge weights and we need to know if a negative cycle exists because it can throw everything off if there is.
+
+33) In this graph nodes 1,2, and 3 form a negative cycle, because you can cycle through all the nodes and end up with a cost of -1. In fact, you can cycle endlessly getting smaller and smaller costs. In the context of finding the shortest path, a negative cycle is like a trap you can never escape. However, there are some contexts where negative cycles are beneficial, suppose we're trading currencies across an exchange or multiple exchanges. Currency prices try to remain consistent throughout the day across exchanges such as USD to EUROs or CANADIAN to YEN, but sometimes there are inconsistencies with currency exchange prices. This makes it possible to do something called an arbitrage, which cycles through multiple currencies exchanging one currency for another coming back to the original currency with more money then you started with, at a risk free gain. This is something we can use graph theory for. There are two well known algorithms that can detect negative cycles: Bellman-ford and Floyd-Warshall that do exactly this.
+
+34) Something else that comes up now and again is finding strongly connected components of a graph. This is analogous to finding the connected components of an undirected graph but for directed graphs. 
+
+35) When looking for SSCs we're looking for self-contained cycles within the graph where every vertex in a given cycle can reach every other vertex in the same cycle. This is useful in many algorithms, usually as an intermediate step, so it's important to know how to find these strongly connected components.
+
+36) You probably won't go through your computer science career without hearing about the TSP. The TSP problem is the problem of having n cities and the distances between each or them and finding what the shortest path that visits each city and comes back to the original city.
+
+37) For example, if our graph is the one on the left, a possible TSP solution is the graph on the right which has a cost of 9.
+
+38) The TSP problem is NP-Hard meaning it is a very computationally challenging problem. This is unfortunate because the TSP has several very important applications. Some famous algorithms we can use to solve this problem include: The Held-Karp algorithm with dynamic programming, branch and bound and many many approximation algorithms including the ant colony optimization.
+
+39) The next problem I want to talk about is finding bridges in graphs, which is something of a fascination to me. Bridges are edges which if removed increase the number of connected components in a graph.
+
+40) In this graph the edges highlighted in pink are the bridges. Bridges are important in graph theory because they often hint at weak points, bottlenecks or vulnerabilities in a graph. Think of your graph as a telephone network, or a physical set bridges between islands, you can immediately see the usefulness of detecting bridges.
+
+41) Related to bridges but not the same are articulation points, which are nodes that if removed increase the number of connected components of a graph.
+
+42) In the same graph you see here there are three articulation points highlighted in pink.
+
+43) This next problem is finding the minimum spanning tree of a graph. A minimum spanning tree is a subset of the edges that connect all the vertices together, without any cycles and with the minimum possible cost. So in summary, it's just a tree, meaning it has no cycles, that spans the graph at a minimal cost, hence the name minimum spanning tree. For example, in the graph below one possible MST is:
+
+44) this graph with a least cost of 12. Note that MSTs all have the same minimum cost but are not unique.
+
+45) MST are seen in lots of different applications in computer science including: Designing a least cost network, circuit design, transportation networks, and etc… They're also used in multiple approximation algorithms which is interesting. If you want to find the MST of a graph I recommend using one of Kruskal's, Prims or Boruvka's [bar-oov-kas] algorithm.
+
+46) This last problem I think is the most fascinating, and it is about finding the maximum flow through a special type of network called a flow network. Flow networks are networks where edge weights represent capacities in some sense. Capacities might be things like the maximum amount of cars on a road, the maximum amount of volume of water that can flow through a pipe, or even the number of boats a river can sustain without destroying the environment.
+In these types of flow-networks we often want to ask ourselves the question: "With an infinite input source, that is of cars, water, boats, whatever, how much “flow” can we push through the network? Assuming that we start at some source and try to make it to a sink node. This question is important because at some point there is bound to be a bottleneck somewhere in our flow graph that limits the amount of stuff we can have traveling on the network. The maximum flow would then represent things like: the volume of water allowed to flow through a network of pipes, the number of cars the roads can sustain in traffic or the maximum amount of boats we can have on the river.
+With these maximum flow problems we can identify bottlenecks that slow down the whole network and fix the edges at need to have a higher capacity.
+
+
+47) That's all the problems I wanted to talk about today. Cheers everybody, and next video I think i'll be talking about the DFS algorithm, stayed tuned and subscribe for more mathematics and computer science videos.

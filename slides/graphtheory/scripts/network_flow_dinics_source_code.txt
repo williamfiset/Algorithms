@@ -1,0 +1,151 @@
+Hello and welcome back,
+My name is William, and today we are going to have a look at some source code 
+for Dinics algorithm.
+
+In the previous video, I explained what Dinics is, how it works, and why it is a
+great choice as a maximum flow algorithm, so I highly recommend watching that 
+video before proceeding, there will be a link in the description. 
+
+All the source code for this video can be found on Github at github.com slash
+williamfiset slash algorithms.
+
+Alright, here we are in the source code written in Java, I have laid out some
+instructions here in the header in case you wanted to get the code, play around
+with it and run it yourself.
+
+Scrolling down, as before you can see the familiar Edge class, this class is
+used to represent an edge that connects two nodes and has a certain capacity.
+It also has the important methods: remainingCapacity() which returns the true
+remaining capacity of this edge, and augment() which updates the flow along this
+edge and the residual edge by a certain amount.
+
+A little further down is also the NetworkFlowSolverBase which acts as a template
+for all the different flow algorithms we have been implementing. I already 
+covered how this class and the Edge class work in previous videos linked below,
+so I won't spend too much time here, but what you need to know is that this 
+class initializes the flow graph, it allows you to add edges to the flow graph 
+and it also lets you call the getMaxFlow method. Internally, the getMaxFlow 
+method calls the abstract solve() method which we need to implement by 
+sub classing the NetworkFlowSolverBase.
+
+So the part we are really interested in is this class called "DinicsSolver". You
+will notice that the DinicsSolver class extends the NetworkFlowSolverBase. 
+The NetworkFlowSolverBase gets initialized when we call 'super' by feeding it
+the three inputs: n, s, and t.
+'n' is the number of nodes in the graph, 's' is the index of the source node and 
+'t' the index of the sink node.
+Just after that, I initialize the array instance variable 'level' to size n. The
+'level' instance variable keeps tracks of the level of each node in the level 
+graph.
+
+Moving on, the following method is the solve method. Recall that this is the 
+method we need to override and compute the maximum flow in. 
+Recall what we're trying to do, Dinic's algorithm begins by building a level 
+graph using a BFS, that's the outer loop, and for each level graph, we
+find the blocking flow by repeatedly doing multiple depth first searches from 
+the source to the sink until the level graph is saturated and the blocking flow 
+is reached. Once that happens, rebuild the level graph, and repeat the process
+until the graph is truly saturated.
+
+Let's look at the BFS method where we build the level graph for starters, we'll
+get back to the rest of the solve method.
+So the BFS method serves basically two purposes:
+1) One is to build the level graph and assign a level to each node in 
+the 'level' array
+2) The other purpose is captured by the return value of the function, and that 
+is to determine if we are able to reach the sink during the BFS phase, and if 
+not, this means that the graph is fully saturated and the algorithm can stop.
+
+The first thing I do in this method is mark each node as unvisited by setting 
+each entry in the level array to be -1. Then I initialize a queue data structure
+we will need when performing the BFS, after that, I immediately add the source 
+to the queue, because that's where we're starting the BFS at. Since we are 
+already at the source, we can mark the distance to the source node to be zero.
+Now we start the BFS, loop while the queue is not empty, each iteration remove
+the first node index found in the queue and iterate through all the adjacent 
+edges to that node. When building the level graph we want to ensure two things:
+The first is that the remaining capacity of the edges we take are greater than 
+zero, and that we are selecting unvisited nodes. If both these cases hold, then
+we compute the level for the node we're about to visit and add it to the queue.
+This process continues until the queue is empty and the entire level graph is 
+built. The last thing we do is return where we were able to reach the sink node
+during the BFS phase.
+
+
+Ok, coming back to the solve method. We now understand how to the BFS method 
+works and how the level graph is constructed, now let's have a look at the DFS 
+method. However, before we do that there's one key piece of information you need
+to know about, and that is the next array in this method. The next array is part
+of the Shimon Evens optimization and is how we will be able to prune edge deads
+efficiently. 
+The idea is that since our graph is stored as a adjacency list, the
+list of edges going outwards from each node is indexed, and we can use this to 
+our advantage to get the next edge to traverse, and skip all edges which
+we know lead to dead ends.
+Say we're at node i, and we take the first edge in our adjacency list for node 
+i, suppose this turns out to lead us to a dead end. Well, next time, as in the 
+next DFS we encounter the same node we should not take the first edge in the
+adjacency list because we know it will lead us to a dead end. The next array is
+a way of tracking for each node which edge we should take next.
+Each iteration you want to reset the next array to allow taking previously 
+forbidden edges.
+Alright, so when we call the DFS method we pass in three arguments: the current
+node being the source, the next array, and the minimum flow along the path which
+starts at positive infinity. Then for each augmenting path we find, sum over the
+bottleneck values we find to compute the maximum flow.
+
+Awesome, so let's have a look at the DFS method itself. 
+
+The dfs method takes three arguments, the current node, the next array, 
+and the minimum flow found along the path so far. This method performs a DFS 
+recursively, and we know we can stop searching when we have reached the sink 
+node t.
+
+Then I capture the number of edges going out of this node. The for-loop loops
+through all the edges while we have not tried taking each edge for the current
+node. The next edge to take is the next outgoing edge from this node at the 
+index in the next array. The thing we have to watch out for is that we must 
+ensure the selected edge has a remaining capacity greater than zero, and that it
+goes up a level. Remember that we always want to be making progress towards the 
+sink, and taking an edge at the next level guarantees that, unless of course it
+leads to a dead end, but we end up pruning those. So if all goes well get can
+enter the inner if statement.
+
+Inside the inner if statement, we call the dfs method recursively passing in the
+node we're going to as the current node, the next array and the flow as the
+minimum of the current flow and this edge's remaining capacity. The DFS returns
+the bottleneck value along the augmenting path. After the DFS call, we are
+unwinding the call stack from the sink back to the source. This is a 
+perfect time to augment the flow for each edge along the augmenting path 
+since we already know what the bottleneck value is. So, if the bottleneck value
+is greater than 0, meaning an augmenting path was found, augment the flow, which
+add flow along the forward edge and subtracts flow along the residual edge, and
+also return the bottleneck value.
+
+So, assuming we were not able to take the selected edge from the 
+current node, because it did not have enough remaining capacity, or it didn't 
+increase in level, or we hit a dead end, or whatever reason, we need to mark
+the selected edge as invalid so we can prune it for future iterations to ignore.
+This is exactly what the 'next[at]++' line does which gets executed after an
+iteration of the loop, it increments the index of the edge to take at the 
+current node.
+
+If we scroll to the main method, you see that I show you how to setup a flow 
+graph by initializing the flow solver and pushing some flow through the graph. 
+In particular, this flow graph is the graph from the slides in the last video,
+and you can verify that the maximum flow should be 30.
+
+Wonderful, thank you for watching, please like this video if you learned 
+something, and subscribe for more mathematics and computer science videos.
+
+
+
+
+
+
+
+
+
+
+
+

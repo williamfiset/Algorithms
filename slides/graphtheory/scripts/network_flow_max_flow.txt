@@ -1,0 +1,235 @@
+Hello and Welcome,
+My name is William, today we're going to start tackling the field of network flow by understanding what Maximum Flow is and in particular how we can use the Ford-Fulkerson method it find it.
+
+Finding the maximum flow begins with having a flow graph; this is a graph where edges have a certain maximum capacity which cannot be exceeded. Edges also have a flow value which is how many units of flow are passing through the edge. Initially, the flow is zero for all edges everywhere until we run a max flow algorithm. There are also two special nodes in a flow graph, the source node and the sink node, usually denoted as 's' and 't' respectively. The maximum flow problem asks: "With an infinite input source how much “flow” can we push through the network without exceeding the capacity on any edge."; and it's not at all obvious how one should figure that out.
+
+Maximum flow can be used in numerous situations where edges and nodes can be represent any number of things. For instance, suppose the edges are roads with cars, pipes with water or wires with electric current. Each of those has a certain capacity value we can associate with. The maximum flow on the other hand would represent the volume of water allowed to flow through the pipes, the number of cars the roads can sustain in traffic and net electric current. Effectively, the max flow is the “bottleneck” value for the amount of flow that can pass through the network from source to sink under all the constraints.
+
+The max-flow for this particular network is 7, you can tell because after running the max flow algorithm the sum of the flows attached to the sink is 7. Running a maximum flow algorithm is used to determine how much flow each edge should receive to achieve the overall maximum flow. Note that there might be multiple ways of achieving the maximum flow by having flow run through different edges, but all solutions will have the same max flow value.
+
+Let's dig deeper into how to find the maximum flow. To begin with, you will need a flow graph which consists of directed edges, also called arcs. Each directed edge has a certain capacity which can receive a certain amount of flow. At all times, the flow running through an edge must be less than or equal to the capacity. This intuitively makes sense, because if we allow more flow than what the capacity permits it means something has to go wrong. When an edge becomes over capacitated in some manner it means we've pushed the system past its limit; in the context of edges representing pipes with water it means your pipe broke or leaked; if your edge is a wire with electric current it means your wire fried, melted or exploded due to too much electric current. This is not good; so we don't allow more flow than capacity.
+
+Each edge in the flow graph has a certain flow and capacity specified by the fraction adjacent to each edge. Originally, the flow through each edge is 0 and the capacity is a non negative value.
+
+To find the maximum flow (and min-cut as a by product), the Ford-Fulkerson method repeatedly finds augmenting paths through the residual graph and augments the flow until no more augmenting paths can be found. So your probably asking yourself: What is an augmenting path, what the heck is the residual graph and what does it mean to augment the flow? Let me explain
+
+An augmenting path is a path of edges in the residual graph with capacity greater than zero from the source s to the sink t. In orange here I have highlighted a possible augmenting path. The key thing to remember about an augmenting path is that it can only flow through edges which aren't fully saturated yet. In fact, you know you've achieved the maximum flow when there are no more augmenting paths left to be found. How to actually find augmenting paths is a detail left unspecified by the Ford-Folkerson method for flexibility, so lets assume we use a DFS.
+
+Something else to know, is that every augmenting path will have what I call a "bottleneck value" which is the “smallest” edge on the path. You can find the value of the bottleneck by taking the difference between the capacity and the current flow of edge; for this augmenting path, the bottleneck value is 6. We can use the bottleneck value to augment the flow along the path.
+
+Augmenting the flow means to update the flow values of the edges along the augmenting path. You can see here that I've increased the flow of each edge along the augmenting path by exactly 6 units.
+
+However, we're not done augmenting the flow, we not only need to increase the flow going forwards, but we also need to decrease the flow going backwards in the residual edges by the same bottleneck value. The residual edges are the dotted edges going backwards in the reverse order of the augmenting path.
+
+The logic behind having residual edges is to "undo" bad choices of augmenting paths which do not lead to a maximum flow. Effectively, we don't know which are the best or even correct augmenting paths to take, so this is a mechanism to enable us to freely find any augmenting paths without having to worry whether we'll be able to achieve the maximum flow. It should be mentioned that residual edges become valid edges to take when finding augmenting paths in later iterations.
+
+If we take a step back, you can think of every edge in the original graph as having a residual edge with a flow/capacity of 0/0 which is not usually shown.
+Now that we know about residual edges, the term "residual graph" is the graph which also contains the residual edges, not just the original edges. Generally speaking, when I mention the flow graph, I mean the residual graph.
+
+Here's a good question you might have at this point: 
+Q: The shown residual edges have a capacity of 0? Aren't those forbidden? How does that work?
+A: Here's the thing, with this method of augmenting the flow, you have to think of the remaining capacity of an edge e (residual or not) as: e.capacity - e.flow, that is the difference between the capacity and flow is the true remaining capacity.
+This ensures that the remaining capacity of an edge is always non-negative (even if the flow can be negative). For example, in the residual edges we have right now, 0 minus -6 is 6, so those residual edges actually have a capacity of 6 if you will.
+
+The Ford-Fulkerson method continues finding augmenting paths and augments the flow until no more augmenting paths from s -> t exist. A key realization to make at this point is that the sum of the bottleneck values found in each augmenting path will result in the maximum flow!
+
+Let's keep finding augmenting paths. Remember that we can only select edges whose remaining capacity is greater than zero to be part of an augmenting.
+
+The bottleneck for this augmenting path is 4 since 4 is the minimum of all the remaining capacities.
+
+Then augment the flow for all forward and residual edges.
+
+<press>
+
+Here's another valid augmenting path from the source to the sink. You'll notice that we're actually using one of the residual edges we created earlier in this path. You'll also notice that there are two purple edges in this slide, this is a coincidence since both those edges have the same bottleneck value of 6.
+
+Then augment the flow as we do.
+
+<press>
+
+I'll let the animation play for this next one
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+
+
+
+
+There's another topic I want to talk about which is maintaining non-negative flow. Currently, it’s possible to have negative flow on residual edges because of how we’ve decided on augmenting the flow which is to increase the flow on the forward edge and decrease the flow on the residual edge by the same amount.
+
+This isn’t necessarily bad, but it’s surely not intuitive + we have to use the mathematical hack of edge.capacity - edge.flow to actually calculate the remaining capacity. Furthermore, negative flow doesn’t play well with min-cost max-flow algorithms which is a topic we’ll encounter later. 
+
+So the main issue is that we've allowed flow to be subtracted from the residual edge.
+
+An alternative way of augmenting the flow is to lift the restriction that the edge capacity must remain constant and treat it as a dynamic value that can be adjusted.
+One way of interpreting this new way of augmenting the flow is to understand that subtracting flow from the residual edge is equivalent to transferring capacity from the forward edge to the residual edge. This eliminates any negative values we previously had.
+
+One consequence of this is that the bottleneck value is no longer calculated as an edge's capacity minus the flow for all edges along the augmenting path, but rather the minimum edge.capacity of all edges along the path.
+
+Furthermore, the “original capacity” of an edge is lost in some sense because the capacity is treated as a dynamic value. However, this value can be retrieved by adding the capacity of the forward and residual edge. However, I do believe that overall this approach is better than the former for calculating the max-flow, at least it makes debugging easier IMO.
+
+
+
+
+In terms of the time complexity, the Ford-Fulkerson derives its complexity from how augmenting paths are found which is left as an unspecified detail. If you assume that finding augmenting paths are found using a DFS then the hold algorithm runs in big O of f times E where f is the max-flow and E is the number of edges.
+
+Here's a graph we can use to derive that time complexity. Suppose the side edges have very high capacity values of 100 and the middle edge has a capacity of 1. You can clearly tell that the max flow should be 200 because you can run two augmenting paths with flow values of 100 running on the top and bottom of the graph from the source to the sink.
+
+However, recall that a DFS traversal is essentially random, so it's possible to pick the middle edge every time limiting your flow to 1 because that's the value of the bottleneck.
+
+When we picked the middle edge in the last iteration, that decreased the flow on the residual edge, enabling flow to run through that edge in this iteration. So it's entirely possible that we select the middle edge again but this time through the residual edge limiting the flow value to 1.
+
+This results in flipping back and forth between the same two alternating paths for 200 iterations…
+
+<press>
+
+<press>
+
+Luckily much faster algorithms and heuristics exist to find maximum flow such as: Edmond's-Karp which is Ford-Fulkerson but instead of using a DFS you use a BFS to find the shorting augmenting path from the source to the sink every time. There's also capacity scaling which is this idea of picking larger path first to reduce the number of paths you need to find which works really well from my empirical tests. Then there's Dinic's which uses a combination for a BFS to first find a directed layered graph that guides edges towards the sink and then uses a DFS to actually find the augmenting paths. There's also this idea of these push-relabel algorithms which work differently than algorithms that find augmenting paths, instead they maintain this concept of a "preflow" to find the maximum flow of a network.
+Please be mindful that the time complexities for flow algorithms are very pessimistic. In practice, they tend to operate much faster, making it hard to compare the performance of flow algorithms solely based on complexity.
+
+Awesome well thank you for watching, next video we'll be going over some source code so stick around. Please like this video if you learned something and subscribe for more mathematics and computer science videos.
+
+---------------------------
+
+TODO(WILLIAM): TEST YOUR FF WITH DFS VS KATTIS!
+
+Hello everybody, welcome back, my name is William and today we're taking a look at the source code for the Ford-Fulkerson method implemented with a DFS.
+
+If you have not already done so, please go watch my last video explaining the Ford-Fulkerson method. There you'll find everything you need to know about augmenting paths, residual edges and flow augmentation.
+
+The goal of this video is to show you how to setup the following flow graph and find the maximum flow.
+
+After we run the max-flow algorithm we should end up with a graph similar to this one with flow running through some of the edges.
+
+The source code and the example I have lined up for you can both be found on github, so I encourage you to go check that out and play along.
+
+Alright, here we are in the source code written in Java. This program has three main supporting classes: An Edge class, a NetflowFlowSolverBase and the FordFulkersonDfsSolver. However, before we get into any of those, I want to take a look at the main method where I actually use the classes above to solve the flow problem we just saw. I know a lot of people struggle setting up the flow graph, which is usually somewhat of a mystery, so I want to clear that up.
+
+The first thing I recommend you do every-time you setup a flow problem is initialize three variables: n - the number of nodes in your graph, including the source and the sink, then label s and t, the source and sink nodes to have indices n-1 and n-2. The rest of the nodes in your graph should then have indices between 0 and n-3 inclusive. I've always found this to be the easiest way to setup any flow graph.
+
+Next, I create the flow solver by providing the three variables n, s and t as inputs so that the sovler knows how many nodes there are in the graph and which are labeled as the source and sink. Then, I use the solver to actually create the flow graph by adding edges with different capacities.
+
+The next step is to hook up the edges from the source, those would be the ones shown in this picture.
+<SHOW IMAGE>
+
+Then carefully hook up the all the middle edges.
+<SHOW IMAGE>
+
+And lastly add the edges leading into the sink.
+<SHOW IMAGE>
+
+It's usually always these three steps, and most of the time your graph is bipartite, so the middle edges are much simpler to setup.
+
+After this, I call the getMaxFlow method on the solver which actually runs the Ford-Fulkerson max flow DFS and returns an integer value. For this graph we're expecting a max flow of 23.
+
+Followed by printing the max-flow, I also display the interesting edges on the residual graph. First, I get the resulting residual graph from the solver after executing the max flow algorithm, iterate over all the edges, and display the flow on each edge.
+
+Let's actually run this program, and see what the output looks, like shall we? so i just poped ipen a terminal, and For those of you who also have a terminal open and want to play with the code, first just clone the code from Github by typing git clone followed by the repo URL which is github dot com slash william fiset slash algorithms
+
+$ git clone https://github.com/williamfiset/Algorithms
+
+You see that i've already cloned the repo, so I don't need to do it again.
+
+Next, simply change directory to be at the base of the Algorithms repo.
+
+$ cd Algorithms
+
+The file we're working with is called FordFulkersonExample.java, and it's in the graphtheory networkflow examples package. Luckily for us it doesn't have any dependencies yet, so we can just compile it with java-ak.
+
+$ javac com/williamfiset/algorithms/graphtheory/networkflow/examples/FordFulkersonExample.java
+
+That'll produce a .class file in that directory, so let's execute it.
+
+$ java com/williamfiset/algorithms/graphtheory/networkflow/examples/FordFulkersonExample
+
+This prints a lot of interesting information, notably the max flow of 7 and all the edges. For each edge five columns are displayed:
+
+1) First the start and end nodes of the directed edge, 
+2) The amount of flow running through this edge
+3) The capacity of the edge
+4) And lastly, a boolean indicating whether the edge is a residual edge or not which is handy for debugging.
+
+Alright, let's get back to the code to see how we actually generate all these values and get that max flow of 23.
+
+Let's scroll up and take a look at the supporting classes. Let's begin with the Edge class.
+
+---
+
+The Edge class is composed of a few instance variables, in particular, every edge has a start node called "from" and an end node called "to". Each edge in the flow graph also has a certain amount of flow and capacity. The capacity of each edge is constant and does not change, the flow is dynamic and adjusts as we augment the flow.
+
+When you create a new edge, it should have a start and an end node plus an initial capacity; the flow defaults to zero. You might notice that the residual edge variable does not get initialized here. The reason is that I initialize this edge and the residual edge together and hook them up manually in a helper method which we'll see later.
+
+The next method, isResidual determines if the edge is a residual edge or not; because forward edges are not permitted to have a capacity of zero you know an edge must be residual if the capacity is zero.
+
+There's also the remaining capacity method which can be used to determine the maximum amount of flow we can push through this edge. This method works whether the flow is positive or negative.
+
+Next is the augment method which augments the flow for this edge alone. All it does is increase the flow on the forward edge by the bottleneck value we found along the augmenting path and also decrease the flow along the residual edge.
+
+Last is the toString method which was responsible for displaying those nice columns we saw in the terminal.
+
+---
+
+The next class we're going to look at is the NetworkFlowSolverBase class. This class is a generic base for max flow solvers which all solver should extend to gain access to reused variables and setup methods. For example, a simple task like adding an edge to the flow graph should be the same whether the max flow algorithm we're using is Edmond's-Karp or Dinics; therefore, since that behavior does not change it makes sense to abstract it.
+
+Let's take a look at some of the variables I have declared here which all get used by the ford-fulkerson solver.
+
+First is, INF short for infinity which is just a handy large constant.
+
+Then are the three input variables, n, s and t that track the number of nodes in the graph, the index of the source node and the index of the sink node.
+
+Followed by this are two special variables I usually end up using -- because they greatly help boost performance. 
+The rational behind using a visited token in combination with an integer array that tracks the visited state of a node is that when we're finding augmenting paths, whether via DFS, BFS or whatever graph traversal method you want to use, you generally want to ensure your augmenting path doesn't visit the same node twice, otherwise that could result in a cycle which we don't want.
+The way to check if node 'i' is visited is to check if the state in the visited array at index 'i' is equal to the visited token. This is handy because in the next iteration, when we need to yet again find another augmenting path we can reset the visited states of all the nodes by simply incrementing the visitedToken; I know, it's kind of hacky but it's super efficient.
+The alternative is to maintain a boolean visited array and fill it with false before finding any augmenting path. That's not great because it results in an additional order n work every time you want to find an augmenting path.
+
+Next is a boolean solved variable which indicates whether the network flow algorithm has ran. The solver only needs to run once since it always yields the same result.
+
+Next is the maxFlow value which we're trying to calculate
+
+and finally the adjacency list representing the flow graph itself. I highly recommend an adjacency list over an adjacency matrix for network flow problems even though it's a lot more work to setup. I say this mainly because it's common to have sparse flow graphs -- the exception being dense bipartite graphs which are somewhat frequent.
+
+Then looking at the constructor, we require the user to specify the number of nodes along with the source and the sink. Then I also take the opportunity to initialize the flow graph and allocate memory for the visited array.
+
+In the initializeEmptyFlowGraph method I just initialize each node index to have an empty arraylist of edges so we don't get a null pointer when we try to add an edge to the graph.
+
+Talking about adding edges to the graph, let's have a look at the addEdge method. Here we need provide the start node and the end node of the directed edge and a positive capacity. In this method we not only create the forward edge but also it's associated residual edge. To do that create another edge in the reverse direction and give it a capacity of zero -- then make the forward edge's residual edge the residual edge and the residual edges residual edge the forward edge -- and finally add them both to the flow graph.
+
+The remaining methods are client facing methods -- they can be used to get the residual graph after the solver has been executed and obtain the maximum flow.
+
+You'll notice that I ensure that the solve method is only ever called once. The solve method needs to be implemented by the child class -- it's the method that finds augmenting paths through the flow graph and augments the flow.
+
+---
+
+So that's the base class, now let's talk about the FordFuklersonSolver. This class extends the Networkflowsolver and implements the solve method which actually finds augmenting paths and augments the flow.
+
+The first method is the constructor which takes as input n, s and t and calls the super class constructor.
+
+Next is the solve method which I'm overriding. In this method you can see that I repeatedly call the dfs method; the dfs method returns as output the bottleneck value found along the augmenting path. I store that value as 'f' and increase the max flow by f each iteration because we know that the sum of the bottleneck values equals the max-flow. We do this until the bottleneck value is 0, at which point we know that no more augmenting paths exist and the algorithm terminates. In between finding each augmenting path and calling the dfs method I increment the visitedToken to indicate that all nodes are now marked as unvisited.
+
+The dfs method itself takes two arguments, the current node index and the flow of the augmenting path. Initially, the starting node is set to be the source and the flow is infinity; as we progress through the flow graph the flow value eventually becomes the bottleneck value as we find smaller and smaller edges with more restricting capacities.
+
+Inside the method itself, we know to stop when we've reached the sink node. At that point we can return the amount of flow we can push through the augmenting path.
+
+Afterwards since the current node is not the sink we need to explore it, so we mark it as visited by assigning the index for the current node to be equal to the visited token.
+
+Then comes the interesting part. First get all the outgoing edges from this node, residual or otherwise and loop over them all. If the capacity is greater than zero, meaning we can push flow through it and the next node is unvisited, meaning we don't risk creating a cycle then we enter the if block.
+
+Inside the if block the first thing I do is call the DFs method recursively. I pass in the index of the next node and the new flow value equals the minimum of the current flow value or the current edge's capacity. That intuitively makes sense, it's saying either keep the previously found bottleneck value or if this new edge is even smaller then it should be the new bottleneck value.
+
+That process continues recursively until the base case is hit and the sink was reached. This returns the bottleneck of the augmenting path. We can then use that value to augment the flow along our augmenting path. However, first check that the bottleneck value is greater than zero, it could be the case that we never actually made it to the sink and hit a dead end.
+
+Assuming that's not the case, simply augment the flow by increasing the flow of the current edge by the bottleneck, decreasing the current edge's capacity and increasing the residual edge's capacity; we covered in the last video why this is a good way of augmenting the flow, essentially is keeps the flow non-negative. After that, simply return the bottleneck value, this propagates it up the stack so that all the other edges along the augmenting path can also be augmented. This also ensures that the bottleneck value is returned to the solve method where the maxflow is calculated.
+
+So that's all I wanted to cover for the Ford-Fulkerson method implemented with a DFS. Thank you for watching, I sincerely hope you learned something, please like this video and subscribe for more mathematics and computer science videos.
+
+
+---------------------------
+
+… you must understand that bipartite graphs with weighted edges are a totally different beast than those with unweighted edges. The algorithms you need to use to solve this type of problem vary in significant ways.

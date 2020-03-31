@@ -1,0 +1,165 @@
+[intro_sound] Hello and welcome! My name is william, today we're going to talk about using a BFS to find the shortest path on a grid. This is going to be a really fun video because we're going to solve a problem and i'm going to teach you a bunch of handy tricks when doing graph theory on grids.
+
+[animation] Before we get started, I highly recommend my video introducing the BFS algorithm. Make sure you understand the basics of a BFS before continuing because we will be building off those concepts. There should be a link in the description to the last video.
+
+The motivation behind why we're learning about grids in this video is that a surprising number of problems can easily be represented using a grid which a lot of the time turns it into a graph theory problem. Grids are interesting because they're a form of implicit graph which means that we can determine a node’s neighbours based on our location within the grid.
+
+For instance, finding a path through a maze is a form of grid problem. 
+
+Or perhaps routing a person or thing though obstacles such as trees, rivers, rocks, and etc to get to a particular location.
+
+A common approach to solving graph theory problems on grids is to first convert the grid to a familiar format such as an adjacency list/matrix so we can easily work with them. However, this isn't always the most efficient technique, but we'll get to that.
+Suppose we have the grid on the left and we want to represent it as both an adjacency list and an adjacency matrix, what do we do first?
+
+First you should label all the cells in the grid with the numbers 0 through n non-inclusive where n is the product of the number of rows and columns. 
+
+Then we want to actually construct an adjacency list and matrix from the grid. The adjacency list doesn't require any setup because it's simply a map that we initialize, but the adjacency matrix requires us to initialize a matrix of size 6 by 6 to represent our graph. There are 6 rows and 6 columns in the new adjacency matrix because that's how many nodes there are in the grid we're trying to represent. 
+
+Assuming edges are unweighted and cells connect left, right up and down, node 0 connects with node 1 and node 2 which we reflect in the adjacency list and matrix on the right.
+
+Then node 1 connects with node 0 and node 3
+
+Node 2 with nodes 0, 3 and 4
+
+Node 3 with nodes 1, 2 and 5 and so on...
+
+[press]
+
+[press]
+
+[press] and that's how you would convert a grid to an adjacency list or an adjacency matrix.
+
+Once we have an adjacency list or adjacency matrix we are easily able to run whatever specialized graph algorithm we need to solve our problem such as shortest path, connected components, etc... 
+However, transformations between graph representations can usually be avoided due to the structure of a grid. Let me explain.
+
+Due to the structure of a grid, if we are at the red ball in the middle we know we can move left, right, up and down to reach adjacent cells:
+
+Mathematically, if the red ball is at the row-column coordinate (r, c) we can add the row vectors [-1, 0], [1, 0], [0, 1], and [0, -1] to reach all adjacent cells.
+
+If the problem you are trying to solve allows moving diagonally then you can also use the row vectors: [-1, -1], [-1, 1], [1, 1], [1, -1]
+
+Using vectors makes it very easy to access neighboring cells from the current row-column position. 
+
+First define the direction vectors for north, south, east and west broken down into their row/column components. 
+
+Then what we want to do is loop over each direction vector and add it to the current position. I iterate i from 0 to 4 non inclusive because we only have 4 directions.
+
+Then add the row direction to the current row to make rr, the new row, and the column direction to the current column to make cc, the new column. So the new position rr comma cc is an adjacent cell. 
+
+However, it might not be an adjacent cell if we're on the border of the grid and the new position is out of bounds, so we check that the new coordinate is within our grid by checking that the new row and column is greater than or equal to zero and doesn't exceed the maximum number of rows and columns respectably.
+
+If those two checks pass we know that the position rr comma cc is a neighboring cell of r comma c.
+
+In summary, this technique is really nice, easy to code and extends naturally to higher dimensions.
+
+Let’s solve a shortest path problem on a grid using the direction vector technique we just learned about!
+Here's a sample problem you might encounter in an interview or during a programming competition: "Suppose you are trapped in a 2D dungeon and need to find the quickest way out! The dungeon is composed of unit cubes which may or may not be filled with rock. It takes one minute to move one unit north, south, east, west. You cannot move diagonally and the maze is surrounded by solid rock on all sides."
+This is an easier version of the problem dungeon master on the Kattis online judge. See the problem link in the description.
+
+The dungeon is a grid of size R by C and you start at the node with an 'S' character and there's an exit at cell 'E'. A cell full of rock is indicated by a pound or hashtag character and empty cells are represented by a dot.
+
+In this particular setup it's possible to escape the dungeon using this route. Remember that we want to find the shortest path to escape the dungeon, not just any path. Our approach is going to be to do a BFS from the start node until we reach the end node and count the number of cells we traverse during that process. However it might not be possible to exit the dungeon if we cannot reach the exit so we'll have to be mindful of that.
+
+So like in any BFS, we need to start by visiting our start node by adding it to the queue.
+
+Assuming we've already found the coordinate of our starting node within the grid we can add it to the queue.
+
+Then we visit all adjacent unvisited neighbors and add them to the queue as well.
+
+And continue this process all the while avoiding adding rock cells to the queue. I'll let the animation play out meanwhile try and predict which cells will be visited next.
+
+[music][press]
+
+[press]
+
+[press]
+
+[press]
+
+[press]
+
+[press]
+
+[press]
+
+[end_music] After we find our end cell we know how many steps it takes to get from the start to the end. Notice that we didn't even visit all the cells in the grid, the bottom right cell is still unvisited, so it's possible to terminate early. If you're interested in actually finding the path itself rather than just the number of steps it takes to escape the dungeon then you'll need to keep track of the previously visited node for each node. Go and re-watch the last video if you need to refresher on how to do that.
+
+I want to talk a little bit about the way we're representing states in our BFS. So far we have been storing the next x-y position in the queue as an (x, y) pair. This works well but requires either an array or an object wrapper to store the coordinate values. In practice, this can require a lot of packing and unpacking of values to and from the queue.
+Let’s take a look at an alternative approach which also scales well in higher dimensions and in my opinion requires less setup and effort…
+
+An alternative approach is to use one queue for each dimension, so in a 3D grid you would have one queue for each of the x, y, and z dimensions.
+
+Suppose we're enqueuing (x1, y1, z1) then we would simply place each coordinate in their respective queues. So the x coordinate goes in its own x queue, y was its own y queue and so on.
+
+As we need to keep en-queuing different positions we simply keep filling up the queues this way.
+
+This contrasts the approach of simply having one queue with each component packed away inside an object. The one thing we have to be mindful about though is then when you either enqueue or dequeue elements you need to enqueue or dequeue from each of the queues at the same time.
+
+So when I want to dequeue or poll elements from the queue I need to remove an element from each of the queues.
+
+[press]
+
+I prefer this representation when working with multi dimensional coordinates which is why I wanted to share it, try it out and see if it works for you. 
+
+So now we have all the knowledge we need to solve the dungeon problem. Let's look at some pseudo code. Assume that I have already read in the input matrix into memory and did some pre processing to find the start node's position.
+
+The first two variables are constants R and C, the number or rows and columns in the input grid. Following this is 'm', the input character matrix of size R by C.
+
+Next are two variables sr and sc, the row-column position of the starting node. We'll need these to start our BFS.
+
+rq and cq are two queue data structures that represent the row queue and the column queue we'll be enqueuing and dequeuing elements from during the BFS.
+
+This next set of variables is to track the number of steps taken to reach the exit. 
+1) move_count will actually track the number of steps taken
+2) nodes_left_in_layer tracks how many nodes we need to dequeue before we taking a step
+3) and nodes_in_next_layer tracks how many nodes we added in this BFS expansion so that we can update nodes_left_in_layer accordingly in the next iteration. This will make more sense soon.
+
+reached_end will track whether or not we reached the end cell marked with an 'E' character
+
+We're also going to make use of a visited matrix the same size as the input grid to keep track of whether or not a cell has been visited since we do not want to visit cells twice.
+
+And lastly I define the north, south, east, west direction vectors.
+
+To solve the Dungeon problem this is all the code we'll need to execute our BFS and reach the exit.
+
+The first thing I do is add the start cell's row and column value to the row queue and column queue.
+
+Then don't forget to mark the start cell as visited because we don't want to go there again.
+
+So we're not done our BFS until both of our queues are empty, I check if the size of the row queue is greater than zero as a while condition, but you could also check the size of the column queue since their sizes should always be in sync.
+
+Then since I know the queues aren't empty I can dequeue the current position from the queues as the row position r and the column position c.
+
+Then check if we've reached the dungeon exit by checking if the character in the input matrix is an E. If it is then mark that we've reached the exit and break out early.
+
+Otherwise, we're not done exploring and we want to add all the valid neighbors of the current node to the queue. I wrote a function called explore_neighbors that'll do just that, let's have a look!
+
+Here we are at the explore_neighbours method. This is where we'll be using the direction vector technique we learned about earlier.
+
+Since cells have 4 directions we care about, north, south, east and west loop i from 0 to 4 non-inclusive.
+
+Compute the new coordinate rr comma cc by adding the direction vector to the current position.
+
+Make sure the new location is actually within the grid because we could end up with positions like 0 comma -1 which is out of bounds.
+
+Even if the new position is within the grid that does not mean it's a valid position. The position might have already been visited or it could be a blocked off cell that isn't traversable.
+
+If both of those conditions aren't true when we can enqueue the new position to visit it later.
+
+When enqueuing the new position we are going to visit make sure to mark it as visited now so that it doesn't get added to the queue multiple times. Also increment the number of nodes in the next layer, we'll need this shortly.
+
+[press]
+
+This next block of code is used to track the number of steps we took getting to the dungeon exit. Every time we finish a layer of nodes we increment the number of steps taken. We know how many nodes are in each layer because we kept track of that in the explore neighbors method. When the number of nodes in the current layer reaches 0 we know to increment the move count.
+
+At the end if we were able to reach the exit we return the move count, otherwise return -1 to indicate that the exit was not reached.
+
+
+
+
+
+
+
+
+
+

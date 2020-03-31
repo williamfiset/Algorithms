@@ -1,0 +1,73 @@
+48) Hello and welcome! My name and William and today we're moving on to talking about the DFS algorithm which plays a central role in several graph theory algorithms.
+
+49) So what is a DFS? A DFS is a core algorithm in graph theory that allows you to explore nodes and edges of a graph, so it's a form of traversal algorithm. The nice thing about a DFS is that it's really easy to code and it runs in a time complexity of big O of V plus E, that is vertices plus edges which is directly proportional to the size of your graph.
+By itself the DFS isn’t all that useful, but when augmented to perform other tasks such as count connected components, determine connectivity, or find bridges/articulation points DFS really shines.
+
+50) Let's look at an example; as the name suggests a DFS plunges depth first into a graph without regard for which edge it selects next until it cannot go any further at which point it backtracks and continues.
+
+... 
+
+103) So let's look at some pseudo code for a DFS to get a deeper understanding for how it works.
+
+104) The first thing we'll need to are these three variables:
+- n, the number of nodes in our graph
+- g, the adjacency list representing the graph
+- and visited, a boolean array containing true or false at index i depending on whether or not node i has been visited. In the beginning this array should have all false values because we have not visited any nodes in the graph.
+
+105) Once that's setup, at the bottom I define our starting node to be node zero and then call the DFS method to do the exploration.
+
+106) The DFS itself only has one argument, the current node we're at which I have conveniently named 'at'.
+
+107) This method is recursive, so I check the base case which is whether we have already visited this node, if so, we have no business here so we can return
+
+108) Otherwise, let's visit this node by marking its visited status as true and exploring all its neighbors.
+
+109) To explore all the neighbors of a node, reach into the adjacency list and pull out all the neighbors of this node and explore them depth first by looping over each and recursively call the DFS method.
+
+110) That's what the DFS is in a nutshell.
+
+111) Let's look at another simple use case for the DFS which I think will solidify your understanding. I want to discuss finding connected components in a graph.
+
+112) First let's understand what we mean by connected component. Sometimes a graph is split into multiple disjoint components and it’s useful to be able to identify and count these components.
+
+113) One way to identify these components might be to color them so we can tell them apart, but what does colouring nodes really mean to a computer?
+
+114) Colouring nodes is equivalent to labeling each node in a component with the same id value. For example, every node in the purple component has an id of 1, and every node in the green component has an id of 3.
+
+115) We can use a DFS to identify components this way. First, make sure all the nodes are labeled from [0, n) where n is the number of nodes.
+
+116) The basic algorithm is to start a DFS at every node (except if it’s already been visited) and mark all reachable nodes as being part of the same component using the same id.
+
+...
+
+147) Awesome, so that was how we find connected components using a DFS, now let's look at some pseudo code for how we do this.
+
+148) First we'll need a couple of things: 
+- n the number of nodes in our graph
+- g and adjacency list representing the graph
+- count, a variable that tracks the number of connected components.
+- components, an integer array that holds the integer value of which component a node belongs to.
+- and finally a boolean array called 'visited' which tracks whether or not node i has been visited or not.
+
+149) Inside the findComponents method, we loop over every node and check if the current node has been visited or not then execute some logic. 
+
+150) This DFS differs slightly from the previous in that we execute a DFS for every unvisited node. When we actually do the DFS we visit nodes and mark them as visited so we never revisit the same node more than once. We either skip over a node because it's been visited or start a new DFS there, if we start a new DFS we have to increment the count variable to keep track of how many DFS's we have done.
+
+151) Inside the DFS, the two things we do are mark the current node as visited and set the current node to be part of the component equal to the value of count. 
+
+154) Then simply iterate over every neighboring node that has not yet been visited and call the DFS method to explore them as well.
+
+155) Back inside the find components method, simply return the number of components and the components array that contains the information about which component each node belongs to.
+
+156) So we've covered two things the DFS can do, but it can be augmented it to do many other things such as:
+ - Compute a graph’s minimum spanning tree.
+ - Detect and find cycles in a graph.
+ - Check if a graph is bipartite.
+ - Find strongly connected components.
+ - Topologically sort the nodes of a graph.
+ - Find bridges and articulation points.
+ - Find augmenting paths in a flow network.
+ - Generate mazes.
+ - and many more applications
+
+157) Thank you for watching! Next video I should be talking about the BFS algorithm, stayed tuned and subscribe for more mathematics and computer science videos.

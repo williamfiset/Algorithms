@@ -1,0 +1,173 @@
+Hello and welcome,
+My name is William and today we are going to probe further into network flow.
+We will be
+talking about a specific implementation of the Ford-Fulkerson method which is
+the Edmonds-Karp algorithm. Edmonds-Karp is another maximum flow
+algorithm which uses a different technique to find augmenting paths through
+the flow graph.
+
+Before we get started let me give you a refresher on what we're doing:
+1) We are trying to find the maximum flow on a flow graph because we know that
+finding the max flow is really useful for finding bipartite matchings and to 
+solve a whole host of problems.
+
+2) So far we have looked at one technique to find the max flow which is to use 
+the Ford-Fulkerson method, which at a high level says that all we want to do is
+repeatedly find augmenting paths from s to t, augment the flow and repeat until
+no more paths exist.
+
+3) The key takeaway here is that the Ford-Fulkerson method does NOT specify HOW 
+to actually find augmenting paths, so this is where optimization comes into play
+
+[Ford-Fulkerson animation]
+A few videos ago we saw what the Ford-Fulkerson method is, how it is used to 
+find the maximum flow and how it can be implemented with a DFS.
+[The flip graph animation]
+However, we saw that the pitfall when using a DFS was that the time complexity
+depends on the capacity of the edges in the graph. This is because the DFS picks
+edges to traverse in such a way that we might only ever able to push one unit of
+flow in each iteration.
+This is really bad and can kill the time complexity even though it is unlikely 
+to happen in practice, but it's something we absolutely want to avoid should it 
+happen. Right now, the time complexity of the Ford-Fulkerson method with a DFS 
+is O(E times f) where E is the number of edges and f is the maximum flow.
+
+The idea behind Edmonds-Karp says that instead of using a DFS to find augmenting
+paths, we should use a BFS instead to get a better time complexity of O(V times
+E squared). O(V times E squared) may not look like a better time complexity, but
+it actually is. What's different is that the time complexity while it may not 
+be great does no depend on the capacity value of any edge in the flow graph, and
+this is crucial. We call such an algorithm that doesn't depend on the actual
+input values a strongly polynomial algorithm, and that's what Edmonds-Karp is.
+
+The Edmonds-Karp algorithm can also be thought of as an algorithm which 
+repeatedly finds the shortest augmenting path from s -> t, that is in terms of 
+the number of edges used each iteration.
+Using a BFS during Edmonds-Karp ensures that we find the shortest path -- this 
+is a consequence of each edge being unweighted. I say unweighted, because as 
+long as the edge has a positive capacity we don't distinguish between one edge
+being any better or worse than any other edge.
+
+Let's look at why we might care about using Edmonds-Karp. Suppose we have this
+flow graph, and we want to find the maximum flow. If we're using a DFS we might
+do something like this:
+
+Start at the source
+
+and do a random DFS going forwards
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+<press>
+
+So after a lot of zigzagging through the flow graph we were able to find the 
+sink. As we just saw, a DFS has the chance to cause long augmenting paths, and
+longer paths are generally undesirable because the longer the path, the higher
+the chance for a small bottleneck value which results in a longer runtime.
+
+Finding the shortest path from s to t, again, in terms of the number of edges
+as an augmenting path is a great approach to avoid the DFS worse case and reduce
+the length of augmenting paths.
+
+To find the shortest path from s to t do a Breadth First Search (BFS) starting
+at the source and ending at the sink. While exploring the flow graph, remember
+that we can only take an edge if the capacity of the edge is greater than 0.
+
+In this example, all edges outwards from s have a remaining capacity greater
+than 0, so we add all the neighbours to the queue and proceed…
+
+Again, add all reachable neighbours to the queue and continue
+
+<press>
+
+So now the BFS has reached the sink, so we can stop. In the real algorithm, we
+stop as soon as any edge reaches the sink, but for symmetry I show three edges
+entering the sink which isn't really accurate.
+
+If we assume the bottom edge made it to the sink first and we retrace the path
+we get the following augmenting path, but we didn't just find any augmenting 
+path, we found a shortest length augmenting path.
+
+Then to augment the flow, do the usual: Find to bottleneck value by finding the
+smallest remaining capacity of all the edges along the path.
+
+Then augment the flow values along the path by the bottleneck.
+
+So that was the first path, however, we're not done yet. 
+Let's start over again at the source. Recall that while exploring the
+flow graph we can only reach a node if the remaining capacity of the edge
+ to get there is greater than 0.
+
+For instance, all the reachable neighbors of the source node does not include
+the bottom left node because the edge from the source to the bottom left node
+has a remaining capacity of zero.
+
+Keep exploring until the sink is reached.
+
+<press>
+
+<press>
+
+We have reached to end again.
+
+Find the bottleneck value
+
+Next, use the bottleneck value to update the flow along the augmenting path.
+
+<press>
+
+And we're still not done because there still exists another augmenting path.
+
+So now only one edge outwards from the source has a capacity greater than zero,
+so it's the edge we must follow.
+
+There's also only one edge to follow from the second node because the other
+edges have a remaining capacity of zero.
+
+<press>
+
+And now the BFS has reached the sink
+
+and we can trace back the edges that were used.
+
+Then as usual, find the bottleneck value
+
+and augment the flow.
+
+Now you can see that there are no more augmenting paths left to be found because
+all the edges leading outwards from the source have a remaining capacity of 0.
+However, more generally we know to stop when there are no more augmenting paths
+from s -> t, because then we know we cannot increase the flow anymore.
+
+The maximum flow we get from running Edmonds-Karp is the sum of the bottleneck 
+values. If you recall, in the first iteration we were able to push 5 units of 
+flow, in the second iteration, 10 units, and in the last iteration 5 units, for
+a total of 20 units of flow.
+
+Another way to find the max flow is to sum the capacity values going into the 
+sink which I have circled in red.
+
+In summary, this is what we've learned: Using a DFS on a flow graph will
+sometimes find long windy paths from the source to the sink.
+
+This is usually undesirable because the longer the path, the smaller the
+bottleneck value, and the longer the runtime.
+
+Edmonds-Karp tries to resolve this problem by finding the shortest path from the
+source to the sink using a breadth first search.
+
+More importantly, the big achievement of Edmonds-Karp is that its time 
+complexity of O(VE²) is independent of the max flow, so it doesn't depend on the
+capacity values of the flow graph.
+
+And that's Edmonds-Karp in a nutshell, thank you for watching, next video we'll
+cover some source code, for now please like this video if you learned something
+and subscribe for more computer science and mathematics videos.
+
+

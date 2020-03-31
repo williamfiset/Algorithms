@@ -1,0 +1,116 @@
+TSP slide notes:
+
+Hello and welcome to this tutorial on how to solve the TSP with dynamic programing! Today we're going look at two things, the first is how to find the cost of the best tour and then how to actually find that path.
+
+So let's get started, what is the TSP? In a nut-shell it's when you're given a list of cities and the distances between each pair of cities, and you want to find the shortest possible route that visits each city exactly once and returns to the origin city.
+
+In some other words we can say the problem is: Given a complete graph with weighted edges, what is the Hamiltonian cycle of minimum cost. A Hamiltonian cycle is simply a path which visits each node exactly once. In practice you will want to represent whatever graph you have as an adjacency matrix for simplicity. If an edge between two node does not exist simply set that edge's value to be positive infinity. 
+
+In this graph below you can see that one optimal tour consists of going from A to D to C to B and finally back to A with a minimum cost of 9. Note that it is entirely possible that there are many possible valid optimal tours but they must all have the same minimum cost.
+
+AS it turns out solving the TSP is extremely hard. In fact, the problem has been proven to be NP-Complete meaning it's very difficult to find the optimal solution for large inputs. However, numerous approximation algorithms exist which run very quickly even for large inputs.
+
+The brute force method to solve the TSP is to compute the cost of every possible tour. This means we have to try all permutations of node ordering which will take big O of n factorial time, which is very slow. Below I have listed all the permutations of nodes and highlighted the ones which yield the optimal solution.
+
+The dynamic programming solution we're going to develop today is able to improve upon this naive approach and reduce the complexity to big O of n squared times 2 to the n.
+At a first glance this may not seem like a substantial improvement, however it now makes graphs with up to roughly 23 nodes feasible for modern home computers.
+
+He's a table of n! verse n^2 2^n. At first you notice that n! is optimal for small numbers but this quickly changes and n^2 2^n offers a significant improvement over n! You can already see how large the numbers for n! are becoming when we hit n = 15 verses that of n squared 2^n
+
+Alright time to talk about the DP approach. The main idea behind the DP approach is to compute the optimal solution for a path of length N we reuse information from a paths of length N-1.
+
+Before we get too far there's some setup work we need to talk about to solve the TSP problem. The first thing we need to do is select a designated starting node S. It doesn't matter which node is picked just make sure the node's index is between 0 and N non inclusive.
+
+Now suppose we have a graph with four nodes and we choose zero so be the start of the tour.
+
+The next step is the store the optimal value from S to every other node. This will solve the TSP for all paths with two nodes. The optimal value for paths with two nodes is given in the input through the adjacency matrix. This is all the setup we need to do.
+
+Visually if we look at it we can see that we'd need to store the value from 0 to 1, 0 to 2 and 0 to 3.
+
+In the last slide I talked about storing the solution for when n = 2, but what is it we really need to store? There are two key things. The first is obvious and that's the set of visited nodes in a partially completed tour. The other is the index of the last visited node in the path. For each partially completed tour we need to save which node was the last node we were on so that we can continue extending that tour from that node we were on and not some other node; this is very important.
+Together these two things, the set of visited nodes and the index of the last visited node form our dynamic programming state. Since there are n possible last nodes and 2 to the power of N distance node subsets our storage space is bounded by big O of n times 2 to the n.
+
+An issue we're going to face when trying to store the DP state is representing the set of visited nodes. And THEE way and I mean THEE way to do this is to use a single 32bit integer. The idea is that if the ith node has been visited we flip on the ith bit to a 1 in the binary representation of the integer. The advantage to this representation is that a 32-bit integer is compact, quick and allows for easy caching in a memo table.
+
+For example, on the leftmost graph we have visited the 0th and 1st nodes so the binary representation is 0011 if the least significant bit is on the right. Similarly, the binary representation of the middle graph is 1-0-0-1 or just the number 9 in decimal since nodes 0 and 3 have been visited.
+
+Now suppose we're trying to expand on our previous state. One particular instance of a two node partial tour is shown below. What we want to do from our last node which in this graph is node 3 is expand to visit all other unvisited nodes which are the gray nodes 1 and 2 to make a partial tour with three nodes.
+
+For this particular state we were able to generate an additional two states but we would also do this for all states with two nodes not just this one with 0 and 3. In total this process would result in six new states for partial tours with three nodes. This process continues with gradually longer and longer paths until paths are of length N.
+
+The last thing we need to do to wrap up our TSP tour is to reconnect our tour with the designated starting node S. To do this loop over the end state in the memo table for all possible end positions (excluding the start node) and minimize the lookup value + cost of going back to S. Note that the end state is the one where the binary representation is composed of all 1's meaning each node has been visited.
+
+It's finally time to look at some pseudo-code for the TSP. Just a heads up to everyone who's still a beginner, the following slides make use of advanced bit manipulation techniques so make sure you're comfortable with how binary shifts, ands ors and xors work.
+
+He's a function that solves the TSP. It takes two inputs, the first is 'm' a 2D adjacency matrix representing the input graph and S the index of the starting node. The first thing we do is get the size of the matrix and store it in the variable N which tells us how many nodes there are. Then we initialize the 2D memo table. The table should have size N by 2 to the power of N. I recommend filling the table null values so that programmatic errors throw runtime exceptions. Then we're going to call four functions setup, solve, findMinCost and findOptimalTour. 
+
+Let's begin by looking at what's happening in the setup method.
+
+The setup method is very easy. It simply does what I illustrated a few slides ago by storing the optimal value from the start node to every other node. You loop though each node skipping over the start node then you cache the optimal value from S to i which can be found in the distance matrix. The DP state you store is the end node as i and the mask with bits S and i set to one hence the double bit shift.
+
+Visually, the green node is the start node and the orange node the node i which changes every iteration. You notice now that the orange node is never on top of the green node which is why I had a continue statement to skip that case.
+
+</flipslide>
+</pause>
+</flipslide>
+
+Now let's look at the solve method.
+
+The solve method is by far the most complicated but i've broken it down to be easy to understand. The first line in the method loops over r = 3 up to N inclusive. Think of r as the number of nodes in a partial tour, so we're increasing this number one at a time. 
+------
+The next line says 'for subset in combinations'. The combinations function generates all bit sets of size N with r bits set. For example, as seen in the comments when calling the combinations function with r = 3 and N = 4 we get four different bit sets each distinct and with 3 ones turn on. These are meant to represent a subset of visited nodes.
+------
+Moving on, notice that I enforce the node S to be part of the generated subset, otherwise the subset of nodes is not valid since it could not have started at our designated starting node. Notice that this if statement calls the 'notIn' function defined at the bottom of this slide. All it does is it checks if the ith bit in the subset is a 0.
+------
+Then we loop over a variable called next which represents the index of the next node. The next node must be part of the current subset. This may sound strange but know that the subset variable generated by the combinations function has a bit which is meant for the next node.
+------
+This is why the variable 'state' on the next line represents the subset excluding the next node. This is so we can do a lookup in our memo table to figure out the best partial tour value when the next node was not yet in the subset. Being able to look back and reuse parts of other partially completed tours is essential to the DP in this algorithm.
+------
+The following variable to consider is e, short for 'end node' because I ran out of room. This variable is quite important because while the next node is fixed temporarily in the scope of the inner loop we try all possible end nodes of our current subset and try and see which end node best optimizes this partial tour. Of course the end node cannot be any of the start node, the next node or not be part of the current subset that we're considering so we skip all those possibilities.
+------
+So we compute the new distance and compare it to the minimum distance. If the new distance is better than the min distance then update the minimum distance. 
+------
+Afterwards, once we've considered all end nodes to connect to the next node we store the best partial tour value in the memo table, and this concludes the solve method.
+
+The only unanswered thing on this slide is how the combinations method works, and I do not mean to leave that unanswered so let's see how this is done.
+
+This method is actually far simpler than you might imagine for what it does. What the first combinations method does is it fills up the subsets array using the second combinations method and then returns that result, so what does the second combinations method do?
+------
+I already covered this in more detail in my tutorial video "Backtracking: power set" if you want more details, but i'll still give you the quick rundown of what this recursive method does.
+Basically, starting with the empty set which is zero you want to set r out of n bits to 1 for all possible combinations, so you keep track of which index position you're currently at and try and set each bit position to 1 and keep moving forward hoping at the end you used up exactly r bits, but if you didn't you backtrack, flip off the bit you flipped on and move to the next position. This is a classic backtracking problem you might want to research. This is how you solve it but it isn't the focus of this video per se so I want to get back to the TSP. Watch my backtracking video on the power-set for guidance if you're lost here, i'll put a link in the description.
+
+So right now in our memo table, we have the optimal value for each partial tour with N nodes, so let's see how we can use that information to find the minimum tour value.
+
+The trick is going to be to construct the bit mask for the end state and use that to do a look up in our memo table. The end state is the bit mask with N bits set to 1 which we can obtain by doing a bit shift and then subtracting one. Then what we do is look at each end node candidate and minimize over the tour cost by looking at what's in our memo table and the distance from that end node back to the start node.
+
+The last method we need to look at is the findOptimalTour function because what good is our TSP algorithm if it cannot actually find you an optimal tour?
+
+For this method what we're going to do to find an actual tour is work backwards from the end state and do lookups in the memo table to find the next optimal node. We will keep track of the last index we were at and the current state which begins with all nodes visited. Then we loop over i from N-1 to 1 which tracks the index position for the tour. 
+To actually find the next optimal node going backwards we're going to use a variable called index which will track of the next best node. The inner loop loops over j which represents a possible candidate for the next node. We must ensure that j is not the starting node and that it is part of the state meaning it has not yet been visited. If this is the first valid iteration the variable index will still be -1 so set it to j, otherwise compare the optimal values of the best distances between nodes index and j and update index if node j is better.
+Once the optimal index is found store that as part of the tour and flip off the bit in the state which represents the index node. 
+Finally set the first and last nodes of the tour to be S the starting node because the tour needs to start and end on the same node. Then return the tour.
+
+And that's how you solve the TSP problem with DP. Of course I might have accidentally fudged a detail or two unintentionally in the pseudo-code, but there's no getting around that with true source code, so catch me in the next video for a complete code implementation of the TSP. If you're eager to see the implementation check out my github repo at: "github dot com slash william fiset slash algorithms" under the graph theory or dynamic programming section. Thank you for watching, I hope you enjoyed this video give it a thumbs up and subscribe for more mathematics and computer science videos.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

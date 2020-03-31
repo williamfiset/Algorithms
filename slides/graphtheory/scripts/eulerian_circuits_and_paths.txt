@@ -1,0 +1,363 @@
+Hello everyone, my name is William; today we're going to talk about Eulerian paths and circuits from a computer science perspective. We're going to start with discussing what euler paths and circuits are, how to determine there existence, how to find them, and lastly we'll look at some code to wrap things up.
+
+Let's begin with what is an Eulerian path? An euler path, also called an euler trail is a path of edges in a graph that visits every edge exactly once.
+
+Suppose we have the undirected graph below and we want to find an eulerian path. First off, not every graph has an eulerian path, this one does, but even still we need to be careful about which node we start our path at.
+
+Suppose we begin the path at the middle right node.
+
+and decide to follow the path left
+
+down
+
+up
+
+up again
+
+and finally left. This completes the eulerian path. 
+
+<press>
+
+However, suppose we start at the top node, what happens if we decide to find a path from this node?
+
+If we take the edge going down you'll notice that we're now stuck. We cannot go anywhere else from this node since there are no edges left to follow.
+
+More importantly, the issue is that we have unvisited edges that we still have not used. We'll see how to resolve, or rather, avoid this issue altogether later.
+
+Moving on, what is an eulerian circuit, also called and eulerian cycle? An eulerian circuit is an eulerian path which starts and ends on the same vertex.
+
+Similar to eulerian paths, not every graph has an Eulerian circuit, but the following graph does.
+
+If you know your graph has an eulerian circuit, then you can begin the circuit at any node. I'm going to begin the circuit on the orange node and also end it on the orange node.
+
+...
+
+and that's the full circuit
+
+If your graph does not contain an eulerian circuit, you may not be able to return to the start node or you will not be able to visit all edges of the graph.
+
+For example, let's start another circuit starting from the same node on this slightly modified graph.
+
+...
+
+So by randomly selecting edges to traverse we weren't able to make it back to the starting node.
+
+Furthermore, we also have unvisited edges, so that's double bad.
+
+Luckily for us we don't have to guess whether or not a graph contains an Eulerian path or an Eulerian circuit. We can inspect the graph we're dealing with by counting the in and out degrees of each node to determine whether or not the graph meets one of the conditions in this table. There are four flavours of the Eulerian path/circuit problem we care about, and those are whether the graph is directed or undirected and whether we want to find an euler path or an euler circuit. All of these variants talk about node degrees, so I want to have a quick look at that before coming back to this table.
+
+The degree of a node means different things depending on whether we're dealing with a directed or an undirected graph.
+
+In an undirected graph, the node degree is simply how many edges are attached to that particular node. The blue node in this picture has three edges attached to it, so its degree is 3.
+
+In a directed graph there are two forms of node degrees, in degrees and out degrees. The 'in' degree is the number of incoming edges and the 'out' degree is the number of outgoing edges. In the example on the right, the in degree of the node is 2 while its out degree is 1, pretty simple.
+
+Coming back to the table, you should now be able to understand the constraints required for each variant. Let's go ever them one by one anyways.
+
+The simplest case is when you have an undirected graph and you want to know if it has an Eulerian circuit. The requirement for this is that every node has an even degree.
+
+The Eulerian Path problem on an undirected graph is similar expect that in addition that every vertex has even degree you can also have exactly two vertices which have odd degree. Those two vertices, if they exist would be the start and end nodes for the Eulerian path.
+
+On a directed graph, you have an Eulerian circuit if every vertex has equal in and out degree.
+
+The last variant is finding an Eulerian path on a directed graph. For there to exist an Eulerian path on a directed graph at most one vertex has (outdegree) - (indegree) = 1 and at most one vertex has 
+(indegree) - (outdegree) = 1 and all other vertices have equal in and out degrees. 
+
+
+Now it's pop quiz time, to make sure you've been paying attention. I'm going to present various graphs and you need to determine whether an Eulerian path, an Eulerian circuit or both exist on the graph. We'll start with undirected graphs and then move on to directed graphs. Feel free to pause the video to think it over.
+
+This graph has no Eulerian path or circuit. You can tell because there are too many nodes with odd degree.
+
+How about this graph?
+
+This graph has an eulerian path, and the green nodes represent the valid start and end nodes.
+
+How about this graph?
+
+Yes, it has both an euler path and euler circuit.
+
+Here's a side question: True or false, if a graph has an Eulerian circuit it also has an euelrian path? I'll give you a moment to think about it.
+
+The answer is true. Any circuit is an Eulerian path.
+
+Here's another one, are there any paths or circuits in this graph?
+
+This one is a bit of a trick question, there are no Eulerian paths or circuits. An additional requirement I have not yet mentioned is that when finding paths and circuits is that all vertices with nonzero degree need to belong to a single connected component.
+
+Now let's have a look at some examples with directed graphs. Does the following graph contain any paths or circuits?
+
+Yes, it has both an eulerian path and an eulerian circuit because all in/out degrees are equal.
+
+What about this graph?
+
+There are no paths or circuits. The red nodes have either too many incoming or outgoing edges.
+
+What about this graph? I'll give you a bit more time because there are a lot of edges here.
+
+This graph only has an Eulerian path, but no Eulerian circuit. It also has a unique start/end node for the path.
+
+Note that the singleton node has no incoming/outgoing edges, so it doesn't impact whether or not we have an Eulerian path.
+
+Ok, that is it on the existence of Eulerian paths and circuits for directed and undirected graphs. I hope that made sense, please give a thumbs up if you learned something, and also stick around for the next video where things get even more interesting as we look at an algorithm to find these Eulerian paths and circuits.
+
+------------------------------------------------------------------
+
+
+Hello everyone, and welcome back, my name is William; today we're talking about how to algorithmically find Eulerian paths and circuits.
+
+This video builds off concepts from my last video which talked about the existence of Eulerian paths and Eulerian circuits in graphs, make sure you give that a watch, the link should be in the description below.
+
+Finding an Eulerian path and an Eulerian circuit are very similar problems for both directed and undirected graphs. If you have an algorithm that finds an Eulerian path, finding an Eulerian circuit comes for free. All you need to do is feed the graph with the Eulerian circuit into the Eulerian path algorithm and out comes the Eulerian circuit. For that reason, today we'll be looking at an algorithm that finds an Eulerian path on a directed graph. 
+The undirected version is just a spin-off of the directed version, furthermore I've found that directed graphs are far more common in practice, at least from personal experience.
+
+The first step in finding an Eulerian path is to verify that one exists, because maybe it's impossible to find an Eulerian path that traverses all the edges.
+
+Recall that for an Eulerian path to exist at most one one vertex has (outdegree) - (indegree) = 1 and at most one vertex has (indegree) - (outdegree) = 1 and all other vertices have equal in and out degrees.
+
+We're going to count the in and out degree of each node by looping through all the edges. We'll be needing two arrays which i've called 'in' and 'out' to track the in and out degrees of each node.
+
+For each edge, increment the in degree of a node if a node has an incoming edge and increment the out degree if it has an outgoing edge.
+
+...
+
+And so on for all other edges
+
+<press>
+
+Once we’ve verified that no node has too many outgoing edges (out[i] - in[i] > 1) or incoming edges (in[i] - out[i] > 1) and there are just the right amount of start/end nodes we can be certain that an Eulerian path exists.
+The next step is to find a valid starting node because we can't start the algorithm at any node we choose necessarily.
+
+Node 1 is the only node with exactly one extra outgoing edge, so it’s our only valid start node. Similarly, node 6 is the only node with exactly one extra incoming edge, so it will end up being the end node.
+
+NOTE: If all in and out degrees are equal, then we have an Eulerian circuit and we can start at any node with non-zero degree.
+
+So we have everything we need to find an eulerian path
+
+Let's see what happens if we try doing a naive DFS to traverse as many edges as possible until we get stuck.
+
+Let's begin at our starting node and execute a random DFS.
+
+Let's take a right
+
+another right
+
+up
+
+down diagonally
+
+up diagonally
+
+right 
+
+and right again
+
+You'll notice that even though we started at the correct starting node, and we know that an Eulerian path exists, and furthermore that we ended at the correct end node that we still did not find a valid Eulerian path since we didn't traverse all the edges. So what's going on?
+
+What's happening is that we're doing our DFS wrong, we need to modify the algorithm to force our DFS to visit all the edges of our graph.
+
+To illustrate this, consider this other smaller graph.
+
+Suppose we start our DFS at node 0 and try to find an Eulerian path.
+
+take the edge right
+
+then suppose the DFS takes the next right also. This causes us to accidentally skip the edges going to node 2 and back which need to be part of the eulerian path solution. Let's not worry about it for now and keep executing our DFS.
+
+Once we get stuck, meaning the current node has no unvisited outgoing edges, we backtrack and add the current node to the solution.
+
+So four gets added to the solution and we return to the node we were just at. We are stuck again because node 3 has no outgoing edges, so we add 3 to the front of the solution and back track.
+
+When backtracking, if the current node has any remaining unvisited edges, that is, white edges, we follow any of them calling our DFS method recursively to extend the Eulerian path.
+
+So we follow the edge up to node 2 and then there's still another edge going downwards so we take that one too.
+
+Now we're stuck again, there aren't any unvisited edges anymore. What we do is we backtrack and add the current node to the front of the solution.
+
+Effectively we do this until we return to the start node and the recursion unwinds.
+
+<press>
+<press>
+
+So in summary, how we force the DFS to take all the edges is to keep taking unvisited edges on the recursive callback until no unvisited edges remain.
+
+Coming back to the previous example, let’s restart the algorithm, but this time track the number of unvisited edges we have left to take for each node.
+
+In fact, we have already computed the number of outgoing edges for each edge in the “out” array which we will reuse. We also won’t be needing the “in” array after we’ve validated that an Eulerian path exists so we can ignore it.
+
+<press>
+
+Let's begin at the starting node once again.
+
+So now one thing we're going to do slightly differently is that every time an edge is take we'll reduce the outgoing edge count. Doing this will enable us to know when a certain node has no more unvisited edges.
+
+So let's just follow the same path we had last time until we get stuck.
+
+...
+
+So now we are where we were last time, but we're not going to terminate the algorithm here. Instead, we're going to backtrack because we're stuck and there are no more outgoing edges we can take from node 6. One way to know this, without looking at the graph, is to check whether the out array at index 6 has a value of 0. So let's backtrack and add 6 to the front of the solution.
+
+Now we're at node 4, and node 4 has remaining unvisited white edges we still need to take, so we call the DFS method recursively following any unvisited edge.
+
+Similarly for node 3.
+
+and node 1
+
+and node 2
+
+Returning back to node 4 this time there are no more unvisited edges so we add 4 to the front of the solution and backtrack.
+
+Node 2 still has an unvisited edge, since out[2] != 0 so we need to follow that edge.
+
+Once we do we, node 2 has no remaining unvisited edges so we backtrack and add 2 to the front of the solution.
+
+We're back at node 2 again and keep backtracking.
+
+Similarly for node 1
+
+and node 3
+
+And so on, since all edges have been visited and at this point on we're just going to unwind the stack and add the current node to the front of the solution. I'll let the animation play.
+
+...
+
+And that's how you find an Eulerian path on a graph.
+
+Let's have a look at some pseudo-code, we'll have a look at some real source code too in an upcoming video.
+
+Let's talk about the variables we're going to need. The first three here are inputs to the algorithm we're going to need which are 'n', the number of nodes in the graph, 'm' the number of edges in the graph and lastly, 'g' the graph itself stored as an adjacency list.
+
+Then there's the 'in' and 'out' arrays I talked about earlier to track the in and out degrees of every node.
+
+Lastly, there's a variable called path which is a linked list which is going to store the Eulerian path solution. You can also use an array or something else, but it simplifies the code to have a linked list IMO.
+
+To actually find an Eulerian path on our graph 'g' we're going to call the findEuelrianPath method.
+
+The first thing we want to do is verify that an Eulerian path exists. To do that we first need to count the in and out degree of each node, and once we know that we can verify that the graph is a good candidate for an Eulerian path.
+
+Here we are looking at the methods which count the in and out degrees and verify whether an Eulerian path can exist.
+
+The count in and out degrees is super simple, simply loop over all the edges in the graph
+
+and increment the 'in' and 'out' degrees for the incoming and outgoing nodes.
+
+The graphHasEulerianPath method checks all the preconditions for an Eulerian path exist, except for making sure the graph is fully connected, we do that check later.
+
+We're going to keep track of of number of start nodes and end nodes we encounter. A start node is a node with one extra outgoing edge and an end node is a node is one extra incoming edge.
+
+If at any point we encounter a node which either has more than one extra outgoing edge or one extra incoming edge we know this graph isn't Eulerian. Because of symmetry, I believe you only need to check one of these conditions, but I put both just to be explicit.
+
+Next up, I check if the current node is a start node or an end node. You cannot be a start node and an end node which is why this is an else if clause.
+
+The last thing to do is check if we have a valid number of start nodes and end nodes for our path. Either there is no designated start and end node, that is the Eulerian circuit case (which is also an Eulerian path), or there is exactly one start node and one end node.
+
+Coming back to the main method.
+
+The next step is to find that starting nodes and perform a DFS to actually find the Eulerian path.
+
+<press>
+
+Let's begin with finding the start node.
+
+We're going to start by assuming that the start node is node 0 although this will likely change.
+
+Since we know at this point that our graph is Eulerian, this means that if we encounter a node with an extra outgoing edge, that it must be the unique starting node, and we can return that node's index immediately.
+
+Otherwise, we just want to ensure that we begin on a node with an outgoing edge. Our default node, node 0 might no have any outgoing edges.
+
+In fact, this check prevents us from starting the DFS at a singleton node.
+
+Then return the start node after the loop.
+
+The DFS method is where things start to get interesting. The DFS method takes one argument and that is the current node we're 'at'. The variable 'at' is the node index we're at.
+
+The while loop in the DFS loops while the current node still has outgoing unvisited edges.
+
+The next line selects the next unvisited outgoing edge from the current node from the adjacency list. It also decrements the number of outgoing edges from the current node.
+
+So it you haven't caught on already, The out array is currently serving two purposes. One purpose is to track whether or not there are still outgoing edges, and the other is to index into the
+adjacency list to select the next outgoing edge.
+This assumes the adjacency list stores edges in a data structure that is indexable in constant time, like an array. If not, say your adjacency list is composed of linked lists you can use an iterator to iterate over the edges.
+
+Once we've selected the next unvisited edge, visit it by calling the DFS method recursively.
+
+Once we exit the loop append the current node to the front of the solution.
+
+Returning to the main function again, there's one last thing we need to do.
+
+This is to check whether or not the graph is connected.
+
+This method is relativity short, but quite essential in detecting invalid Eulerian paths.
+
+Suppose we have the graph below.
+
+Assume we start at node 8 and find an Euler path from there.
+
+...
+
+So we found a path on one of the components.
+
+But as we talked about in the previous video, if the graph is disconnected there is no Eulerian path.
+
+How we're going to check for multiple disconnected components is by checking whether we have any unvisited edges left. In other words, if there's a node in the out array which has a non-zero value there are multiple components and the graph is disconnected.
+
+Once we've verified that the graph doesn't have multiple different components, we an safely return the path.
+
+Thank you for watching, real source code for the Eulerian path can be found on github at github dot com slash william fiset slash algorithms.
+
+Please like this video if you learned something, and subscribe for more computer science and mathematics videos.
+
+
+----------------------------------------------------------------
+
+Hello and welcome, my name is william, and today we're going to look at some source code for the Eulerian path algorithm. This video follows off my last videos explaining the Eulerian path algorithm itself, there should be a link to those in the description.
+
+As usual, source code can be found on Github at github.com slash william fiset slash algorithms. There should also be a link in the description below, so let's dive in.
+
+So here we are in the source code for the Eulerian path. This code works by first instantiating the Eulerian path solver class and then calling a method to fetch the Eulerian path, should one exist. Let's begin by taking a look at the class constructor.
+
+In the constructor, a directed graph is given as input to the algorithm, we verify that the graph is not null, then we initialize a few variables we'll need including: 'n' the number of nodes in the graph, and the path linked list.
+
+Before we go too far, let's have a look at the instance variables for this class. We already talked about 'n' the number of nodes in the graph, next we have the edgeCount which we compute dynamically from the input graph followed by the 'in' and 'out' integer arrays to track the in/out degree of each node, then we have the path, which is the Eulerian path solution to the algorithm and finally the input graph.
+
+So once you create an instance of this class, there's only one public method and that's 'getEulerianPath' which does exactly what is says, it'll return you an eulerian path consisting of the nodes you need to follow to traverse all the edges of the graph, or null if no path exists.
+
+There's a few thing in the 'getEulerianPath' which we'll cover step by step. The first thing in the 'getEulerianPath' method is a 'setUp' method, so let's have a look at that.
+
+All the setup method does is loop through all the edges and increment the in and out array degrees, as well as compute the number of edges in the graph which is tracked with the edgeCount variable.
+
+<close setUp>
+
+back in the 'getEulerianPath' method, the next thing is to check if the edgeCount is zero, and return null if we don't have any edges to work with. Following this I call the 'graphHasEulerianPath' method to verify that our graph actually has an Eulerian path, because most graphs don't.
+
+The 'graphHasEulerianPath' is also fairly simple, what we want to do is make sure that no node has too many outgoing edges or too many incoming edges as well as ensure that there's the correct amount of start and end nodes for an Eulerian path to exist. The variables 'startNodes' and 'endNodes' keep track of how many nodes have either exactly one extra outgoing edge or one extra incoming edge. For an eulerian path to exist, there has to be at most one start and end node.
+So when we're inside the for loop, we have three conditions, the first is to identify if the current node has too many incoming or outgoing edges, which mathematically means that the difference between the in and out degree or vice versa is greater than one, in this case return false because a path is impossible. The other conditions we care about are whether the current node might be a start node or an end node, and if it is, then we increment the startNode and endNode counters.
+The last step is to check that we have the correct number of start and end nodes.
+
+<close graphHasEulerianPath>
+
+Returning back to the 'getEulerianPath' method the next thing in the algorithm is to actually find the euler path now that we know one can exist. To do this, we find a valid starting node and feed that as the first node to the DFS method, so let's look at both of those.
+
+We don't want to start our Eulerian path anywhere as we saw in the first video, because this doesn't ensure that we find an eulerian path, even though we know one exists. The find start node method does exactly what it sounds like, it looks for a node which is a valid starting node, meaning a node with exactly one extra outgoing edge or in the case of an Eulerian circuit just any node with an outgoing edge. It's important that we start at a node with an outgoing edge, because our graph might have singleton nodes which have no outgoing edges, but another component of the graph might which is where we really want to start if we're to find an Eulerian path.
+
+<close findStartNode>
+
+Next up is the DFS method where things get interesting. It turns out the DFS method is really short, and could even be shorter, but at the expense of readability. Remember that when calling this method, the first node is the starting node, which is the 'at' variable in this method which if you haven't guessed it, is the current node index we're 'at'. In essence what's happening in this method is that while the current node still has unvisited edges, we're going to select the next node to explore and call the DFS method recursively. Each time we take an edge, we decrease the outgoing edge count, which means that eventually there will be no more outgoing edges for the current node, and the loop will terminate. Once this happens, we can add the current node to the front of the solution. The key realization, I think, in this method, is to notice that the out array is being used as both a way of determining if there are any unvisited edges left at the current node as well as an index for reaching into the adjacency list to grab the next node to visit.
+
+<goto getEulerianPath>
+
+Returning back to the getEulerianPath method, once we've finished executing the DFS the next thing to do is ensure that we've found an eulerian path. It could be the case that the graph is disconnected, in which case the correct thing to do is return null. Checking that the graph is disconnected is not something the 'graphHasEulerianPath' method verifies, this is intensional  because it's easier to do it after running the DFS by ensuring that the found solution actually has a size of edgeCount plus one.
+
+The next thing I do before returning the solution, which is optional, is simply to empty the contents of the linkedlist into a primitive integer array for convenience, I do this because it's easier for the caller to index an array than it is a linked list.
+
+The rest of the methods in this file are just helper methods for creating a directed graph and adding directed edges to the graph. I also provide two examples here, one from the previous slides and another that I made up, I encourage you to look them over to understand how this program works.
+
+Thank you for watching, please like this video if you learned something, and subscribe for more computer science and mathematics videos, catch you next time.
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,93 @@
+Hello and welcome,
+My name is William, today we're going to have a look at some source code for 
+the Capacity Scaling algorithm.
+
+In the previous video, I explained what Capacity Scaling is, how it works
+and what it is good for, so I highly recommend watching that video before 
+proceeding, there will be a link in the description. All the source code for 
+this can be found on Github at github.com slash william fiset slash algorithms
+
+Alright, here we are in the source code written in Java, I have laid out some
+instructions here in the header in case you wanted to get the code, play around
+with it and run it yourself.
+
+Scrolling down, you can see the familiar Edge class, this class is used to
+represent an edge that connects two nodes and has a certain capacity.
+
+A little further down is also the NetworkFlowSolverBase which acts as a template
+for all the different flow algorithms we have been implementing. I already 
+covered how these two classes work in previous videos linked below, so please 
+have a look at those before continuing. 
+
+However, the part we're really interested in is a new class I have defined below
+which is the CapacityScalingSolver. The CapacityScalingSolver is an 
+implementation of the NetworkFlowSolver base which uses capacity scaling to find
+the maximum flow.
+
+You will notice that I have defined a new instance variable in this class called
+delta. This is the same delta from the slides that we will be using as a 
+parameter to determine whether an edge should be accepted or rejected based on
+its remaining capacity relative to the value of delta.
+
+The constructor for this class simply calls the super class's constructor to
+initialize the flow graph and allocate some memory.
+
+Just below is the addEdge method which is particularly interesting. For capacity
+scaling to work, we need to know the value of the edge with the largest capacity.
+Since we need to construct the flow graph do to anything interesting, we can 
+capture the largest capacity value as we build the graph. The implementation of
+the addEdge method is defined in the NetworkSolverBase, we don't want to change
+this functionality, so inside the addEdge method we are overriding here what I 
+do is I call the addEdge method in the super class and initialize delta to be
+the largest capacity we encounter -- simple enough.
+
+Inside the solve method, which gets called to compute the maximum flow, the 
+first thing we do is initialize delta to be the largest power of 2 less than or
+equal to the largest capacity. One way to do this is to find the floor of the 
+base 2 logarithm and then raise that value to the power of 2, or in Java you can
+use the builtin highest one bit function to do that but in a more efficient way.
+  Following that, we repeatedly find augmenting paths from source to sink using
+only edges with a remaining capacity >= delta. Half delta every time we become 
+unable to find an augmenting path from source to sink until the graph is 
+saturated.
+  Inside the inner loop, mark all nodes as unvisited, do a DFS and sum over the 
+bottleneck values to calculate the maximum flow. Repeatedly does this until 
+delta is equal to zero.
+
+Now let's have a look at the DFS method. The dfs method takes two arguments, the
+current node, and the minimum flow found along the path so far. When we 
+initially call the method, the source node is the current node and flow is set 
+to infinity. This method performs a DFS recursively, and we know we can stop
+searching when we have reached the sink node t.
+
+If the current node is not the sink node, then visit the current node and reach
+iterate through all the neighbors of the current node. Here's the catch though,
+we cannot take the edge going to the neighboring node if the remaining capacity
+of that edge is smaller than delta, because this violates the capacity scaling
+heuristic. Also ensure that the node we're going to has not already been visited
+to avoid cycles.
+
+Inside the inner if statement, we call the dfs method recursively passing in the
+node we're going to as the current node, and the flow as the
+minimum of the current flow and this edge's remaining capacity. The DFS returns
+the bottleneck value along the augmenting path. After the DFS call, we are
+unwinding the call stack from the sink back to the source. This is a 
+perfect time to augment the flow for each edge along the augmenting path 
+since we already know what the bottleneck value is. So, if the bottleneck value
+is greater than 0, meaning an augmenting path was found, augment the flow, which
+add flow along the forward edge and subtracts flow along the residual edge, and
+also return the bottleneck value.
+
+If we scroll to the main method, you see that I have setup the flow graph from 
+the slides here and I create a flow solver and push flow through it to get a 
+result. I also display the resulting flow graph after the flow algorithm has 
+been executed so you can see what happened.
+
+Awesome, that's all for capacity scaling, please like this video if you learned
+something and subscribe fore more mathematics and computer science videos.
+
+
+
+
+
+
