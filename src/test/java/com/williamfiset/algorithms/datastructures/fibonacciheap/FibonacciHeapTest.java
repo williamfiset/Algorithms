@@ -96,7 +96,7 @@ public final class FibonacciHeapTest {
     final List<Integer> expected = new ArrayList<Integer>();
 
     for (int i = 0; i < 1000; i++) {
-      Integer number = new Integer(r.nextInt(10000));
+      Integer number = r.nextInt(10000);
       expected.add(number);
       queue.add(number);
     }
@@ -134,7 +134,7 @@ public final class FibonacciHeapTest {
   public void clearQueue() {
     final Random r = new Random(System.currentTimeMillis());
     for (int i = 0; i < 1000; i++) {
-      Integer number = new Integer(r.nextInt(10000));
+      Integer number = r.nextInt(10000);
       queue.add(number);
     }
 
