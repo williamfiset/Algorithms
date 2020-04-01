@@ -7,7 +7,7 @@ package com.williamfiset.algorithms.datastructures.hashtable;
 
 import java.math.BigInteger;
 
-@SuppressWarnings("unchecked")
+
 public class HashTableDoubleHashing<K extends SecondaryHash, V>
     extends HashTableOpenAddressingBase<K, V> {
 
