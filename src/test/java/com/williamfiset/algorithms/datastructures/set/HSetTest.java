@@ -1,6 +1,5 @@
 package com.williamfiset.algorithms.datastructures.set;
 
-import static java.lang.Math.*;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;

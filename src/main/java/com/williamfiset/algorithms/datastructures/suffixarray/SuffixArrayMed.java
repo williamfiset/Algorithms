@@ -5,8 +5,6 @@
  */
 package com.williamfiset.algorithms.datastructures.suffixarray;
 
-import java.util.*;
-
 public class SuffixArrayMed extends SuffixArray {
 
   // Wrapper class to help sort suffix ranks

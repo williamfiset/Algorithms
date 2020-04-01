@@ -13,8 +13,6 @@
  */
 package com.williamfiset.algorithms.graphtheory.treealgorithms.examples;
 
-import java.util.*;
-
 public class TreeHeight {
 
   public static class TreeNode {
