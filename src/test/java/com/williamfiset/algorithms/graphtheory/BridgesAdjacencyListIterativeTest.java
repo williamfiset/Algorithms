@@ -43,7 +43,7 @@ public class BridgesAdjacencyListIterativeTest {
     BridgesAdjacencyList solver = new BridgesAdjacencyList(graph, n);
     List<Pair<Integer, Integer>> sortedBridges = getSortedBridges(solver.findBridges());
 
-    List<Pair> expected =
+    List<Pair<Integer, Integer>> expected =
         ImmutableList.of(
             Pair.of(0, 1),
             Pair.of(0, 2),
@@ -84,7 +84,7 @@ public class BridgesAdjacencyListIterativeTest {
     List<Integer> bridges = solver.findBridges();
     List<Pair<Integer, Integer>> sortedBridges = getSortedBridges(solver.findBridges());
 
-    List<Pair> expected =
+    List<Pair<Integer, Integer>> expected =
         ImmutableList.of(Pair.of(3, 7), Pair.of(7, 8), Pair.of(7, 9), Pair.of(4, 10));
 
     assertThat(sortedBridges).containsExactlyElementsIn(expected);
