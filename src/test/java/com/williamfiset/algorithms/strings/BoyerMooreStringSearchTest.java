@@ -38,8 +38,8 @@ public class BoyerMooreStringSearchTest {
   public void shouldReturnMultiplyOccurrences() {
     assertThat(
             underTest.findOccurrences("Sample text for testing the Boyer-Moore algorithm.", "te"))
-        .containsAllOf(7, 16);
+        .containsExactly(7, 16);
     assertThat(underTest.findOccurrences("Sample text for testing the Boyer-Moore algorithm.", " "))
-        .containsAllOf(6, 11, 15, 23, 39);
+        .containsExactly(6, 11, 15, 23, 27, 39);
   }
 }
