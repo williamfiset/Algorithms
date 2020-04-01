@@ -113,8 +113,8 @@ public class ConvexPolygonCutWithLineSegment {
     Pt p1 = new Pt(-1, -1);
     Pt p2 = new Pt(5, 5);
 
-    int l = squarePolygon.length;
-    List list = makeList(squarePolygon);
+    
+    List<Pt> list = makeList(squarePolygon);
     list = sortCW(list);
     squarePolygon = makeArray(list);
 
