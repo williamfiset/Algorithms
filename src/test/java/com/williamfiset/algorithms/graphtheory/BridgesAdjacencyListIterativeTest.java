@@ -109,7 +109,8 @@ public class BridgesAdjacencyListIterativeTest {
     List<Integer> bridges = solver.findBridges();
     List<Pair<Integer, Integer>> sortedBridges = getSortedBridges(solver.findBridges());
 
-    List<Pair<Integer, Integer>> expected = ImmutableList.of(Pair.of(2, 3), Pair.of(3, 4), Pair.of(2, 5));
+    List<Pair<Integer, Integer>> expected =
+        ImmutableList.of(Pair.of(2, 3), Pair.of(3, 4), Pair.of(2, 5));
 
     assertThat(sortedBridges).containsExactlyElementsIn(expected);
   }
