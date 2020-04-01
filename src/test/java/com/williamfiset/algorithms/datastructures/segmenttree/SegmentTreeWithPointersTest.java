@@ -2,7 +2,6 @@ package com.williamfiset.algorithms.datastructures.segmenttree;
 
 import static org.junit.Assert.*;
 
-import java.util.*;
 import org.junit.Before;
 import org.junit.Test;
 
