@@ -42,4 +42,7 @@ public class BoyerMooreStringSearchTest {
     assertThat(underTest.findOccurrences("Sample text for testing the Boyer-Moore algorithm.", " "))
         .containsExactly(6, 11, 15, 23, 27, 39);
   }
+
+  // TODO(william): Add a test that compares this implementation of Boyermoore
+  // with that of KMP.
 }

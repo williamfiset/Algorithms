@@ -31,7 +31,7 @@ public class KahnsTest {
     int n = g.size();
     for (int i = 0; i < n; i++) {
       for (int j = i + 1; j < n; j++) {
-        // jAppearsBeforeNodeI
+        // Check that `node j` appears before `node i`
         if (find(g, new boolean[n], order[j], order[i])) {
           return false;
         }
