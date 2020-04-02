@@ -13,7 +13,7 @@
  */
 package com.williamfiset.algorithms.datastructures.hashtable;
 
-@SuppressWarnings("unchecked")
+
 public class HashTableQuadraticProbing<K, V> extends HashTableOpenAddressingBase<K, V> {
 
   public HashTableQuadraticProbing() {
