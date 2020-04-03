@@ -6,7 +6,6 @@
  */
 package com.williamfiset.algorithms.datastructures.hashtable;
 
-
 public class HashTableLinearProbing<K, V> extends HashTableOpenAddressingBase<K, V> {
 
   // This is the linear constant used in the linear probing, it can be
