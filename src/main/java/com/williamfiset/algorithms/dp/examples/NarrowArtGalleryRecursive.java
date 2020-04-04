@@ -80,5 +80,6 @@ public class NarrowArtGalleryRecursive {
 
       System.out.println(f(K, N));
     }
+    sc.close();
   }
 }
