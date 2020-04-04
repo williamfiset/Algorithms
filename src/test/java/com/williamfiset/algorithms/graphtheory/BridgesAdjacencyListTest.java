@@ -81,7 +81,6 @@ public class BridgesAdjacencyListTest {
     addEdge(graph, 11, 6);
 
     BridgesAdjacencyList solver = new BridgesAdjacencyList(graph, n);
-    List<Integer> bridges = solver.findBridges();
     List<Pair<Integer, Integer>> sortedBridges = getSortedBridges(solver.findBridges());
 
     List<Pair<Integer, Integer>> expected =
@@ -106,7 +105,6 @@ public class BridgesAdjacencyListTest {
     addEdge(graph, 8, 5);
 
     BridgesAdjacencyList solver = new BridgesAdjacencyList(graph, n);
-    List<Integer> bridges = solver.findBridges();
     List<Pair<Integer, Integer>> sortedBridges = getSortedBridges(solver.findBridges());
 
     List<Pair<Integer, Integer>> expected =
