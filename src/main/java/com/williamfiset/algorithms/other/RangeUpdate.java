@@ -30,13 +30,18 @@ public class RangeUpdate {
     }
   }
 
-  // Does range update
+  // This method does range update from l to r(both inclusive) by adding the value of x
+  // to it. This method adds x to the element at index l and subtracts x from element at
+  // index r + 1 of differenceArray.
   public void update(int l, int r, int x) {
     differenceArray[l] += x;
     differenceArray[r + 1] -= x;
   }
 
-  // Call this method after all the queries are done
+  // Call this method after all the queries are done.
+  // This method is used to update our array that we actually wanted to work on.
+  // As we previously updated values in differenceArray we use those to update values
+  // in our array.
   public void finalize() {
     int n = array.length;
     for (int i = 0; i < n; i++) {
