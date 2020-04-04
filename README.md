@@ -175,7 +175,7 @@ or
 * [Min Cost Max Flow (Bellman-Ford, adjacency list)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/graphtheory/networkflow/MinCostMaxFlowWithBellmanFord.java) **- O(E<sup>2</sup>V<sup>2</sup>)**
 * [Min Cost Max Flow (Johnson's algorithm, adjacency list)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/graphtheory/networkflow/MinCostMaxFlowJohnsons.java) **- O(E<sup>2</sup>Vlog(V))**
 
-### Other graph theory
+### Main graph theory algorithms
 *  [:movie_camera:](https://www.youtube.com/watch?v=aZXi1unBdJA)[Articulation points/cut vertices (adjacency list)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/graphtheory/ArticulationPointsAdjacencyList.java) **- O(V+E)**
 * [Bellman-Ford (edge list, negative cycles, fast & optimized)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/graphtheory/BellmanFordEdgeList.java) **- O(VE)**
 * [:movie_camera:](https://www.youtube.com/watch?v=lyw4FaxrwHg)[Bellman-Ford (adjacency list, negative cycles)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/graphtheory/BellmanFordAdjacencyList.java) **- O(VE)**
@@ -245,6 +245,7 @@ or
 * [Sliding Window Minimum/Maximum](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/SlidingWindowMaximum.java) **- O(1)**
 * [Square Root Decomposition](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/SquareRootDecomposition.java) **- O(1) point updates, O(√n) range queries**
 * [Unique set combinations](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/UniqueCombinations.java) **- O(n choose r)**
+* [Lazy Range Updater](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/LazyRangeUpdater.java) **- O(1) range updates, O(n) to finalize all updates**
 
 # Search algorithms
 * [Binary search (real numbers)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/search/BinarySearch.java) **- O(log(n))**
