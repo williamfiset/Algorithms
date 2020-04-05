@@ -1,7 +1,7 @@
 
-[![Travis](https://img.shields.io/travis/williamfiset/Algorithms.svg)](https://travis-ci.org/williamfiset/Algorithms)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![Java CI with Gradle](https://github.com/williamfiset/Algorithms/workflows/Java%20CI%20with%20Gradle/badge.svg)
+![README Checker](https://github.com/williamfiset/Algorithms/workflows/README%20URL%20Checker/badge.svg)
 
 # Algorithms & data structures project
 
