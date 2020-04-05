@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class InterpolationSearchTest {
-  
+
   @Test
   public void testCoverage1() {
     int[] arr = {0, 1, 2, 3, 4, 5};

@@ -74,24 +74,3 @@ task buildDependenciesFolder(type: Copy) {
   from configurations.compile
   into './dependencies'
 }
-
-// Make sure all hooks are executable files
-tasks.create(name: 'gitExecutableHooks') {
-  doLast {
-    Runtime.getRuntime().exec("chmod -R +x .git/hooks/");
-  }
-}
-task installGitHooks(type: Copy) {
-  from new File(rootProject.rootDir, 'pre-push')
-  into { new File(rootProject.rootDir, '.git/hooks') }
-  fileMode 0777
-}
-gitExecutableHooks.dependsOn installGitHooks
-test.dependsOn gitExecutableHooks
-
-
-
-
-
-
-
