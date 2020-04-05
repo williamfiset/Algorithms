@@ -24,7 +24,7 @@ public class ArticulationPointsAdjacencyList {
   public ArticulationPointsAdjacencyList(List<List<Integer>> graph, int n) {
     if (graph == null || n <= 0 || graph.size() != n) throw new IllegalArgumentException();
     this.graph = graph;
-    this.n = n-1;
+    this.n = n;
   }
 
   // Returns the indexes for all articulation points in the graph even if the
