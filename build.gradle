@@ -55,6 +55,7 @@ test {
 }
 
 tasks.withType(JavaCompile) {
+  dependsOn(installGitHooks)
   options.compilerArgs << '-Xlint:unchecked'
   options.deprecation = true
 }
@@ -68,4 +69,16 @@ compileTestJava {
 task buildDependenciesFolder(type: Copy) {
   from configurations.compile
   into './dependencies'
+}
+
+// Google Java Format pre-commit hook installation
+// Stolen from: https://github.com/uber/NullAway/commit/8f06f3878fe450bce19c448d48591d77255f2aa0
+// Allows running the pre-commit hook file under config/hooks/pre-commit
+
+tasks.register('installGitHooks', Copy) {
+  from(file('config/hooks/pre-commit-stub')) {
+    rename 'pre-commit-stub', 'pre-commit'
+  }
+  into file('.git/hooks')
+  fileMode 0777
 }
