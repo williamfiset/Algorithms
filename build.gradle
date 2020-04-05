@@ -75,18 +75,19 @@ task buildDependenciesFolder(type: Copy) {
   into './dependencies'
 }
 
-// Copies all files in config/hooks/* to .git/hooks
-// The main git hook that gets copied over is the Java Formatting hook
-// which formats java code according to the Github style guide after each commit
-tasks.register('installGitHooks', Copy) {
-  from "config/hooks"
-  into file('.git/hooks')
-  include "*"
+// Make sure all hooks are executable files
+tasks.create(name: 'gitExecutableHooks') {
+  doLast {
+    Runtime.getRuntime().exec("chmod -R +x .git/hooks/");
+  }
+}
+task installGitHooks(type: Copy) {
+  from new File(rootProject.rootDir, 'pre-push')
+  into { new File(rootProject.rootDir, '.git/hooks') }
   fileMode 0777
 }
-
-build.dependsOn installGitHooks
-
+gitExecutableHooks.dependsOn installGitHooks
+build.dependsOn gitExecutableHooks
 
 
 
