@@ -245,7 +245,7 @@ or
 * [Sliding Window Minimum/Maximum](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/SlidingWindowMaximum.java) **- O(1)**
 * [Square Root Decomposition](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/SquareRootDecomposition.java) **- O(1) point updates, O(√n) range queries**
 * [Unique set combinations](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/UniqueCombinations.java) **- O(n choose r)**
-* [Lazy Range Updater](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/LazyRangeUpdater.java) **- O(1) range updates, O(n) to finalize all updates**
+* [Lazy Range Adder](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/LazyRangeAdder.java) **- O(1) range updates, O(n) to finalize all updates**
 
 # Search algorithms
 * [Binary search (real numbers)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/search/BinarySearch.java) **- O(log(n))**
