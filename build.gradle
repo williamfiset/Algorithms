@@ -87,7 +87,7 @@ task installGitHooks(type: Copy) {
   fileMode 0777
 }
 gitExecutableHooks.dependsOn installGitHooks
-build.dependsOn gitExecutableHooks
+test.dependsOn gitExecutableHooks
 
 
 
