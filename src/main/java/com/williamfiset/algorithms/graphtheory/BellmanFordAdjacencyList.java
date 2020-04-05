@@ -23,6 +23,7 @@ public class BellmanFordAdjacencyList {
   }
 
   // Create a graph with V vertices
+  @SuppressWarnings("unchecked")
   public static List<Edge>[] createGraph(final int V) {
     List<Edge>[] graph = new List[V];
     for (int i = 0; i < V; i++) graph[i] = new ArrayList<>();
