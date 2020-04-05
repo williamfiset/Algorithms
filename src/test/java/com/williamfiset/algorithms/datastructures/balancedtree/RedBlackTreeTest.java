@@ -309,7 +309,7 @@ public class RedBlackTreeTest {
   // Make sure all left child nodes are smaller in value than their parent and
   // make sure all right child nodes are greater in value than their parent.
   // (Used only for testing)
-  boolean assertBinarySearchTreeInvariant(RedBlackTree.Node node) {
+  boolean assertBinarySearchTreeInvariant(RedBlackTree<Integer>.Node node) {
     if (node == null) return true;
     boolean isValid = true;
     if (node.left != null) isValid = isValid && node.left.value.compareTo(node.value) < 0;
