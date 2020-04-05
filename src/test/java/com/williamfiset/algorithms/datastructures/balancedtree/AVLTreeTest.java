@@ -115,7 +115,7 @@ public class AVLTreeTest {
   }
 
   // Make sure all balance factor values are either -1, 0 or +1
-  static boolean validateBalanceFactorValues(AVLTreeRecursive.Node node) {
+  static boolean validateBalanceFactorValues(AVLTreeRecursive<Integer>.Node node) {
     if (node == null) return true;
     if (node.bf > +1 || node.bf < -1) return false;
     return validateBalanceFactorValues(node.left) && validateBalanceFactorValues(node.right);

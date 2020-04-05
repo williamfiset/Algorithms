@@ -164,6 +164,7 @@ public class MiceAndOwls {
     }
 
     // Constructs an empty graph with n nodes including s and t.
+    @SuppressWarnings("unchecked")
     private void initializeEmptyFlowGraph() {
       graph = new List[n];
       for (int i = 0; i < n; i++) graph[i] = new ArrayList<Edge>();
