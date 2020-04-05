@@ -54,6 +54,11 @@ test {
   testLogging.showStandardStreams = true
 }
 
+tasks.withType(JavaCompile) {
+  options.compilerArgs << '-Xlint:unchecked'
+  options.deprecation = true
+}
+
 // Options when compiling tests
 compileTestJava {
   options.encoding = 'UTF-8'
