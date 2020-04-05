@@ -1,7 +1,11 @@
 # Use awesome bot to verify that all URLs in the README are valid.
 
 name: README URL Checker
-on: [push, pull_request]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
