@@ -4,7 +4,6 @@ apply plugin: 'application'
 
 mainClassName = findProperty("main") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"
 
-// https://github.com/sherter/google-java-format-gradle-plugin
 buildscript {
   repositories {
     maven {
@@ -12,6 +11,7 @@ buildscript {
     }
   }
   dependencies {
+    // https://github.com/sherter/google-java-format-gradle-plugin
     classpath "gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.8"
   }
 }
@@ -55,17 +55,42 @@ test {
 }
 
 tasks.withType(JavaCompile) {
-  options.compilerArgs << '-Xlint:unchecked'
-  options.deprecation = true
+  options.compilerArgs += [
+    '-Xlint:unchecked',
+    '-Xlint:deprecation'
+  ]
 }
 
 // Options when compiling tests
 compileTestJava {
   options.encoding = 'UTF-8'
-  options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+  options.compilerArgs += [
+    '-Xlint:unchecked',
+    '-Xlint:deprecation'
+  ]
 }
 
 task buildDependenciesFolder(type: Copy) {
   from configurations.compile
   into './dependencies'
 }
+
+// Copies all files in config/hooks/* to .git/hooks
+// The main git hook that gets copied over is the Java Formatting hook
+// which formats java code according to the Github style guide after each commit
+tasks.register('installGitHooks', Copy) {
+  from "config/hooks"
+  into file('.git/hooks')
+  include "*"
+  fileMode 0777
+}
+
+build.dependsOn installGitHooks
+
+
+
+
+
+
+
+
