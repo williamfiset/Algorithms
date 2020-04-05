@@ -15,4 +15,4 @@ jobs:
     - name: Install Awesome Bot
       run: gem install awesome_bot
     - name: Run Awesome Bot
-      run: awesome_bot README.md --white-list https://medium.engineering
+      run: awesome_bot README.md --allow-dupe --allow-redirect
