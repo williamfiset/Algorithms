@@ -37,22 +37,22 @@ public class Kahns {
     }
 
     // Find all start nodes.
-    Stack<Integer> nodesWithNoIncomingEdges = new Stack<>();
+    Queue<Integer> nodesWithNoIncomingEdges = new ArrayDeque<>();
     for (int i = 0; i < n; i++) {
       if (inDegree[i] == 0) {
-        nodesWithNoIncomingEdges.push(i);
+        nodesWithNoIncomingEdges.offer(i);
       }
     }
 
     int index = 0;
     int[] order = new int[n];
     while (!nodesWithNoIncomingEdges.isEmpty()) {
-      int at = nodesWithNoIncomingEdges.pop();
+      int at = nodesWithNoIncomingEdges.poll();
       order[index++] = at;
       for (int to : g.get(at)) {
         inDegree[to]--;
         if (inDegree[to] == 0) {
-          nodesWithNoIncomingEdges.push(to);
+          nodesWithNoIncomingEdges.offer(to);
         }
       }
     }
