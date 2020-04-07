@@ -7,17 +7,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class NodeTest {
-	Node node;
+  Node node;
 
-	@Before
-	public void setUp() {
-		node = new Node (5);
-	}
+  @Before
+  public void setUp() {
+    node = new Node(5);
+  }
 
-	@Test
-	public void testNode() {
-		assertTrue(node != null);
-		assertEquals(0, node.count);
-		assertEquals(5, node.data);
-	}
+  @Test
+  public void testNode() {
+    assertTrue(node != null);
+    assertEquals(0, node.count);
+    assertEquals(5, node.data);
+  }
 }
