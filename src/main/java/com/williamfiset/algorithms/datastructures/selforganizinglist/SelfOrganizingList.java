@@ -24,7 +24,7 @@ public class SelfOrganizingList {
     totalNodes++;
   }
 
-  public void search(int key) {
+  public boolean search(int key) {
     Node current = start;
     if (current == null) {
       System.out.println("List is empty");
@@ -39,10 +39,13 @@ public class SelfOrganizingList {
       }
       if (current == null) {
         System.out.println("Element " + key + " was not found");
+        return false;
       } else {
         System.out.println(key + " was found");
+        return true;
       }
     }
+    return false;
   }
 
   public void reorder() {
