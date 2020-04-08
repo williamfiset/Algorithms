@@ -64,4 +64,59 @@ public class SelfOrganizingList {
       current = current.next;
     }
   }
+
+  public void deleteNode(int position) {
+    if (start == null) {
+      System.out.println("List is empty");
+    } else {
+      if (position == 1) {
+        System.out.println("Deleting first element " + start.data);
+        if (start.next != null) {
+          start.next.prev = null;
+        }
+        start = start.next;
+        totalNodes--;
+      } else if (position == totalNodes) {
+        Node current = start;
+        while (current.next != null) {
+          current = current.next;
+        }
+        System.out.println("Deleting last element " + current.data);
+        current.prev.next = null;
+        current.prev = null;
+        totalNodes--;
+      } else if (position > 1 && position < totalNodes) {
+        Node current = start;
+        for (int i = 1; i < position - 1; i++) {
+          current = current.next;
+        }
+        current.next = current.next.next;
+        current.next.prev = current;
+        totalNodes--;
+      } else {
+        System.out.println("There is no such position");
+      }
+    }
+  }
+
+  public int getSize() {
+    return totalNodes;
+  }
+
+  public boolean isEmpty() {
+    return start == null;
+  }
+
+  public void display() {
+    Node current = start;
+    if (current == null) {
+      System.out.println("List is empty");
+    } else {
+      while (current.next != null) {
+        System.out.print(current.data + "(count: " + current.count + ")->");
+        current = current.next;
+      }
+      System.out.println(current.data + "(count: " + current.count + ")");
+    }
+  }
 }
