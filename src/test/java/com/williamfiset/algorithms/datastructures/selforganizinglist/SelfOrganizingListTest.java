@@ -42,4 +42,10 @@ class SelfOrganizingListTest {
     assertTrue(list.start.data == 24);
     assertTrue(list.start.count == 2);
   }
+
+  void testSearch() {
+    assertFalse(list.search(8));
+    list.insertNode(59);
+    assertTrue(list.search(59));
+  }
 }
