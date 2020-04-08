@@ -36,7 +36,7 @@ public class Kahns {
       }
     }
 
-    // q always contains the set nodes with no incoming edges.    
+    // q always contains the set nodes with no incoming edges.
     Queue<Integer> q = new ArrayDeque<>();
 
     // Find all start nodes.
