@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.Test;
 
 public class RadixSortTest {
-  RadixSort sort;
 
   @Test
   public void testGetMax() {
