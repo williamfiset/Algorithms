@@ -24,17 +24,17 @@ public class LowestCommonAncestorEulerTour {
     // Number of nodes in the subtree. Computed when tree is built.
     private int n;
 
-    private int id;
+    private int index;
     private TreeNode parent;
     private List<TreeNode> children;
 
     // Useful constructor for root node.
-    public TreeNode(int id) {
-      this(id, /*parent=*/ null);
+    public TreeNode(int index) {
+      this(index, /*parent=*/ null);
     }
 
-    public TreeNode(int id, TreeNode parent) {
-      this.id = id;
+    public TreeNode(int index, TreeNode parent) {
+      this.index = index;
       this.parent = parent;
       children = new LinkedList<>();
     }
@@ -54,8 +54,8 @@ public class LowestCommonAncestorEulerTour {
       return n;
     }
 
-    public int id() {
-      return id;
+    public int index() {
+      return index;
     }
 
     public TreeNode parent() {
@@ -79,9 +79,9 @@ public class LowestCommonAncestorEulerTour {
     // Do dfs to construct rooted tree.
     private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node) {
       int subtreeNodeCount = 1;
-      for (int neighbor : graph.get(node.id())) {
+      for (int neighbor : graph.get(node.index())) {
         // Ignore adding an edge pointing back to parent.
-        if (node.parent() != null && neighbor == node.parent().id()) {
+        if (node.parent() != null && neighbor == node.parent().index()) {
           continue;
         }
 
@@ -97,14 +97,14 @@ public class LowestCommonAncestorEulerTour {
 
     @Override
     public String toString() {
-      return String.valueOf(id);
+      return String.valueOf(index);
     }
   }
 
   private final int n;
   private final TreeNode root;
 
-  private int index = 0;
+  private int tourIndex = 0;
   private boolean preprocessed;
 
   // Populated when constructing Euler Tour.
@@ -139,10 +139,10 @@ public class LowestCommonAncestorEulerTour {
   }
 
   private void visit(TreeNode node, long depth) {
-    nodeOrder[index] = node;
-    nodeDepth[index] = depth;
-    last[node.id()] = index;
-    index++;
+    nodeOrder[tourIndex] = node;
+    nodeDepth[tourIndex] = depth;
+    last[node.index()] = tourIndex;
+    tourIndex++;
   }
 
   // Construct Euler Tour by populating the 'depth' and 'nodeOrder' arrays.
@@ -323,19 +323,19 @@ public class LowestCommonAncestorEulerTour {
 
     TreeNode lca = solver.lca(10, 15);
     System.out.printf("LCA of 10 and 15 = %s\n", lca);
-    if (lca.id() != 5) {
+    if (lca.index() != 5) {
       System.out.println("Error, expected lca to be 5");
     }
 
     lca = solver.lca(13, 14);
     System.out.printf("LCA of 13 and 14 = %s\n", lca);
-    if (lca.id() != 2) {
+    if (lca.index() != 2) {
       System.out.println("Error, expected lca to be 2");
     }
 
     lca = solver.lca(9, 11);
     System.out.printf("LCA of 9 and 11 = %s\n", lca);
-    if (lca.id() != 0) {
+    if (lca.index() != 0) {
       System.out.println("Error, expected lca to be 0");
     }
   }
