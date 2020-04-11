@@ -1,0 +1,78 @@
+Hello and welcome, my name is William, today I want to take a look at some
+source code on how we find the lowest common ancestor of two nodes in a tree
+using the Eulerian tour method.
+
+This video implements the concepts in the previous video where we looked at how
+to construct and Eulerian tour around a tree and how to query the lowest common
+ancestor following that.
+
+All the source code you see today can be found on github at Github dot com slash
+william fiset slash algorithms
+
+=============
+
+Alright, here we are in the source code for the lowest common ancestor written
+in Java.
+
+Let's begin by going over an example of how this class is intended to be used.
+
+In the main method I give three examples of how to do lowest common ancestor queries.
+The first thing we need to do is actually build a rooted tree, in this example I'm building the first tree from the previous videos slides.
+
+After you've created the tree you can pass the tree into the lowest common ancestor Euler tour constructor. At the moment, each instance of this class is only meant to handle one tree, so if you want to do lowest common ancestor queries on multiple trees you will need multiple solvers.
+
+After the solver is created you can use it to do lowest common ancestor queries. In the following example I do three queries to find: the LCA of 13 and 14, the LCA of 9 and 11 and the LCA of 12 and 12.
+
+Let's scroll down and look at some implementation details more closely.
+
+The first class I want to look at is the TreeNode class, you'll notice that this
+class is mostly the same as before except that it has a new variable `n` which
+tracks the number of nodes in the subtree of this treenode (including the node
+itself). A TreeNode also has an index and a list of children.
+
+Most of the methods in this class are accessor methods, the only thing we need
+to look at are some minor changes I made to the buildTree method since the
+tree rooting video.
+In the buildTree method you'll notice that I am now counting the number of nodes
+in the subtree of the current node. For out purposes, this effectively serves
+as a nice way to know how many nodes are in the tree from the root node.
+
+Moving on, I want to talk about some of the instance variables in this class.
+
+The first two are:
+`n` the number of nodes in the tree
+and
+`root` a reference to the root node of the tree.
+
+The `tourIndex` variable tracks the index of where we are in the Eulerian tour
+as we're traversing the tree.
+The preprocessed boolean which tracks whether we have initialized the class
+variables.
+
+The nodeDepth and nodeOrder arrays are populated during the Eulerian tour, they
+track the depth of each node and the pointer to each node for each index in the
+Eulerian tour.
+
+The last occurrence map helps keep track of the last occurrence of a node in the
+Eulerian tour.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

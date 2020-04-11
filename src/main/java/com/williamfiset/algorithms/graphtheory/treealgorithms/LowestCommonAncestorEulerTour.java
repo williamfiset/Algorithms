@@ -166,10 +166,8 @@ public class LowestCommonAncestorEulerTour {
   }
 
   private final int n;
-  private final TreeNode root;
 
   private int tourIndex = 0;
-  private boolean preprocessed;
 
   // Populated when constructing Euler Tour.
   private long[] nodeDepth;
@@ -185,17 +183,17 @@ public class LowestCommonAncestorEulerTour {
 
   public LowestCommonAncestorEulerTour(TreeNode root) {
     this.n = root.size();
-    this.root = root;
+    setup(root);
   }
 
-  private void preprocess() {
+  private void setup(TreeNode root) {
     int eulerTourSize = 2 * n - 1;
     nodeOrder = new TreeNode[eulerTourSize];
     nodeDepth = new long[eulerTourSize];
     last = new int[n];
 
     // Do depth first search to construct Euler tour.
-    dfs(root, 0);
+    dfs(root, /*depth=*/ 0);
 
     // Initialize and build sparse table on the nodeDepth which will allow us to
     // index into the nodeOrder array to return the LCA.
@@ -224,12 +222,6 @@ public class LowestCommonAncestorEulerTour {
 
   // Finds the lowest common ancestor of the nodes id1 and id2.
   public TreeNode lca(int id1, int id2) {
-    // Lazily preprocess here instead of in constructor.
-    if (!preprocessed) {
-      preprocess();
-      preprocessed = true;
-    }
-
     int l = Math.min(last[id1], last[id2]);
     int r = Math.max(last[id1], last[id2]);
     int i = sparseTable.queryIndex(l, r);
@@ -304,5 +296,4 @@ public class LowestCommonAncestorEulerTour {
       }
     }
   }
-
 }
