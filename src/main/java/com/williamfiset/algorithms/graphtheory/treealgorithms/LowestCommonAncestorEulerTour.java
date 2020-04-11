@@ -174,11 +174,10 @@ public class LowestCommonAncestorEulerTour {
   private TreeNode[] nodeOrder;
 
   // The last occurrence mapping. This mapping keeps track of the last occurrence of a TreeNode in
-  // the Euler tour for easy indexing. You could also keep track of the first occurrence of a node
-  // and use that instead.
+  // the Euler tour for easy indexing.
   private int[] last;
 
-  // Sparse table impl which can efficiently do Range Min Queries (RMQ).
+  // Sparse table impl which can efficiently do Range Minimum Queries (RMQs).
   private MinSparseTable sparseTable;
 
   public LowestCommonAncestorEulerTour(TreeNode root) {
@@ -195,12 +194,12 @@ public class LowestCommonAncestorEulerTour {
     // Do depth first search to construct Euler tour.
     dfs(root, /*depth=*/ 0);
 
-    // Initialize and build sparse table on the nodeDepth which will allow us to
-    // index into the nodeOrder array to return the LCA.
+    // Initialize and build sparse table on the `nodeDepth` array which will
+    // allow us to index into the `nodeOrder` array and return the LCA.
     sparseTable = new MinSparseTable(nodeDepth);
   }
 
-  // Construct Euler Tour by populating the 'depth' and 'nodeOrder' arrays.
+  // Construct Euler Tour by populating the `depth` and `nodeOrder` arrays.
   private void dfs(TreeNode node, long depth) {
     if (node == null) {
       return;
@@ -220,10 +219,10 @@ public class LowestCommonAncestorEulerTour {
     tourIndex++;
   }
 
-  // Finds the lowest common ancestor of the nodes id1 and id2.
-  public TreeNode lca(int id1, int id2) {
-    int l = Math.min(last[id1], last[id2]);
-    int r = Math.max(last[id1], last[id2]);
+  // Finds the lowest common ancestor of the nodes with `index1` and `index2`.
+  public TreeNode lca(int index1, int index2) {
+    int l = Math.min(last[index1], last[index2]);
+    int r = Math.max(last[index1], last[index2]);
     int i = sparseTable.queryIndex(l, r);
     return nodeOrder[i];
   }
