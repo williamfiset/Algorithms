@@ -4,7 +4,7 @@
  * obtained from the Euler tour can then be used in combination with a sparse table to find the LCA
  * in O(1).
  *
- * <p>Time Complexity: O(1)
+ * <p>Time Complexity: O(1) queries, O(n*log2(n)) pre-processing.
  *
  * <p>Space Complexity: O(n*log2(n))
  *
@@ -12,7 +12,7 @@
  *
  * <p>./gradlew run -Palgorithm=graphtheory.treealgorithms.LowestCommonAncestorEulerTour
  *
- * @author William Fiset, william.alexandre.fiset@gmail.com
+ * @author William Fiset
  */
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
@@ -199,7 +199,7 @@ public class LowestCommonAncestorEulerTour {
     sparseTable = new MinSparseTable(nodeDepth);
   }
 
-  // Construct Euler Tour by populating the `depth` and `nodeOrder` arrays.
+  // Construct Euler Tour by populating the `nodeDepth` and `nodeOrder` arrays.
   private void dfs(TreeNode node, long depth) {
     if (node == null) {
       return;
