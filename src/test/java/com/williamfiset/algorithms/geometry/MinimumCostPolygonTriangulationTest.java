@@ -43,6 +43,6 @@ public class MinimumCostPolygonTriangulationTest {
     pts[6] = new Point2D.Double(0, 1);
 
     double cost = MinimumCostPolygonTriangulation.minimumCostTriangulation(pts);
-    assert(Math.abs(cost - 32.465) < .001);
+    assert (Math.abs(cost - 32.465) < .001);
   }
 }
