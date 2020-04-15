@@ -1,5 +1,6 @@
 /**
- * This file shows you how to find the minimum cost polygon triangulation of a set of points.
+ * This file shows you how to find the minimum cost convex polygon triangulation of a set of points.
+ * Points must be in either clockwise or counterclockwise order.
  *
  * <p>Time Complexity: O(n^3)
  *
@@ -10,7 +11,7 @@ package com.williamfiset.algorithms.geometry;
 import java.awt.geom.Point2D;
 
 // Problem explanation: https://www.geeksforgeeks.org/minimum-cost-polygon-triangulation/
-public class MinimumCostPolygonTriangulation {
+public class MinimumCostConvexPolygonTriangulation {
 
   // Returns the perimeter (cost) of the triangle
   private static double cost(Point2D i, Point2D j, Point2D k) {
