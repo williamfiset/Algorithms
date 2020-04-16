@@ -18,8 +18,9 @@ public class MinimumCostConvexPolygonTriangulation {
     return i.distance(j) + i.distance(k) + j.distance(k);
   }
 
-  public static double minimumCostTriangulation(Point2D[] points) {
-    int len = points.length;
+  // Input must be a convex polygon with points in CW or CCW order.
+  public static double minimumCostTriangulation(Point2D[] polygon) {
+    int len = polygon.length;
     if (len < 3) return 0;
 
     double[][] dp = new double[len][len];
@@ -30,7 +31,7 @@ public class MinimumCostConvexPolygonTriangulation {
           dp[j][j + i] =
               Math.min(
                   dp[j][j + i],
-                  dp[j][k] + dp[k][j + i] + cost(points[j], points[j + i], points[k]));
+                  dp[j][k] + dp[k][j + i] + cost(polygon[j], polygon[j + i], polygon[k]));
         }
       }
     }
