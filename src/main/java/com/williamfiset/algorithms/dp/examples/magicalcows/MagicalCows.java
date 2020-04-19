@@ -1,16 +1,14 @@
 /**
- * Solution to Magical Cows (https://open.kattis.com/problems/magicalcows)
- * Problem author: Graeme Zinck
- * Solution by: William Fiset
+ * Solution to Magical Cows (https://open.kattis.com/problems/magicalcows) Problem author: Graeme
+ * Zinck Solution by: William Fiset
  *
- * The main thing to realize with magical cows is that the total number of cows 
- * allowed on each farm is bounded by C which is less than or equal to 1000, so
- * you can keep track of all cows in a frequency table for each farm size.
- * 
- * NOTE: You can ignore taking the floor/ceiling of the number of cows on a
- * split since when you double the number of cows you always get an even number.
+ * <p>The main thing to realize with magical cows is that the total number of cows allowed on each
+ * farm is bounded by C which is less than or equal to 1000, so you can keep track of all cows in a
+ * frequency table for each farm size.
+ *
+ * <p>NOTE: You can ignore taking the floor/ceiling of the number of cows on a split since when you
+ * double the number of cows you always get an even number.
  */
-
 import java.io.*;
 import java.util.*;
 
@@ -33,8 +31,8 @@ public class MagicalCows {
     // The number of queries
     final int M = Integer.parseInt(line[2]);
 
-    // The dp table. 
-    long[][] dp = new long[MAX_DAYS+1][C+1];
+    // The dp table.
+    long[][] dp = new long[MAX_DAYS + 1][C + 1];
 
     // Count the initial frequency of farms of different sizes
     for (int i = 0; i < N; i++) {
@@ -47,11 +45,11 @@ public class MagicalCows {
       for (int i = 1; i <= C; i++) {
         if (2 * i <= C) {
           // Cow count on farm with size `i` doubled, but the number of farms did not.
-          dp[day][2*i] += dp[day-1][i];
+          dp[day][2 * i] += dp[day - 1][i];
         } else {
           // The number of cows per farm on the farm with size `i` exceeds the
           // permitted limit, so double the number of farms.
-          dp[day][i] += 2 * dp[day-1][i];
+          dp[day][i] += 2 * dp[day - 1][i];
         }
       }
     }
@@ -73,7 +71,4 @@ public class MagicalCows {
     }
     return farms;
   }
-
 }
-
-
