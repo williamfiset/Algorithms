@@ -1,8 +1,8 @@
-1) Hello and welcome back, my name is William, today I want to talk about the fascinating topic of Strongly Connected Components, and how we can find them using Tarjan's algorithm.
+Hello and welcome back, my name is William, today I want to talk about the fascinating topic of Strongly Connected Components, and how we can find them using Tarjan's algorithm.
 
-2) So what are SCCs or Strongly Connected Components? I like to think of them as self contained cycles within a directed graph. Where for every vertex in a given cycle you can reach every other vertex in the same cycle.
+So what are SCCs or Strongly Connected Components? I like to think of them as self contained cycles within a directed graph. Where for every vertex in a given cycle you can reach every other vertex in the same cycle.
 
-3) For example, in the graph below, there are four strongly connected components. I've outlined them here in different colors. If you inspect each SCC you'll notice that each has it's own self contained cycle, and that for each component, there's no way to find a path that leaves a component and comes back. Because of this property, we can be sure that SCCs are unique within a directed graph.
+For example, in the graph below, there are four strongly connected components. I've outlined them here in different colors. If you inspect each SCC you'll notice that each has it's own self contained cycle, and that for each component, there's no way to find a path that leaves a component and comes back. Because of this property, we can be sure that SCCs are unique within a directed graph.
 
 4) To understand Tarjan's SCC algorithm, we're first going to need to understand the concept of a low-link value. Simply put, the low-link value of a particular node is the smallest node id reachable from that node, including the id of the node itself. For that to make sense, I'm going to label each of the nodes in our graph by doing a DFS.
 

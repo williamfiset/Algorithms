@@ -1,6 +1,9 @@
 /**
- * Solution to Magical Cows (https://open.kattis.com/problems/magicalcows) Problem author: Graeme
- * Zinck Solution by: William Fiset
+ * Solution to Magical Cows (https://open.kattis.com/problems/magicalcows)
+ *
+ * <p>Problem author: Graeme Zinck
+ *
+ * <p>Solution by: William Fiset
  *
  * <p>The main thing to realize with magical cows is that the total number of cows allowed on each
  * farm is bounded by C which is less than or equal to 1000, so you can keep track of all cows in a
