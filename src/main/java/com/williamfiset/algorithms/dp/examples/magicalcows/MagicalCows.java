@@ -43,16 +43,16 @@ public class MagicalCows {
       dp[0][cows]++;
     }
 
-    for (int day = 1; day <= MAX_DAYS; day++) {
+    for (int day = 0; day < MAX_DAYS; day++) {
       // For all farm sizes between 1 and `C`, double the number of cows.
       for (int i = 1; i <= C; i++) {
-        if (2 * i <= C) {
+        if (i <= C / 2) {
           // Cow count on farm with size `i` doubled, but the number of farms did not.
-          dp[day][2 * i] += dp[day - 1][i];
+          dp[day + 1][i * 2] += dp[day][i];
         } else {
           // The number of cows per farm on the farm with size `i` exceeds the
           // permitted limit, so double the number of farms.
-          dp[day][i] += 2 * dp[day - 1][i];
+          dp[day + 1][i] += 2 * dp[day][i];
         }
       }
     }
