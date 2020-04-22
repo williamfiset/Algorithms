@@ -70,24 +70,22 @@ public class TspDynamicProgrammingRecursive {
     // Run the solver
     int state = 1 << START_NODE;
     Double[][] memo = new Double[N][1 << N];
-    Integer[][] prev = new Integer[N][1 << N];
-    minTourCost = tsp(START_NODE, state, memo, prev);
+    Integer[][] nextNode = new Integer[N][1 << N];
+    minTourCost = tsp(START_NODE, state, memo, nextNode);
 
     // Regenerate path
-    int index = START_NODE;
-    while (true) {
-      tour.add(index);
-      Integer nextIndex = prev[index][state];
-      if (nextIndex == null) break;
-      int nextState = state | (1 << nextIndex);
-      state = nextState;
-      index = nextIndex;
+    Integer index = START_NODE;
+    state = START_NODE;
+    while (index != null) {
+        tour.add(index);
+        state = state | (1 << index);
+        index = nextNode[index][state];
     }
     tour.add(START_NODE);
     ranSolver = true;
   }
 
-  private double tsp(int i, int state, Double[][] memo, Integer[][] prev) {
+  private double tsp(int i, int state, Double[][] memo, Integer[][] nextNode) {
 
     // Done this tour. Return cost of going back to start node.
     if (state == FINISHED_STATE) return distance[i][START_NODE];
@@ -103,14 +101,14 @@ public class TspDynamicProgrammingRecursive {
       if ((state & (1 << next)) != 0) continue;
 
       int nextState = state | (1 << next);
-      double newCost = distance[i][next] + tsp(next, nextState, memo, prev);
+      double newCost = distance[i][next] + tsp(next, nextState, memo, nextNode);
       if (newCost < minCost) {
         minCost = newCost;
         index = next;
       }
     }
 
-    prev[i][state] = index;
+    nextNode[i][state] = index;
     return memo[i][state] = minCost;
   }
 
