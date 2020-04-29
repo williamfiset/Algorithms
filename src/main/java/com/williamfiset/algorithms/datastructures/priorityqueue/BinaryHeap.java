@@ -86,7 +86,8 @@ public class BinaryHeap<T extends Comparable<T>> {
     if (elem == null) throw new IllegalArgumentException();
 
     heap.add(elem);
-    int indexOfLastElem = size() - 1 ;
+
+    int indexOfLastElem = size() - 1;
     swim(indexOfLastElem);
   }
 
@@ -150,8 +151,7 @@ public class BinaryHeap<T extends Comparable<T>> {
   public boolean remove(T element) {
     if (element == null) return false;
     // Linear removal via search, O(n)
-    int heapSize = size();
-    for (int i = 0; i < heapSize; i++) {
+    for (int i = 0; i < size(); i++) {
       if (element.equals(heap.get(i))) {
         removeAt(i);
         return true;
