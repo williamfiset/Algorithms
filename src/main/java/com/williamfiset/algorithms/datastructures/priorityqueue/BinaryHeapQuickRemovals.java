@@ -16,12 +16,6 @@ import java.util.TreeSet;
 
 public class BinaryHeapQuickRemovals<T extends Comparable<T>> {
 
-  // The number of elements currently inside the heap
-  private int heapSize = 0;
-
-  // The internal capacity of the heap
-  private int heapCapacity = 0;
-
   // A dynamic list to track the elements inside the heap
   private List<T> heap = null;
 
@@ -45,8 +39,8 @@ public class BinaryHeapQuickRemovals<T extends Comparable<T>> {
   // http://www.cs.umd.edu/~meesh/351/mount/lectures/lect14-heapsort-analysis-part.pdf
   public BinaryHeapQuickRemovals(T[] elems) {
 
-    heapSize = heapCapacity = elems.length;
-    heap = new ArrayList<T>(heapCapacity);
+    int heapSize = elems.length;
+    heap = new ArrayList<T>(heapSize);
 
     // Place all element in heap
     for (int i = 0; i < heapSize; i++) {
@@ -55,7 +49,7 @@ public class BinaryHeapQuickRemovals<T extends Comparable<T>> {
     }
 
     // Heapify process, O(n)
-    for (int i = Math.max(0, (heapSize / 2) - 1); i >= 0; i--) sink(i);
+    for (int i = Math.max(0, (heapSize / 2) - 1); i >= 0; i--) sink(i, heapSize);
   }
 
   // Priority queue construction, O(nlog(n))
@@ -66,19 +60,18 @@ public class BinaryHeapQuickRemovals<T extends Comparable<T>> {
 
   // Returns true/false depending on if the priority queue is empty
   public boolean isEmpty() {
-    return heapSize == 0;
+    return size() == 0;
   }
 
   // Clears everything inside the heap, O(n)
   public void clear() {
-    for (int i = 0; i < heapCapacity; i++) heap.set(i, null);
-    heapSize = 0;
+    heap.clear();
     map.clear();
   }
 
   // Return the size of the heap
   public int size() {
-    return heapSize;
+    return heap.size();
   }
 
   // Returns the value of the element with the lowest
@@ -115,17 +108,11 @@ public class BinaryHeapQuickRemovals<T extends Comparable<T>> {
 
     if (elem == null) throw new IllegalArgumentException();
 
-    if (heapSize < heapCapacity) {
-      heap.set(heapSize, elem);
-    } else {
-      heap.add(elem);
-      heapCapacity++;
-    }
+    heap.add(elem);
+    int indexOfLastElem = size() - 1;
+    mapAdd(elem, indexOfLastElem);
 
-    mapAdd(elem, heapSize);
-
-    swim(heapSize);
-    heapSize++;
+    swim(indexOfLastElem);
   }
 
   // Tests if the value of node i <= node j
@@ -157,7 +144,7 @@ public class BinaryHeapQuickRemovals<T extends Comparable<T>> {
   }
 
   // Top down node sink, O(log(n))
-  private void sink(int k) {
+  private void sink(int k, int heapSize) {
 
     while (true) {
 
@@ -215,21 +202,21 @@ public class BinaryHeapQuickRemovals<T extends Comparable<T>> {
 
     if (isEmpty()) return null;
 
-    heapSize--;
+    int indexOfLastElem = size() - 1;
     T removed_data = heap.get(i);
-    swap(i, heapSize);
+    swap(i, indexOfLastElem);
 
     // Obliterate the value
-    heap.set(heapSize, null);
-    mapRemove(removed_data, heapSize);
+    heap.remove(indexOfLastElem);
+    mapRemove(removed_data, indexOfLastElem);
 
     // Removed last element
-    if (i == heapSize) return removed_data;
+    if (i == indexOfLastElem) return removed_data;
 
     T elem = heap.get(i);
 
     // Try sinking element
-    sink(i);
+    sink(i, size());
 
     // If sinking did not work try swimming
     if (heap.get(i).equals(elem)) swim(i);
@@ -244,6 +231,7 @@ public class BinaryHeapQuickRemovals<T extends Comparable<T>> {
   public boolean isMinHeap(int k) {
 
     // If we are outside the bounds of the heap return true
+    int heapSize = size();
     if (k >= heapSize) return true;
 
     int left = 2 * k + 1;
