@@ -49,7 +49,7 @@ public class BinaryHeapQuickRemovals<T extends Comparable<T>> {
     }
 
     // Heapify process, O(n)
-    for (int i = Math.max(0, (heapSize / 2) - 1); i >= 0; i--) sink(i, heapSize);
+    for (int i = Math.max(0, (heapSize / 2) - 1); i >= 0; i--) sink(i);
   }
 
   // Priority queue construction, O(nlog(n))
@@ -144,7 +144,8 @@ public class BinaryHeapQuickRemovals<T extends Comparable<T>> {
   }
 
   // Top down node sink, O(log(n))
-  private void sink(int k, int heapSize) {
+  private void sink(int k) {
+    int heapSize = size();
 
     while (true) {
 
@@ -216,7 +217,7 @@ public class BinaryHeapQuickRemovals<T extends Comparable<T>> {
     T elem = heap.get(i);
 
     // Try sinking element
-    sink(i, size());
+    sink(i);
 
     // If sinking did not work try swimming
     if (heap.get(i).equals(elem)) swim(i);

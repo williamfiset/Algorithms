@@ -35,7 +35,7 @@ public class BinaryHeap<T extends Comparable<T>> {
     for (int i = 0; i < heapSize; i++) heap.add(elems[i]);
 
     // Heapify process, O(n)
-    for (int i = Math.max(0, (heapSize / 2) - 1); i >= 0; i--) sink(i, heapSize);
+    for (int i = Math.max(0, (heapSize / 2) - 1); i >= 0; i--) sink(i);
   }
 
   // Priority queue construction, O(nlog(n))
@@ -118,7 +118,8 @@ public class BinaryHeap<T extends Comparable<T>> {
   }
 
   // Top down node sink, O(log(n))
-  private void sink(int k, int heapSize) {
+  private void sink(int k) {
+    int heapSize = size();
     while (true) {
       int left = 2 * k + 1; // Left  node
       int right = 2 * k + 2; // Right node
@@ -176,7 +177,7 @@ public class BinaryHeap<T extends Comparable<T>> {
     T elem = heap.get(i);
 
     // Try sinking element
-    sink(i, size());
+    sink(i);
 
     // If sinking did not work try swimming
     if (heap.get(i).equals(elem)) swim(i);
