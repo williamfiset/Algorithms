@@ -31,28 +31,26 @@ public class TilingDominoes {
 
       dp[i][1] += dp[i - 1][6];
 
-      // State 5 depends on state 2 and vice versa, but neither of them
-      // contribute to the number of tilings.
+      // State 2 doesn't contribute to the number of tilings
       // dp[i][2] += dp[i-1][5];
 
       dp[i][3] += dp[i - 1][7];
-      dp[i][3] += dp[i - 1][4]; // Don't double because placing a block sideways double includes?
+      dp[i][3] += dp[i - 1][4];
 
       dp[i][4] += dp[i - 1][3];
 
-      // State 5 depends on state 2 and vice versa, but neither of them
-      // contribute to the number of tilings.
+      // State 5 doesn't contribute to the number of tilings
       // dp[i][5] += dp[i-1][2];
 
       dp[i][6] += dp[i - 1][7];
-      dp[i][6] += dp[i - 1][1]; // Don't double because placing a block sideways double includes?
+      dp[i][6] += dp[i - 1][1];
 
       dp[i][7] += dp[i - 1][3];
       dp[i][7] += dp[i - 1][6];
-      dp[i][7] += dp[i - 1][0]; // Three sideways blocks
+      dp[i][7] += dp[i - 1][0];
     }
     // printMatrix(dp);
-    return dp[dp.length - 1][7];
+    return dp[n][7];
   }
 
   private static void printMatrix(int[][] dp) {
