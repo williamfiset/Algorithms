@@ -6,314 +6,421 @@
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
+
 package com.williamfiset.algorithms.datastructures.balancedtree;
 
 public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
-  public static final boolean RED = true;
-  public static final boolean BLACK = false;
+    public static final boolean RED = true;
+    public static final boolean BLACK = false;
 
-  public class Node {
+    public class Node {
 
-    // The color of this node. By default all nodes start red.
-    public boolean color = RED;
+        // The color of this node. By default all nodes start red.
+        public boolean color = RED;
 
-    // The value/data contained within the node.
-    public T value;
+        // The value/data contained within the node.
+        public T value;
 
-    // The left, right and parent references of this node.
-    public Node left, right, parent;
+        // The left, right and parent references of this node.
+        public Node left, right, parent;
 
-    public Node(T value, Node parent) {
-      this.value = value;
-      this.parent = parent;
-    }
-  }
-
-  // The root node of the RB tree.
-  public Node root;
-
-  // Tracks the number of nodes inside the tree.
-  private int nodeCount = 0;
-
-  // Returns the number of nodes in the tree.
-  public int size() {
-    return nodeCount;
-  }
-
-  // Returns whether or not the tree is empty.
-  public boolean isEmpty() {
-    return size() == 0;
-  }
-
-  public boolean contains(T value) {
-
-    Node node = root;
-
-    if (node == null || value == null) return false;
-
-    while (node != null) {
-
-      // Compare current value to the value in the node.
-      int cmp = value.compareTo(node.value);
-
-      // Dig into left subtree.
-      if (cmp < 0) node = node.left;
-
-      // Dig into right subtree.
-      else if (cmp > 0) node = node.right;
-
-      // Found value in tree.
-      else return true;
-    }
-
-    return false;
-  }
-
-  public boolean insert(T value) {
-
-    if (value == null) throw new IllegalArgumentException();
-
-    // No root node.
-    if (root == null) {
-      root = new Node(value, null);
-      insertionRelabel(root);
-      nodeCount++;
-      return true;
-    }
-
-    for (Node node = root; ; ) {
-
-      int cmp = value.compareTo(node.value);
-
-      // Left subtree.
-      if (cmp < 0) {
-        if (node.left == null) {
-          node.left = new Node(value, node);
-          insertionRelabel(node.left);
-          nodeCount++;
-          return true;
+        public Node(T value, Node parent) {
+            this.value = value;
+            this.parent = parent;
         }
-        node = node.left;
 
-        // Right subtree.
-      } else if (cmp > 0) {
-        if (node.right == null) {
-          node.right = new Node(value, node);
-          insertionRelabel(node.right);
-          nodeCount++;
-          return true;
+    }
+
+    // The root node of the RB tree.
+    public Node root;
+
+    // Tracks the number of nodes inside the tree.
+    private int nodeCount = 0;
+
+    // Returns the number of nodes in the tree.
+    public int size() {
+        return nodeCount;
+    }
+
+    // Returns whether or not the tree is empty.
+    public boolean isEmpty() {
+        return size() == 0;
+    }
+
+    public boolean contains(T value) {
+
+        Node node = root;
+
+        if (node == null || value == null) return false;
+
+        while (node != null) {
+
+            // Compare current value to the value in the node.
+            int cmp = value.compareTo(node.value);
+
+            // Dig into left subtree.
+            if (cmp < 0) node = node.left;
+
+                // Dig into right subtree.
+            else if (cmp > 0) node = node.right;
+
+                // Found value in tree.
+            else return true;
         }
-        node = node.right;
 
-        // The value we're trying to insert already exists in the tree.
-      } else return false;
-    }
-  }
-
-  private void insertionRelabel(Node node) {
-
-    Node parent = node.parent;
-
-    // Root node case.
-    if (parent == null) {
-      node.color = BLACK;
-      root = node;
-      return;
+        return false;
     }
 
-    Node grandParent = parent.parent;
-    if (grandParent == null) return;
+    public boolean insert(T value) {
 
-    // The red-black tree invariant is already satisfied.
-    if (parent.color == BLACK || node.color == BLACK) return;
+        if (value == null) throw new IllegalArgumentException();
 
-    boolean nodeIsLeftChild = (parent.left == node);
-    boolean parentIsLeftChild = (parent == grandParent.left);
-    Node uncle = parentIsLeftChild ? grandParent.right : grandParent.left;
-    boolean uncleIsRedNode = (uncle == null) ? BLACK : uncle.color;
+        // No root node.
+        if (root == null) {
+            root = new Node(value, null);
+            insertionRelabel(root);
+            nodeCount++;
+            return true;
+        }
 
-    if (uncleIsRedNode) {
+        for (Node node = root; ; ) {
 
-      parent.color = BLACK;
-      grandParent.color = RED;
-      uncle.color = BLACK;
+            int cmp = value.compareTo(node.value);
 
-      // At this point the parent node is red and so is the new child node.
-      // We need to re-balance somehow because no two red nodes can be
-      // adjacent to one another.
-    } else {
+            // Left subtree.
+            if (cmp < 0) {
+                if (node.left == null) {
+                    node.left = new Node(value, node);
+                    insertionRelabel(node.left);
+                    nodeCount++;
+                    return true;
+                }
+                node = node.left;
 
-      // Parent node is a left child.
-      if (parentIsLeftChild) {
+                // Right subtree.
+            } else if (cmp > 0) {
+                if (node.right == null) {
+                    node.right = new Node(value, node);
+                    insertionRelabel(node.right);
+                    nodeCount++;
+                    return true;
+                }
+                node = node.right;
 
-        // Left-left case.
-        if (nodeIsLeftChild) {
-          grandParent = leftLeftCase(grandParent);
+                // The value we're trying to insert already exists in the tree.
+            } else return false;
+        }
+    }
 
-          // Left-right case.
+    private Node search(T val, Node root) {
+        if (root == null) return null;
+        else if (root.value.equals(val)) return root;
+        else if (root.value.compareTo(val) < 0) return search(val, root.right);
+        else return search(val, root.left);
+    }
+
+    private void transplant(Node u, Node v) {
+//        if (u.parent == null) System.out.println(u);
+        if(u.parent == null){
+            root = v;
+        }else if(u == u.parent.left){
+            u.parent.left = v;
+        }else
+            u.parent.right = v;
+        v.parent = u.parent;
+    }
+
+    private Node successor(Node root) {
+        if (root == null || root.left == null) return root;
+        else return successor(root.left);
+    }
+
+    public void delete(T key) {
+        Node z;
+        if((z = search(key, root))==null) return;
+        Node x;
+        Node y = z; // temporary reference y
+        boolean y_original_color = y.color;
+
+        if(z.left == null){
+            x = z.right;
+            transplant(z, z.right);
+        }else if(z.right == null){
+            x = z.left;
+            transplant(z, z.left);
+        }else{
+            y = successor(z.right);
+            y_original_color = y.color;
+            x = y.right;
+            if(y.parent == z)
+                x.parent = y;
+            else{
+                transplant(y, y.right);
+                y.right = z.right;
+                y.right.parent = y;
+            }
+            transplant(z, y);
+            y.left = z.left;
+            y.left.parent = y;
+            y.color = z.color;
+        }
+        if(y_original_color == BLACK)
+            deleteFix(x);
+    }
+
+    private void deleteFix(Node x) {
+        while(x!=root && x.color == BLACK){
+            if(x == x.parent.left){
+                Node w = x.parent.right;
+                if(w.color == RED){
+                    w.color = BLACK;
+                    x.parent.color = RED;
+                    leftRotate(x.parent);
+                    w = x.parent.right;
+                }
+                if(w.left.color == BLACK && w.right.color == BLACK){
+                    w.color = RED;
+                    x = x.parent;
+                    continue;
+                }
+                else if(w.right.color == BLACK){
+                    w.left.color = BLACK;
+                    w.color = RED;
+                    rightRotate(w);
+                    w = x.parent.right;
+                }
+                if(w.right.color == RED){
+                    w.color = x.parent.color;
+                    x.parent.color = BLACK;
+                    w.right.color = BLACK;
+                    leftRotate(x.parent);
+                    x = root;
+                }
+            }else{
+                Node w = x.parent.left;
+                if(w.color == RED){
+                    w.color = BLACK;
+                    x.parent.color = RED;
+                    rightRotate(x.parent);
+                    w = x.parent.left;
+                }
+                if(w.right.color == BLACK && w.left.color == BLACK){
+                    w.color = RED;
+                    x = x.parent;
+                    continue;
+                }
+                else if(w.left.color == BLACK){
+                    w.right.color = BLACK;
+                    w.color = RED;
+                    leftRotate(w);
+                    w = (x.parent.left);
+                }
+                if(w.left.color == RED){
+                    w.color = x.parent.color;
+                    x.parent.color = BLACK;
+                    w.left.color = BLACK;
+                    rightRotate(x.parent);
+                    x = root;
+                }
+            }
+        }
+        x.color = BLACK;
+    }
+
+    private void insertionRelabel(Node node) {
+
+        Node parent = node.parent;
+
+        // Root node case.
+        if (parent == null) {
+            node.color = BLACK;
+            root = node;
+            return;
+        }
+
+        Node grandParent = parent.parent;
+        if (grandParent == null) return;
+
+        // The red-black tree invariant is already satisfied.
+        if (parent.color == BLACK || node.color == BLACK) return;
+
+        boolean nodeIsLeftChild = (parent.left == node);
+        boolean parentIsLeftChild = (parent == grandParent.left);
+        Node uncle = parentIsLeftChild ? grandParent.right : grandParent.left;
+        boolean uncleIsRedNode = (uncle == null) ? BLACK : uncle.color;
+
+        if (uncleIsRedNode) {
+
+            parent.color = BLACK;
+            grandParent.color = RED;
+            if(uncle != null) {
+                uncle.color = BLACK;
+            }
+
+            // At this point the parent node is red and so is the new child node.
+            // We need to re-balance somehow because no two red nodes can be
+            // adjacent to one another.
         } else {
-          grandParent = leftRightCase(grandParent);
+
+            // Parent node is a left child.
+            if (parentIsLeftChild) {
+
+                // Left-left case.
+                if (nodeIsLeftChild) {
+                    grandParent = leftLeftCase(grandParent);
+
+                    // Left-right case.
+                } else {
+                    grandParent = leftRightCase(grandParent);
+                }
+
+                // Parent node is a right child.
+            } else {
+
+                // Right-left case.
+                if (nodeIsLeftChild) {
+                    grandParent = rightLeftCase(grandParent);
+
+                    // Right-right case.
+                } else {
+                    grandParent = rightRightCase(grandParent);
+                }
+            }
         }
 
-        // Parent node is a right child.
-      } else {
-
-        // Right-left case.
-        if (nodeIsLeftChild) {
-          grandParent = rightLeftCase(grandParent);
-
-          // Right-right case.
-        } else {
-          grandParent = rightRightCase(grandParent);
-        }
-      }
+        insertionRelabel(grandParent);
     }
 
-    insertionRelabel(grandParent);
-  }
-
-  private void swapColors(Node a, Node b) {
-    boolean tmpColor = a.color;
-    a.color = b.color;
-    b.color = tmpColor;
-  }
-
-  private Node leftLeftCase(Node node) {
-    node = rightRotate(node);
-    swapColors(node, node.right);
-    return node;
-  }
-
-  private Node leftRightCase(Node node) {
-    node.left = leftRotate(node.left);
-    return leftLeftCase(node);
-  }
-
-  private Node rightRightCase(Node node) {
-    node = leftRotate(node);
-    swapColors(node, node.left);
-    return node;
-  }
-
-  private Node rightLeftCase(Node node) {
-    node.right = rightRotate(node.right);
-    return rightRightCase(node);
-  }
-
-  private Node rightRotate(Node parent) {
-
-    Node grandParent = parent.parent;
-    Node child = parent.left;
-
-    parent.left = child.right;
-    if (child.right != null) child.right.parent = parent;
-
-    child.right = parent;
-    parent.parent = child;
-
-    child.parent = grandParent;
-    updateParentChildLink(grandParent, parent, child);
-
-    return child;
-  }
-
-  private Node leftRotate(Node parent) {
-
-    Node grandParent = parent.parent;
-    Node child = parent.right;
-
-    parent.right = child.left;
-    if (child.left != null) child.left.parent = parent;
-
-    child.left = parent;
-    parent.parent = child;
-
-    child.parent = grandParent;
-    updateParentChildLink(grandParent, parent, child);
-
-    return child;
-  }
-
-  // Sometimes the left or right child node of a parent changes and the
-  // parent's reference needs to be updated to point to the new child.
-  // This is a helper method to do just that.
-  private void updateParentChildLink(Node parent, Node oldChild, Node newChild) {
-    if (parent != null) {
-      if (parent.left == oldChild) {
-        parent.left = newChild;
-      } else {
-        parent.right = newChild;
-      }
+    private void swapColors(Node a, Node b) {
+        boolean tmpColor = a.color;
+        a.color = b.color;
+        b.color = tmpColor;
     }
-  }
 
-  // Helper method to find the leftmost node (which has the smallest value)
-  private Node findMin(Node node) {
-    while (node.left != null) node = node.left;
-    return node;
-  }
+    private Node leftLeftCase(Node node) {
+        node = rightRotate(node);
+        swapColors(node, node.right);
+        return node;
+    }
 
-  // Helper method to find the rightmost node (which has the largest value)
-  private Node findMax(Node node) {
-    while (node.right != null) node = node.right;
-    return node;
-  }
+    private Node leftRightCase(Node node) {
+        node.left = leftRotate(node.left);
+        return leftLeftCase(node);
+    }
 
-  // Returns as iterator to traverse the tree in order.
-  @Override
-  public java.util.Iterator<T> iterator() {
+    private Node rightRightCase(Node node) {
+        node = leftRotate(node);
+        swapColors(node, node.left);
+        return node;
+    }
 
-    final int expectedNodeCount = nodeCount;
-    final java.util.Stack<Node> stack = new java.util.Stack<>();
-    stack.push(root);
+    private Node rightLeftCase(Node node) {
+        node.right = rightRotate(node.right);
+        return rightRightCase(node);
+    }
 
-    return new java.util.Iterator<T>() {
-      Node trav = root;
+    private Node rightRotate(Node parent) {
 
-      @Override
-      public boolean hasNext() {
-        if (expectedNodeCount != nodeCount) throw new java.util.ConcurrentModificationException();
-        return root != null && !stack.isEmpty();
-      }
+        Node grandParent = parent.parent;
+        Node child = parent.left;
 
-      @Override
-      public T next() {
+        parent.left = child.right;
+        if (child.right != null) child.right.parent = parent;
 
-        if (expectedNodeCount != nodeCount) throw new java.util.ConcurrentModificationException();
+        child.right = parent;
+        parent.parent = child;
 
-        while (trav != null && trav.left != null) {
-          stack.push(trav.left);
-          trav = trav.left;
+        child.parent = grandParent;
+        updateParentChildLink(grandParent, parent, child);
+
+        return child;
+    }
+
+    private Node leftRotate(Node parent) {
+
+        Node grandParent = parent.parent;
+        Node child = parent.right;
+
+        parent.right = child.left;
+        if (child.left != null) child.left.parent = parent;
+
+        child.left = parent;
+        parent.parent = child;
+
+        child.parent = grandParent;
+        updateParentChildLink(grandParent, parent, child);
+
+        return child;
+    }
+
+    // Sometimes the left or right child node of a parent changes and the
+    // parent's reference needs to be updated to point to the new child.
+    // This is a helper method to do just that.
+    private void updateParentChildLink(Node parent, Node oldChild, Node newChild) {
+        if (parent != null) {
+            if (parent.left == oldChild) {
+                parent.left = newChild;
+            } else {
+                parent.right = newChild;
+            }
         }
+    }
 
-        Node node = stack.pop();
+    // Returns as iterator to traverse the tree in order.
+    @Override
+    public java.util.Iterator<T> iterator() {
 
-        if (node.right != null) {
-          stack.push(node.right);
-          trav = node.right;
-        }
+        final int expectedNodeCount = nodeCount;
+        final java.util.Stack<Node> stack = new java.util.Stack<>();
+        stack.push(root);
 
-        return node.value;
-      }
+        return new java.util.Iterator<>() {
+            Node trav = root;
 
-      @Override
-      public void remove() {
-        throw new UnsupportedOperationException();
-      }
-    };
-  }
+            @Override
+            public boolean hasNext() {
+                if (expectedNodeCount != nodeCount) throw new java.util.ConcurrentModificationException();
+                return root != null && !stack.isEmpty();
+            }
 
-  // Example usage of RB tree:
-  public static void main(String[] args) {
+            @Override
+            public T next() {
 
-    int[] values = {5, 8, 1, -4, 6, -2, 0, 7};
-    RedBlackTree<Integer> rbTree = new RedBlackTree<>();
-    for (int v : values) rbTree.insert(v);
+                if (expectedNodeCount != nodeCount) throw new java.util.ConcurrentModificationException();
 
-    System.out.printf("RB tree contains %d: %s\n", 6, rbTree.contains(6));
-    System.out.printf("RB tree contains %d: %s\n", -5, rbTree.contains(-5));
-    System.out.printf("RB tree contains %d: %s\n", 1, rbTree.contains(1));
-    System.out.printf("RB tree contains %d: %s\n", 99, rbTree.contains(99));
-  }
+                while (trav != null && trav.left != null) {
+                    stack.push(trav.left);
+                    trav = trav.left;
+                }
+
+                Node node = stack.pop();
+
+                if (node.right != null) {
+                    stack.push(node.right);
+                    trav = node.right;
+                }
+
+                return node.value;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    // Example usage of RB tree:
+    public static void main(String[] args) {
+
+        int[] values = {5, 8, 1, -4, 6, -2, 0, 7};
+        RedBlackTree<Integer> rbTree = new RedBlackTree<>();
+        for (int v : values) rbTree.insert(v);
+
+        System.out.printf("RB tree contains %d: %s\n", 6, rbTree.contains(6));
+        System.out.printf("RB tree contains %d: %s\n", -5, rbTree.contains(-5));
+        System.out.printf("RB tree contains %d: %s\n", 1, rbTree.contains(1));
+        System.out.printf("RB tree contains %d: %s\n", 99, rbTree.contains(99));
+    }
 }
