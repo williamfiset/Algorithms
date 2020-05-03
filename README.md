@@ -129,6 +129,12 @@ or
 * [Traveling Salesman Problem (dynamic programming, recursive)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/graphtheory/TspDynamicProgrammingRecursive.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
 * [Minimum Weight Perfect Matching (iterative, complete graph)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/dp/MinimumWeightPerfectMatching.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
 
+## DP Examples
+
+* [:movie_camera:](https://www.youtube.com/watch?v=_tur2nPkIKo)[Magic Cows](https://github.com/williamfiset/Algorithms/blob/master/src/main/java/com/williamfiset/algorithms/dp/examples/magicalcows/MagicalCows.java)
+* [:movie_camera:](https://youtu.be/yn2jnmlepY8)[Tiling Dominoes](https://github.com/williamfiset/Algorithms/blob/master/src/main/java/com/williamfiset/algorithms/dp/examples/tilingdominoes/TilingDominoes.java)
+
+
 # Geometry
 * [Angle between 2D vectors](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/geometry/AngleBetweenVectors2D.java) **- O(1)**
 * [Angle between 3D vectors](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/geometry/AngleBetweenVectors3D.java) **- O(1)**
