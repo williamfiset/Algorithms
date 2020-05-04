@@ -1,9 +1,9 @@
 package com.williamfiset.algorithms.sorting;
 
-//See https://en.wikipedia.org/wiki/Radix_sort for details on runtime and complexity
-//Radix sorts operates in O(nw) time, where n is the number of keys, and w is the key length
-//where w is constant on primitive types like Integer
-//which gives it a better performance than other compare-based sort algorithms,like i.e. QuickSort
+// See https://en.wikipedia.org/wiki/Radix_sort for details on runtime and complexity
+// Radix sorts operates in O(nw) time, where n is the number of keys, and w is the key length
+// where w is constant on primitive types like Integer
+// which gives it a better performance than other compare-based sort algorithms,like i.e. QuickSort
 
 public class RadixSort {
   static int getMax(int[] array) {
