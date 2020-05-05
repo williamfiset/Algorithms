@@ -24,12 +24,17 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
         // The left, right and parent references of this node.
         public Node left, right, parent;
+    // The value/data contained within the node.
+    public T value;
 
         public Node(T value, Node parent) {
             this.value = value;
             this.parent = parent;
         }
 
+    public Node(T value, Node parent) {
+      this.value = value;
+      this.parent = parent;
     }
 
     // The root node of the RB tree.
@@ -51,16 +56,25 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
     public boolean contains(T value) {
 
         Node node = root;
+  // Returns whether or not the tree is empty.
+  public boolean isTmpty() {
+    return size() == 0;
+  }
+
+  public boolean contains(T value) {
 
         if (node == null || value == null) return false;
 
         while (node != null) {
+    if (node == null || value == null) return false;
 
             // Compare current value to the value in the node.
             int cmp = value.compareTo(node.value);
 
             // Dig into left subtree.
             if (cmp < 0) node = node.left;
+      // Compare current value to the value in the node.
+      int cmp = value.compareTo(node.value);
 
                 // Dig into right subtree.
             else if (cmp > 0) node = node.right;
@@ -70,6 +84,8 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
         }
 
         return false;
+      // Found value in tree.
+      else return true;
     }
 
     public boolean insert(T value) {
@@ -111,6 +127,16 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
                 // The value we're trying to insert already exists in the tree.
             } else return false;
         }
+  public boolean insert(T value) {
+
+    if (value == null) throw new IllegalArgumentException();
+
+    // No root node.
+    if (root == null) {
+      root = new Node(value, null);
+      insertionRelabel(root);
+      nodeCount++;
+      return true;
     }
 
     private Node search(T val, Node root) {
@@ -164,6 +190,25 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
             y.left = z.left;
             y.left.parent = y;
             y.color = z.color;
+      int cmp = value.compareTo(node.value);
+
+      // Left subtree.
+      if (cmp < 0) {
+        if (node.left == null) {
+          node.left = new Node(value, node);
+          insertionRelabel(node.left);
+          nodeCount++;
+          return true;
+        }
+        node = node.left;
+
+        // Right subtree.
+      } else if (cmp > 0) {
+        if (node.right == null) {
+          node.right = new Node(value, node);
+          insertionRelabel(node.right);
+          nodeCount++;
+          return true;
         }
         if(y_original_color == BLACK)
             deleteFix(x);
@@ -226,6 +271,8 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
             }
         }
         x.color = BLACK;
+        // The value we're trying to insert already exists in the tree.
+      } else return false;
     }
 
     private void insertionRelabel(Node node) {
@@ -377,6 +424,135 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
         return new java.util.Iterator<>() {
             Node trav = root;
+  // Helper method to find the leftmost node (which has the smallest value)
+  private Node findMin(Node node) {
+    while (node.left != null) node = node.left;
+    return node;
+  }
+
+  // Helper method to find the rightmost node (which has the largest value)
+  private Node findMax(Node node) {
+    while (node.right != null) node = node.right;
+    return node;
+  }
+
+  public void delete(T key) {
+    Node z;
+    if((z = ((Node) search(key, root)))==null) return;
+    Node x;
+    Node y = z; // temporary reference y
+    boolean y_original_color = y.color;
+
+    if(z.left == null){
+      x = z.right;
+      transplant(z, z.right);
+    }else if(z.right == null){
+      x = z.left;
+      transplant(z, z.left);
+    }else{
+      y = successor(z.right);
+      y_original_color = y.color;
+      x = y.right;
+      if(y.parent == z)
+        x.parent = y;
+      else{
+        transplant(y, y.right);
+        y.right = (z.right);
+        y.right.parent = y;
+      }
+      transplant(z, y);
+      y.left = z.left;
+      y.left.parent = y;
+      y.color = z.color;
+    }
+    if(y_original_color==BLACK)
+      deleteFix(x);
+  }
+
+  private void deleteFix(Node x) {
+    while(x!=root && x.color == BLACK){
+      if(x == x.parent.left){
+        Node w = x.parent.right;
+        if(w.color == RED){
+          w.color = BLACK;
+          x.parent.color = RED;
+          leftRotate(x.parent);
+          w = x.parent.right;
+        }
+        if(w.left.color == BLACK && w.right.color == BLACK){
+          w.color = RED;
+          x = x.parent;
+          continue;
+        }
+        else if(w.right.color == BLACK){
+          w.left.color = BLACK;
+          w.color = RED;
+          rightRotate(w);
+          w = x.parent.right;
+        }
+        if(w.right.color == RED){
+          w.color = x.parent.color;
+          x.parent.color = BLACK;
+          w.right.color = BLACK;
+          leftRotate(x.parent);
+          x = root;
+        }
+      }else{
+        Node w = (x.parent.left);
+        if(w.color == RED){
+          w.color = BLACK;
+          x.parent.color = RED;
+          rightRotate(x.parent);
+          w = (x.parent).left;
+        }
+        if(w.right.color == BLACK && w.left.color == BLACK){
+          w.color = RED;
+          x = x.parent;
+          continue;
+        }
+        else if(w.left.color == BLACK){
+          w.right.color = BLACK;
+          w.color = RED;
+          leftRotate(w);
+          w = (x.parent.left);
+        }
+        if(w.left.color == RED){
+          w.color = x.parent.color;
+          x.parent.color = BLACK;
+          w.left.color = BLACK;
+          rightRotate(x.parent);
+          x = root;
+        }
+      }
+    }
+    x.color = BLACK;
+  }
+
+  private Node successor(Node root) {
+    if (root == null || root.left == null) return root;
+    else return successor(root.left);
+  }
+
+  private void transplant(Node u, Node v) {
+    if(u.parent == null){
+      root = v;
+    }else if(u == u.parent.left){
+      u.parent.left = v;
+    }else
+      u.parent.right = v;
+    v.parent = u.parent;
+  }
+
+  private Node search(T value, Node root) {
+    if (root == null) return null;
+    else if (root.value.equals(value)) return root;
+    else if (root.value.compareTo(value) < 0) return search(value, root.right);
+    else return search(value, root.left);
+  }
+
+  // Returns as iterator to traverse the tree in order.
+  @Override
+  public java.util.Iterator<T> iterator() {
 
             @Override
             public boolean hasNext() {
@@ -423,4 +599,28 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
         System.out.printf("RB tree contains %d: %s\n", 1, rbTree.contains(1));
         System.out.printf("RB tree contains %d: %s\n", 99, rbTree.contains(99));
     }
+}
+        return node.value;
+      }
+
+      @Override
+      public void remove() {
+        throw new UnsupportedOperationException();
+      }
+    };
+  }
+
+  // Example usage of RB tree:
+  public static void main(String[] args) {
+
+    int[] values = {5, 8, 1, -4, 6, -2, 0, 7};
+    RedBlackTree<Integer> rbTree = new RedBlackTree<>();
+    for (int v : values) rbTree.insert(v);
+    rbTree.delete(6);
+
+    System.out.printf("RB tree contains %d: %s\n", 6, rbTree.contains(6));
+    System.out.printf("RB tree contains %d: %s\n", -5, rbTree.contains(-5));
+    System.out.printf("RB tree contains %d: %s\n", 1, rbTree.contains(1));
+    System.out.printf("RB tree contains %d: %s\n", 99, rbTree.contains(99));
+  }
 }
