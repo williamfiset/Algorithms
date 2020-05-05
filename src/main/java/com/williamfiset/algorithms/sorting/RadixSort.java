@@ -1,8 +1,56 @@
-/** NOTE: This file is still under development */
 package com.williamfiset.algorithms.sorting;
 
+// See https://en.wikipedia.org/wiki/Radix_sort for details on runtime and complexity
+// Radix sorts operates in O(nw) time, where n is the number of keys, and w is the key length
+// where w is constant on primitive types like Integer
+// which gives it a better performance than other compare-based sort algorithms,like i.e. QuickSort
+
 public class RadixSort {
-  public static void radixSort(int[] ar) {
-    // TODO: https://github.com/williamfiset/Algorithms/issues/5
+  static int getMax(int[] array) {
+    int max = array[0];
+    for (int i = 0; i < array.length; i++) {
+      if (array[i] > max) {
+        max = array[i];
+      }
+    }
+    return max;
+  }
+
+  static int calculateNumberOfDigits(int number) {
+    return (int) Math.log10(number) + 1;
+  }
+
+  public static void radixSort(int numbers[]) {
+    int maximum = getMax(numbers);
+    int numberOfDigits = calculateNumberOfDigits(maximum);
+    int placeValue = 1;
+    while (numberOfDigits-- > 0) {
+      countSort(numbers, placeValue);
+      placeValue *= 10;
+    }
+  }
+
+  private static void countSort(int[] numbers, int placeValue) {
+    int range = 10;
+
+    int[] frequency = new int[range];
+    int[] sortedValues = new int[numbers.length];
+
+    for (int i = 0; i < numbers.length; i++) {
+      int digit = (numbers[i] / placeValue) % range;
+      frequency[digit]++;
+    }
+
+    for (int i = 1; i < range; i++) {
+      frequency[i] += frequency[i - 1];
+    }
+
+    for (int i = numbers.length - 1; i >= 0; i--) {
+      int digit = (numbers[i] / placeValue) % range;
+      sortedValues[frequency[digit] - 1] = numbers[i];
+      frequency[digit]--;
+    }
+
+    System.arraycopy(sortedValues, 0, numbers, 0, numbers.length);
   }
 }
