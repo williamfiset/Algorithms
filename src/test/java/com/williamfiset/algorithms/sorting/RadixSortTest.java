@@ -1,5 +1,6 @@
 package com.williamfiset.algorithms.sorting;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
@@ -7,31 +8,54 @@ import java.util.Random;
 import org.junit.Test;
 
 public class RadixSortTest {
+  static Random random = new Random();
+
   @Test
   public void testGetMax() {
-    int[] array = {5, 7, 1, 13, 42, 101, 512, 67, 1013, 287, 912};
-    assertEquals(1013, RadixSort.getMax(array));
+    int[] array = {5, 7, 1, 13, 1013, 287, 912};
+    assertThat(RadixSort.getMax(array)).isEqualTo(1013);
   }
 
   @Test
   public void testCalculateNumberOfDigits() {
-    assertTrue(4 == RadixSort.calculateNumberOfDigits(1089));
-    assertTrue(2 == RadixSort.calculateNumberOfDigits(19));
+    assertThat(RadixSort.calculateNumberOfDigits(1089)).isEqualTo(4);
+    assertThat(RadixSort.calculateNumberOfDigits(19)).isEqualTo(2);
   }
 
   @Test
-  public void testRadixSort() {
-    // Random Test
-    Random random = new Random();
-    int[] array2 = new int[50];
-    for (int i = 0; i < 50; i++) {
-      array2[i] = random.nextInt(50) + 1;
+  public void randomRadixSort_smallNumbers() {
+    for (int size = 0; size < 1000; size++) {
+      int[] values = new int[size];
+      for (int i = 0; i < size; i++) {
+        values[i] = randInt(1, 50);
+      }
+      int[] copy = values.clone();
+
+      Arrays.sort(values);
+      RadixSort.radixSort(copy);
+
+      assertThat(values).isEqualTo(copy);
     }
-    int[] copy = array2.clone();
+  }
 
-    RadixSort.radixSort(array2);
-    Arrays.sort(copy);
+  @Test
+  public void randomRadixSort_largeNumbers() {
+    for (int size = 0; size < 1000; size++) {
+      int[] values = new int[size];
+      for (int i = 0; i < size; i++) {
+        values[i] = randInt(1, Integer.MAX_VALUE);
+      }
+      int[] copy = values.clone();
 
-    assertTrue(Arrays.equals(array2, copy));
+      Arrays.sort(values);
+      RadixSort.radixSort(copy);
+
+      assertThat(values).isEqualTo(copy);
+    }
+  }
+
+  // return a random number between [min, max]
+  static int randInt(int min, int max) {
+    return random.nextInt((max - min) + 1) + min;
   }
 }

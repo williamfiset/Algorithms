@@ -1,9 +1,16 @@
+/**
+ * An implementation of Radix Sort.
+ *
+ * <p>See https://en.wikipedia.org/wiki/Radix_sort for details on runtime and complexity Radix sorts
+ * operates in O(nw) time, where n is the number of keys, and w is the key length where w is
+ * constant on primitive types like Integer which gives it a better performance than other
+ * compare-based sort algorithms, like i.e. QuickSort
+ *
+ * <p>Time Complexity: O(nw)
+ *
+ * @author EAlexa
+ */
 package com.williamfiset.algorithms.sorting;
-
-// See https://en.wikipedia.org/wiki/Radix_sort for details on runtime and complexity
-// Radix sorts operates in O(nw) time, where n is the number of keys, and w is the key length
-// where w is constant on primitive types like Integer
-// which gives it a better performance than other compare-based sort algorithms,like i.e. QuickSort
 
 public class RadixSort {
   static int getMax(int[] array) {
@@ -20,7 +27,11 @@ public class RadixSort {
     return (int) Math.log10(number) + 1;
   }
 
-  public static void radixSort(int numbers[]) {
+  // Requires all numbers to be greater than or equal to 1
+  public static void radixSort(int[] numbers) {
+    if (numbers == null || numbers.length <= 1) {
+      return;
+    }
     int maximum = getMax(numbers);
     int numberOfDigits = calculateNumberOfDigits(maximum);
     int placeValue = 1;
