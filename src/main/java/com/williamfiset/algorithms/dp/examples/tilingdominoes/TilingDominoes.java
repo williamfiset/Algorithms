@@ -1,3 +1,10 @@
+/**
+ * Solution to Tri Tiling (https://open.kattis.com/problems/tritiling)
+ *
+ * <p>Explanation video: https://www.youtube.com/watch?v=yn2jnmlepY8
+ *
+ * <p>Solution by: William Fiset
+ */
 import java.util.*;
 
 public class TilingDominoes {
@@ -7,12 +14,15 @@ public class TilingDominoes {
     while (true) {
       int n = sc.nextInt();
       if (n == -1) break;
+      // Solution1:
       System.out.println(solution1(n));
+
+      // Alternative solution:
       // System.out.println(solution2(n));
     }
   }
 
-  // Tile states 0...7 represent:
+  // Tile states 0...7 representations:
   //
   //  0: 0    1: 1    2: 0    3: 1
   //     0       0       1       1
