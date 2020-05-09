@@ -8,8 +8,6 @@
  */
 package com.williamfiset.algorithms.datastructures.balancedtree;
 
-import org.graalvm.compiler.api.replacements.Snippet;
-
 public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
   public static final boolean RED = true;
