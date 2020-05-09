@@ -20,6 +20,11 @@ public class Scenes {
     W = Integer.parseInt(ln[1]);
     H = Integer.parseInt(ln[2]);
 
+    solution1();
+  }
+
+  // Recursive solution implementation
+  static void solution1() {
     // Count the number of plain mountains. Be sure to account for having more
     // ribbon than can possible be placed.
     int plains = (Math.min(W * H, N) / W) + 1;
