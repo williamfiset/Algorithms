@@ -60,10 +60,10 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
       // Dig into left subtree.
       if (cmp < 0) node = node.left;
 
-        // Dig into right subtree.
+      // Dig into right subtree.
       else if (cmp > 0) node = node.right;
 
-        // Found value in tree.
+      // Found value in tree.
       else return true;
     }
 
@@ -137,7 +137,7 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
       parent.color = BLACK;
       grandParent.color = RED;
-      if(uncle != null) {
+      if (uncle != null) {
         uncle.color = BLACK;
       }
 
@@ -177,24 +177,23 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
   public boolean delete(T key) {
     Node z;
-    if(key == null || (z = (search(key, root)))==null) return false;
+    if (key == null || (z = (search(key, root))) == null) return false;
     Node x;
     Node y = z; // temporary reference y
     boolean y_original_color = y.color;
 
-    if(z.left == null){
+    if (z.left == null) {
       x = z.right;
       transplant(z, z.right);
-    }else if(z.right == null){
+    } else if (z.right == null) {
       x = z.left;
       transplant(z, z.left);
-    }else{
+    } else {
       y = successor(z.right);
       y_original_color = y.color;
       x = y.right;
-      if(y.parent == z)
-        x.parent = y;
-      else{
+      if (y.parent == z) x.parent = y;
+      else {
         transplant(y, y.right);
         y.right = z.right;
         y.right.parent = y;
@@ -204,59 +203,56 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
       y.left.parent = y;
       y.color = z.color;
     }
-    if(y_original_color==BLACK)
-      deleteFix(x);
+    if (y_original_color == BLACK) deleteFix(x);
     return true;
   }
 
   private void deleteFix(Node x) {
-    while(x!=root && x.color == BLACK){
-      if(x == x.parent.left){
+    while (x != root && x.color == BLACK) {
+      if (x == x.parent.left) {
         Node w = x.parent.right;
-        if(w.color == RED){
+        if (w.color == RED) {
           w.color = BLACK;
           x.parent.color = RED;
           leftRotate(x.parent);
           w = x.parent.right;
         }
-        if(w.left.color == BLACK && w.right.color == BLACK){
+        if (w.left.color == BLACK && w.right.color == BLACK) {
           w.color = RED;
           x = x.parent;
           continue;
-        }
-        else if(w.right.color == BLACK){
+        } else if (w.right.color == BLACK) {
           w.left.color = BLACK;
           w.color = RED;
           rightRotate(w);
           w = x.parent.right;
         }
-        if(w.right.color == RED){
+        if (w.right.color == RED) {
           w.color = x.parent.color;
           x.parent.color = BLACK;
           w.right.color = BLACK;
           leftRotate(x.parent);
           x = root;
         }
-      }else{
+      } else {
         Node w = (x.parent.left);
-        if(w.color == RED){
+        if (w.color == RED) {
           w.color = BLACK;
           x.parent.color = RED;
           rightRotate(x.parent);
           w = (x.parent).left;
         }
-        if(w.right.color == BLACK && w.left.color == BLACK){
+        if (w.right.color == BLACK && w.left.color == BLACK) {
           w.color = RED;
           x = x.parent;
           continue;
-        }
-        else if(w.left.color == BLACK){
+        } else if (w.left.color == BLACK) {
           w.right.color = BLACK;
           w.color = RED;
           leftRotate(w);
           w = (x.parent.left);
         }
-        if(w.left.color == RED){
+        if (w.left.color == RED) {
           w.color = x.parent.color;
           x.parent.color = BLACK;
           w.left.color = BLACK;
@@ -265,7 +261,7 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
         }
       }
     }
-    if(x != null) {
+    if (x != null) {
       x.color = BLACK;
     }
   }
@@ -276,13 +272,12 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
   }
 
   private void transplant(Node u, Node v) {
-    if(u.parent == null){
+    if (u.parent == null) {
       root = v;
-    }else if(u == u.parent.left){
+    } else if (u == u.parent.left) {
       u.parent.left = v;
-    }else
-      u.parent.right = v;
-    if(v != null) {
+    } else u.parent.right = v;
+    if (v != null) {
       v.parent = u.parent;
     }
   }
