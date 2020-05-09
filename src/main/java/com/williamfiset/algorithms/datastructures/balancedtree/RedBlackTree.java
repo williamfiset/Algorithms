@@ -8,7 +8,7 @@
  */
 package com.williamfiset.algorithms.datastructures.balancedtree;
 
-import java.awt.*;
+import org.graalvm.compiler.api.replacements.Snippet;
 
 public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
@@ -62,10 +62,10 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
       // Dig into left subtree.
       if (cmp < 0) node = node.left;
 
-      // Dig into right subtree.
+        // Dig into right subtree.
       else if (cmp > 0) node = node.right;
 
-      // Found value in tree.
+        // Found value in tree.
       else return true;
     }
 
