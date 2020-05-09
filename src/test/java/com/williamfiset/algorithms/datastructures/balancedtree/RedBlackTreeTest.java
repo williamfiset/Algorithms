@@ -246,6 +246,32 @@ public class RedBlackTreeTest {
     }
   }
 
+  @Test
+  public void testRemoval() {
+    tree.insert(5);
+    tree.insert(7);
+    tree.insert(9);
+
+    tree.delete(5);
+    assertFalse(tree.contains(5));
+
+    tree.delete(7);
+    assertFalse(tree.contains(7));
+
+    tree.delete(9);
+    assertFalse(tree.contains(9));
+  }
+
+  @Test
+  public void testNullRemoval() {
+    assertFalse(tree.delete(null));
+  }
+
+  @Test
+  public void testNumberDoesntExist() {
+    assertFalse(tree.delete(0));
+  }
+
   /*
     @Test
     public void randomRemoveTests() {
