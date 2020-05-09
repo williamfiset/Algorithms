@@ -8,8 +8,6 @@
  */
 package com.williamfiset.algorithms.datastructures.balancedtree;
 
-import java.awt.*;
-
 public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
   public static final boolean RED = true;
@@ -139,7 +137,9 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
       parent.color = BLACK;
       grandParent.color = RED;
-      uncle.color = BLACK;
+      if(uncle != null) {
+        uncle.color = BLACK;
+      }
 
       // At this point the parent node is red and so is the new child node.
       // We need to re-balance somehow because no two red nodes can be
