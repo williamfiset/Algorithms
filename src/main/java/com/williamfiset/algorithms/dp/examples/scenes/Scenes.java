@@ -27,7 +27,8 @@ public class Scenes {
   static void solution1() {
     // Count the number of plain mountains. Be sure to account for having more
     // ribbon than can possible be placed.
-    int plains = (Math.min(W * H, N) / W) + 1;
+    int ribbonSquares = Math.min(W * H, N);
+    int plains = (ribbonSquares / W) + 1;
 
     dp = new Long[W + 1][N + 1];
     long ans = ((f(1, N) - plains) + MOD) % MOD;
@@ -35,11 +36,12 @@ public class Scenes {
   }
 
   static long f(int w, int ribbon) {
-    // We're trying to place a strip of ribbon that we don't have.
+    // We're trying to create a mountain scene for which we don't have enough ribbon material for.
     if (ribbon < 0) {
       return 0;
     }
-    // Finished a mountain scene.
+    // When the width value exceeds the frame width, we know we’ve finished creating a unique
+    // mountain scene!
     if (w > W) {
       return 1;
     }
@@ -47,7 +49,7 @@ public class Scenes {
       return dp[w][ribbon];
     }
     long scenes = 0L;
-    // Try all possible ribbon lengths for this column
+    // Try placing all possible ribbon lengths at this column/width
     for (int len = 0; len <= H; len++) {
       scenes = (scenes + f(w + 1, ribbon - len)) % MOD;
     }
