@@ -24,7 +24,7 @@ public final class FibonacciHeapTest {
 
   @Before
   public void setUp() {
-    queue = new FibonacciHeap<Integer>();
+    queue = new FibonacciHeap<>();
   }
 
   @After

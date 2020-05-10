@@ -192,11 +192,13 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
       y = successor(z.right);
       y_original_color = y.color;
       x = y.right;
-      if (y.parent == z) x.parent = y;
+      if (y.parent == z && x != null) x.parent = y;
       else {
         transplant(y, y.right);
         y.right = z.right;
-        y.right.parent = y;
+        if (y.right != null) {
+          y.right.parent = y;
+        }
       }
       transplant(z, y);
       y.left = z.left;
@@ -204,14 +206,15 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
       y.color = z.color;
     }
     if (y_original_color == BLACK) deleteFix(x);
+    nodeCount--;
     return true;
   }
 
   private void deleteFix(Node x) {
-    while (x != root && x.color == BLACK) {
+    while (x != null && x != root && x.color == BLACK) {
       if (x == x.parent.left) {
         Node w = x.parent.right;
-        if (w.color == RED) {
+        if (w != null && w.color == RED) {
           w.color = BLACK;
           x.parent.color = RED;
           leftRotate(x.parent);
@@ -236,7 +239,7 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
         }
       } else {
         Node w = (x.parent.left);
-        if (w.color == RED) {
+        if (w == null || w.color == RED) {
           w.color = BLACK;
           x.parent.color = RED;
           rightRotate(x.parent);
@@ -287,6 +290,22 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
     else if (root.value.equals(val)) return root;
     else if (root.value.compareTo(val) < 0) return search(val, root.right);
     else return search(val, root.left);
+  }
+
+  public int height() {
+    return height(root);
+  }
+
+  private int height(Node curr) {
+    if (curr == null) {
+      return 0;
+    }
+
+    if (curr.left == null && curr.right == null) {
+      return 1;
+    }
+
+    return 1 + Math.max(height(curr.left), height(curr.right));
   }
 
   private void swapColors(Node a, Node b) {
