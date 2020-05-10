@@ -35,21 +35,21 @@ public class LowestCommonAncestorEulerTourTest {
   public void testLcaTreeFromSlides1() {
     LowestCommonAncestorEulerTour.TreeNode root = createFirstTreeFromSlides();
     LowestCommonAncestorEulerTour fastSolver = new LowestCommonAncestorEulerTour(root);
-    assertThat(fastSolver.lca(14, 13).id()).isEqualTo(2);
-    assertThat(fastSolver.lca(10, 16).id()).isEqualTo(5);
-    assertThat(fastSolver.lca(9, 11).id()).isEqualTo(0);
+    assertThat(fastSolver.lca(14, 13).index()).isEqualTo(2);
+    assertThat(fastSolver.lca(10, 16).index()).isEqualTo(5);
+    assertThat(fastSolver.lca(9, 11).index()).isEqualTo(0);
   }
 
   @Test
   public void testLcaTreeFromSlides2() {
     LowestCommonAncestorEulerTour.TreeNode root = createFirstTreeFromSlides();
     LowestCommonAncestorEulerTour fastSolver = new LowestCommonAncestorEulerTour(root);
-    assertThat(fastSolver.lca(8, 9).id()).isEqualTo(3);
-    assertThat(fastSolver.lca(4, 8).id()).isEqualTo(1);
-    assertThat(fastSolver.lca(6, 13).id()).isEqualTo(2);
-    assertThat(fastSolver.lca(7, 13).id()).isEqualTo(7);
-    assertThat(fastSolver.lca(10, 5).id()).isEqualTo(5);
-    assertThat(fastSolver.lca(2, 16).id()).isEqualTo(2);
+    assertThat(fastSolver.lca(8, 9).index()).isEqualTo(3);
+    assertThat(fastSolver.lca(4, 8).index()).isEqualTo(1);
+    assertThat(fastSolver.lca(6, 13).index()).isEqualTo(2);
+    assertThat(fastSolver.lca(7, 13).index()).isEqualTo(7);
+    assertThat(fastSolver.lca(10, 5).index()).isEqualTo(5);
+    assertThat(fastSolver.lca(2, 16).index()).isEqualTo(2);
   }
 
   @Test
@@ -59,7 +59,7 @@ public class LowestCommonAncestorEulerTourTest {
 
     // Try all nodes
     for (int id = 0; id < root.size(); id++) {
-      assertThat(fastSolver.lca(id, id).id()).isEqualTo(id);
+      assertThat(fastSolver.lca(id, id).index()).isEqualTo(id);
     }
   }
 
@@ -86,7 +86,7 @@ public class LowestCommonAncestorEulerTourTest {
 
         assertThat(lca1).isNotNull();
         assertThat(lca2).isNotNull();
-        assertThat(lca1.id()).isEqualTo(lca2.id());
+        assertThat(lca1.id()).isEqualTo(lca2.index());
       }
     }
   }
