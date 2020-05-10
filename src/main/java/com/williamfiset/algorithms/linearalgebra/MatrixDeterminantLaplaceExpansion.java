@@ -122,7 +122,7 @@ public class MatrixDeterminantLaplaceExpansion {
 
   // Constructs a matrix one dimension smaller than the last by
   // excluding the top row and some selected column. This
-  // method ends up consuming a lot of space we called recursively multiple times 
+  // method ends up consuming a lot of space we called recursively multiple times
   // since it allocates meory for a new matrix.
   private static double[][] constructMatrix(double[][] m, int skipColumn) {
 
