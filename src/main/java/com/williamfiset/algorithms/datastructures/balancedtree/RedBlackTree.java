@@ -8,6 +8,8 @@
  */
 package com.williamfiset.algorithms.datastructures.balancedtree;
 
+import java.awt.*;
+
 public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
   public static final boolean RED = true;
@@ -28,6 +30,66 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
       this.value = value;
       this.parent = parent;
     }
+
+    public Node(boolean color, T value) {
+      this.color = color;
+      this.value = value;
+    }
+
+    Node(T key, boolean color, Node parent, Node left, Node right) {
+      this.value = key;
+      this.color = color;
+
+      if (parent == null && left == null && right == null) {
+        parent = this;
+        left = this;
+        right = this;
+      }
+
+      this.parent = parent;
+      this.left = left;
+      this.right = right;
+    }
+
+    public boolean getColor() {
+      return color;
+    }
+
+    public void setColor(boolean color) {
+      this.color = color;
+    }
+
+    public T getValue() {
+      return value;
+    }
+
+    public void setValue(T value) {
+      this.value = value;
+    }
+
+    public Node getLeft() {
+      return left;
+    }
+
+    public void setLeft(Node left) {
+      this.left = left;
+    }
+
+    public Node getRight() {
+      return right;
+    }
+
+    public void setRight(Node right) {
+      this.right = right;
+    }
+
+    public Node getParent() {
+      return parent;
+    }
+
+    public void setParent(Node parent) {
+      this.parent = parent;
+    }
   }
 
   // The root node of the RB tree.
@@ -35,6 +97,17 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
   // Tracks the number of nodes inside the tree.
   private int nodeCount = 0;
+
+  public final Node NIL;
+
+  public RedBlackTree() {
+    NIL = new Node(BLACK, null);
+    NIL.left = NIL;
+    NIL.right = NIL;
+    NIL.parent = NIL;
+
+    root = NIL;
+  }
 
   // Returns the number of nodes in the tree.
   public int size() {
@@ -52,7 +125,7 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
     if (node == null || value == null) return false;
 
-    while (node != null) {
+    while (node != NIL) {
 
       // Compare current value to the value in the node.
       int cmp = value.compareTo(node.value);
@@ -70,140 +143,132 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
     return false;
   }
 
-  public boolean insert(T value) {
-
-    if (value == null) throw new IllegalArgumentException();
-
-    // No root node.
-    if (root == null) {
-      root = new Node(value, null);
-      insertionRelabel(root);
-      nodeCount++;
-      return true;
+  public boolean insert(T val) {
+    if (val == null) {
+      throw new IllegalArgumentException();
     }
 
-    for (Node node = root; ; ) {
+    Node x = root, y = NIL;
 
-      int cmp = value.compareTo(node.value);
+    while (x != NIL) {
+      y = x;
 
-      // Left subtree.
-      if (cmp < 0) {
-        if (node.left == null) {
-          node.left = new Node(value, node);
-          insertionRelabel(node.left);
-          nodeCount++;
-          return true;
-        }
-        node = node.left;
-
-        // Right subtree.
-      } else if (cmp > 0) {
-        if (node.right == null) {
-          node.right = new Node(value, node);
-          insertionRelabel(node.right);
-          nodeCount++;
-          return true;
-        }
-        node = node.right;
-
-        // The value we're trying to insert already exists in the tree.
-      } else return false;
+      if (x.getValue().compareTo(val) > 0) {
+        x = x.left;
+      } else if (x.getValue().compareTo(val) < 0) {
+        x = x.right;
+      } else {
+        return false;
+      }
     }
+
+    Node z = new Node(val, RED, y, NIL, NIL);
+
+    if (y == NIL) {
+      root = z;
+    } else if (z.getValue().compareTo(y.getValue()) < 0) {
+      y.left = z;
+    } else {
+      y.right = z;
+    }
+    insertFix(z);
+
+    nodeCount++;
+    return true;
   }
 
-  private void insertionRelabel(Node node) {
-
-    Node parent = node.parent;
-
-    // Root node case.
-    if (parent == null) {
-      node.color = BLACK;
-      root = node;
-      return;
-    }
-
-    Node grandParent = parent.parent;
-    if (grandParent == null) return;
-
-    // The red-black tree invariant is already satisfied.
-    if (parent.color == BLACK || node.color == BLACK) return;
-
-    boolean nodeIsLeftChild = (parent.left == node);
-    boolean parentIsLeftChild = (parent == grandParent.left);
-    Node uncle = parentIsLeftChild ? grandParent.right : grandParent.left;
-    boolean uncleIsRedNode = (uncle == null) ? BLACK : uncle.color;
-
-    if (uncleIsRedNode) {
-
-      parent.color = BLACK;
-      grandParent.color = RED;
-      if (uncle != null) {
-        uncle.color = BLACK;
-      }
-
-      // At this point the parent node is red and so is the new child node.
-      // We need to re-balance somehow because no two red nodes can be
-      // adjacent to one another.
-    } else {
-
-      // Parent node is a left child.
-      if (parentIsLeftChild) {
-
-        // Left-left case.
-        if (nodeIsLeftChild) {
-          grandParent = leftLeftCase(grandParent);
-
-          // Left-right case.
+  private void insertFix(Node z) {
+    Node y;
+    while (z.parent.color == RED) {
+      if (z.parent == z.parent.parent.left) {
+        y = z.parent.parent.right;
+        if (y.color == RED) {
+          z.parent.color = BLACK;
+          y.color = BLACK;
+          z.parent.parent.color = RED;
+          z = z.parent.parent;
         } else {
-          grandParent = leftRightCase(grandParent);
+          if (z == z.parent.right) {
+            z = z.parent;
+            leftRotate(z);
+          }
+          z.parent.color = BLACK;
+          z.parent.parent.color = RED;
+          rightRotate(z.parent.parent);
         }
-
-        // Parent node is a right child.
       } else {
-
-        // Right-left case.
-        if (nodeIsLeftChild) {
-          grandParent = rightLeftCase(grandParent);
-
-          // Right-right case.
+        y = z.parent.parent.left;
+        if (y.color == RED) {
+          z.parent.color = BLACK;
+          y.color = BLACK;
+          z.parent.parent.color = RED;
+          z = z.parent.parent;
         } else {
-          grandParent = rightRightCase(grandParent);
+          if (z == z.parent.left) {
+            z = z.parent;
+            rightRotate(z);
+          }
+          z.parent.color = BLACK;
+          z.parent.parent.color = RED;
+          leftRotate(z.parent.parent);
         }
       }
     }
+    root.setColor(BLACK);
+    NIL.setParent(null);
+  }
 
-    insertionRelabel(grandParent);
+  private void leftRotate(Node x) {
+    Node y = x.right;
+    x.setRight(y.getLeft());
+    if (y.getLeft() != NIL) y.getLeft().setParent(x);
+    y.setParent(x.getParent());
+    if (x.getParent() == NIL) root = y;
+    if (x == x.getParent().getLeft()) x.getParent().setLeft(y);
+    else x.getParent().setRight(y);
+    y.setLeft(x);
+    x.setParent(y);
+  }
+
+  private void rightRotate(Node y) {
+    Node x = y.left;
+    y.left = x.right;
+    if (x.right != NIL) x.right.parent = y;
+    x.parent = y.parent;
+    if (y.parent == NIL) root = x;
+    if (y == y.parent.left) y.parent.left = x;
+    else y.parent.right = x;
+    x.right = y;
+    y.parent = x;
   }
 
   public boolean delete(T key) {
     Node z;
-    if (key == null || (z = (search(key, root))) == null) return false;
+    if (key == null || (z = (search(key, root))) == NIL) return false;
     Node x;
     Node y = z; // temporary reference y
-    boolean y_original_color = y.color;
+    boolean y_original_color = y.getColor();
 
-    if (z.left == null) {
-      x = z.right;
-      transplant(z, z.right);
-    } else if (z.right == null) {
-      x = z.left;
-      transplant(z, z.left);
+    if (z.getLeft() == NIL) {
+      x = z.getRight();
+      transplant(z, z.getRight());
+    } else if (z.getRight() == NIL) {
+      x = z.getLeft();
+      transplant(z, z.getLeft());
     } else {
-      y = successor(z.right);
-      y_original_color = y.color;
-      x = y.right;
-      if (y.parent == z && x != null) x.parent = y;
+      y = successor(z.getRight());
+      y_original_color = y.getColor();
+      x = y.getRight();
+      if (y.getParent() == z) x.setParent(y);
       else {
-        transplant(y, y.right);
-        y.right = z.right;
-        if (y.right != null) {
-          y.right.parent = y;
-        }
+        transplant(y, y.getRight());
+        y.setRight(z.getRight());
+        y.getRight().setParent(y);
       }
       transplant(z, y);
-      y.left = z.left;
-      y.left.parent = y;
-      y.color = z.color;
+      y.setLeft(z.getLeft());
+      y.getLeft().setParent(y);
+      y.setColor(z.getColor());
     }
     if (y_original_color == BLACK) deleteFix(x);
     nodeCount--;
@@ -211,85 +276,82 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
   }
 
   private void deleteFix(Node x) {
-    while (x != null && x != root && x.color == BLACK) {
-      if (x == x.parent.left) {
-        Node w = x.parent.right;
-        if (w != null && w.color == RED) {
-          w.color = BLACK;
-          x.parent.color = RED;
+    while (x != root && x.getColor() == BLACK) {
+      if (x == x.getParent().getLeft()) {
+        Node w = x.getParent().getRight();
+        if (w.getColor() == RED) {
+          w.setColor(BLACK);
+          x.getParent().setColor(RED);
           leftRotate(x.parent);
-          w = x.parent.right;
+          w = x.getParent().getRight();
         }
-        if (w.left.color == BLACK && w.right.color == BLACK) {
-          w.color = RED;
-          x = x.parent;
+        if (w.getLeft().getColor() == BLACK && w.getRight().getColor() == BLACK) {
+          w.setColor(RED);
+          x = x.getParent();
           continue;
-        } else if (w.right.color == BLACK) {
-          w.left.color = BLACK;
-          w.color = RED;
+        } else if (w.getRight().getColor() == BLACK) {
+          w.getLeft().setColor(BLACK);
+          w.setColor(RED);
           rightRotate(w);
-          w = x.parent.right;
+          w = x.getParent().getRight();
         }
-        if (w.right.color == RED) {
-          w.color = x.parent.color;
-          x.parent.color = BLACK;
-          w.right.color = BLACK;
-          leftRotate(x.parent);
+        if (w.getRight().getColor() == RED) {
+          w.setColor(x.getParent().getColor());
+          x.getParent().setColor(BLACK);
+          w.getRight().setColor(BLACK);
+          leftRotate(x.getParent());
           x = root;
         }
       } else {
-        Node w = (x.parent.left);
-        if (w == null || w.color == RED) {
+        Node w = (x.getParent().getLeft());
+        if (w.color == RED) {
           w.color = BLACK;
-          x.parent.color = RED;
-          rightRotate(x.parent);
-          w = (x.parent).left;
+          x.getParent().setColor(RED);
+          rightRotate(x.getParent());
+          w = (x.getParent()).getLeft();
         }
         if (w.right.color == BLACK && w.left.color == BLACK) {
           w.color = RED;
-          x = x.parent;
+          x = x.getParent();
           continue;
         } else if (w.left.color == BLACK) {
           w.right.color = BLACK;
           w.color = RED;
           leftRotate(w);
-          w = (x.parent.left);
+          w = (x.getParent().getLeft());
         }
         if (w.left.color == RED) {
-          w.color = x.parent.color;
-          x.parent.color = BLACK;
+          w.color = x.getParent().getColor();
+          x.getParent().setColor(BLACK);
           w.left.color = BLACK;
-          rightRotate(x.parent);
+          rightRotate(x.getParent());
           x = root;
         }
       }
     }
-    if (x != null) {
-      x.color = BLACK;
-    }
+    x.setColor(BLACK);
   }
 
   private Node successor(Node root) {
-    if (root == null || root.left == null) return root;
+    if (root == NIL || root.left == NIL) return root;
     else return successor(root.left);
   }
 
   private void transplant(Node u, Node v) {
-    if (u.parent == null) {
+    //        if (u.parent == null) System.out.println(u);
+    if (u.parent == NIL) {
       root = v;
     } else if (u == u.parent.left) {
       u.parent.left = v;
     } else u.parent.right = v;
-    if (v != null) {
-      v.parent = u.parent;
-    }
+    v.parent = u.parent;
   }
 
-  private Node search(T val, Node root) {
-    if (root == null) return null;
-    else if (root.value.equals(val)) return root;
-    else if (root.value.compareTo(val) < 0) return search(val, root.right);
-    else return search(val, root.left);
+  private Node search(T val, Node curr) {
+    if (curr == NIL) return NIL;
+    else if (curr.value.equals(val)) return curr;
+    else if (curr.value.compareTo(val) < 0) return search(val, curr.right);
+    else return search(val, curr.left);
   }
 
   public int height() {
@@ -297,11 +359,11 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
   }
 
   private int height(Node curr) {
-    if (curr == null) {
+    if (curr == NIL) {
       return 0;
     }
 
-    if (curr.left == null && curr.right == null) {
+    if (curr.left == NIL && curr.right == NIL) {
       return 1;
     }
 
@@ -314,67 +376,11 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
     b.color = tmpColor;
   }
 
-  private Node leftLeftCase(Node node) {
-    node = rightRotate(node);
-    swapColors(node, node.right);
-    return node;
-  }
-
-  private Node leftRightCase(Node node) {
-    node.left = leftRotate(node.left);
-    return leftLeftCase(node);
-  }
-
-  private Node rightRightCase(Node node) {
-    node = leftRotate(node);
-    swapColors(node, node.left);
-    return node;
-  }
-
-  private Node rightLeftCase(Node node) {
-    node.right = rightRotate(node.right);
-    return rightRightCase(node);
-  }
-
-  private Node rightRotate(Node parent) {
-
-    Node grandParent = parent.parent;
-    Node child = parent.left;
-
-    parent.left = child.right;
-    if (child.right != null) child.right.parent = parent;
-
-    child.right = parent;
-    parent.parent = child;
-
-    child.parent = grandParent;
-    updateParentChildLink(grandParent, parent, child);
-
-    return child;
-  }
-
-  private Node leftRotate(Node parent) {
-
-    Node grandParent = parent.parent;
-    Node child = parent.right;
-
-    parent.right = child.left;
-    if (child.left != null) child.left.parent = parent;
-
-    child.left = parent;
-    parent.parent = child;
-
-    child.parent = grandParent;
-    updateParentChildLink(grandParent, parent, child);
-
-    return child;
-  }
-
   // Sometimes the left or right child node of a parent changes and the
   // parent's reference needs to be updated to point to the new child.
   // This is a helper method to do just that.
   private void updateParentChildLink(Node parent, Node oldChild, Node newChild) {
-    if (parent != null) {
+    if (parent != NIL) {
       if (parent.left == oldChild) {
         parent.left = newChild;
       } else {
@@ -385,13 +391,13 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
   // Helper method to find the leftmost node (which has the smallest value)
   private Node findMin(Node node) {
-    while (node.left != null) node = node.left;
+    while (node.left != NIL) node = node.left;
     return node;
   }
 
   // Helper method to find the rightmost node (which has the largest value)
   private Node findMax(Node node) {
-    while (node.right != null) node = node.right;
+    while (node.right != NIL) node = node.right;
     return node;
   }
 
@@ -409,7 +415,7 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
       @Override
       public boolean hasNext() {
         if (expectedNodeCount != nodeCount) throw new java.util.ConcurrentModificationException();
-        return root != null && !stack.isEmpty();
+        return root != NIL && !stack.isEmpty();
       }
 
       @Override
@@ -417,14 +423,14 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
         if (expectedNodeCount != nodeCount) throw new java.util.ConcurrentModificationException();
 
-        while (trav != null && trav.left != null) {
+        while (trav != NIL && trav.left != NIL) {
           stack.push(trav.left);
           trav = trav.left;
         }
 
         Node node = stack.pop();
 
-        if (node.right != null) {
+        if (node.right != NIL) {
           stack.push(node.right);
           trav = node.right;
         }
