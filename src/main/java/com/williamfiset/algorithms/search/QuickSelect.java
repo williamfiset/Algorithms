@@ -7,7 +7,7 @@ package com.williamfiset.algorithms.search;
  *  Average performance	O(n)
  *  See: https://en.wikipedia.org/wiki/Quickselect
  *  for further details
-*/
+ */
 
 public class QuickSelect {
   public static int partition(int[] array, int start, int end) {
@@ -29,10 +29,10 @@ public class QuickSelect {
     return end;
   }
 
-  public static int findKthLargest(int[] array, int k) {
+  public static int findKthSmallest(int[] array, int k) {
     int start = 0;
     int end = array.length - 1;
-    int index = array.length - k;
+    int index = k-1;
     while (start < end) {
       int pivot = partition(array, start, end);
       if (pivot < index) {
