@@ -1,5 +1,14 @@
 package com.williamfiset.algorithms.search;
 
+/*
+ *  quickselect is a selection algorithm to find the kth smallest element in an unordered list
+ *  Worst-case performance	О(n2)
+ *  Best-case performance	О(n)
+ *  Average performance	O(n)
+ *  See: https://en.wikipedia.org/wiki/Quickselect
+ *  for further details
+*/
+
 public class QuickSelect {
   public static int partition(int[] array, int start, int end) {
     int pivot = start;
