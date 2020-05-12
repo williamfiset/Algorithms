@@ -242,7 +242,6 @@ public class RedBlackTreeTest {
       assertEquals(set.size(), tree.size());
       assertTrue(tree.contains(v));
       assertBinarySearchTreeInvariant(tree, tree.root);
-      // validateRedBlackTreeInvariant
     }
   }
 
@@ -304,12 +303,9 @@ public class RedBlackTreeTest {
       tree.insert(randValue());
       int height = tree.height();
 
-      // Get an upper bound on what the maximum height of
-      // an AVL tree should be. Values were taken from:
+      // RB tree height upper bound:
       // https://en.wikipedia.org/wiki/AVL_tree#Comparison_to_other_structures
-      double c = 1.441;
-      double b = -0.329;
-      double upperBound = Math.ceil(c * (Math.log(n + 2.0) / Math.log(2)) + b);
+      double upperBound = 2 * (Math.log(n + 1) / Math.log(2));
 
       assertTrue(height <= upperBound);
     }

@@ -4,6 +4,7 @@
  *
  * <p>Great visualization tool: https://www.cs.usfca.edu/~galles/visualization/RedBlack.html
  *
+ * @author nishantc1527
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.datastructures.balancedtree;
@@ -145,7 +146,7 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
   public boolean insert(T val) {
     if (val == null) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Red-Black tree does not allow null values.");
     }
 
     Node x = root, y = NIL;
@@ -338,7 +339,6 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
   }
 
   private void transplant(Node u, Node v) {
-    //        if (u.parent == null) System.out.println(u);
     if (u.parent == NIL) {
       root = v;
     } else if (u == u.parent.left) {
@@ -362,7 +362,6 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
     if (curr == NIL) {
       return 0;
     }
-
     if (curr.left == NIL && curr.right == NIL) {
       return 1;
     }
