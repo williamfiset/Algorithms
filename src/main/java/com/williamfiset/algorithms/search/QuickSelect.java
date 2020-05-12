@@ -32,7 +32,7 @@ public class QuickSelect {
   public static int findKthSmallest(int[] array, int k) {
     int start = 0;
     int end = array.length - 1;
-    int index = k-1;
+    int index = k - 1;
     while (start < end) {
       int pivot = partition(array, start, end);
       if (pivot < index) {
