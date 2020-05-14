@@ -62,31 +62,5 @@ public class QuickSort implements InplaceSort {
     // Prints:
     // [-13, 2, 3, 4, 4, 6, 8, 10]
     System.out.println(java.util.Arrays.toString(array));
-
-    // TODO(williamfiset): Move to test file
-    runTests();
-  }
-
-  /* TESTING BELOW */
-
-  static Random RANDOM = new Random();
-
-  public static void runTests() {
-    final int NUM_TESTS = 1000;
-    for (int i = 1; i <= NUM_TESTS; i++) {
-
-      int[] array = new int[i];
-      for (int j = 0; j < i; j++) array[j] = randInt(-1000000, +1000000);
-      int[] arrayCopy = array.clone();
-
-      quicksort(array);
-      java.util.Arrays.sort(arrayCopy);
-
-      if (!java.util.Arrays.equals(array, arrayCopy)) System.out.println("ERROR");
-    }
-  }
-
-  static int randInt(int min, int max) {
-    return RANDOM.nextInt((max - min) + 1) + min;
   }
 }

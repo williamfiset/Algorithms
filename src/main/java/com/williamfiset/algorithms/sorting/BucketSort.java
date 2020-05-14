@@ -68,34 +68,5 @@ public class BucketSort implements InplaceSort {
     // Prints:
     // [10, 10, 10, 10, 10]
     System.out.println(java.util.Arrays.toString(array));
-
-    // TODO(williamfiset): move to javatests/...
-    runTests();
-  }
-
-  static Random RANDOM = new Random();
-
-  public static void runTests() {
-    final int NUM_TESTS = 1000;
-    for (int i = 1; i <= NUM_TESTS; i++) {
-
-      int[] array = new int[i];
-      int maxVal = Integer.MIN_VALUE, minVal = Integer.MAX_VALUE;
-      for (int j = 0; j < i; j++) {
-        array[j] = randInt(-1000000, +1000000);
-        maxVal = Math.max(maxVal, array[j]);
-        minVal = Math.min(minVal, array[j]);
-      }
-      int[] arrayCopy = array.clone();
-
-      bucketSort(array, minVal, maxVal);
-      Arrays.sort(arrayCopy);
-
-      if (!Arrays.equals(array, arrayCopy)) System.out.println("ERROR");
-    }
-  }
-
-  static int randInt(int min, int max) {
-    return RANDOM.nextInt((max - min) + 1) + min;
   }
 }
