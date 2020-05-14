@@ -1,6 +1,10 @@
 /**
  * Mergesort implementation
  *
+ * <p>Run with:
+ *
+ * <p>$ ./gradlew run -Palgorithm=sorting.Mergesort
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.sorting;
@@ -8,10 +12,19 @@ package com.williamfiset.algorithms.sorting;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Mergesort {
+// Mergesort implements InplaceSort for ease of testings, but in reality
+// it is not really a good fit for an inplace sorting algorithm.
+public class MergeSort implements InplaceSort {
+
+  @Override
+  public void sort(int[] values) {
+    int[] sortedValues = MergeSort.mergesort(values);
+    for (int i = 0; i < values.length; i++) {
+      values[i] = sortedValues[i];
+    }
+  }
 
   public static int[] mergesort(int[] ar) {
-
     // Base case is when a single element (which is already sorted)
     int n = ar.length;
     if (n == 1) return ar;
@@ -26,7 +39,6 @@ public class Mergesort {
 
   // Merge two sorted arrays into a larger sorted array
   private static int[] merge(int[] ar1, int[] ar2) {
-
     int n1 = ar1.length, n2 = ar2.length;
     int n = n1 + n2, i1 = 0, i2 = 0;
     int[] ar = new int[n];
@@ -48,9 +60,10 @@ public class Mergesort {
   }
 
   public static void main(String[] args) {
-
     int[] array = {10, 4, 6, 4, 8, -13, 2, 3};
-    array = mergesort(array);
+    array = MergeSort.mergesort(array);
+    // Prints:
+    // [-13, 2, 3, 4, 4, 6, 8, 10]
     System.out.println(java.util.Arrays.toString(array));
 
     // TODO(williamfiset): move to javatests/...

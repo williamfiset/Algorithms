@@ -8,6 +8,10 @@
  *
  * <p>Time Complexity: O(nw)
  *
+ * <p>Run with:
+ *
+ * <p>$ ./gradlew run -Palgorithm=sorting.RadixSort
+ *
  * @author EAlexa
  */
 package com.williamfiset.algorithms.sorting;
@@ -63,5 +67,13 @@ public class RadixSort {
     }
 
     System.arraycopy(sortedValues, 0, numbers, 0, numbers.length);
+  }
+
+  public static void main(String[] args) {
+    int[] numbers = {387, 468, 134, 123, 68, 221, 769, 37, 7, 890, 1, 587};
+    RadixSort.radixSort(numbers);
+    // Prints:
+    // [1, 7, 37, 68, 123, 134, 221, 387, 468, 587, 769, 890]
+    System.out.println(java.util.Arrays.toString(numbers));
   }
 }

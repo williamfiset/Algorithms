@@ -1,13 +1,22 @@
 /**
  * Quicksort implementation using Hoare partitioning
  *
+ * <p>Run with:
+ *
+ * <p>$ ./gradlew run -Palgorithm=sorting.QuickSort
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.sorting;
 
 import java.util.Random;
 
-public class Quicksort {
+public class QuickSort implements InplaceSort {
+
+  @Override
+  public void sort(int[] values) {
+    QuickSort.quicksort(values);
+  }
 
   public static void quicksort(int[] ar) {
     if (ar == null) return;
@@ -47,9 +56,11 @@ public class Quicksort {
   }
 
   public static void main(String[] args) {
-
+    InplaceSort sorter = new QuickSort();
     int[] array = {10, 4, 6, 4, 8, -13, 2, 3};
-    quicksort(array);
+    sorter.sort(array);
+    // Prints:
+    // [-13, 2, 3, 4, 4, 6, 8, 10]
     System.out.println(java.util.Arrays.toString(array));
 
     // TODO(williamfiset): Move to test file
