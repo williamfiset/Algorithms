@@ -31,7 +31,7 @@ public class BucketSort implements InplaceSort {
     if (ar == null || ar.length == 0 || minValue == maxValue) return;
 
     // N is number elements and M is the range of values
-    final int N = ar.length, M = maxValue - minValue, numBuckets = M / N + 1;
+    final int N = ar.length, M = maxValue - minValue + 1, numBuckets = M / N + 1;
     List<List<Integer>> buckets = new ArrayList<>(numBuckets);
     for (int i = 0; i < numBuckets; i++) buckets.add(new ArrayList<>());
 

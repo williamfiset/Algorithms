@@ -27,7 +27,7 @@ public class MergeSort implements InplaceSort {
   public static int[] mergesort(int[] ar) {
     // Base case is when a single element (which is already sorted)
     int n = ar.length;
-    if (n == 1) return ar;
+    if (n <= 1) return ar;
 
     // Split array into two parts and recursively sort them
     int[] left = mergesort(Arrays.copyOfRange(ar, 0, n / 2));
