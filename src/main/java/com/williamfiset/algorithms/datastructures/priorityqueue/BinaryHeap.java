@@ -38,10 +38,17 @@ public class BinaryHeap<T extends Comparable<T>> {
     for (int i = Math.max(0, (heapSize / 2) - 1); i >= 0; i--) sink(i);
   }
 
-  // Priority queue construction, O(nlog(n))
+  // Priority queue construction, O(n)
   public BinaryHeap(Collection<T> elems) {
-    this(elems.size());
-    for (T elem : elems) add(elem);
+
+    int heapSize = elems.size();
+    heap = new ArrayList<T>(heapSize);
+
+    // Add all elements of the given collection to the heap
+    heap.addAll(elems);
+
+    // Heapify process, O(n)
+    for (int i = Math.max(0, (heapSize / 2) - 1); i >= 0; i--) sink(i);
   }
 
   // Returns true/false depending on if the priority queue is empty
