@@ -9,8 +9,6 @@
  */
 package com.williamfiset.algorithms.sorting;
 
-import java.util.Random;
-
 public class SelectionSort implements InplaceSort {
 
   @Override
