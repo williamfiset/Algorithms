@@ -11,7 +11,7 @@ package com.williamfiset.algorithms.sorting;
 
 import java.util.Random;
 
-class QuickSort implements InplaceSort {
+public class QuickSort implements InplaceSort {
 
   @Override
   public void sort(int[] values) {
