@@ -62,7 +62,7 @@ public class AStar_GridHeuristic {
    * @param end The target vertex.
    * @return The smallest distance with the weights from the start to end.
    */
-  public static int aStar(List<Edge>[] graph, int start, int end) {
+  public static long aStar(List<Edge>[] graph, int start, int end) {
     final int V = graph.length;
     int[] distances = new int[V];
     int[] heuristics = heuristics(graph, end);
