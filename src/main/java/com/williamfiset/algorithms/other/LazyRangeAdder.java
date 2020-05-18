@@ -40,7 +40,7 @@ public class LazyRangeAdder {
 
   // IMPORTANT: Make certain to call this method once all the additions
   // have been made with add(l, r, x)
-  public void finalize() {
+  public void done() {
     for (int i = 0; i < n; i++) {
       if (i == 0) {
         array[i] = differenceArray[i];
@@ -51,22 +51,21 @@ public class LazyRangeAdder {
   }
 
   public static void main(String[] args) {
-
     // Array to be updated
     int[] array = {10, 4, 6, 13, 8, 15, 17, 22};
-    LazyRangeAdder LazyrangeAdder = new LazyRangeAdder(array);
+    LazyRangeAdder lazyRangeAdder = new LazyRangeAdder(array);
 
     // After below add(l, r, x), the
     // elements should become [10, 14, 16, 23, 18, 15, 17, 22]
-    LazyrangeAdder.add(1, 4, 10);
-    LazyrangeAdder.finalize();
+    lazyRangeAdder.add(1, 4, 10);
+    lazyRangeAdder.done();
     System.out.println(java.util.Arrays.toString(array));
 
     // After below add(l, r, x), the
     // elements should become [22, 26, 28, 30, 25, 22, 24, 34]
-    LazyrangeAdder.add(3, 6, -5);
-    LazyrangeAdder.add(0, 7, 12);
-    LazyrangeAdder.finalize();
+    lazyRangeAdder.add(3, 6, -5);
+    lazyRangeAdder.add(0, 7, 12);
+    lazyRangeAdder.done();
     System.out.println(java.util.Arrays.toString(array));
   }
 }

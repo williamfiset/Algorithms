@@ -63,7 +63,6 @@ public class GeneticAlgorithm_knapsack_01 {
       // Setup selection roulette
       for (int i = 1; i <= P; i++) {
 
-        Individual in = generation[i];
         double norm = fitness[i] / fitnessSum;
 
         lo[i] = hi[i - 1] = lo[i - 1] + norm;

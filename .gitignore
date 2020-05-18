@@ -22,3 +22,4 @@ dependencies
 
 # Mac files
 .DS_Store
+/.idea/

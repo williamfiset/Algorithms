@@ -96,7 +96,6 @@ public class AStar_GridHeuristic {
 
           double g = node.g + edge.cost;
           double h = heuristic(X, Y, edge.to, end);
-          double f = g + h;
 
           if (g < G[edge.to] || !openSet.contains(edge.to)) {
 

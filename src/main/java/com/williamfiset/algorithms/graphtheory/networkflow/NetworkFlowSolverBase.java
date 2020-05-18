@@ -86,6 +86,7 @@ public abstract class NetworkFlowSolverBase {
   }
 
   // Construct an empty graph with n nodes including the source and sink nodes.
+  @SuppressWarnings("unchecked")
   private void initializeGraph() {
     graph = new List[n];
     for (int i = 0; i < n; i++) graph[i] = new ArrayList<Edge>();

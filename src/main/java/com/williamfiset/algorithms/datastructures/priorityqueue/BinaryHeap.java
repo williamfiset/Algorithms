@@ -11,12 +11,6 @@ import java.util.List;
 
 public class BinaryHeap<T extends Comparable<T>> {
 
-  // The number of elements currently inside the heap
-  private int heapSize = 0;
-
-  // The internal capacity of the heap
-  private int heapCapacity = 0;
-
   // A dynamic list to track the elements inside the heap
   private List<T> heap = null;
 
@@ -34,8 +28,8 @@ public class BinaryHeap<T extends Comparable<T>> {
   // http://www.cs.umd.edu/~meesh/351/mount/lectures/lect14-heapsort-analysis-part.pdf
   public BinaryHeap(T[] elems) {
 
-    heapSize = heapCapacity = elems.length;
-    heap = new ArrayList<T>(heapCapacity);
+    int heapSize = elems.length;
+    heap = new ArrayList<T>(heapSize);
 
     // Place all element in heap
     for (int i = 0; i < heapSize; i++) heap.add(elems[i]);
@@ -44,26 +38,32 @@ public class BinaryHeap<T extends Comparable<T>> {
     for (int i = Math.max(0, (heapSize / 2) - 1); i >= 0; i--) sink(i);
   }
 
-  // Priority queue construction, O(nlog(n))
+  // Priority queue construction, O(n)
   public BinaryHeap(Collection<T> elems) {
-    this(elems.size());
-    for (T elem : elems) add(elem);
+
+    int heapSize = elems.size();
+    heap = new ArrayList<T>(heapSize);
+
+    // Add all elements of the given collection to the heap
+    heap.addAll(elems);
+
+    // Heapify process, O(n)
+    for (int i = Math.max(0, (heapSize / 2) - 1); i >= 0; i--) sink(i);
   }
 
   // Returns true/false depending on if the priority queue is empty
   public boolean isEmpty() {
-    return heapSize == 0;
+    return size() == 0;
   }
 
   // Clears everything inside the heap, O(n)
   public void clear() {
-    for (int i = 0; i < heapCapacity; i++) heap.set(i, null);
-    heapSize = 0;
+    heap.clear();
   }
 
   // Return the size of the heap
   public int size() {
-    return heapSize;
+    return heap.size();
   }
 
   // Returns the value of the element with the lowest
@@ -82,7 +82,7 @@ public class BinaryHeap<T extends Comparable<T>> {
   // Test if an element is in heap, O(n)
   public boolean contains(T elem) {
     // Linear scan to check containment
-    for (int i = 0; i < heapSize; i++) if (heap.get(i).equals(elem)) return true;
+    for (int i = 0; i < size(); i++) if (heap.get(i).equals(elem)) return true;
     return false;
   }
 
@@ -92,15 +92,10 @@ public class BinaryHeap<T extends Comparable<T>> {
 
     if (elem == null) throw new IllegalArgumentException();
 
-    if (heapSize < heapCapacity) {
-      heap.set(heapSize, elem);
-    } else {
-      heap.add(elem);
-      heapCapacity++;
-    }
+    heap.add(elem);
 
-    swim(heapSize);
-    heapSize++;
+    int indexOfLastElem = size() - 1;
+    swim(indexOfLastElem);
   }
 
   // Tests if the value of node i <= node j
@@ -131,6 +126,7 @@ public class BinaryHeap<T extends Comparable<T>> {
 
   // Top down node sink, O(log(n))
   private void sink(int k) {
+    int heapSize = size();
     while (true) {
       int left = 2 * k + 1; // Left  node
       int right = 2 * k + 2; // Right node
@@ -163,7 +159,7 @@ public class BinaryHeap<T extends Comparable<T>> {
   public boolean remove(T element) {
     if (element == null) return false;
     // Linear removal via search, O(n)
-    for (int i = 0; i < heapSize; i++) {
+    for (int i = 0; i < size(); i++) {
       if (element.equals(heap.get(i))) {
         removeAt(i);
         return true;
@@ -176,15 +172,15 @@ public class BinaryHeap<T extends Comparable<T>> {
   private T removeAt(int i) {
     if (isEmpty()) return null;
 
-    heapSize--;
+    int indexOfLastElem = size() - 1;
     T removed_data = heap.get(i);
-    swap(i, heapSize);
+    swap(i, indexOfLastElem);
 
     // Obliterate the value
-    heap.set(heapSize, null);
+    heap.remove(indexOfLastElem);
 
     // Check if the last element was removed
-    if (i == heapSize) return removed_data;
+    if (i == indexOfLastElem) return removed_data;
     T elem = heap.get(i);
 
     // Try sinking element
@@ -201,6 +197,7 @@ public class BinaryHeap<T extends Comparable<T>> {
   // Called this method with k=0 to start at the root
   public boolean isMinHeap(int k) {
     // If we are outside the bounds of the heap return true
+    int heapSize = size();
     if (k >= heapSize) return true;
 
     int left = 2 * k + 1;

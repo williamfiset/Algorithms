@@ -51,7 +51,6 @@ public class ManachersAlgorithm {
   // of each palindrome centered at each position.
   public static java.util.TreeSet<String> findPalindromeSubstrings(String str) {
     char[] S = str.toCharArray();
-    int N = S.length;
     int[] centers = manachers(S);
     java.util.TreeSet<String> palindromes = new java.util.TreeSet<>();
 

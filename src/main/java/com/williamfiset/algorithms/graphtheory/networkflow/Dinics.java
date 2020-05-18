@@ -2,6 +2,10 @@
  * Implementation of Dinic's network flow algorithm. The algorithm works by first constructing a
  * level graph using a BFS and then finding augmenting paths on the level graph using multiple DFSs.
  *
+ * <p>Run script:
+ *
+ * <p>$ ./gradlew run -Palgorithm=graphtheory.networkflow.Dinics
+ *
  * <p>Time Complexity: O(EV²)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com

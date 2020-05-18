@@ -13,7 +13,7 @@ public class LazyRangeAdderTest {
     lazyRangeAdder.add(0, 1, 10);
     lazyRangeAdder.add(1, 3, 20);
     lazyRangeAdder.add(2, 2, 30);
-    lazyRangeAdder.finalize();
+    lazyRangeAdder.done();
     int[] expected = {20, 35, 70, 60};
     assertArrayEquals(expected, a);
   }
@@ -25,7 +25,7 @@ public class LazyRangeAdderTest {
     lazyRangeAdder.add(2, 5, 32);
     lazyRangeAdder.add(0, 4, 101);
     lazyRangeAdder.add(5, 6, -73);
-    lazyRangeAdder.finalize();
+    lazyRangeAdder.done();
     int[] expected = {371, 412, 560, 668, 467, 152, 101};
     assertArrayEquals(expected, a);
   }
@@ -54,7 +54,7 @@ public class LazyRangeAdderTest {
         slowRangeAdd(arr2, l, r, x);
       }
 
-      lazyRangeAdder.finalize();
+      lazyRangeAdder.done();
 
       assertArrayEquals(arr1, arr2);
     }

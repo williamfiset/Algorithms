@@ -1,0 +1,105 @@
+
+Alright, here we are in the source code for the lowest common ancestor written
+in Java.
+
+Let's begin by going over an example of how this class is intended to be used.
+
+In the main method I give three examples of how to do lowest common ancestor queries.
+The first thing we need to do is actually build a rooted tree, in this example I'm building the first tree from the previous videos slides.
+
+After you've created the tree you can pass the tree into the lowest common ancestor Euler tour constructor. At the moment, each instance of this class is only meant to handle one tree, so if you want to do lowest common ancestor queries on multiple trees you will need multiple solvers.
+
+After the solver is created you can use it to do lowest common ancestor queries. In the following example I do three queries to find: the LCA of 13 and 14, the LCA of 9 and 11 and the LCA of 12 and 12.
+
+Let's scroll down and look at some implementation details more closely.
+<scroll>
+
+The first class I want to look at is the TreeNode class, you'll notice that this
+class is mostly the same as before except that it has a new variable `n` which
+tracks the number of nodes in the subtree of this treenode (including the node
+itself). A TreeNode also has an index and a list of children.
+
+Most of the methods in this class are accessor methods, the only thing we need
+to look at are some minor changes I made to the buildTree method since the
+tree rooting video.
+
+<scroll>
+
+In the buildTree method you'll notice that I am now counting the number of nodes
+in the subtree of the current node. For out purposes, this effectively serves
+as a nice way to know how many nodes are in the tree from the root node.
+
+<scroll>
+
+Moving on, I want to talk about some of the instance variables in this class.
+
+The first is `n`, the number of nodes in the tree.
+
+which is followed by the `tourIndex` variable which tracks the index of where
+we are in the Eulerian tour as we're traversing the tree.
+
+The nodeDepth and nodeOrder arrays are populated during the Eulerian tour, they
+track the depth of each node and the pointer to each node for each index in the
+Eulerian tour.
+
+The last map helps keep track of the last occurrence of a node in the
+Eulerian tour.
+
+And finally, is the min sparse table class to do range minimum queries.
+
+<scroll>
+
+When creating an instance of an LCA solver you need to provide the root node of
+the tree you're doing LCA queries for.
+
+From the root node, assign n to be the number of nodes in the tree and call the
+setup function.
+
+The set up function is responsible for allocating memory and constructing with 
+the Eulerian tour. Begin by allocating memory for our three arrays: `node order`,
+`nodedepth` and `last`.
+
+Then do a depth first search on the tree to construct the Eulerian tour. 
+
+After this, create a sparse table using the `node depth` array that was populated during the depth first search phase. 
+
+<scroll>
+
+The depth first search method is the one that actually performs the Eulerian tour. As parameters it tracks the current node and the node depth.
+
+When the current node becomes null we know that we have reached our base case
+and can return.
+
+Otherwise visit the current node and iterate over it all its children recursively.
+
+The inner visit function call ensures that after visiting a sub tree, that we revisit the current node. This is essential to get the desired Eulerian tour effect and traverse the tree as expected.
+
+The visit function itself is responsible for populating the arrays associated with the Eulerian tour. 
+
+In particular, this function will update the `nodes` array to keep track of a pointer to the current node, it will also update the `depth` array to track the current depth and it will also update the inverse mapping to the eulerian tour index.
+
+Next is the LCA method, which find the lowest common ancestor of two nodes with the indices `index one` and `index two`
+
+The first thing we want to do is look inside our last map, and find the indices in the Eulerian tour associated with `index1` and `index2`. From these values, we can extract a left and a right endpoint. To make sure that the left endpoint always appears before the right endpoint, take the min and max of the indices.
+
+After we know the left and the right endpoints, simply do a range minimum query to find the index of the minimum element in the range `l` to `r` inclusive using the sparse table we created in the setup method.
+
+And lastly, return the tree node object for the lowest common ancestor found in the nodes array.
+
+<scroll>
+
+Below is an implementation of a Min sparse table, but I'm not going to cover that
+in this video since I have a dedicated video on sparse tables in my data structure series. I'll make sure to supply a link to that.
+
+
+Awesome, well that's all for this video, I hope you learned something, please like this video, and subscribe for more mathematics and computer science content thank you
+
+
+
+
+
+
+
+
+
+

@@ -23,32 +23,42 @@ import java.util.*;
 
 public class Kahns {
 
+  // Given a an acyclic graph `g` represented as a adjacency list, return a
+  // topological ordering on the nodes of the graph.
   public int[] kahns(List<List<Integer>> g) {
     int n = g.size();
-    Stack<Integer> nodesWithNoIncomingEdges = new Stack<>();
+
+    // Calculate the in-degree of each node.
     int[] inDegree = new int[n];
     for (List<Integer> edges : g) {
       for (int to : edges) {
         inDegree[to]++;
       }
     }
+
+    // q always contains the set nodes with no incoming edges.
+    Queue<Integer> q = new ArrayDeque<>();
+
+    // Find all start nodes.
     for (int i = 0; i < n; i++) {
       if (inDegree[i] == 0) {
-        nodesWithNoIncomingEdges.push(i);
+        q.offer(i);
       }
     }
+
     int index = 0;
     int[] order = new int[n];
-    while (!nodesWithNoIncomingEdges.isEmpty()) {
-      int at = nodesWithNoIncomingEdges.pop();
+    while (!q.isEmpty()) {
+      int at = q.poll();
       order[index++] = at;
       for (int to : g.get(at)) {
         inDegree[to]--;
         if (inDegree[to] == 0) {
-          nodesWithNoIncomingEdges.push(to);
+          q.offer(to);
         }
       }
     }
+    System.out.println("inDegree: " + java.util.Arrays.toString(inDegree));
     if (index != n) {
       throw new IllegalArgumentException("Graph is not acyclic! Detected a cycle.");
     }

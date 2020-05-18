@@ -63,7 +63,7 @@ public class MinDHeapTest {
       if (p2 < p1) {
         double tmp = p1;
         p1 = p2;
-        p2 = p1;
+        p2 = tmp;
       }
 
       Integer[] ar = genRandArray(LOOPS);
