@@ -24,6 +24,7 @@ public class SortingTest {
     INSERTION_SORT(new InsertionSort()),
     MERGE_SORT(new MergeSort()),
     QUICK_SORT(new QuickSort()),
+    QUICK_SORT3(new QuickSort3()),
     RADIX_SORT(new RadixSort()),
     SELECTION_SORT(new SelectionSort());
 
@@ -47,6 +48,7 @@ public class SortingTest {
           SortingAlgorithm.INSERTION_SORT,
           SortingAlgorithm.MERGE_SORT,
           SortingAlgorithm.QUICK_SORT,
+          SortingAlgorithm.QUICK_SORT3,
           SortingAlgorithm.RADIX_SORT,
           SortingAlgorithm.SELECTION_SORT);
 
