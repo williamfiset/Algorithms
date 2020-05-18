@@ -1,5 +1,7 @@
 /**
- * Quicksort implementation using Hoare partitioning
+ * QuickSort3 or Dutch National Flag algorithm is similar to the QuickSort algorithm but has an
+ * improved partitioning algorithm. QuickSort is quite slow in the case where very few unique
+ * elements exist in the array so the QuickSort3 algorithm is used at that time.
  *
  * <p>Run with:
  *
@@ -20,7 +22,8 @@ public class QuickSort3 implements InplaceSort {
   }
 
   public static void quickSort3(int[] ar) {
-    if (ar == null) return;
+    if (ar == null)
+      return;
     QuickSort3.randomizedQuickSort(ar, 0, ar.length - 1);
   }
 
@@ -30,40 +33,30 @@ public class QuickSort3 implements InplaceSort {
     int j, k;
     if (r - l <= 1) {
       if (a[r] < a[l]) {
-        int temp = a[l];
-        a[l] = a[r];
-        a[r] = temp;
+        swap(a, l, r);
       }
       j = l;
       k = r;
-      int m1 = j;
-      int m2 = k;
-      int[] m = {m1, m2};
+      int[] m = { j, k };
       return m;
     }
     int mid = l;
     int p = a[r];
     while (mid <= r) {
       if (a[mid] < p) {
-        int temp = a[l];
-        a[l] = a[mid];
-        a[mid] = temp;
+        swap(a, l, mid);
         l++;
         mid++;
       } else if (a[mid] == p) {
         mid++;
       } else {
-        int temp = a[r];
-        a[r] = a[mid];
-        a[mid] = temp;
+        swap(a, mid, r);
         r--;
       }
     }
     j = l - 1;
     k = mid;
-    int m1 = j;
-    int m2 = k;
-    int[] m = {m1, m2};
+    int[] m = { j, k };
     return m;
   }
 
@@ -83,9 +76,16 @@ public class QuickSort3 implements InplaceSort {
     randomizedQuickSort(a, m[1], r);
   }
 
+  // Swap two elements
+  private static void swap(int[] ar, int i, int j) {
+    int tmp = ar[i];
+    ar[i] = ar[j];
+    ar[j] = tmp;
+  }
+
   public static void main(String[] args) {
     InplaceSort sorter = new QuickSort3();
-    int[] array = {10, 4, 6, 4, 8, -13, 2, 3};
+    int[] array = { 10, 4, 6, 4, 8, -13, 2, 3 };
     sorter.sort(array);
     // Prints:
     // [-13, 2, 3, 4, 4, 6, 8, 10]
