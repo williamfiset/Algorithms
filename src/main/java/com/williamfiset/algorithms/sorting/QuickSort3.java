@@ -22,8 +22,7 @@ public class QuickSort3 implements InplaceSort {
   }
 
   public static void quickSort3(int[] ar) {
-    if (ar == null)
-      return;
+    if (ar == null) return;
     QuickSort3.randomizedQuickSort(ar, 0, ar.length - 1);
   }
 
@@ -37,7 +36,7 @@ public class QuickSort3 implements InplaceSort {
       }
       j = l;
       k = r;
-      int[] m = { j, k };
+      int[] m = {j, k};
       return m;
     }
     int mid = l;
@@ -56,7 +55,7 @@ public class QuickSort3 implements InplaceSort {
     }
     j = l - 1;
     k = mid;
-    int[] m = { j, k };
+    int[] m = {j, k};
     return m;
   }
 
@@ -85,7 +84,7 @@ public class QuickSort3 implements InplaceSort {
 
   public static void main(String[] args) {
     InplaceSort sorter = new QuickSort3();
-    int[] array = { 10, 4, 6, 4, 8, -13, 2, 3 };
+    int[] array = {10, 4, 6, 4, 8, -13, 2, 3};
     sorter.sort(array);
     // Prints:
     // [-13, 2, 3, 4, 4, 6, 8, 10]
