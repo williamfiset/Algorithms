@@ -15,32 +15,7 @@ This repository is contribution friendly :smiley:. If you'd like to add or impro
 
 To compile and run any of the algorithms here, you need at least JDK version 8. Gradle can make things more convenient for you, but it is not required. 
 
-## Compiling and running with only a JDK
-
-
-### Create a classes folder
-```
-cd Algorithms
-mkdir classes
-```
-
-### Compile the algorithm 
-```
-javac -sourcepath src/main/java -d classes src/main/java/ <relative-path-to-java-source-file>
-```
-
-### Run the algorithm 
-```
-java -cp classes <class-fully-qualified-name>
-```
-
-### Example
-```
-$ javac -d classes -sourcepath src/main/java src/main/java/com/williamfiset/algorithms/search/BinarySearch.java
-$ java -cp classes com.williamfiset.algorithms.search.BinarySearch
-```
-
-## Running with Gradle
+## Running with Gradle (recommended) 
 
 This project supports the [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). The Gradle wrapper automatically downloads Gradle at the first time it runs, so expect a delay when running the first command below.
 
@@ -70,6 +45,31 @@ or
 
 ```
 ./gradlew run -Pmain=com.williamfiset.algorithms.search.BinarySearch
+```
+
+## Compiling and running with only a JDK
+
+
+### Create a classes folder
+```
+cd Algorithms
+mkdir classes
+```
+
+### Compile the algorithm 
+```
+javac -sourcepath src/main/java -d classes src/main/java/ <relative-path-to-java-source-file>
+```
+
+### Run the algorithm 
+```
+java -cp classes <class-fully-qualified-name>
+```
+
+### Example
+```
+$ javac -d classes -sourcepath src/main/java src/main/java/com/williamfiset/algorithms/search/BinarySearch.java
+$ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 ```
 
 # Data Structures
