@@ -1,9 +1,11 @@
 package com.williamfiset.algorithms.graphtheory;
 
-import static com.google.common.truth.Truth.assertThat;
+import org.junit.Test;
 
-import java.util.*;
-import org.junit.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public class ArticulationPointsAdjacencyListTest {
 

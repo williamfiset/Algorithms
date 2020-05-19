@@ -7,48 +7,16 @@
  */
 package com.williamfiset.algorithms.geometry;
 
-import static java.lang.Math.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.TreeSet;
 
-import java.util.*;
+import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
 
 public class ClosestPairOfPoints {
 
   private static final double EPS = 1e-9;
-
-  public class PT {
-    double x, y;
-
-    public PT(double xx, double yy) {
-      x = xx;
-      y = yy;
-    }
-
-    public double dist(PT pt) {
-      double dx = x - pt.x, dy = y - pt.y;
-      return sqrt(dx * dx + dy * dy);
-    }
-  }
-
-  // Sorts points by X coordinate
-  private static class X_Sort implements Comparator<PT> {
-    @Override
-    public int compare(PT pt1, PT pt2) {
-      if (abs(pt1.x - pt2.x) < EPS) return 0;
-      return (pt1.x < pt2.x) ? -1 : +1;
-    }
-  }
-
-  // Sorts points by Y coordinate first then X coordinate
-  private static class YX_Sort implements Comparator<PT> {
-    @Override
-    public int compare(PT pt1, PT pt2) {
-      if (abs(pt1.y - pt2.y) < EPS) {
-        if (abs(pt1.x - pt2.x) < EPS) return 0;
-        return (pt1.x < pt2.x) ? -1 : +1;
-      }
-      return (pt1.y < pt2.y) ? -1 : +1;
-    }
-  }
 
   // Finds the closest pair of points in a list of points
   public static PT[] closestPair(PT[] points) {
@@ -117,5 +85,40 @@ public class ClosestPairOfPoints {
     }
 
     return new PT[] {pt1, pt2};
+  }
+
+  // Sorts points by X coordinate
+  private static class X_Sort implements Comparator<PT> {
+    @Override
+    public int compare(PT pt1, PT pt2) {
+      if (abs(pt1.x - pt2.x) < EPS) return 0;
+      return (pt1.x < pt2.x) ? -1 : +1;
+    }
+  }
+
+  // Sorts points by Y coordinate first then X coordinate
+  private static class YX_Sort implements Comparator<PT> {
+    @Override
+    public int compare(PT pt1, PT pt2) {
+      if (abs(pt1.y - pt2.y) < EPS) {
+        if (abs(pt1.x - pt2.x) < EPS) return 0;
+        return (pt1.x < pt2.x) ? -1 : +1;
+      }
+      return (pt1.y < pt2.y) ? -1 : +1;
+    }
+  }
+
+  public class PT {
+    double x, y;
+
+    public PT(double xx, double yy) {
+      x = xx;
+      y = yy;
+    }
+
+    public double dist(PT pt) {
+      double dx = x - pt.x, dy = y - pt.y;
+      return sqrt(dx * dx + dy * dy);
+    }
   }
 }

@@ -11,20 +11,12 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TopologicalSortAdjacencyList {
-
-  // Helper Edge class to describe edges in the graph
-  static class Edge {
-    int from, to, weight;
-
-    public Edge(int f, int t, int w) {
-      from = f;
-      to = t;
-      weight = w;
-    }
-  }
 
   // Helper method that performs a depth first search on the graph to give
   // us the topological ordering we want. Instead of maintaining a stack
@@ -128,5 +120,16 @@ public class TopologicalSortAdjacencyList {
     // Find the shortest path from 0 to 6 which
     // is null since 6 is not reachable!
     System.out.println(dists[6]);
+  }
+
+  // Helper Edge class to describe edges in the graph
+  static class Edge {
+    int from, to, weight;
+
+    public Edge(int f, int t, int w) {
+      from = f;
+      to = t;
+      weight = w;
+    }
   }
 }

@@ -11,30 +11,13 @@
  */
 package com.williamfiset.algorithms.graphtheory.networkflow.examples;
 
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.lang.Math.min;
 
-import java.awt.geom.*;
-import java.util.*;
-
 public class MiceAndOwls {
-
-  static class Mouse {
-    Point2D point;
-
-    public Mouse(int x, int y) {
-      point = new Point2D.Double(x, y);
-    }
-  }
-
-  static class Hole {
-    int capacity;
-    Point2D point;
-
-    public Hole(int x, int y, int cap) {
-      point = new Point2D.Double(x, y);
-      capacity = cap;
-    }
-  }
 
   public static void main(String[] args) {
     Mouse[] mice = {
@@ -86,13 +69,31 @@ public class MiceAndOwls {
     System.out.println("Number of safe mice: " + solver.getMaxFlow());
   }
 
+  static class Mouse {
+    Point2D point;
+
+    public Mouse(int x, int y) {
+      point = new Point2D.Double(x, y);
+    }
+  }
+
+  static class Hole {
+    int capacity;
+    Point2D point;
+
+    public Hole(int x, int y, int cap) {
+      point = new Point2D.Double(x, y);
+      capacity = cap;
+    }
+  }
+
   /* Network flow solver code */
 
   private static class Edge {
+    public final long capacity;
     public int from, to;
     public Edge residual;
     public long flow;
-    public final long capacity;
 
     public Edge(int from, int to, long capacity) {
       this.from = from;

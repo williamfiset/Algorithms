@@ -16,34 +16,14 @@ package com.williamfiset.algorithms.datastructures.sparsetable.examples;
 // Sparse table for efficient minimum range queries in O(1) with O(nlogn) space
 public class MinSparseTable {
 
-  // Example usage:
-  public static void main(String[] args) {
-    // index values: 0, 1,  2, 3, 4,  5, 6
-    long[] values = {1, 2, -3, 2, 4, -1, 5};
-    MinSparseTable sparseTable = new MinSparseTable(values);
-
-    System.out.println(sparseTable.queryMin(1, 5)); // prints -3
-    System.out.println(sparseTable.queryMinIndex(1, 5)); // prints 2
-
-    System.out.println(sparseTable.queryMin(3, 3)); // prints 2
-    System.out.println(sparseTable.queryMinIndex(3, 3)); // prints 3
-
-    System.out.println(sparseTable.queryMin(3, 6)); // prints -1
-    System.out.println(sparseTable.queryMinIndex(3, 6)); // prints 5
-  }
-
   // The number of elements in the original input array.
   private int n;
-
   // The maximum power of 2 needed. This value is floor(log2(n))
   private int P;
-
   // Fast log base 2 logarithm lookup table, 1 <= i <= n
   private int[] log2;
-
   // The sparse table values.
   private long[][] dp;
-
   // Index Table (IT) associated with the values in the sparse table. This table
   // is only useful when we want to query the index of the min (or max) element
   // in the range [l, r] rather than the value itself. The index table doesn’t
@@ -81,6 +61,22 @@ public class MinSparseTable {
         }
       }
     }
+  }
+
+  // Example usage:
+  public static void main(String[] args) {
+    // index values: 0, 1,  2, 3, 4,  5, 6
+    long[] values = {1, 2, -3, 2, 4, -1, 5};
+    MinSparseTable sparseTable = new MinSparseTable(values);
+
+    System.out.println(sparseTable.queryMin(1, 5)); // prints -3
+    System.out.println(sparseTable.queryMinIndex(1, 5)); // prints 2
+
+    System.out.println(sparseTable.queryMin(3, 3)); // prints 2
+    System.out.println(sparseTable.queryMinIndex(3, 3)); // prints 3
+
+    System.out.println(sparseTable.queryMin(3, 6)); // prints -1
+    System.out.println(sparseTable.queryMinIndex(3, 6)); // prints 5
   }
 
   // Do a min query on the interval [l, r] in O(1).

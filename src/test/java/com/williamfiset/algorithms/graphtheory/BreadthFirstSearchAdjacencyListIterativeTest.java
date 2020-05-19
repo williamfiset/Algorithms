@@ -1,21 +1,39 @@
 package com.williamfiset.algorithms.graphtheory;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.Edge;
-import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.addUnweightedUndirectedEdge;
-import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.createEmptyGraph;
-import static java.lang.Math.max;
-import static java.lang.Math.random;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.*;
+import static java.lang.Math.max;
+import static java.lang.Math.random;
 
 public class BreadthFirstSearchAdjacencyListIterativeTest {
 
   BreadthFirstSearchAdjacencyListIterative solver;
+
+  public static double[][] generateRandomGraph(List<List<Edge>> graph1, int n) {
+    boolean[][] edgeMatrix = new boolean[n][n];
+    double[][] graph2 = new double[n][n];
+    for (double[] r : graph2) Arrays.fill(r, Double.POSITIVE_INFINITY);
+
+    int numEdges = max(1, (int) (random() * n * n));
+    for (int i = 0; i < numEdges; i++) {
+      int u = (int) (random() * n);
+      int v = (int) (random() * n);
+      if (!edgeMatrix[u][v]) {
+        addUnweightedUndirectedEdge(graph1, u, v);
+        graph2[u][v] = graph2[v][u] = 1;
+        edgeMatrix[u][v] = edgeMatrix[v][u] = true;
+      }
+    }
+
+    return graph2;
+  }
 
   @Before
   public void setup() {
@@ -87,24 +105,5 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
       List<Integer> p2 = bfSolver.reconstructShortestPath(e);
       assertThat(p1.size()).isEqualTo(p2.size());
     }
-  }
-
-  public static double[][] generateRandomGraph(List<List<Edge>> graph1, int n) {
-    boolean[][] edgeMatrix = new boolean[n][n];
-    double[][] graph2 = new double[n][n];
-    for (double[] r : graph2) Arrays.fill(r, Double.POSITIVE_INFINITY);
-
-    int numEdges = max(1, (int) (random() * n * n));
-    for (int i = 0; i < numEdges; i++) {
-      int u = (int) (random() * n);
-      int v = (int) (random() * n);
-      if (!edgeMatrix[u][v]) {
-        addUnweightedUndirectedEdge(graph1, u, v);
-        graph2[u][v] = graph2[v][u] = 1;
-        edgeMatrix[u][v] = edgeMatrix[v][u] = true;
-      }
-    }
-
-    return graph2;
   }
 }

@@ -1,10 +1,14 @@
 package com.williamfiset.algorithms.datastructures.binarysearchtree;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.williamfiset.algorithms.datastructures.utils.TestUtils;
-import java.util.*;
 import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class SplayTreeTest {
 

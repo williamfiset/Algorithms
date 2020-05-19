@@ -8,9 +8,10 @@
  */
 package com.williamfiset.algorithms.geometry;
 
-import static java.lang.Math.*;
+import java.awt.geom.Point2D;
 
-import java.awt.geom.*;
+import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
 
 public class TriangleArea {
 

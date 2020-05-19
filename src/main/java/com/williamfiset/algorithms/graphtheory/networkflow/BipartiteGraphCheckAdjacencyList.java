@@ -9,79 +9,23 @@
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import com.williamfiset.algorithms.utils.graphutils.Utils;
+
 import java.util.List;
 
 public class BipartiteGraphCheckAdjacencyList {
 
+  public static final int RED = 0b10, BLACK = (RED ^ 1);
   private int n;
   private int[] colors;
   private boolean solved;
   private boolean isBipartite;
   private List<List<Integer>> graph;
 
-  public static final int RED = 0b10, BLACK = (RED ^ 1);
-
   public BipartiteGraphCheckAdjacencyList(List<List<Integer>> graph) {
     if (graph == null) throw new IllegalArgumentException("Graph cannot be null.");
     n = graph.size();
     this.graph = graph;
   }
-
-  // Checks whether the input graph is bipartite.
-  public boolean isBipartite() {
-    if (!solved) solve();
-    return isBipartite;
-  }
-
-  // If the input graph is bipartite it has a two coloring which can be obtained
-  // through this method. Each index in the returned array is either RED or BLACK
-  // indicating which color node i was colored.
-  public int[] getTwoColoring() {
-    return isBipartite() ? colors : null;
-  }
-
-  private void solve() {
-    if (n <= 1) return;
-
-    colors = new int[n];
-    int nodesVisited = colorGraph(0, RED);
-
-    // The graph is not bipartite. Either not all the nodes were visited or the
-    // colorGraph method returned -1 meaning the graph is not 2-colorable.
-    isBipartite = (nodesVisited == n);
-    solved = true;
-  }
-
-  // Do a depth first search coloring the nodes of the graph as we go.
-  // This method returns the count of the number of nodes visited while
-  // coloring the graph or -1 if this graph is not bipartite.
-  private int colorGraph(int i, int color) {
-    colors[i] = color;
-
-    // Toggles the color between RED and BLACK by exploiting the binary representation
-    // of the constants and flipping the least significant bit on and off.
-    int nextColor = (color ^ 1);
-
-    int visitCount = 1;
-    List<Integer> edges = graph.get(i);
-
-    for (int to : edges) {
-      // Contradiction found. In a bipartite graph no two
-      // nodes of the same color can be next to each other!
-      if (colors[to] == color) return -1;
-      if (colors[to] == nextColor) continue;
-
-      // If a contradiction is found propagate return -1
-      // otherwise keep track of the number of visited nodes.
-      int count = colorGraph(to, nextColor);
-      if (count == -1) return -1;
-      visitCount += count;
-    }
-
-    return visitCount;
-  }
-
-  /* Example usage */
 
   public static void main(String[] args) {
 
@@ -200,5 +144,61 @@ public class BipartiteGraphCheckAdjacencyList {
 
     System.out.println("This graph is bipartite: " + (solver.isBipartite()));
     System.out.println();
+  }
+
+  // Checks whether the input graph is bipartite.
+  public boolean isBipartite() {
+    if (!solved) solve();
+    return isBipartite;
+  }
+
+  // If the input graph is bipartite it has a two coloring which can be obtained
+  // through this method. Each index in the returned array is either RED or BLACK
+  // indicating which color node i was colored.
+  public int[] getTwoColoring() {
+    return isBipartite() ? colors : null;
+  }
+
+  /* Example usage */
+
+  private void solve() {
+    if (n <= 1) return;
+
+    colors = new int[n];
+    int nodesVisited = colorGraph(0, RED);
+
+    // The graph is not bipartite. Either not all the nodes were visited or the
+    // colorGraph method returned -1 meaning the graph is not 2-colorable.
+    isBipartite = (nodesVisited == n);
+    solved = true;
+  }
+
+  // Do a depth first search coloring the nodes of the graph as we go.
+  // This method returns the count of the number of nodes visited while
+  // coloring the graph or -1 if this graph is not bipartite.
+  private int colorGraph(int i, int color) {
+    colors[i] = color;
+
+    // Toggles the color between RED and BLACK by exploiting the binary representation
+    // of the constants and flipping the least significant bit on and off.
+    int nextColor = (color ^ 1);
+
+    int visitCount = 1;
+    List<Integer> edges = graph.get(i);
+
+    for (int to : edges) {
+      // Contradiction found. In a bipartite graph no two
+      // nodes of the same color can be next to each other!
+      if (colors[to] == color) return -1;
+      if (colors[to] == nextColor) continue;
+
+      // If a contradiction is found propagate return -1
+      // otherwise keep track of the number of visited nodes.
+      int count = colorGraph(to, nextColor);
+      if (count == -1) return -1;
+      visitCount += count;
+    }
+
+    return visitCount;
   }
 }

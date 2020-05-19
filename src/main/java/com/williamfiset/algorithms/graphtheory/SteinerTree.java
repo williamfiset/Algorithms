@@ -10,7 +10,7 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class SteinerTree {
 

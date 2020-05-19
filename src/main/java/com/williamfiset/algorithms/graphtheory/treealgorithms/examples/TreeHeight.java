@@ -15,19 +15,6 @@ package com.williamfiset.algorithms.graphtheory.treealgorithms.examples;
 
 public class TreeHeight {
 
-  public static class TreeNode {
-    int value;
-    TreeNode left, right;
-
-    public TreeNode(int value) {
-      this.value = value;
-    }
-
-    public int getValue() {
-      return value;
-    }
-  }
-
   // Returns the height of the binary tree which is the number of edges from the
   // root to the deepest leaf node, or -1 if the input is an empty tree.
   public static int treeHeight1(TreeNode node) {
@@ -48,12 +35,12 @@ public class TreeHeight {
     return node.left == null && node.right == null;
   }
 
-  /* Examples */
-
   public static void main(String[] args) {
     testTreeHeight1();
     testTreeHeight2();
   }
+
+  /* Examples */
 
   private static void testTreeHeight1() {
     System.out.printf("Empty tree: %d\n", treeHeight1(null));
@@ -110,5 +97,18 @@ public class TreeHeight {
     node3.right = node8;
 
     return node0;
+  }
+
+  public static class TreeNode {
+    int value;
+    TreeNode left, right;
+
+    public TreeNode(int value) {
+      this.value = value;
+    }
+
+    public int getValue() {
+      return value;
+    }
   }
 }

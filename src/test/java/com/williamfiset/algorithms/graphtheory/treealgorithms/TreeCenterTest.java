@@ -5,15 +5,28 @@
 
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenter.addUndirectedEdge;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenter.createEmptyTree;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenter.findTreeCenters;
+import org.junit.Test;
 
-import java.util.*;
-import org.junit.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenter.*;
 
 public class TreeCenterTest {
+
+  public static List<List<Integer>> generateRandomTree(int n) {
+    List<Integer> nodes = new ArrayList<>();
+    nodes.add(0);
+
+    List<List<Integer>> g = createEmptyTree(n);
+    for (int nextNode = 1; nodes.size() != n; nextNode++) {
+      int randomNode = nodes.get((int) (Math.random() * nodes.size()));
+      addUndirectedEdge(g, randomNode, nextNode);
+      nodes.add(nextNode);
+    }
+    return g;
+  }
 
   @Test
   public void simpleTest1() {
@@ -84,18 +97,5 @@ public class TreeCenterTest {
         assertThat(impl1).containsExactlyElementsIn(impl2);
       }
     }
-  }
-
-  public static List<List<Integer>> generateRandomTree(int n) {
-    List<Integer> nodes = new ArrayList<>();
-    nodes.add(0);
-
-    List<List<Integer>> g = createEmptyTree(n);
-    for (int nextNode = 1; nodes.size() != n; nextNode++) {
-      int randomNode = nodes.get((int) (Math.random() * nodes.size()));
-      addUndirectedEdge(g, randomNode, nextNode);
-      nodes.add(nextNode);
-    }
-    return g;
   }
 }

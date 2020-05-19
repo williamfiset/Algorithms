@@ -5,15 +5,13 @@
 
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
+import org.junit.Test;
+
+import java.util.List;
+
 import static com.google.common.truth.Truth.assertThat;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.TreeNode;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.addUndirectedEdge;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.createEmptyTree;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.encodeTree;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.treesAreIsomorphic;
-
-import java.util.*;
-import org.junit.*;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.*;
 
 public class TreeIsomorphismWithBfsTest {
 

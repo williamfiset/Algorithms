@@ -28,6 +28,11 @@ public class SuffixArrayFast extends SuffixArray {
     this.alphabetSize = alphabetSize;
   }
 
+  public static void main(String[] args) {
+    SuffixArrayFast sa = new SuffixArrayFast("ABBABAABAA");
+    System.out.println(sa);
+  }
+
   @Override
   protected void construct() {
     sa = new int[N];
@@ -59,10 +64,5 @@ public class SuffixArrayFast extends SuffixArray {
       if (r == N - 1) break;
       alphabetSize = r + 1;
     }
-  }
-
-  public static void main(String[] args) {
-    SuffixArrayFast sa = new SuffixArrayFast("ABBABAABAA");
-    System.out.println(sa);
   }
 }

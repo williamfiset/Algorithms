@@ -5,7 +5,8 @@
  */
 package com.williamfiset.algorithms.datastructures.hashtable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Random;
 
 public class Benchmark {
 

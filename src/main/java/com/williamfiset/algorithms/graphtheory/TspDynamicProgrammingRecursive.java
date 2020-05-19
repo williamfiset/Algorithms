@@ -13,7 +13,8 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TspDynamicProgrammingRecursive {
 
@@ -51,6 +52,30 @@ public class TspDynamicProgrammingRecursive {
     // The finished state is when the finished state mask has all bits are set to
     // one (meaning all the nodes have been visited).
     FINISHED_STATE = (1 << N) - 1;
+  }
+
+  // Example usage:
+  public static void main(String[] args) {
+
+    // Create adjacency matrix
+    int n = 6;
+    double[][] distanceMatrix = new double[n][n];
+    for (double[] row : distanceMatrix) java.util.Arrays.fill(row, 10000);
+    distanceMatrix[1][4] = distanceMatrix[4][1] = 2;
+    distanceMatrix[4][2] = distanceMatrix[2][4] = 4;
+    distanceMatrix[2][3] = distanceMatrix[3][2] = 6;
+    distanceMatrix[3][0] = distanceMatrix[0][3] = 8;
+    distanceMatrix[0][5] = distanceMatrix[5][0] = 10;
+    distanceMatrix[5][1] = distanceMatrix[1][5] = 12;
+
+    // Run the solver
+    TspDynamicProgrammingRecursive solver = new TspDynamicProgrammingRecursive(distanceMatrix);
+
+    // Prints: [0, 3, 2, 4, 1, 5, 0]
+    System.out.println("Tour: " + solver.getTour());
+
+    // Print: 42.0
+    System.out.println("Tour cost: " + solver.getTourCost());
   }
 
   // Returns the optimal tour for the traveling salesman problem.
@@ -112,29 +137,5 @@ public class TspDynamicProgrammingRecursive {
 
     prev[i][state] = index;
     return memo[i][state] = minCost;
-  }
-
-  // Example usage:
-  public static void main(String[] args) {
-
-    // Create adjacency matrix
-    int n = 6;
-    double[][] distanceMatrix = new double[n][n];
-    for (double[] row : distanceMatrix) java.util.Arrays.fill(row, 10000);
-    distanceMatrix[1][4] = distanceMatrix[4][1] = 2;
-    distanceMatrix[4][2] = distanceMatrix[2][4] = 4;
-    distanceMatrix[2][3] = distanceMatrix[3][2] = 6;
-    distanceMatrix[3][0] = distanceMatrix[0][3] = 8;
-    distanceMatrix[0][5] = distanceMatrix[5][0] = 10;
-    distanceMatrix[5][1] = distanceMatrix[1][5] = 12;
-
-    // Run the solver
-    TspDynamicProgrammingRecursive solver = new TspDynamicProgrammingRecursive(distanceMatrix);
-
-    // Prints: [0, 3, 2, 4, 1, 5, 0]
-    System.out.println("Tour: " + solver.getTour());
-
-    // Print: 42.0
-    System.out.println("Tour cost: " + solver.getTourCost());
   }
 }

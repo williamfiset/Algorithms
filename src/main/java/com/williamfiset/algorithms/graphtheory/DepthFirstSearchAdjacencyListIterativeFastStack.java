@@ -6,7 +6,10 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 // This file contains an implementation of an integer only stack which is
 // extremely quick and lightweight. In terms of performance it can outperform
@@ -45,16 +48,6 @@ class IntStack {
 }
 
 public class DepthFirstSearchAdjacencyListIterativeFastStack {
-
-  static class Edge {
-    int from, to, cost;
-
-    public Edge(int from, int to, int cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-  }
 
   // Perform a depth first search on a graph with n nodes
   // from a starting point to count the number of nodes
@@ -130,5 +123,15 @@ public class DepthFirstSearchAdjacencyListIterativeFastStack {
       graph.put(from, list);
     }
     list.add(new Edge(from, to, cost));
+  }
+
+  static class Edge {
+    int from, to, cost;
+
+    public Edge(int from, int to, int cost) {
+      this.from = from;
+      this.to = to;
+      this.cost = cost;
+    }
   }
 }

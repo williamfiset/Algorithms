@@ -1,14 +1,19 @@
 package com.williamfiset.algorithms.sorting;
 
-import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Random;
-import org.junit.Test;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public class RadixSortTest {
   static Random random = new Random();
+
+  // return a random number between [min, max]
+  static int randInt(int min, int max) {
+    return random.nextInt((max - min) + 1) + min;
+  }
 
   @Test
   public void testGetMax() {
@@ -52,10 +57,5 @@ public class RadixSortTest {
 
       assertThat(values).isEqualTo(copy);
     }
-  }
-
-  // return a random number between [min, max]
-  static int randInt(int min, int max) {
-    return random.nextInt((max - min) + 1) + min;
   }
 }

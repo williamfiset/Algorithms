@@ -32,7 +32,7 @@ public class AStar_GridHeuristicTest {
         assertEquals(
             AStar_GridHeuristic.aStar(aStar, j, (int) (Math.random() * j)),
             BellmanFordAdjacencyList.bellmanFord(bellmanFord, V, j)[j],
-            25.0);
+            50.0);
       }
     }
   }

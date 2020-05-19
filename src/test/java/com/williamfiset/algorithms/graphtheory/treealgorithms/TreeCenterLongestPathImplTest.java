@@ -5,13 +5,12 @@
 
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImpl.addUndirectedEdge;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImpl.createEmptyTree;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImpl.findTreeCenters;
+import org.junit.Test;
 
-import java.util.*;
-import org.junit.*;
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImpl.*;
 
 public class TreeCenterLongestPathImplTest {
 

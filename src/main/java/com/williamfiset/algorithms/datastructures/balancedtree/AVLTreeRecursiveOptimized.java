@@ -8,31 +8,10 @@ package com.williamfiset.algorithms.datastructures.balancedtree;
 
 public class AVLTreeRecursiveOptimized<T extends Comparable<T>> implements Iterable<T> {
 
-  public class Node {
-
-    // 'bf' is short for Balance Factor
-    public int bf;
-
-    // The value/data contained within the node.
-    public T value;
-
-    // The height of this node in the tree.
-    public int height;
-
-    // The left and the right children of this node.
-    public Node left, right;
-
-    public Node(T value) {
-      this.value = value;
-    }
-  }
-
   // The root node of the AVL tree.
   public Node root;
-
   // Tracks the number of nodes inside the tree.
   private int nodeCount = 0;
-
   // Special token value used as an alternative to returning 'null'.
   // The TOKEN is used to indicate special return value signals. For example,
   // we can return the TOKEN instead of null when we're inserting a new item
@@ -360,5 +339,24 @@ public class AVLTreeRecursiveOptimized<T extends Comparable<T>> implements Itera
     if (node.left != null) isValid = isValid && node.left.value.compareTo(val) < 0;
     if (node.right != null) isValid = isValid && node.right.value.compareTo(val) > 0;
     return isValid && validateBSTInvarient(node.left) && validateBSTInvarient(node.right);
+  }
+
+  public class Node {
+
+    // 'bf' is short for Balance Factor
+    public int bf;
+
+    // The value/data contained within the node.
+    public T value;
+
+    // The height of this node in the tree.
+    public int height;
+
+    // The left and the right children of this node.
+    public Node left, right;
+
+    public Node(T value) {
+      this.value = value;
+    }
   }
 }

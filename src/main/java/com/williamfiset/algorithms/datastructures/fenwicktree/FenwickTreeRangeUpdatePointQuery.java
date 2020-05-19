@@ -40,6 +40,21 @@ public class FenwickTreeRangeUpdatePointQuery {
     currentTree = fenwickTree.clone();
   }
 
+  // Returns the value of the least significant bit (LSB)
+  // lsb(108) = lsb(0b1101100) = 0b100 = 4
+  // lsb(104) = lsb(0b1101000) = 0b1000 = 8
+  // lsb(96)  = lsb(0b1100000) = 0b100000 = 32
+  // lsb(64)  = lsb(0b1000000) = 0b1000000 = 64
+  private static int lsb(int i) {
+
+    // Isolates the lowest one bit value
+    return i & -i;
+
+    // An alternative method is to use the Java's built in method
+    // return Integer.lowestOneBit(i);
+
+  }
+
   // Update the interval [left, right] with the value 'val', O(log(n))
   public void updateRange(int left, int right, long val) {
     add(left, +val);
@@ -70,20 +85,5 @@ public class FenwickTreeRangeUpdatePointQuery {
       i &= ~lsb(i); // Equivalently, i -= lsb(i);
     }
     return sum;
-  }
-
-  // Returns the value of the least significant bit (LSB)
-  // lsb(108) = lsb(0b1101100) = 0b100 = 4
-  // lsb(104) = lsb(0b1101000) = 0b1000 = 8
-  // lsb(96)  = lsb(0b1100000) = 0b100000 = 32
-  // lsb(64)  = lsb(0b1000000) = 0b1000000 = 64
-  private static int lsb(int i) {
-
-    // Isolates the lowest one bit value
-    return i & -i;
-
-    // An alternative method is to use the Java's built in method
-    // return Integer.lowestOneBit(i);
-
   }
 }

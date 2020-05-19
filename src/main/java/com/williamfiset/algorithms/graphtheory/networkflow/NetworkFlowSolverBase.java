@@ -8,62 +8,18 @@ public abstract class NetworkFlowSolverBase {
 
   // To avoid overflow, set infinity to a value less than Long.MAX_VALUE;
   protected static final long INF = Long.MAX_VALUE / 2;
-
-  public static class Edge {
-    public int from, to;
-    public Edge residual;
-    public long flow, cost;
-    public final long capacity, originalCost;
-
-    public Edge(int from, int to, long capacity) {
-      this(from, to, capacity, 0 /* unused */);
-    }
-
-    public Edge(int from, int to, long capacity, long cost) {
-      this.from = from;
-      this.to = to;
-      this.capacity = capacity;
-      this.originalCost = this.cost = cost;
-    }
-
-    public boolean isResidual() {
-      return capacity == 0;
-    }
-
-    public long remainingCapacity() {
-      return capacity - flow;
-    }
-
-    public void augment(long bottleNeck) {
-      flow += bottleNeck;
-      residual.flow -= bottleNeck;
-    }
-
-    public String toString(int s, int t) {
-      String u = (from == s) ? "s" : ((from == t) ? "t" : String.valueOf(from));
-      String v = (to == s) ? "s" : ((to == t) ? "t" : String.valueOf(to));
-      return String.format(
-          "Edge %s -> %s | flow = %d | capacity = %d | is residual: %s",
-          u, v, flow, capacity, isResidual());
-    }
-  }
-
   // Inputs: n = number of nodes, s = source, t = sink
   protected final int n, s, t;
-
   protected long maxFlow;
   protected long minCost;
-
   protected boolean[] minCut;
   protected List<Edge>[] graph;
-
   // 'visited' and 'visitedToken' are variables used for graph sub-routines to
   // track whether a node has been visited or not. In particular, node 'i' was
   // recently visited if visited[i] == visitedToken is true. This is handy
   // because to mark all nodes as unvisited simply increment the visitedToken.
   private int visitedToken = 1;
   private int[] visited;
-
   // Indicates whether the network flow algorithm has ran. We should not need to
   // run the solver multiple times, because it always yields the same result.
   private boolean solved;
@@ -175,4 +131,43 @@ public abstract class NetworkFlowSolverBase {
 
   // Method to implement which solves the network flow problem.
   public abstract void solve();
+
+  public static class Edge {
+    public final long capacity, originalCost;
+    public int from, to;
+    public Edge residual;
+    public long flow, cost;
+
+    public Edge(int from, int to, long capacity) {
+      this(from, to, capacity, 0 /* unused */);
+    }
+
+    public Edge(int from, int to, long capacity, long cost) {
+      this.from = from;
+      this.to = to;
+      this.capacity = capacity;
+      this.originalCost = this.cost = cost;
+    }
+
+    public boolean isResidual() {
+      return capacity == 0;
+    }
+
+    public long remainingCapacity() {
+      return capacity - flow;
+    }
+
+    public void augment(long bottleNeck) {
+      flow += bottleNeck;
+      residual.flow -= bottleNeck;
+    }
+
+    public String toString(int s, int t) {
+      String u = (from == s) ? "s" : ((from == t) ? "t" : String.valueOf(from));
+      String v = (to == s) ? "s" : ((to == t) ? "t" : String.valueOf(to));
+      return String.format(
+          "Edge %s -> %s | flow = %d | capacity = %d | is residual: %s",
+          u, v, flow, capacity, isResidual());
+    }
+  }
 }

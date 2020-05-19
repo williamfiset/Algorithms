@@ -8,7 +8,8 @@
  */
 package com.williamfiset.algorithms.ai;
 
-import java.util.*;
+import java.util.BitSet;
+import java.util.Random;
 
 public class GeneticAlgorithm_knapsack_01 {
 
@@ -18,12 +19,11 @@ public class GeneticAlgorithm_knapsack_01 {
   static final int P = 500;
   static final int MAX_EPOCH = 10000;
   static final double MUTATION_RATE = 0.0125;
-
+  static final double POWER_INC = 0.0001;
   // The power variable tweaks the weight of the fitness function
   // to emphasize better individuals. The power slowly increments
   // over time to help get out of local minimums in later epochs.
   static double power;
-  static final double POWER_INC = 0.0001;
 
   // Runs a single simulation to find the best price for
   // the 0/1 knapsack problem using a GA

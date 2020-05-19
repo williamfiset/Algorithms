@@ -5,19 +5,12 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DepthFirstSearchAdjacencyListRecursive {
-
-  static class Edge {
-    int from, to, cost;
-
-    public Edge(int from, int to, int cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-  }
 
   // Perform a depth first search on the graph counting
   // the number of nodes traversed starting at some position
@@ -82,5 +75,15 @@ public class DepthFirstSearchAdjacencyListRecursive {
       graph.put(from, list);
     }
     list.add(new Edge(from, to, cost));
+  }
+
+  static class Edge {
+    int from, to, cost;
+
+    public Edge(int from, int to, int cost) {
+      this.from = from;
+      this.to = to;
+      this.cost = cost;
+    }
   }
 }

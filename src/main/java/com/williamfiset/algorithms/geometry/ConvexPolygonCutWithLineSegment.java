@@ -8,26 +8,13 @@
  */
 package com.williamfiset.algorithms.geometry;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ConvexPolygonCutWithLineSegment {
 
   private static final double EPS = 1e-9;
-
-  // Simple 2D point class.
-  public static class Pt {
-    double x, y;
-
-    public Pt(double x, double y) {
-      this.x = x;
-      this.y = y;
-    }
-
-    @Override
-    public String toString() {
-      return "(" + x + "," + y + ")";
-    }
-  }
 
   // sorts the points in CW direction.
   public static List<Pt> sortCW(List<Pt> poly) {
@@ -137,5 +124,20 @@ public class ConvexPolygonCutWithLineSegment {
     // (4.0,0.0)
     // (0.0,0.0)
 
+  }
+
+  // Simple 2D point class.
+  public static class Pt {
+    double x, y;
+
+    public Pt(double x, double y) {
+      this.x = x;
+      this.y = y;
+    }
+
+    @Override
+    public String toString() {
+      return "(" + x + "," + y + ")";
+    }
   }
 }

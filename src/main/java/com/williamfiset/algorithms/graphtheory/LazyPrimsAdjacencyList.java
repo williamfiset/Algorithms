@@ -8,101 +8,28 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
 
 public class LazyPrimsAdjacencyList {
-
-  static class Edge implements Comparable<Edge> {
-    int from, to, cost;
-
-    public Edge(int from, int to, int cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-
-    @Override
-    public int compareTo(Edge other) {
-      return cost - other.cost;
-    }
-  }
 
   // Inputs
   private final int n;
   private final List<List<Edge>> graph;
-
   // Internal
   private boolean solved;
   private boolean mstExists;
   private boolean[] visited;
   private PriorityQueue<Edge> pq;
-
   // Outputs
   private long minCostSum;
   private Edge[] mstEdges;
-
   public LazyPrimsAdjacencyList(List<List<Edge>> graph) {
     if (graph == null || graph.isEmpty()) throw new IllegalArgumentException();
     this.n = graph.size();
     this.graph = graph;
   }
-
-  // Returns the edges used in finding the minimum spanning tree,
-  // or returns null if no MST exists.
-  public Edge[] getMst() {
-    solve();
-    return mstExists ? mstEdges : null;
-  }
-
-  public Long getMstCost() {
-    solve();
-    return mstExists ? minCostSum : null;
-  }
-
-  private void addEdges(int nodeIndex) {
-    visited[nodeIndex] = true;
-
-    // edges will never be null if the createEmptyGraph method was used to build the graph.
-    List<Edge> edges = graph.get(nodeIndex);
-    for (Edge e : edges)
-      if (!visited[e.to]) {
-        // System.out.printf("(%d, %d, %d)\n", e.from, e.to, e.cost);
-        pq.offer(e);
-      }
-  }
-
-  // Computes the minimum spanning tree and minimum spanning tree cost.
-  private void solve() {
-    if (solved) return;
-    solved = true;
-
-    int m = n - 1, edgeCount = 0;
-    pq = new PriorityQueue<>();
-    visited = new boolean[n];
-    mstEdges = new Edge[m];
-
-    // Add initial set of edges to the priority queue starting at node 0.
-    addEdges(0);
-
-    // Loop while the MST is not complete.
-    while (!pq.isEmpty() && edgeCount != m) {
-      Edge edge = pq.poll();
-      int nodeIndex = edge.to;
-
-      // Skip any edge pointing to an already visited node.
-      if (visited[nodeIndex]) continue;
-
-      mstEdges[edgeCount++] = edge;
-      minCostSum += edge.cost;
-
-      addEdges(nodeIndex);
-    }
-
-    // Check if MST spans entire graph.
-    mstExists = (edgeCount == m);
-  }
-
-  /* Graph construction helpers. */
 
   static List<List<Edge>> createEmptyGraph(int n) {
     List<List<Edge>> g = new ArrayList<>();
@@ -118,8 +45,6 @@ public class LazyPrimsAdjacencyList {
     addDirectedEdge(g, from, to, cost);
     addDirectedEdge(g, to, from, cost);
   }
-
-  /* Example usage. */
 
   public static void main(String[] args) {
     // example1();
@@ -175,6 +100,8 @@ public class LazyPrimsAdjacencyList {
     // from: 8, to: 9, cost: 0
     // from: 8, to: 2, cost: 1
   }
+
+  /* Graph construction helpers. */
 
   private static void firstGraphFromSlides() {
     int n = 7;
@@ -286,6 +213,78 @@ public class LazyPrimsAdjacencyList {
       for (Edge e : solver.getMst()) {
         System.out.println(String.format("from: %d, to: %d, cost: %d", e.from, e.to, e.cost));
       }
+    }
+  }
+
+  /* Example usage. */
+
+  // Returns the edges used in finding the minimum spanning tree,
+  // or returns null if no MST exists.
+  public Edge[] getMst() {
+    solve();
+    return mstExists ? mstEdges : null;
+  }
+
+  public Long getMstCost() {
+    solve();
+    return mstExists ? minCostSum : null;
+  }
+
+  private void addEdges(int nodeIndex) {
+    visited[nodeIndex] = true;
+
+    // edges will never be null if the createEmptyGraph method was used to build the graph.
+    List<Edge> edges = graph.get(nodeIndex);
+    for (Edge e : edges)
+      if (!visited[e.to]) {
+        // System.out.printf("(%d, %d, %d)\n", e.from, e.to, e.cost);
+        pq.offer(e);
+      }
+  }
+
+  // Computes the minimum spanning tree and minimum spanning tree cost.
+  private void solve() {
+    if (solved) return;
+    solved = true;
+
+    int m = n - 1, edgeCount = 0;
+    pq = new PriorityQueue<>();
+    visited = new boolean[n];
+    mstEdges = new Edge[m];
+
+    // Add initial set of edges to the priority queue starting at node 0.
+    addEdges(0);
+
+    // Loop while the MST is not complete.
+    while (!pq.isEmpty() && edgeCount != m) {
+      Edge edge = pq.poll();
+      int nodeIndex = edge.to;
+
+      // Skip any edge pointing to an already visited node.
+      if (visited[nodeIndex]) continue;
+
+      mstEdges[edgeCount++] = edge;
+      minCostSum += edge.cost;
+
+      addEdges(nodeIndex);
+    }
+
+    // Check if MST spans entire graph.
+    mstExists = (edgeCount == m);
+  }
+
+  static class Edge implements Comparable<Edge> {
+    int from, to, cost;
+
+    public Edge(int from, int to, int cost) {
+      this.from = from;
+      this.to = to;
+      this.cost = cost;
+    }
+
+    @Override
+    public int compareTo(Edge other) {
+      return cost - other.cost;
     }
   }
 }

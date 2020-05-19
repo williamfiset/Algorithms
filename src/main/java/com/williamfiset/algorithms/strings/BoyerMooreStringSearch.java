@@ -1,11 +1,11 @@
 package com.williamfiset.algorithms.strings;
 
-import static java.util.Objects.isNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static java.util.Objects.isNull;
 
 public class BoyerMooreStringSearch {
 

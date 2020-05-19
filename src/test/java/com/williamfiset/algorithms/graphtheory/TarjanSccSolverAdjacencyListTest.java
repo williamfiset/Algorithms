@@ -1,10 +1,14 @@
 package com.williamfiset.algorithms.graphtheory;
 
-import static com.google.common.truth.Truth.assertThat;
-
 import com.google.common.collect.ImmutableList;
-import java.util.*;
-import org.junit.*;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public class TarjanSccSolverAdjacencyListTest {
 
@@ -18,6 +22,23 @@ public class TarjanSccSolverAdjacencyListTest {
   // Add directed edge to graph.
   public static void addEdge(List<List<Integer>> graph, int from, int to) {
     graph.get(from).add(to);
+  }
+
+  private static boolean isScc(int[] ids, List<List<Integer>> expectedSccs) {
+    Set<Integer> set = new HashSet<>();
+    Set<Integer> sccComponentIds = new HashSet<>();
+    for (List<Integer> indexes : expectedSccs) {
+      set.clear();
+      int componentId = 0;
+      for (int index : indexes) {
+        componentId = ids[index];
+        set.add(componentId);
+      }
+      if (sccComponentIds.contains(componentId)) return false;
+      if (set.size() != 1) return false;
+      sccComponentIds.add(componentId);
+    }
+    return true;
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -146,22 +167,5 @@ public class TarjanSccSolverAdjacencyListTest {
 
     assertThat(solver.sccCount()).isEqualTo(expectedSccs.size());
     assertThat(isScc(solver.getSccs(), expectedSccs)).isTrue();
-  }
-
-  private static boolean isScc(int[] ids, List<List<Integer>> expectedSccs) {
-    Set<Integer> set = new HashSet<>();
-    Set<Integer> sccComponentIds = new HashSet<>();
-    for (List<Integer> indexes : expectedSccs) {
-      set.clear();
-      int componentId = 0;
-      for (int index : indexes) {
-        componentId = ids[index];
-        set.add(componentId);
-      }
-      if (sccComponentIds.contains(componentId)) return false;
-      if (set.size() != 1) return false;
-      sccComponentIds.add(componentId);
-    }
-    return true;
   }
 }

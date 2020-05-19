@@ -13,6 +13,7 @@ package com.williamfiset.algorithms.math;
 
 public class ModPow {
 
+  static final java.util.Random RANDOM = new java.util.Random();
   // The values placed into the modPow function cannot be greater
   // than MAX or less than MIN otherwise long overflow will
   // happen when the values get squared (they will exceed 2^63-1)
@@ -84,6 +85,8 @@ public class ModPow {
     return ((r % mod) + mod) % mod;
   }
 
+  /* TESTING RELATED METHODS */
+
   // Example usage
   public static void main(String[] args) {
 
@@ -154,10 +157,6 @@ public class ModPow {
       }
     }
   }
-
-  /* TESTING RELATED METHODS */
-
-  static final java.util.Random RANDOM = new java.util.Random();
 
   // Returns long between [1, bound]
   public static long randLong(long bound) {

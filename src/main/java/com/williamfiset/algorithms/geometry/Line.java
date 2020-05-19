@@ -5,18 +5,17 @@
  */
 package com.williamfiset.algorithms.geometry;
 
-import static java.lang.Math.*;
-
 import java.awt.geom.Point2D;
+
+import static java.lang.Math.abs;
 
 public class Line {
 
+  // A very same epsilon value used as a threshold for double equality
+  private static final double EPS = 0.0000001;
   // The internal representation of a line is
   // in general form which is: ax + by = c
   private double a, b, c;
-
-  // A very same epsilon value used as a threshold for double equality
-  private static final double EPS = 0.0000001;
 
   // Construct a line given a line segment
   public Line(Point2D p1, Point2D p2) {
@@ -40,19 +39,6 @@ public class Line {
       p2 = new Point2D.Double(pt.getX() + 1, pt.getY() + slope);
     }
     return new Line(pt, p2);
-  }
-
-  // Normalize the line in general form
-  public void normalise() {
-    if (abs(b) < EPS) {
-      c /= a;
-      a = 1;
-      b = 0;
-    } else {
-      a = (abs(a) < EPS) ? 0 : a / b;
-      c /= b;
-      b = 1;
-    }
   }
 
   // Given a line segment this method finds the line which goes
@@ -101,6 +87,19 @@ public class Line {
     }
 
     return new Point2D.Double(x, y);
+  }
+
+  // Normalize the line in general form
+  public void normalise() {
+    if (abs(b) < EPS) {
+      c /= a;
+      a = 1;
+      b = 0;
+    } else {
+      a = (abs(a) < EPS) ? 0 : a / b;
+      c /= b;
+      b = 1;
+    }
   }
 
   // Get a printable representation of a this Line

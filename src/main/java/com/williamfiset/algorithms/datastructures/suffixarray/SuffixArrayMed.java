@@ -7,31 +7,33 @@ package com.williamfiset.algorithms.datastructures.suffixarray;
 
 public class SuffixArrayMed extends SuffixArray {
 
-  // Wrapper class to help sort suffix ranks
-  static class SuffixRankTuple implements Comparable<SuffixRankTuple> {
-
-    int firstHalf, secondHalf, originalIndex;
-
-    // Sort Suffix ranks first on the first half then the second half
-    @Override
-    public int compareTo(SuffixRankTuple other) {
-      int cmp = Integer.compare(firstHalf, other.firstHalf);
-      if (cmp == 0) return Integer.compare(secondHalf, other.secondHalf);
-      return cmp;
-    }
-
-    @Override
-    public String toString() {
-      return originalIndex + " -> (" + firstHalf + ", " + secondHalf + ")";
-    }
-  }
-
   public SuffixArrayMed(String text) {
     super(toIntArray(text));
   }
 
   public SuffixArrayMed(int[] text) {
     super(text);
+  }
+
+  public static void main(String[] args) {
+
+    // String[] strs = { "AAGAAGC", "AGAAGT", "CGAAGC" };
+    // String[] strs = { "abca", "bcad", "daca" };
+    // String[] strs = { "abca", "bcad", "daca" };
+    // String[] strs = { "AABC", "BCDC", "BCDE", "CDED" };
+    // String[] strs = { "abcdefg", "bcdefgh", "cdefghi" };
+    // String[] strs = { "xxx", "yyy", "zzz" };
+    // TreeSet <String> lcss = SuffixArrayMed.lcs(strs, 2);
+    // System.out.println(lcss);
+
+    // SuffixArrayMed sa = new SuffixArrayMed("abracadabra");
+    // System.out.println(sa);
+    // System.out.println(java.util.Arrays.toString(sa.sa));
+    // System.out.println(java.util.Arrays.toString(sa.lcp));
+
+    SuffixArrayMed sa = new SuffixArrayMed("ABBABAABAA");
+    // SuffixArrayMed sa = new SuffixArrayMed("GAGAGAGAGAGAG");
+    System.out.println(sa);
   }
 
   // Construct a suffix array in O(nlog^2(n))
@@ -97,24 +99,22 @@ public class SuffixArrayMed extends SuffixArray {
     ranks = null;
   }
 
-  public static void main(String[] args) {
+  // Wrapper class to help sort suffix ranks
+  static class SuffixRankTuple implements Comparable<SuffixRankTuple> {
 
-    // String[] strs = { "AAGAAGC", "AGAAGT", "CGAAGC" };
-    // String[] strs = { "abca", "bcad", "daca" };
-    // String[] strs = { "abca", "bcad", "daca" };
-    // String[] strs = { "AABC", "BCDC", "BCDE", "CDED" };
-    // String[] strs = { "abcdefg", "bcdefgh", "cdefghi" };
-    // String[] strs = { "xxx", "yyy", "zzz" };
-    // TreeSet <String> lcss = SuffixArrayMed.lcs(strs, 2);
-    // System.out.println(lcss);
+    int firstHalf, secondHalf, originalIndex;
 
-    // SuffixArrayMed sa = new SuffixArrayMed("abracadabra");
-    // System.out.println(sa);
-    // System.out.println(java.util.Arrays.toString(sa.sa));
-    // System.out.println(java.util.Arrays.toString(sa.lcp));
+    // Sort Suffix ranks first on the first half then the second half
+    @Override
+    public int compareTo(SuffixRankTuple other) {
+      int cmp = Integer.compare(firstHalf, other.firstHalf);
+      if (cmp == 0) return Integer.compare(secondHalf, other.secondHalf);
+      return cmp;
+    }
 
-    SuffixArrayMed sa = new SuffixArrayMed("ABBABAABAA");
-    // SuffixArrayMed sa = new SuffixArrayMed("GAGAGAGAGAGAG");
-    System.out.println(sa);
+    @Override
+    public String toString() {
+      return originalIndex + " -> (" + firstHalf + ", " + secondHalf + ")";
+    }
   }
 }

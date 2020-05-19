@@ -1,10 +1,13 @@
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
-import static com.google.common.truth.Truth.assertThat;
-
 import com.williamfiset.algorithms.graphtheory.treealgorithms.RootingTree.TreeNode;
-import java.util.*;
-import org.junit.*;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public class RootingTreeTest {
 

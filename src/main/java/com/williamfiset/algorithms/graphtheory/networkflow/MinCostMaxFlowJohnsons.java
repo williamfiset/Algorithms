@@ -11,9 +11,12 @@
  */
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
-import static java.lang.Math.min;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
 
-import java.util.*;
+import static java.lang.Math.min;
 
 public class MinCostMaxFlowJohnsons extends NetworkFlowSolverBase {
 

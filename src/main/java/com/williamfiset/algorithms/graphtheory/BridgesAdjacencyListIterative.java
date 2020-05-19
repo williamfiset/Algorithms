@@ -8,12 +8,16 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
-import static java.lang.Math.min;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 
-import java.util.*;
+import static java.lang.Math.min;
 
 public class BridgesAdjacencyListIterative {
 
+  private static int CALLBACK_TOKEN = -2;
   private int n, id;
   private int[] low, ids;
   private boolean solved;
@@ -21,12 +25,52 @@ public class BridgesAdjacencyListIterative {
   private List<List<Integer>> graph;
   private List<Integer> bridges;
 
-  private static int CALLBACK_TOKEN = -2;
-
   public BridgesAdjacencyListIterative(List<List<Integer>> graph, int n) {
     if (graph == null || n <= 0 || graph.size() != n) throw new IllegalArgumentException();
     this.graph = graph;
     this.n = n;
+  }
+
+  public static void main(String[] args) {
+
+    int n = 10;
+    List<List<Integer>> graph = createGraph(n);
+
+    addEdge(graph, 0, 1);
+    addEdge(graph, 0, 2);
+    addEdge(graph, 1, 2);
+    addEdge(graph, 1, 3);
+    addEdge(graph, 2, 3);
+    addEdge(graph, 1, 4);
+    addEdge(graph, 2, 7);
+    addEdge(graph, 4, 6);
+    addEdge(graph, 4, 5);
+    addEdge(graph, 5, 6);
+    addEdge(graph, 7, 8);
+    addEdge(graph, 7, 9);
+
+    BridgesAdjacencyListIterative solver = new BridgesAdjacencyListIterative(graph, n);
+    List<Integer> bridges = solver.findBridges();
+    for (int i = 0; i < bridges.size() / 2; i++) {
+      int node1 = bridges.get(2 * i);
+      int node2 = bridges.get(2 * i + 1);
+      System.out.printf("BRIDGE between nodes: %d and %d\n", node1, node2);
+    }
+  }
+
+  /* Example usage: */
+
+  // Initialize graph with 'n' nodes.
+  public static List<List<Integer>> createGraph(int n) {
+    List<List<Integer>> graph = new ArrayList<>();
+    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
+    return graph;
+  }
+
+  // Add undirected edge to graph.
+  public static void addEdge(List<List<Integer>> graph, int from, int to) {
+    graph.get(from).add(to);
+    graph.get(to).add(from);
   }
 
   // Returns a list of pairs of nodes indicating which nodes form bridges.
@@ -90,47 +134,5 @@ public class BridgesAdjacencyListIterative {
 
     solved = true;
     return bridges;
-  }
-
-  /* Example usage: */
-
-  public static void main(String[] args) {
-
-    int n = 10;
-    List<List<Integer>> graph = createGraph(n);
-
-    addEdge(graph, 0, 1);
-    addEdge(graph, 0, 2);
-    addEdge(graph, 1, 2);
-    addEdge(graph, 1, 3);
-    addEdge(graph, 2, 3);
-    addEdge(graph, 1, 4);
-    addEdge(graph, 2, 7);
-    addEdge(graph, 4, 6);
-    addEdge(graph, 4, 5);
-    addEdge(graph, 5, 6);
-    addEdge(graph, 7, 8);
-    addEdge(graph, 7, 9);
-
-    BridgesAdjacencyListIterative solver = new BridgesAdjacencyListIterative(graph, n);
-    List<Integer> bridges = solver.findBridges();
-    for (int i = 0; i < bridges.size() / 2; i++) {
-      int node1 = bridges.get(2 * i);
-      int node2 = bridges.get(2 * i + 1);
-      System.out.printf("BRIDGE between nodes: %d and %d\n", node1, node2);
-    }
-  }
-
-  // Initialize graph with 'n' nodes.
-  public static List<List<Integer>> createGraph(int n) {
-    List<List<Integer>> graph = new ArrayList<>();
-    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
-    return graph;
-  }
-
-  // Add undirected edge to graph.
-  public static void addEdge(List<List<Integer>> graph, int from, int to) {
-    graph.get(from).add(to);
-    graph.get(to).add(from);
   }
 }

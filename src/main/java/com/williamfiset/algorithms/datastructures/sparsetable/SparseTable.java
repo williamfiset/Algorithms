@@ -33,18 +33,7 @@ public class SparseTable {
 
   // Index Table (IT) associated with the values in the sparse table.
   private int[][] it;
-
-  // The various supported query operations on this sparse table.
-  public enum Operation {
-    MIN,
-    MAX,
-    SUM,
-    MULT,
-    GCD
-  };
-
-  private Operation op;
-
+  private Operation op;;
   // All functions must be associative, e.g: a * (b * c) = (a * b) * c for some operation '*'
   private BinaryOperator<Long> sumFn = (a, b) -> a + b;
   private BinaryOperator<Long> minFn = (a, b) -> Math.min(a, b);
@@ -60,11 +49,42 @@ public class SparseTable {
         }
         return Math.abs(gcd);
       };
-
   public SparseTable(long[] values, Operation op) {
     // TODO(william): Lazily call init in query methods instead of initializing in constructor?
     this.op = op;
     init(values);
+  }
+
+  public static void main(String[] args) {
+    // example1();
+    // example2();
+    example3();
+  }
+
+  private static void example1() {
+    long[] values = {1, 2, -3, 2, 4, -1, 5};
+
+    // Initialize sparse table to do range minimum queries.
+    SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.MULT);
+
+    System.out.println(sparseTable.query(2, 3));
+  }
+
+  private static void exampleFromSlides() {
+    long[] values = {4, 2, 3, 7, 1, 5, 3, 3, 9, 6, 7, -1, 4};
+
+    // Initialize sparse table to do range minimum queries.
+    SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.MIN);
+
+    System.out.printf("Min value between [2, 7] = %d\n", sparseTable.query(2, 7));
+  }
+
+  private static void example3() {
+    long[] values = {4, 4, 4, 4, 4, 4};
+    // Initialize sparse table to do range minimum queries.
+    SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.SUM);
+
+    System.out.printf("%d\n", sparseTable.query(0, values.length - 1));
   }
 
   private void init(long[] v) {
@@ -183,6 +203,8 @@ public class SparseTable {
     }
   }
 
+  /* Example usage: */
+
   // Do sum query [l, r] in O(log2(n)).
   //
   // Perform a cascading query which shrinks the left endpoint while summing over all the intervals
@@ -223,37 +245,12 @@ public class SparseTable {
     return fn.apply(dp[p][l], dp[p][r - (1 << p) + 1]);
   }
 
-  /* Example usage: */
-
-  public static void main(String[] args) {
-    // example1();
-    // example2();
-    example3();
-  }
-
-  private static void example1() {
-    long[] values = {1, 2, -3, 2, 4, -1, 5};
-
-    // Initialize sparse table to do range minimum queries.
-    SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.MULT);
-
-    System.out.println(sparseTable.query(2, 3));
-  }
-
-  private static void exampleFromSlides() {
-    long[] values = {4, 2, 3, 7, 1, 5, 3, 3, 9, 6, 7, -1, 4};
-
-    // Initialize sparse table to do range minimum queries.
-    SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.MIN);
-
-    System.out.printf("Min value between [2, 7] = %d\n", sparseTable.query(2, 7));
-  }
-
-  private static void example3() {
-    long[] values = {4, 4, 4, 4, 4, 4};
-    // Initialize sparse table to do range minimum queries.
-    SparseTable sparseTable = new SparseTable(values, SparseTable.Operation.SUM);
-
-    System.out.printf("%d\n", sparseTable.query(0, values.length - 1));
+// The various supported query operations on this sparse table.
+  public enum Operation {
+    MIN,
+    MAX,
+    SUM,
+    MULT,
+    GCD
   }
 }

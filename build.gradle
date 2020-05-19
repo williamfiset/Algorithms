@@ -5,15 +5,15 @@ apply plugin: 'application'
 mainClassName = findProperty("main") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"
 
 buildscript {
-  repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
-  }
-  dependencies {
-    // https://github.com/sherter/google-java-format-gradle-plugin
-    classpath "gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.8"
-  }
+    dependencies {
+        // https://github.com/sherter/google-java-format-gradle-plugin
+        classpath "gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.8"
+    }
 }
 
 // Require Java 8
@@ -21,56 +21,56 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
-  mavenLocal()
-  mavenCentral()
+    mavenLocal()
+    mavenCentral()
 }
 
 // Describe all project deps. Use 'testCompile' for test dependencies and
 // 'compile' for project dependencies.
 dependencies {
-  // Apache commons lang
-  testCompile 'org.apache.commons:commons-lang3:3.6'
+    // Apache commons lang
+    testCompile 'org.apache.commons:commons-lang3:3.6'
 
-  // JUnit framework
-  testCompile 'junit:junit:4.+'
+    // JUnit framework
+    testCompile 'junit:junit:4.+'
 
-  // JUnit 5 / Jupiter
-  testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
-   
-  // Google Guava lib
-  testCompile group: 'com.google.guava', name: 'guava', version: '22.0'
+    // JUnit 5 / Jupiter
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
 
-  // Google Truth test framework
-  // https://mvnrepository.com/artifact/com.google.truth/truth
-  testCompile group: 'com.google.truth', name: 'truth', version: '1.0'
+    // Google Guava lib
+    testCompile group: 'com.google.guava', name: 'guava', version: '22.0'
 
-  // Test mocking framework
-  testCompile "org.mockito:mockito-core:1.+"
+    // Google Truth test framework
+    // https://mvnrepository.com/artifact/com.google.truth/truth
+    testCompile group: 'com.google.truth', name: 'truth', version: '1.0'
+
+    // Test mocking framework
+    testCompile "org.mockito:mockito-core:1.+"
 }
 
 test {
-  dependsOn cleanTest
-  testLogging.showStandardStreams = true
+    dependsOn cleanTest
+    testLogging.showStandardStreams = true
 }
 
 tasks.withType(JavaCompile) {
-  options.encoding = 'UTF-8'
-  options.compilerArgs += [
-    '-Xlint:unchecked',
-    '-Xlint:deprecation'
-  ]
+    options.encoding = 'UTF-8'
+    options.compilerArgs += [
+            '-Xlint:unchecked',
+            '-Xlint:deprecation'
+    ]
 }
 
 // Options when compiling tests
 compileTestJava {
-  options.encoding = 'UTF-8'
-  options.compilerArgs += [
-    '-Xlint:unchecked',
-    '-Xlint:deprecation'
-  ]
+    options.encoding = 'UTF-8'
+    options.compilerArgs += [
+            '-Xlint:unchecked',
+            '-Xlint:deprecation'
+    ]
 }
 
 task buildDependenciesFolder(type: Copy) {
-  from configurations.compile
-  into './dependencies'
+    from configurations.compile
+    into './dependencies'
 }

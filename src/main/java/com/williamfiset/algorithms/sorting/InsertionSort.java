@@ -13,10 +13,7 @@ import java.util.Random;
 
 public class InsertionSort implements InplaceSort {
 
-  @Override
-  public void sort(int[] values) {
-    InsertionSort.insertionSort(values);
-  }
+  static Random RANDOM = new Random();
 
   // Sort the given array using insertion sort. The idea behind
   // insertion sort is that at the array is already sorted from
@@ -52,8 +49,6 @@ public class InsertionSort implements InplaceSort {
     runTests();
   }
 
-  static Random RANDOM = new Random();
-
   public static void runTests() {
     final int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {
@@ -71,5 +66,10 @@ public class InsertionSort implements InplaceSort {
 
   static int randInt(int min, int max) {
     return RANDOM.nextInt((max - min) + 1) + min;
+  }
+
+  @Override
+  public void sort(int[] values) {
+    InsertionSort.insertionSort(values);
   }
 }

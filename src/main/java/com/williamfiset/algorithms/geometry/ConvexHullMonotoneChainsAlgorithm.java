@@ -17,26 +17,16 @@
  */
 package com.williamfiset.algorithms.geometry;
 
-import static java.lang.Math.abs;
+import java.awt.geom.Point2D;
+import java.util.Arrays;
+import java.util.Comparator;
 
-import java.awt.geom.*;
-import java.util.*;
+import static java.lang.Math.abs;
 
 public class ConvexHullMonotoneChainsAlgorithm {
 
   // Small epsilon used for double value comparison.
   private static final double EPS = 1e-5;
-
-  // Sorts points by first x coordinate and then y coordinate.
-  private static class PointComparator implements Comparator<Point2D> {
-    public int compare(Point2D p1, Point2D p2) {
-      if (abs(p1.getX() - p2.getX()) < EPS) {
-        if (abs(p1.getY() - p2.getY()) < EPS) return 0;
-        else if (p1.getY() > p2.getY()) return 1;
-      } else if (p1.getX() > p2.getX()) return 1;
-      return -1;
-    }
-  }
 
   // Use the monotone chains algorithm to find the
   // convex hull of a set of points in O(nlogn) time.
@@ -86,5 +76,16 @@ public class ConvexHullMonotoneChainsAlgorithm {
             - (b.getX() - a.getX()) * (c.getY() - b.getY());
     if (abs(value) < EPS) return 0;
     return (value > 0) ? -1 : +1;
+  }
+
+  // Sorts points by first x coordinate and then y coordinate.
+  private static class PointComparator implements Comparator<Point2D> {
+    public int compare(Point2D p1, Point2D p2) {
+      if (abs(p1.getX() - p2.getX()) < EPS) {
+        if (abs(p1.getY() - p2.getY()) < EPS) return 0;
+        else if (p1.getY() > p2.getY()) return 1;
+      } else if (p1.getX() > p2.getX()) return 1;
+      return -1;
+    }
   }
 }

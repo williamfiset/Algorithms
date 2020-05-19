@@ -28,6 +28,12 @@ public class CompactSegmentTree {
     for (int i = 0; i < N; i++) modify(i, values[i]);
   }
 
+  public static void main(String[] args) {
+    long[] values = new long[] {3, 0, 8, 9, 8, 2, 5, 3, 7, 1};
+    CompactSegmentTree st = new CompactSegmentTree(values);
+    System.out.println(java.util.Arrays.toString(st.tree));
+  }
+
   // This is the segment tree function we are using for queries.
   // The function must be an associative function, meaning
   // the following property must hold: f(f(a,b),c) = f(a,f(b,c)).
@@ -62,11 +68,5 @@ public class CompactSegmentTree {
       throw new IllegalStateException("UNIQUE should not be the return value.");
     }
     return res;
-  }
-
-  public static void main(String[] args) {
-    long[] values = new long[] {3, 0, 8, 9, 8, 2, 5, 3, 7, 1};
-    CompactSegmentTree st = new CompactSegmentTree(values);
-    System.out.println(java.util.Arrays.toString(st.tree));
   }
 }

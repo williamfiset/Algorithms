@@ -1,10 +1,12 @@
 package com.williamfiset.algorithms.datastructures.suffixarray;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.security.SecureRandom;
 import java.util.Random;
-import org.junit.*;
+
+import static org.junit.Assert.assertEquals;
 
 public class SuffixArrayTest {
 

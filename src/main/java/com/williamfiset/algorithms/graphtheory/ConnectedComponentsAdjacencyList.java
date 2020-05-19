@@ -12,19 +12,12 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ConnectedComponentsAdjacencyList {
-
-  static class Edge {
-    int from, to, cost;
-
-    public Edge(int from, int to, int cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-  }
 
   static int countConnectedComponents(Map<Integer, List<Edge>> graph, int n) {
 
@@ -70,6 +63,16 @@ public class ConnectedComponentsAdjacencyList {
     }
     list.add(new Edge(from, to, cost));
     list.add(new Edge(to, from, cost));
+  }
+
+  static class Edge {
+    int from, to, cost;
+
+    public Edge(int from, int to, int cost) {
+      this.from = from;
+      this.to = to;
+      this.cost = cost;
+    }
   }
 }
 

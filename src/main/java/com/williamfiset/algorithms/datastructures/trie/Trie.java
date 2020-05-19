@@ -7,22 +7,6 @@ public class Trie {
   private final char rootCharacter = '\0';
   private Node root = new Node(rootCharacter);
 
-  private static class Node {
-
-    char ch;
-    int count = 0;
-    boolean isWordEnding = false;
-    java.util.Map<Character, Node> children = new java.util.HashMap<>();
-
-    public Node(char ch) {
-      this.ch = ch;
-    }
-
-    public void addChild(Node node, char c) {
-      children.put(c, node);
-    }
-  }
-
   // Returns true if the string being inserted
   // contains a prefix already in the trie
   public boolean insert(String key, int numInserts) {
@@ -150,5 +134,21 @@ public class Trie {
 
     root.children = null;
     root = new Node(rootCharacter);
+  }
+
+  private static class Node {
+
+    char ch;
+    int count = 0;
+    boolean isWordEnding = false;
+    java.util.Map<Character, Node> children = new java.util.HashMap<>();
+
+    public Node(char ch) {
+      this.ch = ch;
+    }
+
+    public void addChild(Node node, char c) {
+      children.put(c, node);
+    }
   }
 }

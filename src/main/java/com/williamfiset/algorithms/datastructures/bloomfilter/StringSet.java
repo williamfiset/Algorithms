@@ -18,13 +18,6 @@ public class StringSet {
   // same value as '   ' since 0*95^0 = 0*95^0 + 0*95^1 + 0*95^2
   private static final int ALPHABET_SZ = 95 + 1;
   private static final int[] ALPHABET = new int[127];
-
-  private final int N_HASHES;
-  private final long POWERS[][];
-  private final int[] MODS, MOD_INVERSES;
-  private final long[] rollingHashes;
-  private final BloomFilter bloomFilter;
-
   // More primes: 1009, 1013, 1019, 10007, 10009, 10037, 100003, 100019, 100043, 1000003, 1000033,
   // 1000037,
   // 10000019, 10000079, 10000103, 100000007, 100000009, 100000023, 1000000007, 1000000009,
@@ -37,6 +30,12 @@ public class StringSet {
       ALPHABET[i] = n;
     }
   }
+
+  private final int N_HASHES;
+  private final long POWERS[][];
+  private final int[] MODS, MOD_INVERSES;
+  private final long[] rollingHashes;
+  private final BloomFilter bloomFilter;
 
   public StringSet(int maxLen) {
     this(DEFAULT_MODS, maxLen);

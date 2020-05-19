@@ -1,17 +1,13 @@
 package com.williamfiset.algorithms.datastructures.fibonacciheap;
 
-import static com.google.common.truth.Truth.assertThat;
-import static java.util.Collections.sort;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Queue;
-import java.util.Random;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.*;
+
+import static com.google.common.truth.Truth.assertThat;
+import static java.util.Collections.sort;
 
 // Disclaimer: Based by help of
 // "http://langrsoft.com/jeff/2011/11/test-driving-a-heap-based-priority-queue/">Test-Driving a

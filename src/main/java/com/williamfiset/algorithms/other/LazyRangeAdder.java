@@ -32,24 +32,6 @@ public class LazyRangeAdder {
     }
   }
 
-  // Add `x` to the range [l, r] inclusive
-  public void add(int l, int r, int x) {
-    differenceArray[l] += x;
-    differenceArray[r + 1] -= x;
-  }
-
-  // IMPORTANT: Make certain to call this method once all the additions
-  // have been made with add(l, r, x)
-  public void done() {
-    for (int i = 0; i < n; i++) {
-      if (i == 0) {
-        array[i] = differenceArray[i];
-      } else {
-        array[i] = differenceArray[i] + array[i - 1];
-      }
-    }
-  }
-
   public static void main(String[] args) {
     // Array to be updated
     int[] array = {10, 4, 6, 13, 8, 15, 17, 22};
@@ -67,5 +49,23 @@ public class LazyRangeAdder {
     lazyRangeAdder.add(0, 7, 12);
     lazyRangeAdder.done();
     System.out.println(java.util.Arrays.toString(array));
+  }
+
+  // Add `x` to the range [l, r] inclusive
+  public void add(int l, int r, int x) {
+    differenceArray[l] += x;
+    differenceArray[r + 1] -= x;
+  }
+
+  // IMPORTANT: Make certain to call this method once all the additions
+  // have been made with add(l, r, x)
+  public void done() {
+    for (int i = 0; i < n; i++) {
+      if (i == 0) {
+        array[i] = differenceArray[i];
+      } else {
+        array[i] = differenceArray[i] + array[i - 1];
+      }
+    }
   }
 }

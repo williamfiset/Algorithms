@@ -11,43 +11,8 @@ import com.williamfiset.algorithms.datastructures.utils.TreePrinter.PrintableNod
 
 public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
 
-  public class Node implements PrintableNode {
-
-    // 'bf' is short for Balance Factor
-    public int bf;
-
-    // The value/data contained within the node.
-    public T value;
-
-    // The height of this node in the tree.
-    public int height;
-
-    // The left and the right children of this node.
-    public Node left, right;
-
-    public Node(T value) {
-      this.value = value;
-    }
-
-    @Override
-    public PrintableNode getLeft() {
-      return left;
-    }
-
-    @Override
-    public PrintableNode getRight() {
-      return right;
-    }
-
-    @Override
-    public String getText() {
-      return value.toString();
-    }
-  }
-
   // The root node of the AVL tree.
   public Node root;
-
   // Tracks the number of nodes inside the tree.
   private int nodeCount = 0;
 
@@ -364,5 +329,39 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
     if (node.left != null) isValid = isValid && node.left.value.compareTo(val) < 0;
     if (node.right != null) isValid = isValid && node.right.value.compareTo(val) > 0;
     return isValid && validateBSTInvarient(node.left) && validateBSTInvarient(node.right);
+  }
+
+  public class Node implements PrintableNode {
+
+    // 'bf' is short for Balance Factor
+    public int bf;
+
+    // The value/data contained within the node.
+    public T value;
+
+    // The height of this node in the tree.
+    public int height;
+
+    // The left and the right children of this node.
+    public Node left, right;
+
+    public Node(T value) {
+      this.value = value;
+    }
+
+    @Override
+    public PrintableNode getLeft() {
+      return left;
+    }
+
+    @Override
+    public PrintableNode getRight() {
+      return right;
+    }
+
+    @Override
+    public String getText() {
+      return value.toString();
+    }
   }
 }

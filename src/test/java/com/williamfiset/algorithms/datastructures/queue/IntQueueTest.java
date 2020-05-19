@@ -1,10 +1,11 @@
 package com.williamfiset.algorithms.datastructures.queue;
 
-import static org.junit.Assert.*;
-
-import java.util.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayDeque;
+
+import static org.junit.Assert.*;
 
 public class IntQueueTest {
 

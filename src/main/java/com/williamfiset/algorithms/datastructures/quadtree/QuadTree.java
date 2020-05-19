@@ -7,33 +7,66 @@
  */
 package com.williamfiset.algorithms.datastructures.quadtree;
 
-import static java.lang.Double.POSITIVE_INFINITY;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.PriorityQueue;
 
-import java.util.*;
+import static java.lang.Double.POSITIVE_INFINITY;
 
 public class QuadTree {
 
+  public static final int DEFAULT_NUM_POINTS = 16;
   private static int NORTH_EAST = 1;
   private static int NORTH_WEST = 2;
   private static int SOUTH_EAST = 3;
   private static int SOUTH_WEST = 4;
+  // This is the maximum number of points each quad tree node can
+  // sustain before it has to subdivide into four more regions.
+  // This variable can have a significant impact on performance.
+  final int NUM_POINTS;
+  // Root node of the quad tree. Public for testing.
+  public Node root;
+
+  public QuadTree(Rect region) {
+    this.NUM_POINTS = DEFAULT_NUM_POINTS;
+    root = new Node(region);
+  }
+
+  public QuadTree(Rect region, int pointsPerNode) {
+    this.NUM_POINTS = pointsPerNode;
+    root = new Node(region);
+  }
 
   private static boolean isNorth(int dir) {
     return dir == NORTH_EAST || dir == NORTH_WEST;
   }
 
-  class Pt {
-    long x, y;
+  public boolean add(long x, long y) {
+    return root.add(x, y);
+  }
 
-    public Pt(long xx, long yy) {
-      y = yy;
-      x = xx;
-    }
+  public int count(Rect region) {
+    return root.count(region);
+  }
 
-    @Override
-    public String toString() {
-      return "(" + x + "," + y + ")";
-    }
+  public List<Pt> kNearestNeighbors(int k, long x, long y) {
+    return root.kNearestNeighbors(k, x, y);
+  }
+
+  public List<Pt> getPoints() {
+    List<Pt> points = new ArrayList<>();
+    getPoints(root, points);
+    return points;
+  }
+
+  private void getPoints(Node node, List<Pt> points) {
+    if (node == null) return;
+    for (int i = 0; i < node.ptCount; i++) points.add(new Pt(node.X[i], node.Y[i]));
+    getPoints(node.nw, points);
+    getPoints(node.ne, points);
+    getPoints(node.sw, points);
+    getPoints(node.se, points);
   }
 
   static class SortedPt implements Comparable<SortedPt> {
@@ -53,6 +86,52 @@ public class QuadTree {
     @Override
     public String toString() {
       return dist + " - " + pt;
+    }
+  }
+
+  public static class Rect {
+
+    long x1, y1, x2, y2;
+
+    // Define a rectangle as a pair of points (x1, y1) in the bottom left corner
+    // and (x2, y2) in the top right corner of the rectangle.
+    public Rect(long x1, long y1, long x2, long y2) {
+      if (x1 > x2 || y1 > y2) throw new IllegalArgumentException("Illegal rectangle coordinates");
+      this.x1 = x1;
+      this.y1 = y1;
+      this.x2 = x2;
+      this.y2 = y2;
+    }
+
+    // Check for an intersection between two rectangles. The easiest way to do this is to
+    // check if the two rectangles do not intersect and negate the logic afterwards.
+    public boolean intersects(Rect r) {
+      return r != null && !(r.x2 < x1 || r.x1 > x2 || r.y1 > y2 || r.y2 < y1);
+    }
+
+    // Check if a point (x, y) is within this rectangle, this
+    // includes the boundary of the rectangle.
+    public boolean contains(long x, long y) {
+      return (x1 <= x && x <= x2) && (y1 <= y && y <= y2);
+    }
+
+    // Check if another rectangle is strictly contained within this rectangle.
+    public boolean contains(Rect r) {
+      return r != null && contains(r.x1, r.y1) && contains(r.x2, r.y2);
+    }
+  }
+
+  class Pt {
+    long x, y;
+
+    public Pt(long xx, long yy) {
+      y = yy;
+      x = xx;
+    }
+
+    @Override
+    public String toString() {
+      return "(" + x + "," + y + ")";
     }
   }
 
@@ -314,83 +393,4 @@ public class QuadTree {
       } // if
     } // method
   } // node
-
-  public static class Rect {
-
-    long x1, y1, x2, y2;
-
-    // Define a rectangle as a pair of points (x1, y1) in the bottom left corner
-    // and (x2, y2) in the top right corner of the rectangle.
-    public Rect(long x1, long y1, long x2, long y2) {
-      if (x1 > x2 || y1 > y2) throw new IllegalArgumentException("Illegal rectangle coordinates");
-      this.x1 = x1;
-      this.y1 = y1;
-      this.x2 = x2;
-      this.y2 = y2;
-    }
-
-    // Check for an intersection between two rectangles. The easiest way to do this is to
-    // check if the two rectangles do not intersect and negate the logic afterwards.
-    public boolean intersects(Rect r) {
-      return r != null && !(r.x2 < x1 || r.x1 > x2 || r.y1 > y2 || r.y2 < y1);
-    }
-
-    // Check if a point (x, y) is within this rectangle, this
-    // includes the boundary of the rectangle.
-    public boolean contains(long x, long y) {
-      return (x1 <= x && x <= x2) && (y1 <= y && y <= y2);
-    }
-
-    // Check if another rectangle is strictly contained within this rectangle.
-    public boolean contains(Rect r) {
-      return r != null && contains(r.x1, r.y1) && contains(r.x2, r.y2);
-    }
-  }
-
-  // This is the maximum number of points each quad tree node can
-  // sustain before it has to subdivide into four more regions.
-  // This variable can have a significant impact on performance.
-  final int NUM_POINTS;
-
-  public static final int DEFAULT_NUM_POINTS = 16;
-
-  // Root node of the quad tree. Public for testing.
-  public Node root;
-
-  public QuadTree(Rect region) {
-    this.NUM_POINTS = DEFAULT_NUM_POINTS;
-    root = new Node(region);
-  }
-
-  public QuadTree(Rect region, int pointsPerNode) {
-    this.NUM_POINTS = pointsPerNode;
-    root = new Node(region);
-  }
-
-  public boolean add(long x, long y) {
-    return root.add(x, y);
-  }
-
-  public int count(Rect region) {
-    return root.count(region);
-  }
-
-  public List<Pt> kNearestNeighbors(int k, long x, long y) {
-    return root.kNearestNeighbors(k, x, y);
-  }
-
-  public List<Pt> getPoints() {
-    List<Pt> points = new ArrayList<>();
-    getPoints(root, points);
-    return points;
-  }
-
-  private void getPoints(Node node, List<Pt> points) {
-    if (node == null) return;
-    for (int i = 0; i < node.ptCount; i++) points.add(new Pt(node.X[i], node.Y[i]));
-    getPoints(node.nw, points);
-    getPoints(node.ne, points);
-    getPoints(node.sw, points);
-    getPoints(node.se, points);
-  }
 }

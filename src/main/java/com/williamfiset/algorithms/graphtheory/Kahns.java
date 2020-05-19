@@ -16,54 +16,14 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
+import java.util.ArrayDeque;
+import java.util.List;
+import java.util.Queue;
+
 import static com.williamfiset.algorithms.utils.graphutils.Utils.addDirectedEdge;
 import static com.williamfiset.algorithms.utils.graphutils.Utils.createEmptyAdjacencyList;
 
-import java.util.*;
-
 public class Kahns {
-
-  // Given a an acyclic graph `g` represented as a adjacency list, return a
-  // topological ordering on the nodes of the graph.
-  public int[] kahns(List<List<Integer>> g) {
-    int n = g.size();
-
-    // Calculate the in-degree of each node.
-    int[] inDegree = new int[n];
-    for (List<Integer> edges : g) {
-      for (int to : edges) {
-        inDegree[to]++;
-      }
-    }
-
-    // q always contains the set nodes with no incoming edges.
-    Queue<Integer> q = new ArrayDeque<>();
-
-    // Find all start nodes.
-    for (int i = 0; i < n; i++) {
-      if (inDegree[i] == 0) {
-        q.offer(i);
-      }
-    }
-
-    int index = 0;
-    int[] order = new int[n];
-    while (!q.isEmpty()) {
-      int at = q.poll();
-      order[index++] = at;
-      for (int to : g.get(at)) {
-        inDegree[to]--;
-        if (inDegree[to] == 0) {
-          q.offer(to);
-        }
-      }
-    }
-    System.out.println("inDegree: " + java.util.Arrays.toString(inDegree));
-    if (index != n) {
-      throw new IllegalArgumentException("Graph is not acyclic! Detected a cycle.");
-    }
-    return order;
-  }
 
   // Example usage:
   public static void main(String[] args) {
@@ -108,5 +68,47 @@ public class Kahns {
     addDirectedEdge(g, 3, 0);
     Kahns solver = new Kahns();
     System.out.println(java.util.Arrays.toString(solver.kahns(g)));
+  }
+
+  // Given a an acyclic graph `g` represented as a adjacency list, return a
+  // topological ordering on the nodes of the graph.
+  public int[] kahns(List<List<Integer>> g) {
+    int n = g.size();
+
+    // Calculate the in-degree of each node.
+    int[] inDegree = new int[n];
+    for (List<Integer> edges : g) {
+      for (int to : edges) {
+        inDegree[to]++;
+      }
+    }
+
+    // q always contains the set nodes with no incoming edges.
+    Queue<Integer> q = new ArrayDeque<>();
+
+    // Find all start nodes.
+    for (int i = 0; i < n; i++) {
+      if (inDegree[i] == 0) {
+        q.offer(i);
+      }
+    }
+
+    int index = 0;
+    int[] order = new int[n];
+    while (!q.isEmpty()) {
+      int at = q.poll();
+      order[index++] = at;
+      for (int to : g.get(at)) {
+        inDegree[to]--;
+        if (inDegree[to] == 0) {
+          q.offer(to);
+        }
+      }
+    }
+    System.out.println("inDegree: " + java.util.Arrays.toString(inDegree));
+    if (index != n) {
+      throw new IllegalArgumentException("Graph is not acyclic! Detected a cycle.");
+    }
+    return order;
   }
 }

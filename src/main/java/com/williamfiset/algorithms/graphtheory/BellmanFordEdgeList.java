@@ -8,18 +8,6 @@ package com.williamfiset.algorithms.graphtheory;
 
 public class BellmanFordEdgeList {
 
-  // A directed edge
-  public static class Edge {
-    double cost;
-    int from, to;
-
-    public Edge(int from, int to, double cost) {
-      this.to = to;
-      this.from = from;
-      this.cost = cost;
-    }
-  }
-
   /**
    * An implementation of the Bellman-Ford algorithm. The algorithm finds the shortest path between
    * a starting node and all other nodes in the graph. The algorithm also detects negative cycles.
@@ -101,5 +89,17 @@ public class BellmanFordEdgeList {
     // The cost to get from node 0 to 7 is 8.00
     // The cost to get from node 0 to 8 is Infinity
 
+  }
+
+  // A directed edge
+  public static class Edge {
+    double cost;
+    int from, to;
+
+    public Edge(int from, int to, double cost) {
+      this.to = to;
+      this.from = from;
+      this.cost = cost;
+    }
   }
 }

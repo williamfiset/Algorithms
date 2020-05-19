@@ -10,31 +10,15 @@
  */
 package com.williamfiset.algorithms.geometry;
 
-import static java.lang.Math.abs;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Math.*;
 
 public class LineSegmentLineSegmentIntersection {
 
   // Small epsilon used for double value comparison.
   private static final double EPS = 1e-7;
-
-  // 2D Point class.
-  public static class Pt {
-    double x, y;
-
-    public Pt(double x, double y) {
-      this.x = x;
-      this.y = y;
-    }
-
-    public boolean equals(Pt pt) {
-      return abs(x - pt.x) < EPS && abs(y - pt.y) < EPS;
-    }
-  }
 
   // Finds the intersection point(s) of two line segments. Unlike regular line
   // segments, segments which are points (x1 = x2 and y1 = y2) are allowed.
@@ -202,5 +186,19 @@ public class LineSegmentLineSegmentIntersection {
 
     // Prints: (-5.000, 0.000) (5.000, 0.000)
     System.out.printf("(%.3f, %.3f) (%.3f, %.3f)\n", point1.x, point1.y, point2.x, point2.y);
+  }
+
+  // 2D Point class.
+  public static class Pt {
+    double x, y;
+
+    public Pt(double x, double y) {
+      this.x = x;
+      this.y = y;
+    }
+
+    public boolean equals(Pt pt) {
+      return abs(x - pt.x) < EPS && abs(y - pt.y) < EPS;
+    }
   }
 }

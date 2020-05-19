@@ -7,15 +7,8 @@ package com.williamfiset.algorithms.datastructures.bloomfilter;
 
 public class AnagramSet {
 
-  private final int N_HASHES;
-  private final int[] MODS;
-  private final long[] rollingHashes;
-  private final int[][] MOD_INVERSES;
-  private final BloomFilter bloomFilter;
-
   // Alphabet table lookup
   private static final int[] ALPHABET = new int[127];
-
   // There are only 95 printable ASCII characters, hence we only
   // need the first 95 prime numbers to uniquely represent every string
   private static final int[] PRIMES = {
@@ -25,7 +18,6 @@ public class AnagramSet {
     311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421,
     431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499
   };
-
   // More primes: 1009, 1013, 1019, 10007, 10009, 10037, 100003, 100019, 100043, 1000003, 1000033,
   // 1000037,
   // 10000019, 10000079, 10000103, 100000007, 100000009, 100000023, 1000000007, 1000000009,
@@ -37,6 +29,12 @@ public class AnagramSet {
       ALPHABET[i] = PRIMES[j];
     }
   }
+
+  private final int N_HASHES;
+  private final int[] MODS;
+  private final long[] rollingHashes;
+  private final int[][] MOD_INVERSES;
+  private final BloomFilter bloomFilter;
 
   public AnagramSet() {
     this(DEFAULT_MODS);

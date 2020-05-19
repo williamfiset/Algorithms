@@ -1,49 +1,12 @@
 package com.williamfiset.algorithms.other;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
-import org.junit.*;
+import static org.junit.Assert.assertEquals;
 
 public class SlidingWindowMaximumTest {
 
   final int TESTS = 1500;
-
-  @Test
-  public void smallWindowTest() {
-
-    int[] values = {1, 2, 1, 3, 0, 4};
-    SlidingWindowMaximum w = new SlidingWindowMaximum(values);
-
-    w.advance();
-    assertEquals(1, w.getMax());
-    w.advance();
-    assertEquals(2, w.getMax());
-    w.advance();
-    assertEquals(2, w.getMax());
-    w.shrink();
-    assertEquals(2, w.getMax());
-    w.shrink();
-    assertEquals(1, w.getMax());
-    w.advance();
-    assertEquals(3, w.getMax());
-    w.advance();
-    assertEquals(3, w.getMax());
-    w.advance();
-    assertEquals(4, w.getMax());
-    w.shrink();
-    assertEquals(4, w.getMax());
-    w.shrink();
-    assertEquals(4, w.getMax());
-    w.shrink();
-    assertEquals(4, w.getMax());
-  }
-
-  @Test
-  public void randomizedSlidingWindowTest() {
-    for (int sz = 1; sz <= TESTS; sz++) {
-      randomizedTest(sz);
-    }
-  }
 
   private static void fillRandom(int[] ar) {
     for (int i = 0; i < ar.length; i++) {
@@ -86,6 +49,43 @@ public class SlidingWindowMaximumTest {
       for (int i = lo; i < hi; i++) max = Math.max(max, ar[i]);
 
       assertEquals(max, window.getMax());
+    }
+  }
+
+  @Test
+  public void smallWindowTest() {
+
+    int[] values = {1, 2, 1, 3, 0, 4};
+    SlidingWindowMaximum w = new SlidingWindowMaximum(values);
+
+    w.advance();
+    assertEquals(1, w.getMax());
+    w.advance();
+    assertEquals(2, w.getMax());
+    w.advance();
+    assertEquals(2, w.getMax());
+    w.shrink();
+    assertEquals(2, w.getMax());
+    w.shrink();
+    assertEquals(1, w.getMax());
+    w.advance();
+    assertEquals(3, w.getMax());
+    w.advance();
+    assertEquals(3, w.getMax());
+    w.advance();
+    assertEquals(4, w.getMax());
+    w.shrink();
+    assertEquals(4, w.getMax());
+    w.shrink();
+    assertEquals(4, w.getMax());
+    w.shrink();
+    assertEquals(4, w.getMax());
+  }
+
+  @Test
+  public void randomizedSlidingWindowTest() {
+    for (int sz = 1; sz <= TESTS; sz++) {
+      randomizedTest(sz);
     }
   }
 }

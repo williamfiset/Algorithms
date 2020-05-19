@@ -17,19 +17,53 @@
  */
 package com.williamfiset.algorithms.graphtheory.networkflow.examples;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class CapacityScalingExample {
 
+  public static void main(String[] args) {
+    // n is the number of nodes including the source and the sink.
+    int n = 6;
+
+    int s = n - 2;
+    int t = n - 1;
+
+    NetworkFlowSolverBase solver = new CapacityScalingSolver(n, s, t);
+
+    // Edges from source
+    solver.addEdge(s, 0, 6);
+    solver.addEdge(s, 1, 14);
+
+    // Middle edges
+    solver.addEdge(0, 1, 1);
+    solver.addEdge(0, 2, 5);
+    solver.addEdge(1, 2, 7);
+    solver.addEdge(1, 3, 10);
+    solver.addEdge(2, 3, 1);
+
+    // Edges to sink
+    solver.addEdge(2, t, 11);
+    solver.addEdge(3, t, 12);
+
+    // Prints:
+    // Maximum Flow is: 20
+    System.out.printf("Maximum Flow is: %d\n", solver.getMaxFlow());
+
+    List<Edge>[] resultGraph = solver.getGraph();
+
+    // Displays all edges part of the resulting residual graph.
+    for (List<Edge> edges : resultGraph) for (Edge e : edges) System.out.println(e.toString(s, t));
+  }
+
   private static class Edge {
+    public final long capacity;
     public int from, to;
     public Edge residual;
     public long flow;
-    public final long capacity;
 
     public Edge(int from, int to, long capacity) {
       this.from = from;
@@ -66,23 +100,19 @@ public class CapacityScalingExample {
 
     // Inputs: n = number of nodes, s = source, t = sink
     final int n, s, t;
-
+    // Indicates whether the network flow algorithm has ran. The solver only
+    // needs to run once because it always yields the same result.
+    protected boolean solved;
+    // The maximum flow. Calculated by calling the {@link #solve} method.
+    protected long maxFlow;
+    // The adjacency list representing the flow graph.
+    protected List<Edge>[] graph;
     // 'visited' and 'visitedToken' are variables used in graph sub-routines to
     // track whether a node has been visited or not. In particular, node 'i' was
     // recently visited if visited[i] == visitedToken is true. This is handy
     // because to mark all nodes as unvisited simply increment the visitedToken.
     private int visitedToken = 1;
     private int[] visited;
-
-    // Indicates whether the network flow algorithm has ran. The solver only
-    // needs to run once because it always yields the same result.
-    protected boolean solved;
-
-    // The maximum flow. Calculated by calling the {@link #solve} method.
-    protected long maxFlow;
-
-    // The adjacency list representing the flow graph.
-    protected List<Edge>[] graph;
 
     /**
      * Creates an instance of a flow network solver. Use the {@link #addEdge} method to add edges to
@@ -167,6 +197,8 @@ public class CapacityScalingExample {
     public abstract void solve();
   }
 
+  /* EXAMPLE */
+
   private static class CapacityScalingSolver extends NetworkFlowSolverBase {
 
     private long delta;
@@ -236,41 +268,5 @@ public class CapacityScalingExample {
       }
       return 0;
     }
-  }
-
-  /* EXAMPLE */
-
-  public static void main(String[] args) {
-    // n is the number of nodes including the source and the sink.
-    int n = 6;
-
-    int s = n - 2;
-    int t = n - 1;
-
-    NetworkFlowSolverBase solver = new CapacityScalingSolver(n, s, t);
-
-    // Edges from source
-    solver.addEdge(s, 0, 6);
-    solver.addEdge(s, 1, 14);
-
-    // Middle edges
-    solver.addEdge(0, 1, 1);
-    solver.addEdge(0, 2, 5);
-    solver.addEdge(1, 2, 7);
-    solver.addEdge(1, 3, 10);
-    solver.addEdge(2, 3, 1);
-
-    // Edges to sink
-    solver.addEdge(2, t, 11);
-    solver.addEdge(3, t, 12);
-
-    // Prints:
-    // Maximum Flow is: 20
-    System.out.printf("Maximum Flow is: %d\n", solver.getMaxFlow());
-
-    List<Edge>[] resultGraph = solver.getGraph();
-
-    // Displays all edges part of the resulting residual graph.
-    for (List<Edge> edges : resultGraph) for (Edge e : edges) System.out.println(e.toString(s, t));
   }
 }

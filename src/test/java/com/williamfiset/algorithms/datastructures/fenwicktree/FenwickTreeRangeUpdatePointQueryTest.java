@@ -1,35 +1,31 @@
 package com.williamfiset.algorithms.datastructures.fenwicktree;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class FenwickTreeRangeUpdatePointQueryTest {
-
-  static class MockRangeUpdateFt {
-    long[] ar;
-
-    public MockRangeUpdateFt(long[] values) {
-      ar = values.clone();
-    }
-
-    public long get(int i) {
-      return ar[i];
-    }
-
-    public void updateRange(int i, int j, long v) {
-      for (int k = i; k <= j; k++) ar[k] += v;
-    }
-  }
 
   static final int MIN_RAND_NUM = -1000;
   static final int MAX_RAND_NUM = +1000;
-
   static final int TEST_SZ = 1000;
   static final int LOOPS = 1000;
-
   static long UNUSED_VAL;
+
+  // Select a lower bound index for the Fenwick tree
+  public static int lowBound(int N) {
+    return 1 + (int) (Math.random() * N);
+  }
+
+  // Select an upper bound index for the Fenwick tree
+  public static int highBound(int low, int N) {
+    return Math.min(N, low + (int) (Math.random() * N));
+  }
+
+  public static long randValue() {
+    return (long) (Math.random() * MAX_RAND_NUM * 2) + MIN_RAND_NUM;
+  }
 
   @Before
   public void setup() {
@@ -122,17 +118,19 @@ public class FenwickTreeRangeUpdatePointQueryTest {
     }
   }
 
-  // Select a lower bound index for the Fenwick tree
-  public static int lowBound(int N) {
-    return 1 + (int) (Math.random() * N);
-  }
+  static class MockRangeUpdateFt {
+    long[] ar;
 
-  // Select an upper bound index for the Fenwick tree
-  public static int highBound(int low, int N) {
-    return Math.min(N, low + (int) (Math.random() * N));
-  }
+    public MockRangeUpdateFt(long[] values) {
+      ar = values.clone();
+    }
 
-  public static long randValue() {
-    return (long) (Math.random() * MAX_RAND_NUM * 2) + MIN_RAND_NUM;
+    public long get(int i) {
+      return ar[i];
+    }
+
+    public void updateRange(int i, int j, long v) {
+      for (int k = i; k <= j; k++) ar[k] += v;
+    }
   }
 }

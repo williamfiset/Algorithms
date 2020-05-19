@@ -14,19 +14,9 @@ import java.util.*;
 
 public class GraphDiameter {
 
-  static class Edge {
-    int from, to;
-
-    public Edge(int from, int to) {
-      this.from = from;
-      this.to = to;
-    }
-  }
-
   // Separate each breadth first search layer with a DEPTH_TOKEN
   // to easily determine the distance to other nodes
   static final int DEPTH_TOKEN = -1;
-
   static Integer VISITED_TOKEN = 0;
   static Map<Integer, Integer> visited = new HashMap<>();
   static ArrayDeque<Integer> queue = new ArrayDeque<>();
@@ -152,5 +142,14 @@ public class GraphDiameter {
   private static void addUndirectedEdge(Map<Integer, List<Edge>> graph, int from, int to) {
     graph.get(from).add(new Edge(from, to));
     graph.get(to).add(new Edge(to, from));
+  }
+
+  static class Edge {
+    int from, to;
+
+    public Edge(int from, int to) {
+      this.from = from;
+      this.to = to;
+    }
   }
 }

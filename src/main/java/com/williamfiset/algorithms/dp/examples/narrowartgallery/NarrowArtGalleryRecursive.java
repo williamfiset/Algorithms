@@ -5,14 +5,12 @@ import java.util.Scanner;
 public class NarrowArtGalleryRecursive {
 
   static final int INF = 10000;
-
-  static int N, K, sum;
-  static int[][] gallery;
-  static Integer[][][] dp;
-
   static final int LEFT = 0;
   static final int RIGHT = 1;
   static final int NEITHER = 2;
+  static int N, K, sum;
+  static int[][] gallery;
+  static Integer[][][] dp;
 
   static int min(int... values) {
     int m = Integer.MAX_VALUE;

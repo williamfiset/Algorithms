@@ -1,52 +1,67 @@
 /** WIP */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Boruvkas {
-
-  static class Edge {
-    int u, v, cost;
-
-    public Edge(int u, int v, int cost) {
-      this.u = u;
-      this.v = v;
-      this.cost = cost;
-    }
-
-    public String toString() {
-      return String.format("%d %d, cost: %d", u, v, cost);
-    }
-    // @Override
-    public int compareTo(Edge other) {
-      int cmp = cost - other.cost;
-      // Break ties by picking lexicographically smallest edge pair.
-      if (cmp == 0) {
-        cmp = u - other.u;
-        if (cmp == 0) return v - other.v;
-        return cmp;
-      }
-      return cmp;
-    }
-  }
 
   // Inputs
   private final int n, m; // Num nodes, num edges
   private final Edge[] graph; // Edge list
-
   // Internal
   private boolean solved;
   private boolean mstExists;
-
   // Outputs
   private long minCostSum;
   private List<Edge> mst;
-
   public Boruvkas(int n, int m, Edge[] graph) {
     if (graph == null) throw new IllegalArgumentException();
     this.graph = graph;
     this.n = n;
     this.m = m;
+  }
+
+  public static void main(String[] args) {
+
+    int n = 10, m = 18, i = 0;
+    Edge[] g = new Edge[m];
+
+    // Edges are treated as undirected
+    g[i++] = new Edge(0, 1, 5);
+    g[i++] = new Edge(0, 3, 4);
+    g[i++] = new Edge(0, 4, 1);
+    g[i++] = new Edge(1, 2, 4);
+    g[i++] = new Edge(1, 3, 2);
+    g[i++] = new Edge(2, 7, 4);
+    g[i++] = new Edge(2, 8, 1);
+    g[i++] = new Edge(2, 9, 2);
+    g[i++] = new Edge(3, 6, 11);
+    g[i++] = new Edge(3, 7, 2);
+    g[i++] = new Edge(4, 3, 2);
+    g[i++] = new Edge(4, 5, 1);
+    g[i++] = new Edge(5, 3, 5);
+    g[i++] = new Edge(5, 6, 7);
+    g[i++] = new Edge(6, 7, 1);
+    g[i++] = new Edge(6, 8, 4);
+    g[i++] = new Edge(7, 8, 6);
+    g[i++] = new Edge(9, 8, 0);
+
+    Boruvkas solver = new Boruvkas(n, m, g);
+
+    Long ans = solver.getMstCost();
+    if (ans != null) {
+      System.out.println("MST cost: " + ans);
+      for (Edge e : solver.getMst()) {
+        System.out.println(e);
+      }
+    } else {
+      System.out.println("No MST exists");
+    }
+
+    // System.out.println(solver.solve(g, n));
+
   }
 
   // Returns the edges used in finding the minimum spanning tree, or returns
@@ -174,45 +189,29 @@ public class Boruvkas {
     return true;
   }
 
-  public static void main(String[] args) {
+  static class Edge {
+    int u, v, cost;
 
-    int n = 10, m = 18, i = 0;
-    Edge[] g = new Edge[m];
-
-    // Edges are treated as undirected
-    g[i++] = new Edge(0, 1, 5);
-    g[i++] = new Edge(0, 3, 4);
-    g[i++] = new Edge(0, 4, 1);
-    g[i++] = new Edge(1, 2, 4);
-    g[i++] = new Edge(1, 3, 2);
-    g[i++] = new Edge(2, 7, 4);
-    g[i++] = new Edge(2, 8, 1);
-    g[i++] = new Edge(2, 9, 2);
-    g[i++] = new Edge(3, 6, 11);
-    g[i++] = new Edge(3, 7, 2);
-    g[i++] = new Edge(4, 3, 2);
-    g[i++] = new Edge(4, 5, 1);
-    g[i++] = new Edge(5, 3, 5);
-    g[i++] = new Edge(5, 6, 7);
-    g[i++] = new Edge(6, 7, 1);
-    g[i++] = new Edge(6, 8, 4);
-    g[i++] = new Edge(7, 8, 6);
-    g[i++] = new Edge(9, 8, 0);
-
-    Boruvkas solver = new Boruvkas(n, m, g);
-
-    Long ans = solver.getMstCost();
-    if (ans != null) {
-      System.out.println("MST cost: " + ans);
-      for (Edge e : solver.getMst()) {
-        System.out.println(e);
-      }
-    } else {
-      System.out.println("No MST exists");
+    public Edge(int u, int v, int cost) {
+      this.u = u;
+      this.v = v;
+      this.cost = cost;
     }
 
-    // System.out.println(solver.solve(g, n));
-
+    public String toString() {
+      return String.format("%d %d, cost: %d", u, v, cost);
+    }
+    // @Override
+    public int compareTo(Edge other) {
+      int cmp = cost - other.cost;
+      // Break ties by picking lexicographically smallest edge pair.
+      if (cmp == 0) {
+        cmp = u - other.u;
+        if (cmp == 0) return v - other.v;
+        return cmp;
+      }
+      return cmp;
+    }
   }
 
   // Union find data structure

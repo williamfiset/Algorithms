@@ -1,11 +1,26 @@
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.google.common.truth.Truth.assertThat;
 
-import java.util.*;
-import org.junit.*;
-
 public class LowestCommonAncestorEulerTourTest {
+
+  public static List<List<Integer>> generateRandomTree(int n) {
+    List<Integer> nodes = new ArrayList<>();
+    nodes.add(0);
+
+    List<List<Integer>> g = LowestCommonAncestorEulerTour.createEmptyGraph(n);
+    for (int nextNode = 1; nodes.size() != n; nextNode++) {
+      int randomNode = nodes.get((int) (Math.random() * nodes.size()));
+      LowestCommonAncestorEulerTour.addUndirectedEdge(g, randomNode, nextNode);
+      nodes.add(nextNode);
+    }
+    return g;
+  }
 
   private LowestCommonAncestorEulerTour.TreeNode createFirstTreeFromSlides() {
     int n = 17;
@@ -89,18 +104,5 @@ public class LowestCommonAncestorEulerTourTest {
         assertThat(lca1.id()).isEqualTo(lca2.index());
       }
     }
-  }
-
-  public static List<List<Integer>> generateRandomTree(int n) {
-    List<Integer> nodes = new ArrayList<>();
-    nodes.add(0);
-
-    List<List<Integer>> g = LowestCommonAncestorEulerTour.createEmptyGraph(n);
-    for (int nextNode = 1; nodes.size() != n; nextNode++) {
-      int randomNode = nodes.get((int) (Math.random() * nodes.size()));
-      LowestCommonAncestorEulerTour.addUndirectedEdge(g, randomNode, nextNode);
-      nodes.add(nextNode);
-    }
-    return g;
   }
 }

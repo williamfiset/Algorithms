@@ -10,37 +10,6 @@ import java.util.*;
  */
 public class AStar_GridHeuristic {
 
-  public static class Pair<A, B> {
-
-    public final A fst;
-    public final B snd;
-
-    public Pair(A fst, B snd) {
-      this.fst = fst;
-      this.snd = snd;
-    }
-
-    public String toString() {
-      return "Pair[" + fst + "," + snd + "]";
-    }
-
-    public boolean equals(Object other) {
-      return other instanceof Pair<?, ?>
-          && Objects.equals(fst, ((Pair<?, ?>) other).fst)
-          && Objects.equals(snd, ((Pair<?, ?>) other).snd);
-    }
-
-    public int hashCode() {
-      if (fst == null) return (snd == null) ? 0 : snd.hashCode() + 1;
-      else if (snd == null) return fst.hashCode() + 2;
-      else return fst.hashCode() * 17 + snd.hashCode();
-    }
-
-    public static <A, B> Pair<A, B> of(A a, B b) {
-      return new Pair<>(a, b);
-    }
-  }
-
   // Create a graph with V vertices
   @SuppressWarnings("unchecked")
   public static List<Edge>[] createGraph(final int V) {
@@ -206,6 +175,37 @@ public class AStar_GridHeuristic {
     System.out.println(
         "The smallest distance from vertex 0 to vertex 1 is "
             + aStar(graph, 0, 1)); // Excepted output is 2.
+  }
+
+  public static class Pair<A, B> {
+
+    public final A fst;
+    public final B snd;
+
+    public Pair(A fst, B snd) {
+      this.fst = fst;
+      this.snd = snd;
+    }
+
+    public static <A, B> Pair<A, B> of(A a, B b) {
+      return new Pair<>(a, b);
+    }
+
+    public String toString() {
+      return "Pair[" + fst + "," + snd + "]";
+    }
+
+    public boolean equals(Object other) {
+      return other instanceof Pair<?, ?>
+          && Objects.equals(fst, ((Pair<?, ?>) other).fst)
+          && Objects.equals(snd, ((Pair<?, ?>) other).snd);
+    }
+
+    public int hashCode() {
+      if (fst == null) return (snd == null) ? 0 : snd.hashCode() + 1;
+      else if (snd == null) return fst.hashCode() + 2;
+      else return fst.hashCode() * 17 + snd.hashCode();
+    }
   }
 
   /** An edge in the graph. */

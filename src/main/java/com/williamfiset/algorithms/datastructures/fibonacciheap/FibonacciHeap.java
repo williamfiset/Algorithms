@@ -7,20 +7,9 @@
  */
 package com.williamfiset.algorithms.datastructures.fibonacciheap;
 
-import static java.lang.Math.floor;
-import static java.lang.Math.log;
-import static java.lang.Math.sqrt;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Queue;
-import java.util.Set;
-import java.util.Stack;
+import static java.lang.Math.*;
 
 public final class FibonacciHeap<E> implements Queue<E> {
 

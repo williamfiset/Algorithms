@@ -7,22 +7,11 @@
  */
 package com.williamfiset.algorithms.geometry;
 
-import static java.lang.Math.*;
+import static java.lang.Math.abs;
 
 public class CoplanarPoints {
 
   private static final double EPS = 1e-7;
-
-  // A simple 3D vector class
-  public static class Vector {
-    double x, y, z;
-
-    public Vector(double xx, double yy, double zz) {
-      x = xx;
-      y = yy;
-      z = zz;
-    }
-  }
 
   // Determine is four points (ax,ay,az), (bx,by,bz), (cx,cy,cz),
   // (dx,dy,dz) all lie in the same plane in 3D space
@@ -89,5 +78,16 @@ public class CoplanarPoints {
     System.out.println(
         "The points (0,0,0), (1,1,1), (2,2,2), (3,3,3) are coplanar: "
             + coplanar(0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3));
+  }
+
+  // A simple 3D vector class
+  public static class Vector {
+    double x, y, z;
+
+    public Vector(double xx, double yy, double zz) {
+      x = xx;
+      y = yy;
+      z = zz;
+    }
   }
 }

@@ -5,7 +5,8 @@
  *
  * <p>Solution by: William Fiset
  */
-import java.util.*;
+
+import java.util.Scanner;
 
 public class TilingDominoes {
   static Scanner sc = new Scanner(System.in);

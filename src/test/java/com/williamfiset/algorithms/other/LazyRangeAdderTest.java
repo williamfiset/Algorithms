@@ -1,10 +1,28 @@
 package com.williamfiset.algorithms.other;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
+
 public class LazyRangeAdderTest {
+
+  // Adds `x` to the range [l, r] in arr
+  private static void slowRangeAdd(int[] arr, int l, int r, int x) {
+    for (int i = l; i <= r; i++) {
+      arr[i] += x;
+    }
+  }
+
+  private static void randomFill(int[] arr) {
+    for (int i = 0; i < arr.length; i++) {
+      arr[i] = randValue(0, 1000);
+    }
+  }
+
+  // Generates a random number between [min, max)
+  private static int randValue(int min, int max) {
+    return min + (int) (Math.random() * ((max - min)));
+  }
 
   @Test
   public void rangeUpdateTest1() {
@@ -58,23 +76,5 @@ public class LazyRangeAdderTest {
 
       assertArrayEquals(arr1, arr2);
     }
-  }
-
-  // Adds `x` to the range [l, r] in arr
-  private static void slowRangeAdd(int[] arr, int l, int r, int x) {
-    for (int i = l; i <= r; i++) {
-      arr[i] += x;
-    }
-  }
-
-  private static void randomFill(int[] arr) {
-    for (int i = 0; i < arr.length; i++) {
-      arr[i] = randValue(0, 1000);
-    }
-  }
-
-  // Generates a random number between [min, max)
-  private static int randValue(int min, int max) {
-    return min + (int) (Math.random() * ((max - min)));
   }
 }

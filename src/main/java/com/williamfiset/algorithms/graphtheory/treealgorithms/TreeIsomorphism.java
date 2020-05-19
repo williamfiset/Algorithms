@@ -8,49 +8,12 @@
  */
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TreeIsomorphism {
-
-  public static class TreeNode {
-    private int id;
-    private TreeNode parent;
-    private List<TreeNode> children;
-
-    // Useful constructor for root node.
-    public TreeNode(int id) {
-      this(id, /*parent=*/ null);
-    }
-
-    public TreeNode(int id, TreeNode parent) {
-      this.id = id;
-      this.parent = parent;
-      children = new LinkedList<>();
-    }
-
-    public void addChildren(TreeNode... nodes) {
-      for (TreeNode node : nodes) {
-        children.add(node);
-      }
-    }
-
-    public int id() {
-      return id;
-    }
-
-    public TreeNode parent() {
-      return parent;
-    }
-
-    public List<TreeNode> children() {
-      return children;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(id);
-    }
-  }
 
   // Determines if two unrooted trees are isomorphic
   public static boolean treesAreIsomorphic(List<List<Integer>> tree1, List<List<Integer>> tree2) {
@@ -149,8 +112,6 @@ public class TreeIsomorphism {
     return "(" + sb.toString() + ")";
   }
 
-  /* Graph/Tree creation helper methods. */
-
   // Create a graph as a adjacency list with 'n' nodes.
   public static List<List<Integer>> createEmptyGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>(n);
@@ -158,17 +119,19 @@ public class TreeIsomorphism {
     return graph;
   }
 
+  /* Graph/Tree creation helper methods. */
+
   public static void addUndirectedEdge(List<List<Integer>> graph, int from, int to) {
     graph.get(from).add(to);
     graph.get(to).add(from);
   }
 
-  /* Example usage */
-
   public static void main(String[] args) {
     simpleIsomorphismTest();
     testEncodingTreeFromSlides();
   }
+
+  /* Example usage */
 
   // Test if two tree are isomorphic, meaning they are structurally equivalent
   // but are labeled differently.
@@ -206,6 +169,46 @@ public class TreeIsomorphism {
 
     if (!encode(root0).equals("(((())())(()())(()))")) {
       System.out.println("Tree encoding is wrong: " + encode(root0));
+    }
+  }
+
+  public static class TreeNode {
+    private int id;
+    private TreeNode parent;
+    private List<TreeNode> children;
+
+    // Useful constructor for root node.
+    public TreeNode(int id) {
+      this(id, /*parent=*/ null);
+    }
+
+    public TreeNode(int id, TreeNode parent) {
+      this.id = id;
+      this.parent = parent;
+      children = new LinkedList<>();
+    }
+
+    public void addChildren(TreeNode... nodes) {
+      for (TreeNode node : nodes) {
+        children.add(node);
+      }
+    }
+
+    public int id() {
+      return id;
+    }
+
+    public TreeNode parent() {
+      return parent;
+    }
+
+    public List<TreeNode> children() {
+      return children;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(id);
     }
   }
 }

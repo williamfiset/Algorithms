@@ -10,11 +10,6 @@ import java.util.Random;
 
 public class DoubleHashingTestObject implements SecondaryHash {
 
-  private int hash, hash2;
-  Integer intData = null;
-  int[] vectorData = null;
-  String stringData = null;
-
   static long[] randomVector;
   static Random R = new Random();
   static int MAX_VECTOR_SIZE = 10000;
@@ -27,6 +22,11 @@ public class DoubleHashingTestObject implements SecondaryHash {
       randomVector[i] = val;
     }
   }
+
+  Integer intData = null;
+  int[] vectorData = null;
+  String stringData = null;
+  private int hash, hash2;
 
   public DoubleHashingTestObject(int data) {
     intData = data;

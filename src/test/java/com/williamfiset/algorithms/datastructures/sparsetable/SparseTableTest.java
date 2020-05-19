@@ -1,11 +1,22 @@
 package com.williamfiset.algorithms.datastructures.sparsetable;
 
+import org.junit.Test;
+
+import java.util.Random;
+
 import static com.google.common.truth.Truth.assertThat;
 
-import java.util.*;
-import org.junit.*;
-
 public class SparseTableTest {
+
+  // Computes the Greatest Common Divisor (GCD) of a & b
+  // This method ensures that the value returned is non negative
+  public static long gcd(long a, long b) {
+    return b == 0 ? (a < 0 ? -a : a) : gcd(b, a % b);
+  }
+
+  private static long[] genRandArray(int n, int lo, int hi) {
+    return new Random().longs(n, lo, hi).toArray();
+  }
 
   private void queryResultTest(
       long[] values, int l, int r, long actual, int index, SparseTable.Operation op) {
@@ -46,12 +57,6 @@ public class SparseTableTest {
     long m = 1;
     for (int i = l; i <= r; i++) m *= values[i];
     assertThat(m).isEqualTo(actual);
-  }
-
-  // Computes the Greatest Common Divisor (GCD) of a & b
-  // This method ensures that the value returned is non negative
-  public static long gcd(long a, long b) {
-    return b == 0 ? (a < 0 ? -a : a) : gcd(b, a % b);
   }
 
   private void gcdQuery(long[] values, int l, int r, long actual) {
@@ -160,9 +165,5 @@ public class SparseTableTest {
         }
       }
     }
-  }
-
-  private static long[] genRandArray(int n, int lo, int hi) {
-    return new Random().longs(n, lo, hi).toArray();
   }
 }

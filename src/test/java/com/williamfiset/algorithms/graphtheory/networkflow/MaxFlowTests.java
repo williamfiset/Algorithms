@@ -1,10 +1,13 @@
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
-import static com.google.common.truth.Truth.assertThat;
-
 import com.williamfiset.algorithms.graphtheory.networkflow.NetworkFlowSolverBase.Edge;
-import java.util.*;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public class MaxFlowTests {
 

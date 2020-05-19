@@ -4,67 +4,34 @@
 package com.williamfiset.algorithms.strings;
 
 // TODO(williamfiset): Replace junit asserts with all Google truth assertions.
-import static com.google.common.truth.Truth.assertThat;
-import static com.williamfiset.algorithms.strings.LongestCommonSubstring.LcsSolver;
-import static org.junit.Assert.*;
 
 import com.google.common.collect.ImmutableList;
 import com.williamfiset.algorithms.utils.TestUtils;
+import org.junit.Test;
+
 import java.util.*;
-import org.junit.*;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.williamfiset.algorithms.strings.LongestCommonSubstring.LcsSolver;
+import static org.junit.Assert.assertEquals;
 
 public class LongestCommonSubstringTest {
 
-  private static class SlowLcsSolver {
-    String[] strings;
-
-    public SlowLcsSolver(String[] strings) {
-      if (strings == null || strings.length < 2)
-        throw new IllegalArgumentException("Invalid strings input to SlowLcsSolver.");
-      this.strings = strings;
+  static String[] createRandomStrings(int numStrings, int minSz, int maxSz, int alphabetSize) {
+    String[] strings = new String[numStrings];
+    for (int i = 0; i < numStrings; i++) {
+      strings[i] = createString(minSz, maxSz, alphabetSize);
     }
+    return strings;
+  }
 
-    public TreeSet<String> getLongestCommonSubstrings(int k) {
-
-      Set<String> allSubstrings = new HashSet<>();
-      List<Set<String>> sets = new ArrayList<>();
-      for (int h = 0; h < strings.length; h++) {
-        String string = strings[h];
-        Set<String> set = new HashSet<>();
-        for (int i = 0; i < string.length(); i++) {
-          for (int j = i + 1; j <= string.length(); j++) {
-            String substring = string.substring(i, j);
-            set.add(substring);
-            allSubstrings.add(substring);
-          }
-        }
-        sets.add(set);
-      }
-
-      TreeSet<String> ans = new TreeSet<>();
-      for (String substring : allSubstrings) {
-        int count = 0;
-        for (Set<String> set : sets) {
-          if (set.contains(substring)) {
-            count++;
-          }
-        }
-        if (count < k) continue;
-        if (ans.size() == 0) {
-          ans.add(substring);
-        } else {
-          String x = ans.last();
-          if (substring.length() > x.length()) {
-            ans.clear();
-            ans.add(substring);
-          } else if (substring.length() == x.length()) {
-            ans.add(substring);
-          }
-        }
-      }
-
-      return ans;
+  static String createString(int minSz, int maxSz, int alphabetSize) {
+    int sz = TestUtils.randValue(minSz, maxSz + 1);
+    char[] chrs = new char[sz];
+    for (int i = 0; i < sz; i++) {
+      chrs[i] = (char) ('A' + TestUtils.randValue(0, alphabetSize));
     }
+    return new String(chrs);
   }
 
   public void verifyMultipleKValues(String[] strings, Map<Integer, TreeSet<String>> answers) {
@@ -355,23 +322,6 @@ public class LongestCommonSubstringTest {
     }
   }
 
-  static String[] createRandomStrings(int numStrings, int minSz, int maxSz, int alphabetSize) {
-    String[] strings = new String[numStrings];
-    for (int i = 0; i < numStrings; i++) {
-      strings[i] = createString(minSz, maxSz, alphabetSize);
-    }
-    return strings;
-  }
-
-  static String createString(int minSz, int maxSz, int alphabetSize) {
-    int sz = TestUtils.randValue(minSz, maxSz + 1);
-    char[] chrs = new char[sz];
-    for (int i = 0; i < sz; i++) {
-      chrs[i] = (char) ('A' + TestUtils.randValue(0, alphabetSize));
-    }
-    return new String(chrs);
-  }
-
   // TODO(williamfiset): crank up the numbers once implementation is faster.
   @Test
   public void testLargeAlphabet() {
@@ -385,6 +335,58 @@ public class LongestCommonSubstringTest {
       LcsSolver solver = new LcsSolver(strs);
       TreeSet<String> lcss = solver.getLongestCommonSubstrings(k);
       assertEquals(ans, lcss);
+    }
+  }
+
+  private static class SlowLcsSolver {
+    String[] strings;
+
+    public SlowLcsSolver(String[] strings) {
+      if (strings == null || strings.length < 2)
+        throw new IllegalArgumentException("Invalid strings input to SlowLcsSolver.");
+      this.strings = strings;
+    }
+
+    public TreeSet<String> getLongestCommonSubstrings(int k) {
+
+      Set<String> allSubstrings = new HashSet<>();
+      List<Set<String>> sets = new ArrayList<>();
+      for (int h = 0; h < strings.length; h++) {
+        String string = strings[h];
+        Set<String> set = new HashSet<>();
+        for (int i = 0; i < string.length(); i++) {
+          for (int j = i + 1; j <= string.length(); j++) {
+            String substring = string.substring(i, j);
+            set.add(substring);
+            allSubstrings.add(substring);
+          }
+        }
+        sets.add(set);
+      }
+
+      TreeSet<String> ans = new TreeSet<>();
+      for (String substring : allSubstrings) {
+        int count = 0;
+        for (Set<String> set : sets) {
+          if (set.contains(substring)) {
+            count++;
+          }
+        }
+        if (count < k) continue;
+        if (ans.size() == 0) {
+          ans.add(substring);
+        } else {
+          String x = ans.last();
+          if (substring.length() > x.length()) {
+            ans.clear();
+            ans.add(substring);
+          } else if (substring.length() == x.length()) {
+            ans.add(substring);
+          }
+        }
+      }
+
+      return ans;
     }
   }
 }

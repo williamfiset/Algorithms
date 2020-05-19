@@ -2,22 +2,10 @@
 // https://stackoverflow.com/questions/4965335/how-to-print-binary-tree-diagram
 package com.williamfiset.algorithms.datastructures.utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TreePrinter {
-
-  /** Node that can be printed */
-  public interface PrintableNode {
-
-    // Get left child
-    public PrintableNode getLeft();
-
-    // Get right child
-    public PrintableNode getRight();
-
-    // Get text to be printed
-    public String getText();
-  }
 
   // Print a binary tree.
   public static String getTreeDisplay(PrintableNode root) {
@@ -116,5 +104,18 @@ public class TreePrinter {
       perpiece /= 2;
     }
     return sb.toString();
+  }
+
+  /** Node that can be printed */
+  public interface PrintableNode {
+
+    // Get left child
+    public PrintableNode getLeft();
+
+    // Get right child
+    public PrintableNode getRight();
+
+    // Get text to be printed
+    public String getText();
   }
 }

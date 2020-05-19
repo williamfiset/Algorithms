@@ -8,27 +8,17 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
-import static java.lang.Math.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Random;
 
-import java.util.*;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public class EagerPrimsAdjacencyList {
 
-  static class Edge implements Comparable<Edge> {
-    int from, to, cost;
-
-    public Edge(int from, int to, int cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-
-    @Override
-    public int compareTo(Edge other) {
-      return cost - other.cost;
-    }
-  }
-
+  static Random random = new Random();
   // Inputs
   private final int n;
   private final List<List<Edge>> graph;
@@ -49,74 +39,6 @@ public class EagerPrimsAdjacencyList {
     this.graph = graph;
   }
 
-  // Returns the edges used in finding the minimum spanning tree,
-  // or returns null if no MST exists.
-  public Edge[] getMst() {
-    solve();
-    return mstExists ? mstEdges : null;
-  }
-
-  public Long getMstCost() {
-    solve();
-    return mstExists ? minCostSum : null;
-  }
-
-  private void relaxEdgesAtNode(int currentNodeIndex) {
-    visited[currentNodeIndex] = true;
-
-    // edges will never be null if the createEmptyGraph method was used to build the graph.
-    List<Edge> edges = graph.get(currentNodeIndex);
-
-    for (Edge edge : edges) {
-      int destNodeIndex = edge.to;
-
-      // Skip edges pointing to already visited nodes.
-      if (visited[destNodeIndex]) continue;
-
-      if (ipq.contains(destNodeIndex)) {
-        // Try and improve the cheapest edge at destNodeIndex with the current edge in the IPQ.
-        ipq.decrease(destNodeIndex, edge);
-      } else {
-        // Insert edge for the first time.
-        ipq.insert(destNodeIndex, edge);
-      }
-    }
-  }
-
-  // Computes the minimum spanning tree and minimum spanning tree cost.
-  private void solve() {
-    if (solved) return;
-    solved = true;
-
-    int m = n - 1, edgeCount = 0;
-    visited = new boolean[n];
-    mstEdges = new Edge[m];
-
-    // The degree of the d-ary heap supporting the IPQ can greatly impact performance, especially
-    // on dense graphs. The base 2 logarithm of n is a decent value based on my quick experiments
-    // (even better than E/V in many cases).
-    int degree = (int) Math.ceil(Math.log(n) / Math.log(2));
-    ipq = new MinIndexedDHeap<>(max(2, degree), n);
-
-    // Add initial set of edges to the priority queue starting at node 0.
-    relaxEdgesAtNode(0);
-
-    while (!ipq.isEmpty() && edgeCount != m) {
-      int destNodeIndex = ipq.peekMinKeyIndex(); // equivalently: edge.to
-      Edge edge = ipq.pollMinValue();
-
-      mstEdges[edgeCount++] = edge;
-      minCostSum += edge.cost;
-
-      relaxEdgesAtNode(destNodeIndex);
-    }
-
-    // Verify MST spans entire graph.
-    mstExists = (edgeCount == m);
-  }
-
-  /* Graph construction helpers. */
-
   // Creates an empty adjacency list graph with n nodes.
   static List<List<Edge>> createEmptyGraph(int n) {
     List<List<Edge>> g = new ArrayList<>();
@@ -133,8 +55,6 @@ public class EagerPrimsAdjacencyList {
     addDirectedEdge(g, to, from, cost);
   }
 
-  /* Example usage. */
-
   public static void main(String[] args) {
     // example1();
     // firstGraphFromSlides();
@@ -144,6 +64,8 @@ public class EagerPrimsAdjacencyList {
     eagerPrimsExampleFromSlides();
     // lazyVsEagerAnalysis();
   }
+
+  /* Graph construction helpers. */
 
   private static void example1() {
     int n = 10;
@@ -253,6 +175,8 @@ public class EagerPrimsAdjacencyList {
     }
   }
 
+  /* Example usage. */
+
   private static void disjointOnFirstNode() {
     int n = 4;
     List<List<Edge>> g = createEmptyGraph(n);
@@ -350,8 +274,6 @@ public class EagerPrimsAdjacencyList {
     }
   }
 
-  static Random random = new Random();
-
   private static void lazyVsEagerAnalysis() {
     int n = 5000;
     List<List<EagerPrimsAdjacencyList.Edge>> g1 = EagerPrimsAdjacencyList.createEmptyGraph(n);
@@ -383,34 +305,109 @@ public class EagerPrimsAdjacencyList {
     }
   }
 
+  // Returns the edges used in finding the minimum spanning tree,
+  // or returns null if no MST exists.
+  public Edge[] getMst() {
+    solve();
+    return mstExists ? mstEdges : null;
+  }
+
+  public Long getMstCost() {
+    solve();
+    return mstExists ? minCostSum : null;
+  }
+
+  private void relaxEdgesAtNode(int currentNodeIndex) {
+    visited[currentNodeIndex] = true;
+
+    // edges will never be null if the createEmptyGraph method was used to build the graph.
+    List<Edge> edges = graph.get(currentNodeIndex);
+
+    for (Edge edge : edges) {
+      int destNodeIndex = edge.to;
+
+      // Skip edges pointing to already visited nodes.
+      if (visited[destNodeIndex]) continue;
+
+      if (ipq.contains(destNodeIndex)) {
+        // Try and improve the cheapest edge at destNodeIndex with the current edge in the IPQ.
+        ipq.decrease(destNodeIndex, edge);
+      } else {
+        // Insert edge for the first time.
+        ipq.insert(destNodeIndex, edge);
+      }
+    }
+  }
+
+  // Computes the minimum spanning tree and minimum spanning tree cost.
+  private void solve() {
+    if (solved) return;
+    solved = true;
+
+    int m = n - 1, edgeCount = 0;
+    visited = new boolean[n];
+    mstEdges = new Edge[m];
+
+    // The degree of the d-ary heap supporting the IPQ can greatly impact performance, especially
+    // on dense graphs. The base 2 logarithm of n is a decent value based on my quick experiments
+    // (even better than E/V in many cases).
+    int degree = (int) Math.ceil(Math.log(n) / Math.log(2));
+    ipq = new MinIndexedDHeap<>(max(2, degree), n);
+
+    // Add initial set of edges to the priority queue starting at node 0.
+    relaxEdgesAtNode(0);
+
+    while (!ipq.isEmpty() && edgeCount != m) {
+      int destNodeIndex = ipq.peekMinKeyIndex(); // equivalently: edge.to
+      Edge edge = ipq.pollMinValue();
+
+      mstEdges[edgeCount++] = edge;
+      minCostSum += edge.cost;
+
+      relaxEdgesAtNode(destNodeIndex);
+    }
+
+    // Verify MST spans entire graph.
+    mstExists = (edgeCount == m);
+  }
+
+  static class Edge implements Comparable<Edge> {
+    int from, to, cost;
+
+    public Edge(int from, int to, int cost) {
+      this.from = from;
+      this.to = to;
+      this.cost = cost;
+    }
+
+    @Override
+    public int compareTo(Edge other) {
+      return cost - other.cost;
+    }
+  }
+
   /* Supporting indexed priority queue implementation. */
 
   private static class MinIndexedDHeap<T extends Comparable<T>> {
 
-    // Current number of elements in the heap.
-    private int sz;
-
-    // Maximum number of elements in the heap.
-    private final int N;
-
-    // The degree of every node in the heap.
-    private final int D;
-
-    // Lookup arrays to track the child/parent indexes of each node.
-    private final int[] child, parent;
-
     // The Position Map (pm) maps Key Indexes (ki) to where the position of that
     // key is represented in the priority queue in the domain [0, sz).
     public final int[] pm;
-
     // The Inverse Map (im) stores the indexes of the keys in the range
     // [0, sz) which make up the priority queue. It should be noted that
     // 'im' and 'pm' are inverses of each other, so: pm[im[i]] = im[pm[i]] = i
     public final int[] im;
-
     // The values associated with the keys. It is very important  to note
     // that this array is indexed by the key indexes (aka 'ki').
     public final Object[] values;
+    // Maximum number of elements in the heap.
+    private final int N;
+    // The degree of every node in the heap.
+    private final int D;
+    // Lookup arrays to track the child/parent indexes of each node.
+    private final int[] child, parent;
+    // Current number of elements in the heap.
+    private int sz;
 
     // Initializes a D-ary heap with a maximum capacity of maxSize.
     public MinIndexedDHeap(int degree, int maxSize) {

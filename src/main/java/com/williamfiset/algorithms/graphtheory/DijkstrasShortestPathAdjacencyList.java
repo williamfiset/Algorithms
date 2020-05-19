@@ -9,47 +9,16 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class DijkstrasShortestPathAdjacencyList {
 
   // Small epsilon value to comparing double values.
   private static final double EPS = 1e-6;
-
-  // An edge class to represent a directed edge
-  // between two nodes with a certain cost.
-  public static class Edge {
-    double cost;
-    int from, to;
-
-    public Edge(int from, int to, double cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-  }
-
-  // Node class to track the nodes to visit while running Dijkstra's
-  public static class Node {
-    int id;
-    double value;
-
-    public Node(int id, double value) {
-      this.id = id;
-      this.value = value;
-    }
-  }
-
   private int n;
   private double[] dist;
   private Integer[] prev;
   private List<List<Edge>> graph;
-
   private Comparator<Node> comparator =
       new Comparator<Node>() {
         @Override
@@ -58,7 +27,6 @@ public class DijkstrasShortestPathAdjacencyList {
           return (node1.value - node2.value) > 0 ? +1 : -1;
         }
       };
-
   /**
    * Initialize the solver by providing the graph size and a starting node. Use the {@link #addEdge}
    * method to actually add edges to the graph.
@@ -165,5 +133,29 @@ public class DijkstrasShortestPathAdjacencyList {
   private void createEmptyGraph() {
     graph = new ArrayList<>(n);
     for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
+  }
+
+  // An edge class to represent a directed edge
+  // between two nodes with a certain cost.
+  public static class Edge {
+    double cost;
+    int from, to;
+
+    public Edge(int from, int to, double cost) {
+      this.from = from;
+      this.to = to;
+      this.cost = cost;
+    }
+  }
+
+  // Node class to track the nodes to visit while running Dijkstra's
+  public static class Node {
+    int id;
+    double value;
+
+    public Node(int id, double value) {
+      this.id = id;
+      this.value = value;
+    }
   }
 }

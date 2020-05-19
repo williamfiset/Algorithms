@@ -1,9 +1,12 @@
 package com.williamfiset.algorithms.datastructures.hashtable;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.*;
-import org.junit.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class HashTableDoubleHashingTest {
 
@@ -17,6 +20,34 @@ public class HashTableDoubleHashingTest {
   }
 
   HashTableDoubleHashing<DoubleHashingTestObject, Integer> map;
+
+  static int randInt(int min, int max) {
+    return RANDOM.nextInt((max - min) + 1) + min;
+  }
+
+  // Generate a list of random numbers
+  static List<DoubleHashingTestObject> genRandList(int sz) {
+
+    List<DoubleHashingTestObject> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) {
+      int randNum = randInt(-MAX_RAND_NUM, MAX_RAND_NUM);
+      DoubleHashingTestObject obj = new DoubleHashingTestObject(randNum);
+      lst.add(obj);
+    }
+    Collections.shuffle(lst);
+    return lst;
+  }
+
+  // Generate a list of unique random numbers
+  static List<DoubleHashingTestObject> genUniqueRandList(int sz) {
+    List<DoubleHashingTestObject> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) {
+      DoubleHashingTestObject obj = new DoubleHashingTestObject(i);
+      lst.add(obj);
+    }
+    Collections.shuffle(lst);
+    return lst;
+  }
 
   @Before
   public void setup() {
@@ -278,33 +309,5 @@ public class HashTableDoubleHashingTest {
         assertEquals(l1, l2);
       }
     }
-  }
-
-  static int randInt(int min, int max) {
-    return RANDOM.nextInt((max - min) + 1) + min;
-  }
-
-  // Generate a list of random numbers
-  static List<DoubleHashingTestObject> genRandList(int sz) {
-
-    List<DoubleHashingTestObject> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) {
-      int randNum = randInt(-MAX_RAND_NUM, MAX_RAND_NUM);
-      DoubleHashingTestObject obj = new DoubleHashingTestObject(randNum);
-      lst.add(obj);
-    }
-    Collections.shuffle(lst);
-    return lst;
-  }
-
-  // Generate a list of unique random numbers
-  static List<DoubleHashingTestObject> genUniqueRandList(int sz) {
-    List<DoubleHashingTestObject> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) {
-      DoubleHashingTestObject obj = new DoubleHashingTestObject(i);
-      lst.add(obj);
-    }
-    Collections.shuffle(lst);
-    return lst;
   }
 }

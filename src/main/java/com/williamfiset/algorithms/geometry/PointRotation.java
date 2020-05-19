@@ -8,9 +8,9 @@
  */
 package com.williamfiset.algorithms.geometry;
 
-import static java.lang.Math.*;
-
 import java.awt.geom.Point2D;
+
+import static java.lang.Math.*;
 
 public class PointRotation {
 

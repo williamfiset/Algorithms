@@ -1,16 +1,11 @@
 package com.williamfiset.algorithms.datastructures.binarysearchtree;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.ConcurrentModificationException;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 class TestTreeNode {
 
@@ -83,6 +78,13 @@ class TestTreeNode {
 public class BinarySearchTreeTest {
 
   static final int LOOPS = 100;
+
+  static List<Integer> genRandList(int sz) {
+    List<Integer> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) lst.add(i);
+    Collections.shuffle(lst);
+    return lst;
+  }
 
   @Before
   public void setup() {}
@@ -361,13 +363,6 @@ public class BinarySearchTreeTest {
 
       assertTrue(tree.isEmpty());
     }
-  }
-
-  static List<Integer> genRandList(int sz) {
-    List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add(i);
-    Collections.shuffle(lst);
-    return lst;
   }
 
   public boolean validateTreeTraversal(TreeTraversalOrder trav_order, List<Integer> input) {

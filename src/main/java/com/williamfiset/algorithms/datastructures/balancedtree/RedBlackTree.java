@@ -9,97 +9,16 @@
  */
 package com.williamfiset.algorithms.datastructures.balancedtree;
 
-import java.awt.*;
-
 public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
   public static final boolean RED = true;
   public static final boolean BLACK = false;
-
-  public class Node {
-
-    // The color of this node. By default all nodes start red.
-    public boolean color = RED;
-
-    // The value/data contained within the node.
-    public T value;
-
-    // The left, right and parent references of this node.
-    public Node left, right, parent;
-
-    public Node(T value, Node parent) {
-      this.value = value;
-      this.parent = parent;
-    }
-
-    public Node(boolean color, T value) {
-      this.color = color;
-      this.value = value;
-    }
-
-    Node(T key, boolean color, Node parent, Node left, Node right) {
-      this.value = key;
-      this.color = color;
-
-      if (parent == null && left == null && right == null) {
-        parent = this;
-        left = this;
-        right = this;
-      }
-
-      this.parent = parent;
-      this.left = left;
-      this.right = right;
-    }
-
-    public boolean getColor() {
-      return color;
-    }
-
-    public void setColor(boolean color) {
-      this.color = color;
-    }
-
-    public T getValue() {
-      return value;
-    }
-
-    public void setValue(T value) {
-      this.value = value;
-    }
-
-    public Node getLeft() {
-      return left;
-    }
-
-    public void setLeft(Node left) {
-      this.left = left;
-    }
-
-    public Node getRight() {
-      return right;
-    }
-
-    public void setRight(Node right) {
-      this.right = right;
-    }
-
-    public Node getParent() {
-      return parent;
-    }
-
-    public void setParent(Node parent) {
-      this.parent = parent;
-    }
-  }
-
+  public final Node NIL;
   // The root node of the RB tree.
   public Node root;
 
   // Tracks the number of nodes inside the tree.
   private int nodeCount = 0;
-
-  public final Node NIL;
 
   public RedBlackTree() {
     NIL = new Node(BLACK, null);
@@ -108,6 +27,19 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
     NIL.parent = NIL;
 
     root = NIL;
+  }
+
+  // Example usage of RB tree:
+  public static void main(String[] args) {
+
+    int[] values = {5, 8, 1, -4, 6, -2, 0, 7};
+    RedBlackTree<Integer> rbTree = new RedBlackTree<>();
+    for (int v : values) rbTree.insert(v);
+
+    System.out.printf("RB tree contains %d: %s\n", 6, rbTree.contains(6));
+    System.out.printf("RB tree contains %d: %s\n", -5, rbTree.contains(-5));
+    System.out.printf("RB tree contains %d: %s\n", 1, rbTree.contains(1));
+    System.out.printf("RB tree contains %d: %s\n", 99, rbTree.contains(99));
   }
 
   // Returns the number of nodes in the tree.
@@ -444,16 +376,80 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
     };
   }
 
-  // Example usage of RB tree:
-  public static void main(String[] args) {
+  public class Node {
 
-    int[] values = {5, 8, 1, -4, 6, -2, 0, 7};
-    RedBlackTree<Integer> rbTree = new RedBlackTree<>();
-    for (int v : values) rbTree.insert(v);
+    // The color of this node. By default all nodes start red.
+    public boolean color = RED;
 
-    System.out.printf("RB tree contains %d: %s\n", 6, rbTree.contains(6));
-    System.out.printf("RB tree contains %d: %s\n", -5, rbTree.contains(-5));
-    System.out.printf("RB tree contains %d: %s\n", 1, rbTree.contains(1));
-    System.out.printf("RB tree contains %d: %s\n", 99, rbTree.contains(99));
+    // The value/data contained within the node.
+    public T value;
+
+    // The left, right and parent references of this node.
+    public Node left, right, parent;
+
+    public Node(T value, Node parent) {
+      this.value = value;
+      this.parent = parent;
+    }
+
+    public Node(boolean color, T value) {
+      this.color = color;
+      this.value = value;
+    }
+
+    Node(T key, boolean color, Node parent, Node left, Node right) {
+      this.value = key;
+      this.color = color;
+
+      if (parent == null && left == null && right == null) {
+        parent = this;
+        left = this;
+        right = this;
+      }
+
+      this.parent = parent;
+      this.left = left;
+      this.right = right;
+    }
+
+    public boolean getColor() {
+      return color;
+    }
+
+    public void setColor(boolean color) {
+      this.color = color;
+    }
+
+    public T getValue() {
+      return value;
+    }
+
+    public void setValue(T value) {
+      this.value = value;
+    }
+
+    public Node getLeft() {
+      return left;
+    }
+
+    public void setLeft(Node left) {
+      this.left = left;
+    }
+
+    public Node getRight() {
+      return right;
+    }
+
+    public void setRight(Node right) {
+      this.right = right;
+    }
+
+    public Node getParent() {
+      return parent;
+    }
+
+    public void setParent(Node parent) {
+      this.parent = parent;
+    }
   }
 }

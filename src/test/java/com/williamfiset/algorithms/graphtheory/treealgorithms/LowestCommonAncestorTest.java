@@ -1,12 +1,13 @@
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
+import com.williamfiset.algorithms.graphtheory.treealgorithms.LowestCommonAncestor.TreeNode;
+import org.junit.Test;
+
+import java.util.List;
+
 import static com.google.common.truth.Truth.assertThat;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.LowestCommonAncestor.addUndirectedEdge;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.LowestCommonAncestor.createEmptyGraph;
-
-import com.williamfiset.algorithms.graphtheory.treealgorithms.LowestCommonAncestor.TreeNode;
-import java.util.*;
-import org.junit.*;
 
 public class LowestCommonAncestorTest {
 

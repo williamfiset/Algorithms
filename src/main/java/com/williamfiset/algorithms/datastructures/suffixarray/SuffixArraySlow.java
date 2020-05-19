@@ -9,6 +9,42 @@ package com.williamfiset.algorithms.datastructures.suffixarray;
 
 public class SuffixArraySlow extends SuffixArray {
 
+  // Contains all the suffixes of the SuffixArray
+  Suffix[] suffixes;
+
+  public SuffixArraySlow(String text) {
+    super(toIntArray(text));
+  }
+
+  public SuffixArraySlow(int[] text) {
+    super(text);
+  }
+
+  public static void main(String[] args) {
+    SuffixArraySlow sa = new SuffixArraySlow("ABBABAABAA");
+    System.out.println(sa);
+  }
+
+  // Suffix array construction. This actually takes O(n^2log(n)) time since sorting takes on
+  // average O(nlog(n)) and each String comparison takes O(n).
+  @Override
+  protected void construct() {
+    sa = new int[N];
+    suffixes = new Suffix[N];
+
+    for (int i = 0; i < N; i++) suffixes[i] = new Suffix(T, i);
+
+    java.util.Arrays.sort(suffixes);
+
+    for (int i = 0; i < N; i++) {
+      Suffix suffix = suffixes[i];
+      sa[i] = suffix.index;
+      suffixes[i] = null;
+    }
+
+    suffixes = null;
+  }
+
   private static class Suffix implements Comparable<Suffix> {
     // Starting position of suffix in text
     final int index, len;
@@ -36,41 +72,5 @@ public class SuffixArraySlow extends SuffixArray {
     public String toString() {
       return new String(text, index, len);
     }
-  }
-
-  // Contains all the suffixes of the SuffixArray
-  Suffix[] suffixes;
-
-  public SuffixArraySlow(String text) {
-    super(toIntArray(text));
-  }
-
-  public SuffixArraySlow(int[] text) {
-    super(text);
-  }
-
-  // Suffix array construction. This actually takes O(n^2log(n)) time since sorting takes on
-  // average O(nlog(n)) and each String comparison takes O(n).
-  @Override
-  protected void construct() {
-    sa = new int[N];
-    suffixes = new Suffix[N];
-
-    for (int i = 0; i < N; i++) suffixes[i] = new Suffix(T, i);
-
-    java.util.Arrays.sort(suffixes);
-
-    for (int i = 0; i < N; i++) {
-      Suffix suffix = suffixes[i];
-      sa[i] = suffix.index;
-      suffixes[i] = null;
-    }
-
-    suffixes = null;
-  }
-
-  public static void main(String[] args) {
-    SuffixArraySlow sa = new SuffixArraySlow("ABBABAABAA");
-    System.out.println(sa);
   }
 }

@@ -8,11 +8,11 @@
  */
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
-import static java.lang.Math.min;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+import static java.lang.Math.min;
 
 public class MinCostMaxFlowWithBellmanFord extends NetworkFlowSolverBase {
 
@@ -27,6 +27,29 @@ public class MinCostMaxFlowWithBellmanFord extends NetworkFlowSolverBase {
   public MinCostMaxFlowWithBellmanFord(int n, int s, int t) {
     super(n, s, t);
   }
+
+  public static void main(String[] args) {
+    testSmallNetwork();
+  }
+
+  private static void testSmallNetwork() {
+    int n = 6;
+    int s = n - 1;
+    int t = n - 2;
+    MinCostMaxFlowWithBellmanFord solver;
+    solver = new MinCostMaxFlowWithBellmanFord(n, s, t);
+
+    solver.addEdge(s, 1, 4, 10);
+    solver.addEdge(s, 2, 2, 30);
+    solver.addEdge(1, 2, 2, 10);
+    solver.addEdge(1, t, 0, 9999);
+    solver.addEdge(2, t, 4, 10);
+
+    // Prints: Max flow: 4, Min cost: 140
+    System.out.printf("Max flow: %d, Min cost: %d\n", solver.getMaxFlow(), solver.getMinCost());
+  }
+
+  /* Example usage. */
 
   @Override
   public void solve() {
@@ -77,28 +100,5 @@ public class MinCostMaxFlowWithBellmanFord extends NetworkFlowSolverBase {
     LinkedList<Edge> path = new LinkedList<>();
     for (Edge edge = prev[t]; edge != null; edge = prev[edge.from]) path.addFirst(edge);
     return path;
-  }
-
-  /* Example usage. */
-
-  public static void main(String[] args) {
-    testSmallNetwork();
-  }
-
-  private static void testSmallNetwork() {
-    int n = 6;
-    int s = n - 1;
-    int t = n - 2;
-    MinCostMaxFlowWithBellmanFord solver;
-    solver = new MinCostMaxFlowWithBellmanFord(n, s, t);
-
-    solver.addEdge(s, 1, 4, 10);
-    solver.addEdge(s, 2, 2, 30);
-    solver.addEdge(1, 2, 2, 10);
-    solver.addEdge(1, t, 0, 9999);
-    solver.addEdge(2, t, 4, 10);
-
-    // Prints: Max flow: 4, Min cost: 140
-    System.out.printf("Max flow: %d, Min cost: %d\n", solver.getMaxFlow(), solver.getMinCost());
   }
 }

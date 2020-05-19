@@ -8,22 +8,12 @@
  */
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TreeCenterLongestPathImpl {
-
-  private static class DfsResult {
-    // The distance to the furthest node (from where the DFS started)
-    int distance;
-
-    // The index of the furthest node (from where the DFS started)
-    int index;
-
-    public DfsResult(int distance, int index) {
-      this.distance = distance;
-      this.index = index;
-    }
-  }
 
   private static DfsResult dfs(
       List<List<Integer>> graph, boolean[] visited, int[] prev, int at, int parent) {
@@ -149,5 +139,18 @@ public class TreeCenterLongestPathImpl {
     addUndirectedEdge(graph6, 4, 5);
     addUndirectedEdge(graph6, 4, 6);
     System.out.println(findTreeCenters(graph6));
+  }
+
+  private static class DfsResult {
+    // The distance to the furthest node (from where the DFS started)
+    int distance;
+
+    // The index of the furthest node (from where the DFS started)
+    int index;
+
+    public DfsResult(int distance, int index) {
+      this.distance = distance;
+      this.index = index;
+    }
   }
 }

@@ -8,58 +8,11 @@
  */
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class RootingTree {
-
-  public static class TreeNode {
-    private int id;
-    private TreeNode parent;
-    private List<TreeNode> children;
-
-    // Useful constructor for root node.
-    public TreeNode(int id) {
-      this(id, /*parent=*/ null);
-    }
-
-    public TreeNode(int id, TreeNode parent) {
-      this.id = id;
-      this.parent = parent;
-      children = new LinkedList<>();
-    }
-
-    public void addChildren(TreeNode... nodes) {
-      for (TreeNode node : nodes) {
-        children.add(node);
-      }
-    }
-
-    public int id() {
-      return id;
-    }
-
-    public TreeNode parent() {
-      return parent;
-    }
-
-    public List<TreeNode> children() {
-      return children;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(id);
-    }
-
-    // Only checks id equality not subtree equality.
-    @Override
-    public boolean equals(Object obj) {
-      if (obj instanceof TreeNode) {
-        return id() == ((TreeNode) obj).id();
-      }
-      return false;
-    }
-  }
 
   public static TreeNode rootTree(List<List<Integer>> graph, int rootId) {
     TreeNode root = new TreeNode(rootId);
@@ -153,5 +106,54 @@ public class RootingTree {
         root.children.get(0).children.get(0).children
             + ", "
             + root.children.get(0).children.get(1).children);
+  }
+
+  public static class TreeNode {
+    private int id;
+    private TreeNode parent;
+    private List<TreeNode> children;
+
+    // Useful constructor for root node.
+    public TreeNode(int id) {
+      this(id, /*parent=*/ null);
+    }
+
+    public TreeNode(int id, TreeNode parent) {
+      this.id = id;
+      this.parent = parent;
+      children = new LinkedList<>();
+    }
+
+    public void addChildren(TreeNode... nodes) {
+      for (TreeNode node : nodes) {
+        children.add(node);
+      }
+    }
+
+    public int id() {
+      return id;
+    }
+
+    public TreeNode parent() {
+      return parent;
+    }
+
+    public List<TreeNode> children() {
+      return children;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(id);
+    }
+
+    // Only checks id equality not subtree equality.
+    @Override
+    public boolean equals(Object obj) {
+      if (obj instanceof TreeNode) {
+        return id() == ((TreeNode) obj).id();
+      }
+      return false;
+    }
   }
 }

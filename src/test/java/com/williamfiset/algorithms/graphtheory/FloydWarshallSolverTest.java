@@ -1,10 +1,11 @@
 package com.williamfiset.algorithms.graphtheory;
 
-import static com.google.common.truth.Truth.assertThat;
-
-import java.util.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public class FloydWarshallSolverTest {
 
@@ -12,6 +13,31 @@ public class FloydWarshallSolverTest {
   static final double NEG_INF = Double.NEGATIVE_INFINITY;
 
   static double[][] matrix1, matrix2, matrix3;
+
+  private static double[][] createMatrix(int n) {
+    double[][] m = new double[n][n];
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        m[i][j] = Double.POSITIVE_INFINITY;
+        m[i][i] = 0;
+      }
+    }
+    return m;
+  }
+
+  private static void addRandomEdges(double[][] matrix, int count, boolean allowNegativeEdges) {
+    int n = matrix.length;
+    while (count-- > 0) {
+      int i = (int) (Math.random() * n);
+      int j = (int) (Math.random() * n);
+      if (i == j) continue;
+      int v = (int) (Math.random() * 100);
+      // Allow negative edges but only very rarely since even one
+      // negative edge can start an avalanche of negative cycles.
+      if (allowNegativeEdges) v = (Math.random() > 0.005) ? v : -v;
+      matrix[i][j] = v;
+    }
+  }
 
   @Before
   public void setup() {
@@ -39,31 +65,6 @@ public class FloydWarshallSolverTest {
           {4, 4, 4, 0, INF},
           {4, 3, 5, INF, 0}
         };
-  }
-
-  private static double[][] createMatrix(int n) {
-    double[][] m = new double[n][n];
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < n; j++) {
-        m[i][j] = Double.POSITIVE_INFINITY;
-        m[i][i] = 0;
-      }
-    }
-    return m;
-  }
-
-  private static void addRandomEdges(double[][] matrix, int count, boolean allowNegativeEdges) {
-    int n = matrix.length;
-    while (count-- > 0) {
-      int i = (int) (Math.random() * n);
-      int j = (int) (Math.random() * n);
-      if (i == j) continue;
-      int v = (int) (Math.random() * 100);
-      // Allow negative edges but only very rarely since even one
-      // negative edge can start an avalanche of negative cycles.
-      if (allowNegativeEdges) v = (Math.random() > 0.005) ? v : -v;
-      matrix[i][j] = v;
-    }
   }
 
   @Test

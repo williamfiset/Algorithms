@@ -1,7 +1,8 @@
 /** NOTE: This file is still in development! */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TwoSatSolverAdjacencyList {
 
@@ -15,36 +16,6 @@ public class TwoSatSolverAdjacencyList {
   public TwoSatSolverAdjacencyList(List<List<Integer>> graph) {
     n = graph.size() / 2;
     sccSolver = new TarjanSccSolverAdjacencyList(graph);
-  }
-
-  // Returns true/false depending on whether this 2SAT problem is satisfiable
-  public boolean isSatisfiable() {
-    if (!solved) solve();
-    return isSatisfiable;
-  }
-
-  public void solve() {
-    if (solved) return;
-
-    int[] sccs = sccSolver.getSccs();
-    // System.out.println(Arrays.toString(sccs));
-
-    // Assume that this 2SAT problem is satisfiable and try to
-    // disprove it by looking at which SCCs p and ~p belong to.
-    isSatisfiable = true;
-    for (int i = 0; i < sccs.length; i += 2) {
-      if (sccs[i] == sccs[i ^ 1]) {
-        isSatisfiable = false;
-        break;
-      }
-    }
-
-    // Find a truth assignment.
-    if (isSatisfiable) {
-      // get topsort ordering
-    }
-
-    solved = true;
   }
 
   // Creates an implication graph.
@@ -98,5 +69,35 @@ public class TwoSatSolverAdjacencyList {
     // int[] sccs = solver.sccSolver.getSccs();
     // System.out.println(Arrays.toString(sccs));
 
+  }
+
+  // Returns true/false depending on whether this 2SAT problem is satisfiable
+  public boolean isSatisfiable() {
+    if (!solved) solve();
+    return isSatisfiable;
+  }
+
+  public void solve() {
+    if (solved) return;
+
+    int[] sccs = sccSolver.getSccs();
+    // System.out.println(Arrays.toString(sccs));
+
+    // Assume that this 2SAT problem is satisfiable and try to
+    // disprove it by looking at which SCCs p and ~p belong to.
+    isSatisfiable = true;
+    for (int i = 0; i < sccs.length; i += 2) {
+      if (sccs[i] == sccs[i ^ 1]) {
+        isSatisfiable = false;
+        break;
+      }
+    }
+
+    // Find a truth assignment.
+    if (isSatisfiable) {
+      // get topsort ordering
+    }
+
+    solved = true;
   }
 }

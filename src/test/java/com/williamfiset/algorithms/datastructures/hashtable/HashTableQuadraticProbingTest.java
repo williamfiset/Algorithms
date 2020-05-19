@@ -1,33 +1,14 @@
 package com.williamfiset.algorithms.datastructures.hashtable;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.*;
-import org.junit.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class HashTableQuadraticProbingTest {
-
-  // You can set the hash value of this object to be whatever you want
-  // This makes it great for testing special cases.
-  static class HashObject {
-    final int hash, data;
-
-    public HashObject(int hash, int data) {
-      this.hash = hash;
-      this.data = data;
-    }
-
-    @Override
-    public int hashCode() {
-      return hash;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-      HashObject ho = (HashObject) o;
-      return hashCode() == ho.hashCode() && data == ho.data;
-    }
-  }
 
   static final Random RANDOM = new Random();
   static int LOOPS, MAX_SIZE, MAX_RAND_NUM;
@@ -39,6 +20,27 @@ public class HashTableQuadraticProbingTest {
   }
 
   HashTableQuadraticProbing<Integer, Integer> map;
+
+  static int randInt(int min, int max) {
+    return RANDOM.nextInt((max - min) + 1) + min;
+  }
+
+  // Generate a list of random numbers
+  static List<Integer> genRandList(int sz) {
+
+    List<Integer> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) lst.add(randInt(-MAX_RAND_NUM, MAX_RAND_NUM));
+    Collections.shuffle(lst);
+    return lst;
+  }
+
+  // Generate a list of unique random numbers
+  static List<Integer> genUniqueRandList(int sz) {
+    List<Integer> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) lst.add(i);
+    Collections.shuffle(lst);
+    return lst;
+  }
 
   @Before
   public void setup() {
@@ -322,24 +324,25 @@ public class HashTableQuadraticProbingTest {
     }
   }
 
-  static int randInt(int min, int max) {
-    return RANDOM.nextInt((max - min) + 1) + min;
-  }
+  // You can set the hash value of this object to be whatever you want
+  // This makes it great for testing special cases.
+  static class HashObject {
+    final int hash, data;
 
-  // Generate a list of random numbers
-  static List<Integer> genRandList(int sz) {
+    public HashObject(int hash, int data) {
+      this.hash = hash;
+      this.data = data;
+    }
 
-    List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add(randInt(-MAX_RAND_NUM, MAX_RAND_NUM));
-    Collections.shuffle(lst);
-    return lst;
-  }
+    @Override
+    public int hashCode() {
+      return hash;
+    }
 
-  // Generate a list of unique random numbers
-  static List<Integer> genUniqueRandList(int sz) {
-    List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add(i);
-    Collections.shuffle(lst);
-    return lst;
+    @Override
+    public boolean equals(Object o) {
+      HashObject ho = (HashObject) o;
+      return hashCode() == ho.hashCode() && data == ho.data;
+    }
   }
 }

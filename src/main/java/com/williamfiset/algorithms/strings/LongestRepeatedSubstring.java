@@ -7,7 +7,8 @@
  */
 package com.williamfiset.algorithms.strings;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.TreeSet;
 
 public class LongestRepeatedSubstring {
 
@@ -37,12 +38,6 @@ public class LongestRepeatedSubstring {
       this(toIntArray(str));
     }
 
-    private static int[] toIntArray(String s) {
-      int[] text = new int[s.length()];
-      for (int i = 0; i < s.length(); i++) text[i] = s.charAt(i);
-      return text;
-    }
-
     // Designated constructor
     public SuffixArray(int[] text) {
       T = text;
@@ -53,6 +48,12 @@ public class LongestRepeatedSubstring {
       c = new int[Math.max(ALPHABET_SZ, N)];
       construct();
       kasai();
+    }
+
+    private static int[] toIntArray(String s) {
+      int[] text = new int[s.length()];
+      for (int i = 0; i < s.length(); i++) text[i] = s.charAt(i);
+      return text;
     }
 
     private void construct() {

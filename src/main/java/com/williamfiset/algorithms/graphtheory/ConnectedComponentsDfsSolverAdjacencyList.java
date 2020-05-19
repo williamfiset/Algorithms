@@ -7,7 +7,8 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConnectedComponentsDfsSolverAdjacencyList {
 
@@ -25,39 +26,6 @@ public class ConnectedComponentsDfsSolverAdjacencyList {
     this.n = graph.size();
     this.graph = graph;
   }
-
-  public int[] getComponents() {
-    solve();
-    return components;
-  }
-
-  public int countComponents() {
-    solve();
-    return componentCount;
-  }
-
-  public void solve() {
-    if (solved) return;
-
-    visited = new boolean[n];
-    components = new int[n];
-    for (int i = 0; i < n; i++) {
-      if (!visited[i]) {
-        componentCount++;
-        dfs(i);
-      }
-    }
-
-    solved = true;
-  }
-
-  private void dfs(int at) {
-    visited[at] = true;
-    components[at] = componentCount;
-    for (int to : graph.get(at)) if (!visited[to]) dfs(to);
-  }
-
-  /* Finding connected components example */
 
   public static List<List<Integer>> createGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>(n);
@@ -107,5 +75,38 @@ public class ConnectedComponentsDfsSolverAdjacencyList {
     // Node 8 is part of component 4
     // Node 9 is part of component 3
     // Node 10 is part of component 5
+  }
+
+  public int[] getComponents() {
+    solve();
+    return components;
+  }
+
+  /* Finding connected components example */
+
+  public int countComponents() {
+    solve();
+    return componentCount;
+  }
+
+  public void solve() {
+    if (solved) return;
+
+    visited = new boolean[n];
+    components = new int[n];
+    for (int i = 0; i < n; i++) {
+      if (!visited[i]) {
+        componentCount++;
+        dfs(i);
+      }
+    }
+
+    solved = true;
+  }
+
+  private void dfs(int at) {
+    visited[at] = true;
+    components[at] = componentCount;
+    for (int to : graph.get(at)) if (!visited[to]) dfs(to);
   }
 }

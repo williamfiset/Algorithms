@@ -6,7 +6,10 @@
  */
 package com.williamfiset.algorithms.ai;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class GeneticAlgorithm_travelingSalesman {
 
@@ -16,12 +19,11 @@ public class GeneticAlgorithm_travelingSalesman {
   static final int P = 250;
   static final int MAX_EPOCH = 100000;
   static final double MUTATION_RATE = 0.015;
-
+  static final double POWER_INC = 0.0001;
   // The power variable tweaks the weight of the fitness function
   // to emphasize better individuals. The power slowly increments
   // over time to help get out of local minimums in later epochs.
   static double power;
-  static final double POWER_INC = 0.0001;
 
   static double tsp(double[][] adjacencyMatrix) {
 
@@ -242,8 +244,8 @@ public class GeneticAlgorithm_travelingSalesman {
   // the cities are visited.
   static class Individual {
 
-    int[] cities;
     static Random RANDOM = new Random();
+    int[] cities;
 
     // Constructs a random individual
     public Individual(int n) {
@@ -264,15 +266,6 @@ public class GeneticAlgorithm_travelingSalesman {
     //   return s == (n*(n-1))/2;
     // }
 
-    // Swap the order in which the cities are visited
-    public void mutate() {
-      int i = RANDOM.nextInt(cities.length);
-      int j = RANDOM.nextInt(cities.length);
-      int tmp = cities[i];
-      cities[i] = cities[j];
-      cities[j] = tmp;
-    }
-
     // Fisher–Yates shuffle
     public static void shuffleArray(int[] array) {
       int index;
@@ -284,6 +277,15 @@ public class GeneticAlgorithm_travelingSalesman {
           array[index] ^= array[i];
         }
       }
+    }
+
+    // Swap the order in which the cities are visited
+    public void mutate() {
+      int i = RANDOM.nextInt(cities.length);
+      int j = RANDOM.nextInt(cities.length);
+      int tmp = cities[i];
+      cities[i] = cities[j];
+      cities[j] = tmp;
     }
 
     @Override

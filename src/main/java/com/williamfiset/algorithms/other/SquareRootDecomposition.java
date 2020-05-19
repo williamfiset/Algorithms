@@ -28,6 +28,25 @@ public class SquareRootDecomposition {
     for (int i = 0; i < values.length; i++) set(i, values[i]);
   }
 
+  // Square root decomposition range query example
+  public static void main(String[] args) {
+
+    int[] values = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    SquareRootDecomposition range = new SquareRootDecomposition(values);
+
+    // Prints: The sum from [0,8] is: 45
+    System.out.printf("The sum from [%d,%d] is: %d\n", 0, 8, range.query(0, 8));
+
+    // Prints: The sum from [2,2] is: 3
+    System.out.printf("The sum from [%d,%d] is: %d\n", 2, 2, range.query(2, 2));
+
+    // Prints: The sum from [3,4] is: 9
+    System.out.printf("The sum from [%d,%d] is: %d\n", 3, 4, range.query(3, 4));
+
+    // Prints: The sum from [1,6] is: 27
+    System.out.printf("The sum from [%d,%d] is: %d\n", 1, 6, range.query(1, 6));
+  }
+
   public int blockID(int index) {
     return index / blockSize;
   }
@@ -58,24 +77,5 @@ public class SquareRootDecomposition {
     for (int i = hiMin; i <= hi; i++) sum += arr[i];
 
     return sum;
-  }
-
-  // Square root decomposition range query example
-  public static void main(String[] args) {
-
-    int[] values = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    SquareRootDecomposition range = new SquareRootDecomposition(values);
-
-    // Prints: The sum from [0,8] is: 45
-    System.out.printf("The sum from [%d,%d] is: %d\n", 0, 8, range.query(0, 8));
-
-    // Prints: The sum from [2,2] is: 3
-    System.out.printf("The sum from [%d,%d] is: %d\n", 2, 2, range.query(2, 2));
-
-    // Prints: The sum from [3,4] is: 9
-    System.out.printf("The sum from [%d,%d] is: %d\n", 3, 4, range.query(3, 4));
-
-    // Prints: The sum from [1,6] is: 27
-    System.out.printf("The sum from [%d,%d] is: %d\n", 1, 6, range.query(1, 6));
   }
 }

@@ -16,11 +16,30 @@
  */
 package com.williamfiset.algorithms.dp.examples;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HouseRobber {
 
   int[] dp;
+
+  public static void main(String[] args) {
+    HouseRobber robber = new HouseRobber();
+    int[] houses = {5, 2, 4, 7, 2, 13, 9, 1, 8, 4};
+    int amount = robber.rob(houses);
+    System.out.println("Robbed: " + amount + "$");
+
+    List<Integer> robbedHouses = robber.findRobbedHouses(houses);
+    int sum = 0;
+    for (int houseIndex : robbedHouses) {
+      System.out.printf("Robbed house at index %d, for %d$\n", houseIndex, houses[houseIndex]);
+      sum += houses[houseIndex];
+    }
+
+    if (amount != sum) {
+      System.out.println("Oh dear, something is very wrong.");
+    }
+  }
 
   public int rob(int[] houses) {
     int n = houses.length;
@@ -43,23 +62,5 @@ public class HouseRobber {
       }
     }
     return robbedHouses;
-  }
-
-  public static void main(String[] args) {
-    HouseRobber robber = new HouseRobber();
-    int[] houses = {5, 2, 4, 7, 2, 13, 9, 1, 8, 4};
-    int amount = robber.rob(houses);
-    System.out.println("Robbed: " + amount + "$");
-
-    List<Integer> robbedHouses = robber.findRobbedHouses(houses);
-    int sum = 0;
-    for (int houseIndex : robbedHouses) {
-      System.out.printf("Robbed house at index %d, for %d$\n", houseIndex, houses[houseIndex]);
-      sum += houses[houseIndex];
-    }
-
-    if (amount != sum) {
-      System.out.println("Oh dear, something is very wrong.");
-    }
   }
 }

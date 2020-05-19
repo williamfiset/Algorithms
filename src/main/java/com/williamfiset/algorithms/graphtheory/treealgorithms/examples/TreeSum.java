@@ -13,32 +13,10 @@
  */
 package com.williamfiset.algorithms.graphtheory.treealgorithms.examples;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TreeSum {
-
-  public static class TreeNode {
-    int value;
-    List<TreeNode> children = new ArrayList<>();
-
-    public TreeNode(int value) {
-      this.value = value;
-    }
-
-    public int getValue() {
-      return value;
-    }
-
-    public List<TreeNode> getChildren() {
-      return children;
-    }
-
-    public void addChild(TreeNode... nodes) {
-      for (TreeNode node : nodes) {
-        children.add(node);
-      }
-    }
-  }
 
   public static int treeSum(TreeNode node) {
     if (node == null) return 0;
@@ -48,12 +26,12 @@ public class TreeSum {
     return total;
   }
 
-  /* Examples */
-
   public static void main(String[] args) {
     TreeNode root = makeTree();
     System.out.printf("Tree sum: %d\n", treeSum(root));
   }
+
+  /* Examples */
 
   private static TreeNode makeTree() {
     TreeNode root = new TreeNode(5);
@@ -79,5 +57,28 @@ public class TreeSum {
     node7.addChild(node8);
 
     return root;
+  }
+
+  public static class TreeNode {
+    int value;
+    List<TreeNode> children = new ArrayList<>();
+
+    public TreeNode(int value) {
+      this.value = value;
+    }
+
+    public int getValue() {
+      return value;
+    }
+
+    public List<TreeNode> getChildren() {
+      return children;
+    }
+
+    public void addChild(TreeNode... nodes) {
+      for (TreeNode node : nodes) {
+        children.add(node);
+      }
+    }
   }
 }

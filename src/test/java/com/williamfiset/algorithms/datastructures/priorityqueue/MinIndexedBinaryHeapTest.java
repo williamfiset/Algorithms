@@ -1,17 +1,36 @@
 package com.williamfiset.algorithms.datastructures.priorityqueue;
 
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.*;
+
 import static com.google.common.truth.Truth.assertThat;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Random;
-import org.junit.*;
-
 public class MinIndexedBinaryHeapTest {
+
+  static int[] genRandArray(int n, int lo, int hi) {
+    return new Random().ints(n, lo, hi).toArray();
+  }
+
+  static void sortPairsByValue(Integer[][] pairs) {
+    Arrays.sort(
+        pairs,
+        new Comparator<Integer[]>() {
+          @Override
+          public int compare(Integer[] pair1, Integer[] pair2) {
+            return pair1[1] - pair2[1];
+          }
+        });
+  }
+
+  // Generate a list of unique random numbers
+  static List<Integer> genUniqueRandList(int sz) {
+    List<Integer> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) lst.add(i);
+    Collections.shuffle(lst);
+    return lst;
+  }
 
   @Before
   public void setup() {}
@@ -269,28 +288,5 @@ public class MinIndexedBinaryHeapTest {
         if (!pq2.isEmpty()) assertThat(pq1.peekMinValue()).isEqualTo(pq2.peek());
       }
     }
-  }
-
-  static int[] genRandArray(int n, int lo, int hi) {
-    return new Random().ints(n, lo, hi).toArray();
-  }
-
-  static void sortPairsByValue(Integer[][] pairs) {
-    Arrays.sort(
-        pairs,
-        new Comparator<Integer[]>() {
-          @Override
-          public int compare(Integer[] pair1, Integer[] pair2) {
-            return pair1[1] - pair2[1];
-          }
-        });
-  }
-
-  // Generate a list of unique random numbers
-  static List<Integer> genUniqueRandList(int sz) {
-    List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add(i);
-    Collections.shuffle(lst);
-    return lst;
   }
 }

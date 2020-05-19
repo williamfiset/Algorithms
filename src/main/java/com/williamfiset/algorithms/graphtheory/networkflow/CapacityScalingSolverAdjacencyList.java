@@ -8,10 +8,10 @@
  */
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
+import java.util.List;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-
-import java.util.List;
 
 public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
 
@@ -28,67 +28,6 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
   public CapacityScalingSolverAdjacencyList(int n, int s, int t) {
     super(n, s, t);
   }
-
-  /**
-   * Adds a directed edge (and residual edge) to the flow graph.
-   *
-   * @param from - The index of the node the directed edge starts at.
-   * @param to - The index of the node the directed edge end at.
-   * @param capacity - The capacity of the edge.
-   */
-  @Override
-  public void addEdge(int from, int to, long capacity) {
-    super.addEdge(from, to, capacity);
-    delta = max(delta, capacity);
-  }
-
-  // Performs the Ford-Fulkerson method applying a depth first search as
-  // a means of finding an augmenting path.
-  @Override
-  public void solve() {
-    // Start delta at the largest power of 2 <= the largest capacity.
-    // Equivalent of: delta = (long) pow(2, (int)floor(log(delta)/log(2)))
-    delta = Long.highestOneBit(delta);
-
-    // Repeatedly find augmenting paths from source to sink using only edges
-    // with a remaining capacity >= delta. Half delta every time we become unable
-    // to find an augmenting path from source to sink until the graph is saturated.
-    for (long f = 0; delta > 0; delta /= 2) {
-      do {
-        markAllNodesAsUnvisited();
-        f = dfs(s, INF);
-        maxFlow += f;
-      } while (f != 0);
-    }
-
-    // Find min cut.
-    for (int i = 0; i < n; i++) if (visited(i)) minCut[i] = true;
-  }
-
-  private long dfs(int node, long flow) {
-    // At sink node, return augmented path flow.
-    if (node == t) return flow;
-
-    List<Edge> edges = graph[node];
-    visit(node);
-
-    for (Edge edge : edges) {
-      long cap = edge.remainingCapacity();
-      if (cap >= delta && !visited(edge.to)) {
-
-        long bottleNeck = dfs(edge.to, min(flow, cap));
-
-        // Augment flow with bottle neck value
-        if (bottleNeck > 0) {
-          edge.augment(bottleNeck);
-          return bottleNeck;
-        }
-      }
-    }
-    return 0;
-  }
-
-  /* Example */
 
   public static void main(String[] args) {
     testSmallFlowGraph();
@@ -147,5 +86,66 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
     solver.addEdge(1, 3, 10);
 
     System.out.println(solver.getMaxFlow()); // 20
+  }
+
+  /* Example */
+
+  /**
+   * Adds a directed edge (and residual edge) to the flow graph.
+   *
+   * @param from - The index of the node the directed edge starts at.
+   * @param to - The index of the node the directed edge end at.
+   * @param capacity - The capacity of the edge.
+   */
+  @Override
+  public void addEdge(int from, int to, long capacity) {
+    super.addEdge(from, to, capacity);
+    delta = max(delta, capacity);
+  }
+
+  // Performs the Ford-Fulkerson method applying a depth first search as
+  // a means of finding an augmenting path.
+  @Override
+  public void solve() {
+    // Start delta at the largest power of 2 <= the largest capacity.
+    // Equivalent of: delta = (long) pow(2, (int)floor(log(delta)/log(2)))
+    delta = Long.highestOneBit(delta);
+
+    // Repeatedly find augmenting paths from source to sink using only edges
+    // with a remaining capacity >= delta. Half delta every time we become unable
+    // to find an augmenting path from source to sink until the graph is saturated.
+    for (long f = 0; delta > 0; delta /= 2) {
+      do {
+        markAllNodesAsUnvisited();
+        f = dfs(s, INF);
+        maxFlow += f;
+      } while (f != 0);
+    }
+
+    // Find min cut.
+    for (int i = 0; i < n; i++) if (visited(i)) minCut[i] = true;
+  }
+
+  private long dfs(int node, long flow) {
+    // At sink node, return augmented path flow.
+    if (node == t) return flow;
+
+    List<Edge> edges = graph[node];
+    visit(node);
+
+    for (Edge edge : edges) {
+      long cap = edge.remainingCapacity();
+      if (cap >= delta && !visited(edge.to)) {
+
+        long bottleNeck = dfs(edge.to, min(flow, cap));
+
+        // Augment flow with bottle neck value
+        if (bottleNeck > 0) {
+          edge.augment(bottleNeck);
+          return bottleNeck;
+        }
+      }
+    }
+    return 0;
   }
 }

@@ -1,6 +1,8 @@
 package com.williamfiset.algorithms.datastructures.utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public final class TestUtils {
 

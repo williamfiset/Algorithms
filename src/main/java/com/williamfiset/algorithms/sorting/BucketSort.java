@@ -13,16 +13,7 @@ import java.util.*;
 
 public class BucketSort implements InplaceSort {
 
-  @Override
-  public void sort(int[] values) {
-    int minValue = Integer.MAX_VALUE;
-    int maxValue = Integer.MIN_VALUE;
-    for (int i = 0; i < values.length; i++) {
-      if (values[i] < minValue) minValue = values[i];
-      if (values[i] > maxValue) maxValue = values[i];
-    }
-    BucketSort.bucketSort(values, minValue, maxValue);
-  }
+  static Random RANDOM = new Random();
 
   // Performs a bucket sort of an array in which all the elements are
   // bounded in the range [minValue, maxValue]. For bucket sort to give linear
@@ -73,8 +64,6 @@ public class BucketSort implements InplaceSort {
     runTests();
   }
 
-  static Random RANDOM = new Random();
-
   public static void runTests() {
     final int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {
@@ -97,5 +86,16 @@ public class BucketSort implements InplaceSort {
 
   static int randInt(int min, int max) {
     return RANDOM.nextInt((max - min) + 1) + min;
+  }
+
+  @Override
+  public void sort(int[] values) {
+    int minValue = Integer.MAX_VALUE;
+    int maxValue = Integer.MIN_VALUE;
+    for (int i = 0; i < values.length; i++) {
+      if (values[i] < minValue) minValue = values[i];
+      if (values[i] > maxValue) maxValue = values[i];
+    }
+    BucketSort.bucketSort(values, minValue, maxValue);
   }
 }

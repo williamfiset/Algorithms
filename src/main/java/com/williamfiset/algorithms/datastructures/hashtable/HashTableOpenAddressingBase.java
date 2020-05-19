@@ -14,23 +14,19 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
 
+  private static final int DEFAULT_CAPACITY = 7;
+  private static final double DEFAULT_LOAD_FACTOR = 0.65;
+  // Special marker token used to indicate the deletion of a key-value pair
+  protected final K TOMBSTONE = (K) (new Object());
   protected double loadFactor;
   protected int capacity, threshold, modificationCount;
-
   // 'usedBuckets' counts the total number of used buckets inside the
   // hash-table (includes cells marked as deleted). While 'keyCount'
   // tracks the number of unique keys currently inside the hash-table.
   protected int usedBuckets, keyCount;
-
   // These arrays store the key-value pairs.
   protected K[] keys;
   protected V[] values;
-
-  // Special marker token used to indicate the deletion of a key-value pair
-  protected final K TOMBSTONE = (K) (new Object());
-
-  private static final int DEFAULT_CAPACITY = 7;
-  private static final double DEFAULT_LOAD_FACTOR = 0.65;
 
   protected HashTableOpenAddressingBase() {
     this(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR);
@@ -54,6 +50,12 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
 
     keys = (K[]) new Object[this.capacity];
     values = (V[]) new Object[this.capacity];
+  }
+
+  // Finds the greatest common denominator of a and b.
+  protected static final int gcd(int a, int b) {
+    if (b == 0) return a;
+    return gcd(b, a % b);
   }
 
   // These three methods are used to dictate how the probing is to actually
@@ -161,12 +163,6 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
   // negative sign and places the hash value in the domain [0, capacity)
   protected final int normalizeIndex(int keyHash) {
     return (keyHash & 0x7FFFFFFF) % capacity;
-  }
-
-  // Finds the greatest common denominator of a and b.
-  protected static final int gcd(int a, int b) {
-    if (b == 0) return a;
-    return gcd(b, a % b);
   }
 
   // Place a key-value pair into the hash-table. If the value already

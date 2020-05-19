@@ -12,20 +12,20 @@ package com.williamfiset.algorithms.graphtheory;
 // Import Java's special constants ∞ and -∞ which behave
 // as you expect them to when you do arithmetic. For example,
 // ∞ + ∞ = ∞, ∞ + x = ∞, -∞ + x = -∞ and ∞ + -∞ = Nan
-import static java.lang.Double.NEGATIVE_INFINITY;
-import static java.lang.Double.POSITIVE_INFINITY;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Double.NEGATIVE_INFINITY;
+import static java.lang.Double.POSITIVE_INFINITY;
+
 public class FloydWarshallSolver {
 
+  private static final int REACHES_NEGATIVE_CYCLE = -1;
   private int n;
   private boolean solved;
   private double[][] dp;
   private Integer[][] next;
-
-  private static final int REACHES_NEGATIVE_CYCLE = -1;
 
   /**
    * As input, this class takes an adjacency matrix with edge weights between nodes, where
@@ -48,70 +48,6 @@ public class FloydWarshallSolver {
       }
     }
   }
-
-  /**
-   * Runs Floyd-Warshall to compute the shortest distance between every pair of nodes.
-   *
-   * @return The solved All Pairs Shortest Path (APSP) matrix.
-   */
-  public double[][] getApspMatrix() {
-    solve();
-    return dp;
-  }
-
-  // Executes the Floyd-Warshall algorithm.
-  public void solve() {
-    if (solved) return;
-
-    // Compute all pairs shortest paths.
-    for (int k = 0; k < n; k++) {
-      for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-          if (dp[i][k] + dp[k][j] < dp[i][j]) {
-            dp[i][j] = dp[i][k] + dp[k][j];
-            next[i][j] = next[i][k];
-          }
-        }
-      }
-    }
-
-    // Identify negative cycles by propagating the value 'NEGATIVE_INFINITY'
-    // to every edge that is part of or reaches into a negative cycle.
-    for (int k = 0; k < n; k++)
-      for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-          if (dp[i][k] + dp[k][j] < dp[i][j]) {
-            dp[i][j] = NEGATIVE_INFINITY;
-            next[i][j] = REACHES_NEGATIVE_CYCLE;
-          }
-
-    solved = true;
-  }
-
-  /**
-   * Reconstructs the shortest path (of nodes) from 'start' to 'end' inclusive.
-   *
-   * @return An array of nodes indexes of the shortest path from 'start' to 'end'. If 'start' and
-   *     'end' are not connected return an empty array. If the shortest path from 'start' to 'end'
-   *     are reachable by a negative cycle return -1.
-   */
-  public List<Integer> reconstructShortestPath(int start, int end) {
-    solve();
-    List<Integer> path = new ArrayList<>();
-    if (dp[start][end] == POSITIVE_INFINITY) return path;
-    int at = start;
-    for (; at != end; at = next[at][end]) {
-      // Return null since there are an infinite number of shortest paths.
-      if (at == REACHES_NEGATIVE_CYCLE) return null;
-      path.add(at);
-    }
-    // Return null since there are an infinite number of shortest paths.
-    if (next[at][end] == REACHES_NEGATIVE_CYCLE) return null;
-    path.add(end);
-    return path;
-  }
-
-  /* Example usage. */
 
   // Creates a graph with n nodes. The adjacency matrix is constructed
   // such that the value of going from a node to itself is 0.
@@ -203,5 +139,69 @@ public class FloydWarshallSolver {
     // The shortest path from node 1 to node 6 is: [1 -> 2 -> 6]
     // The shortest path from node 2 to node 0 DOES NOT EXIST (node 2 doesn't reach node 0)
     // ...
+  }
+
+  /**
+   * Runs Floyd-Warshall to compute the shortest distance between every pair of nodes.
+   *
+   * @return The solved All Pairs Shortest Path (APSP) matrix.
+   */
+  public double[][] getApspMatrix() {
+    solve();
+    return dp;
+  }
+
+  /* Example usage. */
+
+  // Executes the Floyd-Warshall algorithm.
+  public void solve() {
+    if (solved) return;
+
+    // Compute all pairs shortest paths.
+    for (int k = 0; k < n; k++) {
+      for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+          if (dp[i][k] + dp[k][j] < dp[i][j]) {
+            dp[i][j] = dp[i][k] + dp[k][j];
+            next[i][j] = next[i][k];
+          }
+        }
+      }
+    }
+
+    // Identify negative cycles by propagating the value 'NEGATIVE_INFINITY'
+    // to every edge that is part of or reaches into a negative cycle.
+    for (int k = 0; k < n; k++)
+      for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+          if (dp[i][k] + dp[k][j] < dp[i][j]) {
+            dp[i][j] = NEGATIVE_INFINITY;
+            next[i][j] = REACHES_NEGATIVE_CYCLE;
+          }
+
+    solved = true;
+  }
+
+  /**
+   * Reconstructs the shortest path (of nodes) from 'start' to 'end' inclusive.
+   *
+   * @return An array of nodes indexes of the shortest path from 'start' to 'end'. If 'start' and
+   *     'end' are not connected return an empty array. If the shortest path from 'start' to 'end'
+   *     are reachable by a negative cycle return -1.
+   */
+  public List<Integer> reconstructShortestPath(int start, int end) {
+    solve();
+    List<Integer> path = new ArrayList<>();
+    if (dp[start][end] == POSITIVE_INFINITY) return path;
+    int at = start;
+    for (; at != end; at = next[at][end]) {
+      // Return null since there are an infinite number of shortest paths.
+      if (at == REACHES_NEGATIVE_CYCLE) return null;
+      path.add(at);
+    }
+    // Return null since there are an infinite number of shortest paths.
+    if (next[at][end] == REACHES_NEGATIVE_CYCLE) return null;
+    path.add(end);
+    return path;
   }
 }

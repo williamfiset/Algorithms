@@ -5,6 +5,7 @@
 package com.williamfiset.algorithms.datastructures.binarysearchtree;
 
 import com.williamfiset.algorithms.datastructures.utils.TreePrinter;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -24,64 +25,6 @@ import java.util.Scanner;
 public class SplayTree<T extends Comparable<T>> {
 
   private BinaryTree<T> root;
-
-  public static class BinaryTree<T extends Comparable<T>> implements TreePrinter.PrintableNode {
-    private T data;
-    private BinaryTree<T> leftChild, rightChild;
-
-    public BinaryTree(T data) {
-      if (data == null) {
-        try {
-          throw new Exception("Null data not allowed into tree");
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      } else this.data = data;
-    }
-
-    @Override
-    public BinaryTree<T> getLeft() {
-      return leftChild;
-    }
-
-    public void setLeft(BinaryTree<T> leftChild) {
-      this.leftChild = leftChild;
-    }
-
-    @Override
-    public BinaryTree<T> getRight() {
-      return rightChild;
-    }
-
-    public void setRight(BinaryTree<T> rightChild) {
-      this.rightChild = rightChild;
-    }
-
-    @Override
-    public String getText() {
-      return data.toString();
-    }
-
-    public T getData() {
-      return data;
-    }
-
-    public void setData(T data) {
-      if (data == null) {
-        try {
-          throw new Exception("Null data not allowed into tree");
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      } else this.data = data;
-    }
-
-    @Override
-    public String toString() {
-
-      return TreePrinter.getTreeDisplay(this);
-    }
-  }
 
   /** Public Methods * */
   public SplayTree() {
@@ -277,6 +220,64 @@ public class SplayTree<T extends Comparable<T>> {
     sorted.add(root.getData());
     inorder(root.getRight(), sorted);
     return sorted;
+  }
+
+  public static class BinaryTree<T extends Comparable<T>> implements TreePrinter.PrintableNode {
+    private T data;
+    private BinaryTree<T> leftChild, rightChild;
+
+    public BinaryTree(T data) {
+      if (data == null) {
+        try {
+          throw new Exception("Null data not allowed into tree");
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      } else this.data = data;
+    }
+
+    @Override
+    public BinaryTree<T> getLeft() {
+      return leftChild;
+    }
+
+    public void setLeft(BinaryTree<T> leftChild) {
+      this.leftChild = leftChild;
+    }
+
+    @Override
+    public BinaryTree<T> getRight() {
+      return rightChild;
+    }
+
+    public void setRight(BinaryTree<T> rightChild) {
+      this.rightChild = rightChild;
+    }
+
+    @Override
+    public String getText() {
+      return data.toString();
+    }
+
+    public T getData() {
+      return data;
+    }
+
+    public void setData(T data) {
+      if (data == null) {
+        try {
+          throw new Exception("Null data not allowed into tree");
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      } else this.data = data;
+    }
+
+    @Override
+    public String toString() {
+
+      return TreePrinter.getTreeDisplay(this);
+    }
   }
 }
 

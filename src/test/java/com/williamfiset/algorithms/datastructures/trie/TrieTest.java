@@ -1,8 +1,8 @@
 package com.williamfiset.algorithms.datastructures.trie;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
-import org.junit.*;
+import static org.junit.Assert.*;
 
 public class TrieTest {
 

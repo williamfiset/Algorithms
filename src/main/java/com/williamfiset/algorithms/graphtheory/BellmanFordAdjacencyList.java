@@ -6,21 +6,10 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BellmanFordAdjacencyList {
-
-  // A directed edge with a cost
-  public static class Edge {
-    double cost;
-    int from, to;
-
-    public Edge(int from, int to, double cost) {
-      this.to = to;
-      this.from = from;
-      this.cost = cost;
-    }
-  }
 
   // Create a graph with V vertices
   @SuppressWarnings("unchecked")
@@ -102,5 +91,17 @@ public class BellmanFordAdjacencyList {
     // The cost to get from node 0 to 7 is 8.00
     // The cost to get from node 0 to 8 is Infinity
 
+  }
+
+  // A directed edge with a cost
+  public static class Edge {
+    double cost;
+    int from, to;
+
+    public Edge(int from, int to, double cost) {
+      this.to = to;
+      this.from = from;
+      this.cost = cost;
+    }
   }
 }

@@ -6,7 +6,7 @@
  */
 package com.williamfiset.algorithms.ai;
 
-import java.util.*;
+import java.util.Random;
 
 public class GeneticAlgorithm_textSearch {
 
@@ -21,12 +21,11 @@ public class GeneticAlgorithm_textSearch {
   static final int MAX_EPOCH = 100000;
   static final int POPULATION_SZ = 250;
   static final double MUTATION_RATE = 0.0125;
-
+  static final double POWER_INC = 0.0001;
   // The power variable tweaks the weight of the fitness function
   // to emphasize better individuals. The power slowly increments
   // over time to help get out of local minimums in later epochs.
   static double power;
-  static final double POWER_INC = 0.0001;
 
   // Runs a single simulation
   static void run() {
@@ -106,6 +105,36 @@ public class GeneticAlgorithm_textSearch {
     }
   }
 
+  static Individual mutate(Individual in, int i) {
+    in.dna[i] = ALPHA[RANDOM.nextInt(ALPHA.length)];
+    in.str = new String(in.dna);
+    return in;
+  }
+
+  static Individual selectIndividual(Individual[] generation, double[] lo, double[] hi) {
+
+    double r = Math.random();
+
+    // Binary search to find individual
+    int mid, l = 0, h = POPULATION_SZ - 1;
+    while (true) {
+      mid = (l + h) >>> 1;
+      if (lo[mid] <= r && r < hi[mid]) return generation[mid + 1];
+      if (r < lo[mid]) h = mid - 1;
+      else l = mid + 1;
+    }
+  }
+
+  static Individual crossover(Individual p1, Individual p2) {
+    int splitPoint = RANDOM.nextInt(TL);
+    String newDNA = p1.str.substring(0, splitPoint) + p2.str.substring(splitPoint, TL);
+    return new Individual(newDNA);
+  }
+
+  public static void main(String[] args) {
+    run();
+  }
+
   static class Individual {
 
     char[] dna;
@@ -142,35 +171,5 @@ public class GeneticAlgorithm_textSearch {
     public String toString() {
       return str;
     }
-  }
-
-  static Individual mutate(Individual in, int i) {
-    in.dna[i] = ALPHA[RANDOM.nextInt(ALPHA.length)];
-    in.str = new String(in.dna);
-    return in;
-  }
-
-  static Individual selectIndividual(Individual[] generation, double[] lo, double[] hi) {
-
-    double r = Math.random();
-
-    // Binary search to find individual
-    int mid, l = 0, h = POPULATION_SZ - 1;
-    while (true) {
-      mid = (l + h) >>> 1;
-      if (lo[mid] <= r && r < hi[mid]) return generation[mid + 1];
-      if (r < lo[mid]) h = mid - 1;
-      else l = mid + 1;
-    }
-  }
-
-  static Individual crossover(Individual p1, Individual p2) {
-    int splitPoint = RANDOM.nextInt(TL);
-    String newDNA = p1.str.substring(0, splitPoint) + p2.str.substring(splitPoint, TL);
-    return new Individual(newDNA);
-  }
-
-  public static void main(String[] args) {
-    run();
   }
 }

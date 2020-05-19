@@ -1,17 +1,40 @@
 package com.williamfiset.algorithms.datastructures.priorityqueue;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
-import org.junit.*;
+
+import static org.junit.Assert.*;
 
 public class BinaryHeapTest {
 
   static final int LOOPS = 100;
   static final int MAX_SZ = 100;
+
+  static Integer[] genRandArray(int sz) {
+    Integer[] lst = new Integer[sz];
+    for (int i = 0; i < sz; i++) lst[i] = (int) (Math.random() * MAX_SZ);
+    return lst;
+  }
+
+  // Generate a list of random numbers
+  static List<Integer> genRandList(int sz) {
+    List<Integer> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) lst.add((int) (Math.random() * MAX_SZ));
+    return lst;
+  }
+
+  // Generate a list of unique random numbers
+  static List<Integer> genUniqueRandList(int sz) {
+    List<Integer> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) lst.add(i);
+    Collections.shuffle(lst);
+    return lst;
+  }
 
   @Before
   public void setup() {}
@@ -291,26 +314,5 @@ public class BinaryHeapTest {
         assertTrue(pq.isMinHeap(0));
       }
     }
-  }
-
-  static Integer[] genRandArray(int sz) {
-    Integer[] lst = new Integer[sz];
-    for (int i = 0; i < sz; i++) lst[i] = (int) (Math.random() * MAX_SZ);
-    return lst;
-  }
-
-  // Generate a list of random numbers
-  static List<Integer> genRandList(int sz) {
-    List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add((int) (Math.random() * MAX_SZ));
-    return lst;
-  }
-
-  // Generate a list of unique random numbers
-  static List<Integer> genUniqueRandList(int sz) {
-    List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add(i);
-    Collections.shuffle(lst);
-    return lst;
   }
 }

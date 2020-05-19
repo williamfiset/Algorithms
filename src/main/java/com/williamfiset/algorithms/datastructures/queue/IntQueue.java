@@ -22,35 +22,6 @@ public class IntQueue {
     ar = new int[sz];
   }
 
-  // Return true/false on whether the queue is empty
-  public boolean isEmpty() {
-    return front == end;
-  }
-
-  // Return the number of elements inside the queue
-  public int size() {
-    if (front > end) return (end + sz - front);
-    return end - front;
-  }
-
-  public int peek() {
-    return ar[front];
-  }
-
-  // Add an element to the queue
-  public void enqueue(int value) {
-    ar[end] = value;
-    if (++end == sz) end = 0;
-    if (end == front) throw new RuntimeException("Queue too small!");
-  }
-
-  // Make sure you check is the queue is not empty before calling dequeue!
-  public int dequeue() {
-    int ret_val = ar[front];
-    if (++front == sz) front = 0;
-    return ret_val;
-  }
-
   // Example usage
   public static void main(String[] args) {
 
@@ -105,5 +76,34 @@ public class IntQueue {
     for (int i = 0; i < n; i++) arrayDeque.poll();
     end = System.nanoTime();
     System.out.println("ArrayDeque Time: " + (end - start) / 1e9);
+  }
+
+  // Return true/false on whether the queue is empty
+  public boolean isEmpty() {
+    return front == end;
+  }
+
+  // Return the number of elements inside the queue
+  public int size() {
+    if (front > end) return (end + sz - front);
+    return end - front;
+  }
+
+  public int peek() {
+    return ar[front];
+  }
+
+  // Add an element to the queue
+  public void enqueue(int value) {
+    ar[end] = value;
+    if (++end == sz) end = 0;
+    if (end == front) throw new RuntimeException("Queue too small!");
+  }
+
+  // Make sure you check is the queue is not empty before calling dequeue!
+  public int dequeue() {
+    int ret_val = ar[front];
+    if (++front == sz) front = 0;
+    return ret_val;
   }
 }

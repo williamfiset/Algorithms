@@ -9,9 +9,9 @@
  */
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
-import static java.lang.Math.min;
-
 import java.util.List;
+
+import static java.lang.Math.min;
 
 public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
 
@@ -26,45 +26,6 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
   public FordFulkersonDfsSolverAdjacencyList(int n, int s, int t) {
     super(n, s, t);
   }
-
-  // Performs the Ford-Fulkerson method applying a depth first search as
-  // a means of finding an augmenting path.
-  @Override
-  public void solve() {
-
-    // Find max flow by adding all augmenting path flows.
-    for (long f = dfs(s, INF); f != 0; f = dfs(s, INF)) {
-      markAllNodesAsUnvisited();
-      maxFlow += f;
-    }
-
-    // Find min cut.
-    for (int i = 0; i < n; i++) if (visited(i)) minCut[i] = true;
-  }
-
-  private long dfs(int node, long flow) {
-    // At sink node, return augmented path flow.
-    if (node == t) return flow;
-
-    List<Edge> edges = graph[node];
-    visit(node);
-
-    for (Edge edge : edges) {
-      long rcap = edge.remainingCapacity();
-      if (rcap > 0 && !visited(edge.to)) {
-        long bottleNeck = dfs(edge.to, min(flow, rcap));
-
-        // Augment flow with bottle neck value
-        if (bottleNeck > 0) {
-          edge.augment(bottleNeck);
-          return bottleNeck;
-        }
-      }
-    }
-    return 0;
-  }
-
-  /* Example */
 
   public static void main(String[] args) {
     // exampleFromSlides();
@@ -116,6 +77,8 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
       }
     }
   }
+
+  /* Example */
 
   private static void exampleFromSlides() {
     int n = 6;
@@ -171,5 +134,42 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
     solver.addEdge(3, 2, 6);
 
     System.out.println(solver.getMaxFlow()); // 19
+  }
+
+  // Performs the Ford-Fulkerson method applying a depth first search as
+  // a means of finding an augmenting path.
+  @Override
+  public void solve() {
+
+    // Find max flow by adding all augmenting path flows.
+    for (long f = dfs(s, INF); f != 0; f = dfs(s, INF)) {
+      markAllNodesAsUnvisited();
+      maxFlow += f;
+    }
+
+    // Find min cut.
+    for (int i = 0; i < n; i++) if (visited(i)) minCut[i] = true;
+  }
+
+  private long dfs(int node, long flow) {
+    // At sink node, return augmented path flow.
+    if (node == t) return flow;
+
+    List<Edge> edges = graph[node];
+    visit(node);
+
+    for (Edge edge : edges) {
+      long rcap = edge.remainingCapacity();
+      if (rcap > 0 && !visited(edge.to)) {
+        long bottleNeck = dfs(edge.to, min(flow, rcap));
+
+        // Augment flow with bottle neck value
+        if (bottleNeck > 0) {
+          edge.augment(bottleNeck);
+          return bottleNeck;
+        }
+      }
+    }
+    return 0;
   }
 }

@@ -13,10 +13,7 @@ import java.util.Random;
 
 public class QuickSort implements InplaceSort {
 
-  @Override
-  public void sort(int[] values) {
-    QuickSort.quicksort(values);
-  }
+  static Random RANDOM = new Random();
 
   public static void quicksort(int[] ar) {
     if (ar == null) return;
@@ -69,8 +66,6 @@ public class QuickSort implements InplaceSort {
 
   /* TESTING BELOW */
 
-  static Random RANDOM = new Random();
-
   public static void runTests() {
     final int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {
@@ -88,5 +83,10 @@ public class QuickSort implements InplaceSort {
 
   static int randInt(int min, int max) {
     return RANDOM.nextInt((max - min) + 1) + min;
+  }
+
+  @Override
+  public void sort(int[] values) {
+    QuickSort.quicksort(values);
   }
 }

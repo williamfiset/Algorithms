@@ -8,7 +8,9 @@
 package com.williamfiset.algorithms.geometry;
 
 import java.awt.geom.Point2D;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Stack;
 
 public class ConvexHullGrahamScan {
 
@@ -40,6 +42,39 @@ public class ConvexHullGrahamScan {
       hull.push(pts[i]);
     }
     return hull;
+  }
+
+  // Check to see whether the points are ordered clockwise or counter-clockwise (0 indicates that
+  // they are collinear)
+  private static int collinear(Point2D a, Point2D b, Point2D c) {
+    double area =
+        (b.getX() - a.getX()) * (c.getY() - a.getY())
+            - (b.getY() - a.getY()) * (c.getX() - a.getX());
+    return (int) Math.signum(area);
+  }
+
+  public static void main(String[] args) {
+
+    Point2D[] pts = new Point2D[13];
+
+    pts[0] = new Point2D.Double(0, 5);
+    pts[1] = new Point2D.Double(-1, 1);
+    pts[2] = new Point2D.Double(0, 1);
+    pts[3] = new Point2D.Double(1, 1);
+    pts[4] = new Point2D.Double(-5, 0);
+    pts[5] = new Point2D.Double(-1, 0);
+    pts[6] = new Point2D.Double(0, 0);
+    pts[7] = new Point2D.Double(1, 0);
+    pts[8] = new Point2D.Double(5, 0);
+    pts[9] = new Point2D.Double(-1, -1);
+    pts[10] = new Point2D.Double(0, -1);
+    pts[11] = new Point2D.Double(1, -1);
+    pts[12] = new Point2D.Double(0, -5);
+
+    Stack<Point2D> hull = createConvexHull(pts);
+
+    // Print the points in the hull
+    while (!hull.isEmpty()) System.out.println(hull.pop());
   }
 
   // Compare other points relative to polar angle (between 0 and 2*PI) they make with this point
@@ -76,38 +111,5 @@ public class ConvexHullGrahamScan {
       }
       return 1;
     }
-  }
-
-  // Check to see whether the points are ordered clockwise or counter-clockwise (0 indicates that
-  // they are collinear)
-  private static int collinear(Point2D a, Point2D b, Point2D c) {
-    double area =
-        (b.getX() - a.getX()) * (c.getY() - a.getY())
-            - (b.getY() - a.getY()) * (c.getX() - a.getX());
-    return (int) Math.signum(area);
-  }
-
-  public static void main(String[] args) {
-
-    Point2D[] pts = new Point2D[13];
-
-    pts[0] = new Point2D.Double(0, 5);
-    pts[1] = new Point2D.Double(-1, 1);
-    pts[2] = new Point2D.Double(0, 1);
-    pts[3] = new Point2D.Double(1, 1);
-    pts[4] = new Point2D.Double(-5, 0);
-    pts[5] = new Point2D.Double(-1, 0);
-    pts[6] = new Point2D.Double(0, 0);
-    pts[7] = new Point2D.Double(1, 0);
-    pts[8] = new Point2D.Double(5, 0);
-    pts[9] = new Point2D.Double(-1, -1);
-    pts[10] = new Point2D.Double(0, -1);
-    pts[11] = new Point2D.Double(1, -1);
-    pts[12] = new Point2D.Double(0, -5);
-
-    Stack<Point2D> hull = createConvexHull(pts);
-
-    // Print the points in the hull
-    while (!hull.isEmpty()) System.out.println(hull.pop());
   }
 }

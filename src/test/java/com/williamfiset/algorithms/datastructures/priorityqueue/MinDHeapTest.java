@@ -1,18 +1,41 @@
 package com.williamfiset.algorithms.datastructures.priorityqueue;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
-import org.junit.Before;
-import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MinDHeapTest {
 
   static final int LOOPS = 1000;
   static final int MAX_SZ = 100;
+
+  static Integer[] genRandArray(int sz) {
+    Integer[] lst = new Integer[sz];
+    for (int i = 0; i < sz; i++) lst[i] = (int) (Math.random() * MAX_SZ);
+    return lst;
+  }
+
+  // Generate a list of random numbers
+  static List<Integer> genRandList(int sz) {
+    List<Integer> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) lst.add((int) (Math.random() * MAX_SZ));
+    return lst;
+  }
+
+  // Generate a list of unique random numbers
+  static List<Integer> genUniqueRandList(int sz) {
+    List<Integer> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) lst.add(i);
+    Collections.shuffle(lst);
+    return lst;
+  }
 
   @Before
   public void setup() {}
@@ -35,68 +58,6 @@ public class MinDHeapTest {
     // Try manually creating heap
     for (int n : nums) q.add(n);
     for (int i = 1; i <= 9; i++) assertTrue(i == q.poll());
-  }
-
-  @Test
-  public void testPriorityQueueSizeParam() {
-    for (int i = 1; i < LOOPS; i++) {
-
-      Integer[] lst = genRandArray(i);
-
-      MinDHeap<Integer> pq = new MinDHeap<>(i, lst.length);
-      PriorityQueue<Integer> pq2 = new PriorityQueue<>(i);
-
-      for (int x : lst) {
-        pq2.add(x);
-        pq.add(x);
-      }
-      while (!pq2.isEmpty()) assertEquals(pq.poll(), pq2.poll());
-    }
-  }
-
-  @Test
-  public void testPriorityRandomOperations() {
-    for (int loop = 0; loop < LOOPS; loop++) {
-
-      double p1 = Math.random();
-      double p2 = Math.random();
-      if (p2 < p1) {
-        double tmp = p1;
-        p1 = p2;
-        p2 = tmp;
-      }
-
-      Integer[] ar = genRandArray(LOOPS);
-      int d = 2 + (int) (Math.random() * 6);
-      MinDHeap<Integer> pq = new MinDHeap<>(d, LOOPS);
-      PriorityQueue<Integer> pq2 = new PriorityQueue<>(LOOPS);
-
-      for (int i = 0; i < LOOPS; i++) {
-        int e = ar[i];
-        double r = Math.random();
-        if (0 <= r && r <= p1) {
-          pq.add(e);
-          pq2.add(e);
-        } else if (p1 < r && r <= p2) {
-          if (!pq2.isEmpty()) assertEquals(pq.poll(), pq2.poll());
-        } else {
-          pq.clear();
-          pq2.clear();
-        }
-      }
-
-      assertEquals(pq.peek(), pq2.peek());
-    }
-  }
-
-  @Test
-  public void testClear() {
-    String[] strs = {"aa", "bb", "cc", "dd", "ee"};
-    MinDHeap<String> q = new MinDHeap<>(2, strs.length);
-    for (String s : strs) q.add(s);
-    q.clear();
-    assertEquals(q.size(), 0);
-    assertTrue(q.isEmpty());
   }
 
   /*
@@ -178,23 +139,20 @@ public class MinDHeapTest {
   */
 
   @Test
-  public void testRemovingDuplicates() {
+  public void testPriorityQueueSizeParam() {
+    for (int i = 1; i < LOOPS; i++) {
 
-    Integer[] in = new Integer[] {2, 7, 2, 11, 7, 13, 2};
-    MinDHeap<Integer> pq = new MinDHeap<>(3, in.length + 1);
+      Integer[] lst = genRandArray(i);
 
-    for (Integer x : in) pq.add(x);
-    assertTrue(pq.peek() == 2);
-    pq.add(3);
+      MinDHeap<Integer> pq = new MinDHeap<>(i, lst.length);
+      PriorityQueue<Integer> pq2 = new PriorityQueue<>(i);
 
-    assertTrue(pq.poll() == 2);
-    assertTrue(pq.poll() == 2);
-    assertTrue(pq.poll() == 2);
-    assertTrue(pq.poll() == 3);
-    assertTrue(pq.poll() == 7);
-    assertTrue(pq.poll() == 7);
-    assertTrue(pq.poll() == 11);
-    assertTrue(pq.poll() == 13);
+      for (int x : lst) {
+        pq2.add(x);
+        pq.add(x);
+      }
+      while (!pq2.isEmpty()) assertEquals(pq.poll(), pq2.poll());
+    }
   }
   /*
   @Test
@@ -321,24 +279,68 @@ public class MinDHeapTest {
   }
   */
 
-  static Integer[] genRandArray(int sz) {
-    Integer[] lst = new Integer[sz];
-    for (int i = 0; i < sz; i++) lst[i] = (int) (Math.random() * MAX_SZ);
-    return lst;
+  @Test
+  public void testPriorityRandomOperations() {
+    for (int loop = 0; loop < LOOPS; loop++) {
+
+      double p1 = Math.random();
+      double p2 = Math.random();
+      if (p2 < p1) {
+        double tmp = p1;
+        p1 = p2;
+        p2 = tmp;
+      }
+
+      Integer[] ar = genRandArray(LOOPS);
+      int d = 2 + (int) (Math.random() * 6);
+      MinDHeap<Integer> pq = new MinDHeap<>(d, LOOPS);
+      PriorityQueue<Integer> pq2 = new PriorityQueue<>(LOOPS);
+
+      for (int i = 0; i < LOOPS; i++) {
+        int e = ar[i];
+        double r = Math.random();
+        if (0 <= r && r <= p1) {
+          pq.add(e);
+          pq2.add(e);
+        } else if (p1 < r && r <= p2) {
+          if (!pq2.isEmpty()) assertEquals(pq.poll(), pq2.poll());
+        } else {
+          pq.clear();
+          pq2.clear();
+        }
+      }
+
+      assertEquals(pq.peek(), pq2.peek());
+    }
   }
 
-  // Generate a list of random numbers
-  static List<Integer> genRandList(int sz) {
-    List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add((int) (Math.random() * MAX_SZ));
-    return lst;
+  @Test
+  public void testClear() {
+    String[] strs = {"aa", "bb", "cc", "dd", "ee"};
+    MinDHeap<String> q = new MinDHeap<>(2, strs.length);
+    for (String s : strs) q.add(s);
+    q.clear();
+    assertEquals(q.size(), 0);
+    assertTrue(q.isEmpty());
   }
 
-  // Generate a list of unique random numbers
-  static List<Integer> genUniqueRandList(int sz) {
-    List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add(i);
-    Collections.shuffle(lst);
-    return lst;
+  @Test
+  public void testRemovingDuplicates() {
+
+    Integer[] in = new Integer[] {2, 7, 2, 11, 7, 13, 2};
+    MinDHeap<Integer> pq = new MinDHeap<>(3, in.length + 1);
+
+    for (Integer x : in) pq.add(x);
+    assertTrue(pq.peek() == 2);
+    pq.add(3);
+
+    assertTrue(pq.poll() == 2);
+    assertTrue(pq.poll() == 2);
+    assertTrue(pq.poll() == 2);
+    assertTrue(pq.poll() == 3);
+    assertTrue(pq.poll() == 7);
+    assertTrue(pq.poll() == 7);
+    assertTrue(pq.poll() == 11);
+    assertTrue(pq.poll() == 13);
   }
 }

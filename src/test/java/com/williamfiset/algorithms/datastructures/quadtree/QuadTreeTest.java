@@ -1,9 +1,9 @@
 package com.williamfiset.algorithms.datastructures.quadtree;
 
-import static com.google.common.truth.Truth.assertThat;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public class QuadTreeTest {
 

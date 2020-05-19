@@ -9,14 +9,12 @@
  */
 package com.williamfiset.algorithms.sorting;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Random;
 
 public class Heapsort implements InplaceSort {
 
-  @Override
-  public void sort(int[] values) {
-    Heapsort.heapsort(values);
-  }
+  static Random RANDOM = new Random();
 
   private static void heapsort(int[] ar) {
     if (ar == null) return;
@@ -75,8 +73,6 @@ public class Heapsort implements InplaceSort {
     runTests();
   }
 
-  static Random RANDOM = new Random();
-
   public static void runTests() {
     final int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {
@@ -99,5 +95,10 @@ public class Heapsort implements InplaceSort {
 
   static int randInt(int min, int max) {
     return RANDOM.nextInt((max - min) + 1) + min;
+  }
+
+  @Override
+  public void sort(int[] values) {
+    Heapsort.heapsort(values);
   }
 }

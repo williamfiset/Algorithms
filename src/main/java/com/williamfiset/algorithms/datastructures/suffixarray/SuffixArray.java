@@ -28,6 +28,13 @@ public abstract class SuffixArray {
     this.N = text.length;
   }
 
+  protected static int[] toIntArray(String s) {
+    if (s == null) return null;
+    int[] t = new int[s.length()];
+    for (int i = 0; i < s.length(); i++) t[i] = s.charAt(i);
+    return t;
+  }
+
   public int getTextLength() {
     return T.length;
   }
@@ -57,13 +64,6 @@ public abstract class SuffixArray {
     buildSuffixArray();
     kasai();
     constructedLcpArray = true;
-  }
-
-  protected static int[] toIntArray(String s) {
-    if (s == null) return null;
-    int[] t = new int[s.length()];
-    for (int i = 0; i < s.length(); i++) t[i] = s.charAt(i);
-    return t;
   }
 
   // The suffix array construction algorithm is left undefined

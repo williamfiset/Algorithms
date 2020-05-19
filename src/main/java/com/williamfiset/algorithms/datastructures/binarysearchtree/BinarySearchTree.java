@@ -17,19 +17,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
   // This BST is a rooted tree so we maintain a handle on the root node
   private Node root = null;
 
-  // Internal node containing node references
-  // and the actual node data
-  private class Node {
-    T data;
-    Node left, right;
-
-    public Node(Node left, Node right, T elem) {
-      this.data = elem;
-      this.left = left;
-      this.right = right;
-    }
-  }
-
   // Check if this binary tree is empty
   public boolean isEmpty() {
     return size() == 0;
@@ -367,5 +354,18 @@ public class BinarySearchTree<T extends Comparable<T>> {
         throw new UnsupportedOperationException();
       }
     };
+  }
+
+  // Internal node containing node references
+  // and the actual node data
+  private class Node {
+    T data;
+    Node left, right;
+
+    public Node(Node left, Node right, T elem) {
+      this.data = elem;
+      this.left = left;
+      this.right = right;
+    }
   }
 }

@@ -5,7 +5,8 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Stack;
 
 class TarjanAdjacencyMatrix {
 

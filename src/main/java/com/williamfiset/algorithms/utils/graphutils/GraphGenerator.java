@@ -1,8 +1,13 @@
 package com.williamfiset.algorithms.utils.graphutils;
 
-import java.util.*;
+import java.util.List;
 
 public class GraphGenerator {
+
+  public static void main(String[] args) {
+    DagGenerator gen = new DagGenerator(10, 10, 5, 5, 0.9);
+    gen.createDag();
+  }
 
   public static class DagGenerator {
     double edgeProbability;
@@ -55,10 +60,5 @@ public class GraphGenerator {
       }
       return g;
     }
-  }
-
-  public static void main(String[] args) {
-    DagGenerator gen = new DagGenerator(10, 10, 5, 5, 0.9);
-    gen.createDag();
   }
 }

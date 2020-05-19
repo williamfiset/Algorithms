@@ -69,6 +69,35 @@ public class LongestCommonSubstring {
       this.N = text.length;
     }
 
+    protected static int[] toIntArray(String s) {
+      if (s == null) return null;
+      int[] t = new int[s.length()];
+      for (int i = 0; i < s.length(); i++) t[i] = s.charAt(i);
+      return t;
+    }
+
+    // Lazy way of finding color of suffix is by comparing against all sentinel positions
+    private static Color findColorFromPos(int pos, List<Integer> sentinelIndexes) {
+      Color[] colors = {
+        Color.GREEN,
+        Color.RED,
+        Color.BLUE,
+        Color.YELLOW,
+        Color.MAGENTA,
+        Color.CYAN,
+        Color.WHITE,
+        Color.BLACK_BACKGROUND_BRIGHT
+      };
+      int colorIndex = 0;
+      for (int tokenIndex : sentinelIndexes) {
+        if (tokenIndex <= pos) colorIndex++;
+      }
+      if (colorIndex >= colors.length) {
+        throw new IllegalStateException("Too many strings, not enough terminal colors :/");
+      }
+      return colors[colorIndex];
+    }
+
     public int getTextLength() {
       return T.length;
     }
@@ -98,13 +127,6 @@ public class LongestCommonSubstring {
       buildSuffixArray();
       kasai();
       constructedLcpArray = true;
-    }
-
-    protected static int[] toIntArray(String s) {
-      if (s == null) return null;
-      int[] t = new int[s.length()];
-      for (int i = 0; i < s.length(); i++) t[i] = s.charAt(i);
-      return t;
     }
 
     // The suffix array construction algorithm is left undefined
@@ -141,28 +163,6 @@ public class LongestCommonSubstring {
         sb.append(formattedStr);
       }
       return sb.toString();
-    }
-
-    // Lazy way of finding color of suffix is by comparing against all sentinel positions
-    private static Color findColorFromPos(int pos, List<Integer> sentinelIndexes) {
-      Color[] colors = {
-        Color.GREEN,
-        Color.RED,
-        Color.BLUE,
-        Color.YELLOW,
-        Color.MAGENTA,
-        Color.CYAN,
-        Color.WHITE,
-        Color.BLACK_BACKGROUND_BRIGHT
-      };
-      int colorIndex = 0;
-      for (int tokenIndex : sentinelIndexes) {
-        if (tokenIndex <= pos) colorIndex++;
-      }
-      if (colorIndex >= colors.length) {
-        throw new IllegalStateException("Too many strings, not enough terminal colors :/");
-      }
-      return colors[colorIndex];
     }
 
     // Display an augmented colored SA for debugging LCS problem.
@@ -212,19 +212,6 @@ public class LongestCommonSubstring {
   }
 
   static class SuffixArrayImpl extends SuffixArray {
-
-    // Wrapper class to help sort suffix ranks
-    static class SuffixRankTuple implements Comparable<SuffixRankTuple> {
-      int firstHalf, secondHalf, originalIndex;
-
-      // Sort Suffix ranks first on the first half then the second half
-      @Override
-      public int compareTo(SuffixRankTuple other) {
-        int cmp = Integer.compare(firstHalf, other.firstHalf);
-        if (cmp == 0) return Integer.compare(secondHalf, other.secondHalf);
-        return cmp;
-      }
-    }
 
     public SuffixArrayImpl(String text) {
       super(toIntArray(text));
@@ -294,24 +281,34 @@ public class LongestCommonSubstring {
       suffixRanks = null;
       ranks = null;
     }
+
+    // Wrapper class to help sort suffix ranks
+    static class SuffixRankTuple implements Comparable<SuffixRankTuple> {
+      int firstHalf, secondHalf, originalIndex;
+
+      // Sort Suffix ranks first on the first half then the second half
+      @Override
+      public int compareTo(SuffixRankTuple other) {
+        int cmp = Integer.compare(firstHalf, other.firstHalf);
+        if (cmp == 0) return Integer.compare(secondHalf, other.secondHalf);
+        return cmp;
+      }
+    }
   }
 
   public static class LcsSolver {
 
+    private static final boolean DEBUG_MODE = false;
     // Inputs
     int k, numSentinels, textLength;
     String[] strings;
-
     // Internal
     int shift, lcsLen;
     int lowestAsciiValue;
     int highestAsciiValue;
     int[] imap, text, sa, lcp;
-
     // Output
     TreeSet<String> lcss;
-
-    private static final boolean DEBUG_MODE = false;
 
     // TODO(williamfiset): support LCS with strings as int arrays for larger alphabet sizes.
     public LcsSolver(String[] strings) {

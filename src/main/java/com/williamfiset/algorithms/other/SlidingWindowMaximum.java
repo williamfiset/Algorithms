@@ -13,9 +13,8 @@ import java.util.Deque;
 
 public class SlidingWindowMaximum {
 
-  int[] values;
   public int N, lo, hi;
-
+  int[] values;
   Deque<Integer> deque = new ArrayDeque<>();
 
   public SlidingWindowMaximum(int[] values) {

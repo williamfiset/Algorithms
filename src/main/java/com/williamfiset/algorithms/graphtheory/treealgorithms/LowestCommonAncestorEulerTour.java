@@ -16,9 +16,29 @@
  */
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class LowestCommonAncestorEulerTour {
+
+  private final int n;
+  private int tourIndex = 0;
+
+  /* Graph/Tree creation helper methods. */
+  // Populated when constructing Euler Tour.
+  private long[] nodeDepth;
+  private TreeNode[] nodeOrder;
+  // The last occurrence mapping. This mapping keeps track of the last occurrence of a TreeNode in
+  // the Euler tour for easy indexing.
+  private int[] last;
+  // Sparse table impl which can efficiently do Range Minimum Queries (RMQs).
+  private MinSparseTable sparseTable;
+
+  public LowestCommonAncestorEulerTour(TreeNode root) {
+    this.n = root.size();
+    setup(root);
+  }
 
   public static void main(String[] args) {
     TreeNode root = createFirstTreeFromSlides();
@@ -70,8 +90,6 @@ public class LowestCommonAncestorEulerTour {
     return TreeNode.rootTree(tree, 0);
   }
 
-  /* Graph/Tree creation helper methods. */
-
   // Create a graph as a adjacency list with 'n' nodes.
   public static List<List<Integer>> createEmptyGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>(n);
@@ -82,107 +100,6 @@ public class LowestCommonAncestorEulerTour {
   public static void addUndirectedEdge(List<List<Integer>> graph, int from, int to) {
     graph.get(from).add(to);
     graph.get(to).add(from);
-  }
-
-  public static class TreeNode {
-    // Number of nodes in the subtree. Computed when tree is built.
-    private int n;
-
-    private int index;
-    private TreeNode parent;
-    private List<TreeNode> children;
-
-    // Useful constructor for root node.
-    public TreeNode(int index) {
-      this(index, /*parent=*/ null);
-    }
-
-    public TreeNode(int index, TreeNode parent) {
-      this.index = index;
-      this.parent = parent;
-      children = new LinkedList<>();
-    }
-
-    public void addChildren(TreeNode... nodes) {
-      for (TreeNode node : nodes) {
-        children.add(node);
-      }
-    }
-
-    public void setSize(int n) {
-      this.n = n;
-    }
-
-    // Number of nodes in the subtree (including the node itself)
-    public int size() {
-      return n;
-    }
-
-    public int index() {
-      return index;
-    }
-
-    public TreeNode parent() {
-      return parent;
-    }
-
-    public List<TreeNode> children() {
-      return children;
-    }
-
-    public static TreeNode rootTree(List<List<Integer>> graph, int rootId) {
-      TreeNode root = new TreeNode(rootId);
-      TreeNode rootedTree = buildTree(graph, root);
-      if (rootedTree.size() < graph.size()) {
-        System.out.println(
-            "WARNING: Input graph malformed. Did you forget to include all n-1 edges?");
-      }
-      return rootedTree;
-    }
-
-    // Do dfs to construct rooted tree.
-    private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node) {
-      int subtreeNodeCount = 1;
-      for (int neighbor : graph.get(node.index())) {
-        // Ignore adding an edge pointing back to parent.
-        if (node.parent() != null && neighbor == node.parent().index()) {
-          continue;
-        }
-
-        TreeNode child = new TreeNode(neighbor, node);
-        node.addChildren(child);
-
-        buildTree(graph, child);
-        subtreeNodeCount += child.size();
-      }
-      node.setSize(subtreeNodeCount);
-      return node;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(index);
-    }
-  }
-
-  private final int n;
-
-  private int tourIndex = 0;
-
-  // Populated when constructing Euler Tour.
-  private long[] nodeDepth;
-  private TreeNode[] nodeOrder;
-
-  // The last occurrence mapping. This mapping keeps track of the last occurrence of a TreeNode in
-  // the Euler tour for easy indexing.
-  private int[] last;
-
-  // Sparse table impl which can efficiently do Range Minimum Queries (RMQs).
-  private MinSparseTable sparseTable;
-
-  public LowestCommonAncestorEulerTour(TreeNode root) {
-    this.n = root.size();
-    setup(root);
   }
 
   private void setup(TreeNode root) {
@@ -225,6 +142,87 @@ public class LowestCommonAncestorEulerTour {
     int r = Math.max(last[index1], last[index2]);
     int i = sparseTable.queryIndex(l, r);
     return nodeOrder[i];
+  }
+
+  public static class TreeNode {
+    // Number of nodes in the subtree. Computed when tree is built.
+    private int n;
+
+    private int index;
+    private TreeNode parent;
+    private List<TreeNode> children;
+
+    // Useful constructor for root node.
+    public TreeNode(int index) {
+      this(index, /*parent=*/ null);
+    }
+
+    public TreeNode(int index, TreeNode parent) {
+      this.index = index;
+      this.parent = parent;
+      children = new LinkedList<>();
+    }
+
+    public static TreeNode rootTree(List<List<Integer>> graph, int rootId) {
+      TreeNode root = new TreeNode(rootId);
+      TreeNode rootedTree = buildTree(graph, root);
+      if (rootedTree.size() < graph.size()) {
+        System.out.println(
+            "WARNING: Input graph malformed. Did you forget to include all n-1 edges?");
+      }
+      return rootedTree;
+    }
+
+    // Do dfs to construct rooted tree.
+    private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node) {
+      int subtreeNodeCount = 1;
+      for (int neighbor : graph.get(node.index())) {
+        // Ignore adding an edge pointing back to parent.
+        if (node.parent() != null && neighbor == node.parent().index()) {
+          continue;
+        }
+
+        TreeNode child = new TreeNode(neighbor, node);
+        node.addChildren(child);
+
+        buildTree(graph, child);
+        subtreeNodeCount += child.size();
+      }
+      node.setSize(subtreeNodeCount);
+      return node;
+    }
+
+    public void addChildren(TreeNode... nodes) {
+      for (TreeNode node : nodes) {
+        children.add(node);
+      }
+    }
+
+    public void setSize(int n) {
+      this.n = n;
+    }
+
+    // Number of nodes in the subtree (including the node itself)
+    public int size() {
+      return n;
+    }
+
+    public int index() {
+      return index;
+    }
+
+    public TreeNode parent() {
+      return parent;
+    }
+
+    public List<TreeNode> children() {
+      return children;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(index);
+    }
   }
 
   // Sparse table for efficient minimum range queries in O(1) with O(nlogn) space

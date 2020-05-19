@@ -7,21 +7,17 @@ package com.williamfiset.algorithms.datastructures.bloomfilter;
 
 public class BloomFilter {
 
+  // Doing 'n & 0x7F' is the same as modding by 64, but faster
+  private static final long MOD64_MASK = 0x7F;
+  // Doing 'n >> 6' is the same as dividing by 64, but faster
+  private static final long DIV64_SHIFT = 6;
   // The number of bitsets. This should be proportional
   // to the number of hash functions for this bloom filter
   private final int N_SETS;
-
   // A 2D array containing the bitsets
   private final long[][] bitsets;
-
   // Tracks the size of the bitsets in this bloom filter
   private final int[] SET_SIZES;
-
-  // Doing 'n & 0x7F' is the same as modding by 64, but faster
-  private static final long MOD64_MASK = 0x7F;
-
-  // Doing 'n >> 6' is the same as dividing by 64, but faster
-  private static final long DIV64_SHIFT = 6;
 
   // Create a bloom filter with a various bitsets of different sizes
   public BloomFilter(int[] bitSetSizes) {

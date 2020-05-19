@@ -15,20 +15,63 @@
  */
 package com.williamfiset.algorithms.graphtheory.networkflow.examples;
 
-import static java.lang.Math.min;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
+import static java.lang.Math.min;
+
 public class EdmondsKarpExample {
 
+  public static void main(String[] args) {
+    // n is the number of nodes including the source and the sink.
+    int n = 11;
+
+    int s = n - 2;
+    int t = n - 1;
+
+    NetworkFlowSolverBase solver = new EdmondsKarpSolver(n, s, t);
+
+    // Edges from source
+    solver.addEdge(s, 0, 5);
+    solver.addEdge(s, 1, 10);
+    solver.addEdge(s, 2, 5);
+
+    // Middle edges
+    solver.addEdge(0, 3, 10);
+    solver.addEdge(1, 0, 15);
+    solver.addEdge(1, 4, 20);
+    solver.addEdge(2, 5, 10);
+    solver.addEdge(3, 4, 25);
+    solver.addEdge(3, 6, 10);
+    solver.addEdge(4, 2, 5);
+    solver.addEdge(4, 7, 30);
+    solver.addEdge(5, 7, 5);
+    solver.addEdge(5, 8, 10);
+    solver.addEdge(7, 3, 15);
+    solver.addEdge(7, 8, 5);
+
+    // Edges to sink
+    solver.addEdge(6, t, 5);
+    solver.addEdge(7, t, 15);
+    solver.addEdge(8, t, 10);
+
+    // Prints:
+    // Maximum Flow is: 20
+    System.out.printf("Maximum Flow is: %d\n", solver.getMaxFlow());
+
+    List<Edge>[] resultGraph = solver.getGraph();
+
+    // Displays all edges part of the resulting residual graph.
+    for (List<Edge> edges : resultGraph) for (Edge e : edges) System.out.println(e.toString(s, t));
+  }
+
   private static class Edge {
+    public final long capacity;
     public int from, to;
     public Edge residual;
     public long flow;
-    public final long capacity;
 
     public Edge(int from, int to, long capacity) {
       this.from = from;
@@ -65,23 +108,19 @@ public class EdmondsKarpExample {
 
     // Inputs: n = number of nodes, s = source, t = sink
     final int n, s, t;
-
+    // Indicates whether the network flow algorithm has ran. The solver only
+    // needs to run once because it always yields the same result.
+    protected boolean solved;
+    // The maximum flow. Calculated by calling the {@link #solve} method.
+    protected long maxFlow;
+    // The adjacency list representing the flow graph.
+    protected List<Edge>[] graph;
     // 'visited' and 'visitedToken' are variables used in graph sub-routines to
     // track whether a node has been visited or not. In particular, node 'i' was
     // recently visited if visited[i] == visitedToken is true. This is handy
     // because to mark all nodes as unvisited simply increment the visitedToken.
     private int visitedToken = 1;
     private int[] visited;
-
-    // Indicates whether the network flow algorithm has ran. The solver only
-    // needs to run once because it always yields the same result.
-    protected boolean solved;
-
-    // The maximum flow. Calculated by calling the {@link #solve} method.
-    protected long maxFlow;
-
-    // The adjacency list representing the flow graph.
-    protected List<Edge>[] graph;
 
     /**
      * Creates an instance of a flow network solver. Use the {@link #addEdge} method to add edges to
@@ -166,6 +205,8 @@ public class EdmondsKarpExample {
     public abstract void solve();
   }
 
+  /* EXAMPLE */
+
   private static class EdmondsKarpSolver extends NetworkFlowSolverBase {
 
     /**
@@ -227,50 +268,5 @@ public class EdmondsKarpExample {
       // Return bottleneck flow
       return bottleNeck;
     }
-  }
-
-  /* EXAMPLE */
-
-  public static void main(String[] args) {
-    // n is the number of nodes including the source and the sink.
-    int n = 11;
-
-    int s = n - 2;
-    int t = n - 1;
-
-    NetworkFlowSolverBase solver = new EdmondsKarpSolver(n, s, t);
-
-    // Edges from source
-    solver.addEdge(s, 0, 5);
-    solver.addEdge(s, 1, 10);
-    solver.addEdge(s, 2, 5);
-
-    // Middle edges
-    solver.addEdge(0, 3, 10);
-    solver.addEdge(1, 0, 15);
-    solver.addEdge(1, 4, 20);
-    solver.addEdge(2, 5, 10);
-    solver.addEdge(3, 4, 25);
-    solver.addEdge(3, 6, 10);
-    solver.addEdge(4, 2, 5);
-    solver.addEdge(4, 7, 30);
-    solver.addEdge(5, 7, 5);
-    solver.addEdge(5, 8, 10);
-    solver.addEdge(7, 3, 15);
-    solver.addEdge(7, 8, 5);
-
-    // Edges to sink
-    solver.addEdge(6, t, 5);
-    solver.addEdge(7, t, 15);
-    solver.addEdge(8, t, 10);
-
-    // Prints:
-    // Maximum Flow is: 20
-    System.out.printf("Maximum Flow is: %d\n", solver.getMaxFlow());
-
-    List<Edge>[] resultGraph = solver.getGraph();
-
-    // Displays all edges part of the resulting residual graph.
-    for (List<Edge> edges : resultGraph) for (Edge e : edges) System.out.println(e.toString(s, t));
   }
 }

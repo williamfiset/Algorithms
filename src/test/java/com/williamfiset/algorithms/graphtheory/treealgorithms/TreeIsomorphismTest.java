@@ -5,15 +5,28 @@
 
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.addUndirectedEdge;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.createEmptyGraph;
-import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.treesAreIsomorphic;
+import org.junit.Test;
 
-import java.util.*;
-import org.junit.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.*;
 
 public class TreeIsomorphismTest {
+
+  public static List<List<Integer>> generateRandomTree(int n) {
+    List<Integer> nodes = new ArrayList<>();
+    nodes.add(0);
+
+    List<List<Integer>> g = createEmptyGraph(n);
+    for (int nextNode = 1; nodes.size() != n; nextNode++) {
+      int randomNode = nodes.get((int) (Math.random() * nodes.size()));
+      addUndirectedEdge(g, randomNode, nextNode);
+      nodes.add(nextNode);
+    }
+    return g;
+  }
 
   @Test(expected = IllegalArgumentException.class)
   public void emptyTreeThrowsException() {
@@ -145,18 +158,5 @@ public class TreeIsomorphismTest {
         assertThat(impl1).isEqualTo(impl2);
       }
     }
-  }
-
-  public static List<List<Integer>> generateRandomTree(int n) {
-    List<Integer> nodes = new ArrayList<>();
-    nodes.add(0);
-
-    List<List<Integer>> g = createEmptyGraph(n);
-    for (int nextNode = 1; nodes.size() != n; nextNode++) {
-      int randomNode = nodes.get((int) (Math.random() * nodes.size()));
-      addUndirectedEdge(g, randomNode, nextNode);
-      nodes.add(nextNode);
-    }
-    return g;
   }
 }

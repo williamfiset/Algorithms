@@ -12,15 +12,16 @@
  * <p>NOTE: You can ignore taking the floor/ceiling of the number of cows on a split since when you
  * double the number of cows you always get an even number.
  */
-import java.io.*;
-import java.util.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class MagicalCows {
 
-  static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
   // The maximum number of days.
   static final int MAX_DAYS = 50;
+  static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
   public static void main(String[] args) throws IOException {
     String[] line = br.readLine().split(" ");

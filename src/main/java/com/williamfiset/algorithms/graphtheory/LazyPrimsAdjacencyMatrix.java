@@ -9,23 +9,9 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.PriorityQueue;
 
 public class LazyPrimsAdjacencyMatrix {
-
-  static class Edge implements Comparable<Edge> {
-    int to, cost;
-
-    public Edge(int to, int cost) {
-      this.to = to;
-      this.cost = cost;
-    }
-
-    @Override
-    public int compareTo(Edge other) {
-      return cost - other.cost;
-    }
-  }
 
   // Given an N*N undirected adjacency matrix, that is a
   // graph with matrix[i][j] = matrix[j][i] for all i,j this method
@@ -91,5 +77,19 @@ public class LazyPrimsAdjacencyMatrix {
 
     Long mstCost = prims(graph);
     System.out.println("MST cost: " + mstCost);
+  }
+
+  static class Edge implements Comparable<Edge> {
+    int to, cost;
+
+    public Edge(int to, int cost) {
+      this.to = to;
+      this.cost = cost;
+    }
+
+    @Override
+    public int compareTo(Edge other) {
+      return cost - other.cost;
+    }
   }
 }

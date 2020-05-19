@@ -1,9 +1,9 @@
 package com.williamfiset.algorithms.datastructures.fenwicktree;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class FenwickTreeRangeQueryPointUpdateTest {
 
@@ -14,6 +14,27 @@ public class FenwickTreeRangeQueryPointUpdateTest {
   static final int LOOPS = 1000;
 
   static long UNUSED_VAL;
+
+  public static int lowBound(int N) {
+    return 1 + (int) (Math.random() * N);
+  }
+
+  public static int highBound(int low, int N) {
+    return Math.min(N, low + (int) (Math.random() * N));
+  }
+
+  public static long randValue() {
+    return (long) (Math.random() * MAX_RAND_NUM * 2) + MIN_RAND_NUM;
+  }
+
+  // Generate a list of random numbers, one based
+  static long[] genRandList(int sz) {
+    long[] lst = new long[sz + 1];
+    for (int i = 1; i <= sz; i++) {
+      lst[i] = randValue();
+    }
+    return lst;
+  }
 
   @Before
   public void setup() {
@@ -158,29 +179,8 @@ public class FenwickTreeRangeQueryPointUpdateTest {
     }
   }
 
-  public static int lowBound(int N) {
-    return 1 + (int) (Math.random() * N);
-  }
-
-  public static int highBound(int low, int N) {
-    return Math.min(N, low + (int) (Math.random() * N));
-  }
-
-  public static long randValue() {
-    return (long) (Math.random() * MAX_RAND_NUM * 2) + MIN_RAND_NUM;
-  }
-
   @Test(expected = IllegalArgumentException.class)
   public void testIllegalCreation() {
     new FenwickTreeRangeQueryPointUpdate(null);
-  }
-
-  // Generate a list of random numbers, one based
-  static long[] genRandList(int sz) {
-    long[] lst = new long[sz + 1];
-    for (int i = 1; i <= sz; i++) {
-      lst[i] = randValue();
-    }
-    return lst;
   }
 }

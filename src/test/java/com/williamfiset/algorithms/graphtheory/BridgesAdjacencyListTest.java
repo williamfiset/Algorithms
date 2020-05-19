@@ -1,11 +1,13 @@
 package com.williamfiset.algorithms.graphtheory;
 
-import static com.google.common.truth.Truth.assertThat;
-
 import com.google.common.collect.ImmutableList;
-import java.util.*;
 import org.apache.commons.lang3.tuple.Pair;
-import org.junit.*;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public class BridgesAdjacencyListTest {
 
@@ -20,6 +22,22 @@ public class BridgesAdjacencyListTest {
   public static void addEdge(List<List<Integer>> graph, int from, int to) {
     graph.get(from).add(to);
     graph.get(to).add(from);
+  }
+
+  private static List<Pair<Integer, Integer>> getSortedBridges(List<Integer> bridgeNodes) {
+    List<Pair<Integer, Integer>> bridges = new ArrayList<>();
+    for (int i = 0; i < bridgeNodes.size(); i += 2) {
+      int node1 = bridgeNodes.get(i);
+      int node2 = bridgeNodes.get(i + 1);
+      Pair<Integer, Integer> pair;
+      if (node1 < node2) {
+        pair = Pair.of(node1, node2);
+      } else {
+        pair = Pair.of(node2, node1);
+      }
+      bridges.add(pair);
+    }
+    return bridges;
   }
 
   // Every edge should be a bridge if the input a tree
@@ -142,21 +160,5 @@ public class BridgesAdjacencyListTest {
             Pair.of(8, 10));
 
     assertThat(sortedBridges).containsExactlyElementsIn(expected);
-  }
-
-  private static List<Pair<Integer, Integer>> getSortedBridges(List<Integer> bridgeNodes) {
-    List<Pair<Integer, Integer>> bridges = new ArrayList<>();
-    for (int i = 0; i < bridgeNodes.size(); i += 2) {
-      int node1 = bridgeNodes.get(i);
-      int node2 = bridgeNodes.get(i + 1);
-      Pair<Integer, Integer> pair;
-      if (node1 < node2) {
-        pair = Pair.of(node1, node2);
-      } else {
-        pair = Pair.of(node2, node1);
-      }
-      bridges.add(pair);
-    }
-    return bridges;
   }
 }

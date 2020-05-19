@@ -12,39 +12,33 @@
  */
 package com.williamfiset.algorithms.datastructures.priorityqueue;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class MinIndexedDHeap<T extends Comparable<T>> {
-
-  // Current number of elements in the heap.
-  private int sz;
-
-  // Maximum number of elements in the heap.
-  private final int N;
-
-  // The degree of every node in the heap.
-  private final int D;
-
-  // Lookup arrays to track the child/parent indexes of each node.
-  private final int[] child, parent;
 
   // The Position Map (pm) maps Key Indexes (ki) to where the position of that
   // key is represented in the priority queue in the domain [0, sz).
   public final int[] pm;
-
   // The Inverse Map (im) stores the indexes of the keys in the range
   // [0, sz) which make up the priority queue. It should be noted that
   // 'im' and 'pm' are inverses of each other, so: pm[im[i]] = im[pm[i]] = i
   public final int[] im;
-
   // The values associated with the keys. It is very important  to note
   // that this array is indexed by the key indexes (aka 'ki').
   public final Object[] values;
+  // Maximum number of elements in the heap.
+  private final int N;
+  // The degree of every node in the heap.
+  private final int D;
+  // Lookup arrays to track the child/parent indexes of each node.
+  private final int[] child, parent;
+  // Current number of elements in the heap.
+  private int sz;
 
   // Initializes a D-ary heap with a maximum capacity of maxSize.
   public MinIndexedDHeap(int degree, int maxSize) {

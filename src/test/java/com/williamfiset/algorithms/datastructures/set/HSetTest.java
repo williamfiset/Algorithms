@@ -1,13 +1,11 @@
 package com.williamfiset.algorithms.datastructures.set;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import org.junit.*;
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
 
 // You can set the hash value of this object to be whatever you want
 // This makes it great for testing special cases.
@@ -32,13 +30,27 @@ class ConstObj {
 
 public class HSetTest {
 
-  static Random r = new Random();
-
   static final int LOOPS = 100;
   static final int TEST_SZ = 1000;
   static final int MAX_RAND_NUM = 50000;
-
+  static Random r = new Random();
   HSet<Integer> hs;
+
+  // Generate a list of random numbers
+  static List<Integer> genRandList(int sz) {
+    List<Integer> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) lst.add((int) (Math.random() * MAX_RAND_NUM));
+    Collections.shuffle(lst);
+    return lst;
+  }
+
+  // Generate a list of unique random numbers
+  static List<Integer> genUniqueRandList(int sz) {
+    List<Integer> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) lst.add(i);
+    Collections.shuffle(lst);
+    return lst;
+  }
 
   @Before
   public void setup() {
@@ -132,21 +144,5 @@ public class HSetTest {
     assertEquals(1, s.size());
     s.remove(ch2);
     assertEquals(0, s.size());
-  }
-
-  // Generate a list of random numbers
-  static List<Integer> genRandList(int sz) {
-    List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add((int) (Math.random() * MAX_RAND_NUM));
-    Collections.shuffle(lst);
-    return lst;
-  }
-
-  // Generate a list of unique random numbers
-  static List<Integer> genUniqueRandList(int sz) {
-    List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add(i);
-    Collections.shuffle(lst);
-    return lst;
   }
 }

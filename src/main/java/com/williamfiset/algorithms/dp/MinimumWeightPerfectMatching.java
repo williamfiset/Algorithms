@@ -9,8 +9,10 @@
  */
 package com.williamfiset.algorithms.dp;
 
-import java.awt.geom.*;
-import java.util.*;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class MinimumWeightPerfectMatching {
 
@@ -37,6 +39,45 @@ public class MinimumWeightPerfectMatching {
           "Matrix too large! A matrix that size for the MWPM problem with a time complexity of"
               + "O(n^2*2^n) requires way too much computation and memory for a modern home computer.");
     this.cost = cost;
+  }
+
+  public static void main(String[] args) {
+    int n = 18;
+    List<Point2D> pts = new ArrayList<>();
+
+    // Generate points on a 2D plane which will produce a unique answer
+    for (int i = 0; i < n / 2; i++) {
+      pts.add(new Point2D.Double(2 * i, 0));
+      pts.add(new Point2D.Double(2 * i, 1));
+    }
+    Collections.shuffle(pts);
+
+    double[][] cost = new double[n][n];
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        cost[i][j] = pts.get(i).distance(pts.get(j));
+      }
+    }
+
+    MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(cost);
+    double minCost = mwpm.getMinWeightCost();
+    if (minCost != n / 2) {
+      System.out.printf("MWPM cost is wrong! Got: %.5f But wanted: %d\n", minCost, n / 2);
+    } else {
+      System.out.printf("MWPM is: %.5f\n", minCost);
+    }
+
+    int[] matching = mwpm.getMinWeightCostMatching();
+    for (int i = 0; i < matching.length / 2; i++) {
+      int ii = matching[2 * i];
+      int jj = matching[2 * i + 1];
+      System.out.printf(
+          "(%d, %d) <-> (%d, %d)\n",
+          (int) pts.get(ii).getX(),
+          (int) pts.get(ii).getY(),
+          (int) pts.get(jj).getX(),
+          (int) pts.get(jj).getY());
+    }
   }
 
   public double getMinWeightCost() {
@@ -128,6 +169,8 @@ public class MinimumWeightPerfectMatching {
     solved = true;
   }
 
+  /* Example */
+
   // Gets the zero base index position of the 1 bit in 'k'
   private int getBitPosition(int k) {
     int count = -1;
@@ -136,46 +179,5 @@ public class MinimumWeightPerfectMatching {
       k >>= 1;
     }
     return count;
-  }
-
-  /* Example */
-
-  public static void main(String[] args) {
-    int n = 18;
-    List<Point2D> pts = new ArrayList<>();
-
-    // Generate points on a 2D plane which will produce a unique answer
-    for (int i = 0; i < n / 2; i++) {
-      pts.add(new Point2D.Double(2 * i, 0));
-      pts.add(new Point2D.Double(2 * i, 1));
-    }
-    Collections.shuffle(pts);
-
-    double[][] cost = new double[n][n];
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < n; j++) {
-        cost[i][j] = pts.get(i).distance(pts.get(j));
-      }
-    }
-
-    MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(cost);
-    double minCost = mwpm.getMinWeightCost();
-    if (minCost != n / 2) {
-      System.out.printf("MWPM cost is wrong! Got: %.5f But wanted: %d\n", minCost, n / 2);
-    } else {
-      System.out.printf("MWPM is: %.5f\n", minCost);
-    }
-
-    int[] matching = mwpm.getMinWeightCostMatching();
-    for (int i = 0; i < matching.length / 2; i++) {
-      int ii = matching[2 * i];
-      int jj = matching[2 * i + 1];
-      System.out.printf(
-          "(%d, %d) <-> (%d, %d)\n",
-          (int) pts.get(ii).getX(),
-          (int) pts.get(ii).getY(),
-          (int) pts.get(jj).getX(),
-          (int) pts.get(jj).getY());
-    }
   }
 }

@@ -5,8 +5,10 @@
  */
 package com.williamfiset.algorithms.strings;
 
-import java.math.*;
-import java.util.*;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class RabinKarp {
 

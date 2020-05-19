@@ -1,13 +1,14 @@
 package com.williamfiset.algorithms.datastructures.balancedtree;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
-import org.junit.Before;
-import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class AVLTreeTest {
 
@@ -17,6 +18,24 @@ public class AVLTreeTest {
   static final int TEST_SZ = 2500;
 
   private AVLTreeRecursive<Integer> tree;
+
+  // Make sure all balance factor values are either -1, 0 or +1
+  static boolean validateBalanceFactorValues(AVLTreeRecursive<Integer>.Node node) {
+    if (node == null) return true;
+    if (node.bf > +1 || node.bf < -1) return false;
+    return validateBalanceFactorValues(node.left) && validateBalanceFactorValues(node.right);
+  }
+
+  static List<Integer> genRandList(int sz) {
+    List<Integer> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) lst.add(i); // unique values.
+    Collections.shuffle(lst);
+    return lst;
+  }
+
+  public static int randValue() {
+    return (int) (Math.random() * MAX_RAND_NUM * 2) + MIN_RAND_NUM;
+  }
 
   @Before
   public void setup() {
@@ -114,13 +133,6 @@ public class AVLTreeTest {
     }
   }
 
-  // Make sure all balance factor values are either -1, 0 or +1
-  static boolean validateBalanceFactorValues(AVLTreeRecursive<Integer>.Node node) {
-    if (node == null) return true;
-    if (node.bf > +1 || node.bf < -1) return false;
-    return validateBalanceFactorValues(node.left) && validateBalanceFactorValues(node.right);
-  }
-
   @Test
   public void testRandomizedValueInsertionsAgainstTreeSet() {
 
@@ -176,16 +188,5 @@ public class AVLTreeTest {
 
       assertTrue(tree.isEmpty());
     }
-  }
-
-  static List<Integer> genRandList(int sz) {
-    List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add(i); // unique values.
-    Collections.shuffle(lst);
-    return lst;
-  }
-
-  public static int randValue() {
-    return (int) (Math.random() * MAX_RAND_NUM * 2) + MIN_RAND_NUM;
   }
 }

@@ -13,10 +13,7 @@ import java.util.Random;
 
 public class SelectionSort implements InplaceSort {
 
-  @Override
-  public void sort(int[] values) {
-    SelectionSort.selectionSort(values);
-  }
+  static Random RANDOM = new Random();
 
   public static void selectionSort(int[] array) {
     if (array == null) return;
@@ -53,8 +50,6 @@ public class SelectionSort implements InplaceSort {
 
   // TODO(williamfiset): move this to a test file.
 
-  static Random RANDOM = new Random();
-
   public static void runTests() {
     final int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {
@@ -72,5 +67,10 @@ public class SelectionSort implements InplaceSort {
 
   static int randInt(int min, int max) {
     return RANDOM.nextInt((max - min) + 1) + min;
+  }
+
+  @Override
+  public void sort(int[] values) {
+    SelectionSort.selectionSort(values);
   }
 }

@@ -93,14 +93,76 @@ Matrix: 154691124 nanos
 
 package com.williamfiset.algorithms.graphtheory.analysis;
 
-import static java.lang.Math.*;
-
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class PrimsGraphRepresentationAnaylsis {
+
+  static Random random = new Random();
+
+  public static void main(String[] args) throws InterruptedException {
+    densityTest();
+  }
+
+  private static void densityTest() throws InterruptedException {
+    String rows = "", header = "edge density percentage, adj list, adj matrix\n";
+    for (int percentage = 5; percentage <= 100; percentage += 5) {
+
+      // Calling GC seems to give more consistent results?
+      System.gc();
+      TimeUnit.SECONDS.sleep(2);
+
+      int n = 5000;
+      List<List<Edge>> g1 = PrimsAdjList.createEmptyGraph(n);
+      Integer[][] g2 = PrimsAdjMatrix.createEmptyGraph(n);
+
+      int numEdgesIncluded = 0;
+      for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+          int r = Math.abs(random.nextInt()) % 100;
+          if (r >= percentage) continue;
+          PrimsAdjList.addUndirectedEdge(g1, i, j, r);
+          PrimsAdjMatrix.addUndirectedEdge(g2, i, j, r);
+          numEdgesIncluded += 2;
+        }
+      }
+
+      PrimsAdjList adjListSolver = new PrimsAdjList(g1);
+      PrimsAdjMatrix matrixSolver = new PrimsAdjMatrix(g2);
+
+      System.out.println(
+          "\nPercentage full: ~" + percentage + "%, Edges included: " + numEdgesIncluded);
+
+      Instant start = Instant.now();
+      Long listCost = adjListSolver.getMstCost();
+      Instant end = Instant.now();
+      long listTimeMs = Duration.between(start, end).toMillis();
+      System.out.println("List:   " + listTimeMs + " millis");
+
+      start = Instant.now();
+      Long matrixCost = matrixSolver.getMstCost();
+      end = Instant.now();
+      long matrixTimeMs = Duration.between(start, end).toMillis();
+      System.out.println("Matrix: " + matrixTimeMs + " millis");
+
+      if (listCost != null && listCost.longValue() != matrixCost.longValue()) {
+        System.out.println("Oh dear. " + listCost + " != " + matrixCost);
+      }
+
+      rows += String.format("%d%%,%d,%d\n", percentage, listTimeMs, matrixTimeMs);
+    }
+    System.out.println("CSV printout:\n\n" + header + rows);
+  }
+
+  /* Example usage. */
 
   private static class Edge implements Comparable<Edge> {
     int from, to, cost;
@@ -139,12 +201,30 @@ public class PrimsGraphRepresentationAnaylsis {
       this.graph = graph;
     }
 
+    // Creates an empty adjacency list graph with n nodes.
+    static List<List<Edge>> createEmptyGraph(int n) {
+      List<List<Edge>> g = new ArrayList<>();
+      for (int i = 0; i < n; i++) g.add(new ArrayList<>());
+      return g;
+    }
+
+    static void addDirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
+      g.get(from).add(new Edge(from, to, cost));
+    }
+
+    static void addUndirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
+      addDirectedEdge(g, from, to, cost);
+      addDirectedEdge(g, to, from, cost);
+    }
+
     // Returns the edges used in finding the minimum spanning tree,
     // or returns null if no MST exists.
     public Edge[] getMst() {
       solve();
       return mstExists ? mstEdges : null;
     }
+
+    /* Graph construction helpers. */
 
     public Long getMstCost() {
       solve();
@@ -204,24 +284,6 @@ public class PrimsGraphRepresentationAnaylsis {
       // Verify MST spans entire graph.
       mstExists = (edgeCount == m);
     }
-
-    /* Graph construction helpers. */
-
-    // Creates an empty adjacency list graph with n nodes.
-    static List<List<Edge>> createEmptyGraph(int n) {
-      List<List<Edge>> g = new ArrayList<>();
-      for (int i = 0; i < n; i++) g.add(new ArrayList<>());
-      return g;
-    }
-
-    static void addDirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
-      g.get(from).add(new Edge(from, to, cost));
-    }
-
-    static void addUndirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
-      addDirectedEdge(g, from, to, cost);
-      addDirectedEdge(g, to, from, cost);
-    }
   }
 
   private static class PrimsAdjMatrix {
@@ -247,12 +309,28 @@ public class PrimsGraphRepresentationAnaylsis {
       this.graph = graph;
     }
 
+    // Creates an empty adjacency matrix graph with n nodes.
+    static Integer[][] createEmptyGraph(int n) {
+      return new Integer[n][n];
+    }
+
+    static void addDirectedEdge(Integer[][] g, int from, int to, int cost) {
+      g[from][to] = cost;
+    }
+
+    static void addUndirectedEdge(Integer[][] g, int from, int to, int cost) {
+      addDirectedEdge(g, from, to, cost);
+      addDirectedEdge(g, to, from, cost);
+    }
+
     // Returns the edges used in finding the minimum spanning tree,
     // or returns null if no MST exists.
     public Edge[] getMst() {
       // Unimplemented.
       return null;
     }
+
+    /* Graph construction helpers. */
 
     public Long getMstCost() {
       solve();
@@ -310,110 +388,30 @@ public class PrimsGraphRepresentationAnaylsis {
       // Verify MST spans entire graph.
       mstExists = (edgeCount == m);
     }
-
-    /* Graph construction helpers. */
-
-    // Creates an empty adjacency matrix graph with n nodes.
-    static Integer[][] createEmptyGraph(int n) {
-      return new Integer[n][n];
-    }
-
-    static void addDirectedEdge(Integer[][] g, int from, int to, int cost) {
-      g[from][to] = cost;
-    }
-
-    static void addUndirectedEdge(Integer[][] g, int from, int to, int cost) {
-      addDirectedEdge(g, from, to, cost);
-      addDirectedEdge(g, to, from, cost);
-    }
-  }
-
-  /* Example usage. */
-
-  public static void main(String[] args) throws InterruptedException {
-    densityTest();
-  }
-
-  static Random random = new Random();
-
-  private static void densityTest() throws InterruptedException {
-    String rows = "", header = "edge density percentage, adj list, adj matrix\n";
-    for (int percentage = 5; percentage <= 100; percentage += 5) {
-
-      // Calling GC seems to give more consistent results?
-      System.gc();
-      TimeUnit.SECONDS.sleep(2);
-
-      int n = 5000;
-      List<List<Edge>> g1 = PrimsAdjList.createEmptyGraph(n);
-      Integer[][] g2 = PrimsAdjMatrix.createEmptyGraph(n);
-
-      int numEdgesIncluded = 0;
-      for (int i = 0; i < n; i++) {
-        for (int j = i + 1; j < n; j++) {
-          int r = Math.abs(random.nextInt()) % 100;
-          if (r >= percentage) continue;
-          PrimsAdjList.addUndirectedEdge(g1, i, j, r);
-          PrimsAdjMatrix.addUndirectedEdge(g2, i, j, r);
-          numEdgesIncluded += 2;
-        }
-      }
-
-      PrimsAdjList adjListSolver = new PrimsAdjList(g1);
-      PrimsAdjMatrix matrixSolver = new PrimsAdjMatrix(g2);
-
-      System.out.println(
-          "\nPercentage full: ~" + percentage + "%, Edges included: " + numEdgesIncluded);
-
-      Instant start = Instant.now();
-      Long listCost = adjListSolver.getMstCost();
-      Instant end = Instant.now();
-      long listTimeMs = Duration.between(start, end).toMillis();
-      System.out.println("List:   " + listTimeMs + " millis");
-
-      start = Instant.now();
-      Long matrixCost = matrixSolver.getMstCost();
-      end = Instant.now();
-      long matrixTimeMs = Duration.between(start, end).toMillis();
-      System.out.println("Matrix: " + matrixTimeMs + " millis");
-
-      if (listCost != null && listCost.longValue() != matrixCost.longValue()) {
-        System.out.println("Oh dear. " + listCost + " != " + matrixCost);
-      }
-
-      rows += String.format("%d%%,%d,%d\n", percentage, listTimeMs, matrixTimeMs);
-    }
-    System.out.println("CSV printout:\n\n" + header + rows);
   }
 
   /* Supporting indexed priority queue implementation. */
 
   private static class MinIndexedDHeap<T extends Comparable<T>> {
 
-    // Current number of elements in the heap.
-    private int sz;
-
-    // Maximum number of elements in the heap.
-    private final int N;
-
-    // The degree of every node in the heap.
-    private final int D;
-
-    // Lookup arrays to track the child/parent indexes of each node.
-    private final int[] child, parent;
-
     // The Position Map (pm) maps Key Indexes (ki) to where the position of that
     // key is represented in the priority queue in the domain [0, sz).
     public final int[] pm;
-
     // The Inverse Map (im) stores the indexes of the keys in the range
     // [0, sz) which make up the priority queue. It should be noted that
     // 'im' and 'pm' are inverses of each other, so: pm[im[i]] = im[pm[i]] = i
     public final int[] im;
-
     // The values associated with the keys. It is very important  to note
     // that this array is indexed by the key indexes (aka 'ki').
     public final Object[] values;
+    // Maximum number of elements in the heap.
+    private final int N;
+    // The degree of every node in the heap.
+    private final int D;
+    // Lookup arrays to track the child/parent indexes of each node.
+    private final int[] child, parent;
+    // Current number of elements in the heap.
+    private int sz;
 
     // Initializes a D-ary heap with a maximum capacity of maxSize.
     public MinIndexedDHeap(int degree, int maxSize) {

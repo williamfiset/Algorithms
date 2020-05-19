@@ -1,11 +1,14 @@
 package com.williamfiset.algorithms.datastructures.linkedlist;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.junit.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class LinkedListTest {
   private static final int LOOPS = 10000;
@@ -14,6 +17,24 @@ public class LinkedListTest {
   private static final int MAX_RAND_NUM = 250;
 
   DoublyLinkedList<Integer> list;
+
+  // Generate a list of random numbers
+  static List<Integer> genRandList(int sz) {
+    List<Integer> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) lst.add((int) (Math.random() * MAX_RAND_NUM));
+    for (int i = 0; i < NUM_NULLS; i++) lst.add(null);
+    Collections.shuffle(lst);
+    return lst;
+  }
+
+  // Generate a list of unique random numbers
+  static List<Integer> genUniqueRandList(int sz) {
+    List<Integer> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) lst.add(i);
+    for (int i = 0; i < NUM_NULLS; i++) lst.add(null);
+    Collections.shuffle(lst);
+    return lst;
+  }
 
   @Before
   public void setup() {
@@ -322,23 +343,5 @@ public class LinkedListTest {
     strs.add("e");
     strs.add("f");
     assertEquals(strs.toString(), "[ a, b, c, d, e, f ]");
-  }
-
-  // Generate a list of random numbers
-  static List<Integer> genRandList(int sz) {
-    List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add((int) (Math.random() * MAX_RAND_NUM));
-    for (int i = 0; i < NUM_NULLS; i++) lst.add(null);
-    Collections.shuffle(lst);
-    return lst;
-  }
-
-  // Generate a list of unique random numbers
-  static List<Integer> genUniqueRandList(int sz) {
-    List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add(i);
-    for (int i = 0; i < NUM_NULLS; i++) lst.add(null);
-    Collections.shuffle(lst);
-    return lst;
   }
 }

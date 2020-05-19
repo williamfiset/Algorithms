@@ -1,9 +1,10 @@
 package com.williamfiset.algorithms.geometry;
 
-import static com.google.common.truth.Truth.assertThat;
+import org.junit.Test;
 
-import java.awt.geom.*;
-import org.junit.*;
+import java.awt.geom.Point2D;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public class MinimumCostConvexPolygonTriangulationTest {
 

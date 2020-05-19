@@ -7,6 +7,37 @@ package com.williamfiset.algorithms.graphtheory;
 
 public class KruskalsEdgeList {
 
+  // Given a graph represented as an edge list this method finds
+  // the Minimum Spanning Tree (MST) cost if there exists
+  // a MST, otherwise it returns null.
+  static Long kruskals(Edge[] edges, int n) {
+
+    if (edges == null) return null;
+
+    long sum = 0L;
+    java.util.Arrays.sort(edges);
+    UnionFind uf = new UnionFind(n);
+
+    for (Edge edge : edges) {
+
+      // Skip this edge to avoid creating a cycle in MST
+      if (uf.connected(edge.from, edge.to)) continue;
+
+      // Include this edge
+      uf.union(edge.from, edge.to);
+      sum += edge.cost;
+
+      // Optimization to stop early if we found
+      // a MST that includes all the nodes
+      if (uf.size(0) == n) break;
+    }
+
+    // Make sure we have a MST that includes all the nodes
+    if (uf.size(0) != n) return null;
+
+    return sum;
+  }
+
   // Union find data structure
   static class UnionFind {
 
@@ -67,36 +98,5 @@ public class KruskalsEdgeList {
     public int compareTo(Edge other) {
       return cost - other.cost;
     }
-  }
-
-  // Given a graph represented as an edge list this method finds
-  // the Minimum Spanning Tree (MST) cost if there exists
-  // a MST, otherwise it returns null.
-  static Long kruskals(Edge[] edges, int n) {
-
-    if (edges == null) return null;
-
-    long sum = 0L;
-    java.util.Arrays.sort(edges);
-    UnionFind uf = new UnionFind(n);
-
-    for (Edge edge : edges) {
-
-      // Skip this edge to avoid creating a cycle in MST
-      if (uf.connected(edge.from, edge.to)) continue;
-
-      // Include this edge
-      uf.union(edge.from, edge.to);
-      sum += edge.cost;
-
-      // Optimization to stop early if we found
-      // a MST that includes all the nodes
-      if (uf.size(0) == n) break;
-    }
-
-    // Make sure we have a MST that includes all the nodes
-    if (uf.size(0) != n) return null;
-
-    return sum;
   }
 }

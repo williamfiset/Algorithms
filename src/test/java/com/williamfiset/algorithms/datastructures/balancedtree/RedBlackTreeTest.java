@@ -1,10 +1,14 @@
 package com.williamfiset.algorithms.datastructures.balancedtree;
 
-import static org.junit.Assert.*;
-
-import java.util.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.TreeSet;
+
+import static org.junit.Assert.*;
 
 public class RedBlackTreeTest {
 
@@ -14,6 +18,36 @@ public class RedBlackTreeTest {
   static final int TEST_SZ = 9000;
 
   private RedBlackTree<Integer> tree;
+
+  static void assertNullChildren(RedBlackTree tree, RedBlackTree.Node... nodes) {
+    for (RedBlackTree.Node node : nodes) {
+      assertEquals(tree.NIL, node.left);
+      assertEquals(tree.NIL, node.right);
+    }
+  }
+
+  static void assertCorrectParentLinks(
+      RedBlackTree tree, RedBlackTree.Node node, RedBlackTree.Node parent) {
+    if (node == tree.NIL) return;
+    try {
+      assertEquals(node.parent, parent);
+    } catch (AssertionError e) {
+      System.out.println("hi");
+    }
+    assertCorrectParentLinks(tree, node.left, node);
+    assertCorrectParentLinks(tree, node.right, node);
+  }
+
+  static List<Integer> genRandList(int sz) {
+    List<Integer> lst = new ArrayList<>(sz);
+    for (int i = 0; i < sz; i++) lst.add(i); // unique values.
+    Collections.shuffle(lst);
+    return lst;
+  }
+
+  public static int randValue() {
+    return (int) (Math.random() * MAX_RAND_NUM * 2) + MIN_RAND_NUM;
+  }
 
   @Before
   public void setup() {
@@ -311,25 +345,6 @@ public class RedBlackTreeTest {
     }
   }
 
-  static void assertNullChildren(RedBlackTree tree, RedBlackTree.Node... nodes) {
-    for (RedBlackTree.Node node : nodes) {
-      assertEquals(tree.NIL, node.left);
-      assertEquals(tree.NIL, node.right);
-    }
-  }
-
-  static void assertCorrectParentLinks(
-      RedBlackTree tree, RedBlackTree.Node node, RedBlackTree.Node parent) {
-    if (node == tree.NIL) return;
-    try {
-      assertEquals(node.parent, parent);
-    } catch (AssertionError e) {
-      System.out.println("hi");
-    }
-    assertCorrectParentLinks(tree, node.left, node);
-    assertCorrectParentLinks(tree, node.right, node);
-  }
-
   // Make sure all left child nodes are smaller in value than their parent and
   // make sure all right child nodes are greater in value than their parent.
   // (Used only for testing)
@@ -349,16 +364,5 @@ public class RedBlackTreeTest {
     if (node.parent != parent) return false;
     return validateParentLinksAreCorrect(node.left, node)
         && validateParentLinksAreCorrect(node.right, node);
-  }
-
-  static List<Integer> genRandList(int sz) {
-    List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add(i); // unique values.
-    Collections.shuffle(lst);
-    return lst;
-  }
-
-  public static int randValue() {
-    return (int) (Math.random() * MAX_RAND_NUM * 2) + MIN_RAND_NUM;
   }
 }

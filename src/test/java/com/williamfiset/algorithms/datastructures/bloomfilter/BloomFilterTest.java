@@ -1,13 +1,15 @@
 package com.williamfiset.algorithms.datastructures.bloomfilter;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import org.junit.Before;
-import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class BloomFilterTest {
 
@@ -19,6 +21,19 @@ public class BloomFilterTest {
 
   static final int TEST_SZ = 1000;
   static final int LOOPS = 1000;
+  static final String AB =
+      " )(*&^%$#@!0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+  static int randNum(int min, int max) {
+    int range = max - min + 1;
+    return rand.nextInt(range) + min;
+  }
+
+  static String randomString(int len) {
+    StringBuilder sb = new StringBuilder(len);
+    for (int i = 0; i < len; i++) sb.append(AB.charAt(rand.nextInt(AB.length())));
+    return sb.toString();
+  }
 
   @Before
   public void setup() {}
@@ -99,19 +114,5 @@ public class BloomFilterTest {
         }
       }
     }
-  }
-
-  static int randNum(int min, int max) {
-    int range = max - min + 1;
-    return rand.nextInt(range) + min;
-  }
-
-  static final String AB =
-      " )(*&^%$#@!0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
-  static String randomString(int len) {
-    StringBuilder sb = new StringBuilder(len);
-    for (int i = 0; i < len; i++) sb.append(AB.charAt(rand.nextInt(AB.length())));
-    return sb.toString();
   }
 }
