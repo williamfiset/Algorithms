@@ -14,7 +14,7 @@ import java.util.Random;
 
 // Mergesort implements InplaceSort for ease of testings, but in reality
 // it is not really a good fit for an inplace sorting algorithm.
-public class MergeSort implements InplaceSort {
+class MergeSort implements InplaceSort {
 
   @Override
   public void sort(int[] values) {
