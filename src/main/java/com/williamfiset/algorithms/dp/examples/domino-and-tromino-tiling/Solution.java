@@ -85,4 +85,11 @@ class Solution {
     if (row2) state |= 0b10;
     return state;
   }
+
+  public static void main(String[] args) {
+    Solution s = new Solution();
+    for (int n = 1; n <= 10; n++) {
+      System.out.printf("n = %d, ans = %d\n", n, s.numTilings(n));
+    }
+  }
 }
