@@ -28,55 +28,55 @@ class Solution {
     boolean t3 = i + 1 < n;
     boolean t4 = i + 1 < n;
 
-    long ans = 0;
+    long count = 0;
 
     // Placing:
     // XX
     // X
-    if (t1 && t2 && t3) ans += f(i + 1, false, true);
+    if (t1 && t2 && t3) count += f(i + 1, false, true);
 
     // Placing:
     // X
     // XX
-    if (t1 && t2 && t4) ans += f(i + 1, true, false);
+    if (t1 && t2 && t4) count += f(i + 1, true, false);
 
     // Placing:
     // XX
     // #X
-    if (t1 && !t2 && t3 && t4) ans += f(i + 1, false, false);
+    if (t1 && !t2 && t3 && t4) count += f(i + 1, false, false);
 
     // Placing:
     // #X
     // XX
-    if (!t1 && t2 && t3 && t4) ans += f(i + 1, false, false);
+    if (!t1 && t2 && t3 && t4) count += f(i + 1, false, false);
 
     // Placing
     // X
     // X
-    if (t1 && t2) ans += f(i + 1, true, true);
+    if (t1 && t2) count += f(i + 1, true, true);
 
     // Placing two horizontals. We don't place 2 verticals because
     // that's accounted for with the single vertical tile:
     // XX
     // XX
-    if (t1 && t2 && t3 && t4) ans += f(i + 1, false, false);
+    if (t1 && t2 && t3 && t4) count += f(i + 1, false, false);
 
     // Placing:
     // XX
     // #
-    if (t1 && !t2 && t3) ans += f(i + 1, false, true);
+    if (t1 && !t2 && t3) count += f(i + 1, false, true);
 
     // Placing:
     // #
     // XX
-    if (!t1 && t2 && t4) ans += f(i + 1, true, false);
+    if (!t1 && t2 && t4) count += f(i + 1, true, false);
 
     // Current column is already fully tiled, so move to next column
     // #
     // #
-    if (!t1 && !t2) ans += f(i + 1, true, true);
+    if (!t1 && !t2) count += f(i + 1, true, true);
 
-    return dp[i][state] = ans % MOD;
+    return dp[i][state] = count % MOD;
   }
 
   static int makeState(boolean row1, boolean row2) {
