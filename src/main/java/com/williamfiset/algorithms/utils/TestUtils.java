@@ -4,6 +4,14 @@ import java.util.*;
 
 public final class TestUtils {
 
+  // Generates an array of random values where every number is between
+  // [min, max) and there are possible repeats.
+  public static int[] randomIntegerArray(int sz, int min, int max) {
+    int[] ar = new int[sz];
+    for (int i = 0; i < sz; i++) ar[i] = randValue(min, max);
+    return ar;
+  }
+
   // Generates a list of random values where every number is between
   // [min, max) and there are possible repeats.
   public static List<Integer> randomIntegerList(int sz, int min, int max) {

@@ -48,8 +48,8 @@ public class RedBlackTreeTest {
     assertEquals(tree.root, tree.root.left.parent);
     assertEquals(tree.root, tree.root.right.parent);
 
-    assertNullChildren(tree.root.left, tree.root.right);
-    assertCorrectParentLinks(tree.root, null);
+    assertNullChildren(tree, tree.root.left, tree.root.right);
+    assertCorrectParentLinks(tree, tree.root, tree.NIL);
   }
 
   @Test
@@ -70,8 +70,8 @@ public class RedBlackTreeTest {
     assertEquals(tree.root, tree.root.left.parent);
     assertEquals(tree.root, tree.root.right.parent);
 
-    assertNullChildren(tree.root.left, tree.root.right);
-    assertCorrectParentLinks(tree.root, null);
+    assertNullChildren(tree, tree.root.left, tree.root.right);
+    assertCorrectParentLinks(tree, tree.root, tree.NIL);
   }
 
   @Test
@@ -92,8 +92,8 @@ public class RedBlackTreeTest {
     assertEquals(tree.root, tree.root.left.parent);
     assertEquals(tree.root, tree.root.right.parent);
 
-    assertNullChildren(tree.root.left, tree.root.right);
-    assertCorrectParentLinks(tree.root, null);
+    assertNullChildren(tree, tree.root.left, tree.root.right);
+    assertCorrectParentLinks(tree, tree.root, tree.NIL);
   }
 
   @Test
@@ -114,8 +114,8 @@ public class RedBlackTreeTest {
     assertEquals(tree.root, tree.root.left.parent);
     assertEquals(tree.root, tree.root.right.parent);
 
-    assertNullChildren(tree.root.left, tree.root.right);
-    assertCorrectParentLinks(tree.root, null);
+    assertNullChildren(tree, tree.root.left, tree.root.right);
+    assertCorrectParentLinks(tree, tree.root, tree.NIL);
   }
 
   @Test
@@ -138,9 +138,9 @@ public class RedBlackTreeTest {
     assertEquals(RedBlackTree.BLACK, tree.root.right.color);
     assertEquals(RedBlackTree.RED, tree.root.right.right.color);
 
-    assertNull(tree.root.right.left);
-    assertNullChildren(tree.root.left, tree.root.right.right);
-    assertCorrectParentLinks(tree.root, null);
+    assertEquals(tree.NIL, tree.root.right.left);
+    assertNullChildren(tree, tree.root.left, tree.root.right.right);
+    assertCorrectParentLinks(tree, tree.root, tree.NIL);
 
     /* Black left uncle case. */
 
@@ -157,7 +157,7 @@ public class RedBlackTreeTest {
     assertEquals(RedBlackTree.BLACK, tree.root.right.color);
     assertEquals(RedBlackTree.RED, tree.root.right.left.color);
     assertEquals(RedBlackTree.RED, tree.root.right.right.color);
-    assertCorrectParentLinks(tree.root, null);
+    assertCorrectParentLinks(tree, tree.root, tree.NIL);
   }
 
   @Test
@@ -180,9 +180,9 @@ public class RedBlackTreeTest {
     assertEquals(RedBlackTree.BLACK, tree.root.right.color);
     assertEquals(RedBlackTree.RED, tree.root.left.left.color);
 
-    assertNull(tree.root.left.right);
-    assertNullChildren(tree.root.right, tree.root.left.left);
-    assertCorrectParentLinks(tree.root, null);
+    assertEquals(tree.NIL, tree.root.left.right);
+    assertNullChildren(tree, tree.root.right, tree.root.left.left);
+    assertCorrectParentLinks(tree, tree.root, tree.NIL);
 
     /* Black right uncle case. */
 
@@ -199,7 +199,7 @@ public class RedBlackTreeTest {
     assertEquals(RedBlackTree.BLACK, tree.root.right.color);
     assertEquals(RedBlackTree.RED, tree.root.left.left.color);
     assertEquals(RedBlackTree.RED, tree.root.left.right.color);
-    assertCorrectParentLinks(tree.root, null);
+    assertCorrectParentLinks(tree, tree.root, tree.NIL);
   }
 
   @Test
@@ -241,87 +241,111 @@ public class RedBlackTreeTest {
       assertEquals(set.add(v), tree.insert(v));
       assertEquals(set.size(), tree.size());
       assertTrue(tree.contains(v));
-      assertBinarySearchTreeInvariant(tree.root);
-      // validateRedBlackTreeInvariant
+      assertBinarySearchTreeInvariant(tree, tree.root);
     }
   }
 
-  /*
-    @Test
-    public void randomRemoveTests() {
-      TreeSet<Integer> ts = new TreeSet<>();
-      for (int i = 0; i < TEST_SZ; i++) {
+  @Test
+  public void testRemoval() {
+    tree.insert(5);
+    tree.insert(7);
+    tree.insert(9);
 
-        int size = i;
-        List <Integer> lst = genRandList(size);
-        for (Integer value : lst) {
-          tree.insert(value);
-          ts.add(value);
-        }
-        Collections.shuffle(lst);
+    tree.delete(5);
+    assertFalse(tree.contains(5));
 
-        // Remove all the elements we just placed in the tree.
-        for (int j = 0; j < size; j++) {
+    tree.delete(7);
+    assertFalse(tree.contains(7));
 
-          Integer value = lst.get(j);
-          assertEquals(ts.remove(value), tree.remove(value));
-          assertFalse(tree.contains(value));
-          assertEquals(size - j - 1, tree.size());
-        }
-        assertTrue(tree.isEmpty());
+    tree.delete(9);
+    assertFalse(tree.contains(9));
+  }
+
+  @Test
+  public void testNullRemoval() {
+    assertFalse(tree.delete(null));
+  }
+
+  @Test
+  public void testNumberDoesntExist() {
+    assertFalse(tree.delete(0));
+  }
+
+  @Test
+  public void randomRemoveTests() {
+    TreeSet<Integer> ts = new TreeSet<>();
+    for (int i = 0; i < TEST_SZ; i++) {
+
+      List<Integer> lst = genRandList(i);
+      for (Integer value : lst) {
+        tree.insert(value);
+        ts.add(value);
       }
-    }
+      Collections.shuffle(lst);
 
-    @Test
-    public void testTreeHeight() {
-      for (int n = 1; n <= TEST_SZ; n++) {
+      for (int j = 0; j < i; j++) {
 
-        tree.insert(randValue());
-        int height = tree.height();
-
-        // Get an upper bound on what the maximum height of
-        // an AVL tree should be. Values were taken from:
-        // https://en.wikipedia.org/wiki/AVL_tree#Comparison_to_other_structures
-        double c = 1.441;
-        double b = -0.329;
-        double upperBound = c*(Math.log(n+2.0)/Math.log(2)) + b;
-
-        assertTrue(height < upperBound);
-
+        Integer value = lst.get(j);
+        boolean treeSetRemove = ts.remove(value);
+        boolean treeRemove = tree.delete(value);
+        assertEquals(treeSetRemove, treeRemove);
+        assertFalse(tree.contains(value));
+        assertEquals(i - j - 1, tree.size());
       }
+      assertEquals(ts.isEmpty(), tree.isEmpty());
     }
-  */
+  }
 
-  static void assertNullChildren(RedBlackTree.Node... nodes) {
+  @Test
+  public void testTreeHeight() {
+    for (int n = 1; n <= TEST_SZ; n++) {
+
+      tree.insert(randValue());
+      int height = tree.height();
+
+      // RB tree height upper bound:
+      // https://en.wikipedia.org/wiki/AVL_tree#Comparison_to_other_structures
+      double upperBound = 2 * (Math.log(n + 1) / Math.log(2));
+
+      assertTrue(height <= upperBound);
+    }
+  }
+
+  static void assertNullChildren(RedBlackTree tree, RedBlackTree.Node... nodes) {
     for (RedBlackTree.Node node : nodes) {
-      assertNull(node.left);
-      assertNull(node.right);
+      assertEquals(tree.NIL, node.left);
+      assertEquals(tree.NIL, node.right);
     }
   }
 
-  static void assertCorrectParentLinks(RedBlackTree.Node node, RedBlackTree.Node parent) {
-    if (node == null) return;
-    assertEquals(node.parent, parent);
-    assertCorrectParentLinks(node.left, node);
-    assertCorrectParentLinks(node.right, node);
+  static void assertCorrectParentLinks(
+      RedBlackTree tree, RedBlackTree.Node node, RedBlackTree.Node parent) {
+    if (node == tree.NIL) return;
+    try {
+      assertEquals(node.parent, parent);
+    } catch (AssertionError e) {
+      System.out.println("hi");
+    }
+    assertCorrectParentLinks(tree, node.left, node);
+    assertCorrectParentLinks(tree, node.right, node);
   }
 
   // Make sure all left child nodes are smaller in value than their parent and
   // make sure all right child nodes are greater in value than their parent.
   // (Used only for testing)
-  boolean assertBinarySearchTreeInvariant(RedBlackTree<Integer>.Node node) {
-    if (node == null) return true;
+  boolean assertBinarySearchTreeInvariant(RedBlackTree tree, RedBlackTree<Integer>.Node node) {
+    if (node == tree.NIL) return true;
     boolean isValid = true;
-    if (node.left != null) isValid = isValid && node.left.value.compareTo(node.value) < 0;
-    if (node.right != null) isValid = isValid && node.right.value.compareTo(node.value) > 0;
+    if (node.left != tree.NIL) isValid = node.left.value.compareTo(node.value) < 0;
+    if (node.right != tree.NIL) isValid = isValid && node.right.value.compareTo(node.value) > 0;
     return isValid
-        && assertBinarySearchTreeInvariant(node.left)
-        && assertBinarySearchTreeInvariant(node.right);
+        && assertBinarySearchTreeInvariant(tree, node.left)
+        && assertBinarySearchTreeInvariant(tree, node.right);
   }
 
   // Used for testing.
   boolean validateParentLinksAreCorrect(RedBlackTree.Node node, RedBlackTree.Node parent) {
-    if (node == null) return true;
+    if (node == tree.NIL) return true;
     if (node.parent != parent) return false;
     return validateParentLinksAreCorrect(node.left, node)
         && validateParentLinksAreCorrect(node.right, node);

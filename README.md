@@ -15,32 +15,7 @@ This repository is contribution friendly :smiley:. If you'd like to add or impro
 
 To compile and run any of the algorithms here, you need at least JDK version 8. Gradle can make things more convenient for you, but it is not required. 
 
-## Compiling and running with only a JDK
-
-
-### Create a classes folder
-```
-cd Algorithms
-mkdir classes
-```
-
-### Compile the algorithm 
-```
-javac -sourcepath src/main/java -d classes src/main/java/ <relative-path-to-java-source-file>
-```
-
-### Run the algorithm 
-```
-java -cp classes <class-fully-qualified-name>
-```
-
-### Example
-```
-$ javac -d classes -sourcepath src/main/java src/main/java/com/williamfiset/algorithms/search/BinarySearch.java
-$ java -cp classes com.williamfiset.algorithms.search.BinarySearch
-```
-
-## Running with Gradle
+## Running with Gradle (recommended) 
 
 This project supports the [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). The Gradle wrapper automatically downloads Gradle at the first time it runs, so expect a delay when running the first command below.
 
@@ -70,6 +45,31 @@ or
 
 ```
 ./gradlew run -Pmain=com.williamfiset.algorithms.search.BinarySearch
+```
+
+## Compiling and running with only a JDK
+
+
+### Create a classes folder
+```
+cd Algorithms
+mkdir classes
+```
+
+### Compile the algorithm 
+```
+javac -sourcepath src/main/java -d classes src/main/java/ <relative-path-to-java-source-file>
+```
+
+### Run the algorithm 
+```
+java -cp classes <class-fully-qualified-name>
+```
+
+### Example
+```
+$ javac -d classes -sourcepath src/main/java src/main/java/com/williamfiset/algorithms/search/BinarySearch.java
+$ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 ```
 
 # Data Structures
@@ -263,8 +263,9 @@ or
 * [Counting sort](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/sorting/CountingSort.java) **- O(n + k)**
 * [Heapsort](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/sorting/Heapsort.java) **- O(nlog(n))**
 * [Insertion sort](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/sorting/InsertionSort.java) **- O(n<sup>2</sup>)**
-* [Mergesort](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/sorting/Mergesort.java) **- O(nlog(n))**
-* [Quicksort (in-place, Hoare partitioning)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/sorting/Quicksort.java) **- Θ(nlog(n))**
+* [Mergesort](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/sorting/MergeSort.java) **- O(nlog(n))**
+* [Quicksort (in-place, Hoare partitioning)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/sorting/QuickSort.java) **- Θ(nlog(n))**
+* [Quicksort3 (Dutch National Flag algorithm)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/sorting/QuickSort3.java) **- Θ(nlog(n))**
 * [Selection sort](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/sorting/SelectionSort.java) **- O(n<sup>2</sup>)**
 * [Radix sort](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/sorting/RadixSort.java) **- O(n*w)**
 
