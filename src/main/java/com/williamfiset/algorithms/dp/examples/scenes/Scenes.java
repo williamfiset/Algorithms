@@ -17,8 +17,8 @@ public class Scenes {
   public static void main(String[] args) throws IOException {
     String[] ln = br.readLine().split(" ");
     N = Integer.parseInt(ln[0]); // Total ribbon length
-    W = Integer.parseInt(ln[1]);
-    H = Integer.parseInt(ln[2]);
+    W = Integer.parseInt(ln[1]); // Width
+    H = Integer.parseInt(ln[2]); // Height
 
     solution1();
   }
@@ -51,8 +51,11 @@ public class Scenes {
     long scenes = 0L;
     // Try placing all possible ribbon lengths at this column/width
     for (int len = 0; len <= H; len++) {
-      scenes = (scenes + f(w + 1, ribbon - len)) % MOD;
+      scenes = (scenes + f(w + 1, ribbon - len));
     }
-    return dp[w][ribbon] = scenes;
+    // Store and return the number of scenes for this sub-problem.
+    // Applying the MOD after the loop is safe since H is at most 100 and
+    // the MOD is 10^9+7 which cannot overflow a signed 64bit integer.
+    return dp[w][ribbon] = scenes % MOD;
   }
 }
