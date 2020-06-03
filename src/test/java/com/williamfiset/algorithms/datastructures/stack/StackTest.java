@@ -3,6 +3,7 @@ package com.williamfiset.algorithms.datastructures.stack;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.williamfiset.algorithms.datastructures.stack.impl.ListStack;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,7 +13,8 @@ public class StackTest {
 
   @Before
   public void setup() {
-    stack = new Stack<Integer>();
+    stack = new ListStack<Integer>();
+    //    stack = new ArrayStack<>();
   }
 
   @Test
