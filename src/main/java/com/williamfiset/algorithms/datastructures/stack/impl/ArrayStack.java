@@ -4,6 +4,9 @@ import com.williamfiset.algorithms.datastructures.stack.Stack;
 import java.util.Arrays;
 import java.util.EmptyStackException;
 
+/**
+ * @author liujingkun
+ */
 public class ArrayStack<T> implements Stack<T> {
   private int capacity;
   private Object[] data;
@@ -34,6 +37,7 @@ public class ArrayStack<T> implements Stack<T> {
     data[size++] = elem;
   }
 
+  // adjust the capacity to store more element
   private void adjustCap() {
     if (capacity == Integer.MAX_VALUE) {
       throw new OutOfMemoryError();
