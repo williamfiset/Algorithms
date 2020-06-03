@@ -1,8 +1,6 @@
 package com.williamfiset.algorithms.datastructures.stack;
 
-/**
- * @author liujingkun
- */
+/** @author liujingkun */
 public interface Stack<T> {
   // return the number of elements in the stack
   public int size();
