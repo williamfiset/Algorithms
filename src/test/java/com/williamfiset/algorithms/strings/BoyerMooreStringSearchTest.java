@@ -36,11 +36,14 @@ public class BoyerMooreStringSearchTest {
 
   @Test
   public void shouldReturnMultiplyOccurrences() {
+    assertThat(underTest.findOccurrences("SAAT TE", "TE")).containsExactly(5);
     assertThat(
             underTest.findOccurrences("Sample text for testing the Boyer-Moore algorithm.", "te"))
         .containsExactly(7, 16);
     assertThat(underTest.findOccurrences("Sample text for testing the Boyer-Moore algorithm.", " "))
         .containsExactly(6, 11, 15, 23, 27, 39);
+    assertThat(underTest.findOccurrences("AABAACAADAABAABA", "AABA")).containsExactly(0, 9, 12);
+    assertThat(underTest.findOccurrences("AAAAAAA", "AA")).containsExactly(0, 1, 2, 3, 4, 5);
   }
 
   // TODO(william): Add a test that compares this implementation of Boyermoore
