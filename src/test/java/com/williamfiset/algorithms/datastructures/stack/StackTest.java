@@ -6,15 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
 public class StackTest {
 
-  List<Stack> stacks = new ArrayList<>();
+  private List<Stack<Integer>> stacks = new ArrayList<>();
 
   @Before
   public void setup() {
     stacks.add(new ListStack<Integer>());
-    stacks.add(new ArrayStack<>());
+    stacks.add(new ArrayStack<Integer>());
   }
 
   @Test
@@ -25,7 +26,7 @@ public class StackTest {
     }
   }
 
-  @Test(expected = Exception.class)
+  @Test
   public void testPopOnEmpty() {
     for (Stack stack : stacks) {
       assertThrows(Exception.class, stack::pop);
@@ -35,13 +36,13 @@ public class StackTest {
   @Test(expected = Exception.class)
   public void testPeekOnEmpty() {
     for (Stack stack : stacks) {
-      stack.peek();
+      assertThrows(Exception.class, (ThrowingRunnable) stack.peek());
     }
   }
 
   @Test
   public void testPush() {
-    for (Stack stack : stacks) {
+    for (Stack<Integer> stack : stacks) {
       stack.push(2);
       assertEquals(stack.size(), 1);
     }
@@ -49,7 +50,7 @@ public class StackTest {
 
   @Test
   public void testPeek() {
-    for (Stack stack : stacks) {
+    for (Stack<Integer> stack : stacks) {
       stack.push(2);
       assertEquals(2, (int) (Integer) stack.peek());
       assertEquals(stack.size(), 1);
@@ -58,7 +59,7 @@ public class StackTest {
 
   @Test
   public void testPop() {
-    for (Stack stack : stacks) {
+    for (Stack<Integer> stack : stacks) {
       stack.push(2);
       assertEquals(2, (int) stack.pop());
       assertEquals(stack.size(), 0);
@@ -67,10 +68,10 @@ public class StackTest {
 
   @Test
   public void testExhaustively() {
-    for (Stack stack : stacks) {
+    for (Stack<Integer> stack : stacks) {
       assertTrue(stack.isEmpty());
       stack.push(1);
-      assertTrue(!stack.isEmpty());
+      assertFalse(stack.isEmpty());
       stack.push(2);
       assertEquals(stack.size(), 2);
       assertEquals(2, (int) stack.peek());
