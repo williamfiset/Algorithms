@@ -128,8 +128,16 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 
 ## DP Examples
 
+### Adhoc
+
+* [:movie_camera:](https://www.youtube.com/watch?v=_tur2nPkIKo)[Magic Cows](https://github.com/williamfiset/Algorithms/blob/master/src/main/java/com/williamfiset/algorithms/dp/examples/magicalcows/MagicalCows.java)
+
+### Tiling problems
+
 * [:movie_camera:](https://www.youtube.com/watch?v=_tur2nPkIKo)[Magic Cows](https://github.com/williamfiset/Algorithms/blob/master/src/main/java/com/williamfiset/algorithms/dp/examples/magicalcows/MagicalCows.java)
 * [:movie_camera:](https://youtu.be/yn2jnmlepY8)[Tiling Dominoes](https://github.com/williamfiset/Algorithms/blob/master/src/main/java/com/williamfiset/algorithms/dp/examples/tilingdominoes/TilingDominoes.java)
+* [:movie_camera:](https://www.youtube.com/watch?v=CecjOo4Zo-g)[Tiling Dominoes and Trominoes](https://github.com/williamfiset/Algorithms/tree/master/src/main/java/com/williamfiset/algorithms/dp/examples/domino-and-tromino-tiling)
+* [Mountain Scenes](https://github.com/williamfiset/Algorithms/blob/master/src/main/java/com/williamfiset/algorithms/dp/examples/scenes/Scenes.java)
 
 
 # Geometry
