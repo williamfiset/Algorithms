@@ -126,7 +126,7 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 * [Traveling Salesman Problem (dynamic programming, recursive)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/graphtheory/TspDynamicProgrammingRecursive.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
 * [Minimum Weight Perfect Matching (iterative, complete graph)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/dp/MinimumWeightPerfectMatching.java) **- O(n<sup>2</sup>2<sup>n</sup>)**
 
-## DP Examples
+## Dynamic Programming Problem Examples
 
 ### Adhoc
 
@@ -134,7 +134,6 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 
 ### Tiling problems
 
-* [:movie_camera:](https://www.youtube.com/watch?v=_tur2nPkIKo)[Magic Cows](https://github.com/williamfiset/Algorithms/blob/master/src/main/java/com/williamfiset/algorithms/dp/examples/magicalcows/MagicalCows.java)
 * [:movie_camera:](https://youtu.be/yn2jnmlepY8)[Tiling Dominoes](https://github.com/williamfiset/Algorithms/blob/master/src/main/java/com/williamfiset/algorithms/dp/examples/tilingdominoes/TilingDominoes.java)
 * [:movie_camera:](https://www.youtube.com/watch?v=CecjOo4Zo-g)[Tiling Dominoes and Trominoes](https://github.com/williamfiset/Algorithms/tree/master/src/main/java/com/williamfiset/algorithms/dp/examples/domino-and-tromino-tiling)
 * [Mountain Scenes](https://github.com/williamfiset/Algorithms/blob/master/src/main/java/com/williamfiset/algorithms/dp/examples/scenes/Scenes.java)
