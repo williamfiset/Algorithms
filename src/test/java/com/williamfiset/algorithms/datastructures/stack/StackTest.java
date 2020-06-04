@@ -1,73 +1,87 @@
 package com.williamfiset.algorithms.datastructures.stack;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-import com.williamfiset.algorithms.datastructures.stack.impl.ListStack;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
 public class StackTest {
 
-  Stack<Integer> stack;
+  List<Stack> stacks = new ArrayList<>();
 
   @Before
   public void setup() {
-    stack = new ListStack<Integer>();
-    //    stack = new ArrayStack<>();
+    stacks.add(new ListStack<Integer>());
+    stacks.add(new ArrayStack<>());
   }
 
   @Test
   public void testEmptyStack() {
-    assertTrue(stack.isEmpty());
-    assertEquals(stack.size(), 0);
+    for (Stack stack : stacks) {
+      assertTrue(stack.isEmpty());
+      assertEquals(stack.size(), 0);
+    }
   }
 
   @Test(expected = Exception.class)
   public void testPopOnEmpty() {
-    stack.pop();
+    for (Stack stack : stacks) {
+      assertThrows(Exception.class, stack::pop);
+    }
   }
 
   @Test(expected = Exception.class)
   public void testPeekOnEmpty() {
-    stack.peek();
+    for (Stack stack : stacks) {
+      stack.peek();
+    }
   }
 
   @Test
   public void testPush() {
-    stack.push(2);
-    assertEquals(stack.size(), 1);
+    for (Stack stack : stacks) {
+      stack.push(2);
+      assertEquals(stack.size(), 1);
+    }
   }
 
   @Test
   public void testPeek() {
-    stack.push(2);
-    assertTrue(stack.peek() == 2);
-    assertEquals(stack.size(), 1);
+    for (Stack stack : stacks) {
+      stack.push(2);
+      assertEquals(2, (int) (Integer) stack.peek());
+      assertEquals(stack.size(), 1);
+    }
   }
 
   @Test
   public void testPop() {
-    stack.push(2);
-    assertTrue(stack.pop() == 2);
-    assertEquals(stack.size(), 0);
+    for (Stack stack : stacks) {
+      stack.push(2);
+      assertEquals(2, (int) stack.pop());
+      assertEquals(stack.size(), 0);
+    }
   }
 
   @Test
   public void testExhaustively() {
-    assertTrue(stack.isEmpty());
-    stack.push(1);
-    assertTrue(!stack.isEmpty());
-    stack.push(2);
-    assertEquals(stack.size(), 2);
-    assertTrue(stack.peek() == 2);
-    assertEquals(stack.size(), 2);
-    assertTrue(stack.pop() == 2);
-    assertEquals(stack.size(), 1);
-    assertTrue(stack.peek() == 1);
-    assertEquals(stack.size(), 1);
-    assertTrue(stack.pop() == 1);
-    assertEquals(stack.size(), 0);
-    assertTrue(stack.isEmpty());
+    for (Stack stack : stacks) {
+      assertTrue(stack.isEmpty());
+      stack.push(1);
+      assertTrue(!stack.isEmpty());
+      stack.push(2);
+      assertEquals(stack.size(), 2);
+      assertEquals(2, (int) stack.peek());
+      assertEquals(stack.size(), 2);
+      assertEquals(2, (int) stack.pop());
+      assertEquals(stack.size(), 1);
+      assertEquals(1, (int) stack.peek());
+      assertEquals(stack.size(), 1);
+      assertEquals(1, (int) stack.pop());
+      assertEquals(stack.size(), 0);
+      assertTrue(stack.isEmpty());
+    }
   }
 }

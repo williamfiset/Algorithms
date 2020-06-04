@@ -1,6 +1,5 @@
-package com.williamfiset.algorithms.datastructures.stack.impl;
+package com.williamfiset.algorithms.datastructures.stack;
 
-import com.williamfiset.algorithms.datastructures.stack.Stack;
 import java.util.Arrays;
 import java.util.EmptyStackException;
 
@@ -11,8 +10,7 @@ public class ArrayStack<T> implements Stack<T> {
   private int size;
 
   public ArrayStack() {
-    // the factor of 10 is the magic of speed!!
-    capacity = 10;
+    capacity = 16;
     size = 0;
     data = new Object[capacity];
   }
@@ -24,7 +22,7 @@ public class ArrayStack<T> implements Stack<T> {
 
   @Override
   public boolean isEmpty() {
-    return 0 == size;
+    return size == 0;
   }
 
   @Override

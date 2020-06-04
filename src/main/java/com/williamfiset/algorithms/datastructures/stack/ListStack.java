@@ -3,9 +3,7 @@
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
-package com.williamfiset.algorithms.datastructures.stack.impl;
-
-import com.williamfiset.algorithms.datastructures.stack.Stack;
+package com.williamfiset.algorithms.datastructures.stack;
 
 public class ListStack<T> implements Iterable<T>, Stack<T> {
 
