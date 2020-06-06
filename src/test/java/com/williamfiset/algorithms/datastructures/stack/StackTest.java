@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
 
 public class StackTest {
 
@@ -33,10 +32,10 @@ public class StackTest {
     }
   }
 
-  @Test(expected = Exception.class)
+  @Test
   public void testPeekOnEmpty() {
     for (Stack stack : stacks) {
-      assertThrows(Exception.class, (ThrowingRunnable) stack.peek());
+      assertThrows(Exception.class, stack::peek);
     }
   }
 
