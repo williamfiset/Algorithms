@@ -14,7 +14,7 @@ public class BoyerMooreStringSearch {
    *
    * @param text the string being searched in
    * @param pattern the string being searched for
-   * @return List of indexes where the pattern occursq
+   * @return List of indexes where the pattern occurs
    */
   public List<Integer> findOccurrences(String text, String pattern) {
     if (isNull(text)
