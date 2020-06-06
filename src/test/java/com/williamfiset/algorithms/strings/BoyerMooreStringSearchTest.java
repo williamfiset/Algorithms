@@ -81,7 +81,10 @@ public class BoyerMooreStringSearchTest {
    * @return a list of beginning index of text where pattern exits
    */
   private List<Integer> getOccurrencesBruteForce(String text, String pattern) {
-    if (isNull(text) || isNull(pattern) || text.length() < pattern.length() || pattern.length() == 0) {
+    if (isNull(text)
+        || isNull(pattern)
+        || text.length() < pattern.length()
+        || pattern.length() == 0) {
       return new ArrayList<>();
     }
     List<Integer> occurrences = new ArrayList<>();

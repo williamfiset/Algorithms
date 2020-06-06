@@ -14,10 +14,13 @@ public class BoyerMooreStringSearch {
    *
    * @param text the string being searched in
    * @param pattern the string being searched for
-   * @return List of indexes where the pattern occurs
+   * @return List of indexes where the pattern occursq
    */
   public List<Integer> findOccurrences(String text, String pattern) {
-    if (isNull(text) || isNull(pattern) || pattern.length() > text.length() || pattern.length() == 0) {
+    if (isNull(text)
+        || isNull(pattern)
+        || pattern.length() > text.length()
+        || pattern.length() == 0) {
       return new ArrayList<>();
     }
     List<Integer> occurrences = new ArrayList<>();
