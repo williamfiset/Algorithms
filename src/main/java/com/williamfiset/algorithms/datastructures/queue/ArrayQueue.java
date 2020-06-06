@@ -5,6 +5,11 @@ package com.williamfiset.algorithms.datastructures.queue;
  * IntQueue. The size of ArrayQueue is calculated by the formula, as are empty status and full
  * status.
  *
+ * <p>ArrayQueue maximum size is data.length - 1. The place of the variant rear is always in font of
+ * the variant front logistically if regard the data array as circular array. so the number of
+ * status of rear and front is the length of data array. And one status is used to be judge if the
+ * queue is empty or full.
+ *
  * @author liujingkun, liujkon@gmail.com
  */
 public class ArrayQueue<T> implements Queue<T> {
@@ -13,6 +18,7 @@ public class ArrayQueue<T> implements Queue<T> {
   private int rear;
 
   public ArrayQueue(int capacity) {
+    // ArrayQueue maximum size is data.length - 1.
     data = new Object[capacity + 1];
     front = 0;
     rear = 0;
