@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 
 public class BoyerMooreStringSearch {
 
@@ -18,56 +17,39 @@ public class BoyerMooreStringSearch {
    * @return List of indexes where the pattern occurs
    */
   public List<Integer> findOccurrences(String text, String pattern) {
-    if (isNull(text) || isNull(pattern)) {
+    if (isNull(text) || isNull(pattern) || pattern.length() > text.length() || pattern.length() == 0) {
       return new ArrayList<>();
     }
     List<Integer> occurrences = new ArrayList<>();
-    Map<Character, TreeSet<Integer>> skipTable = generateSkipTable(pattern);
+    Map<Character, Integer> skipTable = generateSkipTable(pattern);
 
     int textIndex = pattern.length() - 1;
+    int patternIndex = pattern.length() - 1;
     while (textIndex < text.length()) {
-      int patternIndex = 0;
-      boolean match = true;
-      while (patternIndex < pattern.length() && match) {
-        if (text.charAt(textIndex - patternIndex)
-            != pattern.charAt(pattern.length() - patternIndex - 1)) {
-          match = false;
-          textIndex +=
-              getSkipLength(
-                  skipTable,
-                  text.charAt(textIndex - patternIndex),
-                  pattern.length() - patternIndex - 1);
+      if (patternIndex >= 0 && pattern.charAt(patternIndex) == text.charAt(textIndex)) {
+        if (patternIndex == 0) {
+          occurrences.add(textIndex);
+        } else {
+          textIndex--;
         }
-        patternIndex++;
-      }
-      if (match) {
-        occurrences.add(textIndex - (pattern.length() - 1));
-        textIndex +=
-            getSkipLength(skipTable, pattern.charAt(pattern.length() - 1), pattern.length() - 1);
+        patternIndex--;
+      } else {
+        textIndex =
+            textIndex
+                + pattern.length()
+                - Math.min(
+                    Math.max(patternIndex, 0),
+                    1 + skipTable.getOrDefault(text.charAt(textIndex), 0));
+        patternIndex = pattern.length() - 1;
       }
     }
-
     return occurrences;
   }
 
-  private int getSkipLength(
-      Map<Character, TreeSet<Integer>> skipTable, char currentChar, int currentPositionInPat) {
-    int skipLength = -1;
-    if (skipTable.containsKey(currentChar)) {
-      Integer loweThanPatternIndex = skipTable.get(currentChar).lower(currentPositionInPat);
-      if (loweThanPatternIndex != null) {
-        skipLength = currentPositionInPat - loweThanPatternIndex;
-      }
-    }
-    return skipLength == -1 ? currentPositionInPat + 1 : skipLength;
-  }
-
-  private Map<Character, TreeSet<Integer>> generateSkipTable(String pattern) {
-    Map<Character, TreeSet<Integer>> characterIndexMap = new HashMap<>();
+  private Map<Character, Integer> generateSkipTable(String pattern) {
+    Map<Character, Integer> characterIndexMap = new HashMap<>();
     for (int charIndex = 0; charIndex < pattern.length(); charIndex++) {
-      characterIndexMap
-          .computeIfAbsent(pattern.charAt(charIndex), e -> new TreeSet<>())
-          .add(charIndex);
+      characterIndexMap.put(pattern.charAt(charIndex), charIndex);
     }
     return characterIndexMap;
   }
