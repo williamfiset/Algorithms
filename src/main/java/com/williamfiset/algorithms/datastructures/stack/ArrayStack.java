@@ -5,13 +5,12 @@ import java.util.EmptyStackException;
 
 /** @author liujingkun */
 public class ArrayStack<T> implements Stack<T> {
+  private int size;
   private int capacity;
   private Object[] data;
-  private int size;
 
   public ArrayStack() {
     capacity = 16;
-    size = 0;
     data = new Object[capacity];
   }
 
@@ -28,17 +27,14 @@ public class ArrayStack<T> implements Stack<T> {
   @Override
   public void push(T elem) {
     if (size == capacity) {
-      adjustCap();
+      increaseCapacity();
     }
     data[size++] = elem;
   }
 
-  // adjust the capacity to store more element
-  private void adjustCap() {
-    if (capacity == Integer.MAX_VALUE) {
-      throw new OutOfMemoryError();
-    }
-    capacity += capacity;
+  // Increase the capacity to store more elements.
+  private void increaseCapacity() {
+    capacity *= 2;
     data = Arrays.copyOf(data, capacity);
   }
 
