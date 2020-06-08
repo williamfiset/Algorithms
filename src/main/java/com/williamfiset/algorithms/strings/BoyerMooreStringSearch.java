@@ -35,6 +35,7 @@ public class BoyerMooreStringSearch {
 
     int n = pattern.length();
     for (int textIndex = n - 1, patternIndex = n - 1; textIndex < text.length(); ) {
+      // Found a match!
       if (patternIndex >= 0 && pattern.charAt(patternIndex) == text.charAt(textIndex)) {
         if (patternIndex == 0) {
           occurrences.add(textIndex);
@@ -43,7 +44,7 @@ public class BoyerMooreStringSearch {
         }
         patternIndex--;
       } else {
-        textIndex += n - min(max(patternIndex, 0), 1 + skipTable[text.charAt(textIndex)]);
+        textIndex += n - min(max(patternIndex, 0), skipTable[text.charAt(textIndex)] + 1);
         patternIndex = n - 1;
       }
     }
