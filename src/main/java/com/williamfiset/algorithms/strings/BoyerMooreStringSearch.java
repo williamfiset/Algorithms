@@ -1,13 +1,20 @@
+/**
+ * Performs Boyer-Moore search on a given string with a given pattern
+ *
+ * <p>./gradlew run -Palgorithm=strings.BoyerMooreStringSearch
+ */
 package com.williamfiset.algorithms.strings;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 import static java.util.Objects.isNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BoyerMooreStringSearch {
+
+  private static final int MAX_ALPHABET_SIZE = 256;
 
   /**
    * Performs Boyer-Moore search on a given string with a given pattern
@@ -24,11 +31,10 @@ public class BoyerMooreStringSearch {
       return new ArrayList<>();
     }
     List<Integer> occurrences = new ArrayList<>();
-    Map<Character, Integer> skipTable = generateSkipTable(pattern);
+    int[] skipTable = generateSkipTable(pattern);
 
-    int textIndex = pattern.length() - 1;
-    int patternIndex = pattern.length() - 1;
-    while (textIndex < text.length()) {
+    int n = pattern.length();
+    for (int textIndex = n - 1, patternIndex = n - 1; textIndex < text.length(); ) {
       if (patternIndex >= 0 && pattern.charAt(patternIndex) == text.charAt(textIndex)) {
         if (patternIndex == 0) {
           occurrences.add(textIndex);
@@ -37,23 +43,27 @@ public class BoyerMooreStringSearch {
         }
         patternIndex--;
       } else {
-        textIndex =
-            textIndex
-                + pattern.length()
-                - Math.min(
-                    Math.max(patternIndex, 0),
-                    1 + skipTable.getOrDefault(text.charAt(textIndex), 0));
-        patternIndex = pattern.length() - 1;
+        textIndex += n - min(max(patternIndex, 0), 1 + skipTable[text.charAt(textIndex)]);
+        patternIndex = n - 1;
       }
     }
     return occurrences;
   }
 
-  private Map<Character, Integer> generateSkipTable(String pattern) {
-    Map<Character, Integer> characterIndexMap = new HashMap<>();
-    for (int charIndex = 0; charIndex < pattern.length(); charIndex++) {
-      characterIndexMap.put(pattern.charAt(charIndex), charIndex);
+  private int[] generateSkipTable(String pattern) {
+    int[] skipTable = new int[MAX_ALPHABET_SIZE];
+    for (int i = 0; i < pattern.length(); i++) {
+      skipTable[(int) pattern.charAt(i)] = i;
     }
-    return characterIndexMap;
+    return skipTable;
+  }
+
+  public static void main(String[] args) {
+    BoyerMooreStringSearch searcher = new BoyerMooreStringSearch();
+    String t = "ABABAAABAABAB";
+    String p = "AA";
+
+    // Prints: [4, 5, 8]
+    System.out.println(searcher.findOccurrences(t, p));
   }
 }
