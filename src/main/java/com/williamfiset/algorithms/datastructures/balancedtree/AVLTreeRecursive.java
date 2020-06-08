@@ -76,7 +76,6 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
 
   // Recursive contains helper method.
   private boolean contains(Node node, T value) {
-
     if (node == null) return false;
 
     // Compare current value to the value in the node.
@@ -105,7 +104,6 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
 
   // Inserts a value inside the AVL tree.
   private Node insert(Node node, T value) {
-
     // Base case.
     if (node == null) return new Node(value);
 
@@ -115,7 +113,6 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
     // Insert node in left subtree.
     if (cmp < 0) {
       node.left = insert(node.left, value);
-      ;
 
       // Insert node in right subtree.
     } else {
@@ -131,7 +128,6 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
 
   // Update a node's height and balance factor.
   private void update(Node node) {
-
     int leftNodeHeight = (node.left == null) ? -1 : node.left.height;
     int rightNodeHeight = (node.right == null) ? -1 : node.right.height;
 
@@ -144,7 +140,6 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
 
   // Re-balance a node if its balance factor is +2 or -2.
   private Node balance(Node node) {
-
     // Left heavy subtree.
     if (node.bf == -2) {
 
@@ -212,7 +207,6 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
 
   // Remove a value from this binary tree if it exists, O(log(n))
   public boolean remove(T elem) {
-
     if (elem == null) return false;
 
     if (contains(root, elem)) {
@@ -226,7 +220,6 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
 
   // Removes a value from the AVL tree.
   private Node remove(Node node, T elem) {
-
     if (node == null) return null;
 
     int cmp = elem.compareTo(node.value);
