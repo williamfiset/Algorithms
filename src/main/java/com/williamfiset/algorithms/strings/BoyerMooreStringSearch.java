@@ -17,35 +17,43 @@ public class BoyerMooreStringSearch {
    * @return List of indexes where the pattern occurs
    */
   public List<Integer> findOccurrences(String text, String pattern) {
-    if (isNull(text) || isNull(pattern)) {
+    if (isNull(text)
+        || isNull(pattern)
+        || pattern.length() > text.length()
+        || pattern.length() == 0) {
       return new ArrayList<>();
     }
     List<Integer> occurrences = new ArrayList<>();
-
-    Map<Character, Integer> skipTable = new HashMap<>();
-    for (int i = 0; i < pattern.length(); i++) {
-      skipTable.put(pattern.charAt(i), pattern.length() - i - 1);
-    }
+    Map<Character, Integer> skipTable = generateSkipTable(pattern);
 
     int textIndex = pattern.length() - 1;
+    int patternIndex = pattern.length() - 1;
     while (textIndex < text.length()) {
-      int patternIndex = 0;
-      boolean match = true;
-      while (patternIndex < pattern.length() && match) {
-        if (text.charAt(textIndex - patternIndex)
-            != pattern.charAt(pattern.length() - patternIndex - 1)) {
-          match = false;
-          textIndex +=
-              skipTable.getOrDefault(text.charAt(textIndex - patternIndex), pattern.length());
+      if (patternIndex >= 0 && pattern.charAt(patternIndex) == text.charAt(textIndex)) {
+        if (patternIndex == 0) {
+          occurrences.add(textIndex);
+        } else {
+          textIndex--;
         }
-        patternIndex++;
-      }
-      if (match) {
-        occurrences.add(textIndex - (pattern.length() - 1));
-        textIndex += pattern.length();
+        patternIndex--;
+      } else {
+        textIndex =
+            textIndex
+                + pattern.length()
+                - Math.min(
+                    Math.max(patternIndex, 0),
+                    1 + skipTable.getOrDefault(text.charAt(textIndex), 0));
+        patternIndex = pattern.length() - 1;
       }
     }
-
     return occurrences;
+  }
+
+  private Map<Character, Integer> generateSkipTable(String pattern) {
+    Map<Character, Integer> characterIndexMap = new HashMap<>();
+    for (int charIndex = 0; charIndex < pattern.length(); charIndex++) {
+      characterIndexMap.put(pattern.charAt(charIndex), charIndex);
+    }
+    return characterIndexMap;
   }
 }
