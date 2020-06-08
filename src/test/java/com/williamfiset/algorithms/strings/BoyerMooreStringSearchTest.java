@@ -63,8 +63,8 @@ public class BoyerMooreStringSearchTest {
   public void shouldReturnDynamicString() {
     int runLength = random.nextInt(MAX_ITERATION) + 1;
     for (int run = 0; run < runLength; run++) {
-      int upperCharText = random.nextInt(26);
-      int upperCharPattern = random.nextInt(26);
+      int upperCharText = random.nextInt(3);
+      int upperCharPattern = random.nextInt(3);
       int maxLengthText =
           random.nextInt(1000) + 100; // random length of the string between [100=1000]
       int maxLengthPattern = random.nextInt(10);
