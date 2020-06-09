@@ -15,6 +15,7 @@ public class QueueTest {
   public void setup() {
     queues.add(new ArrayQueue<Integer>(2));
     queues.add(new LinkedQueue<Integer>());
+    queues.add(new IntQueue(2));
   }
 
   @Test

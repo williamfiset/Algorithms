@@ -15,6 +15,7 @@ public class StackTest {
   public void setup() {
     stacks.add(new ListStack<Integer>());
     stacks.add(new ArrayStack<Integer>());
+    stacks.add(new IntStack(2));
   }
 
   @Test

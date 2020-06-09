@@ -9,7 +9,7 @@
  */
 package com.williamfiset.algorithms.datastructures.stack;
 
-public class IntStack {
+public class IntStack implements Stack<Integer> {
 
   private int[] ar;
   private int pos = 0;
@@ -31,17 +31,20 @@ public class IntStack {
   }
 
   // Returns the element at the top of the stack
-  public int peek() {
+  @Override
+  public Integer peek() {
     return ar[pos - 1];
   }
 
   // Add an element to the top of the stack
-  public void push(int value) {
+  @Override
+  public void push(Integer value) {
     ar[pos++] = value;
   }
 
   // Make sure you check that the stack is not empty before calling pop!
-  public int pop() {
+  @Override
+  public Integer pop() {
     return ar[--pos];
   }
 

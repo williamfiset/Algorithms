@@ -9,7 +9,7 @@
  */
 package com.williamfiset.algorithms.datastructures.queue;
 
-public class IntQueue {
+public class IntQueue implements Queue<Integer> {
 
   private int[] data;
   private int front, end;
@@ -32,17 +32,23 @@ public class IntQueue {
     return size;
   }
 
-  public int peek() {
-    if (size == 0) {
+  @Override
+  public Integer peek() {
+    if (isEmpty()) {
       throw new RuntimeException("Queue is empty");
     }
     front = front % data.length;
     return data[front];
   }
 
+  public boolean isFull() {
+    return size == data.length;
+  }
+
   // Add an element to the queue
-  public void enqueue(int value) {
-    if (size == data.length) {
+  @Override
+  public void offer(Integer value) {
+    if (isFull()) {
       throw new RuntimeException("Queue too small!");
     }
     data[end++] = value;
@@ -50,8 +56,9 @@ public class IntQueue {
     end = end % data.length;
   }
 
-  // Make sure you check is the queue is not empty before calling dequeue!
-  public int dequeue() {
+  // Make sure you check is the queue is not empty before calling poll!
+  @Override
+  public Integer poll() {
     if (size == 0) {
       throw new RuntimeException("Queue is empty");
     }
@@ -65,27 +72,27 @@ public class IntQueue {
 
     IntQueue q = new IntQueue(5);
 
-    q.enqueue(1);
-    q.enqueue(2);
-    q.enqueue(3);
-    q.enqueue(4);
-    q.enqueue(5);
+    q.offer(1);
+    q.offer(2);
+    q.offer(3);
+    q.offer(4);
+    q.offer(5);
 
-    System.out.println(q.dequeue()); // 1
-    System.out.println(q.dequeue()); // 2
-    System.out.println(q.dequeue()); // 3
-    System.out.println(q.dequeue()); // 4
+    System.out.println(q.poll()); // 1
+    System.out.println(q.poll()); // 2
+    System.out.println(q.poll()); // 3
+    System.out.println(q.poll()); // 4
 
     System.out.println(q.isEmpty()); // false
 
-    q.enqueue(1);
-    q.enqueue(2);
-    q.enqueue(3);
+    q.offer(1);
+    q.offer(2);
+    q.offer(3);
 
-    System.out.println(q.dequeue()); // 5
-    System.out.println(q.dequeue()); // 1
-    System.out.println(q.dequeue()); // 2
-    System.out.println(q.dequeue()); // 3
+    System.out.println(q.poll()); // 5
+    System.out.println(q.poll()); // 1
+    System.out.println(q.poll()); // 2
+    System.out.println(q.poll()); // 3
 
     System.out.println(q.isEmpty()); // true
 
@@ -100,8 +107,8 @@ public class IntQueue {
 
     // IntQueue times at around 0.0324 seconds
     long start = System.nanoTime();
-    for (int i = 0; i < n; i++) intQ.enqueue(i);
-    for (int i = 0; i < n; i++) intQ.dequeue();
+    for (int i = 0; i < n; i++) intQ.offer(i);
+    for (int i = 0; i < n; i++) intQ.poll();
     long end = System.nanoTime();
     System.out.println("IntQueue Time: " + (end - start) / 1e9);
 

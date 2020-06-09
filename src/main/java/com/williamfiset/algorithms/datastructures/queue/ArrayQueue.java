@@ -30,7 +30,7 @@ public class ArrayQueue<T> implements Queue<T> {
       throw new RuntimeException("Queue is full");
     }
     data[rear++] = elem;
-    rear = rear % data.length;
+    rear = rear >= data.length ? rear - data.length : rear;
   }
 
   @Override
@@ -55,7 +55,7 @@ public class ArrayQueue<T> implements Queue<T> {
 
   @Override
   public int size() {
-    return (rear + data.length - front) % data.length;
+    return (rear + data.length - front) >= data.length ? rear - front : rear + data.length - front;
   }
 
   @Override
