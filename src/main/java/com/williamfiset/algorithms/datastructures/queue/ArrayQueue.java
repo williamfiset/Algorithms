@@ -30,7 +30,7 @@ public class ArrayQueue<T> implements Queue<T> {
       throw new RuntimeException("Queue is full");
     }
     data[rear++] = elem;
-    rear = rear >= data.length ? rear - data.length : rear;
+    rear = adjustIndex(rear, data.length);
   }
 
   @Override
@@ -39,7 +39,7 @@ public class ArrayQueue<T> implements Queue<T> {
     if (isEmpty()) {
       throw new RuntimeException("Queue is empty");
     }
-    front = front % data.length;
+    front = adjustIndex(front, data.length);
     return (T) data[front++];
   }
 
@@ -49,13 +49,13 @@ public class ArrayQueue<T> implements Queue<T> {
     if (isEmpty()) {
       throw new RuntimeException("Queue is empty");
     }
-    front = front % data.length;
+    front = adjustIndex(front, data.length);
     return (T) data[front];
   }
 
   @Override
   public int size() {
-    return (rear + data.length - front) >= data.length ? rear - front : rear + data.length - front;
+    return adjustIndex(rear + data.length - front, data.length);
   }
 
   @Override
@@ -65,5 +65,9 @@ public class ArrayQueue<T> implements Queue<T> {
 
   public boolean isFull() {
     return (front + data.length - rear) % data.length == 1;
+  }
+
+  private int adjustIndex(int index, int size) {
+    return index >= size ? index - size : index;
   }
 }
