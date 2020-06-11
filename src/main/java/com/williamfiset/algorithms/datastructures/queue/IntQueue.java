@@ -5,50 +5,66 @@
  * is you need to know an upper bound on the number of elements that will be inside the queue at any
  * given time for this queue to work.
  *
- * @author William Fiset, william.alexandre.fiset@gmail.com
+ * @author William Fiset, william.alexandre.fiset@gmail.com, liujingkun, liujkon@gmail.com
  */
 package com.williamfiset.algorithms.datastructures.queue;
 
-public class IntQueue {
+public class IntQueue implements Queue<Integer> {
 
-  private int[] ar;
-  private int front, end, sz;
+  private int[] data;
+  private int front, end;
+  private int size;
 
   // maxSize is the maximum number of items
   // that can be in the queue at any given time
   public IntQueue(int maxSize) {
-    front = end = 0;
-    sz = maxSize + 1;
-    ar = new int[sz];
+    front = end = size = 0;
+    data = new int[maxSize];
   }
 
   // Return true/false on whether the queue is empty
   public boolean isEmpty() {
-    return front == end;
+    return size == 0;
   }
 
   // Return the number of elements inside the queue
   public int size() {
-    if (front > end) return (end + sz - front);
-    return end - front;
+    return size;
   }
 
-  public int peek() {
-    return ar[front];
+  @Override
+  public Integer peek() {
+    if (isEmpty()) {
+      throw new RuntimeException("Queue is empty");
+    }
+    front = front % data.length;
+    return data[front];
+  }
+
+  public boolean isFull() {
+    return size == data.length;
   }
 
   // Add an element to the queue
-  public void enqueue(int value) {
-    ar[end] = value;
-    if (++end == sz) end = 0;
-    if (end == front) throw new RuntimeException("Queue too small!");
+  @Override
+  public void offer(Integer value) {
+    if (isFull()) {
+      throw new RuntimeException("Queue too small!");
+    }
+    data[end++] = value;
+    size++;
+    end = end % data.length;
   }
 
-  // Make sure you check is the queue is not empty before calling dequeue!
-  public int dequeue() {
-    int ret_val = ar[front];
-    if (++front == sz) front = 0;
-    return ret_val;
+  // Make sure you check is the queue is not empty before calling poll!
+  @Override
+  public Integer poll() {
+    if (size == 0) {
+      throw new RuntimeException("Queue is empty");
+    }
+    size--;
+    front = front % data.length;
+    return data[front++];
   }
 
   // Example usage
@@ -56,31 +72,31 @@ public class IntQueue {
 
     IntQueue q = new IntQueue(5);
 
-    q.enqueue(1);
-    q.enqueue(2);
-    q.enqueue(3);
-    q.enqueue(4);
-    q.enqueue(5);
+    q.offer(1);
+    q.offer(2);
+    q.offer(3);
+    q.offer(4);
+    q.offer(5);
 
-    System.out.println(q.dequeue()); // 1
-    System.out.println(q.dequeue()); // 2
-    System.out.println(q.dequeue()); // 3
-    System.out.println(q.dequeue()); // 4
+    System.out.println(q.poll()); // 1
+    System.out.println(q.poll()); // 2
+    System.out.println(q.poll()); // 3
+    System.out.println(q.poll()); // 4
 
     System.out.println(q.isEmpty()); // false
 
-    q.enqueue(1);
-    q.enqueue(2);
-    q.enqueue(3);
+    q.offer(1);
+    q.offer(2);
+    q.offer(3);
 
-    System.out.println(q.dequeue()); // 5
-    System.out.println(q.dequeue()); // 1
-    System.out.println(q.dequeue()); // 2
-    System.out.println(q.dequeue()); // 3
+    System.out.println(q.poll()); // 5
+    System.out.println(q.poll()); // 1
+    System.out.println(q.poll()); // 2
+    System.out.println(q.poll()); // 3
 
     System.out.println(q.isEmpty()); // true
 
-    benchMarkTest();
+    //    benchMarkTest();
   }
 
   // BenchMark IntQueue vs ArrayDeque.
@@ -91,8 +107,8 @@ public class IntQueue {
 
     // IntQueue times at around 0.0324 seconds
     long start = System.nanoTime();
-    for (int i = 0; i < n; i++) intQ.enqueue(i);
-    for (int i = 0; i < n; i++) intQ.dequeue();
+    for (int i = 0; i < n; i++) intQ.offer(i);
+    for (int i = 0; i < n; i++) intQ.poll();
     long end = System.nanoTime();
     System.out.println("IntQueue Time: " + (end - start) / 1e9);
 
