@@ -1,6 +1,6 @@
 /**
  * This is an implementation of finding the determinant of an nxn matrix using Laplace/cofactor
- * expansion. Although this method is mathematically beautiful it is computationally intensive and
+ * expansion. Although this method is mathematically beautiful, it is computationally intensive and
  * not practical for matrices beyond the size of 7-8.
  *
  * <p>Time Complexity: ~O((n+2)!)
@@ -72,8 +72,7 @@ public class MatrixDeterminantLaplaceExpansion {
     }
   }
 
-  // Given an n*n matrix this method finds the determinant
-  // using Laplace/cofactor expansion.
+  // Given an n*n matrix, this method finds the determinant using Laplace/cofactor expansion.
   // Time Complexity: ~O((n+2)!)
   public static double determinant(double[][] matrix) {
 
@@ -91,7 +90,7 @@ public class MatrixDeterminantLaplaceExpansion {
 
   // This method uses cofactor expansion to compute the determinant
   // of a matrix. Unfortunately, this method is very slow and uses
-  // A LOT of memory hence it is not too practical for large matrices.
+  // A LOT of memory, hence it is not too practical for large matrices.
   private static double laplace(double[][] m) {
 
     final int n = m.length;
@@ -122,8 +121,9 @@ public class MatrixDeterminantLaplaceExpansion {
   }
 
   // Constructs a matrix one dimension smaller than the last by
-  // excluding always the top row and some selected column. This
-  // method uses a lot of space we called recursively multiple times.
+  // excluding the top row and some selected column. This
+  // method ends up consuming a lot of space we called recursively multiple times
+  // since it allocates meory for a new matrix.
   private static double[][] constructMatrix(double[][] m, int skipColumn) {
 
     int n = m.length;

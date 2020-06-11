@@ -9,7 +9,7 @@
  */
 package com.williamfiset.algorithms.datastructures.stack;
 
-public class IntStack {
+public class IntStack implements Stack<Integer> {
 
   private int[] ar;
   private int pos = 0;
@@ -31,17 +31,20 @@ public class IntStack {
   }
 
   // Returns the element at the top of the stack
-  public int peek() {
+  @Override
+  public Integer peek() {
     return ar[pos - 1];
   }
 
   // Add an element to the top of the stack
-  public void push(int value) {
+  @Override
+  public void push(Integer value) {
     ar[pos++] = value;
   }
 
   // Make sure you check that the stack is not empty before calling pop!
-  public int pop() {
+  @Override
+  public Integer pop() {
     return ar[--pos];
   }
 
@@ -83,13 +86,30 @@ public class IntStack {
     System.out.println("IntStack Time: " + (end - start) / 1e9);
 
     // ArrayDeque times at around 1.438 seconds
-    java.util.ArrayDeque<Integer> arrayDeque = new java.util.ArrayDeque<>();
-    // java.util.ArrayDeque <Integer> arrayDeque = new java.util.ArrayDeque<>(n); // strangely the
+    //    java.util.ArrayDeque<Integer> arrayDeque = new java.util.ArrayDeque<>();
+    //    java.util.Stack<Integer> arrayDeque = new java.util.Stack<>();
+    java.util.ArrayDeque<Integer> arrayDeque = new java.util.ArrayDeque<>(n); // strangely the
     // ArrayQueue is slower when you give it an initial capacity.
     start = System.nanoTime();
     for (int i = 0; i < n; i++) arrayDeque.push(i);
     for (int i = 0; i < n; i++) arrayDeque.pop();
     end = System.nanoTime();
     System.out.println("ArrayDeque Time: " + (end - start) / 1e9);
+
+    Stack<Integer> listStack = new ListStack<>();
+
+    start = System.nanoTime();
+    for (int i = 0; i < n; i++) listStack.push(i);
+    for (int i = 0; i < n; i++) listStack.pop();
+    end = System.nanoTime();
+    System.out.println("ListStack Time: " + (end - start) / 1e9);
+
+    Stack<Integer> arrayStack = new ArrayStack<>();
+
+    start = System.nanoTime();
+    for (int i = 0; i < n; i++) arrayStack.push(i);
+    for (int i = 0; i < n; i++) arrayStack.pop();
+    end = System.nanoTime();
+    System.out.println("ArrayStack Time: " + (end - start) / 1e9);
   }
 }
