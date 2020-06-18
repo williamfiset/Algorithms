@@ -289,7 +289,7 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
     EulerianPathDirectedEdgesAdjacencyList solver;
     solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
     int[] path = solver.getEulerianPath();
-    int[] expected = {6,7,8,9,6,3,0,2,1,3,4};
+    int[] expected = {6, 7, 8, 9, 6, 3, 0, 2, 1, 3, 4};
     assertThat(path).isEqualTo(expected);
   }
 
