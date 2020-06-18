@@ -13,7 +13,7 @@ gradle-app.setting
 .gradletasknamecache
 
 dependencies
-/bin/
+bin/
 
 # Eclipse IDE metadata
 .classpath
@@ -22,4 +22,4 @@ dependencies
 
 # Mac files
 .DS_Store
-/.idea/
+.idea/

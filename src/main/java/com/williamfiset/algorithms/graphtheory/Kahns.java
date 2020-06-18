@@ -58,7 +58,6 @@ public class Kahns {
         }
       }
     }
-    System.out.println("inDegree: " + java.util.Arrays.toString(inDegree));
     if (index != n) {
       throw new IllegalArgumentException("Graph is not acyclic! Detected a cycle.");
     }
