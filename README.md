@@ -115,6 +115,9 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 * [:movie_camera:](https://www.youtube.com/watch?v=ibjEGG7ylHk)[Union Find](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/unionfind/UnionFind.java)
 
 # Dynamic Programming
+
+## Dynamic Programming Classics
+
 * [Coin change problem](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/dp/CoinChange.java) **- O(nW)**
 * [Edit distance](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/dp/EditDistance.java) **- O(nm)**
 * [:movie_camera:](https://www.youtube.com/watch?v=cJ21moQpofY)[Knapsack 0/1](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/dp/Knapsack_01.java) **- O(nW)**
