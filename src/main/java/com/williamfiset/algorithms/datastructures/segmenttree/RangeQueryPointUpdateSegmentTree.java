@@ -9,9 +9,9 @@
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
 public class RangeQueryPointUpdateSegmentTree {
+  // TODO(william): make the members of this class private
 
-  // Tree values.
-  // TODO(william): make these members private
+  // Tree segment values.
   Integer[] t;
 
   // The number of values in the original input values array.
@@ -33,7 +33,6 @@ public class RangeQueryPointUpdateSegmentTree {
     t = new Integer[N];
 
     buildTree(0, 0, n - 1, values);
-
     // System.out.println(java.util.Arrays.toString(values));
     // System.out.println(java.util.Arrays.toString(t));
   }
@@ -116,39 +115,37 @@ public class RangeQueryPointUpdateSegmentTree {
     }
   }
 
-  public void set(int i, int value) {
-    // update(i, 0, n-1, value);
-  }
-
+  // Updates the segment tree to reflect that index `i` in the original `values` array was updated
+  // to `newValue`.
   public void update(int i, int newValue) {
     update(0, i, 0, n - 1, newValue);
   }
 
   /**
-   * Update a point in the segment tree by doing a binary search, updating the leaf node and
-   * re-computing all the segment values on the callback.
+   * Update a point segment to a new value and update all affected segments.
+   *
+   * <p>Do this by performing a binary search to find the interval containing the point, then update
+   * the leaf segment with the new value, and re-compute all affected segment values on the
+   * callback.
    *
    * @param at the index of the current segment in the tree
-   * @param to the target position to update left endpoint for the range query
-   * @param tl the left endpoint that the of the current segment
-   * @param tr the right endpoint that the of the current segment
-   * @param r the target right endpoint for the range query
+   * @param pos the target position to update
+   * @param tl the left segment endpoint
+   * @param tr the right segment endpoint
+   * @param newValue the new value to update
    */
-  private void update(int at, int to, int tl, int tr, int newValue) {
-    if (tl > tr) {
-      return;
-    }
-    if (tl == tr) { // or `tl == to && tr == to`
+  private void update(int at, int pos, int tl, int tr, int newValue) {
+    if (tl == tr) { // `tl == pos && tr == pos` might be clearer
       t[at] = newValue;
       return;
     }
     int tm = (tl + tr) / 2;
-    // Dig into the left segment
-    if (to <= tm) {
-      update(2 * at + 1, to, tl, tm, newValue);
-      // Dig into the right segment
+    // The point index `pos` is contained within the left segment [tl, tm]
+    if (pos <= tm) {
+      update(2 * at + 1, pos, tl, tm, newValue);
+      // The point index `pos` is contained within the right segment [tm+1, tr]
     } else {
-      update(2 * at + 2, to, tm + 1, tr, newValue);
+      update(2 * at + 2, pos, tm + 1, tr, newValue);
     }
     // Re-compute the segment value of the current segment on the callback
     t[at] = t[2 * at + 1] + t[2 * at + 2];
@@ -164,15 +161,5 @@ public class RangeQueryPointUpdateSegmentTree {
     System.out.println(st.sumQuery(1, 1));
     System.out.println(st.sumQuery(0, 1));
     System.out.println(st.sumQuery(0, 2));
-
-    // for (int i = 1; i < 500; i++) {
-    //   // System.out.println();
-    //   int[] values = new int[i];
-    //   java.util.Arrays.fill(values, 1);
-    //   RangeQueryPointUpdateSegmentTree st = new RangeQueryPointUpdateSegmentTree(values);
-    // }
-    // for (int i = 1; i < 20; i++) {
-    //   System.out.printf("%d -> %d\n", i, nextPowerOf2(i));
-    // }
   }
 }
