@@ -1,55 +1,178 @@
-/** NOTE: This file is a current WIP */
+// NOTE: This file is a current WIP!
+//
+// Run with:
+// ./gradlew run -Palgorithm=datastructures.segmenttree.RangeQueryPointUpdateSegmentTree
+//
+// Several thanks to cp-algorithms for their great article on segment trees:
+// https://cp-algorithms.com/data_structures/segment_tree.html
+
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
 public class RangeQueryPointUpdateSegmentTree {
 
-  // Tree values
-  private int[] t;
+  // Tree values.
+  // TODO(william): make these members private
+  Integer[] t;
 
-  private int n;
+  // The number of values in the original input values array.
+  int n;
+
+  // The size of the segment tree `t`
+  // NOTE: the size is not necessarily = number of segments.
+  int N;
 
   public RangeQueryPointUpdateSegmentTree(int[] values) {
     if (values == null) {
       throw new NullPointerException("Segment tree values cannot be null.");
     }
     n = values.length;
-    t = new int[2 * n];
+    // TODO(william): Investigate to reduce this space. There are only 2n-1 segments, so we should
+    // be able to reduce the space, but may need to reorganize the tree/queries. One idea is to use
+    // the Eulerian tour structure of the tree to densely pack the segments.
+    N = 4 * n;
+    t = new Integer[N];
 
-    // buildTree(0, 0, n-1);
+    buildTree(0, 0, n - 1, values);
+
+    // System.out.println(java.util.Arrays.toString(values));
+    // System.out.println(java.util.Arrays.toString(t));
   }
 
-  // Builds tree bottom up starting with leaf nodes and combining
-  // values on callback.
-  // Range is inclusive: [l, r]
-  private int buildTree(int i, int l, int r, int[] values) {
-    if (l == r) {
+  /**
+   * Builds the segment tree starting with leaf nodes and combining values on callback. This
+   * construction method takes O(n) time since there are only 2n - 1 segments in the segment tree.
+   *
+   * @param i the index of the segment in the segment tree
+   * @param l the left index of the range on the values array
+   * @param r the right index of the range on the values array
+   * @param values the initial values array
+   *     <p>The range [l, r] over the values array is inclusive.
+   */
+  private int buildTree(int i, int tl, int tr, int[] values) {
+    if (tl == tr) {
+      return t[i] = values[tl];
+    }
+    int mid = (tl + tr) / 2;
+
+    // TODO(william): fix segment index out of bounds issue
+    // System.out.printf("Range [%d, %d] splits into: [%d, %d] and [%d, %d] | %d -> %d and %d\n", l,
+    // r, l, mid, mid+1, r, i, tl, tr);
+    int lSum = buildTree(2 * i + 1, tl, mid, values);
+    int rSum = buildTree(2 * i + 2, mid + 1, tr, values);
+
+    // TODO(william): Make generic to support min, max and other queries. One idea is to keep
+    // segment multiple trees for each query type?
+    return t[i] = lSum + rSum;
+  }
+
+  /**
+   * Returns the sum of the range [l, r] in the original `values` array.
+   *
+   * @param l the left endpoint of the sum range query (inclusive)
+   * @param r the right endpoint of the sum range query (inclusive)
+   */
+  public long sumQuery(int l, int r) {
+    return sumQuery(0, 0, n - 1, l, r);
+  }
+
+  /**
+   * @param i the index of the current segment in the tree
+   * @param tl the left endpoint that the of the current segment
+   * @param tr the right endpoint that the of the current segment
+   * @param l the target left endpoint for the range query
+   * @param r the target right endpoint for the range query
+   */
+  private long sumQuery(int i, int tl, int tr, int l, int r) {
+    if (l > r) {
       return 0;
     }
-    int leftChild = (i * 2);
-    int rightChild = (i * 2) + 1;
-    int mid = (l + r) / 2;
-    // TODO(will): herm... doesn't look quite righT?
-    // t[i] = buildTree(leftChild, l, mid, values) + buildTree(rightChild, mid, r, values);
-
-    return 0;
+    if (tl == l && tr == r) {
+      return t[i];
+    }
+    int tm = (tl + tr) / 2;
+    // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
+    // [l, r], simply recurse on both and return a sum of 0 if the interval is invalid.
+    return sumQuery(2 * i + 1, tl, tm, l, Math.min(tm, r))
+        + sumQuery(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r);
   }
 
-  public int query(int l, int r) {
-    return 0;
+  // Alternative implementation of summing that intelligently only digs into
+  // the branches which overlap with the query [l, r]
+  private long sumQuery2(int i, int tl, int tr, int l, int r) {
+    if (tl == l && tr == r) {
+      return t[i];
+    }
+    int tm = (tl + tr) / 2;
+    // Test how the current segment [tl, tr] overlaps with the query [l, r]
+    boolean overlapsLeftSegment = (l <= tm);
+    boolean overlapsRightSegment = (r > tm);
+    if (overlapsLeftSegment && overlapsRightSegment) {
+      return sumQuery2(2 * i + 1, tl, tm, l, Math.min(tm, r))
+          + sumQuery2(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r);
+    } else if (overlapsLeftSegment) {
+      return sumQuery2(2 * i + 1, tl, tm, l, Math.min(tm, r));
+    } else {
+      return sumQuery2(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r);
+    }
   }
 
   public void set(int i, int value) {
     // update(i, 0, n-1, value);
   }
 
-  private void update(int at, int to, int l, int r, int value) {
-    if (l == r) {
+  public void update(int i, int newValue) {
+    update(0, i, 0, n - 1, newValue);
+  }
+
+  /**
+   * Update a point in the segment tree by doing a binary search, updating the leaf node and
+   * re-computing all the segment values on the callback.
+   *
+   * @param at the index of the current segment in the tree
+   * @param to the target position to update left endpoint for the range query
+   * @param tl the left endpoint that the of the current segment
+   * @param tr the right endpoint that the of the current segment
+   * @param r the target right endpoint for the range query
+   */
+  private void update(int at, int to, int tl, int tr, int newValue) {
+    if (tl > tr) {
       return;
-    } else {
-      int lv = t[at * 2];
-      int rv = t[at * 2 + 1];
-      int m = (l + r) >>> 1;
-      if (l <= r) {}
     }
+    if (tl == tr) { // or `tl == to && tr == to`
+      t[at] = newValue;
+      return;
+    }
+    int tm = (tl + tr) / 2;
+    // Dig into the left segment
+    if (to <= tm) {
+      update(2 * at + 1, to, tl, tm, newValue);
+      // Dig into the right segment
+    } else {
+      update(2 * at + 2, to, tm + 1, tr, newValue);
+    }
+    // Re-compute the segment value of the current segment on the callback
+    t[at] = t[2 * at + 1] + t[2 * at + 2];
+  }
+
+  public static void main(String[] args) {
+    int[] values = new int[6];
+    java.util.Arrays.fill(values, 1);
+    RangeQueryPointUpdateSegmentTree st = new RangeQueryPointUpdateSegmentTree(values);
+    System.out.println(st.sumQuery(1, 4));
+
+    st.update(1, 2);
+    System.out.println(st.sumQuery(1, 1));
+    System.out.println(st.sumQuery(0, 1));
+    System.out.println(st.sumQuery(0, 2));
+
+    // for (int i = 1; i < 500; i++) {
+    //   // System.out.println();
+    //   int[] values = new int[i];
+    //   java.util.Arrays.fill(values, 1);
+    //   RangeQueryPointUpdateSegmentTree st = new RangeQueryPointUpdateSegmentTree(values);
+    // }
+    // for (int i = 1; i < 20; i++) {
+    //   System.out.printf("%d -> %d\n", i, nextPowerOf2(i));
+    // }
   }
 }
