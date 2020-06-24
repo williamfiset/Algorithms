@@ -1,11 +1,16 @@
-// NOTE: This file is a current WIP!
-//
-// Run with:
-// ./gradlew run -Palgorithm=datastructures.segmenttree.RangeQueryPointUpdateSegmentTree
-//
-// Several thanks to cp-algorithms for their great article on segment trees:
-// https://cp-algorithms.com/data_structures/segment_tree.html
-
+/**
+ * Simple segment tree implementation that supports sum range queries and point updates.
+ *
+ * <p>NOTE: This file is still a little bit of a WIP
+ *
+ * <p>Run with: ./gradlew run
+ * -Palgorithm=datastructures.segmenttree.RangeQueryPointUpdateSegmentTree
+ *
+ * <p>Several thanks to cp-algorithms for their great article on segment trees:
+ * https://cp-algorithms.com/data_structures/segment_tree.html
+ *
+ * @author William Fiset, william.alexandre.fiset@gmail.com
+ */
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
 public class RangeQueryPointUpdateSegmentTree {
@@ -47,21 +52,19 @@ public class RangeQueryPointUpdateSegmentTree {
    * @param values the initial values array
    *     <p>The range [l, r] over the values array is inclusive.
    */
-  private int buildTree(int i, int tl, int tr, int[] values) {
+  private void buildTree(int i, int tl, int tr, int[] values) {
     if (tl == tr) {
-      return t[i] = values[tl];
+      t[i] = values[tl];
+      return;
     }
     int mid = (tl + tr) / 2;
 
-    // TODO(william): fix segment index out of bounds issue
-    // System.out.printf("Range [%d, %d] splits into: [%d, %d] and [%d, %d] | %d -> %d and %d\n", l,
-    // r, l, mid, mid+1, r, i, tl, tr);
-    int lSum = buildTree(2 * i + 1, tl, mid, values);
-    int rSum = buildTree(2 * i + 2, mid + 1, tr, values);
+    buildTree(2 * i + 1, tl, mid, values);
+    buildTree(2 * i + 2, mid + 1, tr, values);
 
     // TODO(william): Make generic to support min, max and other queries. One idea is to keep
     // segment multiple trees for each query type?
-    return t[i] = lSum + rSum;
+    t[i] = t[2 * i + 1] + t[2 * i + 2];
   }
 
   /**
@@ -155,11 +158,11 @@ public class RangeQueryPointUpdateSegmentTree {
     int[] values = new int[6];
     java.util.Arrays.fill(values, 1);
     RangeQueryPointUpdateSegmentTree st = new RangeQueryPointUpdateSegmentTree(values);
-    System.out.println(st.sumQuery(1, 4));
+    System.out.println(st.sumQuery(1, 4)); // 4
 
     st.update(1, 2);
-    System.out.println(st.sumQuery(1, 1));
-    System.out.println(st.sumQuery(0, 1));
-    System.out.println(st.sumQuery(0, 2));
+    System.out.println(st.sumQuery(1, 1)); // 2
+    System.out.println(st.sumQuery(0, 1)); // 3
+    System.out.println(st.sumQuery(0, 2)); // 4
   }
 }
