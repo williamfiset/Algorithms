@@ -1,16 +1,15 @@
+// gradle test --info --tests
+// "com.williamfiset.algorithms.datastructures.segmenttree.SegmentTreeWithPointersTest"
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.*;
 
+import com.williamfiset.algorithms.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 public class SegmentTreeWithPointersTest {
-
-  static final int LOOPS = 50;
-  static final int TEST_SZ = 1000;
-  static final int MIN_RAND_NUM = 0;
-  static final int MAX_RAND_NUM = +2000;
 
   @Before
   public void setup() {}
@@ -28,28 +27,37 @@ public class SegmentTreeWithPointersTest {
 
   @Test
   public void testSumQuery() {
-
     int[] values = {1, 2, 3, 4, 5};
     Node tree = new Node(values);
 
-    assertEquals(1, tree.sum(0, 1));
-    assertEquals(2, tree.sum(1, 2));
-    assertEquals(3, tree.sum(2, 3));
-    assertEquals(4, tree.sum(3, 4));
-    assertEquals(5, tree.sum(4, 5));
+    assertThat(tree.sum(0, 1)).isEqualTo(1);
+    assertThat(tree.sum(1, 2)).isEqualTo(2);
+    assertThat(tree.sum(2, 3)).isEqualTo(3);
+    assertThat(tree.sum(3, 4)).isEqualTo(4);
+    assertThat(tree.sum(4, 5)).isEqualTo(5);
   }
 
-  // Select a lower bound index for the Fenwick tree
-  public static int lowBound(int N) {
-    return (int) (Math.random() * N);
+  @Test
+  public void testAllSumQueries() {
+    int n = 100;
+    int[] ar = TestUtils.randomIntegerArray(n, -1000, +1000);
+    Node tree = new Node(ar);
+
+    for (int i = 0; i < n; i++) {
+      for (int j = i + 1; j < n; j++) {
+        long bfSum = bruteForceSum(ar, i, j);
+        long segTreeSum = tree.sum(i, j);
+        assertThat(bfSum).isEqualTo(segTreeSum);
+      }
+    }
   }
 
-  // Select an upper bound index for the Fenwick tree
-  public static int highBound(int low, int N) {
-    return Math.min(N, low + (int) (Math.random() * N));
-  }
-
-  public static long randValue() {
-    return (long) (Math.random() * MAX_RAND_NUM * 2) + MIN_RAND_NUM;
+  // Finds the sum in an array between [l, r) in the `values` array
+  private static long bruteForceSum(int[] values, int l, int r) {
+    long s = 0;
+    for (int i = l; i < r; i++) {
+      s += values[i];
+    }
+    return s;
   }
 }

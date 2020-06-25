@@ -115,6 +115,9 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 * [:movie_camera:](https://www.youtube.com/watch?v=ibjEGG7ylHk)[Union Find](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/datastructures/unionfind/UnionFind.java)
 
 # Dynamic Programming
+
+## Dynamic Programming Classics
+
 * [Coin change problem](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/dp/CoinChange.java) **- O(nW)**
 * [Edit distance](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/dp/EditDistance.java) **- O(nm)**
 * [:movie_camera:](https://www.youtube.com/watch?v=cJ21moQpofY)[Knapsack 0/1](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/dp/Knapsack_01.java) **- O(nW)**
@@ -137,7 +140,7 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 
 * [:movie_camera:](https://youtu.be/yn2jnmlepY8)[Tiling Dominoes](https://github.com/williamfiset/Algorithms/blob/master/src/main/java/com/williamfiset/algorithms/dp/examples/tilingdominoes/TilingDominoes.java)
 * [:movie_camera:](https://www.youtube.com/watch?v=CecjOo4Zo-g)[Tiling Dominoes and Trominoes](https://github.com/williamfiset/Algorithms/tree/master/src/main/java/com/williamfiset/algorithms/dp/examples/domino-and-tromino-tiling)
-* [Mountain Scenes](https://github.com/williamfiset/Algorithms/blob/master/src/main/java/com/williamfiset/algorithms/dp/examples/scenes/Scenes.java)
+* [:movie_camera:](https://youtu.be/pPgBZqY_Xh0)[Mountain Scenes](https://github.com/williamfiset/Algorithms/blob/master/src/main/java/com/williamfiset/algorithms/dp/examples/scenes/Scenes.java)
 
 
 # Geometry

@@ -269,6 +269,30 @@ public class EulerianPathDirectedEdgesAdjacencyListTest {
     verifyEulerianPath(graph);
   }
 
+  @Test
+  public void testGraphWithUniquePath() {
+    int n = 10;
+    List<List<Integer>> graph = initializeEmptyGraph(n);
+    addDirectedEdge(graph, 0, 2);
+    addDirectedEdge(graph, 1, 3);
+    addDirectedEdge(graph, 2, 1);
+    addDirectedEdge(graph, 3, 0);
+    addDirectedEdge(graph, 3, 4);
+    addDirectedEdge(graph, 6, 3);
+    addDirectedEdge(graph, 6, 7);
+    addDirectedEdge(graph, 7, 8);
+    addDirectedEdge(graph, 8, 9);
+    addDirectedEdge(graph, 9, 6);
+
+    verifyEulerianPath(graph);
+
+    EulerianPathDirectedEdgesAdjacencyList solver;
+    solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
+    int[] path = solver.getEulerianPath();
+    int[] expected = {6, 7, 8, 9, 6, 3, 0, 2, 1, 3, 4};
+    assertThat(path).isEqualTo(expected);
+  }
+
   // There should be an Eulerian path on this directed graph from node 1 to node 0;
   @Test
   public void testSomewhatComplexPath() {
