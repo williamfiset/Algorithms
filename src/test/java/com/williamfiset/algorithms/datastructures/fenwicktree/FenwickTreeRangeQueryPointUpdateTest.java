@@ -1,6 +1,6 @@
 package com.williamfiset.algorithms.datastructures.fenwicktree;
 
-import static org.junit.Assert.assertEquals;
+import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,24 +27,24 @@ public class FenwickTreeRangeQueryPointUpdateTest {
     long[] ar = {UNUSED_VAL, 1, 2, 3, 4, 5, 6};
     FenwickTreeRangeQueryPointUpdate ft = new FenwickTreeRangeQueryPointUpdate(ar);
 
-    assertEquals(21, ft.sum(1, 6));
-    assertEquals(15, ft.sum(1, 5));
-    assertEquals(10, ft.sum(1, 4));
-    assertEquals(6, ft.sum(1, 3));
-    assertEquals(3, ft.sum(1, 2));
-    assertEquals(1, ft.sum(1, 1));
+    assertThat(ft.sum(1, 6)).isEqualTo(21);;
+    assertThat(ft.sum(1, 5)).isEqualTo(15);;
+    assertThat(ft.sum(1, 4)).isEqualTo(10);;
+    assertThat(ft.sum(1, 3)).isEqualTo(6);;
+    assertThat(ft.sum(1, 2)).isEqualTo(3);;
+    assertThat(ft.sum(1, 1)).isEqualTo(1);;
     // assertEquals(  0, ft.sum(1, 0) );
 
-    assertEquals(7, ft.sum(3, 4));
-    assertEquals(20, ft.sum(2, 6));
-    assertEquals(9, ft.sum(4, 5));
+    assertThat(ft.sum(3, 4)).isEqualTo(7);;
+    assertThat(ft.sum(2, 6)).isEqualTo(20);;
+    assertThat(ft.sum(4, 5)).isEqualTo(9);;
 
-    assertEquals(6, ft.sum(6, 6));
-    assertEquals(5, ft.sum(5, 5));
-    assertEquals(4, ft.sum(4, 4));
-    assertEquals(3, ft.sum(3, 3));
-    assertEquals(2, ft.sum(2, 2));
-    assertEquals(1, ft.sum(1, 1));
+    assertThat(ft.sum(6, 6)).isEqualTo(6);;
+    assertThat(ft.sum(5, 5)).isEqualTo(5);;
+    assertThat(ft.sum(4, 4)).isEqualTo(4);;
+    assertThat(ft.sum(3, 3)).isEqualTo(3);;
+    assertThat(ft.sum(2, 2)).isEqualTo(2);;
+    assertThat(ft.sum(1, 1)).isEqualTo(1);;
   }
 
   @Test
@@ -54,19 +54,19 @@ public class FenwickTreeRangeQueryPointUpdateTest {
     long[] ar = {UNUSED_VAL, -1, -2, -3, -4, -5, -6};
     FenwickTreeRangeQueryPointUpdate ft = new FenwickTreeRangeQueryPointUpdate(ar);
 
-    assertEquals(-21, ft.sum(1, 6));
-    assertEquals(-15, ft.sum(1, 5));
-    assertEquals(-10, ft.sum(1, 4));
-    assertEquals(-6, ft.sum(1, 3));
-    assertEquals(-3, ft.sum(1, 2));
-    assertEquals(-1, ft.sum(1, 1));
+    assertThat(ft.sum(1, 6)).isEqualTo(-21);
+    assertThat(ft.sum(1, 5)).isEqualTo(-15);
+    assertThat(ft.sum(1, 4)).isEqualTo(-10);
+    assertThat(ft.sum(1, 3)).isEqualTo(-6);
+    assertThat(ft.sum(1, 2)).isEqualTo(-3);
+    assertThat(ft.sum(1, 1)).isEqualTo(-1);
 
-    assertEquals(-6, ft.sum(6, 6));
-    assertEquals(-5, ft.sum(5, 5));
-    assertEquals(-4, ft.sum(4, 4));
-    assertEquals(-3, ft.sum(3, 3));
-    assertEquals(-2, ft.sum(2, 2));
-    assertEquals(-1, ft.sum(1, 1));
+    assertThat(ft.sum(6, 6)).isEqualTo(-6);
+    assertThat(ft.sum(5, 5)).isEqualTo(-5);
+    assertThat(ft.sum(4, 4)).isEqualTo(-4);
+    assertThat(ft.sum(3, 3)).isEqualTo(-3);
+    assertThat(ft.sum(2, 2)).isEqualTo(-2);
+    assertThat(ft.sum(1, 1)).isEqualTo(-1);
   }
 
   @Test
@@ -77,14 +77,14 @@ public class FenwickTreeRangeQueryPointUpdateTest {
     FenwickTreeRangeQueryPointUpdate ft = new FenwickTreeRangeQueryPointUpdate(ar);
 
     for (int i = 0; i < LOOPS; i++) {
-      assertEquals(-76871, ft.sum(1, 1));
-      assertEquals(-76871, ft.sum(1, 1));
-      assertEquals(-241661, ft.sum(1, 2));
-      assertEquals(-241661, ft.sum(1, 2));
-      assertEquals(-241661, ft.sum(1, 2));
-      assertEquals(-164790, ft.sum(2, 2));
-      assertEquals(-164790, ft.sum(2, 2));
-      assertEquals(-164790, ft.sum(2, 2));
+      assertThat(ft.sum(1, 1)).isEqualTo(-76871);
+      assertThat(ft.sum(1, 1)).isEqualTo(-76871);
+      assertThat(ft.sum(1, 2)).isEqualTo(-241661);
+      assertThat(ft.sum(1, 2)).isEqualTo(-241661);
+      assertThat(ft.sum(1, 2)).isEqualTo(-241661);
+      assertThat(ft.sum(2, 2)).isEqualTo(-164790);
+      assertThat(ft.sum(2, 2)).isEqualTo(-164790);
+      assertThat(ft.sum(2, 2)).isEqualTo(-164790);
     }
   }
 
@@ -115,7 +115,7 @@ public class FenwickTreeRangeQueryPointUpdateTest {
 
     for (int k = lo; k <= hi; k++) sum += arr[k];
 
-    assertEquals(sum, ft.sum(lo, hi));
+    assertThat(ft.sum(lo, hi)).isEqualTo(sum);
   }
 
   @Test
