@@ -1,27 +1,27 @@
 package com.williamfiset.algorithms.datastructures.binarysearchtree;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.williamfiset.algorithms.datastructures.utils.TestUtils;
 import java.util.*;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class SplayTreeTest {
+public class SplayTreeTest {
 
   public static final int MAX = Integer.MAX_VALUE / 4, MIN = Integer.MIN_VALUE / 4;
 
   @Test
-  void getRoot() {
+  public void getRoot() {
     SplayTree<Integer> splayTree = new SplayTree<>();
     List<Integer> data = TestUtils.randomIntegerList(100, MIN, MAX);
     for (int i : data) {
       splayTree.insert(i);
-      assertEquals(i, splayTree.getRoot().getData());
+      assertThat(splayTree.getRoot().getData()).isEqualTo(i);
     }
   }
 
   @Test
-  void splayInsertDeleteSearch() {
+  public void splayInsertDeleteSearch() {
     SplayTree<Integer> splayTree = new SplayTree<>();
     List<Integer> data =
         TestUtils.randomUniformUniqueIntegerList(
@@ -29,61 +29,61 @@ class SplayTreeTest {
     // should assertNull
     for (int i : data) {
       splayTree.insert(i);
-      assertEquals(i, splayTree.getRoot().getData());
+      assertThat(splayTree.getRoot().getData()).isEqualTo(i);
     }
     for (int i : data) {
-      assertNotNull(splayTree.search(i));
+      assertThat(splayTree.search(i)).isNotNull();
     }
     for (int i : data) {
       splayTree.delete(i);
-      assertNull(splayTree.search(i));
+      assertThat(splayTree.search(i)).isNull();
     }
   }
 
   @Test
-  void insertSearch() {
+  public void insertSearch() {
     SplayTree<Integer> splayTree = new SplayTree<>();
     List<Integer> data = TestUtils.randomIntegerList(100, MIN, MAX);
     for (int i : data) {
       splayTree.insert(i);
-      assertEquals(i, splayTree.getRoot().getData());
+      assertThat(splayTree.getRoot().getData()).isEqualTo(i);
     }
   }
 
   @Test
-  void findMax() {
+  public void findMax() {
     SplayTree<Integer> splayTree = new SplayTree<>();
     List<Integer> data = TestUtils.sortedIntegerList(-50, 50);
     for (int i : data) {
       splayTree.insert(i);
-      assertEquals(i, splayTree.findMax(splayTree.getRoot()));
+      assertThat(splayTree.findMax(splayTree.getRoot())).isEqualTo(i);
     }
   }
 
   /** Comparison With Built In Priority Queue* */
   @Test
-  void splayTreePriorityQueueConsistencyTest() {
+  public void splayTreePriorityQueueConsistencyTest() {
     SplayTree<Integer> splayTree = new SplayTree<>();
     List<Integer> data = TestUtils.randomUniformUniqueIntegerList(100);
     Queue<Integer> pq = new PriorityQueue<>(100, Collections.reverseOrder());
 
     // insertion
     for (int i : data) {
-      assertEquals(pq.add(i), splayTree.insert(i) != null);
+      assertThat(pq.add(i)).isEqualTo(splayTree.insert(i) != null);
     }
     // searching
     for (int i : data) {
-      assertEquals(splayTree.search(i).getData().equals(i), pq.contains(i));
+      assertThat(splayTree.search(i).getData().equals(i)).isEqualTo(pq.contains(i));
     }
     // findMax & delete
     while (!pq.isEmpty()) {
       Integer splayTreeMax = splayTree.findMax();
-      assertEquals(pq.peek(), splayTreeMax);
+      assertThat(pq.peek()).isEqualTo(splayTreeMax);
 
       splayTree.delete(splayTreeMax);
-      assertNull(splayTree.search(splayTreeMax));
+      assertThat(splayTree.search(splayTreeMax)).isNull();
       pq.remove(splayTreeMax);
-      assertFalse(pq.contains(splayTreeMax));
+      assertThat(pq.contains(splayTreeMax)).isFalse();
     }
   }
 }
