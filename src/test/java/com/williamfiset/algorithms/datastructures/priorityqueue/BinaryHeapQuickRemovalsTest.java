@@ -21,7 +21,6 @@ public class BinaryHeapQuickRemovalsTest {
     BinaryHeapQuickRemovals<Integer> q = new BinaryHeapQuickRemovals<>();
     assertThat(q.size()).isEqualTo(0);
     assertThat(q.isEmpty()).isTrue();
-    ;
     assertThat(q.poll()).isNull();
     assertThat(q.peek()).isNull();
   }
@@ -71,7 +70,6 @@ public class BinaryHeapQuickRemovalsTest {
     q.clear();
     assertThat(q.size()).isEqualTo(0);
     assertThat(q.isEmpty()).isTrue();
-    ;
   }
 
   @Test
@@ -124,7 +122,6 @@ public class BinaryHeapQuickRemovalsTest {
     for (int value : in) PQ.offer(value);
 
     assertThat(pq.isMinHeap(0)).isTrue();
-    ;
 
     for (int i = 0; i < removeOrder.length; i++) {
 
@@ -137,7 +134,6 @@ public class BinaryHeapQuickRemovalsTest {
     }
 
     assertThat(pq.isEmpty()).isTrue();
-    ;
   }
 
   @Test
@@ -202,7 +198,6 @@ public class BinaryHeapQuickRemovalsTest {
       while (!pq1.isEmpty()) {
 
         assertThat(pq2.isMinHeap(0)).isTrue();
-        ;
         assertThat(pq1.size()).isEqualTo(pq2.size());
         assertThat(pq1.peek()).isEqualTo(pq2.peek());
         assertThat(pq1.contains(pq1.peek())).isEqualTo(pq2.contains(pq2.peek()));
@@ -214,7 +209,6 @@ public class BinaryHeapQuickRemovalsTest {
         assertThat(pq1.peek()).isEqualTo(pq2.peek());
         assertThat(pq1.size()).isEqualTo(pq2.size());
         assertThat(pq2.isMinHeap(0)).isTrue();
-        ;
       }
     }
   }
@@ -243,7 +237,6 @@ public class BinaryHeapQuickRemovalsTest {
         int removeNum = randNums.get(index++);
 
         assertThat(pq2.isMinHeap(0)).isTrue();
-        ;
         assertThat(pq1.size()).isEqualTo(pq2.size());
         assertThat(pq1.peek()).isEqualTo(pq2.peek());
         pq1.remove(removeNum);
@@ -251,7 +244,6 @@ public class BinaryHeapQuickRemovalsTest {
         assertThat(pq1.peek()).isEqualTo(pq2.peek());
         assertThat(pq1.size()).isEqualTo(pq2.size());
         assertThat(pq2.isMinHeap(0)).isTrue();
-        ;
       }
     }
   }
@@ -289,7 +281,6 @@ public class BinaryHeapQuickRemovalsTest {
         int removeNum = nums.get(i);
 
         assertThat(pq.isMinHeap(0)).isTrue();
-        ;
         assertThat(PQ.size()).isEqualTo(pq.size());
         assertThat(PQ.peek()).isEqualTo(pq.peek());
 
@@ -299,7 +290,6 @@ public class BinaryHeapQuickRemovalsTest {
         assertThat(PQ.peek()).isEqualTo(pq.peek());
         assertThat(PQ.size()).isEqualTo(pq.size());
         assertThat(pq.isMinHeap(0)).isTrue();
-        ;
       }
     }
   }

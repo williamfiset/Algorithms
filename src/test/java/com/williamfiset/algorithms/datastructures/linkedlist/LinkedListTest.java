@@ -23,7 +23,6 @@ public class LinkedListTest {
   @Test
   public void testEmptyList() {
     assertThat(list.isEmpty()).isTrue();
-    ;
     assertThat(list.size()).isEqualTo(0);
   }
 
@@ -89,7 +88,6 @@ public class LinkedListTest {
     list.addLast(4);
     assertThat(list.removeLast()).isEqualTo(4);
     assertThat(list.isEmpty()).isTrue();
-    ;
   }
 
   @Test

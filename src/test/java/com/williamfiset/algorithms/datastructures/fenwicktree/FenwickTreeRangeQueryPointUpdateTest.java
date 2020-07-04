@@ -28,38 +28,22 @@ public class FenwickTreeRangeQueryPointUpdateTest {
     FenwickTreeRangeQueryPointUpdate ft = new FenwickTreeRangeQueryPointUpdate(ar);
 
     assertThat(ft.sum(1, 6)).isEqualTo(21);
-    ;
     assertThat(ft.sum(1, 5)).isEqualTo(15);
-    ;
     assertThat(ft.sum(1, 4)).isEqualTo(10);
-    ;
     assertThat(ft.sum(1, 3)).isEqualTo(6);
-    ;
     assertThat(ft.sum(1, 2)).isEqualTo(3);
-    ;
     assertThat(ft.sum(1, 1)).isEqualTo(1);
-    ;
-    // assertEquals(  0, ft.sum(1, 0) );
+    // assertThat(ft.sum(1, 0)).isEqualTo(0);
 
     assertThat(ft.sum(3, 4)).isEqualTo(7);
-    ;
     assertThat(ft.sum(2, 6)).isEqualTo(20);
-    ;
     assertThat(ft.sum(4, 5)).isEqualTo(9);
-    ;
-
     assertThat(ft.sum(6, 6)).isEqualTo(6);
-    ;
     assertThat(ft.sum(5, 5)).isEqualTo(5);
-    ;
     assertThat(ft.sum(4, 4)).isEqualTo(4);
-    ;
     assertThat(ft.sum(3, 3)).isEqualTo(3);
-    ;
     assertThat(ft.sum(2, 2)).isEqualTo(2);
-    ;
     assertThat(ft.sum(1, 1)).isEqualTo(1);
-    ;
   }
 
   @Test

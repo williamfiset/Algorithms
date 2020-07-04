@@ -10,7 +10,6 @@ public class DynamicArrayTest {
   public void testEmptyList() {
     DynamicArray<Integer> list = new DynamicArray<>();
     assertThat(list.isEmpty()).isTrue();
-    ;
   }
 
   @Test(expected = Exception.class)
@@ -100,35 +99,27 @@ public class DynamicArrayTest {
 
     boolean ret = list.remove("c");
     assertThat(ret).isTrue();
-    ;
 
     ret = list.remove("c");
     assertThat(ret).isFalse();
-    ;
 
     ret = list.remove("h");
     assertThat(ret).isTrue();
-    ;
 
     ret = list.remove(null);
     assertThat(ret).isTrue();
-    ;
 
     ret = list.remove("a");
     assertThat(ret).isTrue();
-    ;
 
     ret = list.remove("a");
     assertThat(ret).isFalse();
-    ;
 
     ret = list.remove("h");
     assertThat(ret).isFalse();
-    ;
 
     ret = list.remove(null);
     assertThat(ret).isFalse();
-    ;
   }
 
   @Test
@@ -139,22 +130,14 @@ public class DynamicArrayTest {
     for (String s : strs) list.add(s);
 
     assertThat(list.remove("a")).isTrue();
-    ;
     assertThat(list.remove("b")).isTrue();
-    ;
     assertThat(list.remove("c")).isTrue();
-    ;
     assertThat(list.remove("d")).isTrue();
-    ;
 
     assertThat(list.remove("a")).isFalse();
-    ;
     assertThat(list.remove("b")).isFalse();
-    ;
     assertThat(list.remove("c")).isFalse();
-    ;
     assertThat(list.remove("d")).isFalse();
-    ;
   }
 
   @Test
