@@ -174,7 +174,7 @@ public class BinaryHeapTest {
     assertThat(pq.poll()).isEqualTo(3);
     assertThat(pq.poll()).isEqualTo(7);
     assertThat(pq.poll()).isEqualTo(7);
-    assertThat(pq.poll()).isEqualTo( 11);
+    assertThat(pq.poll()).isEqualTo(11);
     assertThat(pq.poll()).isEqualTo(13);
   }
 

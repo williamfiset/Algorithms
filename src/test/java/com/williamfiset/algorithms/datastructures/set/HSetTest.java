@@ -73,7 +73,7 @@ public class HSetTest {
       for (int i = 0; i < TEST_SZ; i++) {
 
         int num = nums.get(i);
-        // assertThat( hs.add(num)).isEqualTo(s.add(num));
+        // assertThat(hs.add(num)).isEqualTo(s.add(num));
         hs.add(num);
         s.add(num);
 
@@ -103,7 +103,7 @@ public class HSetTest {
 
         int num = nums.get(i);
         ConstObj obj = new ConstObj(java.util.Objects.hash(num), num);
-        // assertThat( hs.add(num)).isEqualTo(s.add(num));
+        // assertThat(hs.add(num)).isEqualTo(s.add(num));
         hs.add(obj);
         s.add(obj);
 

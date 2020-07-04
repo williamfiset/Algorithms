@@ -1,6 +1,5 @@
 package com.williamfiset.algorithms.datastructures.balancedtree;
 
-// import static org.junit.Assert.*;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.util.*;
@@ -182,7 +181,6 @@ public class RedBlackTreeTest {
     assertThat(tree.root.left.left.color).isEqualTo(RedBlackTree.RED);
 
     assertThat(tree.root.right.left).isEqualTo(tree.NIL);
-
     assertThat(tree.root.left.right).isEqualTo(tree.NIL);
     assertNullChildren(tree, tree.root.right, tree.root.left.left);
     assertCorrectParentLinks(tree, tree.root, tree.NIL);

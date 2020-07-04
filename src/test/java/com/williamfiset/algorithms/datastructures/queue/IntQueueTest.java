@@ -14,7 +14,7 @@ public class IntQueueTest {
   @Test
   public void testEmptyQueue() {
     IntQueue queue = new IntQueue(0);
-    assertThat(queue.isEmpty());
+    assertThat(queue.isEmpty()).isTrue();
     assertThat(queue.size()).isEqualTo(0);
   }
 

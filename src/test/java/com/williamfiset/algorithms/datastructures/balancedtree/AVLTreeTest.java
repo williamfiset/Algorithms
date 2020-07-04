@@ -25,17 +25,17 @@ public class AVLTreeTest {
 
   @Test
   public void testNullInsertion() {
-    assertThat(tree.insert(null));
+    assertThat(tree.insert(null)).isFalse();
   }
 
   @Test
   public void testNullRemoval() {
-    assertThat(tree.remove(null));
+    assertThat(tree.remove(null)).isFalse();
   }
 
   @Test
   public void testTreeContainsNull() {
-    assertThat(tree.contains(null));
+    assertThat(tree.contains(null)).isFalse();
   }
 
   @Test
