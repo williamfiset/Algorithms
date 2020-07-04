@@ -1,6 +1,6 @@
 package com.williamfiset.algorithms.other;
 
-import static org.junit.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ public class LazyRangeAdderTest {
     lazyRangeAdder.add(2, 2, 30);
     lazyRangeAdder.done();
     int[] expected = {20, 35, 70, 60};
-    assertArrayEquals(expected, a);
+    assertThat(a).isEqualTo(expected);
   }
 
   @Test
@@ -27,7 +27,7 @@ public class LazyRangeAdderTest {
     lazyRangeAdder.add(5, 6, -73);
     lazyRangeAdder.done();
     int[] expected = {371, 412, 560, 668, 467, 152, 101};
-    assertArrayEquals(expected, a);
+    assertThat(a).isEqualTo(expected);
   }
 
   @Test
@@ -56,7 +56,7 @@ public class LazyRangeAdderTest {
 
       lazyRangeAdder.done();
 
-      assertArrayEquals(arr1, arr2);
+      assertThat(arr1).isEqualTo(arr2);
     }
   }
 
