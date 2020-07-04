@@ -65,7 +65,7 @@ public class AVLTreeTest {
     assertThat(tree.root.value.intValue()).isEqualTo(2);
     assertThat(tree.root.left.value.intValue()).isEqualTo(1);
     assertThat(tree.root.right.value.intValue()).isEqualTo(3);
-    
+
     assertThat(tree.root.left.left).isNull();
     assertThat(tree.root.left.right).isNull();
     assertThat(tree.root.right.left).isNull();
@@ -82,7 +82,7 @@ public class AVLTreeTest {
     assertThat(tree.root.value.intValue()).isEqualTo(2);
     assertThat(tree.root.left.value.intValue()).isEqualTo(1);
     assertThat(tree.root.right.value.intValue()).isEqualTo(3);
-    
+
     assertThat(tree.root.left.left).isNull();
     assertThat(tree.root.left.right).isNull();
     assertThat(tree.root.right.left).isNull();
@@ -99,7 +99,7 @@ public class AVLTreeTest {
     assertThat(tree.root.value.intValue()).isEqualTo(2);
     assertThat(tree.root.left.value.intValue()).isEqualTo(1);
     assertThat(tree.root.right.value.intValue()).isEqualTo(3);
-    
+
     assertThat(tree.root.left.left).isNull();
     assertThat(tree.root.left.right).isNull();
     assertThat(tree.root.right.left).isNull();

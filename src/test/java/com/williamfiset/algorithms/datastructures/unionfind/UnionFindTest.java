@@ -148,7 +148,7 @@ public class UnionFindTest {
     assertThat(uf.connected(1, 0)).isFalse();
     assertThat(uf.connected(2, 1)).isFalse();
     assertThat(uf.connected(3, 2)).isFalse();
-    
+
     assertThat(uf.connected(1, 4)).isFalse();
     assertThat(uf.connected(2, 5)).isFalse();
     assertThat(uf.connected(3, 6)).isFalse();

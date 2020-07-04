@@ -78,7 +78,8 @@ public class HashTableDoubleHashingTest {
 
       mmap.clear();
       jmap.clear();
-      assertThat(mmap.isEmpty()).isTrue();;
+      assertThat(mmap.isEmpty()).isTrue();
+      ;
 
       List<DoubleHashingTestObject> rand_nums = genRandList(MAX_SIZE);
       for (DoubleHashingTestObject key : rand_nums)
@@ -88,13 +89,16 @@ public class HashTableDoubleHashingTest {
       for (DoubleHashingTestObject key : mmap) {
         assertThat(mmap.get(key)).isEqualTo(key);
         assertThat(mmap.get(key)).isEqualTo(jmap.get(key));
-        assertThat(mmap.hasKey(key)).isTrue();;
-        assertThat(rand_nums.contains(key)).isTrue();;
+        assertThat(mmap.hasKey(key)).isTrue();
+        ;
+        assertThat(rand_nums.contains(key)).isTrue();
+        ;
         count++;
       }
 
       for (DoubleHashingTestObject key : jmap.keySet()) {
-        assertThat(mmap.get(key)).isEqualTo(key);;
+        assertThat(mmap.get(key)).isEqualTo(key);
+        ;
       }
 
       Set<DoubleHashingTestObject> set = new HashSet<>();

@@ -77,7 +77,8 @@ public class HashTableLinearProbingTest {
     assertThat(map.get(1)).isEqualTo(1);
 
     map.add(1, 5);
-    assertThat(map.get(1)).isEqualTo(5);;
+    assertThat(map.get(1)).isEqualTo(5);
+    ;
 
     map.add(1, -7);
     assertThat(map.get(1)).isEqualTo(-7);
@@ -92,7 +93,8 @@ public class HashTableLinearProbingTest {
 
       map.clear();
       map2.clear();
-      assertThat(map.isEmpty()).isTrue();;
+      assertThat(map.isEmpty()).isTrue();
+      ;
 
       map = new HashTableLinearProbing<>();
 
@@ -101,7 +103,8 @@ public class HashTableLinearProbingTest {
 
       int count = 0;
       for (Integer key : map) {
-        assertThat(map.get(key)).isEqualTo(key);;
+        assertThat(map.get(key)).isEqualTo(key);
+        ;
         assertThat(map.get(key)).isEqualTo(map2.get(key));
         assertThat(map.hasKey(key)).isTrue();
         assertThat(rand_nums.contains(key)).isTrue();
@@ -159,7 +162,8 @@ public class HashTableLinearProbingTest {
       List<Integer> keys = map.keys();
       for (Integer key : keys) map.remove(key);
 
-      assertThat(map.isEmpty()).isTrue();;
+      assertThat(map.isEmpty()).isTrue();
+      ;
     }
   }
 

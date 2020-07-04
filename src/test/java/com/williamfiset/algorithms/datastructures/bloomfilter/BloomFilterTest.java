@@ -86,7 +86,8 @@ public class BloomFilterTest {
           set.add(randStr);
         }
 
-        for (String s : javaset) assertThat(set.contains(s)).isTrue();;
+        for (String s : javaset) assertThat(set.contains(s)).isTrue();
+        ;
 
         // Check that strings that aren't in the string set actually aren't
         // in the set, the probablity should be low enough that a false positive
@@ -94,7 +95,8 @@ public class BloomFilterTest {
         for (int l = 0; l < 100; l++) {
           String randStr = randomString(sz);
           if (!randStr.contains(randStr)) {
-            assertThat(set.contains(randStr)).isFalse();;
+            assertThat(set.contains(randStr)).isFalse();
+            ;
           }
         }
       }

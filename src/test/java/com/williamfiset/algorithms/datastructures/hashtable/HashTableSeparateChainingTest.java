@@ -104,12 +104,14 @@ public class HashTableSeparateChainingTest {
         assertThat(map.get(key)).isEqualTo(key);
         assertThat(map.get(key)).isEqualTo(map2.get(key));
         assertThat(map.hasKey(key)).isTrue();
-        assertThat(rand_nums.contains(key)).isTrue();;
+        assertThat(rand_nums.contains(key)).isTrue();
+        ;
         count++;
       }
 
       for (Integer key : map2.keySet()) {
-        assertThat(map.get(key)).isEqualTo(key);;
+        assertThat(map.get(key)).isEqualTo(key);
+        ;
       }
 
       Set<Integer> set = new HashSet<>();

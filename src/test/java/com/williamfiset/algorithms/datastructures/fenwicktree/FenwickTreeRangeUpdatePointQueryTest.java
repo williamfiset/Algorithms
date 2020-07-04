@@ -47,11 +47,16 @@ public class FenwickTreeRangeUpdatePointQueryTest {
     long[] values = {UNUSED_VAL, -1, -1, -1, -1, -1};
     FenwickTreeRangeUpdatePointQuery ft = new FenwickTreeRangeUpdatePointQuery(values);
     ft.updateRange(2, 4, 10);
-    assertThat(ft.get(1)).isEqualTo(-1);;
-    assertThat(ft.get(2)).isEqualTo(9);;
-    assertThat(ft.get(3)).isEqualTo(9);;
-    assertThat(ft.get(4)).isEqualTo(9);;
-    assertThat(ft.get(5)).isEqualTo(-1);;
+    assertThat(ft.get(1)).isEqualTo(-1);
+    ;
+    assertThat(ft.get(2)).isEqualTo(9);
+    ;
+    assertThat(ft.get(3)).isEqualTo(9);
+    ;
+    assertThat(ft.get(4)).isEqualTo(9);
+    ;
+    assertThat(ft.get(5)).isEqualTo(-1);
+    ;
   }
 
   @Test
@@ -60,11 +65,16 @@ public class FenwickTreeRangeUpdatePointQueryTest {
     long[] values = {UNUSED_VAL, 2, 3, 4, 5, 6};
     FenwickTreeRangeUpdatePointQuery ft = new FenwickTreeRangeUpdatePointQuery(values);
     ft.updateRange(2, 4, 10);
-    assertThat(ft.get(1)).isEqualTo(2);;
-    assertThat(ft.get(2)).isEqualTo(13);;
-    assertThat(ft.get(3)).isEqualTo(14);;
-    assertThat(ft.get(4)).isEqualTo(15);;
-    assertThat(ft.get(5)).isEqualTo(6);;
+    assertThat(ft.get(1)).isEqualTo(2);
+    ;
+    assertThat(ft.get(2)).isEqualTo(13);
+    ;
+    assertThat(ft.get(3)).isEqualTo(14);
+    ;
+    assertThat(ft.get(4)).isEqualTo(15);
+    ;
+    assertThat(ft.get(5)).isEqualTo(6);
+    ;
   }
 
   @Test

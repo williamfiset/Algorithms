@@ -230,7 +230,7 @@ public class RedBlackTreeTest {
     assertThat(tree.root.right.left.left.color).isEqualTo(RedBlackTree.RED);
     assertThat(tree.root.right.left.right.color).isEqualTo(RedBlackTree.RED);
     assertThat(tree.root.right.right.left.color).isEqualTo(RedBlackTree.RED);
-    assertThat(tree.root.right.right.right.color).isEqualTo(RedBlackTree.RED);    
+    assertThat(tree.root.right.right.right.color).isEqualTo(RedBlackTree.RED);
   }
 
   @Test

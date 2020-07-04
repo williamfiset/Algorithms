@@ -9,7 +9,8 @@ public class DynamicArrayTest {
   @Test
   public void testEmptyList() {
     DynamicArray<Integer> list = new DynamicArray<>();
-    assertThat(list.isEmpty()).isTrue();;
+    assertThat(list.isEmpty()).isTrue();
+    ;
   }
 
   @Test(expected = Exception.class)
@@ -98,28 +99,36 @@ public class DynamicArrayTest {
     for (String s : strs) list.add(s);
 
     boolean ret = list.remove("c");
-    assertThat(ret).isTrue();;
+    assertThat(ret).isTrue();
+    ;
 
     ret = list.remove("c");
-    assertThat(ret).isFalse();;
+    assertThat(ret).isFalse();
+    ;
 
     ret = list.remove("h");
-    assertThat(ret).isTrue();;
+    assertThat(ret).isTrue();
+    ;
 
     ret = list.remove(null);
-    assertThat(ret).isTrue();;
+    assertThat(ret).isTrue();
+    ;
 
     ret = list.remove("a");
-    assertThat(ret).isTrue();;
+    assertThat(ret).isTrue();
+    ;
 
     ret = list.remove("a");
-    assertThat(ret).isFalse();;
+    assertThat(ret).isFalse();
+    ;
 
     ret = list.remove("h");
-    assertThat(ret).isFalse();;
+    assertThat(ret).isFalse();
+    ;
 
     ret = list.remove(null);
-    assertThat(ret).isFalse();;
+    assertThat(ret).isFalse();
+    ;
   }
 
   @Test
@@ -129,15 +138,23 @@ public class DynamicArrayTest {
     String[] strs = {"a", "b", "c", "d"};
     for (String s : strs) list.add(s);
 
-    assertThat(list.remove("a")).isTrue();;
-    assertThat(list.remove("b")).isTrue();;
-    assertThat(list.remove("c")).isTrue();;
-    assertThat(list.remove("d")).isTrue();;
+    assertThat(list.remove("a")).isTrue();
+    ;
+    assertThat(list.remove("b")).isTrue();
+    ;
+    assertThat(list.remove("c")).isTrue();
+    ;
+    assertThat(list.remove("d")).isTrue();
+    ;
 
-    assertThat(list.remove("a")).isFalse();;
-    assertThat(list.remove("b")).isFalse();;
-    assertThat(list.remove("c")).isFalse();;
-    assertThat(list.remove("d")).isFalse();;
+    assertThat(list.remove("a")).isFalse();
+    ;
+    assertThat(list.remove("b")).isFalse();
+    ;
+    assertThat(list.remove("c")).isFalse();
+    ;
+    assertThat(list.remove("d")).isFalse();
+    ;
   }
 
   @Test

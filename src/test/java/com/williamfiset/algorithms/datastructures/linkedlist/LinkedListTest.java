@@ -22,7 +22,8 @@ public class LinkedListTest {
 
   @Test
   public void testEmptyList() {
-    assertThat(list.isEmpty()).isTrue();;
+    assertThat(list.isEmpty()).isTrue();
+    ;
     assertThat(list.size()).isEqualTo(0);
   }
 
@@ -87,7 +88,8 @@ public class LinkedListTest {
   public void testRemoveLast() {
     list.addLast(4);
     assertThat(list.removeLast()).isEqualTo(4);
-    assertThat(list.isEmpty()).isTrue();;
+    assertThat(list.isEmpty()).isTrue();
+    ;
   }
 
   @Test
@@ -134,7 +136,7 @@ public class LinkedListTest {
     // 7 - 6
     list.removeLast();
     assertThat(list.peekFirst()).isEqualTo(7);
-    assertThat(list.peekLast()).isEqualTo( 6);
+    assertThat(list.peekLast()).isEqualTo(6);
 
     // 6
     list.removeFirst();

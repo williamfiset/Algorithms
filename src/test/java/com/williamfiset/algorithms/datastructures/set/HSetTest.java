@@ -58,7 +58,7 @@ public class HSetTest {
     hs.add(-5);
     assertThat(hs.size()).isEqualTo(1);
     hs.remove(-5);
-    assertThat(hs.size()).isEqualTo( 0);
+    assertThat(hs.size()).isEqualTo(0);
   }
 
   @Test

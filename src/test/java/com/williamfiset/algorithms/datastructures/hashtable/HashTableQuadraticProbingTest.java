@@ -122,7 +122,8 @@ public class HashTableQuadraticProbingTest {
 
       int count = 0;
       for (Integer key : map) {
-        assertThat(map.get(key)).isEqualTo(key);;
+        assertThat(map.get(key)).isEqualTo(key);
+        ;
         assertThat(map.get(key)).isEqualTo(map2.get(key));
         assertThat(map.hasKey(key)).isTrue();
         assertThat(rand_nums.contains(key)).isTrue();
