@@ -1,6 +1,6 @@
 package com.williamfiset.algorithms.datastructures.suffixarray;
 
-import static org.junit.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.security.SecureRandom;
 import java.util.Random;
@@ -29,9 +29,9 @@ public class SuffixArrayTest {
     SuffixArray sa2 = new SuffixArrayMed(str);
     SuffixArray sa3 = new SuffixArrayFast(str);
 
-    assertEquals(str.length(), sa1.getSa().length);
-    assertEquals(str.length(), sa2.getSa().length);
-    assertEquals(str.length(), sa3.getSa().length);
+    assertThat(sa1.getSa().length).isEqualTo(str.length());
+    assertThat(sa2.getSa().length).isEqualTo(str.length());
+    assertThat(sa3.getSa().length).isEqualTo(str.length());
   }
 
   @Test
@@ -45,7 +45,7 @@ public class SuffixArrayTest {
 
     for (SuffixArray sa : suffixArrays) {
       for (int i = 0; i < sa.getSa().length; i++) {
-        assertEquals(0, sa.getLcpArray()[i]);
+        assertThat(sa.getLcpArray()[i]).isEqualTo(0);
       }
     }
   }
@@ -63,7 +63,7 @@ public class SuffixArrayTest {
 
     for (SuffixArray sa : suffixArrays) {
       for (int i = 0; i < sa.getSa().length; i++) {
-        assertEquals(i, sa.getLcpArray()[i]);
+        assertThat(sa.getLcpArray()[i]).isEqualTo(i);
       }
     }
   }
@@ -82,7 +82,7 @@ public class SuffixArrayTest {
 
     for (SuffixArray sa : suffixArrays) {
       for (int i = 0; i < sa.getSa().length; i++) {
-        assertEquals(lcpValues[i], sa.getLcpArray()[i]);
+        assertThat(lcpValues[i]).isEqualTo(sa.getLcpArray()[i]);
       }
     }
   }
@@ -100,7 +100,7 @@ public class SuffixArrayTest {
 
     for (SuffixArray sa : suffixArrays) {
       for (int i = 0; i < sa.getSa().length; i++) {
-        assertEquals(lcpValues[i], sa.getLcpArray()[i]);
+        assertThat(lcpValues[i]).isEqualTo(sa.getLcpArray()[i]);
       }
     }
   }
@@ -121,7 +121,7 @@ public class SuffixArrayTest {
         SuffixArray s1 = suffixArrays[i];
         SuffixArray s2 = suffixArrays[j];
         for (int k = 0; k < s1.getSa().length; k++) {
-          assertEquals(s1.getSa()[k], s2.getSa()[k]);
+          assertThat(s1.getSa()[k]).isEqualTo(s2.getSa()[k]);
         }
       }
     }
