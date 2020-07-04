@@ -315,7 +315,7 @@ public class TrieTest {
     assertThat(t.contains("$A")).isTrue();
     assertThat(t.contains("$B")).isTrue();
     assertThat(t.contains("$C")).isTrue();
-    assertThat(t.delete("$A")).isFalse();
+    assertThat(t.delete("$A")).isTrue();
     assertThat(t.delete("$B")).isFalse();
     assertThat(t.delete("$C")).isFalse();
 
