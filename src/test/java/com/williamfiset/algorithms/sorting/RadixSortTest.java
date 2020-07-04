@@ -1,7 +1,6 @@
 package com.williamfiset.algorithms.sorting;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Random;
