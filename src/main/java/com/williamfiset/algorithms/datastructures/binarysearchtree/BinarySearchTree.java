@@ -112,25 +112,14 @@ public class BinarySearchTree<T extends Comparable<T>> {
       // no subtree at all. In this situation just
       // swap the node we wish to remove with its right child.
       if (node.left == null) {
-
-        Node rightChild = node.right;
-
-        node.data = null;
-        node = null;
-
-        return rightChild;
+        return node.right;
 
         // This is the case with only a left subtree or
         // no subtree at all. In this situation just
         // swap the node we wish to remove with its left child.
       } else if (node.right == null) {
 
-        Node leftChild = node.left;
-
-        node.data = null;
-        node = null;
-
-        return leftChild;
+        return node.left;
 
         // When removing a node from a binary tree with two links the
         // successor of the node being removed can either be the largest
