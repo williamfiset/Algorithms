@@ -1,6 +1,6 @@
 package com.williamfiset.algorithms.datastructures.queue;
 
-import static org.junit.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.*;
 import org.junit.Before;
@@ -14,8 +14,8 @@ public class IntQueueTest {
   @Test
   public void testEmptyQueue() {
     IntQueue queue = new IntQueue(0);
-    assertTrue(queue.isEmpty());
-    assertEquals(queue.size(), 0);
+    assertThat(queue.isEmpty()).isTrue();
+    assertThat(queue.size()).isEqualTo(0);
   }
 
   // Doesn't apply to this implementation because of wrap
@@ -36,73 +36,73 @@ public class IntQueueTest {
   public void testofferOneElement() {
     IntQueue queue = new IntQueue(1);
     queue.offer(77);
-    assertEquals(queue.size(), 1);
+    assertThat(queue.size()).isEqualTo(1);
   }
 
   @Test
   public void testAll() {
     int n = 5;
     IntQueue queue = new IntQueue(10);
-    assertTrue(queue.isEmpty());
+    assertThat(queue.isEmpty()).isTrue();
     for (int i = 1; i <= n; i++) {
       queue.offer(i);
-      assertFalse(queue.isEmpty());
+      assertThat(queue.isEmpty()).isFalse();
     }
     for (int i = 1; i <= n; i++) {
-      assertEquals(i, (int) queue.peek());
-      assertEquals(i, (int) queue.poll());
-      assertEquals(queue.size(), n - i);
+      assertThat((int) queue.peek()).isEqualTo(i);
+      assertThat((int) queue.poll()).isEqualTo(i);
+      assertThat(queue.size()).isEqualTo(n - i);
     }
-    assertTrue(queue.isEmpty());
+    assertThat(queue.isEmpty()).isTrue();
     n = 8;
     for (int i = 1; i <= n; i++) {
       queue.offer(i);
-      assertFalse(queue.isEmpty());
+      assertThat(queue.isEmpty()).isFalse();
     }
     for (int i = 1; i <= n; i++) {
-      assertEquals(i, (int) queue.peek());
-      assertEquals(i, (int) queue.poll());
-      assertEquals(queue.size(), n - i);
+      assertThat((int) queue.peek()).isEqualTo(i);
+      assertThat((int) queue.poll()).isEqualTo(i);
+      assertThat(queue.size()).isEqualTo(n - i);
     }
-    assertTrue(queue.isEmpty());
+    assertThat(queue.isEmpty()).isTrue();
     n = 9;
     for (int i = 1; i <= n; i++) {
       queue.offer(i);
-      assertFalse(queue.isEmpty());
+      assertThat(queue.isEmpty()).isFalse();
     }
     for (int i = 1; i <= n; i++) {
-      assertEquals(i, (int) queue.peek());
-      assertEquals(i, (int) queue.poll());
-      assertEquals(queue.size(), n - i);
+      assertThat((int) queue.peek()).isEqualTo(i);
+      assertThat((int) queue.poll()).isEqualTo(i);
+      assertThat(queue.size()).isEqualTo(n - i);
     }
-    assertTrue(queue.isEmpty());
+    assertThat(queue.isEmpty()).isTrue();
     n = 10;
     for (int i = 1; i <= n; i++) {
       queue.offer(i);
-      assertFalse(queue.isEmpty());
+      assertThat(queue.isEmpty()).isFalse();
     }
     for (int i = 1; i <= n; i++) {
-      assertEquals(i, (int) queue.peek());
-      assertEquals(i, (int) queue.poll());
-      assertEquals(queue.size(), n - i);
+      assertThat((int) queue.peek()).isEqualTo(i);
+      assertThat((int) queue.poll()).isEqualTo(i);
+      assertThat(queue.size()).isEqualTo(n - i);
     }
-    assertTrue(queue.isEmpty());
+    assertThat(queue.isEmpty()).isTrue();
   }
 
   @Test
   public void testPeekOneElement() {
     IntQueue queue = new IntQueue(1);
     queue.offer(77);
-    assertTrue(queue.peek() == 77);
-    assertEquals(queue.size(), 1);
+    assertThat(queue.peek()).isEqualTo(77);
+    assertThat(queue.size()).isEqualTo(1);
   }
 
   @Test
   public void testpollOneElement() {
     IntQueue queue = new IntQueue(1);
     queue.offer(77);
-    assertTrue(queue.poll() == 77);
-    assertEquals(queue.size(), 0);
+    assertThat(queue.poll()).isEqualTo(77);
+    assertThat(queue.size()).isEqualTo(0);
   }
 
   @Test
@@ -113,8 +113,8 @@ public class IntQueueTest {
       IntQueue intQ = new IntQueue(qSize);
       ArrayDeque<Integer> javaQ = new ArrayDeque<>(qSize);
 
-      assertEquals(javaQ.isEmpty(), intQ.isEmpty());
-      assertEquals(javaQ.size(), intQ.size());
+      assertThat(javaQ.isEmpty()).isEqualTo(intQ.isEmpty());
+      assertThat(javaQ.size()).isEqualTo(intQ.size());
 
       for (int operations = 0; operations < 5000; operations++) {
 
@@ -128,12 +128,12 @@ public class IntQueueTest {
           }
         } else {
           if (!javaQ.isEmpty()) {
-            assertEquals((int) javaQ.poll(), (int) intQ.poll());
+            assertThat((int) javaQ.poll()).isEqualTo((int) intQ.poll());
           }
         }
 
-        assertEquals(javaQ.isEmpty(), intQ.isEmpty());
-        assertEquals(javaQ.size(), intQ.size());
+        assertThat(javaQ.isEmpty()).isEqualTo(intQ.isEmpty());
+        assertThat(javaQ.size()).isEqualTo(intQ.size());
       }
     }
   }

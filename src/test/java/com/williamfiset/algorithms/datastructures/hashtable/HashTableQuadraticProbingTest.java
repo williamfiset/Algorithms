@@ -1,6 +1,6 @@
 package com.williamfiset.algorithms.datastructures.hashtable;
 
-import static org.junit.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.*;
 import org.junit.*;
@@ -74,19 +74,19 @@ public class HashTableQuadraticProbingTest {
   public void testUpdatingValue() {
 
     map.add(1, 1);
-    assertTrue(1 == map.get(1));
+    assertThat(map.get(1)).isEqualTo(1);
 
     map.add(1, 5);
-    assertTrue(5 == map.get(1));
+    assertThat(map.get(1)).isEqualTo(5);
 
     map.add(1, -7);
-    assertTrue(-7 == map.get(1));
+    assertThat(map.get(1)).isEqualTo(-7);
   }
 
   private void assertCapacityIsPowerOfTwo(HashTableQuadraticProbing<Integer, Integer> ht) {
     int sz = ht.getCapacity();
     if (sz == 0) return;
-    assertTrue((sz & (sz - 1)) == 0);
+    assertThat((sz & (sz - 1))).isEqualTo(0);
   }
 
   // Test that as the table size increases the hashtable
@@ -113,31 +113,31 @@ public class HashTableQuadraticProbingTest {
 
       map.clear();
       map2.clear();
-      assertTrue(map.isEmpty());
+      assertThat(map.isEmpty()).isTrue();
 
       map = new HashTableQuadraticProbing<>();
 
       List<Integer> rand_nums = genRandList(MAX_SIZE);
-      for (Integer key : rand_nums) assertEquals(map.add(key, key), map2.put(key, key));
+      for (Integer key : rand_nums) assertThat(map.add(key, key)).isEqualTo(map2.put(key, key));
 
       int count = 0;
       for (Integer key : map) {
-        assertEquals(key, map.get(key));
-        assertEquals(map.get(key), map2.get(key));
-        assertTrue(map.hasKey(key));
-        assertTrue(rand_nums.contains(key));
+        assertThat(map.get(key)).isEqualTo(key);
+        assertThat(map.get(key)).isEqualTo(map2.get(key));
+        assertThat(map.hasKey(key)).isTrue();
+        assertThat(rand_nums.contains(key)).isTrue();
         count++;
       }
 
       for (Integer key : map2.keySet()) {
-        assertEquals(key, map.get(key));
+        assertThat(map.get(key)).isEqualTo(key);
       }
 
       Set<Integer> set = new HashSet<>();
       for (int n : rand_nums) set.add(n);
 
-      assertEquals(set.size(), count);
-      assertEquals(map2.size(), count);
+      assertThat(set.size()).isEqualTo(count);
+      assertThat(map2.size()).isEqualTo(count);
     }
   }
 
@@ -175,12 +175,12 @@ public class HashTableQuadraticProbingTest {
         map.put(randomVal, 5);
       }
 
-      assertEquals(map.size(), keys_set.size());
+      assertThat(map.size()).isEqualTo(keys_set.size());
 
       List<Integer> keys = map.keys();
       for (Integer key : keys) map.remove(key);
 
-      assertTrue(map.isEmpty());
+      assertThat(map.isEmpty()).isTrue();
     }
   }
 
@@ -193,21 +193,21 @@ public class HashTableQuadraticProbingTest {
     map.put(11, 0);
     map.put(12, 0);
     map.put(13, 0);
-    assertEquals(3, map.size());
+    assertThat(map.size()).isEqualTo(3);
 
     // Add ten more
     for (int i = 1; i <= 10; i++) map.put(i, 0);
-    assertEquals(13, map.size());
+    assertThat(map.size()).isEqualTo(13);
 
     // Remove ten
     for (int i = 1; i <= 10; i++) map.remove(i);
-    assertEquals(3, map.size());
+    assertThat(map.size()).isEqualTo(3);
 
     // remove three
     map.remove(11);
     map.remove(12);
     map.remove(13);
-    assertEquals(0, map.size());
+    assertThat(map.size()).isEqualTo(0);
   }
 
   @Test
@@ -230,7 +230,7 @@ public class HashTableQuadraticProbingTest {
     map.remove(o1);
     map.remove(o4);
 
-    assertEquals(0, map.size());
+    assertThat(map.size()).isEqualTo(0);
   }
 
   @Test
@@ -242,7 +242,7 @@ public class HashTableQuadraticProbingTest {
 
       map.clear();
       jmap.clear();
-      assertEquals(jmap.size(), map.size());
+      assertThat(jmap.size()).isEqualTo(map.size());
 
       map = new HashTableQuadraticProbing<>();
 
@@ -257,17 +257,17 @@ public class HashTableQuadraticProbingTest {
         int key = nums.get(i);
         int val = i;
 
-        if (r < probability1) assertEquals(jmap.put(key, val), map.put(key, val));
+        if (r < probability1) assertThat(jmap.put(key, val)).isEqualTo(map.put(key, val));
 
-        assertEquals(jmap.get(key), map.get(key));
-        assertEquals(jmap.containsKey(key), map.containsKey(key));
-        assertEquals(jmap.size(), map.size());
+        assertThat(jmap.get(key)).isEqualTo(map.get(key));
+        assertThat(jmap.containsKey(key)).isEqualTo(map.containsKey(key));
+        assertThat(jmap.size()).isEqualTo(map.size());
 
-        if (r > probability2) assertEquals(map.remove(key), jmap.remove(key));
+        if (r > probability2) assertThat(map.remove(key)).isEqualTo(jmap.remove(key));
 
-        assertEquals(jmap.get(key), map.get(key));
-        assertEquals(jmap.containsKey(key), map.containsKey(key));
-        assertEquals(jmap.size(), map.size());
+        assertThat(jmap.get(key)).isEqualTo(map.get(key));
+        assertThat(jmap.containsKey(key)).isEqualTo(map.containsKey(key));
+        assertThat(jmap.size()).isEqualTo(map.size());
       }
     }
   }
@@ -282,7 +282,7 @@ public class HashTableQuadraticProbingTest {
 
       m.clear();
       hm.clear();
-      assertEquals(m.size(), hm.size());
+      assertThat(m.size()).isEqualTo(hm.size());
 
       int sz = randInt(1, MAX_SIZE);
       m = new HashTableQuadraticProbing<>(sz);
@@ -316,8 +316,8 @@ public class HashTableQuadraticProbingTest {
           l2.add(rand_val);
         }
 
-        assertEquals(m.size(), hm.size());
-        assertEquals(l1, l2);
+        assertThat(m.size()).isEqualTo(hm.size());
+        assertThat(l1).isEqualTo(l2);
       }
     }
   }

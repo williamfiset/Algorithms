@@ -1,6 +1,6 @@
 package com.williamfiset.algorithms.datastructures.linkedlist;
 
-import static org.junit.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,8 +22,8 @@ public class LinkedListTest {
 
   @Test
   public void testEmptyList() {
-    assertTrue(list.isEmpty());
-    assertEquals(list.size(), 0);
+    assertThat(list.isEmpty()).isTrue();
+    assertThat(list.size()).isEqualTo(0);
   }
 
   @Test(expected = Exception.class)
@@ -49,97 +49,97 @@ public class LinkedListTest {
   @Test
   public void testAddFirst() {
     list.addFirst(3);
-    assertEquals(list.size(), 1);
+    assertThat(list.size()).isEqualTo(1);
     list.addFirst(5);
-    assertEquals(list.size(), 2);
+    assertThat(list.size()).isEqualTo(2);
   }
 
   @Test
   public void testAddLast() {
     list.addLast(3);
-    assertEquals(list.size(), 1);
+    assertThat(list.size()).isEqualTo(1);
     list.addLast(5);
-    assertEquals(list.size(), 2);
+    assertThat(list.size()).isEqualTo(2);
   }
 
   @Test
   public void testAddAt() throws Exception {
     list.addAt(0, 1);
-    assertEquals(list.size(), 1);
+    assertThat(list.size()).isEqualTo(1);
     list.addAt(1, 2);
-    assertEquals(list.size(), 2);
+    assertThat(list.size()).isEqualTo(2);
     list.addAt(1, 3);
-    assertEquals(list.size(), 3);
+    assertThat(list.size()).isEqualTo(3);
     list.addAt(2, 4);
-    assertEquals(list.size(), 4);
+    assertThat(list.size()).isEqualTo(4);
     list.addAt(1, 8);
-    assertEquals(list.size(), 5);
+    assertThat(list.size()).isEqualTo(5);
   }
 
   @Test
   public void testRemoveFirst() {
     list.addFirst(3);
-    assertTrue(list.removeFirst() == 3);
-    assertTrue(list.isEmpty());
+    assertThat(list.removeFirst()).isEqualTo(3);
+    assertThat(list.isEmpty());
   }
 
   @Test
   public void testRemoveLast() {
     list.addLast(4);
-    assertTrue(list.removeLast() == 4);
-    assertTrue(list.isEmpty());
+    assertThat(list.removeLast()).isEqualTo(4);
+    assertThat(list.isEmpty()).isTrue();
   }
 
   @Test
   public void testPeekFirst() {
     list.addFirst(4);
-    assertTrue(list.peekFirst() == 4);
-    assertEquals(list.size(), 1);
+    assertThat(list.peekFirst()).isEqualTo(4);
+    assertThat(list.size()).isEqualTo(1);
   }
 
   @Test
   public void testPeekLast() {
     list.addLast(4);
-    assertTrue(list.peekLast() == 4);
-    assertEquals(list.size(), 1);
+    assertThat(list.peekLast()).isEqualTo(4);
+    assertThat(list.size()).isEqualTo(1);
   }
 
   @Test
   public void testPeeking() {
     // 5
     list.addFirst(5);
-    assertTrue(list.peekFirst() == 5);
-    assertTrue(list.peekLast() == 5);
+    assertThat(list.peekFirst()).isEqualTo(5);
+    assertThat(list.peekLast()).isEqualTo(5);
 
     // 6 - 5
     list.addFirst(6);
-    assertTrue(list.peekFirst() == 6);
-    assertTrue(list.peekLast() == 5);
+    assertThat(list.peekFirst()).isEqualTo(6);
+    assertThat(list.peekLast()).isEqualTo(5);
 
     // 7 - 6 - 5
     list.addFirst(7);
-    assertTrue(list.peekFirst() == 7);
-    assertTrue(list.peekLast() == 5);
+    assertThat(list.peekFirst()).isEqualTo(7);
+    assertThat(list.peekLast()).isEqualTo(5);
 
     // 7 - 6 - 5 - 8
     list.addLast(8);
-    assertTrue(list.peekFirst() == 7);
-    assertTrue(list.peekLast() == 8);
+    assertThat(list.peekFirst()).isEqualTo(7);
+    assertThat(list.peekLast()).isEqualTo(8);
 
     // 7 - 6 - 5
     list.removeLast();
-    assertTrue(list.peekFirst() == 7);
-    assertTrue(list.peekLast() == 5);
+    assertThat(list.peekFirst()).isEqualTo(7);
+    assertThat(list.peekLast()).isEqualTo(5);
 
     // 7 - 6
     list.removeLast();
-    assertTrue(list.peekFirst() == 7);
-    assertTrue(list.peekLast() == 6);
+    assertThat(list.peekFirst()).isEqualTo(7);
+    assertThat(list.peekLast()).isEqualTo(6);
 
     // 6
     list.removeFirst();
-    assertTrue(list.peekFirst() == 6);
-    assertTrue(list.peekLast() == 6);
+    assertThat(list.peekFirst()).isEqualTo(6);
+    assertThat(list.peekLast()).isEqualTo(6);
   }
 
   @Test
@@ -157,7 +157,7 @@ public class LinkedListTest {
     strs.remove("e");
     strs.remove("c");
     strs.remove("f");
-    assertEquals(0, strs.size());
+    assertThat(strs.size()).isEqualTo(0);
   }
 
   @Test
@@ -168,11 +168,11 @@ public class LinkedListTest {
     list.add(4);
     list.removeAt(0);
     list.removeAt(2);
-    assertTrue(list.peekFirst() == 2);
-    assertTrue(list.peekLast() == 3);
+    assertThat(list.peekFirst()).isEqualTo(2);
+    assertThat(list.peekLast()).isEqualTo(3);
     list.removeAt(1);
     list.removeAt(0);
-    assertEquals(list.size(), 0);
+    assertThat(list.size()).isEqualTo(0);
   }
 
   @Test
@@ -180,15 +180,15 @@ public class LinkedListTest {
     list.add(22);
     list.add(33);
     list.add(44);
-    assertEquals(list.size(), 3);
+    assertThat(list.size()).isEqualTo(3);
     list.clear();
-    assertEquals(list.size(), 0);
+    assertThat(list.size()).isEqualTo(0);
     list.add(22);
     list.add(33);
     list.add(44);
-    assertEquals(list.size(), 3);
+    assertThat(list.size()).isEqualTo(3);
     list.clear();
-    assertEquals(list.size(), 0);
+    assertThat(list.size()).isEqualTo(0);
   }
 
   @Test
@@ -210,16 +210,16 @@ public class LinkedListTest {
       for (int i = 0; i < randNums.size(); i++) {
 
         Integer rm_val = randNums.get(i);
-        assertEquals(javaLinkedList.remove(rm_val), list.remove(rm_val));
-        assertEquals(javaLinkedList.size(), list.size());
+        assertThat(javaLinkedList.remove(rm_val)).isEqualTo(list.remove(rm_val));
+        assertThat(javaLinkedList.size()).isEqualTo(list.size());
 
         java.util.Iterator<Integer> iter1 = javaLinkedList.iterator();
         java.util.Iterator<Integer> iter2 = list.iterator();
-        while (iter1.hasNext()) assertEquals(iter1.next(), iter2.next());
+        while (iter1.hasNext()) assertThat(iter1.next()).isEqualTo(iter2.next());
 
         iter1 = javaLinkedList.iterator();
         iter2 = list.iterator();
-        while (iter1.hasNext()) assertEquals(iter1.next(), iter2.next());
+        while (iter1.hasNext()) assertThat(iter1.next()).isEqualTo(iter2.next());
       }
 
       list.clear();
@@ -234,12 +234,12 @@ public class LinkedListTest {
       for (int i = 0; i < randNums.size(); i++) {
 
         Integer rm_val = (int) (MAX_RAND_NUM * Math.random());
-        assertEquals(javaLinkedList.remove(rm_val), list.remove(rm_val));
-        assertEquals(javaLinkedList.size(), list.size());
+        assertThat(javaLinkedList.remove(rm_val)).isEqualTo(list.remove(rm_val));
+        assertThat(javaLinkedList.size()).isEqualTo(list.size());
 
         java.util.Iterator<Integer> iter1 = javaLinkedList.iterator();
         java.util.Iterator<Integer> iter2 = list.iterator();
-        while (iter1.hasNext()) assertEquals(iter1.next(), iter2.next());
+        while (iter1.hasNext()) assertThat(iter1.next()).isEqualTo(iter2.next());
       }
     }
   }
@@ -266,12 +266,12 @@ public class LinkedListTest {
 
         Integer num1 = javaLinkedList.remove(rm_index);
         Integer num2 = list.removeAt(rm_index);
-        assertEquals(num1, num2);
-        assertEquals(javaLinkedList.size(), list.size());
+        assertThat(num1).isEqualTo(num2);
+        assertThat(javaLinkedList.size()).isEqualTo(list.size());
 
         java.util.Iterator<Integer> iter1 = javaLinkedList.iterator();
         java.util.Iterator<Integer> iter2 = list.iterator();
-        while (iter1.hasNext()) assertEquals(iter1.next(), iter2.next());
+        while (iter1.hasNext()) assertThat(iter1.next()).isEqualTo(iter2.next());
       }
     }
   }
@@ -299,12 +299,12 @@ public class LinkedListTest {
         Integer index1 = javaLinkedList.indexOf(elem);
         Integer index2 = list.indexOf(elem);
 
-        assertEquals(index1, index2);
-        assertEquals(javaLinkedList.size(), list.size());
+        assertThat(index1).isEqualTo(index2);
+        assertThat(javaLinkedList.size()).isEqualTo(list.size());
 
         java.util.Iterator<Integer> iter1 = javaLinkedList.iterator();
         java.util.Iterator<Integer> iter2 = list.iterator();
-        while (iter1.hasNext()) assertEquals(iter1.next(), iter2.next());
+        while (iter1.hasNext()) assertThat(iter1.next()).isEqualTo(iter2.next());
       }
     }
   }
@@ -312,16 +312,16 @@ public class LinkedListTest {
   @Test
   public void testToString() {
     DoublyLinkedList<String> strs = new DoublyLinkedList<>();
-    assertEquals(strs.toString(), "[  ]");
+    assertThat(strs.toString()).isEqualTo("[  ]");
     strs.add("a");
-    assertEquals(strs.toString(), "[ a ]");
+    assertThat(strs.toString()).isEqualTo("[ a ]");
     strs.add("b");
-    assertEquals(strs.toString(), "[ a, b ]");
+    assertThat(strs.toString()).isEqualTo("[ a, b ]");
     strs.add("c");
     strs.add("d");
     strs.add("e");
     strs.add("f");
-    assertEquals(strs.toString(), "[ a, b, c, d, e, f ]");
+    assertThat(strs.toString()).isEqualTo("[ a, b, c, d, e, f ]");
   }
 
   // Generate a list of random numbers

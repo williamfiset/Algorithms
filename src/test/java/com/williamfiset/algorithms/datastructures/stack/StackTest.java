@@ -1,6 +1,6 @@
 package com.williamfiset.algorithms.datastructures.stack;
 
-import static org.junit.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,22 +21,22 @@ public class StackTest {
   @Test
   public void testEmptyStack() {
     for (Stack stack : stacks) {
-      assertTrue(stack.isEmpty());
-      assertEquals(stack.size(), 0);
+      assertThat(stack.isEmpty()).isTrue();
+      assertThat(stack.size()).isEqualTo(0);
     }
   }
 
-  @Test
+  @Test(expected = Exception.class)
   public void testPopOnEmpty() {
     for (Stack stack : stacks) {
-      assertThrows(Exception.class, stack::pop);
+      stack.pop();
     }
   }
 
-  @Test
+  @Test(expected = Exception.class)
   public void testPeekOnEmpty() {
     for (Stack stack : stacks) {
-      assertThrows(Exception.class, stack::peek);
+      stack.peek();
     }
   }
 
@@ -44,7 +44,7 @@ public class StackTest {
   public void testPush() {
     for (Stack<Integer> stack : stacks) {
       stack.push(2);
-      assertEquals(stack.size(), 1);
+      assertThat(stack.size()).isEqualTo(1);
     }
   }
 
@@ -52,8 +52,8 @@ public class StackTest {
   public void testPeek() {
     for (Stack<Integer> stack : stacks) {
       stack.push(2);
-      assertEquals(2, (int) (Integer) stack.peek());
-      assertEquals(stack.size(), 1);
+      assertThat((int) (Integer) stack.peek()).isEqualTo(2);
+      assertThat(stack.size()).isEqualTo(1);
     }
   }
 
@@ -61,28 +61,28 @@ public class StackTest {
   public void testPop() {
     for (Stack<Integer> stack : stacks) {
       stack.push(2);
-      assertEquals(2, (int) stack.pop());
-      assertEquals(stack.size(), 0);
+      assertThat((int) stack.pop()).isEqualTo(2);
+      assertThat(stack.size()).isEqualTo(0);
     }
   }
 
   @Test
   public void testExhaustively() {
     for (Stack<Integer> stack : stacks) {
-      assertTrue(stack.isEmpty());
+      assertThat(stack.isEmpty()).isTrue();
       stack.push(1);
-      assertFalse(stack.isEmpty());
+      assertThat(stack.isEmpty()).isFalse();
       stack.push(2);
-      assertEquals(stack.size(), 2);
-      assertEquals(2, (int) stack.peek());
-      assertEquals(stack.size(), 2);
-      assertEquals(2, (int) stack.pop());
-      assertEquals(stack.size(), 1);
-      assertEquals(1, (int) stack.peek());
-      assertEquals(stack.size(), 1);
-      assertEquals(1, (int) stack.pop());
-      assertEquals(stack.size(), 0);
-      assertTrue(stack.isEmpty());
+      assertThat(stack.size()).isEqualTo(2);
+      assertThat((int) stack.peek()).isEqualTo(2);
+      assertThat(stack.size()).isEqualTo(2);
+      assertThat((int) stack.pop()).isEqualTo(2);
+      assertThat(stack.size()).isEqualTo(1);
+      assertThat((int) stack.peek()).isEqualTo(1);
+      assertThat(stack.size()).isEqualTo(1);
+      assertThat((int) stack.pop()).isEqualTo(1);
+      assertThat(stack.size()).isEqualTo(0);
+      assertThat(stack.isEmpty()).isTrue();
     }
   }
 }

@@ -1,6 +1,6 @@
 package com.williamfiset.algorithms.datastructures.set;
 
-import static org.junit.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,17 +48,17 @@ public class HSetTest {
   @Test
   public void testAddRemove() {
     hs.add(5);
-    assertEquals(hs.size(), 1);
+    assertThat(hs.size()).isEqualTo(1);
     hs.remove(5);
-    assertEquals(hs.size(), 0);
+    assertThat(hs.size()).isEqualTo(0);
     hs.add(0);
-    assertEquals(hs.size(), 1);
+    assertThat(hs.size()).isEqualTo(1);
     hs.remove(0);
-    assertEquals(hs.size(), 0);
+    assertThat(hs.size()).isEqualTo(0);
     hs.add(-5);
-    assertEquals(hs.size(), 1);
+    assertThat(hs.size()).isEqualTo(1);
     hs.remove(-5);
-    assertEquals(hs.size(), 0);
+    assertThat(hs.size()).isEqualTo(0);
   }
 
   @Test
@@ -73,7 +73,7 @@ public class HSetTest {
       for (int i = 0; i < TEST_SZ; i++) {
 
         int num = nums.get(i);
-        // assertEquals( hs.add(num), s.add(num) );
+        // assertThat(hs.add(num)).isEqualTo(s.add(num));
         hs.add(num);
         s.add(num);
 
@@ -81,7 +81,7 @@ public class HSetTest {
         for (Integer n : s) hs.contains(n);
         for (Integer n : hs) s.contains(n);
 
-        assertEquals(s.size(), hs.size());
+        assertThat(s.size()).isEqualTo(hs.size());
       }
     }
   }
@@ -103,7 +103,7 @@ public class HSetTest {
 
         int num = nums.get(i);
         ConstObj obj = new ConstObj(java.util.Objects.hash(num), num);
-        // assertEquals( hs.add(num), s.add(num) );
+        // assertThat(hs.add(num)).isEqualTo(s.add(num));
         hs.add(obj);
         s.add(obj);
 
@@ -111,7 +111,7 @@ public class HSetTest {
         for (ConstObj n : s) hs.contains(n);
         for (ConstObj n : hs) s.contains(n);
 
-        assertEquals(s.size(), hs.size());
+        assertThat(s.size()).isEqualTo(hs.size());
       }
     }
   }
@@ -125,13 +125,13 @@ public class HSetTest {
     HSet<ConstObj> s = new HSet<ConstObj>();
 
     s.add(ch1);
-    assertEquals(1, s.size());
+    assertThat(s.size()).isEqualTo(1);
     s.remove(ch1);
-    assertEquals(0, s.size());
+    assertThat(s.size()).isEqualTo(0);
     s.add(ch2);
-    assertEquals(1, s.size());
+    assertThat(s.size()).isEqualTo(1);
     s.remove(ch2);
-    assertEquals(0, s.size());
+    assertThat(s.size()).isEqualTo(0);
   }
 
   // Generate a list of random numbers

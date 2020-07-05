@@ -1,6 +1,6 @@
 package com.williamfiset.algorithms.datastructures.hashtable;
 
-import static org.junit.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.*;
 import org.junit.*;
@@ -57,13 +57,13 @@ public class HashTableDoubleHashingTest {
     DoubleHashingTestObject on7 = new DoubleHashingTestObject(-7);
 
     map.add(o1, 1);
-    assertTrue(1 == map.get(o1));
+    assertThat(map.get(o1)).isEqualTo(1);
 
     map.add(o5, 5);
-    assertTrue(5 == map.get(o5));
+    assertThat(map.get(o5)).isEqualTo(5);
 
     map.add(on7, -7);
-    assertTrue(-7 == map.get(on7));
+    assertThat(map.get(on7)).isEqualTo(-7);
   }
 
   @Test
@@ -78,23 +78,23 @@ public class HashTableDoubleHashingTest {
 
       mmap.clear();
       jmap.clear();
-      assertTrue(mmap.isEmpty());
+      assertThat(mmap.isEmpty()).isTrue();
 
       List<DoubleHashingTestObject> rand_nums = genRandList(MAX_SIZE);
       for (DoubleHashingTestObject key : rand_nums)
-        assertEquals(mmap.add(key, key), jmap.put(key, key));
+        assertThat(mmap.add(key, key)).isEqualTo(jmap.put(key, key));
 
       int count = 0;
       for (DoubleHashingTestObject key : mmap) {
-        assertEquals(key, mmap.get(key));
-        assertEquals(mmap.get(key), jmap.get(key));
-        assertTrue(mmap.hasKey(key));
-        assertTrue(rand_nums.contains(key));
+        assertThat(mmap.get(key)).isEqualTo(key);
+        assertThat(mmap.get(key)).isEqualTo(jmap.get(key));
+        assertThat(mmap.hasKey(key)).isTrue();
+        assertThat(rand_nums.contains(key)).isTrue();
         count++;
       }
 
       for (DoubleHashingTestObject key : jmap.keySet()) {
-        assertEquals(key, mmap.get(key));
+        assertThat(mmap.get(key)).isEqualTo(key);
       }
 
       Set<DoubleHashingTestObject> set = new HashSet<>();
@@ -102,8 +102,8 @@ public class HashTableDoubleHashingTest {
 
       // System.out.println(set.size() + " " + jmap.size() + " " + count);
 
-      assertEquals(set.size(), count);
-      assertEquals(jmap.size(), count);
+      assertThat(set.size()).isEqualTo(count);
+      assertThat(jmap.size()).isEqualTo(count);
     }
   }
 
@@ -150,12 +150,12 @@ public class HashTableDoubleHashingTest {
         map.put(obj, 5);
       }
 
-      assertEquals(map.size(), keys_set.size());
+      assertThat(map.size()).isEqualTo(keys_set.size());
 
       List<DoubleHashingTestObject> keys = map.keys();
       for (DoubleHashingTestObject key : keys) map.remove(key);
 
-      assertTrue(map.isEmpty());
+      assertThat(map.isEmpty()).isTrue();
     }
   }
 
@@ -172,21 +172,21 @@ public class HashTableDoubleHashingTest {
     map.put(o11, 0);
     map.put(o12, 0);
     map.put(o13, 0);
-    assertEquals(3, map.size());
+    assertThat(map.size()).isEqualTo(3);
 
     // Add ten more
     for (int i = 1; i <= 10; i++) map.put(new DoubleHashingTestObject(i), 0);
-    assertEquals(13, map.size());
+    assertThat(map.size()).isEqualTo(13);
 
     // Remove ten
     for (int i = 1; i <= 10; i++) map.remove(new DoubleHashingTestObject(i));
-    assertEquals(3, map.size());
+    assertThat(map.size()).isEqualTo(3);
 
     // remove three
     map.remove(o11);
     map.remove(o12);
     map.remove(o13);
-    assertEquals(0, map.size());
+    assertThat(map.size()).isEqualTo(0);
   }
 
   @Test
@@ -198,7 +198,7 @@ public class HashTableDoubleHashingTest {
 
       map.clear();
       jmap.clear();
-      assertEquals(jmap.size(), map.size());
+      assertThat(jmap.size()).isEqualTo(map.size());
 
       map = new HashTableDoubleHashing<>();
 
@@ -213,17 +213,17 @@ public class HashTableDoubleHashingTest {
         DoubleHashingTestObject key = nums.get(i);
         int val = i;
 
-        if (r < probability1) assertEquals(jmap.put(key, val), map.put(key, val));
+        if (r < probability1) assertThat(jmap.put(key, val)).isEqualTo(map.put(key, val));
 
-        assertEquals(jmap.get(key), map.get(key));
-        assertEquals(jmap.containsKey(key), map.containsKey(key));
-        assertEquals(jmap.size(), map.size());
+        assertThat(jmap.get(key)).isEqualTo(map.get(key));
+        assertThat(jmap.containsKey(key)).isEqualTo(map.containsKey(key));
+        assertThat(jmap.size()).isEqualTo(map.size());
 
-        if (r > probability2) assertEquals(map.remove(key), jmap.remove(key));
+        if (r > probability2) assertThat(map.remove(key)).isEqualTo(jmap.remove(key));
 
-        assertEquals(jmap.get(key), map.get(key));
-        assertEquals(jmap.containsKey(key), map.containsKey(key));
-        assertEquals(jmap.size(), map.size());
+        assertThat(jmap.get(key)).isEqualTo(map.get(key));
+        assertThat(jmap.containsKey(key)).isEqualTo(map.containsKey(key));
+        assertThat(jmap.size()).isEqualTo(map.size());
       }
     }
   }
@@ -239,7 +239,7 @@ public class HashTableDoubleHashingTest {
 
       m.clear();
       hm.clear();
-      assertEquals(m.size(), hm.size());
+      assertThat(m.size()).isEqualTo(hm.size());
 
       int sz = randInt(1, MAX_SIZE);
       m = new HashTableDoubleHashing<>(sz);
@@ -274,8 +274,8 @@ public class HashTableDoubleHashingTest {
           l2.add(randVal);
         }
 
-        assertEquals(m.size(), hm.size());
-        assertEquals(l1, l2);
+        assertThat(m.size()).isEqualTo(hm.size());
+        assertThat(l1).isEqualTo(l2);
       }
     }
   }

@@ -1,6 +1,6 @@
 package com.williamfiset.algorithms.datastructures.bloomfilter;
 
-import static org.junit.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.security.SecureRandom;
 import java.util.HashSet;
@@ -33,7 +33,7 @@ public class BloomFilterTest {
     for (int i = 0; i < s.length(); i++) {
       for (int j = i + 1; j < s.length(); j++) {
         String sub = s.substring(i, j + 1);
-        assertTrue(set.contains(sub));
+        assertThat(set.contains(sub)).isTrue();
       }
     }
   }
@@ -67,7 +67,7 @@ public class BloomFilterTest {
 
     // The probablity of a collision should be really high
     // because we're using small prime numbers
-    assertTrue(collisionHappened);
+    assertThat(collisionHappened).isTrue();
   }
 
   @Test
@@ -86,7 +86,7 @@ public class BloomFilterTest {
           set.add(randStr);
         }
 
-        for (String s : javaset) assertTrue(set.contains(s));
+        for (String s : javaset) assertThat(set.contains(s)).isTrue();
 
         // Check that strings that aren't in the string set actually aren't
         // in the set, the probablity should be low enough that a false positive
@@ -94,7 +94,7 @@ public class BloomFilterTest {
         for (int l = 0; l < 100; l++) {
           String randStr = randomString(sz);
           if (!randStr.contains(randStr)) {
-            assertFalse(set.contains(randStr));
+            assertThat(set.contains(randStr)).isFalse();
           }
         }
       }

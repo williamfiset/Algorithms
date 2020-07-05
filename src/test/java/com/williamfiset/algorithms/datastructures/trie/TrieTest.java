@@ -1,6 +1,6 @@
 package com.williamfiset.algorithms.datastructures.trie;
 
-import static org.junit.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.*;
 
@@ -53,11 +53,11 @@ public class TrieTest {
     // a valid string to be inserted into the trie (although it
     // would be easy to account for)
     t1.insert("");
-    assertFalse(t1.contains(""));
+    assertThat(t1.contains("")).isFalse();
     t1.insert("");
-    assertFalse(t1.contains(""));
+    assertThat(t1.contains("")).isFalse();
     t1.insert("");
-    assertFalse(t1.contains(""));
+    assertThat(t1.contains("")).isFalse();
 
     Trie t2 = new Trie();
     t2.insert("aaaaa");
@@ -65,11 +65,11 @@ public class TrieTest {
     t2.insert("aaaaa");
     t2.insert("aaaaa");
     t2.insert("aaaaa");
-    assertTrue(t2.contains("aaaaa"));
-    assertTrue(t2.contains("aaaa"));
-    assertTrue(t2.contains("aaa"));
-    assertTrue(t2.contains("aa"));
-    assertTrue(t2.contains("a"));
+    assertThat(t2.contains("aaaaa")).isTrue();
+    assertThat(t2.contains("aaaa")).isTrue();
+    assertThat(t2.contains("aaa")).isTrue();
+    assertThat(t2.contains("aa")).isTrue();
+    assertThat(t2.contains("a")).isTrue();
 
     Trie t3 = new Trie();
 
@@ -86,18 +86,18 @@ public class TrieTest {
     t3.insert("B");
     t3.insert("B");
 
-    assertTrue(t3.contains("A"));
-    assertTrue(t3.contains("AH"));
-    assertTrue(t3.contains("A7"));
-    assertTrue(t3.contains("AE"));
-    assertTrue(t3.contains("AH7"));
-    assertTrue(t3.contains("7"));
-    assertTrue(t3.contains("B"));
+    assertThat(t3.contains("A")).isTrue();
+    assertThat(t3.contains("AH")).isTrue();
+    assertThat(t3.contains("A7")).isTrue();
+    assertThat(t3.contains("AE")).isTrue();
+    assertThat(t3.contains("AH7")).isTrue();
+    assertThat(t3.contains("7")).isTrue();
+    assertThat(t3.contains("B")).isTrue();
 
-    assertFalse(t3.contains("Ar"));
-    assertFalse(t3.contains("A8"));
-    assertFalse(t3.contains("AH6"));
-    assertFalse(t3.contains("C"));
+    assertThat(t3.contains("Ar")).isFalse();
+    assertThat(t3.contains("A8")).isFalse();
+    assertThat(t3.contains("AH6")).isFalse();
+    assertThat(t3.contains("C")).isFalse();
   }
 
   @Test
@@ -109,11 +109,11 @@ public class TrieTest {
     // a valid string to be inserted into the trie (although it
     // would be easy to account for)
     t1.insert("");
-    assertEquals(t1.count(""), 0);
+    assertThat(t1.count("")).isEqualTo(0);
     t1.insert("");
-    assertEquals(t1.count(""), 0);
+    assertThat(t1.count("")).isEqualTo(0);
     t1.insert("");
-    assertEquals(t1.count(""), 0);
+    assertThat(t1.count("")).isEqualTo(0);
 
     Trie t2 = new Trie();
     t2.insert("aaaaa");
@@ -121,11 +121,11 @@ public class TrieTest {
     t2.insert("aaaaa");
     t2.insert("aaaaa");
     t2.insert("aaaaa");
-    assertEquals(t2.count("aaaaa"), 5);
-    assertEquals(t2.count("aaaa"), 5);
-    assertEquals(t2.count("aaa"), 5);
-    assertEquals(t2.count("aa"), 5);
-    assertEquals(t2.count("a"), 5);
+    assertThat(t2.count("aaaaa")).isEqualTo(5);
+    assertThat(t2.count("aaaa")).isEqualTo(5);
+    assertThat(t2.count("aaa")).isEqualTo(5);
+    assertThat(t2.count("aa")).isEqualTo(5);
+    assertThat(t2.count("a")).isEqualTo(5);
 
     Trie t3 = new Trie();
 
@@ -144,55 +144,55 @@ public class TrieTest {
     t3.insert("B");
     t3.insert("B");
 
-    assertEquals(t3.count("A"), 6);
-    assertEquals(t3.count("AH"), 3);
-    assertEquals(t3.count("A7"), 1);
-    assertEquals(t3.count("AE"), 2);
-    assertEquals(t3.count("AH7"), 1);
-    assertEquals(t3.count("7"), 2);
-    assertEquals(t3.count("B"), 4);
-    assertEquals(t3.count("Ar"), 0);
-    assertEquals(t3.count("A8"), 0);
-    assertEquals(t3.count("AH6"), 0);
-    assertEquals(t3.count("C"), 0);
+    assertThat(t3.count("A")).isEqualTo(6);
+    assertThat(t3.count("AH")).isEqualTo(3);
+    assertThat(t3.count("A7")).isEqualTo(1);
+    assertThat(t3.count("AE")).isEqualTo(2);
+    assertThat(t3.count("AH7")).isEqualTo(1);
+    assertThat(t3.count("7")).isEqualTo(2);
+    assertThat(t3.count("B")).isEqualTo(4);
+    assertThat(t3.count("Ar")).isEqualTo(0);
+    assertThat(t3.count("A8")).isEqualTo(0);
+    assertThat(t3.count("AH6")).isEqualTo(0);
+    assertThat(t3.count("C")).isEqualTo(0);
   }
 
   @Test
   public void testInsert() {
 
     Trie t = new Trie();
-    assertFalse(t.insert("a"));
-    assertFalse(t.insert("b"));
-    assertFalse(t.insert("c"));
-    assertFalse(t.insert("d"));
-    assertFalse(t.insert("x"));
+    assertThat(t.insert("a")).isFalse();
+    assertThat(t.insert("b")).isFalse();
+    assertThat(t.insert("c")).isFalse();
+    assertThat(t.insert("d")).isFalse();
+    assertThat(t.insert("x")).isFalse();
 
-    assertTrue(t.insert("ab"));
-    assertTrue(t.insert("xkcd"));
-    assertTrue(t.insert("dogs"));
-    assertTrue(t.insert("bears"));
+    assertThat(t.insert("ab")).isTrue();
+    assertThat(t.insert("xkcd")).isTrue();
+    assertThat(t.insert("dogs")).isTrue();
+    assertThat(t.insert("bears")).isTrue();
 
-    assertFalse(t.insert("mo"));
-    assertTrue(t.insert("mooooose"));
+    assertThat(t.insert("mo")).isFalse();
+    assertThat(t.insert("mooooose")).isTrue();
 
     t.clear();
 
-    assertFalse(t.insert("aaaa", 4));
-    assertEquals(t.count("aaaa"), 4);
+    assertThat(t.insert("aaaa", 4)).isFalse();
+    assertThat(t.count("aaaa")).isEqualTo(4);
 
-    assertTrue(t.insert("aaa", 3));
-    assertEquals(t.count("a"), 7);
-    assertEquals(t.count("aa"), 7);
-    assertEquals(t.count("aaa"), 7);
-    assertEquals(t.count("aaaa"), 4);
-    assertEquals(t.count("aaaaa"), 0);
+    assertThat(t.insert("aaa", 3)).isTrue();
+    assertThat(t.count("a")).isEqualTo(7);
+    assertThat(t.count("aa")).isEqualTo(7);
+    assertThat(t.count("aaa")).isEqualTo(7);
+    assertThat(t.count("aaaa")).isEqualTo(4);
+    assertThat(t.count("aaaaa")).isEqualTo(0);
 
-    assertTrue(t.insert("a", 5));
-    assertEquals(t.count("a"), 12);
-    assertEquals(t.count("aa"), 7);
-    assertEquals(t.count("aaa"), 7);
-    assertEquals(t.count("aaaa"), 4);
-    assertEquals(t.count("aaaaa"), 0);
+    assertThat(t.insert("a", 5)).isTrue();
+    assertThat(t.count("a")).isEqualTo(12);
+    assertThat(t.count("aa")).isEqualTo(7);
+    assertThat(t.count("aaa")).isEqualTo(7);
+    assertThat(t.count("aaaa")).isEqualTo(4);
+    assertThat(t.count("aaaaa")).isEqualTo(0);
   }
 
   @Test
@@ -200,19 +200,19 @@ public class TrieTest {
 
     Trie t = new Trie();
 
-    assertFalse(t.insert("a"));
-    assertFalse(t.insert("b"));
-    assertFalse(t.insert("c"));
+    assertThat(t.insert("a")).isFalse();
+    assertThat(t.insert("b")).isFalse();
+    assertThat(t.insert("c")).isFalse();
 
-    assertTrue(t.contains("a"));
-    assertTrue(t.contains("b"));
-    assertTrue(t.contains("c"));
+    assertThat(t.contains("a")).isTrue();
+    assertThat(t.contains("b")).isTrue();
+    assertThat(t.contains("c")).isTrue();
 
     t.clear();
 
-    assertFalse(t.contains("a"));
-    assertFalse(t.contains("b"));
-    assertFalse(t.contains("c"));
+    assertThat(t.contains("a")).isFalse();
+    assertThat(t.contains("b")).isFalse();
+    assertThat(t.contains("c")).isFalse();
 
     t.insert("aaaa");
     t.insert("aaab");
@@ -220,17 +220,17 @@ public class TrieTest {
     t.insert("aaac");
     t.insert("aaacb");
 
-    assertTrue(t.contains("aaa"));
-    assertTrue(t.contains("aaacb"));
-    assertTrue(t.contains("aaab5"));
+    assertThat(t.contains("aaa")).isTrue();
+    assertThat(t.contains("aaacb")).isTrue();
+    assertThat(t.contains("aaab5")).isTrue();
 
     t.clear();
 
-    assertFalse(t.contains("aaaa"));
-    assertFalse(t.contains("aaab"));
-    assertFalse(t.contains("aaab5"));
-    assertFalse(t.contains("aaac"));
-    assertFalse(t.contains("aaacb"));
+    assertThat(t.contains("aaaa")).isFalse();
+    assertThat(t.contains("aaab")).isFalse();
+    assertThat(t.contains("aaab5")).isFalse();
+    assertThat(t.contains("aaac")).isFalse();
+    assertThat(t.contains("aaacb")).isFalse();
   }
 
   @Test
@@ -241,20 +241,20 @@ public class TrieTest {
     t.insert("AA");
     t.insert("A");
 
-    assertTrue(t.delete("AAC"));
-    assertFalse(t.contains("AAC"));
-    assertTrue(t.contains("AA"));
-    assertTrue(t.contains("A"));
+    assertThat(t.delete("AAC")).isTrue();
+    assertThat(t.contains("AAC")).isFalse();
+    assertThat(t.contains("AA")).isTrue();
+    assertThat(t.contains("A")).isTrue();
 
-    assertTrue(t.delete("AA"));
-    assertFalse(t.contains("AAC"));
-    assertFalse(t.contains("AA"));
-    assertTrue(t.contains("A"));
+    assertThat(t.delete("AA")).isTrue();
+    assertThat(t.contains("AAC")).isFalse();
+    assertThat(t.contains("AA")).isFalse();
+    assertThat(t.contains("A")).isTrue();
 
-    assertTrue(t.delete("A"));
-    assertFalse(t.contains("AAC"));
-    assertFalse(t.contains("AA"));
-    assertFalse(t.contains("A"));
+    assertThat(t.delete("A")).isTrue();
+    assertThat(t.contains("AAC")).isFalse();
+    assertThat(t.contains("AA")).isFalse();
+    assertThat(t.contains("A")).isFalse();
 
     t.clear();
 
@@ -262,29 +262,12 @@ public class TrieTest {
     t.insert("AA");
     t.insert("A");
 
-    assertTrue(t.delete("AA"));
-    assertTrue(t.delete("AA"));
+    assertThat(t.delete("AA")).isTrue();
+    assertThat(t.delete("AA")).isTrue();
 
-    assertFalse(t.contains("AAC"));
-    assertFalse(t.contains("AA"));
-    assertTrue(t.contains("A"));
-
-    t.clear();
-
-    t.insert("$A");
-    t.insert("$B");
-    t.insert("$C");
-
-    assertTrue(t.delete("$", 3));
-
-    assertFalse(t.delete("$"));
-    assertFalse(t.contains("$"));
-    assertFalse(t.contains("$A"));
-    assertFalse(t.contains("$B"));
-    assertFalse(t.contains("$C"));
-    assertFalse(t.delete("$A"));
-    assertFalse(t.delete("$B"));
-    assertFalse(t.delete("$C"));
+    assertThat(t.contains("AAC")).isFalse();
+    assertThat(t.contains("AA")).isFalse();
+    assertThat(t.contains("A")).isTrue();
 
     t.clear();
 
@@ -292,16 +275,16 @@ public class TrieTest {
     t.insert("$B");
     t.insert("$C");
 
-    assertTrue(t.delete("$", 2));
-    assertTrue(t.delete("$"));
+    assertThat(t.delete("$", 3)).isTrue();
 
-    assertFalse(t.contains("$"));
-    assertFalse(t.contains("$A"));
-    assertFalse(t.contains("$B"));
-    assertFalse(t.contains("$C"));
-    assertFalse(t.delete("$A"));
-    assertFalse(t.delete("$B"));
-    assertFalse(t.delete("$C"));
+    assertThat(t.delete("$")).isFalse();
+    assertThat(t.contains("$")).isFalse();
+    assertThat(t.contains("$A")).isFalse();
+    assertThat(t.contains("$B")).isFalse();
+    assertThat(t.contains("$C")).isFalse();
+    assertThat(t.delete("$A")).isFalse();
+    assertThat(t.delete("$B")).isFalse();
+    assertThat(t.delete("$C")).isFalse();
 
     t.clear();
 
@@ -309,22 +292,39 @@ public class TrieTest {
     t.insert("$B");
     t.insert("$C");
 
-    assertTrue(t.delete("$", 2));
+    assertThat(t.delete("$", 2)).isTrue();
+    assertThat(t.delete("$")).isTrue();
 
-    assertTrue(t.contains("$"));
-    assertTrue(t.contains("$A"));
-    assertTrue(t.contains("$B"));
-    assertTrue(t.contains("$C"));
-    assertTrue(t.delete("$A"));
-    assertFalse(t.delete("$B"));
-    assertFalse(t.delete("$C"));
+    assertThat(t.contains("$")).isFalse();
+    assertThat(t.contains("$A")).isFalse();
+    assertThat(t.contains("$B")).isFalse();
+    assertThat(t.contains("$C")).isFalse();
+    assertThat(t.delete("$A")).isFalse();
+    assertThat(t.delete("$B")).isFalse();
+    assertThat(t.delete("$C")).isFalse();
+
+    t.clear();
+
+    t.insert("$A");
+    t.insert("$B");
+    t.insert("$C");
+
+    assertThat(t.delete("$", 2)).isTrue();
+
+    assertThat(t.contains("$")).isTrue();
+    assertThat(t.contains("$A")).isTrue();
+    assertThat(t.contains("$B")).isTrue();
+    assertThat(t.contains("$C")).isTrue();
+    assertThat(t.delete("$A")).isTrue();
+    assertThat(t.delete("$B")).isFalse();
+    assertThat(t.delete("$C")).isFalse();
 
     t.clear();
 
     t.insert("CAT", 3);
     t.insert("DOG", 3);
 
-    assertFalse(t.delete("parrot", 50));
+    assertThat(t.delete("parrot", 50)).isFalse();
 
     t.clear();
 
@@ -332,26 +332,13 @@ public class TrieTest {
     t.insert("122", 2);
     t.insert("123", 3);
 
-    assertTrue(t.delete("12", 6));
-    assertFalse(t.delete("12"));
-    assertFalse(t.delete("1"));
-    assertFalse(t.contains("1234"));
-    assertFalse(t.contains("123"));
-    assertFalse(t.contains("12"));
-    assertFalse(t.contains("1"));
-
-    t.clear();
-
-    t.insert("1234");
-    t.insert("122", 2);
-    t.insert("123", 3);
-
-    t.delete("12", 999999);
-
-    assertFalse(t.contains("1234"));
-    assertFalse(t.contains("123"));
-    assertFalse(t.contains("12"));
-    assertFalse(t.contains("1"));
+    assertThat(t.delete("12", 6)).isTrue();
+    assertThat(t.delete("12")).isFalse();
+    assertThat(t.delete("1")).isFalse();
+    assertThat(t.contains("1234")).isFalse();
+    assertThat(t.contains("123")).isFalse();
+    assertThat(t.contains("12")).isFalse();
+    assertThat(t.contains("1")).isFalse();
 
     t.clear();
 
@@ -361,10 +348,10 @@ public class TrieTest {
 
     t.delete("12", 999999);
 
-    assertFalse(t.contains("1234"));
-    assertFalse(t.contains("123"));
-    assertFalse(t.contains("12"));
-    assertFalse(t.contains("1"));
+    assertThat(t.contains("1234")).isFalse();
+    assertThat(t.contains("123")).isFalse();
+    assertThat(t.contains("12")).isFalse();
+    assertThat(t.contains("1")).isFalse();
 
     t.clear();
 
@@ -372,33 +359,46 @@ public class TrieTest {
     t.insert("122", 2);
     t.insert("123", 3);
 
-    assertTrue(t.delete("1234"));
-    assertTrue(t.delete("123", 4));
-    assertTrue(t.delete("122", 2));
+    t.delete("12", 999999);
 
-    assertFalse(t.contains("1"));
-    assertFalse(t.contains("12"));
-    assertFalse(t.contains("122"));
-    assertFalse(t.contains("123"));
-    assertFalse(t.contains("1234"));
+    assertThat(t.contains("1234")).isFalse();
+    assertThat(t.contains("123")).isFalse();
+    assertThat(t.contains("12")).isFalse();
+    assertThat(t.contains("1")).isFalse();
+
+    t.clear();
+
+    t.insert("1234");
+    t.insert("122", 2);
+    t.insert("123", 3);
+
+    assertThat(t.delete("1234")).isTrue();
+    assertThat(t.delete("123", 4)).isTrue();
+    assertThat(t.delete("122", 2)).isTrue();
+
+    assertThat(t.contains("1")).isFalse();
+    assertThat(t.contains("12")).isFalse();
+    assertThat(t.contains("122")).isFalse();
+    assertThat(t.contains("123")).isFalse();
+    assertThat(t.contains("1234")).isFalse();
   }
 
   @Test
   public void testEdgeCases() {
 
     Trie t = new Trie();
-    assertEquals(t.count(""), 0);
-    assertEquals(t.count("\0"), 0);
-    assertEquals(t.count("\0\0"), 0);
-    assertEquals(t.count("\0\0\0"), 0);
+    assertThat(t.count("")).isEqualTo(0);
+    assertThat(t.count("\0")).isEqualTo(0);
+    assertThat(t.count("\0\0")).isEqualTo(0);
+    assertThat(t.count("\0\0\0")).isEqualTo(0);
 
-    for (char c = 0; c < 128; c++) assertEquals(t.count("" + c), 0);
+    for (char c = 0; c < 128; c++) assertThat(t.count("" + c)).isEqualTo(0);
 
-    assertFalse(t.contains(""));
-    assertFalse(t.contains("\0"));
-    assertFalse(t.contains("\0\0"));
-    assertFalse(t.contains("\0\0\0"));
+    assertThat(t.contains("")).isFalse();
+    assertThat(t.contains("\0")).isFalse();
+    assertThat(t.contains("\0\0")).isFalse();
+    assertThat(t.contains("\0\0\0")).isFalse();
 
-    for (char c = 0; c < 128; c++) assertFalse(t.contains("" + c));
+    for (char c = 0; c < 128; c++) assertThat(t.contains("" + c)).isFalse();
   }
 }

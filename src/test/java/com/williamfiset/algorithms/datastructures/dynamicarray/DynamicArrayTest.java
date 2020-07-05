@@ -1,8 +1,6 @@
 package com.williamfiset.algorithms.datastructures.dynamicarray;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
 
@@ -11,7 +9,7 @@ public class DynamicArrayTest {
   @Test
   public void testEmptyList() {
     DynamicArray<Integer> list = new DynamicArray<>();
-    assertTrue(list.isEmpty());
+    assertThat(list.isEmpty()).isTrue();
   }
 
   @Test(expected = Exception.class)
@@ -100,28 +98,28 @@ public class DynamicArrayTest {
     for (String s : strs) list.add(s);
 
     boolean ret = list.remove("c");
-    assertTrue(ret);
+    assertThat(ret).isTrue();
 
     ret = list.remove("c");
-    assertFalse(ret);
+    assertThat(ret).isFalse();
 
     ret = list.remove("h");
-    assertTrue(ret);
+    assertThat(ret).isTrue();
 
     ret = list.remove(null);
-    assertTrue(ret);
+    assertThat(ret).isTrue();
 
     ret = list.remove("a");
-    assertTrue(ret);
+    assertThat(ret).isTrue();
 
     ret = list.remove("a");
-    assertFalse(ret);
+    assertThat(ret).isFalse();
 
     ret = list.remove("h");
-    assertFalse(ret);
+    assertThat(ret).isFalse();
 
     ret = list.remove(null);
-    assertFalse(ret);
+    assertThat(ret).isFalse();
   }
 
   @Test
@@ -131,15 +129,15 @@ public class DynamicArrayTest {
     String[] strs = {"a", "b", "c", "d"};
     for (String s : strs) list.add(s);
 
-    assertTrue(list.remove("a"));
-    assertTrue(list.remove("b"));
-    assertTrue(list.remove("c"));
-    assertTrue(list.remove("d"));
+    assertThat(list.remove("a")).isTrue();
+    assertThat(list.remove("b")).isTrue();
+    assertThat(list.remove("c")).isTrue();
+    assertThat(list.remove("d")).isTrue();
 
-    assertFalse(list.remove("a"));
-    assertFalse(list.remove("b"));
-    assertFalse(list.remove("c"));
-    assertFalse(list.remove("d"));
+    assertThat(list.remove("a")).isFalse();
+    assertThat(list.remove("b")).isFalse();
+    assertThat(list.remove("c")).isFalse();
+    assertThat(list.remove("d")).isFalse();
   }
 
   @Test
@@ -147,7 +145,7 @@ public class DynamicArrayTest {
     DynamicArray<String> list = new DynamicArray<>();
     String[] strs = {"a", "b", null, "d"};
     for (String s : strs) list.add(s);
-    assertTrue(list.indexOf(null) == 2);
+    assertThat(list.indexOf(null)).isEqualTo(2);
   }
 
   @Test
@@ -159,7 +157,7 @@ public class DynamicArrayTest {
 
     for (int i = 0; i < elems.length; i++) list.add(elems[i]);
 
-    for (int i = 0; i < elems.length; i++) assertEquals(list.get(i).intValue(), elems[i]);
+    for (int i = 0; i < elems.length; i++) assertThat(list.get(i).intValue()).isEqualTo(elems[i]);
   }
 
   @Test
@@ -169,19 +167,19 @@ public class DynamicArrayTest {
 
     for (int i = 0; i < 55; i++) list.add(44L);
     for (int i = 0; i < 55; i++) list.remove(44L);
-    assertTrue(list.isEmpty());
+    assertThat(list.isEmpty()).isTrue();
 
     for (int i = 0; i < 55; i++) list.add(44L);
     for (int i = 0; i < 55; i++) list.removeAt(0);
-    assertTrue(list.isEmpty());
+    assertThat(list.isEmpty()).isTrue();
 
     for (int i = 0; i < 155; i++) list.add(44L);
     for (int i = 0; i < 155; i++) list.remove(44L);
-    assertTrue(list.isEmpty());
+    assertThat(list.isEmpty()).isTrue();
 
     for (int i = 0; i < 155; i++) list.add(44L);
     for (int i = 0; i < 155; i++) list.removeAt(0);
-    assertTrue(list.isEmpty());
+    assertThat(list.isEmpty()).isTrue();
   }
 
   @Test
@@ -192,21 +190,21 @@ public class DynamicArrayTest {
     for (int i = 0; i < 55; i++) list.add(44L);
     for (int i = 0; i < 55; i++) list.set(i, 33L);
     for (int i = 0; i < 55; i++) list.remove(33L);
-    assertTrue(list.isEmpty());
+    assertThat(list.isEmpty()).isTrue();
 
     for (int i = 0; i < 55; i++) list.add(44L);
     for (int i = 0; i < 55; i++) list.set(i, 33L);
     for (int i = 0; i < 55; i++) list.removeAt(0);
-    assertTrue(list.isEmpty());
+    assertThat(list.isEmpty()).isTrue();
 
     for (int i = 0; i < 155; i++) list.add(44L);
     for (int i = 0; i < 155; i++) list.set(i, 33L);
     for (int i = 0; i < 155; i++) list.remove(33L);
-    assertTrue(list.isEmpty());
+    assertThat(list.isEmpty()).isTrue();
 
     for (int i = 0; i < 155; i++) list.add(44L);
     for (int i = 0; i < 155; i++) list.removeAt(0);
-    assertTrue(list.isEmpty());
+    assertThat(list.isEmpty()).isTrue();
   }
 
   @Test
@@ -217,7 +215,7 @@ public class DynamicArrayTest {
     Integer[] elems = {-76, 45, 66, 3, null, 54, 33};
     for (int i = 0, sz = 1; i < elems.length; i++, sz++) {
       list.add(elems[i]);
-      assertEquals(list.size(), sz);
+      assertThat(list.size()).isEqualTo(sz);
     }
   }
 }

@@ -1,6 +1,6 @@
 package com.williamfiset.algorithms.datastructures.fenwicktree;
 
-import static org.junit.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,11 +47,11 @@ public class FenwickTreeRangeUpdatePointQueryTest {
     long[] values = {UNUSED_VAL, -1, -1, -1, -1, -1};
     FenwickTreeRangeUpdatePointQuery ft = new FenwickTreeRangeUpdatePointQuery(values);
     ft.updateRange(2, 4, 10);
-    assertEquals(-1, ft.get(1));
-    assertEquals(9, ft.get(2));
-    assertEquals(9, ft.get(3));
-    assertEquals(9, ft.get(4));
-    assertEquals(-1, ft.get(5));
+    assertThat(ft.get(1)).isEqualTo(-1);
+    assertThat(ft.get(2)).isEqualTo(9);
+    assertThat(ft.get(3)).isEqualTo(9);
+    assertThat(ft.get(4)).isEqualTo(9);
+    assertThat(ft.get(5)).isEqualTo(-1);
   }
 
   @Test
@@ -60,11 +60,11 @@ public class FenwickTreeRangeUpdatePointQueryTest {
     long[] values = {UNUSED_VAL, 2, 3, 4, 5, 6};
     FenwickTreeRangeUpdatePointQuery ft = new FenwickTreeRangeUpdatePointQuery(values);
     ft.updateRange(2, 4, 10);
-    assertEquals(2, ft.get(1));
-    assertEquals(13, ft.get(2));
-    assertEquals(14, ft.get(3));
-    assertEquals(15, ft.get(4));
-    assertEquals(6, ft.get(5));
+    assertThat(ft.get(1)).isEqualTo(2);
+    assertThat(ft.get(2)).isEqualTo(13);
+    assertThat(ft.get(3)).isEqualTo(14);
+    assertThat(ft.get(4)).isEqualTo(15);
+    assertThat(ft.get(5)).isEqualTo(6);
   }
 
   @Test
@@ -73,11 +73,11 @@ public class FenwickTreeRangeUpdatePointQueryTest {
     long[] values = {UNUSED_VAL, 2, -3, -4, 5, 6};
     FenwickTreeRangeUpdatePointQuery ft = new FenwickTreeRangeUpdatePointQuery(values);
     ft.updateRange(2, 4, 10);
-    assertEquals(2, ft.get(1));
-    assertEquals(7, ft.get(2));
-    assertEquals(6, ft.get(3));
-    assertEquals(15, ft.get(4));
-    assertEquals(6, ft.get(5));
+    assertThat(ft.get(1)).isEqualTo(2);
+    assertThat(ft.get(2)).isEqualTo(7);
+    assertThat(ft.get(3)).isEqualTo(6);
+    assertThat(ft.get(4)).isEqualTo(15);
+    assertThat(ft.get(5)).isEqualTo(6);
   }
 
   @Test
@@ -92,7 +92,7 @@ public class FenwickTreeRangeUpdatePointQueryTest {
     int delta = 10;
 
     for (int loop = 0; loop < TEST_SZ; loop++) {
-      for (int i = 1; i < n; i++) assertEquals(sum, ft.get(i));
+      for (int i = 1; i < n; i++) assertThat(ft.get(i)).isEqualTo(sum);
       ft.updateRange(1, n - 1, delta);
       sum += delta;
     }
@@ -111,7 +111,7 @@ public class FenwickTreeRangeUpdatePointQueryTest {
 
     for (int loop = 0; loop < TEST_SZ; loop++) {
 
-      for (int i = 1; i < n; i++) assertEquals(mockedFt.get(i), ft.get(i));
+      for (int i = 1; i < n; i++) assertThat(ft.get(i)).isEqualTo(mockedFt.get(i));
 
       long delta = randValue();
       int lo = lowBound(n);

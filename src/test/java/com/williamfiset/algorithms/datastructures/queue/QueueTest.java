@@ -1,6 +1,6 @@
 package com.williamfiset.algorithms.datastructures.queue;
 
-import static org.junit.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,22 +21,22 @@ public class QueueTest {
   @Test
   public void testEmptyQueue() {
     for (Queue queue : queues) {
-      assertTrue(queue.isEmpty());
-      assertEquals(queue.size(), 0);
+      assertThat(queue.isEmpty()).isTrue();
+      assertThat(queue.size()).isEqualTo(0);
     }
   }
 
-  @Test
+  @Test(expected = Exception.class)
   public void testPollOnEmpty() {
     for (Queue queue : queues) {
-      assertThrows(Exception.class, queue::poll);
+      queue.poll();
     }
   }
 
-  @Test
+  @Test(expected = Exception.class)
   public void testPeekOnEmpty() {
     for (Queue queue : queues) {
-      assertThrows(Exception.class, queue::peek);
+      queue.peek();
     }
   }
 
@@ -44,7 +44,7 @@ public class QueueTest {
   public void testOffer() {
     for (Queue<Integer> queue : queues) {
       queue.offer(2);
-      assertEquals(queue.size(), 1);
+      assertThat(queue.size()).isEqualTo(1);
     }
   }
 
@@ -52,8 +52,8 @@ public class QueueTest {
   public void testPeek() {
     for (Queue<Integer> queue : queues) {
       queue.offer(2);
-      assertEquals(2, (int) queue.peek());
-      assertEquals(queue.size(), 1);
+      assertThat((int) queue.peek()).isEqualTo(2);
+      assertThat(queue.size()).isEqualTo(1);
     }
   }
 
@@ -61,28 +61,28 @@ public class QueueTest {
   public void testPoll() {
     for (Queue<Integer> queue : queues) {
       queue.offer(2);
-      assertEquals(2, (int) queue.poll());
-      assertEquals(queue.size(), 0);
+      assertThat((int) queue.poll()).isEqualTo(2);
+      assertThat(queue.size()).isEqualTo(0);
     }
   }
 
   @Test
   public void testExhaustively() {
     for (Queue<Integer> queue : queues) {
-      assertTrue(queue.isEmpty());
+      assertThat(queue.isEmpty()).isTrue();
       queue.offer(1);
-      assertFalse(queue.isEmpty());
+      assertThat(queue.isEmpty()).isFalse();
       queue.offer(2);
-      assertEquals(queue.size(), 2);
-      assertEquals(1, (int) queue.peek());
-      assertEquals(queue.size(), 2);
-      assertEquals(1, (int) queue.poll());
-      assertEquals(queue.size(), 1);
-      assertEquals(2, (int) queue.peek());
-      assertEquals(queue.size(), 1);
-      assertEquals(2, (int) queue.poll());
-      assertEquals(queue.size(), 0);
-      assertTrue(queue.isEmpty());
+      assertThat(queue.size()).isEqualTo(2);
+      assertThat((int) queue.peek()).isEqualTo(1);
+      assertThat(queue.size()).isEqualTo(2);
+      assertThat((int) queue.poll()).isEqualTo(1);
+      assertThat(queue.size()).isEqualTo(1);
+      assertThat((int) queue.peek()).isEqualTo(2);
+      assertThat(queue.size()).isEqualTo(1);
+      assertThat((int) queue.poll()).isEqualTo(2);
+      assertThat(queue.size()).isEqualTo(0);
+      assertThat(queue.isEmpty()).isTrue();
     }
   }
 }

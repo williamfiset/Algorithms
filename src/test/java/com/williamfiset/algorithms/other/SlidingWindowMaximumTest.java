@@ -1,6 +1,6 @@
 package com.williamfiset.algorithms.other;
 
-import static org.junit.Assert.*;
+import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.*;
 
@@ -15,27 +15,27 @@ public class SlidingWindowMaximumTest {
     SlidingWindowMaximum w = new SlidingWindowMaximum(values);
 
     w.advance();
-    assertEquals(1, w.getMax());
+    assertThat(w.getMax()).isEqualTo(1);
     w.advance();
-    assertEquals(2, w.getMax());
+    assertThat(w.getMax()).isEqualTo(2);
     w.advance();
-    assertEquals(2, w.getMax());
+    assertThat(w.getMax()).isEqualTo(2);
     w.shrink();
-    assertEquals(2, w.getMax());
+    assertThat(w.getMax()).isEqualTo(2);
     w.shrink();
-    assertEquals(1, w.getMax());
+    assertThat(w.getMax()).isEqualTo(1);
     w.advance();
-    assertEquals(3, w.getMax());
+    assertThat(w.getMax()).isEqualTo(3);
     w.advance();
-    assertEquals(3, w.getMax());
+    assertThat(w.getMax()).isEqualTo(3);
     w.advance();
-    assertEquals(4, w.getMax());
+    assertThat(w.getMax()).isEqualTo(4);
     w.shrink();
-    assertEquals(4, w.getMax());
+    assertThat(w.getMax()).isEqualTo(4);
     w.shrink();
-    assertEquals(4, w.getMax());
+    assertThat(w.getMax()).isEqualTo(4);
     w.shrink();
-    assertEquals(4, w.getMax());
+    assertThat(w.getMax()).isEqualTo(4);
   }
 
   @Test
@@ -85,7 +85,7 @@ public class SlidingWindowMaximumTest {
       int max = Integer.MIN_VALUE;
       for (int i = lo; i < hi; i++) max = Math.max(max, ar[i]);
 
-      assertEquals(max, window.getMax());
+      assertThat(window.getMax()).isEqualTo(max);
     }
   }
 }
