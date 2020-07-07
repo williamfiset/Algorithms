@@ -1,5 +1,6 @@
 /**
- * Simple segment tree implementation that supports sum range queries and point updates.
+ * Simple segment tree implementation that supports a few range query operations (sum, min and max)
+ * long with point updates.
  *
  * <p>NOTE: This file is still a little bit of a WIP
  *
@@ -25,9 +26,11 @@ public class RangeQueryPointUpdateSegmentTree {
     MAX
   }
 
-  // The number of values in the original input values array.
+  // The number of elements in the original input values array.
   private int n;
 
+  // The segment tree represented as a binary tree of ranges where t[0] is the
+  // root node and the left and right children of node i are i*2+1 and i*2+2.
   private long[] t;
 
   private Operation op;
@@ -75,8 +78,8 @@ public class RangeQueryPointUpdateSegmentTree {
    * Builds a segment tree by starting with the leaf nodes and combining segment values on callback.
    *
    * @param i the index of the segment in the segment tree
-   * @param l the left index (inclusive) of the range in the values array
-   * @param r the right index (inclusive) of the range in the values array
+   * @param tl the left index (inclusive) of the segment range
+   * @param tr the right index (inclusive) of the segment range
    * @param values the initial values array
    */
   private void buildSegmentTree(int i, int tl, int tr, long[] values) {
@@ -84,9 +87,9 @@ public class RangeQueryPointUpdateSegmentTree {
       t[i] = values[tl];
       return;
     }
-    int mid = (tl + tr) / 2;
-    buildSegmentTree(2 * i + 1, tl, mid, values);
-    buildSegmentTree(2 * i + 2, mid + 1, tr, values);
+    int tm = (tl + tr) / 2;
+    buildSegmentTree(2 * i + 1, tl, tm, values);
+    buildSegmentTree(2 * i + 2, tm + 1, tr, values);
 
     t[i] = fn.apply(t[2 * i + 1], t[2 * i + 2]);
   }
@@ -112,11 +115,13 @@ public class RangeQueryPointUpdateSegmentTree {
   }
 
   /**
+   * Returns the range query value of the range [l, r]
+   *
    * @param i the index of the current segment in the tree
-   * @param tl the left endpoint that the of the current segment
-   * @param tr the right endpoint that the of the current segment
-   * @param l the target left endpoint for the range query
-   * @param r the target right endpoint for the range query
+   * @param tl the left endpoint (inclusive) of the current segment
+   * @param tr the right endpoint (inclusive) of the current segment
+   * @param l the target left endpoint (inclusive) for the range query
+   * @param r the target right endpoint (inclusive) for the range query
    */
   private long rangeQuery(int i, int tl, int tr, int l, int r) {
     if (l > r) {
@@ -134,23 +139,34 @@ public class RangeQueryPointUpdateSegmentTree {
     }
     int tm = (tl + tr) / 2;
     // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
-    // [l, r], simply recurse on both and return a sum of 0 if the interval is invalid.
+    // [l, r], simply recurse on both segments and let the base case return the
+    // default value for invalid intervals.
     return fn.apply(
         rangeQuery(2 * i + 1, tl, tm, l, Math.min(tm, r)),
         rangeQuery(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r));
   }
 
-  // Alternative implementation of summing that intelligently only digs into
-  // the branches which overlap with the query [l, r].
-  //
-  // This version of the range query impl also has the advantage that it doesn't
-  // need to know the explicit base case value for each query type.
+  /**
+   * Returns the range query value of the range [l, r]
+   *
+   * <p>An alternative implementation of the range query function that intelligently only digs into
+   * the branches of the segment tree which overlap with the query [l, r].
+   *
+   * <p>This version of the range query implementation has the advantage that it doesn't need to
+   * know the explicit base case value for each range query type.
+   *
+   * @param i the index of the current segment in the tree
+   * @param tl the left endpoint (inclusive) of the current segment
+   * @param tr the right endpoint (inclusive) of the current segment
+   * @param l the target left endpoint (inclusive) for the range query
+   * @param r the target right endpoint (inclusive) for the range query
+   */
   private long rangeQuery2(int i, int tl, int tr, int l, int r) {
     if (tl == l && tr == r) {
       return t[i];
     }
     int tm = (tl + tr) / 2;
-    // Test how the current segment [tl, tr] overlaps with the query [l, r]
+    // Test how the left and right segments of the interval [tl, tr] overlap with the query [l, r]
     boolean overlapsLeftSegment = (l <= tm);
     boolean overlapsRightSegment = (r > tm);
     if (overlapsLeftSegment && overlapsRightSegment) {
@@ -171,33 +187,33 @@ public class RangeQueryPointUpdateSegmentTree {
   }
 
   /**
-   * Update a point segment to a new value and update all affected segments.
+   * Update a point value to a new value and update all affected segments.
    *
    * <p>Do this by performing a binary search to find the interval containing the point, then update
    * the leaf segment with the new value, and re-compute all affected segment values on the
    * callback.
    *
-   * @param at the index of the current segment in the tree
+   * @param i the index of the current segment in the tree
    * @param pos the target position to update
-   * @param tl the left segment endpoint
-   * @param tr the right segment endpoint
+   * @param tl the left segment endpoint (inclusive)
+   * @param tr the right segment endpoint (inclusive)
    * @param newValue the new value to update
    */
-  private void update(int at, int pos, int tl, int tr, long newValue) {
+  private void update(int i, int pos, int tl, int tr, long newValue) {
     if (tl == tr) { // `tl == pos && tr == pos` might be clearer
-      t[at] = newValue;
+      t[i] = newValue;
       return;
     }
     int tm = (tl + tr) / 2;
-    // The point index `pos` is contained within the left segment [tl, tm]
     if (pos <= tm) {
-      update(2 * at + 1, pos, tl, tm, newValue);
-      // The point index `pos` is contained within the right segment [tm+1, tr]
+      // The point index `pos` is contained within the left segment [tl, tm]
+      update(2 * i + 1, pos, tl, tm, newValue);
     } else {
-      update(2 * at + 2, pos, tm + 1, tr, newValue);
+      // The point index `pos` is contained within the right segment [tm+1, tr]
+      update(2 * i + 2, pos, tm + 1, tr, newValue);
     }
     // Re-compute the segment value of the current segment on the callback
-    t[at] = fn.apply(t[2 * at + 1], t[2 * at + 2]);
+    t[i] = fn.apply(t[2 * i + 1], t[2 * i + 2]);
   }
 
   ////////////////////////////////////////////////////
