@@ -20,7 +20,7 @@ public class RangeQueryPointUpdateSegmentTreeTest {
     long[] values = {1, 2, 3, 4, 5};
     RangeQueryPointUpdateSegmentTree st =
         new RangeQueryPointUpdateSegmentTree(
-            values, RangeQueryPointUpdateSegmentTree.Operation.SUM);
+            values, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.SUM);
 
     assertThat(st.rangeQuery(0, 1)).isEqualTo(3);
     assertThat(st.rangeQuery(2, 2)).isEqualTo(3);
@@ -32,7 +32,8 @@ public class RangeQueryPointUpdateSegmentTreeTest {
     int n = 100;
     long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
     RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(ar, RangeQueryPointUpdateSegmentTree.Operation.SUM);
+        new RangeQueryPointUpdateSegmentTree(
+            ar, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.SUM);
 
     for (int i = 0; i < n; i++) {
       for (int j = i; j < n; j++) {
@@ -48,7 +49,8 @@ public class RangeQueryPointUpdateSegmentTreeTest {
     int n = 100;
     long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
     RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(ar, RangeQueryPointUpdateSegmentTree.Operation.SUM);
+        new RangeQueryPointUpdateSegmentTree(
+            ar, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.SUM);
 
     for (int i = 0; i < n; i++) {
       for (int j = i; j < n; j++) {
@@ -60,7 +62,7 @@ public class RangeQueryPointUpdateSegmentTreeTest {
         // Point update
         int randIndex = TestUtils.randValue(i, j + 1);
         long randValue = TestUtils.randValue(-1000, 1000);
-        st.update(randIndex, randValue);
+        st.pointUpdate(randIndex, randValue);
         ar[randIndex] = randValue;
         bfSum = bruteForceSum(ar, i, j);
         segTreeSum = st.rangeQuery(i, j);
@@ -74,7 +76,8 @@ public class RangeQueryPointUpdateSegmentTreeTest {
     int n = 100;
     long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
     RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(ar, RangeQueryPointUpdateSegmentTree.Operation.MIN);
+        new RangeQueryPointUpdateSegmentTree(
+            ar, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.MIN);
 
     for (int i = 0; i < n; i++) {
       for (int j = i; j < n; j++) {
@@ -86,7 +89,7 @@ public class RangeQueryPointUpdateSegmentTreeTest {
         // Point update
         int randIndex = TestUtils.randValue(i, j + 1);
         long randValue = TestUtils.randValue(-1000, 1000);
-        st.update(randIndex, randValue);
+        st.pointUpdate(randIndex, randValue);
         ar[randIndex] = randValue;
         bfMin = bruteForceMin(ar, i, j);
         segTreeMin = st.rangeQuery(i, j);
@@ -100,7 +103,8 @@ public class RangeQueryPointUpdateSegmentTreeTest {
     int n = 100;
     long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
     RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(ar, RangeQueryPointUpdateSegmentTree.Operation.MAX);
+        new RangeQueryPointUpdateSegmentTree(
+            ar, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.MAX);
 
     for (int i = 0; i < n; i++) {
       for (int j = i; j < n; j++) {
@@ -112,7 +116,7 @@ public class RangeQueryPointUpdateSegmentTreeTest {
         // Point update
         int randIndex = TestUtils.randValue(i, j + 1);
         long randValue = TestUtils.randValue(-1000, 1000);
-        st.update(randIndex, randValue);
+        st.pointUpdate(randIndex, randValue);
         ar[randIndex] = randValue;
         bfMax = bruteForceMax(ar, i, j);
         segTreeMax = st.rangeQuery(i, j);
@@ -126,7 +130,8 @@ public class RangeQueryPointUpdateSegmentTreeTest {
     int n = 100;
     long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
     RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(ar, RangeQueryPointUpdateSegmentTree.Operation.SUM);
+        new RangeQueryPointUpdateSegmentTree(
+            ar, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.SUM);
 
     for (int i = 0; i < n; i++) {
       for (int j = i; j < n; j++) {
@@ -138,7 +143,7 @@ public class RangeQueryPointUpdateSegmentTreeTest {
         // Point update
         int randIndex = TestUtils.randValue(i, j + 1);
         long randValue = TestUtils.randValue(-1000, 1000);
-        st.update(randIndex, randValue);
+        st.pointUpdate(randIndex, randValue);
         ar[randIndex] = randValue;
         bfSum = bruteForceSum(ar, i, j);
         segTreeSum = st.rangeQuery2(i, j);
@@ -152,7 +157,8 @@ public class RangeQueryPointUpdateSegmentTreeTest {
     int n = 100;
     long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
     RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(ar, RangeQueryPointUpdateSegmentTree.Operation.MIN);
+        new RangeQueryPointUpdateSegmentTree(
+            ar, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.MIN);
 
     for (int i = 0; i < n; i++) {
       for (int j = i; j < n; j++) {
@@ -164,7 +170,7 @@ public class RangeQueryPointUpdateSegmentTreeTest {
         // Point update
         int randIndex = TestUtils.randValue(i, j + 1);
         long randValue = TestUtils.randValue(-1000, 1000);
-        st.update(randIndex, randValue);
+        st.pointUpdate(randIndex, randValue);
         ar[randIndex] = randValue;
         bfMin = bruteForceMin(ar, i, j);
         segTreeMin = st.rangeQuery2(i, j);
@@ -178,7 +184,8 @@ public class RangeQueryPointUpdateSegmentTreeTest {
     int n = 100;
     long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
     RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(ar, RangeQueryPointUpdateSegmentTree.Operation.MAX);
+        new RangeQueryPointUpdateSegmentTree(
+            ar, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.MAX);
 
     for (int i = 0; i < n; i++) {
       for (int j = i; j < n; j++) {
@@ -190,7 +197,7 @@ public class RangeQueryPointUpdateSegmentTreeTest {
         // Point update
         int randIndex = TestUtils.randValue(i, j + 1);
         long randValue = TestUtils.randValue(-1000, 1000);
-        st.update(randIndex, randValue);
+        st.pointUpdate(randIndex, randValue);
         ar[randIndex] = randValue;
         bfMax = bruteForceMax(ar, i, j);
         segTreeMax = st.rangeQuery(i, j);

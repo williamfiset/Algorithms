@@ -18,10 +18,19 @@ import java.util.function.BinaryOperator;
 public class RangeQueryPointUpdateSegmentTree {
 
   // The type of segment combination function to use
-  public static enum Operation {
+  public static enum SegmentCombinationFn {
     SUM,
     MIN,
     MAX
+  }
+
+  // When updating the value of a specific index position, or a range of values,
+  // modify the affected values using the following function:
+  public static enum RangeUpdateFn {
+    // When a range update is issued, add a value of `x` to all the elements in the range [l, r]
+    ADDITION,
+    // When a range update is issued, multiply all elements in the range [l, r] by a value of `x`
+    MULTIPLICATION
   }
 
   // The number of elements in the original input values array.
@@ -31,24 +40,44 @@ public class RangeQueryPointUpdateSegmentTree {
   // root node and the left and right children of node i are i*2+1 and i*2+2.
   private long[] t;
 
-  private Operation op;
+  // The delta values associates with each segment. Used for lazy propagation
+  // when doing range updates.
+  private long[] lazy;
+
+  private SegmentCombinationFn segmentCombinationFn;
 
   // The chosen range combination function
-  private BinaryOperator<Long> fn;
+  private BinaryOperator<Long> combinationFn;
+
+  // The chosen range update function
+  private BinaryOperator<Long> rangeUpdateFn;
 
   private BinaryOperator<Long> sumFn = (a, b) -> a + b;
+  private BinaryOperator<Long> mulFn = (a, b) -> a * b;
   private BinaryOperator<Long> minFn = (a, b) -> Math.min(a, b);
   private BinaryOperator<Long> maxFn = (a, b) -> Math.max(a, b);
 
-  public RangeQueryPointUpdateSegmentTree(long[] values, Operation op) {
+  public RangeQueryPointUpdateSegmentTree(
+      long[] values, SegmentCombinationFn segmentCombinationFunction) {
+    // By default, specify ADDITION as the range update function.
+    this(values, segmentCombinationFunction, RangeUpdateFn.ADDITION);
+  }
+
+  public RangeQueryPointUpdateSegmentTree(
+      long[] values,
+      SegmentCombinationFn segmentCombinationFunction,
+      RangeUpdateFn rangeUpdateFunction) {
     if (values == null) {
-      throw new NullPointerException("Segment tree values cannot be null.");
+      throw new IllegalArgumentException("Segment tree values cannot be null.");
     }
-    if (op == null) {
-      throw new NullPointerException("Please specify a valid segment combination operation.");
+    if (segmentCombinationFunction == null) {
+      throw new IllegalArgumentException("Please specify a valid segment combination function.");
+    }
+    if (rangeUpdateFunction == null) {
+      throw new IllegalArgumentException("Please specify a valid range update function.");
     }
     n = values.length;
-    this.op = op;
+    this.segmentCombinationFn = segmentCombinationFunction;
 
     // The size of the segment tree `t`
     //
@@ -59,14 +88,22 @@ public class RangeQueryPointUpdateSegmentTree {
 
     t = new long[N];
 
-    if (op == Operation.SUM) {
-      fn = sumFn;
-    } else if (op == Operation.MIN) {
+    // Select the specified combination function
+    if (segmentCombinationFunction == SegmentCombinationFn.SUM) {
+      combinationFn = sumFn;
+    } else if (segmentCombinationFunction == SegmentCombinationFn.MIN) {
       Arrays.fill(t, Long.MAX_VALUE);
-      fn = minFn;
-    } else if (op == Operation.MAX) {
+      combinationFn = minFn;
+    } else if (segmentCombinationFunction == SegmentCombinationFn.MAX) {
       Arrays.fill(t, Long.MIN_VALUE);
-      fn = maxFn;
+      combinationFn = maxFn;
+    }
+
+    // Select the specified range update function
+    if (rangeUpdateFunction == RangeUpdateFn.ADDITION) {
+      rangeUpdateFn = sumFn;
+    } else if (rangeUpdateFunction == RangeUpdateFn.MULTIPLICATION) {
+      rangeUpdateFn = mulFn;
     }
 
     buildSegmentTree(0, 0, n - 1, values);
@@ -89,7 +126,7 @@ public class RangeQueryPointUpdateSegmentTree {
     buildSegmentTree(2 * i + 1, tl, tm, values);
     buildSegmentTree(2 * i + 2, tm + 1, tr, values);
 
-    t[i] = fn.apply(t[2 * i + 1], t[2 * i + 2]);
+    t[i] = combinationFn.apply(t[2 * i + 1], t[2 * i + 2]);
   }
 
   /**
@@ -124,11 +161,11 @@ public class RangeQueryPointUpdateSegmentTree {
   private long rangeQuery(int i, int tl, int tr, int l, int r) {
     if (l > r) {
       // Different segment tree types have different base cases:
-      if (op == Operation.SUM) {
+      if (segmentCombinationFn == SegmentCombinationFn.SUM) {
         return 0;
-      } else if (op == Operation.MIN) {
+      } else if (segmentCombinationFn == SegmentCombinationFn.MIN) {
         return Long.MAX_VALUE;
-      } else if (op == Operation.MAX) {
+      } else if (segmentCombinationFn == SegmentCombinationFn.MAX) {
         return Long.MIN_VALUE;
       }
     }
@@ -139,7 +176,7 @@ public class RangeQueryPointUpdateSegmentTree {
     // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
     // [l, r], simply recurse on both segments and let the base case return the
     // default value for invalid intervals.
-    return fn.apply(
+    return combinationFn.apply(
         rangeQuery(2 * i + 1, tl, tm, l, Math.min(tm, r)),
         rangeQuery(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r));
   }
@@ -168,7 +205,7 @@ public class RangeQueryPointUpdateSegmentTree {
     boolean overlapsLeftSegment = (l <= tm);
     boolean overlapsRightSegment = (r > tm);
     if (overlapsLeftSegment && overlapsRightSegment) {
-      return fn.apply(
+      return combinationFn.apply(
           rangeQuery2(2 * i + 1, tl, tm, l, Math.min(tm, r)),
           rangeQuery2(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r));
     } else if (overlapsLeftSegment) {
@@ -178,10 +215,9 @@ public class RangeQueryPointUpdateSegmentTree {
     }
   }
 
-  // Updates the segment tree to reflect that index `i` in the original `values` array was updated
-  // to `newValue`.
-  public void update(int i, long newValue) {
-    update(0, i, 0, n - 1, newValue);
+  // Updates the value at index `i` in the original `values` array to be `newValue`.
+  public void pointUpdate(int i, long newValue) {
+    pointUpdate(0, i, 0, n - 1, newValue);
   }
 
   /**
@@ -197,7 +233,7 @@ public class RangeQueryPointUpdateSegmentTree {
    * @param tr the right segment endpoint (inclusive)
    * @param newValue the new value to update
    */
-  private void update(int i, int pos, int tl, int tr, long newValue) {
+  private void pointUpdate(int i, int pos, int tl, int tr, long newValue) {
     if (tl == tr) { // `tl == pos && tr == pos` might be clearer
       t[i] = newValue;
       return;
@@ -205,13 +241,19 @@ public class RangeQueryPointUpdateSegmentTree {
     int tm = (tl + tr) / 2;
     if (pos <= tm) {
       // The point index `pos` is contained within the left segment [tl, tm]
-      update(2 * i + 1, pos, tl, tm, newValue);
+      pointUpdate(2 * i + 1, pos, tl, tm, newValue);
     } else {
       // The point index `pos` is contained within the right segment [tm+1, tr]
-      update(2 * i + 2, pos, tm + 1, tr, newValue);
+      pointUpdate(2 * i + 2, pos, tm + 1, tr, newValue);
     }
     // Re-compute the segment value of the current segment on the callback
-    t[i] = fn.apply(t[2 * i + 1], t[2 * i + 2]);
+    t[i] = combinationFn.apply(t[2 * i + 1], t[2 * i + 2]);
+  }
+
+  // Updates the range of values between [l, r] the segment tree with `x` based
+  // on what RangeUpdateFn was chosen.
+  public void rangeUpdate(int l, int r, long x) {
+    throw new UnsupportedOperationException("rangeUpdate is not yet implemented");
   }
 
   ////////////////////////////////////////////////////
@@ -228,7 +270,7 @@ public class RangeQueryPointUpdateSegmentTree {
     //               0  1  2  3
     long[] values = {1, 2, 3, 2};
     RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(values, Operation.SUM);
+        new RangeQueryPointUpdateSegmentTree(values, SegmentCombinationFn.SUM);
 
     int l = 0, r = 3;
     System.out.printf("The sum between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery(l, r));
@@ -240,7 +282,7 @@ public class RangeQueryPointUpdateSegmentTree {
     //               0  1  2  3
     long[] values = {1, 2, 3, 2};
     RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(values, Operation.MIN);
+        new RangeQueryPointUpdateSegmentTree(values, SegmentCombinationFn.MIN);
 
     int l = 0, r = 3;
     System.out.printf("The sum between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery(l, r));
@@ -252,7 +294,7 @@ public class RangeQueryPointUpdateSegmentTree {
     //               0  1  2  3
     long[] values = {1, 2, 3, 2};
     RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(values, Operation.MAX);
+        new RangeQueryPointUpdateSegmentTree(values, SegmentCombinationFn.MAX);
 
     int l = 0, r = 3;
     System.out.printf("The sum between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery(l, r));
