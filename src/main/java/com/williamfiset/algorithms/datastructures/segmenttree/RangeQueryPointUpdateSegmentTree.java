@@ -1,8 +1,6 @@
 /**
  * Simple segment tree implementation that supports a few range query operations (sum, min and max)
- * long with point updates.
- *
- * <p>NOTE: This file is still a little bit of a WIP
+ * along with point updates on individual elements.
  *
  * <p>Run with: ./gradlew run
  * -Palgorithm=datastructures.segmenttree.RangeQueryPointUpdateSegmentTree
