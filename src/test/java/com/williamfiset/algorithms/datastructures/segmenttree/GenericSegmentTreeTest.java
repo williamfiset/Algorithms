@@ -1,6 +1,6 @@
 /**
  * gradle test --info --tests
- * "com.williamfiset.algorithms.datastructures.segmenttree.RangeQueryPointUpdateSegmentTreeTest"
+ * "com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTreeTest"
  */
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
@@ -10,7 +10,7 @@ import com.williamfiset.algorithms.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-public class RangeQueryPointUpdateSegmentTreeTest {
+public class GenericSegmentTreeTest {
 
   @Before
   public void setup() {}
@@ -18,9 +18,8 @@ public class RangeQueryPointUpdateSegmentTreeTest {
   @Test
   public void testSumQuery() {
     long[] values = {1, 2, 3, 4, 5};
-    RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(
-            values, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.SUM);
+    GenericSegmentTree st =
+        new GenericSegmentTree(values, GenericSegmentTree.SegmentCombinationFn.SUM);
 
     assertThat(st.rangeQuery(0, 1)).isEqualTo(3);
     assertThat(st.rangeQuery(2, 2)).isEqualTo(3);
@@ -31,9 +30,7 @@ public class RangeQueryPointUpdateSegmentTreeTest {
   public void testAllSumQueries() {
     int n = 100;
     long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
-    RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(
-            ar, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.SUM);
+    GenericSegmentTree st = new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.SUM);
 
     for (int i = 0; i < n; i++) {
       for (int j = i; j < n; j++) {
@@ -48,9 +45,7 @@ public class RangeQueryPointUpdateSegmentTreeTest {
   public void testRandomPointUpdatesAndSumRangeQueries() {
     int n = 100;
     long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
-    RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(
-            ar, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.SUM);
+    GenericSegmentTree st = new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.SUM);
 
     for (int i = 0; i < n; i++) {
       for (int j = i; j < n; j++) {
@@ -75,9 +70,7 @@ public class RangeQueryPointUpdateSegmentTreeTest {
   public void testRandomPointUpdatesAndMinRangeQueries() {
     int n = 100;
     long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
-    RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(
-            ar, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.MIN);
+    GenericSegmentTree st = new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.MIN);
 
     for (int i = 0; i < n; i++) {
       for (int j = i; j < n; j++) {
@@ -102,9 +95,7 @@ public class RangeQueryPointUpdateSegmentTreeTest {
   public void testRandomPointUpdatesAndMaxRangeQueries() {
     int n = 100;
     long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
-    RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(
-            ar, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.MAX);
+    GenericSegmentTree st = new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.MAX);
 
     for (int i = 0; i < n; i++) {
       for (int j = i; j < n; j++) {
@@ -129,9 +120,7 @@ public class RangeQueryPointUpdateSegmentTreeTest {
   public void testRandomPointUpdatesAndSumRangeQueries_rangeQuery2() {
     int n = 100;
     long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
-    RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(
-            ar, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.SUM);
+    GenericSegmentTree st = new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.SUM);
 
     for (int i = 0; i < n; i++) {
       for (int j = i; j < n; j++) {
@@ -156,9 +145,7 @@ public class RangeQueryPointUpdateSegmentTreeTest {
   public void testRandomPointUpdatesAndMinRangeQueries_rangeQuery2() {
     int n = 100;
     long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
-    RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(
-            ar, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.MIN);
+    GenericSegmentTree st = new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.MIN);
 
     for (int i = 0; i < n; i++) {
       for (int j = i; j < n; j++) {
@@ -183,9 +170,7 @@ public class RangeQueryPointUpdateSegmentTreeTest {
   public void testRandomPointUpdatesAndMaxRangeQueries_rangeQuery2() {
     int n = 100;
     long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
-    RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(
-            ar, RangeQueryPointUpdateSegmentTree.SegmentCombinationFn.MAX);
+    GenericSegmentTree st = new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.MAX);
 
     for (int i = 0; i < n; i++) {
       for (int j = i; j < n; j++) {

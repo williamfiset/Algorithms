@@ -2,8 +2,7 @@
  * Simple segment tree implementation that supports a few range query operations (sum, min and max)
  * along with point updates on individual elements.
  *
- * <p>Run with: ./gradlew run
- * -Palgorithm=datastructures.segmenttree.RangeQueryPointUpdateSegmentTree
+ * <p>Run with: ./gradlew run -Palgorithm=datastructures.segmenttree.GenericSegmentTree
  *
  * <p>Several thanks to cp-algorithms for their great article on segment trees:
  * https://cp-algorithms.com/data_structures/segment_tree.html
@@ -15,7 +14,7 @@ package com.williamfiset.algorithms.datastructures.segmenttree;
 import java.util.Arrays;
 import java.util.function.BinaryOperator;
 
-public class RangeQueryPointUpdateSegmentTree {
+public class GenericSegmentTree {
 
   // The type of segment combination function to use
   public static enum SegmentCombinationFn {
@@ -57,13 +56,12 @@ public class RangeQueryPointUpdateSegmentTree {
   private BinaryOperator<Long> minFn = (a, b) -> Math.min(a, b);
   private BinaryOperator<Long> maxFn = (a, b) -> Math.max(a, b);
 
-  public RangeQueryPointUpdateSegmentTree(
-      long[] values, SegmentCombinationFn segmentCombinationFunction) {
+  public GenericSegmentTree(long[] values, SegmentCombinationFn segmentCombinationFunction) {
     // By default, specify ADDITION as the range update function.
     this(values, segmentCombinationFunction, RangeUpdateFn.ADDITION);
   }
 
-  public RangeQueryPointUpdateSegmentTree(
+  public GenericSegmentTree(
       long[] values,
       SegmentCombinationFn segmentCombinationFunction,
       RangeUpdateFn rangeUpdateFunction) {
@@ -270,8 +268,7 @@ public class RangeQueryPointUpdateSegmentTree {
   private static void rangeSumQueryExample() {
     //               0  1  2  3
     long[] values = {1, 2, 3, 2};
-    RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(values, SegmentCombinationFn.SUM);
+    GenericSegmentTree st = new GenericSegmentTree(values, SegmentCombinationFn.SUM);
 
     int l = 0, r = 3;
     System.out.printf("The sum between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery(l, r));
@@ -282,24 +279,22 @@ public class RangeQueryPointUpdateSegmentTree {
   private static void rangeMinQueryExample() {
     //               0  1  2  3
     long[] values = {1, 2, 3, 2};
-    RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(values, SegmentCombinationFn.MIN);
+    GenericSegmentTree st = new GenericSegmentTree(values, SegmentCombinationFn.MIN);
 
     int l = 0, r = 3;
-    System.out.printf("The sum between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery(l, r));
+    System.out.printf("The min between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery(l, r));
     // Prints:
-    // The sum between indeces [0, 3] is: 1
+    // The min between indeces [0, 3] is: 1
   }
 
   private static void rangeMaxQueryExample() {
     //               0  1  2  3
     long[] values = {1, 2, 3, 2};
-    RangeQueryPointUpdateSegmentTree st =
-        new RangeQueryPointUpdateSegmentTree(values, SegmentCombinationFn.MAX);
+    GenericSegmentTree st = new GenericSegmentTree(values, SegmentCombinationFn.MAX);
 
     int l = 0, r = 3;
-    System.out.printf("The sum between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery(l, r));
+    System.out.printf("The max between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery(l, r));
     // Prints:
-    // The sum between indeces [0, 3] is: 3
+    // The max between indeces [0, 3] is: 3
   }
 }
