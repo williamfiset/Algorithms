@@ -26,6 +26,8 @@ public class GenericSegmentTree {
   // When updating the value of a specific index position, or a range of values,
   // modify the affected values using the following function:
   public static enum RangeUpdateFn {
+    // When a range update is issued, assign all the values in the range [l, r] to be `x`
+    ASSIGN,
     // When a range update is issued, add a value of `x` to all the elements in the range [l, r]
     ADDITION,
     // When a range update is issued, multiply all elements in the range [l, r] by a value of `x`
@@ -92,9 +94,11 @@ public class GenericSegmentTree {
       combinationFn = sumFn;
     } else if (segmentCombinationFunction == SegmentCombinationFn.MIN) {
       Arrays.fill(t, Long.MAX_VALUE);
+      Arrays.fill(lazy, Long.MAX_VALUE);
       combinationFn = minFn;
     } else if (segmentCombinationFunction == SegmentCombinationFn.MAX) {
       Arrays.fill(t, Long.MIN_VALUE);
+      Arrays.fill(lazy, Long.MIN_VALUE);
       combinationFn = maxFn;
     }
 
@@ -128,6 +132,16 @@ public class GenericSegmentTree {
     t[i] = combinationFn.apply(t[2 * i + 1], t[2 * i + 2]);
   }
 
+  private long defaultValue() {
+    if (segmentCombinationFn == SegmentCombinationFn.SUM) {
+      return 0;
+    } else if (segmentCombinationFn == SegmentCombinationFn.MIN) {
+      return Long.MAX_VALUE;
+    } else {
+      return Long.MIN_VALUE;
+    }
+  }
+
   /**
    * Returns the query of the range [l, r] on the original `values` array (+ any updates made to it)
    *
@@ -159,18 +173,13 @@ public class GenericSegmentTree {
    */
   private long rangeQuery(int i, int tl, int tr, int l, int r) {
     if (l > r) {
-      // Different segment tree types have different base cases:
-      if (segmentCombinationFn == SegmentCombinationFn.SUM) {
-        return 0;
-      } else if (segmentCombinationFn == SegmentCombinationFn.MIN) {
-        return Long.MAX_VALUE;
-      } else if (segmentCombinationFn == SegmentCombinationFn.MAX) {
-        return Long.MIN_VALUE;
-      }
+      // Different segment tree types have different base cases
+      return defaultValue();
     }
     if (tl == l && tr == r) {
       return t[i];
     }
+    propagate(i);
     int tm = (tl + tr) / 2;
     // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
     // [l, r], simply recurse on both segments and let the base case return the
@@ -199,6 +208,7 @@ public class GenericSegmentTree {
     if (tl == l && tr == r) {
       return t[i];
     }
+    propagate(i);
     int tm = (tl + tr) / 2;
     // Test how the left and right segments of the interval [tl, tr] overlap with the query [l, r]
     boolean overlapsLeftSegment = (l <= tm);
@@ -252,7 +262,39 @@ public class GenericSegmentTree {
   // Updates the range of values between [l, r] the segment tree with `x` based
   // on what RangeUpdateFn was chosen.
   public void rangeUpdate(int l, int r, long x) {
-    throw new UnsupportedOperationException("rangeUpdate is not yet implemented");
+    rangeUpdate(0, 0, n - 1, l, r, x);
+  }
+
+  private void propagate(int i) {
+    // Lazy propagate left segment
+    t[2 * i + 1] = combinationFn.apply(t[2 * i + 1], lazy[i]);
+    lazy[2 * i + 1] = combinationFn.apply(lazy[2 * i + 1], lazy[i]);
+
+    // Lazy propagate right segment
+    t[2 * i + 2] = combinationFn.apply(t[2 * i + 2], lazy[i]);
+    lazy[2 * i + 2] = combinationFn.apply(lazy[2 * i + 2], lazy[i]);
+
+    lazy[i] = defaultValue();
+  }
+
+  private void rangeUpdate(int i, int tl, int tr, int l, int r, long x) {
+    if (l > r) {
+      return;
+    }
+    if (tl == l && tr == r) {
+      t[i] = rangeUpdateFn.apply(t[i], x);
+      lazy[i] = rangeUpdateFn.apply(lazy[i], x);
+      return;
+    }
+    propagate(i);
+    int tm = (tl + tr) / 2;
+    // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
+    // [l, r], simply recurse on both segments and let the base case disregard
+    // invalid intervals.
+    rangeUpdate(2 * i + 1, tl, tm, l, Math.min(tm, r), x);
+    rangeUpdate(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r, x);
+
+    t[i] = combinationFn.apply(t[2 * i + 1], t[2 * i + 2]);
   }
 
   ////////////////////////////////////////////////////
@@ -263,6 +305,8 @@ public class GenericSegmentTree {
     rangeSumQueryExample();
     rangeMinQueryExample();
     rangeMaxQueryExample();
+    additionRangeUpdateExample();
+    multiplicationRangeUpdateExample();
   }
 
   private static void rangeSumQueryExample() {
@@ -296,5 +340,30 @@ public class GenericSegmentTree {
     System.out.printf("The max between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery(l, r));
     // Prints:
     // The max between indeces [0, 3] is: 3
+  }
+
+  private static void additionRangeUpdateExample() {
+    //               0  1  2  3  4
+    long[] values = {1, 2, 3, 2, 1};
+    GenericSegmentTree st = new GenericSegmentTree(values, SegmentCombinationFn.SUM);
+
+    int l = 1, r = 3;
+    st.rangeUpdate(1, 3, 4); // update [1, 3] with 4
+    System.out.printf("The sum between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery(l, r));
+    // Prints:
+    // The sum between indeces [1, 3] is: 19
+  }
+
+  private static void multiplicationRangeUpdateExample() {
+    //               0  1  2  3  4
+    long[] values = {1, 2, 3, 2, 1};
+    GenericSegmentTree st =
+        new GenericSegmentTree(values, SegmentCombinationFn.SUM, RangeUpdateFn.MULTIPLICATION);
+
+    int l = 1, r = 3;
+    st.rangeUpdate(1, 3, 3); // Multiply each element in the range [1, 3] by 3
+    System.out.printf("The sum between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery2(l, r));
+    // Prints:
+    // The sum between indeces [1, 3] is: 21
   }
 }

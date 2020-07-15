@@ -41,6 +41,27 @@ public class GenericSegmentTreeTest {
     }
   }
 
+  // @Test
+  // public void testSimpleAdditionRangeUpdate() {
+  //   int n = 10;
+  //   long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
+  //   GenericSegmentTree st = new GenericSegmentTree(ar,
+  // GenericSegmentTree.SegmentCombinationFn.SUM);
+
+  //   // Do multiple range updates
+  //   st.rangeUpdate(0, 7, 5);
+  //   st.rangeUpdate(3, n-1, 6);
+  //   st.rangeUpdate(3, 7, 7);
+
+  //   bruteForceSumRangeUpdate(ar, 0, 7, 5);
+  //   bruteForceSumRangeUpdate(ar, 3, n-1, 6);
+  //   bruteForceSumRangeUpdate(ar, 3, 7, 7);
+
+  //   System.out.println(bruteForceSum(ar, 0, n-1));
+  //   System.out.println(st.rangeQuery(0, n-1));
+  //   assertThat(true).isEqualTo(false);
+  // }
+
   @Test
   public void testRandomPointUpdatesAndSumRangeQueries() {
     int n = 100;
@@ -216,5 +237,25 @@ public class GenericSegmentTreeTest {
       m = Math.max(m, values[i]);
     }
     return m;
+  }
+
+  private static void bruteForceSumRangeUpdate(long[] values, int l, int r, long x) {
+    for (int i = l; i <= r; i++) {
+      values[i] += x;
+    }
+  }
+
+  private static void bruteForceMulRangeUpdate(long[] values, int l, int r, long x) {
+    for (int i = l; i <= r; i++) {
+      values[i] *= x;
+    }
+  }
+
+  private static long bruteForceSumRangeQuery(long[] values, int l, int r) {
+    long s = 0;
+    for (int i = l; i <= r; i++) {
+      s += values[i];
+    }
+    return s;
   }
 }
