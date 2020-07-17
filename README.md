@@ -265,7 +265,7 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 
 - [Bit manipulations](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/BitManipulations.java) **- O(1)**
 - [List permutations](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/Permutations.java) **- O(n!)**
-- [:movie_camera:](https://www.youtube.com/watch?v=RnlHPR0lyOE)[Power set (set of all subsets)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/PowerSet.java) **- O(2<sup>n</sup>)**
+- [:movie_camera:](https://www.youtube.com/watch?v=RnlHPR0lyOE) [Power set (set of all subsets)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/PowerSet.java) **- O(2<sup>n</sup>)**
 - [Set combinations](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/Combinations.java) **- O(n choose r)**
 - [Set combinations with repetition](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/CombinationsWithRepetition.java) **- O((n+r-1) choose r)**
 - [Sliding Window Minimum/Maximum](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/other/SlidingWindowMaximum.java) **- O(1)**
