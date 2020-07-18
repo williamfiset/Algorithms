@@ -172,6 +172,7 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 - [Triangle area algorithms](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/geometry/TriangleArea.java) **- O(1)**
 - [[UNTESTED] Circle-circle intersection area](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/geometry/CircleCircleIntersectionArea.java) **- O(1)**
 - [[UNTESTED] Circular segment area](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/geometry/CircularSegmentArea.java) **- O(1)**
+- [Minimum cost polygon triangulation](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/geometry/MinimumCostConvexPolygonTriangulation.java) **- O(n^3)**
 
 # Graph theory
 
@@ -258,6 +259,7 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 - [Modular inverse](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/math/ModularInverse.java) **- ~O(log(a + b))**
 - [Prime factorization (pollard rho)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/math/PrimeFactorization.java) **- O(n<sup>1/4</sup>)**
 - [Relatively prime check (coprimality check)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/math/RelativelyPrime.java) **- ~O(log(a + b))**
+- [N Choose R Mod Prime](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/math/NChooseRModPrime.java) **- ~O(n)**
 
 # Other
 
@@ -301,6 +303,8 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 - [Manacher's algorithm (finds all palindromes in text)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/strings/ManachersAlgorithm.java) **- O(n)**
 - [Rabin-Karp algorithm (finds pattern match positions in text)](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/strings/RabinKarp.java) **- O(n+m)**
 - [Substring verification with suffix array](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/strings/SubstringVerificationSuffixArray.java) **- O(nlog(n)) SA construction and O(mlog(n)) per query**
+- [Boyer-Moore string search](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/strings/BoyerMooreStringSearch.java) **- O(m+k)**
+- [Z Algorithm](https://github.com/williamfiset/algorithms/tree/master/src/main/java/com/williamfiset/algorithms/strings/ZAlgorithm.java) **- O(m+n)**
 
 # License
 
