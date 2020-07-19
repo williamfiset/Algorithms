@@ -1,6 +1,6 @@
 /**
- * Simple segment tree implementation that supports a few range query operations (sum, min and max)
- * along with point updates on individual elements.
+ * A generic segment tree implementation that supports several range update and aggregation
+ * functions.
  *
  * <p>Run with: ./gradlew run -Palgorithm=datastructures.segmenttree.GenericSegmentTree
  *
@@ -172,14 +172,18 @@ public class GenericSegmentTree {
    * @param r the target right endpoint (inclusive) for the range query
    */
   private long rangeQuery(int i, int tl, int tr, int l, int r) {
+    // System.out.println("RANGE QUERY");
     if (l > r) {
       // Different segment tree types have different base cases
+      // System.out.printf("[%d, %d] out of bounds\n", tl, tr);
       return defaultValue();
     }
+    propagateQuery(i, tl, tr);
     if (tl == l && tr == r) {
+      // System.out.printf("[%d, %d], t[i] = %d, lazy[i] = %d\n", tl, tr, t[i], lazy[i]);
       return t[i];
     }
-    propagate(i);
+    // System.out.printf("[%d, %d]\n", tl, tr);
     int tm = (tl + tr) / 2;
     // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
     // [l, r], simply recurse on both segments and let the base case return the
@@ -205,10 +209,10 @@ public class GenericSegmentTree {
    * @param r the target right endpoint (inclusive) for the range query
    */
   private long rangeQuery2(int i, int tl, int tr, int l, int r) {
+    propagateQuery(i, tl, tr);
     if (tl == l && tr == r) {
       return t[i];
     }
-    propagate(i);
     int tm = (tl + tr) / 2;
     // Test how the left and right segments of the interval [tl, tr] overlap with the query [l, r]
     boolean overlapsLeftSegment = (l <= tm);
@@ -265,15 +269,33 @@ public class GenericSegmentTree {
     rangeUpdate(0, 0, n - 1, l, r, x);
   }
 
-  private void propagate(int i) {
-    // Lazy propagate left segment
-    t[2 * i + 1] = combinationFn.apply(t[2 * i + 1], lazy[i]);
-    lazy[2 * i + 1] = combinationFn.apply(lazy[2 * i + 1], lazy[i]);
+  private void propagateUpdate(int i, int tl, int tr, long x) {
+    if (segmentCombinationFn == SegmentCombinationFn.SUM) {
+      t[i] = combinationFn.apply(t[i], (tr - tl + 1) * x);
+    } else {
+      t[i] = combinationFn.apply(t[i], x);
+    }
 
-    // Lazy propagate right segment
-    t[2 * i + 2] = combinationFn.apply(t[2 * i + 2], lazy[i]);
-    lazy[2 * i + 2] = combinationFn.apply(lazy[2 * i + 2], lazy[i]);
+    // Push delta to left/right segments
+    if (tl != tr) {
+      lazy[2 * i + 1] = combinationFn.apply(lazy[2 * i + 1], lazy[i]);
+      lazy[2 * i + 2] = combinationFn.apply(lazy[2 * i + 2], lazy[i]);
+    }
+    lazy[i] = defaultValue();
+  }
 
+  private void propagateQuery(int i, int tl, int tr) {
+    if (segmentCombinationFn == SegmentCombinationFn.SUM) {
+      t[i] = combinationFn.apply(t[i], (tr - tl + 1) * lazy[i]);
+    } else {
+      t[i] = combinationFn.apply(t[i], lazy[i]);
+    }
+
+    // Push delta to left/right segments
+    if (tl != tr) {
+      lazy[2 * i + 1] = combinationFn.apply(lazy[2 * i + 1], lazy[i]);
+      lazy[2 * i + 2] = combinationFn.apply(lazy[2 * i + 2], lazy[i]);
+    }
     lazy[i] = defaultValue();
   }
 
@@ -281,20 +303,43 @@ public class GenericSegmentTree {
     if (l > r) {
       return;
     }
+
+    // TODO(william): re-factor into propagate method
+    t[i] = combinationFn.apply(t[i], (tr - tl + 1) * lazy[i]);
+    // Push delta to left/right segments
+    lazy[2 * i + 1] = combinationFn.apply(lazy[2 * i + 1], lazy[i]);
+    lazy[2 * i + 2] = combinationFn.apply(lazy[2 * i + 2], lazy[i]);
+    lazy[i] = defaultValue();
+
     if (tl == l && tr == r) {
-      t[i] = rangeUpdateFn.apply(t[i], x);
-      lazy[i] = rangeUpdateFn.apply(lazy[i], x);
+      t[i] = combinationFn.apply(t[i], (tr - tl + 1) * x);
+      lazy[2 * i + 1] = combinationFn.apply(lazy[2 * i + 1], x);
+      lazy[2 * i + 2] = combinationFn.apply(lazy[2 * i + 2], x);
+    } else {
+      int tm = (tl + tr) / 2;
+      // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
+      // [l, r], simply recurse on both segments and let the base case disregard
+      // invalid intervals.
+      rangeUpdate(2 * i + 1, tl, tm, l, Math.min(tm, r), x);
+      rangeUpdate(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r, x);
+
+      t[i] = combinationFn.apply(t[2 * i + 1], t[2 * i + 2]);
+    }
+  }
+
+  public void printDebugInfo() {
+    printDebugInfo(0, 0, n - 1);
+    System.out.println();
+  }
+
+  private void printDebugInfo(int i, int tl, int tr) {
+    System.out.printf("[%d, %d], t[i] = %d, lazy[i] = %d\n", tl, tr, t[i], lazy[i]);
+    if (tl == tr) {
       return;
     }
-    propagate(i);
     int tm = (tl + tr) / 2;
-    // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
-    // [l, r], simply recurse on both segments and let the base case disregard
-    // invalid intervals.
-    rangeUpdate(2 * i + 1, tl, tm, l, Math.min(tm, r), x);
-    rangeUpdate(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r, x);
-
-    t[i] = combinationFn.apply(t[2 * i + 1], t[2 * i + 2]);
+    printDebugInfo(2 * i + 1, tl, tm);
+    printDebugInfo(2 * i + 2, tm + 1, tr);
   }
 
   ////////////////////////////////////////////////////

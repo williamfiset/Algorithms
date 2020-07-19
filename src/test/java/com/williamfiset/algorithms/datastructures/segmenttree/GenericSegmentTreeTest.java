@@ -41,26 +41,30 @@ public class GenericSegmentTreeTest {
     }
   }
 
-  // @Test
-  // public void testSimpleAdditionRangeUpdate() {
-  //   int n = 10;
-  //   long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
-  //   GenericSegmentTree st = new GenericSegmentTree(ar,
-  // GenericSegmentTree.SegmentCombinationFn.SUM);
+  @Test
+  public void testSimpleAdditionRangeUpdate() {
+    //           0, 1, 2, 3, 4
+    long[] ar = {1, 2, 1, 2, 1};
+    GenericSegmentTree st = new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.SUM);
 
-  //   // Do multiple range updates
-  //   st.rangeUpdate(0, 7, 5);
-  //   st.rangeUpdate(3, n-1, 6);
-  //   st.rangeUpdate(3, 7, 7);
+    // Do multiple range updates
+    st.rangeUpdate(0, 1, 5);
+    st.rangeUpdate(3, 4, 2);
+    st.rangeUpdate(0, 4, 3);
 
-  //   bruteForceSumRangeUpdate(ar, 0, 7, 5);
-  //   bruteForceSumRangeUpdate(ar, 3, n-1, 6);
-  //   bruteForceSumRangeUpdate(ar, 3, 7, 7);
+    // Point queries
+    assertThat(st.rangeQuery(0, 0)).isEqualTo(1 + 3 + 5);
+    assertThat(st.rangeQuery(1, 1)).isEqualTo(2 + 3 + 5);
+    assertThat(st.rangeQuery(2, 2)).isEqualTo(1 + 3);
+    assertThat(st.rangeQuery(3, 3)).isEqualTo(2 + 3 + 2);
+    assertThat(st.rangeQuery(4, 4)).isEqualTo(2 + 3 + 1);
 
-  //   System.out.println(bruteForceSum(ar, 0, n-1));
-  //   System.out.println(st.rangeQuery(0, n-1));
-  //   assertThat(true).isEqualTo(false);
-  // }
+    // Range queries
+    assertThat(st.rangeQuery(0, 1)).isEqualTo(2 * 5 + 2 * 3 + 1 + 2);
+    assertThat(st.rangeQuery(0, 2)).isEqualTo(2 * 5 + 3 * 3 + 1 + 2 + 1);
+    assertThat(st.rangeQuery(3, 4)).isEqualTo(2 * 2 + 2 * 3 + 2 + 1);
+    assertThat(st.rangeQuery(0, 4)).isEqualTo(2 * 5 + 2 * 2 + 3 * 5 + 1 + 1 + 1 + 2 + 2);
+  }
 
   @Test
   public void testRandomPointUpdatesAndSumRangeQueries() {
