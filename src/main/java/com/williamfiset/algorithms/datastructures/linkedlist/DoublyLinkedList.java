@@ -61,6 +61,7 @@ public class DoublyLinkedList<T> implements Iterable<T> {
       head = tail = new Node<T>(elem, null, null);
     } else {
       tail.next = new Node<T>(elem, tail, null);
+      tail.next.prev=tail;
       tail = tail.next;
     }
     size++;
@@ -71,7 +72,8 @@ public class DoublyLinkedList<T> implements Iterable<T> {
     if (isEmpty()) {
       head = tail = new Node<T>(elem, null, null);
     } else {
-      head.prev = new Node<T>(elem, null, head);
+      head.prev = new Node<T>(elem, null, head);'
+      head.prev.next = head;
       head = head.prev;
     }
     size++;
