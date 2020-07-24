@@ -7,6 +7,8 @@
  * <p>Several thanks to cp-algorithms for their great article on segment trees:
  * https://cp-algorithms.com/data_structures/segment_tree.html
  *
+ * NOTE: This file is still a WIP
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.datastructures.segmenttree;
@@ -45,7 +47,12 @@ public class GenericSegmentTree {
   // when doing range updates.
   private long[] lazy;
 
-  private SegmentCombinationFn segmentCombinationFn;
+  // TODO(william): change these values once you're done debugging overflow issues.
+  private static long POS_INF = +99999999999999L;
+  private static long NEG_INF = -99999999999999L;
+
+  private SegmentCombinationFn segmentCombinationFunction;
+  private RangeUpdateFn rangeUpdateFunction;
 
   // The chosen range combination function
   private BinaryOperator<Long> combinationFn;
@@ -77,7 +84,8 @@ public class GenericSegmentTree {
       throw new IllegalArgumentException("Please specify a valid range update function.");
     }
     n = values.length;
-    this.segmentCombinationFn = segmentCombinationFunction;
+    this.segmentCombinationFunction = segmentCombinationFunction;
+    this.rangeUpdateFunction = rangeUpdateFunction;
 
     // The size of the segment tree `t`
     //
@@ -93,12 +101,12 @@ public class GenericSegmentTree {
     if (segmentCombinationFunction == SegmentCombinationFn.SUM) {
       combinationFn = sumFn;
     } else if (segmentCombinationFunction == SegmentCombinationFn.MIN) {
-      Arrays.fill(t, Long.MAX_VALUE);
-      Arrays.fill(lazy, Long.MAX_VALUE);
+      Arrays.fill(t, POS_INF);
+      Arrays.fill(lazy, POS_INF);
       combinationFn = minFn;
     } else if (segmentCombinationFunction == SegmentCombinationFn.MAX) {
-      Arrays.fill(t, Long.MIN_VALUE);
-      Arrays.fill(lazy, Long.MIN_VALUE);
+      Arrays.fill(t, NEG_INF);
+      Arrays.fill(lazy, NEG_INF);
       combinationFn = maxFn;
     }
 
@@ -133,12 +141,12 @@ public class GenericSegmentTree {
   }
 
   private long defaultValue() {
-    if (segmentCombinationFn == SegmentCombinationFn.SUM) {
+    if (segmentCombinationFunction == SegmentCombinationFn.SUM) {
       return 0;
-    } else if (segmentCombinationFn == SegmentCombinationFn.MIN) {
-      return Long.MAX_VALUE;
+    } else if (segmentCombinationFunction == SegmentCombinationFn.MIN) {
+      return POS_INF;
     } else {
-      return Long.MIN_VALUE;
+      return NEG_INF;
     }
   }
 
@@ -172,13 +180,12 @@ public class GenericSegmentTree {
    * @param r the target right endpoint (inclusive) for the range query
    */
   private long rangeQuery(int i, int tl, int tr, int l, int r) {
-    // System.out.println("RANGE QUERY");
     if (l > r) {
       // Different segment tree types have different base cases
-      // System.out.printf("[%d, %d] out of bounds\n", tl, tr);
       return defaultValue();
     }
-    propagateQuery(i, tl, tr);
+    propagateWithCombinationFn(i, tl, tr);
+    // propagateWithRangeUpdateFn(i, tl, tr);
     if (tl == l && tr == r) {
       // System.out.printf("[%d, %d], t[i] = %d, lazy[i] = %d\n", tl, tr, t[i], lazy[i]);
       return t[i];
@@ -209,7 +216,8 @@ public class GenericSegmentTree {
    * @param r the target right endpoint (inclusive) for the range query
    */
   private long rangeQuery2(int i, int tl, int tr, int l, int r) {
-    propagateQuery(i, tl, tr);
+    propagateWithCombinationFn(i, tl, tr);
+    // propagateWithRangeUpdateFn(i, tl, tr);
     if (tl == l && tr == r) {
       return t[i];
     }
@@ -260,32 +268,40 @@ public class GenericSegmentTree {
       pointUpdate(2 * i + 2, pos, tm + 1, tr, newValue);
     }
     // Re-compute the segment value of the current segment on the callback
+    // t[i] = rangeUpdateFn.apply(t[2 * i + 1], t[2 * i + 2]);
     t[i] = combinationFn.apply(t[2 * i + 1], t[2 * i + 2]);
   }
 
   // Updates the range of values between [l, r] the segment tree with `x` based
   // on what RangeUpdateFn was chosen.
   public void rangeUpdate(int l, int r, long x) {
-    rangeUpdate(0, 0, n - 1, l, r, x);
+    if (rangeUpdateFunction == RangeUpdateFn.ADDITION) {
+      rangeUpdate1(0, 0, n - 1, l, r, x);
+    } else if (rangeUpdateFunction == RangeUpdateFn.ASSIGN) {
+      rangeUpdate2(0, 0, n - 1, l, r, x);
+    } else {
+      throw new UnsupportedOperationException("This range update type is not supported yet: " + rangeUpdateFunction);
+    }
   }
 
-  private void propagateUpdate(int i, int tl, int tr, long x) {
-    if (segmentCombinationFn == SegmentCombinationFn.SUM) {
-      t[i] = combinationFn.apply(t[i], (tr - tl + 1) * x);
+  private void propagateWithRangeUpdateFn(int i, int tl, int tr) {
+    // TODO(william): What if range updates don't apply? Assume sum point updates?
+    if (rangeUpdateFunction == RangeUpdateFn.ADDITION) {
+      t[i] = rangeUpdateFn.apply(t[i], (tr - tl + 1) * lazy[i]);
     } else {
-      t[i] = combinationFn.apply(t[i], x);
+      throw new UnsupportedOperationException("Not supported ATM");
     }
 
     // Push delta to left/right segments
     if (tl != tr) {
-      lazy[2 * i + 1] = combinationFn.apply(lazy[2 * i + 1], lazy[i]);
-      lazy[2 * i + 2] = combinationFn.apply(lazy[2 * i + 2], lazy[i]);
+      lazy[2 * i + 1] = rangeUpdateFn.apply(lazy[2 * i + 1], lazy[i]);
+      lazy[2 * i + 2] = rangeUpdateFn.apply(lazy[2 * i + 2], lazy[i]);
     }
     lazy[i] = defaultValue();
   }
 
-  private void propagateQuery(int i, int tl, int tr) {
-    if (segmentCombinationFn == SegmentCombinationFn.SUM) {
+  private void propagateWithCombinationFn(int i, int tl, int tr) {
+    if (segmentCombinationFunction == SegmentCombinationFn.SUM) {
       t[i] = combinationFn.apply(t[i], (tr - tl + 1) * lazy[i]);
     } else {
       t[i] = combinationFn.apply(t[i], lazy[i]);
@@ -299,29 +315,74 @@ public class GenericSegmentTree {
     lazy[i] = defaultValue();
   }
 
-  private void rangeUpdate(int i, int tl, int tr, int l, int r, long x) {
+  private void rangeUpdate1(int i, int tl, int tr, int l, int r, long x) {
+
+    // // TODO(william): re-factor into propagate method
+    // t[i] = combinationFn.apply(t[i], (tr - tl + 1) * lazy[i]);
+    // // Push delta to left/right segments
+    // if (tl != tr) {
+    //   lazy[2 * i + 1] = combinationFn.apply(lazy[2 * i + 1], lazy[i]);
+    //   lazy[2 * i + 2] = combinationFn.apply(lazy[2 * i + 2], lazy[i]);
+    // }
+    // lazy[i] = defaultValue();
+
+    propagateWithRangeUpdateFn(i, tl, tr);
+    // propagateWithCombinationFn(i, tl, tr);
+
     if (l > r) {
       return;
     }
 
-    // TODO(william): re-factor into propagate method
-    t[i] = combinationFn.apply(t[i], (tr - tl + 1) * lazy[i]);
-    // Push delta to left/right segments
-    lazy[2 * i + 1] = combinationFn.apply(lazy[2 * i + 1], lazy[i]);
-    lazy[2 * i + 2] = combinationFn.apply(lazy[2 * i + 2], lazy[i]);
-    lazy[i] = defaultValue();
-
     if (tl == l && tr == r) {
-      t[i] = combinationFn.apply(t[i], (tr - tl + 1) * x);
-      lazy[2 * i + 1] = combinationFn.apply(lazy[2 * i + 1], x);
-      lazy[2 * i + 2] = combinationFn.apply(lazy[2 * i + 2], x);
+      if (rangeUpdateFunction == RangeUpdateFn.ADDITION) {
+        t[i] = rangeUpdateFn.apply(t[i], (tr - tl + 1) * x);
+      } else {
+        throw new UnsupportedOperationException("Not supported ATM");
+      }
+      if (tl != tr) {
+        lazy[2 * i + 1] = rangeUpdateFn.apply(lazy[2 * i + 1], x);
+        lazy[2 * i + 2] = rangeUpdateFn.apply(lazy[2 * i + 2], x);
+      }
+
+      // t[i] = combinationFn.apply(t[i], (tr - tl + 1) * x);
+      // if (tl != tr) {
+      //   lazy[2 * i + 1] = combinationFn.apply(lazy[2 * i + 1], x);
+      //   lazy[2 * i + 2] = combinationFn.apply(lazy[2 * i + 2], x);
+      // }
     } else {
       int tm = (tl + tr) / 2;
       // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
       // [l, r], simply recurse on both segments and let the base case disregard
       // invalid intervals.
-      rangeUpdate(2 * i + 1, tl, tm, l, Math.min(tm, r), x);
-      rangeUpdate(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r, x);
+      rangeUpdate1(2 * i + 1, tl, tm, l, Math.min(tm, r), x);
+      rangeUpdate1(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r, x);
+
+      t[i] = combinationFn.apply(t[2 * i + 1], t[2 * i + 2]);
+      // t[i] = rangeUpdateFn.apply(t[2 * i + 1], t[2 * i + 2]);
+    }
+  }
+
+  private void rangeUpdate2(int i, int tl, int tr, int l, int r, long x) {
+    // propagateWithRangeUpdateFn(i, tl, tr);
+    propagateWithCombinationFn(i, tl, tr);
+
+    if (l > r) {
+      return;
+    }
+
+    if (tl == l && tr == r) {
+      t[i] = x;
+      if (tl != tr) {
+        lazy[2 * i + 1] = combinationFn.apply(lazy[2 * i + 1], x);
+        lazy[2 * i + 2] = combinationFn.apply(lazy[2 * i + 2], x);
+      }
+    } else {
+      int tm = (tl + tr) / 2;
+      // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
+      // [l, r], simply recurse on both segments and let the base case disregard
+      // invalid intervals.
+      rangeUpdate2(2 * i + 1, tl, tm, l, Math.min(tm, r), x);
+      rangeUpdate2(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r, x);
 
       t[i] = combinationFn.apply(t[2 * i + 1], t[2 * i + 2]);
     }
@@ -347,11 +408,18 @@ public class GenericSegmentTree {
   ////////////////////////////////////////////////////
 
   public static void main(String[] args) {
-    rangeSumQueryExample();
-    rangeMinQueryExample();
-    rangeMaxQueryExample();
-    additionRangeUpdateExample();
-    multiplicationRangeUpdateExample();
+    example1();
+    // rangeSumQueryExample();
+    // rangeMinQueryExample();
+    // rangeMaxQueryExample();
+    // additionRangeUpdateExample();
+    // multiplicationRangeUpdateExample();
+  }
+
+  private static void example1() {
+    long[] values = {2, 1, 3, 4, -1};
+    GenericSegmentTree st = new GenericSegmentTree(values, SegmentCombinationFn.MIN);
+    st.printDebugInfo();
   }
 
   private static void rangeSumQueryExample() {
