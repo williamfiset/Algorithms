@@ -18,59 +18,42 @@ public class SumQueryAssignUpdateSegmentTreeTest {
   public void setup() {}
 
   @Test
-  public void testSumQuery() {
-    long[] values = {1, 2, 3, 4, 5};
-    SumQueryAssignUpdateSegmentTree st = new SumQueryAssignUpdateSegmentTree(values);
-
-    assertThat(st.rangeQuery1(0, 1)).isEqualTo(3);
-    assertThat(st.rangeQuery1(2, 2)).isEqualTo(3);
-    assertThat(st.rangeQuery1(0, 4)).isEqualTo(15);
-  }
-
-  @Test
-  public void testAllSumQueries() {
-    int n = 100;
-    long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
+  public void simpleTest() {
+    long[] ar = {2, 1, 3, 4, -1};
     SumQueryAssignUpdateSegmentTree st = new SumQueryAssignUpdateSegmentTree(ar);
 
-    for (int i = 0; i < n; i++) {
-      for (int j = i; j < n; j++) {
-        long bfSum = bruteForceSum(ar, i, j);
-        long segTreeSum = st.rangeQuery1(i, j);
-        assertThat(bfSum).isEqualTo(segTreeSum);
-      }
-    }
-  }
-
-  @Test
-  public void testSimpleAdditionRangeUpdate() {
-    //           0, 1, 2, 3, 4
-    long[] ar = {1, 2, 1, 2, 1};
-    SumQueryAssignUpdateSegmentTree st = new SumQueryAssignUpdateSegmentTree(ar);
-
-    // Do multiple range updates
-    st.rangeUpdate1(0, 1, 5);
     st.rangeUpdate1(3, 4, 2);
-    st.rangeUpdate1(0, 4, 3);
 
-    // Point queries
-    assertThat(st.rangeQuery1(0, 0)).isEqualTo(1 + 3 + 5);
-    assertThat(st.rangeQuery1(1, 1)).isEqualTo(2 + 3 + 5);
-    assertThat(st.rangeQuery1(2, 2)).isEqualTo(1 + 3);
-    assertThat(st.rangeQuery1(3, 3)).isEqualTo(2 + 3 + 2);
-    assertThat(st.rangeQuery1(4, 4)).isEqualTo(2 + 3 + 1);
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(10);
+    assertThat(st.rangeQuery1(3, 4)).isEqualTo(4);
+    assertThat(st.rangeQuery1(3, 3)).isEqualTo(2);
+    assertThat(st.rangeQuery1(4, 4)).isEqualTo(2);
 
-    // Range queries
-    assertThat(st.rangeQuery1(0, 1)).isEqualTo(2 * 5 + 2 * 3 + 1 + 2);
-    assertThat(st.rangeQuery1(0, 2)).isEqualTo(2 * 5 + 3 * 3 + 1 + 2 + 1);
-    assertThat(st.rangeQuery1(3, 4)).isEqualTo(2 * 2 + 2 * 3 + 2 + 1);
-    assertThat(st.rangeQuery1(0, 4)).isEqualTo(2 * 5 + 2 * 2 + 3 * 5 + 1 + 1 + 1 + 2 + 2);
+    st.rangeUpdate1(1, 3, 4);
+
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(16);
+    assertThat(st.rangeQuery1(0, 1)).isEqualTo(6);
+    assertThat(st.rangeQuery1(3, 4)).isEqualTo(6);
+    assertThat(st.rangeQuery1(1, 1)).isEqualTo(4);
+    assertThat(st.rangeQuery1(2, 2)).isEqualTo(4);
+    assertThat(st.rangeQuery1(3, 3)).isEqualTo(4);
+    assertThat(st.rangeQuery1(1, 3)).isEqualTo(12);
+    assertThat(st.rangeQuery1(2, 3)).isEqualTo(8);
+    assertThat(st.rangeQuery1(1, 2)).isEqualTo(8);
+
+    st.rangeUpdate1(2, 2, 5);
+
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(17);
+    assertThat(st.rangeQuery1(0, 2)).isEqualTo(11);
+    assertThat(st.rangeQuery1(2, 4)).isEqualTo(11);
+    assertThat(st.rangeQuery1(1, 3)).isEqualTo(13);
+    assertThat(st.rangeQuery1(2, 2)).isEqualTo(5);
   }
 
   @Test
   public void testRandomRangeAssignUpdatesWithSumRangeQueries() {
     for (int n = 5; n < ITERATIONS; n++) {
-      long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
+      long[] ar = TestUtils.randomLongArray(n, -100, +100);
       SumQueryAssignUpdateSegmentTree st = new SumQueryAssignUpdateSegmentTree(ar);
 
       for (int i = 0; i < n; i++) {
@@ -81,16 +64,17 @@ public class SumQueryAssignUpdateSegmentTreeTest {
         int i2 = Math.max(j, k);
 
         // Range query
-        long bfMin = bruteForceMin(ar, i1, i2);
-        long segTreeMin = st.rangeQuery1(i1, i2);
-        assertThat(bfMin).isEqualTo(segTreeMin);
+        long bfSum = bruteForceSum(ar, i1, i2);
+        long segTreeSum = st.rangeQuery1(i1, i2);
+        assertThat(bfSum).isEqualTo(segTreeSum);
 
         // Range update
         j = TestUtils.randValue(0, n - 1);
         k = TestUtils.randValue(0, n - 1);
         int i3 = Math.min(j, k);
         int i4 = Math.max(j, k);
-        long randValue = TestUtils.randValue(-1000, 1000);
+        long randValue = TestUtils.randValue(-100, 100);
+        System.out.printf("Update [%d, %d] to %d\n", i3, i4, randValue);
         st.rangeUpdate1(i3, i4, randValue);
         bruteForceAssignRangeUpdate(ar, i3, i4, randValue);
       }

@@ -31,7 +31,7 @@ public class GenericSegmentTreeTest {
   @Test
   public void testAllSumQueries() {
     int n = 100;
-    long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
+    long[] ar = TestUtils.randomLongArray(n, -100, +100);
     GenericSegmentTree st = new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.SUM);
 
     for (int i = 0; i < n; i++) {
@@ -71,7 +71,7 @@ public class GenericSegmentTreeTest {
   @Test
   public void testRandomPointUpdatesAndSumRangeQueries() {
     for (int n = 1; n < ITERATIONS; n++) {
-      long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
+      long[] ar = TestUtils.randomLongArray(n, -100, +100);
       GenericSegmentTree st =
           new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.SUM);
 
@@ -84,7 +84,7 @@ public class GenericSegmentTreeTest {
 
           // Point update
           int randIndex = TestUtils.randValue(i, j + 1);
-          long randValue = TestUtils.randValue(-1000, 1000);
+          long randValue = TestUtils.randValue(-100, 100);
           st.pointUpdate(randIndex, randValue);
           ar[randIndex] = randValue;
           bfSum = bruteForceSum(ar, i, j);
@@ -98,7 +98,7 @@ public class GenericSegmentTreeTest {
   @Test
   public void testRandomPointUpdatesAndMinRangeQueries() {
     for (int n = 1; n < ITERATIONS; n++) {
-      long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
+      long[] ar = TestUtils.randomLongArray(n, -100, +100);
       GenericSegmentTree st =
           new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.MIN);
 
@@ -111,7 +111,7 @@ public class GenericSegmentTreeTest {
 
           // Point update
           int randIndex = TestUtils.randValue(i, j + 1);
-          long randValue = TestUtils.randValue(-1000, 1000);
+          long randValue = TestUtils.randValue(-100, 100);
           st.pointUpdate(randIndex, randValue);
           ar[randIndex] = randValue;
           bfMin = bruteForceMin(ar, i, j);
@@ -125,7 +125,7 @@ public class GenericSegmentTreeTest {
   @Test
   public void testRandomPointUpdatesAndMaxRangeQueries() {
     for (int n = 1; n < ITERATIONS; n++) {
-      long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
+      long[] ar = TestUtils.randomLongArray(n, -100, +100);
       GenericSegmentTree st =
           new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.MAX);
 
@@ -138,7 +138,7 @@ public class GenericSegmentTreeTest {
 
           // Point update
           int randIndex = TestUtils.randValue(i, j + 1);
-          long randValue = TestUtils.randValue(-1000, 1000);
+          long randValue = TestUtils.randValue(-100, 100);
           st.pointUpdate(randIndex, randValue);
           ar[randIndex] = randValue;
           bfMax = bruteForceMax(ar, i, j);
@@ -152,7 +152,7 @@ public class GenericSegmentTreeTest {
   @Test
   public void testRandomPointUpdatesAndSumRangeQueries_rangeQuery2() {
     for (int n = 1; n < ITERATIONS; n++) {
-      long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
+      long[] ar = TestUtils.randomLongArray(n, -100, +100);
       GenericSegmentTree st =
           new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.SUM);
 
@@ -165,7 +165,7 @@ public class GenericSegmentTreeTest {
 
           // Point update
           int randIndex = TestUtils.randValue(i, j + 1);
-          long randValue = TestUtils.randValue(-1000, 1000);
+          long randValue = TestUtils.randValue(-100, 100);
           st.pointUpdate(randIndex, randValue);
           ar[randIndex] = randValue;
           bfSum = bruteForceSum(ar, i, j);
@@ -179,7 +179,7 @@ public class GenericSegmentTreeTest {
   @Test
   public void testRandomPointUpdatesAndMinRangeQueries_rangeQuery2() {
     for (int n = 1; n < ITERATIONS; n++) {
-      long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
+      long[] ar = TestUtils.randomLongArray(n, -100, +100);
       GenericSegmentTree st =
           new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.MIN);
 
@@ -192,7 +192,7 @@ public class GenericSegmentTreeTest {
 
           // Point update
           int randIndex = TestUtils.randValue(i, j + 1);
-          long randValue = TestUtils.randValue(-1000, 1000);
+          long randValue = TestUtils.randValue(-100, 100);
           st.pointUpdate(randIndex, randValue);
           ar[randIndex] = randValue;
           bfMin = bruteForceMin(ar, i, j);
@@ -206,7 +206,7 @@ public class GenericSegmentTreeTest {
   @Test
   public void testRandomPointUpdatesAndMaxRangeQueries_rangeQuery2() {
     for (int n = 1; n < ITERATIONS; n++) {
-      long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
+      long[] ar = TestUtils.randomLongArray(n, -100, +100);
       GenericSegmentTree st =
           new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.MAX);
 
@@ -219,7 +219,7 @@ public class GenericSegmentTreeTest {
 
           // Point update
           int randIndex = TestUtils.randValue(i, j + 1);
-          long randValue = TestUtils.randValue(-1000, 1000);
+          long randValue = TestUtils.randValue(-100, 100);
           st.pointUpdate(randIndex, randValue);
           ar[randIndex] = randValue;
           bfMax = bruteForceMax(ar, i, j);
@@ -233,7 +233,7 @@ public class GenericSegmentTreeTest {
   @Test
   public void testRandomRangeSumUpdatesWithSumRangeQueries() {
     for (int n = 1; n < ITERATIONS; n++) {
-      long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
+      long[] ar = TestUtils.randomLongArray(n, -100, +100);
       GenericSegmentTree st =
           new GenericSegmentTree(
               ar,
@@ -256,7 +256,7 @@ public class GenericSegmentTreeTest {
         k = TestUtils.randValue(0, n - 1);
         int i3 = Math.min(j, k);
         int i4 = Math.max(j, k);
-        long randValue = TestUtils.randValue(-1000, 1000);
+        long randValue = TestUtils.randValue(-100, 100);
         st.rangeUpdate(i3, i4, randValue);
         bruteForceSumRangeUpdate(ar, i3, i4, randValue);
       }
@@ -266,7 +266,7 @@ public class GenericSegmentTreeTest {
   @Test
   public void testRandomRangeAssignUpdatesWithMinRangeQueries() {
     for (int n = 5; n < ITERATIONS; n++) {
-      long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
+      long[] ar = TestUtils.randomLongArray(n, -100, +100);
       GenericSegmentTree st =
           new GenericSegmentTree(
               ar,
@@ -290,7 +290,7 @@ public class GenericSegmentTreeTest {
         k = TestUtils.randValue(0, n - 1);
         int i3 = Math.min(j, k);
         int i4 = Math.max(j, k);
-        long randValue = TestUtils.randValue(-1000, 1000);
+        long randValue = TestUtils.randValue(-100, 100);
         st.rangeUpdate(i3, i4, randValue);
         bruteForceAssignRangeUpdate(ar, i3, i4, randValue);
       }

@@ -1,17 +1,16 @@
 /**
- * <p>Run with: ./gradlew run -Palgorithm=datastructures.segmenttree.MinQueryAssignUpdateSegmentTree
+ * Run with: ./gradlew run -Palgorithm=datastructures.segmenttree.MinQueryAssignUpdateSegmentTree
  *
  * <p>Several thanks to cp-algorithms for their great article on segment trees:
  * https://cp-algorithms.com/data_structures/segment_tree.html
  *
- * NOTE: This file is still a WIP
+ * <p>NOTE: This file is still a WIP
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
 import java.util.Arrays;
-import java.util.function.BinaryOperator;
 
 public class MinQueryAssignUpdateSegmentTree {
 
@@ -161,9 +160,8 @@ public class MinQueryAssignUpdateSegmentTree {
   }
 
   public void rangeUpdate1(int l, int r, long x) {
-    rangeUpdate1(0, 0, n-1, l, r, x);
+    rangeUpdate1(0, 0, n - 1, l, r, x);
   }
-
 
   private void propagate1(int i, int tl, int tr) {
     // Check for default value because you don't want to assign to the lazy
@@ -206,7 +204,7 @@ public class MinQueryAssignUpdateSegmentTree {
 
   // Alternative range update impl that propagates a little differently.
   public void rangeUpdate2(int l, int r, long x) {
-    rangeUpdate2(0, 0, n-1, l, r, x);
+    rangeUpdate2(0, 0, n - 1, l, r, x);
   }
 
   // Propagates ahead so that when you lookup a value of a node it's already pre-propagated
@@ -267,7 +265,7 @@ public class MinQueryAssignUpdateSegmentTree {
   public static void main(String[] args) {
     //          0, 1, 2, 3,  4
     long[] v = {2, 1, 3, 4, -1};
-    MinQueryAssignUpdateSegmentTree st = new MinQueryAssignUpdateSegmentTree(v);        
+    MinQueryAssignUpdateSegmentTree st = new MinQueryAssignUpdateSegmentTree(v);
     st.printDebugInfo();
     System.out.println(st.rangeQuery1(0, 4)); // -1
     System.out.println(st.rangeQuery1(3, 3)); // 4
@@ -299,7 +297,5 @@ public class MinQueryAssignUpdateSegmentTree {
     System.out.println(st.rangeQuery1(1, 3)); // 4
     System.out.println(st.rangeQuery1(2, 3)); // 4
     System.out.println(st.rangeQuery1(1, 2)); // 4
-
   }
-
 }

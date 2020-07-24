@@ -7,7 +7,7 @@
  * <p>Several thanks to cp-algorithms for their great article on segment trees:
  * https://cp-algorithms.com/data_structures/segment_tree.html
  *
- * NOTE: This file is still a WIP
+ * <p>NOTE: This file is still a WIP
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
@@ -280,7 +280,8 @@ public class GenericSegmentTree {
     } else if (rangeUpdateFunction == RangeUpdateFn.ASSIGN) {
       rangeUpdate2(0, 0, n - 1, l, r, x);
     } else {
-      throw new UnsupportedOperationException("This range update type is not supported yet: " + rangeUpdateFunction);
+      throw new UnsupportedOperationException(
+          "This range update type is not supported yet: " + rangeUpdateFunction);
     }
   }
 
