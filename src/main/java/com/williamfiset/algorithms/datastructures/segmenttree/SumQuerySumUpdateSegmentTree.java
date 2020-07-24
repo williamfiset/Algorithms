@@ -1,5 +1,5 @@
 /**
- * Run with: ./gradlew run -Palgorithm=datastructures.segmenttree.SumQueryAssignUpdateSegmentTree
+ * Run with: ./gradlew run -Palgorithm=datastructures.segmenttree.SumQuerySumUpdateSegmentTree
  *
  * <p>Several thanks to cp-algorithms for their great article on segment trees:
  * https://cp-algorithms.com/data_structures/segment_tree.html
@@ -10,10 +10,10 @@
  */
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
-public class SumQueryAssignUpdateSegmentTree {
+public class SumQuerySumUpdateSegmentTree {
 
   // The number of elements in the original input values array.
-  private int n;
+  private final int n;
 
   // The segment tree represented as a binary tree of ranges where t[0] is the
   // root node and the left and right children of node i are i*2+1 and i*2+2.
@@ -31,7 +31,14 @@ public class SumQueryAssignUpdateSegmentTree {
     return a + b;
   }
 
-  public SumQueryAssignUpdateSegmentTree(long[] values) {
+  // Safe sum function
+  private Long function2(Long a, Long b) {
+    if (a == null) a = 0L;
+    if (b == null) b = 0L;
+    return a + b;
+  }
+
+  public SumQuerySumUpdateSegmentTree(long[] values) {
     if (values == null) {
       throw new IllegalArgumentException("Segment tree values cannot be null.");
     }
@@ -118,11 +125,11 @@ public class SumQueryAssignUpdateSegmentTree {
     // value if it's the default value.
     if (lazy[i] != null) {
       long rangeSum = (tr - tl + 1) * lazy[i];
-      t[i] = rangeSum;
+      t[i] = function2(t[i], rangeSum);
       // Push delta to left/right segments for non-leaf nodes
       if (tl != tr) {
-        lazy[2 * i + 1] = lazy[i];
-        lazy[2 * i + 2] = lazy[i];
+        lazy[2 * i + 1] = function2(lazy[2 * i + 1], lazy[i]);
+        lazy[2 * i + 2] = function2(lazy[2 * i + 2], lazy[i]);
       }
       lazy[i] = null;
     }
@@ -136,10 +143,10 @@ public class SumQueryAssignUpdateSegmentTree {
 
     if (tl == l && tr == r) {
       long rangeSum = (tr - tl + 1) * x;
-      t[i] = rangeSum;
+      t[i] = function2(t[i], rangeSum);
       if (tl != tr) {
-        lazy[2 * i + 1] = x;
-        lazy[2 * i + 2] = x;
+        lazy[2 * i + 1] = function2(lazy[2 * i + 1], x);
+        lazy[2 * i + 2] = function2(lazy[2 * i + 2], x);
       }
     } else {
       int tm = (tl + tr) / 2;
@@ -175,6 +182,6 @@ public class SumQueryAssignUpdateSegmentTree {
   public static void main(String[] args) {
     //          0, 1, 2, 3,  4
     long[] v = {2, 1, 3, 4, -1};
-    SumQueryAssignUpdateSegmentTree st = new SumQueryAssignUpdateSegmentTree(v);
+    SumQuerySumUpdateSegmentTree st = new SumQuerySumUpdateSegmentTree(v);
   }
 }

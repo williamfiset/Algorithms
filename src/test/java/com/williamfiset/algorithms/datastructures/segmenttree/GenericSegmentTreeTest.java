@@ -4,11 +4,7 @@
  */
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
-import static com.google.common.truth.Truth.assertThat;
-
-import com.williamfiset.algorithms.utils.TestUtils;
 import org.junit.Before;
-import org.junit.Test;
 
 public class GenericSegmentTreeTest {
 
@@ -32,7 +28,8 @@ public class GenericSegmentTreeTest {
   // public void testAllSumQueries() {
   //   int n = 100;
   //   long[] ar = TestUtils.randomLongArray(n, -100, +100);
-  //   GenericSegmentTree st = new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.SUM);
+  //   GenericSegmentTree st = new GenericSegmentTree(ar,
+  // GenericSegmentTree.SegmentCombinationFn.SUM);
 
   //   for (int i = 0; i < n; i++) {
   //     for (int j = i; j < n; j++) {
@@ -47,7 +44,8 @@ public class GenericSegmentTreeTest {
   // public void testSimpleAdditionRangeUpdate() {
   //   //           0, 1, 2, 3, 4
   //   long[] ar = {1, 2, 1, 2, 1};
-  //   GenericSegmentTree st = new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.SUM);
+  //   GenericSegmentTree st = new GenericSegmentTree(ar,
+  // GenericSegmentTree.SegmentCombinationFn.SUM);
 
   //   // Do multiple range updates
   //   st.rangeUpdate(0, 1, 5);
