@@ -1,5 +1,5 @@
 /**
- * Run with: ./gradlew run -Palgorithm=datastructures.segmenttree.SumQuerySumUpdateSegmentTree
+ * Run with: ./gradlew run -Palgorithm=datastructures.segmenttree.MinQuerySumUpdateSegmentTree
  *
  * <p>Several thanks to cp-algorithms for their great article on segment trees:
  * https://cp-algorithms.com/data_structures/segment_tree.html
@@ -10,7 +10,7 @@
  */
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
-public class SumQuerySumUpdateSegmentTree {
+public class MinQuerySumUpdateSegmentTree {
 
   // The number of elements in the original input values array.
   private final int n;
@@ -23,22 +23,21 @@ public class SumQuerySumUpdateSegmentTree {
   // when doing range updates.
   private Long[] lazy;
 
-  // Null safe sum function
-  private Long nullSafeFunction(Long a, Long b) {
+  // Min function
+  private Long minFunction(Long a, Long b) {
     if (a == null && b == null) return null;
     if (a == null) return b;
     if (b == null) return a;
-    return a + b;
+    return Math.min(a, b);
   }
 
-  // Sum function
-  private Long function(Long a, Long b) {
+  private Long sumFunction(Long a, Long b) {
     if (a == null) a = 0L;
     if (b == null) b = 0L;
     return a + b;
   }
 
-  public SumQuerySumUpdateSegmentTree(long[] values) {
+  public MinQuerySumUpdateSegmentTree(long[] values) {
     if (values == null) {
       throw new IllegalArgumentException("Segment tree values cannot be null.");
     }
@@ -74,7 +73,7 @@ public class SumQuerySumUpdateSegmentTree {
     buildSegmentTree(2 * i + 1, tl, tm, values);
     buildSegmentTree(2 * i + 2, tm + 1, tr, values);
 
-    t[i] = nullSafeFunction(t[2 * i + 1], t[2 * i + 2]);
+    t[i] = minFunction(t[2 * i + 1], t[2 * i + 2]);
   }
 
   /**
@@ -108,7 +107,7 @@ public class SumQuerySumUpdateSegmentTree {
     // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
     // [l, r], simply recurse on both segments and let the base case return the
     // default value for invalid intervals.
-    return function(
+    return minFunction(
         rangeQuery1(2 * i + 1, tl, tm, l, Math.min(tm, r)),
         rangeQuery1(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r));
   }
@@ -117,17 +116,21 @@ public class SumQuerySumUpdateSegmentTree {
     rangeUpdate1(0, 0, n - 1, l, r, x);
   }
 
+  private void propagateLazy(int i, int tl, int tr, long delta) {
+    // Ignore leaf segments
+    if (tl == tr) return;
+    lazy[2 * i + 1] = sumFunction(lazy[2 * i + 1], delta);
+    lazy[2 * i + 2] = sumFunction(lazy[2 * i + 2], delta);
+  }
+
   private void propagate1(int i, int tl, int tr) {
     // Check for default value because you don't want to assign to the lazy
     // value if it's the default value.
     if (lazy[i] != null) {
-      long rangeSum = (tr - tl + 1) * lazy[i];
-      t[i] = function(t[i], rangeSum);
+      // The minimum value increases by the delta over the whole range.
+      t[i] = t[i] + lazy[i]; // sumFunction(t[i], lazy[i]);
       // Push delta to left/right segments for non-leaf nodes
-      if (tl != tr) {
-        lazy[2 * i + 1] = nullSafeFunction(lazy[2 * i + 1], lazy[i]);
-        lazy[2 * i + 2] = nullSafeFunction(lazy[2 * i + 2], lazy[i]);
-      }
+      propagateLazy(i, tl, tr, lazy[i]);
       lazy[i] = null;
     }
   }
@@ -139,12 +142,8 @@ public class SumQuerySumUpdateSegmentTree {
     }
 
     if (tl == l && tr == r) {
-      long rangeSum = (tr - tl + 1) * x;
-      t[i] = function(t[i], rangeSum);
-      if (tl != tr) {
-        lazy[2 * i + 1] = nullSafeFunction(lazy[2 * i + 1], x);
-        lazy[2 * i + 2] = nullSafeFunction(lazy[2 * i + 2], x);
-      }
+      t[i] = t[i] + x; // sumFunction(t[i], x);
+      propagateLazy(i, tl, tr, x);
       lazy[i] = null; // !!! needed? bug? remove?
     } else {
       int tm = (tl + tr) / 2;
@@ -154,7 +153,7 @@ public class SumQuerySumUpdateSegmentTree {
       rangeUpdate1(2 * i + 1, tl, tm, l, Math.min(tm, r), x);
       rangeUpdate1(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r, x);
 
-      t[i] = function(t[2 * i + 1], t[2 * i + 2]);
+      t[i] = minFunction(t[2 * i + 1], t[2 * i + 2]);
     }
   }
 
@@ -180,6 +179,6 @@ public class SumQuerySumUpdateSegmentTree {
   public static void main(String[] args) {
     //          0, 1, 2, 3,  4
     long[] v = {2, 1, 3, 4, -1};
-    SumQuerySumUpdateSegmentTree st = new SumQuerySumUpdateSegmentTree(v);
+    MinQuerySumUpdateSegmentTree st = new MinQuerySumUpdateSegmentTree(v);
   }
 }

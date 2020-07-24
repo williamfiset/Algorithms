@@ -141,6 +141,7 @@ public class SumQueryAssignUpdateSegmentTree {
         lazy[2 * i + 1] = x;
         lazy[2 * i + 2] = x;
       }
+      lazy[i] = null; // !!! Is this needed? bug? remove?
     } else {
       int tm = (tl + tr) / 2;
       // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
