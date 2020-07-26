@@ -10,6 +10,12 @@ Algorithms and data structures are fundamental to efficient code and good softwa
 
 This repository is contribution friendly :smiley:. If you'd like to add or improve an algorithm, your contribution is welcome! Please be sure to checkout the [Wiki](https://github.com/williamfiset/Algorithms/wiki) for instructions.
 
+### Other programming languages?
+
+This repository provides algorithm implementations in Java, however there are other forks that provide implementations in other languages, most notably:
+
+* **C++/Python**: https://github.com/akzare/Algorithms
+
 # Running an algorithm implementation
 
 To compile and run any of the algorithms here, you need at least JDK version 8. Gradle can make things more convenient for you, but it is not required.
