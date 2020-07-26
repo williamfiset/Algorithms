@@ -128,7 +128,7 @@ public class MinQuerySumUpdateSegmentTree {
     // value if it's the default value.
     if (lazy[i] != null) {
       // The minimum value increases by the delta over the whole range.
-      t[i] = t[i] + lazy[i]; // sumFunction(t[i], lazy[i]);
+      t[i] = sumFunction(t[i], lazy[i]); // t[i] + lazy[i];
       // Push delta to left/right segments for non-leaf nodes
       propagateLazy(i, tl, tr, lazy[i]);
       lazy[i] = null;
@@ -144,7 +144,7 @@ public class MinQuerySumUpdateSegmentTree {
     if (tl == l && tr == r) {
       t[i] = t[i] + x; // sumFunction(t[i], x);
       propagateLazy(i, tl, tr, x);
-      lazy[i] = null; // !!! needed? bug? remove?
+      lazy[i] = null; // TODO(william): confirm if this is needed?
     } else {
       int tm = (tl + tr) / 2;
       // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps

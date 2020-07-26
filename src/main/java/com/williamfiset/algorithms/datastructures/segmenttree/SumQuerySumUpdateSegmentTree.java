@@ -23,16 +23,8 @@ public class SumQuerySumUpdateSegmentTree {
   // when doing range updates.
   private Long[] lazy;
 
-  // Null safe sum function
-  private Long nullSafeFunction(Long a, Long b) {
-    if (a == null && b == null) return null;
-    if (a == null) return b;
-    if (b == null) return a;
-    return a + b;
-  }
-
-  // Sum function
-  private Long function(Long a, Long b) {
+  // Sum sumFunction
+  private Long sumFunction(Long a, Long b) {
     if (a == null) a = 0L;
     if (b == null) b = 0L;
     return a + b;
@@ -74,7 +66,7 @@ public class SumQuerySumUpdateSegmentTree {
     buildSegmentTree(2 * i + 1, tl, tm, values);
     buildSegmentTree(2 * i + 2, tm + 1, tr, values);
 
-    t[i] = nullSafeFunction(t[2 * i + 1], t[2 * i + 2]);
+    t[i] = sumFunction(t[2 * i + 1], t[2 * i + 2]);
   }
 
   /**
@@ -108,7 +100,7 @@ public class SumQuerySumUpdateSegmentTree {
     // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
     // [l, r], simply recurse on both segments and let the base case return the
     // default value for invalid intervals.
-    return function(
+    return sumFunction(
         rangeQuery1(2 * i + 1, tl, tm, l, Math.min(tm, r)),
         rangeQuery1(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r));
   }
@@ -122,11 +114,11 @@ public class SumQuerySumUpdateSegmentTree {
     // value if it's the default value.
     if (lazy[i] != null) {
       long rangeSum = (tr - tl + 1) * lazy[i];
-      t[i] = function(t[i], rangeSum);
+      t[i] = sumFunction(t[i], rangeSum);
       // Push delta to left/right segments for non-leaf nodes
       if (tl != tr) {
-        lazy[2 * i + 1] = nullSafeFunction(lazy[2 * i + 1], lazy[i]);
-        lazy[2 * i + 2] = nullSafeFunction(lazy[2 * i + 2], lazy[i]);
+        lazy[2 * i + 1] = sumFunction(lazy[2 * i + 1], lazy[i]);
+        lazy[2 * i + 2] = sumFunction(lazy[2 * i + 2], lazy[i]);
       }
       lazy[i] = null;
     }
@@ -140,12 +132,12 @@ public class SumQuerySumUpdateSegmentTree {
 
     if (tl == l && tr == r) {
       long rangeSum = (tr - tl + 1) * x;
-      t[i] = function(t[i], rangeSum);
+      t[i] = sumFunction(t[i], rangeSum);
       if (tl != tr) {
-        lazy[2 * i + 1] = nullSafeFunction(lazy[2 * i + 1], x);
-        lazy[2 * i + 2] = nullSafeFunction(lazy[2 * i + 2], x);
+        lazy[2 * i + 1] = sumFunction(lazy[2 * i + 1], x);
+        lazy[2 * i + 2] = sumFunction(lazy[2 * i + 2], x);
       }
-      lazy[i] = null; // !!! needed? bug? remove?
+      lazy[i] = null; // TODO(william): confirm if this is needed?
     } else {
       int tm = (tl + tr) / 2;
       // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
@@ -154,7 +146,7 @@ public class SumQuerySumUpdateSegmentTree {
       rangeUpdate1(2 * i + 1, tl, tm, l, Math.min(tm, r), x);
       rangeUpdate1(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r, x);
 
-      t[i] = function(t[2 * i + 1], t[2 * i + 2]);
+      t[i] = sumFunction(t[2 * i + 1], t[2 * i + 2]);
     }
   }
 

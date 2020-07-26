@@ -47,35 +47,35 @@ public class MinQueryAssignUpdateSegmentTreeTest {
     }
   }
 
-  @Test
-  public void testRandomRangeAssignUpdates2WithMinRangeQueries1() {
-    for (int n = 5; n < ITERATIONS; n++) {
-      long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
-      MinQueryAssignUpdateSegmentTree st = new MinQueryAssignUpdateSegmentTree(ar);
+  // @Test
+  // public void testRandomRangeAssignUpdates2WithMinRangeQueries1() {
+  //   for (int n = 5; n < ITERATIONS; n++) {
+  //     long[] ar = TestUtils.randomLongArray(n, -1000, +1000);
+  //     MinQueryAssignUpdateSegmentTree st = new MinQueryAssignUpdateSegmentTree(ar);
 
-      for (int i = 0; i < n; i++) {
-        // System.out.printf("n = %d, i = %d\n", n, i);
-        int j = TestUtils.randValue(0, n - 1);
-        int k = TestUtils.randValue(0, n - 1);
-        int i1 = Math.min(j, k);
-        int i2 = Math.max(j, k);
+  //     for (int i = 0; i < n; i++) {
+  //       // System.out.printf("n = %d, i = %d\n", n, i);
+  //       int j = TestUtils.randValue(0, n - 1);
+  //       int k = TestUtils.randValue(0, n - 1);
+  //       int i1 = Math.min(j, k);
+  //       int i2 = Math.max(j, k);
 
-        // Range query
-        long bfMin = bruteForceMin(ar, i1, i2);
-        long segTreeMin = st.rangeQuery2(i1, i2);
-        assertThat(bfMin).isEqualTo(segTreeMin);
+  //       // Range query
+  //       long bfMin = bruteForceMin(ar, i1, i2);
+  //       long segTreeMin = st.rangeQuery2(i1, i2);
+  //       assertThat(bfMin).isEqualTo(segTreeMin);
 
-        // Range update
-        j = TestUtils.randValue(0, n - 1);
-        k = TestUtils.randValue(0, n - 1);
-        int i3 = Math.min(j, k);
-        int i4 = Math.max(j, k);
-        long randValue = TestUtils.randValue(-1000, 1000);
-        st.rangeUpdate2(i3, i4, randValue);
-        bruteForceAssignRangeUpdate(ar, i3, i4, randValue);
-      }
-    }
-  }
+  //       // Range update
+  //       j = TestUtils.randValue(0, n - 1);
+  //       k = TestUtils.randValue(0, n - 1);
+  //       int i3 = Math.min(j, k);
+  //       int i4 = Math.max(j, k);
+  //       long randValue = TestUtils.randValue(-1000, 1000);
+  //       st.rangeUpdate2(i3, i4, randValue);
+  //       bruteForceAssignRangeUpdate(ar, i3, i4, randValue);
+  //     }
+  //   }
+  // }
 
   // Finds the sum in an array between [l, r] in the `values` array
   private static long bruteForceSum(long[] values, int l, int r) {

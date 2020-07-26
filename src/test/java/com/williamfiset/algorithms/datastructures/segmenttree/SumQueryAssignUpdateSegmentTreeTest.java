@@ -57,7 +57,7 @@ public class SumQueryAssignUpdateSegmentTreeTest {
       SumQueryAssignUpdateSegmentTree st = new SumQueryAssignUpdateSegmentTree(ar);
 
       for (int i = 0; i < n; i++) {
-        System.out.printf("n = %d, i = %d\n", n, i);
+        // System.out.printf("n = %d, i = %d\n", n, i);
         int j = TestUtils.randValue(0, n - 1);
         int k = TestUtils.randValue(0, n - 1);
         int i1 = Math.min(j, k);
@@ -74,7 +74,7 @@ public class SumQueryAssignUpdateSegmentTreeTest {
         int i3 = Math.min(j, k);
         int i4 = Math.max(j, k);
         long randValue = TestUtils.randValue(-100, 100);
-        System.out.printf("Update [%d, %d] to %d\n", i3, i4, randValue);
+        // System.out.printf("Update [%d, %d] to %d\n", i3, i4, randValue);
         st.rangeUpdate1(i3, i4, randValue);
         bruteForceAssignRangeUpdate(ar, i3, i4, randValue);
       }

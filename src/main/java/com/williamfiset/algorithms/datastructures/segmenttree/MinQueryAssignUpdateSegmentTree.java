@@ -10,8 +10,6 @@
  */
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
-import java.util.Arrays;
-
 public class MinQueryAssignUpdateSegmentTree {
 
   // The number of elements in the original input values array.
@@ -19,15 +17,18 @@ public class MinQueryAssignUpdateSegmentTree {
 
   // The segment tree represented as a binary tree of ranges where t[0] is the
   // root node and the left and right children of node i are i*2+1 and i*2+2.
-  private long[] t;
+  private Long[] t;
 
   // The delta values associates with each segment. Used for lazy propagation
   // when doing range updates.
-  private long[] lazy;
+  private Long[] lazy;
 
-  // TODO(william): change these values once you're done debugging overflow issues.
-  private static long POS_INF = +99999999999999L;
-  private static long NEG_INF = -99999999999999L;
+  private Long minFunction(Long a, Long b) {
+    if (a == null && b == null) return null;
+    if (a == null) return b;
+    if (b == null) return a;
+    return Math.min(a, b);
+  }
 
   public MinQueryAssignUpdateSegmentTree(long[] values) {
     if (values == null) {
@@ -43,11 +44,8 @@ public class MinQueryAssignUpdateSegmentTree {
     // the Eulerian tour structure of the tree to densely pack the segments.
     int N = 4 * n;
 
-    t = new long[N];
-    lazy = new long[N];
-
-    Arrays.fill(t, POS_INF);
-    Arrays.fill(lazy, POS_INF);
+    t = new Long[N];
+    lazy = new Long[N];
 
     buildSegmentTree(0, 0, n - 1, values);
   }
@@ -69,11 +67,7 @@ public class MinQueryAssignUpdateSegmentTree {
     buildSegmentTree(2 * i + 1, tl, tm, values);
     buildSegmentTree(2 * i + 2, tm + 1, tr, values);
 
-    t[i] = Math.min(t[2 * i + 1], t[2 * i + 2]);
-  }
-
-  private long defaultValue() {
-    return POS_INF;
+    t[i] = minFunction(t[2 * i + 1], t[2 * i + 2]);
   }
 
   /**
@@ -87,16 +81,6 @@ public class MinQueryAssignUpdateSegmentTree {
   }
 
   /**
-   * Returns the query of the range [l, r] on the original `values` array (+ any updates made to it)
-   *
-   * @param l the left endpoint of the range query (inclusive)
-   * @param r the right endpoint of the range query (inclusive)
-   */
-  public long rangeQuery2(int l, int r) {
-    return rangeQuery2(0, 0, n - 1, l, r);
-  }
-
-  /**
    * Returns the range query value of the range [l, r]
    *
    * @param i the index of the current segment in the tree
@@ -105,58 +89,21 @@ public class MinQueryAssignUpdateSegmentTree {
    * @param l the target left endpoint (inclusive) for the range query
    * @param r the target right endpoint (inclusive) for the range query
    */
-  private long rangeQuery1(int i, int tl, int tr, int l, int r) {
+  private Long rangeQuery1(int i, int tl, int tr, int l, int r) {
     if (l > r) {
-      return defaultValue();
+      return null;
     }
     propagate1(i, tl, tr);
     if (tl == l && tr == r) {
-      // System.out.printf("[%d, %d], t[i] = %d, lazy[i] = %d\n", tl, tr, t[i], lazy[i]);
       return t[i];
     }
-    // System.out.printf("[%d, %d]\n", tl, tr);
     int tm = (tl + tr) / 2;
     // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
     // [l, r], simply recurse on both segments and let the base case return the
     // default value for invalid intervals.
-    return Math.min(
+    return minFunction(
         rangeQuery1(2 * i + 1, tl, tm, l, Math.min(tm, r)),
         rangeQuery1(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r));
-  }
-
-  /**
-   * Returns the range query value of the range [l, r]
-   *
-   * <p>An alternative implementation of the range query function that intelligently only digs into
-   * the branches of the segment tree which overlap with the query [l, r].
-   *
-   * <p>This version of the range query implementation has the advantage that it doesn't need to
-   * know the explicit base case value for each range query type.
-   *
-   * @param i the index of the current segment in the tree
-   * @param tl the left endpoint (inclusive) of the current segment
-   * @param tr the right endpoint (inclusive) of the current segment
-   * @param l the target left endpoint (inclusive) for the range query
-   * @param r the target right endpoint (inclusive) for the range query
-   */
-  private long rangeQuery2(int i, int tl, int tr, int l, int r) {
-    if (tl == l && tr == r) {
-      return t[i];
-    }
-    propagate2(i, tl, tr);
-    int tm = (tl + tr) / 2;
-    // Test how the left and right segments of the interval [tl, tr] overlap with the query [l, r]
-    boolean overlapsLeftSegment = (l <= tm);
-    boolean overlapsRightSegment = (r > tm);
-    if (overlapsLeftSegment && overlapsRightSegment) {
-      return Math.min(
-          rangeQuery2(2 * i + 1, tl, tm, l, Math.min(tm, r)),
-          rangeQuery2(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r));
-    } else if (overlapsLeftSegment) {
-      return rangeQuery2(2 * i + 1, tl, tm, l, Math.min(tm, r));
-    } else {
-      return rangeQuery2(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r);
-    }
   }
 
   public void rangeUpdate1(int l, int r, long x) {
@@ -166,16 +113,15 @@ public class MinQueryAssignUpdateSegmentTree {
   private void propagate1(int i, int tl, int tr) {
     // Check for default value because you don't want to assign to the lazy
     // value if it's the default value.
-    if (lazy[i] != defaultValue()) {
+    if (lazy[i] != null) {
       t[i] = lazy[i];
       // Push delta to left/right segments for non-leaf nodes
       if (tl != tr) {
         lazy[2 * i + 1] = lazy[i];
         lazy[2 * i + 2] = lazy[i];
       }
+      lazy[i] = null;
     }
-
-    lazy[i] = defaultValue();
   }
 
   private void rangeUpdate1(int i, int tl, int tr, int l, int r, long x) {
@@ -190,6 +136,7 @@ public class MinQueryAssignUpdateSegmentTree {
         lazy[2 * i + 1] = x;
         lazy[2 * i + 2] = x;
       }
+      // lazy[i] = null; // TODO(william): confirm if this is needed?
     } else {
       int tm = (tl + tr) / 2;
       // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
@@ -198,50 +145,97 @@ public class MinQueryAssignUpdateSegmentTree {
       rangeUpdate1(2 * i + 1, tl, tm, l, Math.min(tm, r), x);
       rangeUpdate1(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r, x);
 
-      t[i] = Math.min(t[2 * i + 1], t[2 * i + 2]);
+      t[i] = minFunction(t[2 * i + 1], t[2 * i + 2]);
     }
   }
+
+  // /**
+  //  * Returns the query of the range [l, r] on the original `values` array (+ any updates made to
+  // it)
+  //  *
+  //  * @param l the left endpoint of the range query (inclusive)
+  //  * @param r the right endpoint of the range query (inclusive)
+  //  */
+  // public long rangeQuery2(int l, int r) {
+  //   return rangeQuery2(0, 0, n - 1, l, r);
+  // }
+
+  // /**
+  //  * Returns the range query value of the range [l, r]
+  //  *
+  //  * <p>An alternative implementation of the range query function that intelligently only digs
+  // into
+  //  * the branches of the segment tree which overlap with the query [l, r].
+  //  *
+  //  * <p>This version of the range query implementation has the advantage that it doesn't need to
+  //  * know the explicit base case value for each range query type.
+  //  *
+  //  * @param i the index of the current segment in the tree
+  //  * @param tl the left endpoint (inclusive) of the current segment
+  //  * @param tr the right endpoint (inclusive) of the current segment
+  //  * @param l the target left endpoint (inclusive) for the range query
+  //  * @param r the target right endpoint (inclusive) for the range query
+  //  */
+  // private Long rangeQuery2(int i, int tl, int tr, int l, int r) {
+  //   if (tl == l && tr == r) {
+  //     return t[i];
+  //   }
+  //   propagate2(i, tl, tr);
+  //   int tm = (tl + tr) / 2;
+  //   // Test how the left and right segments of the interval [tl, tr] overlap with the query [l,
+  // r]
+  //   boolean overlapsLeftSegment = (l <= tm);
+  //   boolean overlapsRightSegment = (r > tm);
+  //   if (overlapsLeftSegment && overlapsRightSegment) {
+  //     return minFunction(
+  //         rangeQuery2(2 * i + 1, tl, tm, l, Math.min(tm, r)),
+  //         rangeQuery2(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r));
+  //   } else if (overlapsLeftSegment) {
+  //     return rangeQuery2(2 * i + 1, tl, tm, l, Math.min(tm, r));
+  //   } else {
+  //     return rangeQuery2(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r);
+  //   }
+  // }
 
   // Alternative range update impl that propagates a little differently.
-  public void rangeUpdate2(int l, int r, long x) {
-    rangeUpdate2(0, 0, n - 1, l, r, x);
-  }
+  // public void rangeUpdate2(int l, int r, long x) {
+  //   rangeUpdate2(0, 0, n - 1, l, r, x);
+  // }
 
-  // Propagates ahead so that when you lookup a value of a node it's already pre-propagated
-  // in a sense. Cleans up the code a bit. You don't want to call this method on the leaf nodes.
-  private void propagate2(int i, int tl, int tr) {
-    // Check for default value because you don't want to assign to the lazy
-    // value if it's the default value.
-    if (lazy[i] != defaultValue()) {
-      t[2 * i + 1] = lazy[i];
-      lazy[2 * i + 1] = lazy[i];
-      t[2 * i + 2] = lazy[i];
-      lazy[2 * i + 2] = lazy[i];
-    }
+  // // Propagates ahead so that when you lookup a value of a node it's already pre-propagated
+  // // in a sense. Cleans up the code a bit. You don't want to call this method on the leaf nodes.
+  // private void propagate2(int i, int tl, int tr) {
+  //   // Check for default value because you don't want to assign to the lazy
+  //   // value if it's the default value.
+  //   if (lazy[i] != null) {
+  //     t[2 * i + 1] = lazy[i];
+  //     lazy[2 * i + 1] = lazy[i];
+  //     t[2 * i + 2] = lazy[i];
+  //     lazy[2 * i + 2] = lazy[i];
+  //     lazy[i] = null;
+  //   }
+  // }
 
-    lazy[i] = defaultValue();
-  }
+  // private void rangeUpdate2(int i, int tl, int tr, int l, int r, long x) {
+  //   if (l > r) {
+  //     return;
+  //   }
 
-  private void rangeUpdate2(int i, int tl, int tr, int l, int r, long x) {
-    if (l > r) {
-      return;
-    }
+  //   if (tl == l && tr == r) {
+  //     t[i] = x;
+  //     lazy[i] = x;
+  //   } else {
+  //     propagate2(i, tl, tr);
+  //     int tm = (tl + tr) / 2;
+  //     // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
+  //     // [l, r], simply recurse on both segments and let the base case disregard
+  //     // invalid intervals.
+  //     rangeUpdate2(2 * i + 1, tl, tm, l, Math.min(tm, r), x);
+  //     rangeUpdate2(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r, x);
 
-    if (tl == l && tr == r) {
-      t[i] = x;
-      lazy[i] = x;
-    } else {
-      propagate2(i, tl, tr);
-      int tm = (tl + tr) / 2;
-      // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
-      // [l, r], simply recurse on both segments and let the base case disregard
-      // invalid intervals.
-      rangeUpdate2(2 * i + 1, tl, tm, l, Math.min(tm, r), x);
-      rangeUpdate2(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r, x);
-
-      t[i] = Math.min(t[2 * i + 1], t[2 * i + 2]);
-    }
-  }
+  //     t[i] = minFunction(t[2 * i + 1], t[2 * i + 2]);
+  //   }
+  // }
 
   public void printDebugInfo() {
     printDebugInfo(0, 0, n - 1);
