@@ -30,6 +30,29 @@ public class TreapTree<T extends Comparable<T>> {
             this.value = value;
             this.priority = random.nextInt(100);
         }
+        public T getValue() {
+            return value;
+        }
+
+        public void setValue(T value) {
+            this.value = value;
+        }
+
+        public TreapTree.Node getLeft() {
+            return left;
+        }
+
+        public void setLeft(TreapTree.Node left) {
+            this.left = left;
+        }
+
+        public TreapTree.Node getRight() {
+            return right;
+        }
+
+        public void setRight(TreapTree.Node right) {
+            this.right = right;
+        }
     }
     // The root node of hte Treap tree.
     public Node root;
@@ -46,24 +69,36 @@ public class TreapTree<T extends Comparable<T>> {
 
         root = NIL;
     }
-
+    // returns the number of nodes in the tree
     public int size(){
         return this.nodeCount;
     }
 
     public boolean contains(T value){
-        return null;
+        return contains(root, value);
+    }
+
+    private boolean contains(Node node, T elem) {
+        if (node == null) return false;
+
+        int cmp = elem.compareTo(node.getValue());
+
+        if (cmp < 0) return contains(node.left, elem);
+
+        else if (cmp > 0) return contains(node.right, elem);
+
+        else return true;
     }
 
     public boolean isEmpty(){
-        return null;
+        return (nodeCount == 0);
     }
 
     public boolean insert(T val){
-        return null;
+        return true;
     }
 
     public boolean delete(T key){
-        return null;
+        return true;
     }
 }
