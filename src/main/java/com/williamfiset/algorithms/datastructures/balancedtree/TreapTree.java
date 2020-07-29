@@ -29,6 +29,7 @@ public class TreapTree<T extends Comparable<T>> {
         public Node(T value) {
             this.value = value;
             this.priority = random.nextInt(100);
+            this.left = this.right = null;
         }
         public T getValue() {
             return value;
@@ -54,7 +55,7 @@ public class TreapTree<T extends Comparable<T>> {
             this.right = right;
         }
     }
-    // The root node of hte Treap tree.
+    // The root node of the Treap tree.
     public Node root;
 
     // Tracks the number of nodes inside the tree
@@ -95,7 +96,24 @@ public class TreapTree<T extends Comparable<T>> {
     }
 
     public boolean insert(T val){
-        return true;
+        if (val == null){
+            throw new IllegalArgumentException("TreapTree does not allow null values");
+        }
+    }
+
+    private Node insert(Node node, T value) {
+        // base case
+        if (node == null) return new Node(value);
+
+        // compare curr val to the val in the node
+        int compareResult = value.compareTo(node.value);
+
+        if (compareResult < 0){
+            node.left = insert(node.left, value);
+            if (node.left.priority < node.priority){
+                // rotate with left child (node)
+            }
+        }
     }
 
     public boolean delete(T key){
