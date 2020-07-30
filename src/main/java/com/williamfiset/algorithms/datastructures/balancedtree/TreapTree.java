@@ -117,27 +117,22 @@ public class TreapTree<T extends Comparable<T>> {
     }
 
     private Node insert(Node node, T value, int priority) {
-        // base case
         if (node == null) { return new Node(value, priority); }
 
-        // compare curr val to the val in the node
         int compareResult = value.compareTo(node.value);
 
         if (compareResult < 0){
             node.left = insert(node.left, value, priority);
             if (node.left.priority > node.priority){
-                // right rotation
                 node = rightRotation(node);
             }
         }
         else if (compareResult > 0){
             node.right = insert(node.right, value, priority);
             if (node.right.priority > node.priority){
-                // left rotation
                 node = leftRotation(node);
             }
         }
-        // is duplicate, return nothing
         return node;
     }
 
@@ -156,15 +151,43 @@ public class TreapTree<T extends Comparable<T>> {
         return newParent;
     }
 
-    public void remove(T elem){
-        root = remove(root, elem);
+    public boolean remove(T elem){
+        if (elem == null) return false;
+        if (contains(root, elem)) {
+            root = remove(root, elem);
+            nodeCount--;
+            return true;
+        }
+        return false;
     }
 
-    public Node remove(Node node, T elem){
-        if (node == null) {
-            return node;
+    private Node remove( Node t , T x)
+    {
+        if( t != null )
+        {
+            int compareResult = x.compareTo( t.value );
+
+            if( compareResult < 0 )
+                t.left = remove( t.left, x );
+            else if( compareResult > 0 )
+                t.right = remove(t.right, x );
+            else
+            {
+                // match -- one child or leaf?
+                if ( t.left == null ) return t.right;
+                if ( t.right ==  null) return t.left;
+
+                // Match found, two children
+                if( t.left.priority > t.right.priority ) {
+                    t = rightRotation( t );
+                    t.right = remove (t.right,x);
+                } else {
+                    t = leftRotation( t );
+                    t.left = remove(t.left, x);
+                }
+            }
         }
-        int cmp = elem.compareTo(node.value);
+        return t;
     }
 
 }

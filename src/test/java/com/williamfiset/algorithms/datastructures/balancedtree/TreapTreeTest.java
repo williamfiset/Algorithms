@@ -15,7 +15,7 @@ public class TreapTreeTest {
   static final int MAX_RAND_NUM = +100000;
   static final int MIN_RAND_NUM = -100000;
 
-  static final int TEST_SZ = 9000;
+  static final int TEST_SZ = 500;
 
   private TreapTree<Integer> tree;
 
@@ -86,19 +86,50 @@ public class TreapTreeTest {
     assertThat(tree.root.right.right.right).isNull();
   }
 
+
+
   @Test
   public void testRightRightCase() {
+    tree.insert(10, 2);
+    tree.insert(8,1);
 
+    assertThat(tree.root.getValue()).isEqualTo(10);
+    assertThat(tree.root.left.getValue()).isEqualTo(8);
+
+    tree.insert(7,3);
+
+    assertThat(tree.root.getValue()).isEqualTo(7);
+    assertThat(tree.root.right.getValue()).isEqualTo(10);
+    assertThat(tree.root.right.left.getValue()).isEqualTo(8);
+
+    assertThat(tree.root.left).isNull();
+    assertThat(tree.root.right.right).isNull();
+    assertThat(tree.root.right.left.right).isNull();
+    assertThat(tree.root.right.left.left).isNull();
   }
 
   @Test
   public void testRightLeftCase() {
+    tree.insert(15, 10);
+    tree.insert(16,8);
 
+    assertThat(tree.root.getValue()).isEqualTo(15);
+    assertThat(tree.root.right.getValue()).isEqualTo(16);
+
+    tree.insert(13,11);
+
+    assertThat(tree.root.getValue()).isEqualTo(13);
+    assertThat(tree.root.right.getValue()).isEqualTo(15);
+    assertThat(tree.root.right.right.getValue()).isEqualTo(16);
+
+    assertThat(tree.root.left).isNull();
+    assertThat(tree.root.right.left).isNull();
+    assertThat(tree.root.right.right.left).isNull();
+    assertThat(tree.root.right.right.right).isNull();
   }
 
   @Test
   public void randomRemoveTests() {
-    /*
     TreeSet<Integer> ts = new TreeSet<>();
     for (int i = 0; i < TEST_SZ; i++) {
 
@@ -122,7 +153,7 @@ public class TreapTreeTest {
 
       assertThat(tree.isEmpty()).isTrue();
     }
-     */
+
   }
 
   static List<Integer> genRandList(int sz) {
