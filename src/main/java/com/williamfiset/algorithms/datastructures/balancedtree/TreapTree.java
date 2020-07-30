@@ -30,7 +30,6 @@ public class TreapTree<T extends Comparable<T>> {
 
     public Node(T value, int priority) {
       this.value = value;
-      this.priority = random.nextInt(100);
       this.left = this.right = null;
       this.priority = priority;
     }
