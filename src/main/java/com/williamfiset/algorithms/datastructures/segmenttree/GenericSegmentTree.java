@@ -100,9 +100,9 @@ public class GenericSegmentTree {
   private Ruf minQuerySumUpdate = (b, tl, tr, d) -> safeSum(b, d);
   private Ruf lminQuerySumUpdate = (b, tl, tr, d) -> safeSum(b, d);
 
-  // TODO(william): support this
-  private Ruf minQueryMulUpdate = (b, tl, tr, d) -> null;
-  private Ruf lminQueryMulUpdate = (b, tl, tr, d) -> null;
+  // TODO(issue/208): support this multiplication update
+  private Ruf minQueryMulUpdate = (b, tl, tr, d) -> safeMul(b, d);
+  private Ruf lminQueryMulUpdate = (b, tl, tr, d) -> safeMul(b, d);
 
   private Ruf minQueryAssignUpdate = (b, tl, tr, d) -> d;
   private Ruf lminQueryAssignUpdate = (b, tl, tr, d) -> d;
@@ -110,9 +110,9 @@ public class GenericSegmentTree {
   private Ruf maxQuerySumUpdate = (b, tl, tr, d) -> safeSum(b, d);
   private Ruf lmaxQuerySumUpdate = (b, tl, tr, d) -> safeSum(b, d);
 
-  // TODO(william): support this
-  private Ruf maxQueryMulUpdate = (b, tl, tr, d) -> null;
-  private Ruf lmaxQueryMulUpdate = (b, tl, tr, d) -> null;
+  // TODO(issue/208): support this multiplication update
+  private Ruf maxQueryMulUpdate = (b, tl, tr, d) -> safeMul(b, d);
+  private Ruf lmaxQueryMulUpdate = (b, tl, tr, d) -> safeMul(b, d);
 
   private Ruf maxQueryAssignUpdate = (b, tl, tr, d) -> d;
   private Ruf lmaxQueryAssignUpdate = (b, tl, tr, d) -> d;

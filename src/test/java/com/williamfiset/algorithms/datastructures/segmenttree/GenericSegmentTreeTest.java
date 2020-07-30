@@ -201,6 +201,23 @@ public class GenericSegmentTreeTest {
   }
 
   @Test
+  public void maxQueryMulUpdate_simple() {
+    long[] ar = {2, 1, 3, 4, -1};
+    GenericSegmentTree st =
+        new GenericSegmentTree(
+            ar,
+            GenericSegmentTree.SegmentCombinationFn.MAX,
+            GenericSegmentTree.RangeUpdateFn.MULTIPLICATION);
+
+    st.rangeUpdate1(0, 4, 1);
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(4);
+
+    // TODO(issue/208): Negative numbers are a known issue
+    // st.rangeUpdate1(0, 4, -2);
+    // assertThat(st.rangeQuery1(0, 4)).isEqualTo(2); // Returns -8 as max but should be 2
+  }
+
+  @Test
   public void testAllFunctionCombinations() {
     GenericSegmentTree.SegmentCombinationFn[] combinationFns = {
       GenericSegmentTree.SegmentCombinationFn.SUM,
@@ -209,19 +226,31 @@ public class GenericSegmentTreeTest {
     };
 
     GenericSegmentTree.RangeUpdateFn[] rangeUpdateFns = {
-      GenericSegmentTree.RangeUpdateFn.ADDITION, GenericSegmentTree.RangeUpdateFn.ASSIGN
-      // TODO(william): enabled mul when impled
-      // GenericSegmentTree.RangeUpdateFn.MULTIPLICATION
+      GenericSegmentTree.RangeUpdateFn.ADDITION,
+      GenericSegmentTree.RangeUpdateFn.ASSIGN,
+      GenericSegmentTree.RangeUpdateFn.MULTIPLICATION
     };
 
     for (GenericSegmentTree.SegmentCombinationFn combinationFn : combinationFns) {
       for (GenericSegmentTree.RangeUpdateFn rangeUpdateFn : rangeUpdateFns) {
+
+        // TODO(issue/208): The multiplication range update function seems to be suffering
+        // from overflow issues and not being able to handle negative numbers.
+        //
+        // One idea might be to also track the min value for the max query and vice versa
+        // and swap values when a negative number is found?
+        if (rangeUpdateFn == GenericSegmentTree.RangeUpdateFn.MULTIPLICATION
+            && (combinationFn == GenericSegmentTree.SegmentCombinationFn.MIN
+                || combinationFn == GenericSegmentTree.SegmentCombinationFn.MAX)) {
+          continue;
+        }
 
         for (int n = 5; n < ITERATIONS; n++) {
           long[] ar = TestUtils.randomLongArray(n, -100, +100);
           GenericSegmentTree st = new GenericSegmentTree(ar, combinationFn, rangeUpdateFn);
 
           for (int i = 0; i < n; i++) {
+            // System.out.printf("i = %d\n", i);
             int j = TestUtils.randValue(0, n - 1);
             int k = TestUtils.randValue(0, n - 1);
             int i1 = Math.min(j, k);
