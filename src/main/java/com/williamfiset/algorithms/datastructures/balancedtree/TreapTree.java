@@ -161,7 +161,7 @@ public class TreapTree<T extends Comparable<T>> {
       else {
         if (t.left == null) return t.right;
         if (t.right == null) return t.left;
-        
+
         if (t.left.priority > t.right.priority) {
           t = rightRotation(t);
           t.right = remove(t.right, x);
