@@ -19,9 +19,9 @@ public class GenericSegmentTreeTest {
   //   GenericSegmentTree st =
   //       new GenericSegmentTree(values, GenericSegmentTree.SegmentCombinationFn.SUM);
 
-  //   assertThat(st.rangeQuery(0, 1)).isEqualTo(3);
-  //   assertThat(st.rangeQuery(2, 2)).isEqualTo(3);
-  //   assertThat(st.rangeQuery(0, 4)).isEqualTo(15);
+  //   assertThat(st.rangeQuery1(0, 1)).isEqualTo(3);
+  //   assertThat(st.rangeQuery1(2, 2)).isEqualTo(3);
+  //   assertThat(st.rangeQuery1(0, 4)).isEqualTo(15);
   // }
 
   // @Test
@@ -34,7 +34,7 @@ public class GenericSegmentTreeTest {
   //   for (int i = 0; i < n; i++) {
   //     for (int j = i; j < n; j++) {
   //       long bfSum = bruteForceSum(ar, i, j);
-  //       long segTreeSum = st.rangeQuery(i, j);
+  //       long segTreeSum = st.rangeQuery1(i, j);
   //       assertThat(bfSum).isEqualTo(segTreeSum);
   //     }
   //   }
@@ -48,22 +48,22 @@ public class GenericSegmentTreeTest {
   // GenericSegmentTree.SegmentCombinationFn.SUM);
 
   //   // Do multiple range updates
-  //   st.rangeUpdate(0, 1, 5);
-  //   st.rangeUpdate(3, 4, 2);
-  //   st.rangeUpdate(0, 4, 3);
+  //   st.rangeUpdate1(0, 1, 5);
+  //   st.rangeUpdate1(3, 4, 2);
+  //   st.rangeUpdate1(0, 4, 3);
 
   //   // Point queries
-  //   assertThat(st.rangeQuery(0, 0)).isEqualTo(1 + 3 + 5);
-  //   assertThat(st.rangeQuery(1, 1)).isEqualTo(2 + 3 + 5);
-  //   assertThat(st.rangeQuery(2, 2)).isEqualTo(1 + 3);
-  //   assertThat(st.rangeQuery(3, 3)).isEqualTo(2 + 3 + 2);
-  //   assertThat(st.rangeQuery(4, 4)).isEqualTo(2 + 3 + 1);
+  //   assertThat(st.rangeQuery1(0, 0)).isEqualTo(1 + 3 + 5);
+  //   assertThat(st.rangeQuery1(1, 1)).isEqualTo(2 + 3 + 5);
+  //   assertThat(st.rangeQuery1(2, 2)).isEqualTo(1 + 3);
+  //   assertThat(st.rangeQuery1(3, 3)).isEqualTo(2 + 3 + 2);
+  //   assertThat(st.rangeQuery1(4, 4)).isEqualTo(2 + 3 + 1);
 
   //   // Range queries
-  //   assertThat(st.rangeQuery(0, 1)).isEqualTo(2 * 5 + 2 * 3 + 1 + 2);
-  //   assertThat(st.rangeQuery(0, 2)).isEqualTo(2 * 5 + 3 * 3 + 1 + 2 + 1);
-  //   assertThat(st.rangeQuery(3, 4)).isEqualTo(2 * 2 + 2 * 3 + 2 + 1);
-  //   assertThat(st.rangeQuery(0, 4)).isEqualTo(2 * 5 + 2 * 2 + 3 * 5 + 1 + 1 + 1 + 2 + 2);
+  //   assertThat(st.rangeQuery1(0, 1)).isEqualTo(2 * 5 + 2 * 3 + 1 + 2);
+  //   assertThat(st.rangeQuery1(0, 2)).isEqualTo(2 * 5 + 3 * 3 + 1 + 2 + 1);
+  //   assertThat(st.rangeQuery1(3, 4)).isEqualTo(2 * 2 + 2 * 3 + 2 + 1);
+  //   assertThat(st.rangeQuery1(0, 4)).isEqualTo(2 * 5 + 2 * 2 + 3 * 5 + 1 + 1 + 1 + 2 + 2);
   // }
 
   // @Test
@@ -77,7 +77,7 @@ public class GenericSegmentTreeTest {
   //       for (int j = i; j < n; j++) {
   //         // Range query
   //         long bfSum = bruteForceSum(ar, i, j);
-  //         long segTreeSum = st.rangeQuery(i, j);
+  //         long segTreeSum = st.rangeQuery1(i, j);
   //         assertThat(bfSum).isEqualTo(segTreeSum);
 
   //         // Point update
@@ -86,7 +86,7 @@ public class GenericSegmentTreeTest {
   //         st.pointUpdate(randIndex, randValue);
   //         ar[randIndex] = randValue;
   //         bfSum = bruteForceSum(ar, i, j);
-  //         segTreeSum = st.rangeQuery(i, j);
+  //         segTreeSum = st.rangeQuery1(i, j);
   //         assertThat(bfSum).isEqualTo(segTreeSum);
   //       }
   //     }
@@ -104,7 +104,7 @@ public class GenericSegmentTreeTest {
   //       for (int j = i; j < n; j++) {
   //         // Range query
   //         long bfMin = bruteForceMin(ar, i, j);
-  //         long segTreeMin = st.rangeQuery(i, j);
+  //         long segTreeMin = st.rangeQuery1(i, j);
   //         assertThat(bfMin).isEqualTo(segTreeMin);
 
   //         // Point update
@@ -113,7 +113,7 @@ public class GenericSegmentTreeTest {
   //         st.pointUpdate(randIndex, randValue);
   //         ar[randIndex] = randValue;
   //         bfMin = bruteForceMin(ar, i, j);
-  //         segTreeMin = st.rangeQuery(i, j);
+  //         segTreeMin = st.rangeQuery1(i, j);
   //         assertThat(bfMin).isEqualTo(segTreeMin);
   //       }
   //     }
@@ -131,7 +131,7 @@ public class GenericSegmentTreeTest {
   //       for (int j = i; j < n; j++) {
   //         // Range query
   //         long bfMax = bruteForceMax(ar, i, j);
-  //         long segTreeMax = st.rangeQuery(i, j);
+  //         long segTreeMax = st.rangeQuery1(i, j);
   //         assertThat(bfMax).isEqualTo(segTreeMax);
 
   //         // Point update
@@ -140,7 +140,7 @@ public class GenericSegmentTreeTest {
   //         st.pointUpdate(randIndex, randValue);
   //         ar[randIndex] = randValue;
   //         bfMax = bruteForceMax(ar, i, j);
-  //         segTreeMax = st.rangeQuery(i, j);
+  //         segTreeMax = st.rangeQuery1(i, j);
   //         assertThat(bfMax).isEqualTo(segTreeMax);
   //       }
   //     }
@@ -158,7 +158,7 @@ public class GenericSegmentTreeTest {
   //       for (int j = i; j < n; j++) {
   //         // Range query
   //         long bfSum = bruteForceSum(ar, i, j);
-  //         long segTreeSum = st.rangeQuery(i, j);
+  //         long segTreeSum = st.rangeQuery1(i, j);
   //         assertThat(bfSum).isEqualTo(segTreeSum);
 
   //         // Point update
@@ -212,7 +212,7 @@ public class GenericSegmentTreeTest {
   //       for (int j = i; j < n; j++) {
   //         // Range query
   //         long bfMax = bruteForceMax(ar, i, j);
-  //         long segTreeMax = st.rangeQuery(i, j);
+  //         long segTreeMax = st.rangeQuery1(i, j);
   //         assertThat(bfMax).isEqualTo(segTreeMax);
 
   //         // Point update
@@ -221,7 +221,7 @@ public class GenericSegmentTreeTest {
   //         st.pointUpdate(randIndex, randValue);
   //         ar[randIndex] = randValue;
   //         bfMax = bruteForceMax(ar, i, j);
-  //         segTreeMax = st.rangeQuery(i, j);
+  //         segTreeMax = st.rangeQuery1(i, j);
   //         assertThat(bfMax).isEqualTo(segTreeMax);
   //       }
   //     }
@@ -246,7 +246,7 @@ public class GenericSegmentTreeTest {
 
   //       // Range query
   //       long bfSum = bruteForceSum(ar, i1, i2);
-  //       long segTreeSum = st.rangeQuery(i1, i2);
+  //       long segTreeSum = st.rangeQuery1(i1, i2);
   //       assertThat(bfSum).isEqualTo(segTreeSum);
 
   //       // Range update
@@ -255,7 +255,7 @@ public class GenericSegmentTreeTest {
   //       int i3 = Math.min(j, k);
   //       int i4 = Math.max(j, k);
   //       long randValue = TestUtils.randValue(-100, 100);
-  //       st.rangeUpdate(i3, i4, randValue);
+  //       st.rangeUpdate1(i3, i4, randValue);
   //       bruteForceSumRangeUpdate(ar, i3, i4, randValue);
   //     }
   //   }
@@ -280,7 +280,7 @@ public class GenericSegmentTreeTest {
 
   //       // Range query
   //       long bfMin = bruteForceMin(ar, i1, i2);
-  //       long segTreeMin = st.rangeQuery(i1, i2);
+  //       long segTreeMin = st.rangeQuery1(i1, i2);
   //       assertThat(bfMin).isEqualTo(segTreeMin);
 
   //       // Range update
@@ -289,7 +289,7 @@ public class GenericSegmentTreeTest {
   //       int i3 = Math.min(j, k);
   //       int i4 = Math.max(j, k);
   //       long randValue = TestUtils.randValue(-100, 100);
-  //       st.rangeUpdate(i3, i4, randValue);
+  //       st.rangeUpdate1(i3, i4, randValue);
   //       bruteForceAssignRangeUpdate(ar, i3, i4, randValue);
   //     }
   //   }

@@ -1,5 +1,5 @@
 /**
- * Run with: ./gradlew run -Palgorithm=datastructures.segmenttree.SumQueryAssignUpdateSegmentTree
+ * Run with: ./gradlew run -Palgorithm=datastructures.segmenttree.SumQuerySumUpdateSegmentTree
  *
  * <p>Several thanks to cp-algorithms for their great article on segment trees:
  * https://cp-algorithms.com/data_structures/segment_tree.html
@@ -10,10 +10,10 @@
  */
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
-public class SumQueryAssignUpdateSegmentTree {
+public class SumQueryMultiplicationUpdateSegmentTree {
 
   // The number of elements in the original input values array.
-  private int n;
+  private final int n;
 
   // The segment tree represented as a binary tree of ranges where t[0] is the
   // root node and the left and right children of node i are i*2+1 and i*2+2.
@@ -23,24 +23,37 @@ public class SumQueryAssignUpdateSegmentTree {
   // when doing range updates.
   private Long[] lazy;
 
-  private Long sumCombinationFn(Long a, Long b) {
-    if (a == null && b == null) return null;
-    if (a == null) return b;
-    if (b == null) return a;
+  // Sum sumFunction
+  private Long sumFunction(Long a, Long b) {
+    if (a == null) a = 0L;
+    if (b == null) b = 0L;
     return a + b;
   }
 
-  // Return the segment value if `x` was added to every element in the segment [tl, tr]
-  // during an assign update.
-  private Long sumRangeUpdateAssignFn(long base, int tl, int tr, long x) {
-    return (tr - tl + 1) * x;
+  // Multiplication range update function
+  private Long multRuf(Long base, int tl, int tr, Long delta) {
+    // When we hit a null value, multiply by 1 since this is the
+    // multiplication identity, i.e: 1*x = x
+    if (base == null) base = 1L;
+    if (delta == null) delta = 1L;
+    return base * delta;
   }
 
-  public SumQueryAssignUpdateSegmentTree(long[] values) {
+  // Lazy multiplication range update function
+  private long multLruf(Long delta1, Long delta2) {
+    // When we hit a null value, multiply by 1 since this is the
+    // multiplication identity, i.e: 1*x = x
+    if (delta1 == null) delta1 = 1L;
+    if (delta2 == null) delta2 = 1L;
+    // Multiply together the existing delta and the new delta to properly
+    // propagate the changes.
+    return delta1 * delta2;
+  }
+
+  public SumQueryMultiplicationUpdateSegmentTree(long[] values) {
     if (values == null) {
       throw new IllegalArgumentException("Segment tree values cannot be null.");
     }
-
     n = values.length;
 
     // The size of the segment tree `t`
@@ -73,7 +86,7 @@ public class SumQueryAssignUpdateSegmentTree {
     buildSegmentTree(2 * i + 1, tl, tm, values);
     buildSegmentTree(2 * i + 2, tm + 1, tr, values);
 
-    t[i] = sumCombinationFn(t[2 * i + 1], t[2 * i + 2]);
+    t[i] = sumFunction(t[2 * i + 1], t[2 * i + 2]);
   }
 
   /**
@@ -101,15 +114,13 @@ public class SumQueryAssignUpdateSegmentTree {
     }
     propagate1(i, tl, tr);
     if (tl == l && tr == r) {
-      // System.out.printf("[%d, %d], t[i] = %d, lazy[i] = %d\n", tl, tr, t[i], lazy[i]);
       return t[i];
     }
-    // System.out.printf("[%d, %d]\n", tl, tr);
     int tm = (tl + tr) / 2;
     // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
     // [l, r], simply recurse on both segments and let the base case return the
     // default value for invalid intervals.
-    return sumCombinationFn(
+    return sumFunction(
         rangeQuery1(2 * i + 1, tl, tm, l, Math.min(tm, r)),
         rangeQuery1(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r));
   }
@@ -118,23 +129,18 @@ public class SumQueryAssignUpdateSegmentTree {
     rangeUpdate1(0, 0, n - 1, l, r, x);
   }
 
-  // TODO(william): cleanup this function
-  private Long assignFunction(Long a, Long b) {
-    return b;
-  }
-
   private void propagateLazy(int i, int tl, int tr, long val) {
     // Ignore leaf segments
     if (tl == tr) return;
-    lazy[2 * i + 1] = assignFunction(/*unused*/ 0L, val);
-    lazy[2 * i + 2] = assignFunction(/*unused*/ 0L, val);
+    lazy[2 * i + 1] = multLruf(lazy[2 * i + 1], val);
+    lazy[2 * i + 2] = multLruf(lazy[2 * i + 2], val);
   }
 
   private void propagate1(int i, int tl, int tr) {
     // Check for default value because you don't want to assign to the lazy
     // value if it's the default value.
     if (lazy[i] != null) {
-      t[i] = sumRangeUpdateAssignFn(/*unused*/ 0L, tl, tr, lazy[i]);
+      t[i] = multRuf(t[i], /*unused*/ 0, /*unused*/ 0, lazy[i]);
       // Push delta to left/right segments for non-leaf nodes
       propagateLazy(i, tl, tr, lazy[i]);
       lazy[i] = null;
@@ -148,7 +154,7 @@ public class SumQueryAssignUpdateSegmentTree {
     }
 
     if (tl == l && tr == r) {
-      t[i] = sumRangeUpdateAssignFn(/*unused*/ 0L, tl, tr, x);
+      t[i] = multRuf(t[i], /*unused*/ 0, /*unused*/ 0, x);
       propagateLazy(i, tl, tr, x);
     } else {
       int tm = (tl + tr) / 2;
@@ -158,7 +164,7 @@ public class SumQueryAssignUpdateSegmentTree {
       rangeUpdate1(2 * i + 1, tl, tm, l, Math.min(tm, r), x);
       rangeUpdate1(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r, x);
 
-      t[i] = sumCombinationFn(t[2 * i + 1], t[2 * i + 2]);
+      t[i] = sumFunction(t[2 * i + 1], t[2 * i + 2]);
     }
   }
 
@@ -184,6 +190,6 @@ public class SumQueryAssignUpdateSegmentTree {
   public static void main(String[] args) {
     //          0, 1, 2, 3,  4
     long[] v = {2, 1, 3, 4, -1};
-    SumQueryAssignUpdateSegmentTree st = new SumQueryAssignUpdateSegmentTree(v);
+    SumQuerySumUpdateSegmentTree st = new SumQuerySumUpdateSegmentTree(v);
   }
 }

@@ -110,16 +110,25 @@ public class MinQueryAssignUpdateSegmentTree {
     rangeUpdate1(0, 0, n - 1, l, r, x);
   }
 
+  // TODO(william): cleanup this function
+  private Long assignFunction(Long a, Long b) {
+    return b;
+  }
+
+  private void propagateLazy(int i, int tl, int tr, long val) {
+    // Ignore leaf segments
+    if (tl == tr) return;
+    lazy[2 * i + 1] = assignFunction(/*unused*/ 0L, val);
+    lazy[2 * i + 2] = assignFunction(/*unused*/ 0L, val);
+  }
+
   private void propagate1(int i, int tl, int tr) {
     // Check for default value because you don't want to assign to the lazy
     // value if it's the default value.
     if (lazy[i] != null) {
       t[i] = lazy[i];
       // Push delta to left/right segments for non-leaf nodes
-      if (tl != tr) {
-        lazy[2 * i + 1] = lazy[i];
-        lazy[2 * i + 2] = lazy[i];
-      }
+      propagateLazy(i, tl, tr, lazy[i]);
       lazy[i] = null;
     }
   }
@@ -132,11 +141,9 @@ public class MinQueryAssignUpdateSegmentTree {
 
     if (tl == l && tr == r) {
       t[i] = x;
-      if (tl != tr) {
-        lazy[2 * i + 1] = x;
-        lazy[2 * i + 2] = x;
-      }
-      // lazy[i] = null; // TODO(william): confirm if this is needed?
+      propagateLazy(i, tl, tr, x);
+      // TODO(william): confirm if this is needed if we already propagated?
+      lazy[i] = null;
     } else {
       int tm = (tl + tr) / 2;
       // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps

@@ -109,6 +109,13 @@ public class SumQuerySumUpdateSegmentTree {
     rangeUpdate1(0, 0, n - 1, l, r, x);
   }
 
+  private void propagateLazy(int i, int tl, int tr, long val) {
+    // Ignore leaf segments
+    if (tl == tr) return;
+    lazy[2 * i + 1] = sumFunction(lazy[2 * i + 1], val);
+    lazy[2 * i + 2] = sumFunction(lazy[2 * i + 2], val);
+  }
+
   private void propagate1(int i, int tl, int tr) {
     // Check for default value because you don't want to assign to the lazy
     // value if it's the default value.
@@ -116,10 +123,7 @@ public class SumQuerySumUpdateSegmentTree {
       long rangeSum = (tr - tl + 1) * lazy[i];
       t[i] = sumFunction(t[i], rangeSum);
       // Push delta to left/right segments for non-leaf nodes
-      if (tl != tr) {
-        lazy[2 * i + 1] = sumFunction(lazy[2 * i + 1], lazy[i]);
-        lazy[2 * i + 2] = sumFunction(lazy[2 * i + 2], lazy[i]);
-      }
+      propagateLazy(i, tl, tr, lazy[i]);
       lazy[i] = null;
     }
   }
@@ -133,11 +137,7 @@ public class SumQuerySumUpdateSegmentTree {
     if (tl == l && tr == r) {
       long rangeSum = (tr - tl + 1) * x;
       t[i] = sumFunction(t[i], rangeSum);
-      if (tl != tr) {
-        lazy[2 * i + 1] = sumFunction(lazy[2 * i + 1], x);
-        lazy[2 * i + 2] = sumFunction(lazy[2 * i + 2], x);
-      }
-      lazy[i] = null; // TODO(william): confirm if this is needed?
+      propagateLazy(i, tl, tr, x);
     } else {
       int tm = (tl + tr) / 2;
       // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
@@ -173,5 +173,13 @@ public class SumQuerySumUpdateSegmentTree {
     //          0, 1, 2, 3,  4
     long[] v = {2, 1, 3, 4, -1};
     SumQuerySumUpdateSegmentTree st = new SumQuerySumUpdateSegmentTree(v);
+
+    int l = 1;
+    int r = 3;
+    st.printDebugInfo();
+    System.out.printf("The sum between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery1(l, r));
+    st.rangeUpdate1(l, r, 3);
+    st.printDebugInfo();
+    System.out.printf("The sum between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery1(l, r));
   }
 }

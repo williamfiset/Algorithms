@@ -37,6 +37,10 @@ public class MinQuerySumUpdateSegmentTree {
     return a + b;
   }
 
+  private Long minSegmentUpdateFn(long base, int tl, int tr, long x) {
+    return base + x;
+  }
+
   public MinQuerySumUpdateSegmentTree(long[] values) {
     if (values == null) {
       throw new IllegalArgumentException("Segment tree values cannot be null.");
@@ -119,6 +123,7 @@ public class MinQuerySumUpdateSegmentTree {
   private void propagateLazy(int i, int tl, int tr, long delta) {
     // Ignore leaf segments
     if (tl == tr) return;
+    // TODO(william): should this also used the minSegmentUpdateFn
     lazy[2 * i + 1] = sumFunction(lazy[2 * i + 1], delta);
     lazy[2 * i + 2] = sumFunction(lazy[2 * i + 2], delta);
   }
@@ -128,7 +133,7 @@ public class MinQuerySumUpdateSegmentTree {
     // value if it's the default value.
     if (lazy[i] != null) {
       // The minimum value increases by the delta over the whole range.
-      t[i] = sumFunction(t[i], lazy[i]); // t[i] + lazy[i];
+      t[i] = minSegmentUpdateFn(t[i], /*unused*/ 0, /*unused*/ 0, lazy[i]);
       // Push delta to left/right segments for non-leaf nodes
       propagateLazy(i, tl, tr, lazy[i]);
       lazy[i] = null;
@@ -142,9 +147,8 @@ public class MinQuerySumUpdateSegmentTree {
     }
 
     if (tl == l && tr == r) {
-      t[i] = t[i] + x; // sumFunction(t[i], x);
+      t[i] = minSegmentUpdateFn(t[i], /*unused*/ 0, /*unused*/ 0, x);
       propagateLazy(i, tl, tr, x);
-      lazy[i] = null; // TODO(william): confirm if this is needed?
     } else {
       int tm = (tl + tr) / 2;
       // Instead of checking if [tl, tm] overlaps [l, r] and [tm+1, tr] overlaps
