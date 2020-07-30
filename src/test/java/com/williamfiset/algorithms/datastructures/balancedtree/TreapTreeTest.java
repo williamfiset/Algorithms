@@ -1,14 +1,13 @@
 package com.williamfiset.algorithms.datastructures.balancedtree;
 
-import org.junit.Before;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
-
-import static com.google.common.truth.Truth.assertThat;
+import org.junit.Before;
+import org.junit.Test;
 
 public class TreapTreeTest {
 
@@ -20,33 +19,33 @@ public class TreapTreeTest {
   private TreapTree<Integer> tree;
 
   @Before
-  public void setup(){
+  public void setup() {
     tree = new TreapTree<>();
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void testNullInsertion(){
+  public void testNullInsertion() {
     tree.insert(null);
   }
 
   @Test
-  public void testTreeContainsNull(){
+  public void testTreeContainsNull() {
     assertThat(tree.contains(null)).isFalse();
   }
 
   @Test
   public void LeftLeftCase() {
     tree.insert(15, 15);
-    tree.insert(10,8);
-    tree.insert(20,10);
-    tree.insert(30,9);
+    tree.insert(10, 8);
+    tree.insert(20, 10);
+    tree.insert(30, 9);
 
     assertThat(tree.root.left.getValue()).isEqualTo(10);
     assertThat(tree.root.getValue()).isEqualTo(15);
     assertThat(tree.root.right.getValue()).isEqualTo(20);
     assertThat(tree.root.right.right.getValue()).isEqualTo(30);
 
-    tree.insert(32,14);
+    tree.insert(32, 14);
 
     assertThat(tree.root.left.getValue()).isEqualTo(10);
     assertThat(tree.root.getValue()).isEqualTo(15);
@@ -60,20 +59,19 @@ public class TreapTreeTest {
     assertThat(tree.root.right.right).isNull();
     assertThat(tree.root.left.left).isNull();
     assertThat(tree.root.left.right).isNull();
-
   }
 
   @Test
   public void testLeftRightCase() {
     tree.insert(20, 10);
-    tree.insert(17,5);
-    tree.insert(26,7);
+    tree.insert(17, 5);
+    tree.insert(26, 7);
 
     assertThat(tree.root.getValue()).isEqualTo(20);
     assertThat(tree.root.left.getValue()).isEqualTo(17);
     assertThat(tree.root.right.getValue()).isEqualTo(26);
 
-    tree.insert(18,15);
+    tree.insert(18, 15);
     assertThat(tree.root.getValue()).isEqualTo(18);
     assertThat(tree.root.left.getValue()).isEqualTo(17);
     assertThat(tree.root.right.getValue()).isEqualTo(20);
@@ -86,17 +84,15 @@ public class TreapTreeTest {
     assertThat(tree.root.right.right.right).isNull();
   }
 
-
-
   @Test
   public void testRightRightCase() {
     tree.insert(10, 2);
-    tree.insert(8,1);
+    tree.insert(8, 1);
 
     assertThat(tree.root.getValue()).isEqualTo(10);
     assertThat(tree.root.left.getValue()).isEqualTo(8);
 
-    tree.insert(7,3);
+    tree.insert(7, 3);
 
     assertThat(tree.root.getValue()).isEqualTo(7);
     assertThat(tree.root.right.getValue()).isEqualTo(10);
@@ -111,12 +107,12 @@ public class TreapTreeTest {
   @Test
   public void testRightLeftCase() {
     tree.insert(15, 10);
-    tree.insert(16,8);
+    tree.insert(16, 8);
 
     assertThat(tree.root.getValue()).isEqualTo(15);
     assertThat(tree.root.right.getValue()).isEqualTo(16);
 
-    tree.insert(13,11);
+    tree.insert(13, 11);
 
     assertThat(tree.root.getValue()).isEqualTo(13);
     assertThat(tree.root.right.getValue()).isEqualTo(15);
@@ -153,7 +149,6 @@ public class TreapTreeTest {
 
       assertThat(tree.isEmpty()).isTrue();
     }
-
   }
 
   static List<Integer> genRandList(int sz) {
