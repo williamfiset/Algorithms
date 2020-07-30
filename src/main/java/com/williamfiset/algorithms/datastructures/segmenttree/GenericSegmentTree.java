@@ -118,7 +118,7 @@ public class GenericSegmentTree {
   private Ruf lmaxQueryAssignUpdate = (b, tl, tr, d) -> d;
 
   private Ruf sumQuerySumUpdate = (b, tl, tr, d) -> b + (tr - tl + 1) * d;
-  private Ruf lsumQuerySumUpdate = (b, tl, tr, d) -> b + safeSum(b, d);
+  private Ruf lsumQuerySumUpdate = (b, tl, tr, d) -> safeSum(b, d);
 
   private Ruf sumQueryMulUpdate = (b, tl, tr, d) -> safeMul(b, d);
   private Ruf lsumQueryMulUpdate = (b, tl, tr, d) -> safeMul(b, d);

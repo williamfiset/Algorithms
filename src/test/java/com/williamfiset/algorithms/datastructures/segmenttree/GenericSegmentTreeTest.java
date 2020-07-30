@@ -4,296 +4,268 @@
  */
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import com.williamfiset.algorithms.utils.TestUtils;
 import org.junit.Before;
+import org.junit.Test;
 
 public class GenericSegmentTreeTest {
 
   static int ITERATIONS = 100;
+  static int MAX_N = 28;
 
   @Before
   public void setup() {}
 
-  // @Test
-  // public void testSumQuery() {
-  //   long[] values = {1, 2, 3, 4, 5};
-  //   GenericSegmentTree st =
-  //       new GenericSegmentTree(values, GenericSegmentTree.SegmentCombinationFn.SUM);
+  @Test
+  public void testSumQuerySumUpdate_Simple() {
+    long[] values = {1, 2, 3, 4, 5};
+    GenericSegmentTree st =
+        new GenericSegmentTree(
+            values,
+            GenericSegmentTree.SegmentCombinationFn.SUM,
+            GenericSegmentTree.RangeUpdateFn.ADDITION);
 
-  //   assertThat(st.rangeQuery1(0, 1)).isEqualTo(3);
-  //   assertThat(st.rangeQuery1(2, 2)).isEqualTo(3);
-  //   assertThat(st.rangeQuery1(0, 4)).isEqualTo(15);
-  // }
+    assertThat(st.rangeQuery1(0, 1)).isEqualTo(3);
+    assertThat(st.rangeQuery1(2, 2)).isEqualTo(3);
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(15);
+  }
 
-  // @Test
-  // public void testAllSumQueries() {
-  //   int n = 100;
-  //   long[] ar = TestUtils.randomLongArray(n, -100, +100);
-  //   GenericSegmentTree st = new GenericSegmentTree(ar,
-  // GenericSegmentTree.SegmentCombinationFn.SUM);
+  @Test
+  public void testSumQuerySumUpdate_RangeUpdate() {
+    //           0, 1, 2, 3, 4
+    long[] ar = {1, 2, 1, 2, 1};
+    GenericSegmentTree st =
+        new GenericSegmentTree(
+            ar,
+            GenericSegmentTree.SegmentCombinationFn.SUM,
+            GenericSegmentTree.RangeUpdateFn.ADDITION);
 
-  //   for (int i = 0; i < n; i++) {
-  //     for (int j = i; j < n; j++) {
-  //       long bfSum = bruteForceSum(ar, i, j);
-  //       long segTreeSum = st.rangeQuery1(i, j);
-  //       assertThat(bfSum).isEqualTo(segTreeSum);
-  //     }
-  //   }
-  // }
+    // Do multiple range updates
+    st.rangeUpdate1(0, 1, 5);
+    st.rangeUpdate1(3, 4, 2);
+    st.rangeUpdate1(0, 4, 3);
 
-  // @Test
-  // public void testSimpleAdditionRangeUpdate() {
-  //   //           0, 1, 2, 3, 4
-  //   long[] ar = {1, 2, 1, 2, 1};
-  //   GenericSegmentTree st = new GenericSegmentTree(ar,
-  // GenericSegmentTree.SegmentCombinationFn.SUM);
+    // Point queries
+    assertThat(st.rangeQuery1(0, 0)).isEqualTo(1 + 3 + 5);
+    assertThat(st.rangeQuery1(1, 1)).isEqualTo(2 + 3 + 5);
+    assertThat(st.rangeQuery1(2, 2)).isEqualTo(1 + 3);
+    assertThat(st.rangeQuery1(3, 3)).isEqualTo(2 + 3 + 2);
+    assertThat(st.rangeQuery1(4, 4)).isEqualTo(2 + 3 + 1);
 
-  //   // Do multiple range updates
-  //   st.rangeUpdate1(0, 1, 5);
-  //   st.rangeUpdate1(3, 4, 2);
-  //   st.rangeUpdate1(0, 4, 3);
+    // Range queries
+    assertThat(st.rangeQuery1(0, 1)).isEqualTo(2 * 5 + 2 * 3 + 1 + 2);
+    assertThat(st.rangeQuery1(0, 2)).isEqualTo(2 * 5 + 3 * 3 + 1 + 2 + 1);
+    assertThat(st.rangeQuery1(3, 4)).isEqualTo(2 * 2 + 2 * 3 + 2 + 1);
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(2 * 5 + 2 * 2 + 3 * 5 + 1 + 1 + 1 + 2 + 2);
+  }
 
-  //   // Point queries
-  //   assertThat(st.rangeQuery1(0, 0)).isEqualTo(1 + 3 + 5);
-  //   assertThat(st.rangeQuery1(1, 1)).isEqualTo(2 + 3 + 5);
-  //   assertThat(st.rangeQuery1(2, 2)).isEqualTo(1 + 3);
-  //   assertThat(st.rangeQuery1(3, 3)).isEqualTo(2 + 3 + 2);
-  //   assertThat(st.rangeQuery1(4, 4)).isEqualTo(2 + 3 + 1);
+  @Test
+  public void testSumQueryAssignUpdate_simple() {
+    long[] ar = {2, 1, 3, 4, -1};
+    GenericSegmentTree st =
+        new GenericSegmentTree(
+            ar,
+            GenericSegmentTree.SegmentCombinationFn.SUM,
+            GenericSegmentTree.RangeUpdateFn.ASSIGN);
 
-  //   // Range queries
-  //   assertThat(st.rangeQuery1(0, 1)).isEqualTo(2 * 5 + 2 * 3 + 1 + 2);
-  //   assertThat(st.rangeQuery1(0, 2)).isEqualTo(2 * 5 + 3 * 3 + 1 + 2 + 1);
-  //   assertThat(st.rangeQuery1(3, 4)).isEqualTo(2 * 2 + 2 * 3 + 2 + 1);
-  //   assertThat(st.rangeQuery1(0, 4)).isEqualTo(2 * 5 + 2 * 2 + 3 * 5 + 1 + 1 + 1 + 2 + 2);
-  // }
+    st.rangeUpdate1(3, 4, 2);
 
-  // @Test
-  // public void testRandomPointUpdatesAndSumRangeQueries() {
-  //   for (int n = 1; n < ITERATIONS; n++) {
-  //     long[] ar = TestUtils.randomLongArray(n, -100, +100);
-  //     GenericSegmentTree st =
-  //         new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.SUM);
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(10);
+    assertThat(st.rangeQuery1(3, 4)).isEqualTo(4);
+    assertThat(st.rangeQuery1(3, 3)).isEqualTo(2);
+    assertThat(st.rangeQuery1(4, 4)).isEqualTo(2);
 
-  //     for (int i = 0; i < n; i++) {
-  //       for (int j = i; j < n; j++) {
-  //         // Range query
-  //         long bfSum = bruteForceSum(ar, i, j);
-  //         long segTreeSum = st.rangeQuery1(i, j);
-  //         assertThat(bfSum).isEqualTo(segTreeSum);
+    st.rangeUpdate1(1, 3, 4);
 
-  //         // Point update
-  //         int randIndex = TestUtils.randValue(i, j + 1);
-  //         long randValue = TestUtils.randValue(-100, 100);
-  //         st.pointUpdate(randIndex, randValue);
-  //         ar[randIndex] = randValue;
-  //         bfSum = bruteForceSum(ar, i, j);
-  //         segTreeSum = st.rangeQuery1(i, j);
-  //         assertThat(bfSum).isEqualTo(segTreeSum);
-  //       }
-  //     }
-  //   }
-  // }
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(16);
+    assertThat(st.rangeQuery1(0, 1)).isEqualTo(6);
+    assertThat(st.rangeQuery1(3, 4)).isEqualTo(6);
+    assertThat(st.rangeQuery1(1, 1)).isEqualTo(4);
+    assertThat(st.rangeQuery1(2, 2)).isEqualTo(4);
+    assertThat(st.rangeQuery1(3, 3)).isEqualTo(4);
+    assertThat(st.rangeQuery1(1, 3)).isEqualTo(12);
+    assertThat(st.rangeQuery1(2, 3)).isEqualTo(8);
+    assertThat(st.rangeQuery1(1, 2)).isEqualTo(8);
 
-  // @Test
-  // public void testRandomPointUpdatesAndMinRangeQueries() {
-  //   for (int n = 1; n < ITERATIONS; n++) {
-  //     long[] ar = TestUtils.randomLongArray(n, -100, +100);
-  //     GenericSegmentTree st =
-  //         new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.MIN);
+    st.rangeUpdate1(2, 2, 5);
 
-  //     for (int i = 0; i < n; i++) {
-  //       for (int j = i; j < n; j++) {
-  //         // Range query
-  //         long bfMin = bruteForceMin(ar, i, j);
-  //         long segTreeMin = st.rangeQuery1(i, j);
-  //         assertThat(bfMin).isEqualTo(segTreeMin);
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(17);
+    assertThat(st.rangeQuery1(0, 2)).isEqualTo(11);
+    assertThat(st.rangeQuery1(2, 4)).isEqualTo(11);
+    assertThat(st.rangeQuery1(1, 3)).isEqualTo(13);
+    assertThat(st.rangeQuery1(2, 2)).isEqualTo(5);
+  }
 
-  //         // Point update
-  //         int randIndex = TestUtils.randValue(i, j + 1);
-  //         long randValue = TestUtils.randValue(-100, 100);
-  //         st.pointUpdate(randIndex, randValue);
-  //         ar[randIndex] = randValue;
-  //         bfMin = bruteForceMin(ar, i, j);
-  //         segTreeMin = st.rangeQuery1(i, j);
-  //         assertThat(bfMin).isEqualTo(segTreeMin);
-  //       }
-  //     }
-  //   }
-  // }
+  @Test
+  public void testSumQueryMulUpdate_simple() {
+    long[] ar = {1, 4, 5, 3, 2};
+    GenericSegmentTree st =
+        new GenericSegmentTree(
+            ar,
+            GenericSegmentTree.SegmentCombinationFn.SUM,
+            GenericSegmentTree.RangeUpdateFn.MULTIPLICATION);
 
-  // @Test
-  // public void testRandomPointUpdatesAndMaxRangeQueries() {
-  //   for (int n = 1; n < ITERATIONS; n++) {
-  //     long[] ar = TestUtils.randomLongArray(n, -100, +100);
-  //     GenericSegmentTree st =
-  //         new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.MAX);
+    st.rangeUpdate1(1, 3, 3);
 
-  //     for (int i = 0; i < n; i++) {
-  //       for (int j = i; j < n; j++) {
-  //         // Range query
-  //         long bfMax = bruteForceMax(ar, i, j);
-  //         long segTreeMax = st.rangeQuery1(i, j);
-  //         assertThat(bfMax).isEqualTo(segTreeMax);
+    assertThat(st.rangeQuery1(1, 3)).isEqualTo(4 * 3 + 5 * 3 + 3 * 3);
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(1 + 4 * 3 + 5 * 3 + 3 * 3 + 2);
+    assertThat(st.rangeQuery1(0, 2)).isEqualTo(1 + 4 * 3 + 5 * 3);
+    assertThat(st.rangeQuery1(2, 4)).isEqualTo(5 * 3 + 3 * 3 + 2);
 
-  //         // Point update
-  //         int randIndex = TestUtils.randValue(i, j + 1);
-  //         long randValue = TestUtils.randValue(-100, 100);
-  //         st.pointUpdate(randIndex, randValue);
-  //         ar[randIndex] = randValue;
-  //         bfMax = bruteForceMax(ar, i, j);
-  //         segTreeMax = st.rangeQuery1(i, j);
-  //         assertThat(bfMax).isEqualTo(segTreeMax);
-  //       }
-  //     }
-  //   }
-  // }
+    st.rangeUpdate1(1, 3, 2);
+    assertThat(st.rangeQuery1(1, 3)).isEqualTo(4 * 3 * 2 + 5 * 3 * 2 + 3 * 3 * 2);
+  }
 
-  // @Test
-  // public void testRandomPointUpdatesAndSumRangeQueries_rangeQuery2() {
-  //   for (int n = 1; n < ITERATIONS; n++) {
-  //     long[] ar = TestUtils.randomLongArray(n, -100, +100);
-  //     GenericSegmentTree st =
-  //         new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.SUM);
+  @Test
+  public void minQuerySumUpdates_simple() {
+    long[] ar = {2, 1, 3, 4, -1};
+    GenericSegmentTree st =
+        new GenericSegmentTree(
+            ar,
+            GenericSegmentTree.SegmentCombinationFn.MIN,
+            GenericSegmentTree.RangeUpdateFn.ADDITION);
 
-  //     for (int i = 0; i < n; i++) {
-  //       for (int j = i; j < n; j++) {
-  //         // Range query
-  //         long bfSum = bruteForceSum(ar, i, j);
-  //         long segTreeSum = st.rangeQuery1(i, j);
-  //         assertThat(bfSum).isEqualTo(segTreeSum);
+    st.rangeUpdate1(0, 4, 1);
 
-  //         // Point update
-  //         int randIndex = TestUtils.randValue(i, j + 1);
-  //         long randValue = TestUtils.randValue(-100, 100);
-  //         st.pointUpdate(randIndex, randValue);
-  //         ar[randIndex] = randValue;
-  //         bfSum = bruteForceSum(ar, i, j);
-  //         segTreeSum = st.rangeQuery2(i, j);
-  //         assertThat(bfSum).isEqualTo(segTreeSum);
-  //       }
-  //     }
-  //   }
-  // }
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(0);
+    assertThat(st.rangeQuery1(1, 3)).isEqualTo(2);
+    assertThat(st.rangeQuery1(2, 4)).isEqualTo(0);
+    assertThat(st.rangeQuery1(3, 3)).isEqualTo(5);
 
-  // @Test
-  // public void testRandomPointUpdatesAndMinRangeQueries_rangeQuery2() {
-  //   for (int n = 1; n < ITERATIONS; n++) {
-  //     long[] ar = TestUtils.randomLongArray(n, -100, +100);
-  //     GenericSegmentTree st =
-  //         new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.MIN);
+    st.rangeUpdate1(3, 4, 4);
 
-  //     for (int i = 0; i < n; i++) {
-  //       for (int j = i; j < n; j++) {
-  //         // Range query
-  //         long bfMin = bruteForceMin(ar, i, j);
-  //         long segTreeMin = st.rangeQuery2(i, j);
-  //         assertThat(bfMin).isEqualTo(segTreeMin);
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(2);
+    assertThat(st.rangeQuery1(0, 1)).isEqualTo(2);
+    assertThat(st.rangeQuery1(3, 4)).isEqualTo(4);
+    assertThat(st.rangeQuery1(1, 1)).isEqualTo(2);
+    assertThat(st.rangeQuery1(2, 2)).isEqualTo(4);
+    assertThat(st.rangeQuery1(3, 3)).isEqualTo(9);
+    assertThat(st.rangeQuery1(1, 3)).isEqualTo(2);
+    assertThat(st.rangeQuery1(2, 3)).isEqualTo(4);
+    assertThat(st.rangeQuery1(1, 2)).isEqualTo(2);
 
-  //         // Point update
-  //         int randIndex = TestUtils.randValue(i, j + 1);
-  //         long randValue = TestUtils.randValue(-100, 100);
-  //         st.pointUpdate(randIndex, randValue);
-  //         ar[randIndex] = randValue;
-  //         bfMin = bruteForceMin(ar, i, j);
-  //         segTreeMin = st.rangeQuery2(i, j);
-  //         assertThat(bfMin).isEqualTo(segTreeMin);
-  //       }
-  //     }
-  //   }
-  // }
+    st.rangeUpdate1(1, 3, 3);
 
-  // @Test
-  // public void testRandomPointUpdatesAndMaxRangeQueries_rangeQuery2() {
-  //   for (int n = 1; n < ITERATIONS; n++) {
-  //     long[] ar = TestUtils.randomLongArray(n, -100, +100);
-  //     GenericSegmentTree st =
-  //         new GenericSegmentTree(ar, GenericSegmentTree.SegmentCombinationFn.MAX);
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(3);
+    assertThat(st.rangeQuery1(0, 2)).isEqualTo(3);
+    assertThat(st.rangeQuery1(2, 4)).isEqualTo(4);
+    assertThat(st.rangeQuery1(1, 3)).isEqualTo(5);
+    assertThat(st.rangeQuery1(0, 0)).isEqualTo(3);
+    assertThat(st.rangeQuery1(1, 1)).isEqualTo(5);
+    assertThat(st.rangeQuery1(2, 2)).isEqualTo(7);
+    assertThat(st.rangeQuery1(3, 3)).isEqualTo(12);
+    assertThat(st.rangeQuery1(4, 4)).isEqualTo(4);
+  }
 
-  //     for (int i = 0; i < n; i++) {
-  //       for (int j = i; j < n; j++) {
-  //         // Range query
-  //         long bfMax = bruteForceMax(ar, i, j);
-  //         long segTreeMax = st.rangeQuery1(i, j);
-  //         assertThat(bfMax).isEqualTo(segTreeMax);
+  @Test
+  public void maxQuerySumUpdate_simple() {
+    long[] ar = {2, 1, 3, 4, -1};
+    GenericSegmentTree st =
+        new GenericSegmentTree(
+            ar,
+            GenericSegmentTree.SegmentCombinationFn.MAX,
+            GenericSegmentTree.RangeUpdateFn.ADDITION);
 
-  //         // Point update
-  //         int randIndex = TestUtils.randValue(i, j + 1);
-  //         long randValue = TestUtils.randValue(-100, 100);
-  //         st.pointUpdate(randIndex, randValue);
-  //         ar[randIndex] = randValue;
-  //         bfMax = bruteForceMax(ar, i, j);
-  //         segTreeMax = st.rangeQuery1(i, j);
-  //         assertThat(bfMax).isEqualTo(segTreeMax);
-  //       }
-  //     }
-  //   }
-  // }
+    st.rangeUpdate1(0, 4, 1);
 
-  // @Test
-  // public void testRandomRangeSumUpdatesWithSumRangeQueries() {
-  //   for (int n = 1; n < ITERATIONS; n++) {
-  //     long[] ar = TestUtils.randomLongArray(n, -100, +100);
-  //     GenericSegmentTree st =
-  //         new GenericSegmentTree(
-  //             ar,
-  //             GenericSegmentTree.SegmentCombinationFn.SUM,
-  //             GenericSegmentTree.RangeUpdateFn.ADDITION);
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(5);
+    assertThat(st.rangeQuery1(0, 1)).isEqualTo(3);
+    assertThat(st.rangeQuery1(1, 2)).isEqualTo(4);
+    assertThat(st.rangeQuery1(1, 3)).isEqualTo(5);
 
-  //     for (int i = 0; i < n; i++) {
-  //       int j = TestUtils.randValue(0, n - 1);
-  //       int k = TestUtils.randValue(0, n - 1);
-  //       int i1 = Math.min(j, k);
-  //       int i2 = Math.max(j, k);
+    st.rangeUpdate1(3, 4, 4);
 
-  //       // Range query
-  //       long bfSum = bruteForceSum(ar, i1, i2);
-  //       long segTreeSum = st.rangeQuery1(i1, i2);
-  //       assertThat(bfSum).isEqualTo(segTreeSum);
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(9);
+    assertThat(st.rangeQuery1(0, 1)).isEqualTo(3);
+    assertThat(st.rangeQuery1(3, 4)).isEqualTo(9);
+    assertThat(st.rangeQuery1(1, 1)).isEqualTo(2);
+    assertThat(st.rangeQuery1(2, 2)).isEqualTo(4);
+    assertThat(st.rangeQuery1(3, 3)).isEqualTo(9);
+    assertThat(st.rangeQuery1(1, 3)).isEqualTo(9);
+    assertThat(st.rangeQuery1(2, 3)).isEqualTo(9);
+    assertThat(st.rangeQuery1(1, 2)).isEqualTo(4);
 
-  //       // Range update
-  //       j = TestUtils.randValue(0, n - 1);
-  //       k = TestUtils.randValue(0, n - 1);
-  //       int i3 = Math.min(j, k);
-  //       int i4 = Math.max(j, k);
-  //       long randValue = TestUtils.randValue(-100, 100);
-  //       st.rangeUpdate1(i3, i4, randValue);
-  //       bruteForceSumRangeUpdate(ar, i3, i4, randValue);
-  //     }
-  //   }
-  // }
+    st.rangeUpdate1(1, 3, 3);
 
-  // @Test
-  // public void testRandomRangeAssignUpdatesWithMinRangeQueries() {
-  //   for (int n = 5; n < ITERATIONS; n++) {
-  //     long[] ar = TestUtils.randomLongArray(n, -100, +100);
-  //     GenericSegmentTree st =
-  //         new GenericSegmentTree(
-  //             ar,
-  //             GenericSegmentTree.SegmentCombinationFn.MIN,
-  //             GenericSegmentTree.RangeUpdateFn.ASSIGN);
+    assertThat(st.rangeQuery1(0, 4)).isEqualTo(12);
+    assertThat(st.rangeQuery1(0, 2)).isEqualTo(7);
+    assertThat(st.rangeQuery1(2, 4)).isEqualTo(12);
+    assertThat(st.rangeQuery1(1, 3)).isEqualTo(12);
+    assertThat(st.rangeQuery1(0, 0)).isEqualTo(3);
+    assertThat(st.rangeQuery1(1, 1)).isEqualTo(5);
+    assertThat(st.rangeQuery1(2, 2)).isEqualTo(7);
+    assertThat(st.rangeQuery1(3, 3)).isEqualTo(12);
+    assertThat(st.rangeQuery1(4, 4)).isEqualTo(4);
+  }
 
-  //     for (int i = 0; i < n; i++) {
-  //       System.out.printf("n = %d, i = %d\n", n, i);
-  //       int j = TestUtils.randValue(0, n - 1);
-  //       int k = TestUtils.randValue(0, n - 1);
-  //       int i1 = Math.min(j, k);
-  //       int i2 = Math.max(j, k);
+  @Test
+  public void testAllFunctionCombinations() {
+    GenericSegmentTree.SegmentCombinationFn[] combinationFns = {
+      GenericSegmentTree.SegmentCombinationFn.SUM,
+      GenericSegmentTree.SegmentCombinationFn.MIN,
+      GenericSegmentTree.SegmentCombinationFn.MAX,
+    };
 
-  //       // Range query
-  //       long bfMin = bruteForceMin(ar, i1, i2);
-  //       long segTreeMin = st.rangeQuery1(i1, i2);
-  //       assertThat(bfMin).isEqualTo(segTreeMin);
+    GenericSegmentTree.RangeUpdateFn[] rangeUpdateFns = {
+      GenericSegmentTree.RangeUpdateFn.ADDITION, GenericSegmentTree.RangeUpdateFn.ASSIGN
+      // TODO(william): enabled mul when impled
+      // GenericSegmentTree.RangeUpdateFn.MULTIPLICATION
+    };
 
-  //       // Range update
-  //       j = TestUtils.randValue(0, n - 1);
-  //       k = TestUtils.randValue(0, n - 1);
-  //       int i3 = Math.min(j, k);
-  //       int i4 = Math.max(j, k);
-  //       long randValue = TestUtils.randValue(-100, 100);
-  //       st.rangeUpdate1(i3, i4, randValue);
-  //       bruteForceAssignRangeUpdate(ar, i3, i4, randValue);
-  //     }
-  //   }
-  // }
+    for (GenericSegmentTree.SegmentCombinationFn combinationFn : combinationFns) {
+      for (GenericSegmentTree.RangeUpdateFn rangeUpdateFn : rangeUpdateFns) {
+
+        for (int n = 5; n < ITERATIONS; n++) {
+          long[] ar = TestUtils.randomLongArray(n, -100, +100);
+          GenericSegmentTree st = new GenericSegmentTree(ar, combinationFn, rangeUpdateFn);
+
+          for (int i = 0; i < n; i++) {
+            int j = TestUtils.randValue(0, n - 1);
+            int k = TestUtils.randValue(0, n - 1);
+            int i1 = Math.min(j, k);
+            int i2 = Math.max(j, k);
+
+            j = TestUtils.randValue(0, n - 1);
+            k = TestUtils.randValue(0, n - 1);
+            int i3 = Math.min(j, k);
+            int i4 = Math.max(j, k);
+
+            // Range update
+            long randValue = TestUtils.randValue(-10, 10);
+            // System.out.printf("UPDATE [%d, %d] with %d\n", i3, i4, randValue);
+
+            if (rangeUpdateFn == GenericSegmentTree.RangeUpdateFn.ADDITION) {
+              bruteForceSumRangeUpdate(ar, i3, i4, randValue);
+            } else if (rangeUpdateFn == GenericSegmentTree.RangeUpdateFn.ASSIGN) {
+              bruteForceAssignRangeUpdate(ar, i3, i4, randValue);
+            } else if (rangeUpdateFn == GenericSegmentTree.RangeUpdateFn.MULTIPLICATION) {
+              bruteForceMulRangeUpdate(ar, i3, i4, randValue);
+            }
+
+            st.rangeUpdate1(i3, i4, randValue);
+
+            // Range query
+            long bf = 0;
+
+            if (combinationFn == GenericSegmentTree.SegmentCombinationFn.SUM) {
+              bf = bruteForceSum(ar, i1, i2);
+            } else if (combinationFn == GenericSegmentTree.SegmentCombinationFn.MIN) {
+              bf = bruteForceMin(ar, i1, i2);
+            } else if (combinationFn == GenericSegmentTree.SegmentCombinationFn.MAX) {
+              bf = bruteForceMax(ar, i1, i2);
+            }
+
+            long segTreeAnswer = st.rangeQuery1(i1, i2);
+            // System.out.printf("QUERY [%d, %d], want = %d, got = %d\n", i1, i2, bfMin,
+            // segTreeAnswer);
+            assertThat(bf).isEqualTo(segTreeAnswer);
+          }
+        }
+      }
+    }
+  }
 
   // Finds the sum in an array between [l, r] in the `values` array
   private static long bruteForceSum(long[] values, int l, int r) {
