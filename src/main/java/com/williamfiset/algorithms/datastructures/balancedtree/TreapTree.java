@@ -77,7 +77,7 @@ public class TreapTree<T extends Comparable<T>> {
   }
 
   private boolean contains(Node node, T value) {
-    if (node == null || value == null) return false;
+    if (node == null) return false;
 
     int cmp = value.compareTo(node.getValue());
 
@@ -87,7 +87,7 @@ public class TreapTree<T extends Comparable<T>> {
   }
 
   public boolean isEmpty() {
-    return (nodeCount == 0);
+    return nodeCount == 0;
   }
 
   public boolean insert(T val, int priority) {
@@ -111,14 +111,14 @@ public class TreapTree<T extends Comparable<T>> {
       return new Node(value, priority);
     }
 
-    int compareResult = value.compareTo(node.value);
+    int cmp = value.compareTo(node.value);
 
-    if (compareResult < 0) {
+    if (cmp < 0) {
       node.left = insert(node.left, value, priority);
       if (node.left.priority > node.priority) {
         node = rightRotation(node);
       }
-    } else if (compareResult > 0) {
+    } else if (cmp > 0) {
       node.right = insert(node.right, value, priority);
       if (node.right.priority > node.priority) {
         node = leftRotation(node);
@@ -152,24 +152,26 @@ public class TreapTree<T extends Comparable<T>> {
   }
 
   private Node remove(Node t, T x) {
-    if (t != null) {
-      int compareResult = x.compareTo(t.value);
+    if (t == null) {
+      return t;
+    }
 
-      if (compareResult < 0) t.left = remove(t.left, x);
-      else if (compareResult > 0) t.right = remove(t.right, x);
-      else {
-        if (t.left == null) return t.right;
-        if (t.right == null) return t.left;
+    int cmp = x.compareTo(t.value);
+    if (cmp < 0) t.left = remove(t.left, x);
+    else if (cmp > 0) t.right = remove(t.right, x);
+    else {
+      if (t.left == null) return t.right;
+      if (t.right == null) return t.left;
 
-        if (t.left.priority > t.right.priority) {
-          t = rightRotation(t);
-          t.right = remove(t.right, x);
-        } else {
-          t = leftRotation(t);
-          t.left = remove(t.left, x);
-        }
+      if (t.left.priority > t.right.priority) {
+        t = rightRotation(t);
+        t.right = remove(t.right, x);
+      } else {
+        t = leftRotation(t);
+        t.left = remove(t.left, x);
       }
     }
+
     return t;
   }
 }

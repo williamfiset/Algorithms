@@ -125,7 +125,7 @@ public class TreapTreeTest {
   }
 
   @Test
-  public void randomRemoveTests() {
+  public void randomTreapOperations() {
     TreeSet<Integer> ts = new TreeSet<>();
     for (int i = 0; i < TEST_SZ; i++) {
 
