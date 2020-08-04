@@ -205,20 +205,91 @@ public class GenericSegmentTree2Test {
   }
 
   @Test
+  public void maxminQueryMulUpdate_simple() {
+    long[] ar = {2, 1, 3, 4, -1};
+    GenericSegmentTree2 st1 =
+        new GenericSegmentTree2(
+            ar,
+            GenericSegmentTree2.SegmentCombinationFn.MAX,
+            GenericSegmentTree2.RangeUpdateFn.MULTIPLICATION);
+    GenericSegmentTree2 st2 =
+        new GenericSegmentTree2(
+            ar,
+            GenericSegmentTree2.SegmentCombinationFn.MIN,
+            GenericSegmentTree2.RangeUpdateFn.MULTIPLICATION);
+
+    st1.rangeUpdate1(0, 4, 1);
+    st2.rangeUpdate1(0, 4, 1);
+
+    assertThat(st1.rangeQuery1(0, 4)).isEqualTo(4);
+    assertThat(st2.rangeQuery1(0, 4)).isEqualTo(-1);
+
+    // TODO(issue/208): Negative numbers are a known issue
+    st1.rangeUpdate1(0, 4, -2);
+    st2.rangeUpdate1(0, 4, -2);
+
+    assertThat(st1.rangeQuery1(0, 4)).isEqualTo(2);
+    assertThat(st2.rangeQuery1(0, 4)).isEqualTo(-8);
+
+    st1.rangeUpdate1(0, 4, -1);
+    st2.rangeUpdate1(0, 4, -1);
+
+    assertThat(st1.rangeQuery1(0, 4)).isEqualTo(8);
+    assertThat(st2.rangeQuery1(0, 4)).isEqualTo(-2);
+  }
+
+  @Test
   public void maxQueryMulUpdate_simple() {
     long[] ar = {2, 1, 3, 4, -1};
-    GenericSegmentTree2 st =
+    GenericSegmentTree2 st1 =
         new GenericSegmentTree2(
             ar,
             GenericSegmentTree2.SegmentCombinationFn.MAX,
             GenericSegmentTree2.RangeUpdateFn.MULTIPLICATION);
 
-    st.rangeUpdate1(0, 4, 1);
-    assertThat(st.rangeQuery1(0, 4)).isEqualTo(4);
+    // [4, 2, 6, 8, -2]
+    st1.rangeUpdate1(0, 4, 2);
+    assertThat(st1.rangeQuery1(0, 4)).isEqualTo(8);
+    assertThat(st1.rangeQuery1(0, 0)).isEqualTo(4);
+    assertThat(st1.rangeQuery1(0, 1)).isEqualTo(4);
+    assertThat(st1.rangeQuery1(0, 2)).isEqualTo(6);
+    assertThat(st1.rangeQuery1(1, 3)).isEqualTo(8);
 
-    // TODO(issue/208): Negative numbers are a known issue
-    // st.rangeUpdate1(0, 4, -2);
-    // assertThat(st.rangeQuery1(0, 4)).isEqualTo(2); // Returns -8 as max but should be 2
+    // [4, 2, 6, -16, 4]
+    st1.rangeUpdate1(3, 4, -2);
+    assertThat(st1.rangeQuery1(0, 4)).isEqualTo(6);
+    assertThat(st1.rangeQuery1(0, 0)).isEqualTo(4);
+    assertThat(st1.rangeQuery1(0, 1)).isEqualTo(4);
+    assertThat(st1.rangeQuery1(0, 2)).isEqualTo(6);
+    assertThat(st1.rangeQuery1(1, 3)).isEqualTo(6);
+    assertThat(st1.rangeQuery1(3, 4)).isEqualTo(4);
+  }
+
+  @Test
+  public void minQueryMulUpdate_simple() {
+    long[] ar = {2, 1, 3, 4, -1};
+    GenericSegmentTree2 st1 =
+        new GenericSegmentTree2(
+            ar,
+            GenericSegmentTree2.SegmentCombinationFn.MIN,
+            GenericSegmentTree2.RangeUpdateFn.MULTIPLICATION);
+
+    // [4, 2, 6, 8, -2]
+    st1.rangeUpdate1(0, 4, 2);
+    assertThat(st1.rangeQuery1(0, 4)).isEqualTo(-2);
+    assertThat(st1.rangeQuery1(0, 0)).isEqualTo(4);
+    assertThat(st1.rangeQuery1(0, 1)).isEqualTo(2);
+    assertThat(st1.rangeQuery1(0, 2)).isEqualTo(2);
+    assertThat(st1.rangeQuery1(1, 3)).isEqualTo(2);
+
+    // [4, 2, 6, -16, 4]
+    st1.rangeUpdate1(3, 4, -2);
+    assertThat(st1.rangeQuery1(0, 4)).isEqualTo(-16);
+    assertThat(st1.rangeQuery1(0, 0)).isEqualTo(4);
+    assertThat(st1.rangeQuery1(0, 1)).isEqualTo(2);
+    assertThat(st1.rangeQuery1(0, 2)).isEqualTo(2);
+    assertThat(st1.rangeQuery1(1, 3)).isEqualTo(-16);
+    assertThat(st1.rangeQuery1(3, 4)).isEqualTo(-16);
   }
 
   @Test

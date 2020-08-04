@@ -42,13 +42,18 @@ public class GenericSegmentTree2 {
     Long value;
     Long lazy;
 
+    // Use for Min/Max mul queries
+    Long min, max;
+
     // The range of the segment [tl, tr]
     int tl;
     int tr;
 
-    public Segment(int i, Long value, int tl, int tr) {
+    public Segment(int i, Long value, Long min, Long max, int tl, int tr) {
       this.i = i;
       this.value = value;
+      this.min = min;
+      this.max = max;
       this.tl = tl;
       this.tr = tr;
     }
@@ -117,8 +122,20 @@ public class GenericSegmentTree2 {
   private Ruf lminQuerySumUpdate = (s, x) -> safeSum(s.lazy, x);
 
   // // TODO(issue/208): support this multiplication update
-  private Ruf minQueryMulUpdate = (s, x) -> safeMul(s.value, x);
-  private Ruf lminQueryMulUpdate = (s, x) -> safeMul(s.value, x); // s.lazy?
+  private Ruf minQueryMulUpdate =
+      (s, x) -> {
+        if (x < 0) {
+          // s.min was already calculated
+          if (safeMul(s.value, x) == s.min) {
+            return s.max;
+          } else {
+            return s.min;
+          }
+        } else {
+          return safeMul(s.value, x);
+        }
+      };
+  private Ruf lminQueryMulUpdate = (s, x) -> safeMul(s.lazy, x);
 
   private Ruf minQueryAssignUpdate = (s, x) -> x;
   private Ruf lminQueryAssignUpdate = (s, x) -> x;
@@ -127,8 +144,19 @@ public class GenericSegmentTree2 {
   private Ruf lmaxQuerySumUpdate = (s, x) -> safeSum(s.lazy, x);
 
   // TODO(issue/208): support this multiplication update
-  private Ruf maxQueryMulUpdate = (s, x) -> safeMul(s.value, x);
-  private Ruf lmaxQueryMulUpdate = (s, x) -> safeMul(s.value, x); // s.lazy?
+  private Ruf maxQueryMulUpdate =
+      (s, x) -> {
+        if (x < 0) {
+          if (safeMul(s.value, x) == s.min) {
+            return s.max;
+          } else {
+            return s.min;
+          }
+        } else {
+          return safeMul(s.value, x);
+        }
+      };
+  private Ruf lmaxQueryMulUpdate = (s, x) -> safeMul(s.lazy, x);
 
   private Ruf maxQueryAssignUpdate = (s, x) -> x;
   private Ruf lmaxQueryAssignUpdate = (s, x) -> x;
@@ -221,7 +249,7 @@ public class GenericSegmentTree2 {
    */
   private void buildSegmentTree(int i, int tl, int tr, long[] values) {
     if (tl == tr) {
-      st[i] = new Segment(i, values[tl], tl, tr);
+      st[i] = new Segment(i, values[tl], values[tl], values[tl], tl, tr);
       return;
     }
     int tm = (tl + tr) / 2;
@@ -229,7 +257,9 @@ public class GenericSegmentTree2 {
     buildSegmentTree(2 * i + 2, tm + 1, tr, values);
 
     Long segmentValue = combinationFn.apply(st[2 * i + 1].value, st[2 * i + 2].value);
-    Segment segment = new Segment(i, segmentValue, tl, tr);
+    Long minValue = Math.min(st[2 * i + 1].min, st[2 * i + 2].min);
+    Long maxValue = Math.max(st[2 * i + 1].max, st[2 * i + 2].max);
+    Segment segment = new Segment(i, segmentValue, minValue, maxValue, tl, tr);
 
     st[i] = segment;
   }
@@ -274,6 +304,10 @@ public class GenericSegmentTree2 {
   // Apply the delta value to the current node and push it to the child segments
   private void propagate1(int i, int tl, int tr) {
     if (st[i].lazy != null) {
+      // Only used for min/max mul queries
+      st[i].min = st[i].min * st[i].lazy;
+      st[i].max = st[i].max * st[i].lazy;
+
       // Apply the delta to the current segment.
       st[i].value = ruf.apply(st[i], st[i].lazy);
       // Push the delta to left/right segments for non-leaf nodes
@@ -300,6 +334,9 @@ public class GenericSegmentTree2 {
     }
 
     if (tl == l && tr == r) {
+      st[i].min = st[i].min * x;
+      st[i].max = st[i].max * x;
+
       st[i].value = ruf.apply(st[i], x);
       propagateLazy1(i, tl, tr, x);
     } else {
@@ -311,6 +348,8 @@ public class GenericSegmentTree2 {
       rangeUpdate1(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r, x);
 
       st[i].value = combinationFn.apply(st[2 * i + 1].value, st[2 * i + 2].value);
+      st[i].max = Math.max(st[2 * i + 1].max, st[2 * i + 2].max);
+      st[i].min = Math.min(st[2 * i + 1].min, st[2 * i + 2].min);
     }
   }
 
