@@ -46,7 +46,6 @@ public class IntQueue extends Queue<Integer> {
   }
 
   // Add an element to the queue
-  @Override
   public void offer(Integer value) {
     if (isFull()) {
       throw new RuntimeException("Queue too small!");
@@ -57,7 +56,6 @@ public class IntQueue extends Queue<Integer> {
   }
 
   // Make sure you check is the queue is not empty before calling poll!
-  @Override
   public Integer poll() {
     if (size == 0) {
       throw new RuntimeException("Queue is empty");
