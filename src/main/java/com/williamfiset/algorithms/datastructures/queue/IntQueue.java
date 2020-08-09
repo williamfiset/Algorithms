@@ -9,7 +9,7 @@
  */
 package com.williamfiset.algorithms.datastructures.queue;
 
-public class IntQueue implements Queue<Integer> {
+public class IntQueue extends Queue<Integer> {
 
   private int[] data;
   private int front, end;
