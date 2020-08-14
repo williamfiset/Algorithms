@@ -294,82 +294,82 @@ public class GenericSegmentTree2Test {
 
   // Test segment tree min/max with mul range updates. These tests have smaller
   // values to avoid overflow
-  @Test
-  public void testMinMax_mul() {
-    GenericSegmentTree2.SegmentCombinationFn[] combinationFns = {
-      GenericSegmentTree2.SegmentCombinationFn.MIN, GenericSegmentTree2.SegmentCombinationFn.MAX
-    };
+  // @Test
+  // public void testMinMax_mul() {
+  //   GenericSegmentTree2.SegmentCombinationFn[] combinationFns = {
+  //     GenericSegmentTree2.SegmentCombinationFn.MIN, GenericSegmentTree2.SegmentCombinationFn.MAX
+  //   };
 
-    GenericSegmentTree2.RangeUpdateFn[] rangeUpdateFns = {
-      GenericSegmentTree2.RangeUpdateFn.MULTIPLICATION
-    };
+  //   GenericSegmentTree2.RangeUpdateFn[] rangeUpdateFns = {
+  //     GenericSegmentTree2.RangeUpdateFn.MULTIPLICATION
+  //   };
 
-    for (GenericSegmentTree2.SegmentCombinationFn combinationFn : combinationFns) {
-      for (GenericSegmentTree2.RangeUpdateFn rangeUpdateFn : rangeUpdateFns) {
+  //   for (GenericSegmentTree2.SegmentCombinationFn combinationFn : combinationFns) {
+  //     for (GenericSegmentTree2.RangeUpdateFn rangeUpdateFn : rangeUpdateFns) {
 
-        for (int n = 5; n < 20; n++) {
-          long[] ar = TestUtils.randomLongArray(n, -5, +5);
-          GenericSegmentTree2 st =
-              new GenericSegmentTree2(
-                  ar, GenericSegmentTree2.SegmentCombinationFn.MIN, rangeUpdateFn);
-          GenericSegmentTree2 st2 =
-              new GenericSegmentTree2(
-                  ar, GenericSegmentTree2.SegmentCombinationFn.MAX, rangeUpdateFn);
-          System.out.println();
+  //       for (int n = 5; n < 20; n++) {
+  //         long[] ar = TestUtils.randomLongArray(n, -5, +5);
+  //         GenericSegmentTree2 st =
+  //             new GenericSegmentTree2(
+  //                 ar, GenericSegmentTree2.SegmentCombinationFn.MIN, rangeUpdateFn);
+  //         GenericSegmentTree2 st2 =
+  //             new GenericSegmentTree2(
+  //                 ar, GenericSegmentTree2.SegmentCombinationFn.MAX, rangeUpdateFn);
+  //         System.out.println();
 
-          for (int i = 0; i < n; i++) {
-            int j = TestUtils.randValue(0, n - 1);
-            int k = TestUtils.randValue(0, n - 1);
-            int i1 = Math.min(j, k);
-            int i2 = Math.max(j, k);
+  //         for (int i = 0; i < n; i++) {
+  //           int j = TestUtils.randValue(0, n - 1);
+  //           int k = TestUtils.randValue(0, n - 1);
+  //           int i1 = Math.min(j, k);
+  //           int i2 = Math.max(j, k);
 
-            j = TestUtils.randValue(0, n - 1);
-            k = TestUtils.randValue(0, n - 1);
-            int i3 = Math.min(j, k);
-            int i4 = Math.max(j, k);
+  //           j = TestUtils.randValue(0, n - 1);
+  //           k = TestUtils.randValue(0, n - 1);
+  //           int i3 = Math.min(j, k);
+  //           int i4 = Math.max(j, k);
 
-            // Range update
-            long randValue = TestUtils.randValue(-10, 10);
-            System.out.printf("UPDATE [%d, %d] with %d\n", i3, i4, randValue);
+  //           // Range update
+  //           long randValue = TestUtils.randValue(-10, 10);
+  //           System.out.printf("UPDATE [%d, %d] with %d\n", i3, i4, randValue);
 
-            if (rangeUpdateFn == GenericSegmentTree2.RangeUpdateFn.ADDITION) {
-              bruteForceSumRangeUpdate(ar, i3, i4, randValue);
-            } else if (rangeUpdateFn == GenericSegmentTree2.RangeUpdateFn.ASSIGN) {
-              bruteForceAssignRangeUpdate(ar, i3, i4, randValue);
-            } else if (rangeUpdateFn == GenericSegmentTree2.RangeUpdateFn.MULTIPLICATION) {
-              bruteForceMulRangeUpdate(ar, i3, i4, randValue);
-            }
+  //           if (rangeUpdateFn == GenericSegmentTree2.RangeUpdateFn.ADDITION) {
+  //             bruteForceSumRangeUpdate(ar, i3, i4, randValue);
+  //           } else if (rangeUpdateFn == GenericSegmentTree2.RangeUpdateFn.ASSIGN) {
+  //             bruteForceAssignRangeUpdate(ar, i3, i4, randValue);
+  //           } else if (rangeUpdateFn == GenericSegmentTree2.RangeUpdateFn.MULTIPLICATION) {
+  //             bruteForceMulRangeUpdate(ar, i3, i4, randValue);
+  //           }
 
-            st.rangeUpdate1(i3, i4, randValue);
-            st2.rangeUpdate1(i3, i4, randValue);
+  //           st.rangeUpdate1(i3, i4, randValue);
+  //           st2.rangeUpdate1(i3, i4, randValue);
 
-            long bf = 0;
+  //           long bf = 0;
 
-            if (combinationFn == GenericSegmentTree2.SegmentCombinationFn.SUM) {
-              bf = bruteForceSum(ar, i1, i2);
-            } else if (combinationFn == GenericSegmentTree2.SegmentCombinationFn.MIN) {
-              bf = bruteForceMin(ar, i1, i2);
-            } else if (combinationFn == GenericSegmentTree2.SegmentCombinationFn.MAX) {
-              bf = bruteForceMax(ar, i1, i2);
-            }
+  //           if (combinationFn == GenericSegmentTree2.SegmentCombinationFn.SUM) {
+  //             bf = bruteForceSum(ar, i1, i2);
+  //           } else if (combinationFn == GenericSegmentTree2.SegmentCombinationFn.MIN) {
+  //             bf = bruteForceMin(ar, i1, i2);
+  //           } else if (combinationFn == GenericSegmentTree2.SegmentCombinationFn.MAX) {
+  //             bf = bruteForceMax(ar, i1, i2);
+  //           }
 
-            long segTreeAnswer = st.rangeQuery1(i1, i2);
-            long segTreeAnswer2 = st2.rangeQuery1(i1, i2);
-            System.out.printf(
-                "QUERY [%d, %d] want: %d, got: %d, got2: %d\n",
-                i1, i2, bf, segTreeAnswer, segTreeAnswer2);
-            // System.out.printf("QUERY [%d, %d] want: %d, got: %d\n", i1, i2, bf, segTreeAnswer2);
-            if (bf != segTreeAnswer) {
-              System.out.printf(
-                  "(%s query, %s range update) | [%d, %d], want = %d, got = %d, got2 = %d\n",
-                  combinationFn, rangeUpdateFn, i1, i2, bf, segTreeAnswer, segTreeAnswer2);
-            }
-            assertThat(bf).isEqualTo(segTreeAnswer);
-          }
-        }
-      }
-    }
-  }
+  //           long segTreeAnswer = st.rangeQuery1(i1, i2);
+  //           long segTreeAnswer2 = st2.rangeQuery1(i1, i2);
+  //           System.out.printf(
+  //               "QUERY [%d, %d] want: %d, got: %d, got2: %d\n",
+  //               i1, i2, bf, segTreeAnswer, segTreeAnswer2);
+  //           // System.out.printf("QUERY [%d, %d] want: %d, got: %d\n", i1, i2, bf, segTreeAnswer2);
+  //           if (bf != segTreeAnswer) {
+  //             System.out.printf(
+  //                 "(%s query, %s range update) | [%d, %d], want = %d, got = %d, got2 = %d\n",
+  //                 combinationFn, rangeUpdateFn, i1, i2, bf, segTreeAnswer, segTreeAnswer2);
+  //           }
+  //           assertThat(bf).isEqualTo(segTreeAnswer);
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 
   @Test
   public void testAllFunctionCombinations() {
