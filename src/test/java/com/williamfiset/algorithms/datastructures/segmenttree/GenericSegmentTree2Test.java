@@ -358,7 +358,8 @@ public class GenericSegmentTree2Test {
   //           System.out.printf(
   //               "QUERY [%d, %d] want: %d, got: %d, got2: %d\n",
   //               i1, i2, bf, segTreeAnswer, segTreeAnswer2);
-  //           // System.out.printf("QUERY [%d, %d] want: %d, got: %d\n", i1, i2, bf, segTreeAnswer2);
+  //           // System.out.printf("QUERY [%d, %d] want: %d, got: %d\n", i1, i2, bf,
+  // segTreeAnswer2);
   //           if (bf != segTreeAnswer) {
   //             System.out.printf(
   //                 "(%s query, %s range update) | [%d, %d], want = %d, got = %d, got2 = %d\n",
