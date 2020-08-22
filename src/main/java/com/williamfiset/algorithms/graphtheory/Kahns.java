@@ -35,6 +35,7 @@ public class Kahns {
         inDegree[to]++;
       }
     }
+    System.out.println(java.util.Arrays.toString(inDegree));
 
     // q always contains the set nodes with no incoming edges.
     Queue<Integer> q = new ArrayDeque<>();
@@ -66,9 +67,38 @@ public class Kahns {
 
   // Example usage:
   public static void main(String[] args) {
-    test1();
-    test2();
+    exampleFromSlides();
+    // test1();
+    // test2();
     // cycleTest();
+  }
+
+  private static void exampleFromSlides() {
+    List<List<Integer>> g = createEmptyAdjacencyList(14);
+    addDirectedEdge(g, 0, 2);
+    addDirectedEdge(g, 0, 3);
+    addDirectedEdge(g, 0, 6);
+    addDirectedEdge(g, 1, 4);
+    addDirectedEdge(g, 2, 6);
+    addDirectedEdge(g, 3, 1);
+    addDirectedEdge(g, 3, 4);
+    addDirectedEdge(g, 4, 5);
+    addDirectedEdge(g, 4, 8);
+    addDirectedEdge(g, 6, 7);
+    addDirectedEdge(g, 6, 11);
+    addDirectedEdge(g, 7, 4);
+    addDirectedEdge(g, 7, 12);
+    addDirectedEdge(g, 9, 2);
+    addDirectedEdge(g, 9, 10);
+    addDirectedEdge(g, 10, 6);
+    addDirectedEdge(g, 11, 12);
+    addDirectedEdge(g, 12, 8);
+
+    Kahns solver = new Kahns();
+    int[] ordering = solver.kahns(g);
+
+    // Prints: [0, 9, 13, 3, 2, 10, 1, 6, 7, 11, 4, 12, 5, 8]
+    System.out.println(java.util.Arrays.toString(ordering));
   }
 
   private static void test1() {
