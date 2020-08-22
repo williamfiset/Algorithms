@@ -35,7 +35,6 @@ public class Kahns {
         inDegree[to]++;
       }
     }
-    System.out.println(java.util.Arrays.toString(inDegree));
 
     // q always contains the set nodes with no incoming edges.
     Queue<Integer> q = new ArrayDeque<>();
