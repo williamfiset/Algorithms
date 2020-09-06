@@ -42,7 +42,7 @@ public class GenericSegmentTree2 {
     Long value;
     Long lazy;
 
-    // Use for Min/Max mul queries
+    // Used only for Min/Max mul queries
     Long min, max;
 
     // The range of the segment [tl, tr]

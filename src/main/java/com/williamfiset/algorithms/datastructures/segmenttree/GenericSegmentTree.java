@@ -21,7 +21,8 @@ public class GenericSegmentTree {
   public static enum SegmentCombinationFn {
     SUM,
     MIN,
-    MAX
+    MAX,
+    GCD
   }
 
   // When updating the value of a specific index position, or a range of values,
@@ -93,6 +94,18 @@ public class GenericSegmentTree {
   private BinaryOperator<Long> sumCombinationFn = (a, b) -> safeSum(a, b);
   private BinaryOperator<Long> minCombinationFn = (a, b) -> safeMin(a, b);
   private BinaryOperator<Long> maxCombinationFn = (a, b) -> safeMax(a, b);
+  private BinaryOperator<Long> gcdCombinationFn =
+      (a, b) -> {
+        if (a == null) return b;
+        if (b == null) return a;
+        long gcd = a;
+        while (b != 0) {
+          gcd = b;
+          b = a % b;
+          a = gcd;
+        }
+        return Math.abs(gcd);
+      };
 
   // TODO(william): Document the justification for each function below
 
@@ -100,7 +113,7 @@ public class GenericSegmentTree {
   private Ruf minQuerySumUpdate = (b, tl, tr, d) -> safeSum(b, d);
   private Ruf lminQuerySumUpdate = (b, tl, tr, d) -> safeSum(b, d);
 
-  // TODO(issue/208): support this multiplication update
+  // TODO(issue/208): Can negative multiplication updates be supported?
   private Ruf minQueryMulUpdate = (b, tl, tr, d) -> safeMul(b, d);
   private Ruf lminQueryMulUpdate = (b, tl, tr, d) -> safeMul(b, d);
 
@@ -110,7 +123,7 @@ public class GenericSegmentTree {
   private Ruf maxQuerySumUpdate = (b, tl, tr, d) -> safeSum(b, d);
   private Ruf lmaxQuerySumUpdate = (b, tl, tr, d) -> safeSum(b, d);
 
-  // TODO(issue/208): support this multiplication update
+  // TODO(issue/208): Can negative multiplication updates be supported?
   private Ruf maxQueryMulUpdate = (b, tl, tr, d) -> safeMul(b, d);
   private Ruf lmaxQueryMulUpdate = (b, tl, tr, d) -> safeMul(b, d);
 
@@ -125,6 +138,17 @@ public class GenericSegmentTree {
 
   private Ruf sumQueryAssignUpdate = (b, tl, tr, d) -> (tr - tl + 1) * d;
   private Ruf lsumQueryAssignUpdate = (b, tl, tr, d) -> d;
+
+  // TODO(william): confirm this cannot be supported? Can we maintain additional
+  // information to make it possible?
+  private Ruf gcdQuerySumUpdate = (b, tl, tr, d) -> null;
+  private Ruf lgcdQuerySumUpdate = (b, tl, tr, d) -> null;
+
+  private Ruf gcdQueryMulUpdate = (b, tl, tr, d) -> safeMul(b, d);
+  private Ruf lgcdQueryMulUpdate = (b, tl, tr, d) -> safeMul(b, d);
+
+  private Ruf gcdQueryAssignUpdate = (b, tl, tr, d) -> d;
+  private Ruf lgcdQueryAssignUpdate = (b, tl, tr, d) -> d;
 
   public GenericSegmentTree(
       long[] values,
@@ -187,6 +211,18 @@ public class GenericSegmentTree {
       } else if (rangeUpdateFunction == RangeUpdateFn.MULTIPLICATION) {
         ruf = maxQueryMulUpdate;
         lruf = lmaxQueryMulUpdate;
+      }
+    } else if (segmentCombinationFunction == SegmentCombinationFn.GCD) {
+      combinationFn = gcdCombinationFn;
+      if (rangeUpdateFunction == RangeUpdateFn.ADDITION) {
+        ruf = gcdQuerySumUpdate;
+        lruf = lgcdQuerySumUpdate;
+      } else if (rangeUpdateFunction == RangeUpdateFn.ASSIGN) {
+        ruf = gcdQueryAssignUpdate;
+        lruf = lgcdQueryAssignUpdate;
+      } else if (rangeUpdateFunction == RangeUpdateFn.MULTIPLICATION) {
+        ruf = gcdQueryMulUpdate;
+        lruf = lgcdQueryMulUpdate;
       }
     } else {
       throw new UnsupportedOperationException(
@@ -354,7 +390,58 @@ public class GenericSegmentTree {
 
   public static void main(String[] args) {
     // sumQuerySumUpdateExample();
-    minQueryAssignUpdateExample();
+    // minQueryAssignUpdateExample();
+    // gcdQueryMulUpdateExample();
+    gcdQueryAssignUpdateExample();
+  }
+
+  private static void gcdQueryMulUpdateExample() {
+    //           0,  1, 2, 3,  4
+    long[] v = {12, 24, 3, 4, -1};
+    GenericSegmentTree st =
+        new GenericSegmentTree(v, SegmentCombinationFn.GCD, RangeUpdateFn.MULTIPLICATION);
+
+    int l = 0;
+    int r = 2;
+    long q = st.rangeQuery1(l, r);
+    if (q != 3) System.out.println("Error");
+    System.out.printf("The gcd between indeces [%d, %d] is: %d\n", l, r, q);
+    st.rangeUpdate1(2, 2, 2);
+    q = st.rangeQuery1(l, r);
+    if (q != 6) System.out.println("Error");
+    System.out.printf("The gcd between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery1(l, r));
+
+    r = 1; // [l, r] = [0, 1]
+    q = st.rangeQuery1(l, r);
+    if (q != 12) System.out.println("Error");
+    System.out.printf("The gcd between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery1(l, r));
+  }
+
+  private static void gcdQueryAssignUpdateExample() {
+    //           0,  1, 2, 3,  4
+    long[] v = {12, 24, 3, 12, 48};
+    GenericSegmentTree st =
+        new GenericSegmentTree(v, SegmentCombinationFn.GCD, RangeUpdateFn.ASSIGN);
+
+    int l = 0;
+    int r = 2;
+    long q = st.rangeQuery1(l, r);
+    if (q != 3) System.out.println("Error");
+    System.out.printf("The gcd between indeces [%d, %d] is: %d\n", l, r, q);
+
+    // 12, 24, 48, 12, 48
+    st.rangeUpdate1(2, 2, 48);
+    q = st.rangeQuery1(l, r);
+    if (q != 12) System.out.println("Error");
+    System.out.printf("The gcd between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery1(l, r));
+
+    // 12, 24, 24, 24, 48
+    st.rangeUpdate1(2, 3, 24);
+    l = 0;
+    r = 4;
+    q = st.rangeQuery1(l, r);
+    if (q != 12) System.out.println("Error");
+    System.out.printf("The gcd between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery1(l, r));
   }
 
   private static void sumQuerySumUpdateExample() {
