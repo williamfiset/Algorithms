@@ -6,9 +6,7 @@ package com.williamfiset.algorithms.datastructures.segmenttree;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
 import com.williamfiset.algorithms.utils.TestUtils;
-import org.junit.Before;
 import org.junit.Test;
 
 public class GenericSegmentTreeTest {
@@ -249,7 +247,8 @@ public class GenericSegmentTreeTest {
           continue;
         }
 
-        if (combinationFn == GenericSegmentTree.SegmentCombinationFn.GCD && rangeUpdateFn == GenericSegmentTree.RangeUpdateFn.ADDITION) {
+        if (combinationFn == GenericSegmentTree.SegmentCombinationFn.GCD
+            && rangeUpdateFn == GenericSegmentTree.RangeUpdateFn.ADDITION) {
           // Not supported yet
           continue;
         }
@@ -304,9 +303,10 @@ public class GenericSegmentTreeTest {
             }
 
             long segTreeAnswer = st.rangeQuery1(i1, i2);
-            // System.out.printf("Type: %s QUERY [%d, %d], want = %d, got = %d\n", combinationFn, i1, i2, bf, segTreeAnswer);
+            // System.out.printf("Type: %s QUERY [%d, %d], want = %d, got = %d\n", combinationFn,
+            // i1, i2, bf, segTreeAnswer);
             // if (bf != segTreeAnswer) {
-              // System.out.println(java.util.Arrays.toString(ar));
+            // System.out.println(java.util.Arrays.toString(ar));
             // }
             assertThat(bf).isEqualTo(segTreeAnswer);
           }
@@ -315,14 +315,16 @@ public class GenericSegmentTreeTest {
     }
   }
 
-  private static long getRandValueByTestType(GenericSegmentTree.SegmentCombinationFn combinationFn) {
+  private static long getRandValueByTestType(
+      GenericSegmentTree.SegmentCombinationFn combinationFn) {
     if (combinationFn != GenericSegmentTree.SegmentCombinationFn.GCD) {
       return TestUtils.randValue(-10, 10);
     }
     return TestUtils.randValue(1, 10);
   }
 
-  private static long[] generateRandomArrayByTestType(int n, GenericSegmentTree.SegmentCombinationFn combinationFn) {
+  private static long[] generateRandomArrayByTestType(
+      int n, GenericSegmentTree.SegmentCombinationFn combinationFn) {
     // GCD doesn't play well with negative numbers
     if (combinationFn != GenericSegmentTree.SegmentCombinationFn.GCD) {
       return TestUtils.randomLongArray(n, -100, +100);
