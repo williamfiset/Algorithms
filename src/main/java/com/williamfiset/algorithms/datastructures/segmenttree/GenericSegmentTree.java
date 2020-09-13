@@ -22,7 +22,8 @@ public class GenericSegmentTree {
     SUM,
     MIN,
     MAX,
-    GCD
+    GCD,
+    PRODUCT
   }
 
   // When updating the value of a specific index position, or a range of values,
@@ -94,6 +95,7 @@ public class GenericSegmentTree {
   private BinaryOperator<Long> sumCombinationFn = (a, b) -> safeSum(a, b);
   private BinaryOperator<Long> minCombinationFn = (a, b) -> safeMin(a, b);
   private BinaryOperator<Long> maxCombinationFn = (a, b) -> safeMax(a, b);
+  private BinaryOperator<Long> productCombinationFn = (a, b) -> safeMul(a, b);
   private BinaryOperator<Long> gcdCombinationFn =
       (a, b) -> {
         if (a == null) return b;
@@ -149,6 +151,15 @@ public class GenericSegmentTree {
 
   private Ruf gcdQueryAssignUpdate = (b, tl, tr, d) -> d;
   private Ruf lgcdQueryAssignUpdate = (b, tl, tr, d) -> d;
+
+  private Ruf productQuerySumUpdate = (b, tl, tr, d) -> b + (long)(Math.pow(d, (tr - tl + 1)));
+  private Ruf lproductQuerySumUpdate = (b, tl, tr, d) -> safeSum(b, d);
+
+  private Ruf productQueryMulUpdate = (b, tl, tr, d) -> b * (long)(Math.pow(d, (tr - tl + 1)));
+  private Ruf lproductQueryMulUpdate = (b, tl, tr, d) -> safeMul(b, d); // safeMul(b, (long)(Math.pow(d, (tr - tl + 1))));
+
+  private Ruf productQueryAssignUpdate = (b, tl, tr, d) -> d;
+  private Ruf lproductQueryAssignUpdate = (b, tl, tr, d) -> d;
 
   public GenericSegmentTree(
       long[] values,
@@ -223,6 +234,18 @@ public class GenericSegmentTree {
       } else if (rangeUpdateFunction == RangeUpdateFn.MULTIPLICATION) {
         ruf = gcdQueryMulUpdate;
         lruf = lgcdQueryMulUpdate;
+      }
+    } else if (segmentCombinationFunction == SegmentCombinationFn.PRODUCT) {
+      combinationFn = productCombinationFn;
+      if (rangeUpdateFunction == RangeUpdateFn.ADDITION) {
+        ruf = productQuerySumUpdate;
+        lruf = lproductQuerySumUpdate;
+      } else if (rangeUpdateFunction == RangeUpdateFn.ASSIGN) {
+        ruf = productQueryAssignUpdate;
+        lruf = lproductQueryAssignUpdate;
+      } else if (rangeUpdateFunction == RangeUpdateFn.MULTIPLICATION) {
+        ruf = productQueryMulUpdate;
+        lruf = lproductQueryMulUpdate;
       }
     } else {
       throw new UnsupportedOperationException(
@@ -392,7 +415,43 @@ public class GenericSegmentTree {
     // sumQuerySumUpdateExample();
     // minQueryAssignUpdateExample();
     // gcdQueryMulUpdateExample();
-    gcdQueryAssignUpdateExample();
+    // gcdQueryAssignUpdateExample();
+    productQueryMulUpdateExample();
+  }
+
+  private static void productQueryMulUpdateExample() {
+      //        0, 1, 2, 3
+    long[] v = {3, 2, 2, 1};
+    GenericSegmentTree st =
+        new GenericSegmentTree(v, SegmentCombinationFn.PRODUCT, RangeUpdateFn.MULTIPLICATION);
+
+    int l = 0;
+    int r = 3;
+    long q = st.rangeQuery1(l, r);
+    if (q != 12) System.out.println("Error");
+    System.out.printf("The product between indeces [%d, %d] is: %d\n", l, r, q);
+
+    // 3, 8, 8, 1
+    // 3 * 8 * 8 * 1 = 192
+    st.rangeUpdate1(1, 2, 4);
+    q = st.rangeQuery1(l, r);
+    if (q != 192) System.out.println("Error");
+    System.out.printf("The product between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery1(l, r));
+
+    // 3, 8, 16, 2
+    // 3 * 8 * 16 * 2 = 768
+    st.rangeUpdate1(2, 3, 2);
+    q = st.rangeQuery1(l, r);
+    if (q != 768) System.out.println("Error");
+    System.out.printf("The product between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery1(l, r));
+
+    // 12, 24, 24, 24, 48
+    // st.rangeUpdate1(2, 3, 24);
+    // l = 0;
+    // r = 4;
+    // q = st.rangeQuery1(l, r);
+    // if (q != 12) System.out.println("Error");
+    // System.out.printf("The product between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery1(l, r));
   }
 
   private static void gcdQueryMulUpdateExample() {
