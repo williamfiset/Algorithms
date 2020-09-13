@@ -152,11 +152,12 @@ public class GenericSegmentTree {
   private Ruf gcdQueryAssignUpdate = (b, tl, tr, d) -> d;
   private Ruf lgcdQueryAssignUpdate = (b, tl, tr, d) -> d;
 
-  private Ruf productQuerySumUpdate = (b, tl, tr, d) -> b + (long)(Math.pow(d, (tr - tl + 1)));
+  private Ruf productQuerySumUpdate = (b, tl, tr, d) -> b + (long) (Math.pow(d, (tr - tl + 1)));
   private Ruf lproductQuerySumUpdate = (b, tl, tr, d) -> safeSum(b, d);
 
-  private Ruf productQueryMulUpdate = (b, tl, tr, d) -> b * (long)(Math.pow(d, (tr - tl + 1)));
-  private Ruf lproductQueryMulUpdate = (b, tl, tr, d) -> safeMul(b, d); // safeMul(b, (long)(Math.pow(d, (tr - tl + 1))));
+  private Ruf productQueryMulUpdate = (b, tl, tr, d) -> b * (long) (Math.pow(d, (tr - tl + 1)));
+  private Ruf lproductQueryMulUpdate =
+      (b, tl, tr, d) -> safeMul(b, d); // safeMul(b, (long)(Math.pow(d, (tr - tl + 1))));
 
   private Ruf productQueryAssignUpdate = (b, tl, tr, d) -> d;
   private Ruf lproductQueryAssignUpdate = (b, tl, tr, d) -> d;
@@ -420,7 +421,7 @@ public class GenericSegmentTree {
   }
 
   private static void productQueryMulUpdateExample() {
-      //        0, 1, 2, 3
+    //        0, 1, 2, 3
     long[] v = {3, 2, 2, 1};
     GenericSegmentTree st =
         new GenericSegmentTree(v, SegmentCombinationFn.PRODUCT, RangeUpdateFn.MULTIPLICATION);
@@ -451,7 +452,8 @@ public class GenericSegmentTree {
     // r = 4;
     // q = st.rangeQuery1(l, r);
     // if (q != 12) System.out.println("Error");
-    // System.out.printf("The product between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery1(l, r));
+    // System.out.printf("The product between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery1(l,
+    // r));
   }
 
   private static void gcdQueryMulUpdateExample() {
