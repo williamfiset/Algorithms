@@ -5,6 +5,8 @@
  * <p>Test against: https://open.kattis.com/problems/eulerianpath
  * http://codeforces.com/contest/508/problem/D
  *
+ * <p>Run: ./gradlew run -Palgorithm=graphtheory.EulerianPathDirectedEdgesAdjacencyList
+ *
  * <p>Time Complexity: O(E)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
@@ -115,7 +117,7 @@ public class EulerianPathDirectedEdgesAdjacencyList {
 
   public static void main(String[] args) {
     exampleFromSlides();
-    // smallExample();
+    smallExample();
   }
 
   private static void exampleFromSlides() {
@@ -156,7 +158,7 @@ public class EulerianPathDirectedEdgesAdjacencyList {
     EulerianPathDirectedEdgesAdjacencyList solver;
     solver = new EulerianPathDirectedEdgesAdjacencyList(graph);
 
-    // Outputs path: [0, 1, 2, 1, 4, 1, 3]
+    // Outputs path: [0, 1, 4, 1, 2, 1, 3]
     System.out.println(Arrays.toString(solver.getEulerianPath()));
   }
 }
