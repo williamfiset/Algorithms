@@ -221,11 +221,11 @@ public class GenericSegmentTreeTest {
   @Test
   public void testAllFunctionCombinations() {
     GenericSegmentTree.SegmentCombinationFn[] combinationFns = {
-      // GenericSegmentTree.SegmentCombinationFn.SUM,
-      // GenericSegmentTree.SegmentCombinationFn.MIN,
-      // GenericSegmentTree.SegmentCombinationFn.MAX,
-      // GenericSegmentTree.SegmentCombinationFn.GCD,
-      GenericSegmentTree.SegmentCombinationFn.PRODUCT,
+      GenericSegmentTree.SegmentCombinationFn.SUM,
+      GenericSegmentTree.SegmentCombinationFn.MIN,
+      GenericSegmentTree.SegmentCombinationFn.MAX,
+      GenericSegmentTree.SegmentCombinationFn.GCD,
+      // GenericSegmentTree.SegmentCombinationFn.PRODUCT,
     };
 
     GenericSegmentTree.RangeUpdateFn[] rangeUpdateFns = {
@@ -306,10 +306,12 @@ public class GenericSegmentTreeTest {
             }
 
             long segTreeAnswer = st.rangeQuery1(i1, i2);
-            System.out.printf(
-                "Range query type: %s, range update type: %s, QUERY [%d, %d], want = %d, got = %d\n",
-                combinationFn, rangeUpdateFn, i1, i2, bf, segTreeAnswer);
             if (bf != segTreeAnswer) {
+
+              System.out.printf(
+                  "Range query type: %s, range update type: %s, QUERY [%d, %d], want = %d, got = %d\n",
+                  combinationFn, rangeUpdateFn, i1, i2, bf, segTreeAnswer);
+
               System.out.println(java.util.Arrays.toString(ar));
             }
             assertThat(segTreeAnswer).isEqualTo(bf);
