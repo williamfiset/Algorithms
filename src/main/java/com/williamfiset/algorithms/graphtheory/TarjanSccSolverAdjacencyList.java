@@ -64,8 +64,12 @@ public class TarjanSccSolverAdjacencyList {
     ids[at] = low[at] = id++;
 
     for (int to : graph.get(at)) {
-      if (ids[to] == UNVISITED) dfs(to);
-      if (onStack[to]) low[at] = min(low[at], low[to]);
+      if (ids[to] == UNVISITED) {
+        dfs(to);
+        low[at] = min(low[at], low[to]);
+      } else if (onStack[to]) {
+        low[at] = min(low[at], ids[to]);
+      }
     }
 
     // On recursive callback, if we're at the root node (start of SCC)
