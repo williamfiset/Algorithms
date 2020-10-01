@@ -291,10 +291,12 @@ public class LinkedListTest {
   // Generate a list of random numbers
   static List<Integer> genRandList(int sz) {
     List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++)
+    for (int i = 0; i < sz; i++) {
       lst.add((int) (Math.random() * MAX_RAND_NUM));
-    for (int i = 0; i < NUM_NULLS; i++)
+    }
+    for (int i = 0; i < NUM_NULLS; i++) {
       lst.add(null);
+    }
     Collections.shuffle(lst);
     return lst;
   }
@@ -302,10 +304,12 @@ public class LinkedListTest {
   // Generate a list of unique random numbers
   static List<Integer> genUniqueRandList(int sz) {
     List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++)
+    for (int i = 0; i < sz; i++) {
       lst.add(i);
-    for (int i = 0; i < NUM_NULLS; i++)
+    }
+    for (int i = 0; i < NUM_NULLS; i++) {
       lst.add(null);
+    }
     Collections.shuffle(lst);
     return lst;
   }
@@ -322,7 +326,8 @@ public class LinkedListTest {
   private void testIterator(java.util.LinkedList<Integer> javaLinkedList) {
     java.util.Iterator<Integer> javaIterator = javaLinkedList.iterator();
     java.util.Iterator<Integer> myIterator = list.iterator();
-    while (javaIterator.hasNext())
+    while (javaIterator.hasNext()) {
       assertThat(javaIterator.next()).isEqualTo(myIterator.next());
+    }
   }
 }

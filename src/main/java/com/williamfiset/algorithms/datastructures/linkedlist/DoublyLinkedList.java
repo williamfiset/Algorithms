@@ -96,7 +96,7 @@ public class DoublyLinkedList<T> implements Iterable<T> {
       return;
     }
 
-    Node<T> leftNode = getNodeAt(index-1);
+    Node<T> leftNode = getNodeAt(index - 1);
     Node<T> rightNode = leftNode.next;
     Node<T> newNode = new Node<>(data, leftNode, rightNode);
     leftNode.next = rightNode.previous = newNode;
@@ -113,7 +113,9 @@ public class DoublyLinkedList<T> implements Iterable<T> {
   }
 
   private void checkEmptyListException() {
-    if (isEmpty()) throw new RuntimeException("Empty list");
+    if (isEmpty()) {
+      throw new RuntimeException("Empty list");
+    }
   }
 
   // Check the value of the first node if it exists, O(1)
@@ -140,10 +142,11 @@ public class DoublyLinkedList<T> implements Iterable<T> {
     --size;
 
     // If the list is empty set the tail to null
-    if (isEmpty()) tail = null;
-
-    // Do a memory cleanup of the previous node
-    else head.previous = null;
+    if (isEmpty()) {
+      tail = null;
+    } else {
+      head.previous = null;
+    }
 
     // Return the data that was at the first node we just removed
     return data;
@@ -161,10 +164,11 @@ public class DoublyLinkedList<T> implements Iterable<T> {
     --size;
 
     // If the list is now empty set the head to null
-    if (isEmpty()) head = null;
-
-    // Do a memory clean of the node that was just removed
-    else tail.next = null;
+    if (isEmpty()) {
+      head = null;
+    } else {
+      tail.next = null;
+    }
 
     // Return the data that was in the last node we just removed
     return data;
@@ -174,8 +178,12 @@ public class DoublyLinkedList<T> implements Iterable<T> {
   private T remove(Node<T> node) {
     // If the node to remove is somewhere either at the
     // head or the tail handle those independently
-    if (node.previous == null) return removeFirst();
-    if (node.next == null) return removeLast();
+    if (node.previous == null) {
+      return removeFirst();
+    }
+    if (node.next == null) {
+      return removeLast();
+    }
 
     // Make the pointers of adjacent nodes skip over 'node'
     Node<T> leftNode = node.previous;
@@ -212,10 +220,11 @@ public class DoublyLinkedList<T> implements Iterable<T> {
         current = current.next;
       }
       // Search from the back of the list
-    } else
+    } else {
       for (i = size - 1, current = tail; i != index; i--) {
         current = current.previous;
       }
+    }
 
     return remove(current);
   }
@@ -257,12 +266,13 @@ public class DoublyLinkedList<T> implements Iterable<T> {
         }
       }
       // Search for non null object
-    } else
+    } else {
       for (; current != null; current = current.next, index++) {
         if (obj.equals(current.data)) {
           return index;
         }
       }
+    }
 
     return -1;
   }
