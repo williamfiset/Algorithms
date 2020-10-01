@@ -20,11 +20,11 @@ public class DoublyLinkedList<T> implements Iterable<T> {
       this.previous = previous;
       this.next = next;
     }
-    
+
     public void clear() {
-    	data = null;
-    	previous = null;
-    	next = null;
+      data = null;
+      previous = null;
+      next = null;
     }
 
     @Override
@@ -103,35 +103,35 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
     size++;
   }
-  
+
   private Node<T> getNodeAt(int index) {
     Node<T> node = head;
-	  for (int i = 0; i < index; i++) {
-	    node = node.next;
-	  }
-	  return node;
+    for (int i = 0; i < index; i++) {
+      node = node.next;
+    }
+    return node;
   }
-  
+
   private void checkEmptyListException() {
-	  if (isEmpty()) throw new RuntimeException("Empty list");
+    if (isEmpty()) throw new RuntimeException("Empty list");
   }
 
   // Check the value of the first node if it exists, O(1)
   public T peekFirst() {
-	checkEmptyListException();
+    checkEmptyListException();
     return head.data;
   }
 
   // Check the value of the last node if it exists, O(1)
   public T peekLast() {
-	checkEmptyListException();
+    checkEmptyListException();
     return tail.data;
   }
 
   // Remove the first value at the head of the linked list, O(1)
   public T removeFirst() {
     // Can't remove data from an empty list
-	checkEmptyListException();
+    checkEmptyListException();
 
     // Extract the data at the head and move
     // the head pointer forwards one node
@@ -152,7 +152,7 @@ public class DoublyLinkedList<T> implements Iterable<T> {
   // Remove the last value at the tail of the linked list, O(1)
   public T removeLast() {
     // Can't remove data from an empty list
-	checkEmptyListException();
+    checkEmptyListException();
 
     // Extract the data at the tail and move
     // the tail pointer backwards one node

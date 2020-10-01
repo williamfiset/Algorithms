@@ -194,10 +194,10 @@ public class LinkedListTest {
   @Test
   public void testRandomizedRemoving() {
     java.util.LinkedList<Integer> javaLinkedList = new java.util.LinkedList<>();
-    
+
     for (int loops = 0; loops < LOOPS; loops++) {
       List<Integer> randNums = genRandList(TEST_SZ);
-      
+
       setConcurrentLists(javaLinkedList, randNums);
 
       Collections.shuffle(randNums);
@@ -209,7 +209,7 @@ public class LinkedListTest {
         assertThat(javaLinkedList.size()).isEqualTo(list.size());
 
         testIterator(javaLinkedList);
-        testIterator(javaLinkedList);  // Two times, why?
+        testIterator(javaLinkedList); // Two times, why?
       }
 
       setConcurrentLists(javaLinkedList, randNums);
@@ -232,7 +232,7 @@ public class LinkedListTest {
 
     for (int loops = 0; loops < LOOPS; loops++) {
       List<Integer> randNums = genRandList(TEST_SZ);
-      
+
       setConcurrentLists(javaLinkedList, randNums);
 
       for (int i = 0; i < randNums.size(); i++) {
@@ -291,8 +291,10 @@ public class LinkedListTest {
   // Generate a list of random numbers
   static List<Integer> genRandList(int sz) {
     List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add((int) (Math.random() * MAX_RAND_NUM));
-    for (int i = 0; i < NUM_NULLS; i++) lst.add(null);
+    for (int i = 0; i < sz; i++)
+      lst.add((int) (Math.random() * MAX_RAND_NUM));
+    for (int i = 0; i < NUM_NULLS; i++)
+      lst.add(null);
     Collections.shuffle(lst);
     return lst;
   }
@@ -300,12 +302,14 @@ public class LinkedListTest {
   // Generate a list of unique random numbers
   static List<Integer> genUniqueRandList(int sz) {
     List<Integer> lst = new ArrayList<>(sz);
-    for (int i = 0; i < sz; i++) lst.add(i);
-    for (int i = 0; i < NUM_NULLS; i++) lst.add(null);
+    for (int i = 0; i < sz; i++)
+      lst.add(i);
+    for (int i = 0; i < NUM_NULLS; i++)
+      lst.add(null);
     Collections.shuffle(lst);
     return lst;
   }
-  
+
   private void setConcurrentLists(java.util.LinkedList<Integer> javaLinkedList, List<Integer> randNums) {
     list.clear();
     javaLinkedList.clear();
@@ -315,11 +319,10 @@ public class LinkedListTest {
     }
   }
 
-	private void testIterator(java.util.LinkedList<Integer> javaLinkedList) {
-		java.util.Iterator<Integer> javaIterator = javaLinkedList.iterator();
-	  java.util.Iterator<Integer> myIterator = list.iterator();
-	  while (javaIterator.hasNext()) {
+  private void testIterator(java.util.LinkedList<Integer> javaLinkedList) {
+    java.util.Iterator<Integer> javaIterator = javaLinkedList.iterator();
+    java.util.Iterator<Integer> myIterator = list.iterator();
+    while (javaIterator.hasNext())
       assertThat(javaIterator.next()).isEqualTo(myIterator.next());
-    }
-	}
+  }
 }
