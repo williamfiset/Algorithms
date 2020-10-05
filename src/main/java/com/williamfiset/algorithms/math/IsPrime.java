@@ -3,9 +3,11 @@
  *
  * @author Micah Stairs, William Fiset
  */
+import java.util.Scanner;
 package com.williamfiset.algorithms.math;
 
 public class IsPrime {
+  static int temp=0;
 
   public static boolean isPrime(final long n) {
     if (n < 2) return false;
@@ -21,11 +23,32 @@ public class IsPrime {
     }
     return true;
   }
+  
+  public static void checkPrime(final long n){
+    if(n===0 || n==1){
+      System.out.println(n+" is not a prime number");
+    } else{
+      for(int i=2;i<=n-1;i++){
+        if(n%i==0){
+          temp +=temp;
+        }
+      }
+      if(temp==0){
+        System.out.println(n+" is a prime number");
+      } else{
+        System.out.println(n+" is not a prime number");
+      }
+    }
+  }
+    
 
   public static void main(String[] args) {
-    System.out.println(isPrime(5));
-    System.out.println(isPrime(31));
-    System.out.println(isPrime(1433));
-    System.out.println(isPrime(8763857775536878331L));
+    Scanner sc = new Scanner(System.in);
+     System.out.println("Enter the number");
+     checkPrime(scn.nextInt()); 
+     System.out.println(isPrime(5));
+     System.out.println(isPrime(31));
+     System.out.println(isPrime(1433));
+     System.out.println(isPrime(8763857775536878331L));
   }
 }
