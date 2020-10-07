@@ -1,5 +1,10 @@
 /**
  * An implementation of Tarjan's Strongly Connected Components algorithm using an adjacency list.
+ * 
+ * Verified against:
+ * - https://www.hackerearth.com/practice/algorithms/graphs/strongly-connected-components/tutorial/
+ * - https://open.kattis.com/problems/equivalences
+ * - https://open.kattis.com/problems/runningmom
  *
  * <p>Time complexity: O(V+E)
  *
@@ -18,7 +23,7 @@ public class TarjanSccSolverAdjacencyList {
 
   private boolean solved;
   private int sccCount, id;
-  private boolean[] onStack;
+  private boolean[] visited;
   private int[] ids, low;
   private Deque<Integer> stack;
 
@@ -40,7 +45,7 @@ public class TarjanSccSolverAdjacencyList {
   // have the same value then they're in the same SCC.
   public int[] getSccs() {
     if (!solved) solve();
-    return low;
+    return ids;
   }
 
   public void solve() {
@@ -48,36 +53,50 @@ public class TarjanSccSolverAdjacencyList {
 
     ids = new int[n];
     low = new int[n];
-    onStack = new boolean[n];
+    visited = new boolean[n];
     stack = new ArrayDeque<>();
     Arrays.fill(ids, UNVISITED);
 
-    for (int i = 0; i < n; i++) if (ids[i] == UNVISITED) dfs(i);
+    for (int i = 0; i < n; i++) {
+      if (ids[i] == UNVISITED) {
+        dfs(i);
+      }
+    }
 
     solved = true;
   }
 
   private void dfs(int at) {
-
-    stack.push(at);
-    onStack[at] = true;
     ids[at] = low[at] = id++;
+    stack.push(at);
+    visited[at] = true;
 
     for (int to : graph.get(at)) {
       if (ids[to] == UNVISITED) {
         dfs(to);
-        low[at] = min(low[at], low[to]);
-      } else if (onStack[to]) {
-        low[at] = min(low[at], ids[to]);
       }
+      if (visited[to]) {
+        low[at] = min(low[at], low[to]);
+      }
+      /*
+       TODO(william): investigate whether the proper way to update the lowlinks is:
+       if (ids[to] == UNVISITED) {
+         dfs(to);
+         low[at] = min(low[at], low[to]);
+       }
+       if (visited[to]) {
+         low[at] = min(low[at], ids[to]);
+       }
+      */
+
     }
 
     // On recursive callback, if we're at the root node (start of SCC)
     // empty the seen stack until back to root.
     if (ids[at] == low[at]) {
       for (int node = stack.pop(); ; node = stack.pop()) {
-        onStack[node] = false;
-        low[node] = ids[at];
+        visited[node] = false;
+        ids[node] = sccCount;
         if (node == at) break;
       }
       sccCount++;
