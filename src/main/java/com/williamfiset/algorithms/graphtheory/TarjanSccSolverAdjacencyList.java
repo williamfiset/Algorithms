@@ -23,7 +23,7 @@ public class TarjanSccSolverAdjacencyList {
   private boolean solved;
   private int sccCount, id;
   private boolean[] visited;
-  private int[] ids, low;
+  private int[] ids, low, sccs;
   private Deque<Integer> stack;
 
   private static final int UNVISITED = -1;
@@ -44,7 +44,7 @@ public class TarjanSccSolverAdjacencyList {
   // have the same value then they're in the same SCC.
   public int[] getSccs() {
     if (!solved) solve();
-    return ids;
+    return sccs;
   }
 
   public void solve() {
@@ -52,6 +52,7 @@ public class TarjanSccSolverAdjacencyList {
 
     ids = new int[n];
     low = new int[n];
+    sccs = new int[n];
     visited = new boolean[n];
     stack = new ArrayDeque<>();
     Arrays.fill(ids, UNVISITED);
@@ -78,7 +79,7 @@ public class TarjanSccSolverAdjacencyList {
         low[at] = min(low[at], low[to]);
       }
       /*
-       TODO(william): investigate whether the proper way to update the lowlinks is:
+       TODO(william): investigate whether the proper way to update the lowlinks is the following bit of code. From my experience this doesn't seem to matter if the output is placed in a separate output array, but this needs further investigation.
        if (ids[to] == UNVISITED) {
          dfs(to);
          low[at] = min(low[at], low[to]);
@@ -95,7 +96,7 @@ public class TarjanSccSolverAdjacencyList {
     if (ids[at] == low[at]) {
       for (int node = stack.pop(); ; node = stack.pop()) {
         visited[node] = false;
-        ids[node] = sccCount;
+        sccs[node] = sccCount;
         if (node == at) break;
       }
       sccCount++;
