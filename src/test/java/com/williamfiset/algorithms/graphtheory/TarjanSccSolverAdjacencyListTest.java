@@ -93,19 +93,19 @@ public class TarjanSccSolverAdjacencyListTest {
     addEdge(g, 4, 3);
     addEdge(g, 5, 3);
     addEdge(g, 6, 3);
-  
+
     TarjanSccSolverAdjacencyList solver = new TarjanSccSolverAdjacencyList(g);
     solver.solve();
 
-    List<List<Integer>> expectedSccs = 
-      ImmutableList.of(
-        ImmutableList.of(0),
-        ImmutableList.of(1),
-        ImmutableList.of(2),
-        ImmutableList.of(3),
-        ImmutableList.of(4),
-        ImmutableList.of(5),
-        ImmutableList.of(6));
+    List<List<Integer>> expectedSccs =
+        ImmutableList.of(
+            ImmutableList.of(0),
+            ImmutableList.of(1),
+            ImmutableList.of(2),
+            ImmutableList.of(3),
+            ImmutableList.of(4),
+            ImmutableList.of(5),
+            ImmutableList.of(6));
 
     assertThat(solver.sccCount()).isEqualTo(expectedSccs.size());
     assertThat(isScc(solver.getSccs(), expectedSccs)).isTrue();
@@ -132,26 +132,26 @@ public class TarjanSccSolverAdjacencyListTest {
     addEdge(g, 2, 11);
     addEdge(g, 2, 6);
     addEdge(g, 9, 11);
-  
+
     TarjanSccSolverAdjacencyList solver = new TarjanSccSolverAdjacencyList(g);
     solver.solve();
 
-    List<List<Integer>> expectedSccs = 
-      ImmutableList.of(
-        ImmutableList.of(0),
-        ImmutableList.of(2),
-        ImmutableList.of(3),
-        ImmutableList.of(4),
-        ImmutableList.of(5),
-        ImmutableList.of(6),
-        ImmutableList.of(7),
-        ImmutableList.of(8),
-        ImmutableList.of(9),
-        ImmutableList.of(10),
-        ImmutableList.of(1, 11, 12),
-        ImmutableList.of(13),
-        ImmutableList.of(14),
-        ImmutableList.of(15));
+    List<List<Integer>> expectedSccs =
+        ImmutableList.of(
+            ImmutableList.of(0),
+            ImmutableList.of(2),
+            ImmutableList.of(3),
+            ImmutableList.of(4),
+            ImmutableList.of(5),
+            ImmutableList.of(6),
+            ImmutableList.of(7),
+            ImmutableList.of(8),
+            ImmutableList.of(9),
+            ImmutableList.of(10),
+            ImmutableList.of(1, 11, 12),
+            ImmutableList.of(13),
+            ImmutableList.of(14),
+            ImmutableList.of(15));
 
     assertThat(solver.sccCount()).isEqualTo(expectedSccs.size());
     assertThat(isScc(solver.getSccs(), expectedSccs)).isTrue();
