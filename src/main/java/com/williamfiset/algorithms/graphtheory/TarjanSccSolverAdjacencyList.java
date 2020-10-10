@@ -79,7 +79,11 @@ public class TarjanSccSolverAdjacencyList {
         low[at] = min(low[at], low[to]);
       }
       /*
-       TODO(william): investigate whether the proper way to update the lowlinks is the following bit of code. From my experience this doesn't seem to matter if the output is placed in a separate output array, but this needs further investigation.
+       TODO(william): investigate whether the proper way to update the lowlinks
+       is the following bit of code. From my experience this doesn't seem to
+       matter if the output is placed in a separate output array, but this needs
+       further investigation.
+
        if (ids[to] == UNVISITED) {
          dfs(to);
          low[at] = min(low[at], low[to]);
