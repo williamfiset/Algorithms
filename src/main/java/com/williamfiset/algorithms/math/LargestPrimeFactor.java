@@ -1,5 +1,8 @@
 package com.williamfiset.algorithms.math;
 
+/**
+ * get the maximum prime number for the given number
+ */
 public class LargestPrimeFactor {
 
   static long maxPrime(long val) {
