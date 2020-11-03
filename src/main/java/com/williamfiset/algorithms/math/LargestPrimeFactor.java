@@ -6,7 +6,7 @@ public class LargestPrimeFactor {
         long max_prime = -1;
         while (val % 2 == 0) {
             max_prime = 2;
-            val >>= 1;
+            val = 1;
         }
         for (int i = 3; i <= Math.sqrt(val); i += 2){
             while (val % i == 0){
