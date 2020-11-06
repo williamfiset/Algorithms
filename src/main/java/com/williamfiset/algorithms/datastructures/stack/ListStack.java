@@ -46,6 +46,12 @@ public class ListStack<T> implements Iterable<T>, Stack<T> {
     return list.peekLast();
   }
 
+  // Searches for the element starting from top of the stack
+  // Returns -1 if the element is not present in the stack
+  public int search(T elem) {
+    return list.lastIndexOf(elem);
+  }
+
   // Allow users to iterate through the stack using an iterator
   @Override
   public java.util.Iterator<T> iterator() {
