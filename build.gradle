@@ -1,18 +1,22 @@
 apply plugin: 'java'
+apply plugin: 'kotlin'
 apply plugin: "com.github.sherter.google-java-format"
 apply plugin: 'application'
 
 mainClassName = findProperty("main") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"
 
 buildscript {
-  repositories {
+    ext.kotlin_version = '1.4.20'
+    repositories {
     maven {
       url "https://plugins.gradle.org/m2/"
     }
-  }
+        mavenCentral()
+    }
   dependencies {
     // https://github.com/sherter/google-java-format-gradle-plugin
     classpath "gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.8"
+      classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
 }
 
@@ -46,6 +50,7 @@ dependencies {
 
   // Test mocking framework
   testCompile "org.mockito:mockito-core:1.+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 test {
@@ -73,4 +78,14 @@ compileTestJava {
 task buildDependenciesFolder(type: Copy) {
   from configurations.compile
   into './dependencies'
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
