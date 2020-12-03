@@ -1,6 +1,5 @@
 package com.williamfiset.algorithms.sorting
 
-import java.util.*
 import kotlin.jvm.JvmStatic
 
 class KotlinInsertionSort : InplaceSort {
@@ -33,9 +32,7 @@ class KotlinInsertionSort : InplaceSort {
             val sorter: InplaceSort = InsertionSort()
             val array = intArrayOf(10, 4, 6, 8, 13, 2, 3)
             sorter.sort(array)
-            // Prints:
-            // [2, 3, 4, 6, 8, 10, 13]
-            println(Arrays.toString(array))
+            println(array.contentToString())
         }
     }
 }
