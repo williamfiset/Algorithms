@@ -48,15 +48,17 @@ public class NarrowArtGalleryRecursive {
     if (dp[n][k][s] != null) {
       return dp[n][k][s];
     }
+    // Get the value of the current room at row `n` and column `s`.
+    int roomValue = gallery[n][s];
     return dp[n][k][s] =
         min(
-            // Take the best solution from 2 rows back, and block off the left room,
-            // and then do the same, but for the right room.
-            f(n - 2, k - 1, s) + gallery[n][s],
-            f(n - 2, k - 1, s ^ 1) + gallery[n][s],
-            // Take the partial state which may include the room directly below,
-            // and include the room in the current row.
-            f(n - 1, k - 1, s) + gallery[n][s],
+            // Close the current room, and take the best solution from 2 rows
+            // back considering the left and right partial states.
+            f(n - 2, k - 1, s) + roomValue,
+            f(n - 2, k - 1, s ^ 1) + roomValue,
+            // Close the current room, and take the best value from the partial
+            // state directly below the current room.
+            f(n - 1, k - 1, s) + roomValue,
             // Don't include the current room. Instead, take the last best value from
             // the previously calculated partial state which includes k rooms closed.
             f(n - 1, k, s));
