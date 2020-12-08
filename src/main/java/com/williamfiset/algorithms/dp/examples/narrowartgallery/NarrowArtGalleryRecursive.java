@@ -30,13 +30,13 @@ public class NarrowArtGalleryRecursive {
     return min(f(n, k, LEFT), f(n, k, RIGHT));
   }
 
-  // f(n,k,s) Computes the minimum value you can save by closing off `k` rooms
-  // in a gallery with `n` levels starting on side `s`.
+  // f(n,k,c) Computes the minimum value you can save by closing off `k` rooms
+  // in a gallery with `n` levels starting on side `c`.
   //
   // n = The gallery row index
   // k = The number of rooms the curator needs to close
-  // s = The side, either LEFT (= 0) or RIGHT (= 1)
-  static int f(int n, int k, int s) {
+  // c = The column, either LEFT (= 0) or RIGHT (= 1)
+  static int f(int n, int k, int c) {
     // We finished closing all K rooms
     if (k == 0) {
       return 0;
@@ -45,23 +45,23 @@ public class NarrowArtGalleryRecursive {
       return INF;
     }
     // Return the value of this subproblem, if it's already been computed.
-    if (dp[n][k][s] != null) {
-      return dp[n][k][s];
+    if (dp[n][k][c] != null) {
+      return dp[n][k][c];
     }
-    // Get the value of the current room at row `n` and column `s`.
-    int roomValue = gallery[n][s];
-    return dp[n][k][s] =
+    // Get the value of the current room at row `n` and column `c`.
+    int roomValue = gallery[n][c];
+    return dp[n][k][c] =
         min(
             // Close the current room, and take the best solution from 2 rows
             // back considering the left and right partial states.
-            f(n - 2, k - 1, s) + roomValue,
-            f(n - 2, k - 1, s ^ 1) + roomValue,
+            f(n - 2, k - 1, c) + roomValue,
+            f(n - 2, k - 1, c ^ 1) + roomValue,
             // Close the current room, and take the best value from the partial
             // state directly below the current room.
-            f(n - 1, k - 1, s) + roomValue,
+            f(n - 1, k - 1, c) + roomValue,
             // Don't include the current room. Instead, take the last best value from
-            // the previously calculated partial state which includes k rooms closed.
-            f(n - 1, k, s));
+            // the previously calculated partial state which includes `k` rooms closed.
+            f(n - 1, k, c));
   }
 
   public static void main(String[] Fiset) {
