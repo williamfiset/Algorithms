@@ -1,3 +1,10 @@
+/**
+ * Solution to the Narrow Art Gallery problem from the 2014 ICPC North America Qualifier
+ *
+ * <p>Problem: https://open.kattis.com/problems/narrowartgallery
+ *
+ * <p>Problem Author: Robert Hochberg Solution by: William Fiset
+ */
 import java.util.Scanner;
 
 public class NarrowArtGalleryRecursive {
@@ -7,15 +14,13 @@ public class NarrowArtGalleryRecursive {
 
   static int[][] gallery;
   static Integer[][][] dp;
-  
+
   static final int LEFT = 0;
   static final int RIGHT = 1;
 
   static int min(int... values) {
     int m = Integer.MAX_VALUE;
-    for (int v : values)
-      if (v < m)
-        m = v;
+    for (int v : values) if (v < m) m = v;
     return m;
   }
 
@@ -26,60 +31,60 @@ public class NarrowArtGalleryRecursive {
   }
 
   // f(n,k,s) Computes the minimum value you can save by closing off `k` rooms
-  // in a gallery with `n` levels starting on the side `s`.
+  // in a gallery with `n` levels starting on side `s`.
   //
   // n = The gallery row index
   // k = The number of rooms the curator needs to close
   // s = The side, either LEFT (= 0) or RIGHT (= 1)
   static int f(int n, int k, int s) {
-    // NOTE: Mention the order of the base cased matter
+    // We finished closing all K rooms
     if (k == 0) {
       return 0;
     }
     if (n < 0) {
       return INF;
     }
+    // Return the value of this subproblem, if it's already been computed.
     if (dp[n][k][s] != null) {
       return dp[n][k][s];
     }
-    return dp[n][k][s] = min(
-      // Take the best solution from 2 rows back, and block off the left room,
-      // and then do the same, but for the right room.
-      f(n-2, k-1, s) + gallery[n][s],
-      f(n-2, k-1, s ^ 1) + gallery[n][s],
-      // Take the partial state which may include the room directly below,
-      // and include the room in the current row.
-      f(n-1, k-1, s) + gallery[n][s],
-      // Don't include the current room. Instead, take the last best value from
-      // the previously calculated partial state which includes k rooms closed.
-      f(n-1, k, s)
-    );
+    return dp[n][k][s] =
+        min(
+            // Take the best solution from 2 rows back, and block off the left room,
+            // and then do the same, but for the right room.
+            f(n - 2, k - 1, s) + gallery[n][s],
+            f(n - 2, k - 1, s ^ 1) + gallery[n][s],
+            // Take the partial state which may include the room directly below,
+            // and include the room in the current row.
+            f(n - 1, k - 1, s) + gallery[n][s],
+            // Don't include the current room. Instead, take the last best value from
+            // the previously calculated partial state which includes k rooms closed.
+            f(n - 1, k, s));
   }
 
   public static void main(String[] Fiset) {
     Scanner sc = new Scanner(System.in);
-    while(true) {
+    while (true) {
       int N = sc.nextInt();
       int K = sc.nextInt();
 
       if (N == 0 && K == 0) break;
 
       gallery = new int[N][2];
-      dp = new Integer[N][K+1][2];
+      dp = new Integer[N][K + 1][2];
 
       int sum = 0;
       for (int i = 0; i < N; i++) {
         // Input the gallery values in reverse to simulate walking from the
         // bottom to the top of the gallery. This makes debugging easier and
         // shouldn't affect the final result.
-        int index = N-i-1;
+        int index = N - i - 1;
         gallery[index][LEFT] = sc.nextInt();
         gallery[index][RIGHT] = sc.nextInt();
         sum += gallery[index][LEFT] + gallery[index][RIGHT];
       }
 
-      System.out.printf("%d\n", sum - f(N-1, K));
+      System.out.printf("%d\n", sum - f(N - 1, K));
     }
   }
 }
-
