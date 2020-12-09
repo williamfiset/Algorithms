@@ -87,6 +87,7 @@ public class NarrowArtGalleryRecursive {
       }
 
       System.out.printf("%d\n", sum - f(N - 1, K));
+      System.out.printf("%d\n", f(N - 1, K));
     }
   }
 }
