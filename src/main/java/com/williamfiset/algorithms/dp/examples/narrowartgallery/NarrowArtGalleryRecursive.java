@@ -3,7 +3,9 @@
  *
  * <p>Problem: https://open.kattis.com/problems/narrowartgallery
  *
- * <p>Problem Author: Robert Hochberg Solution by: William Fiset
+ * <p>Problem Author: Robert Hochberg
+ *
+ * <p>Solution by: William Fiset
  */
 import java.util.Scanner;
 
@@ -24,7 +26,7 @@ public class NarrowArtGalleryRecursive {
     return m;
   }
 
-  static int f(int n, int k) {
+  public static int f(int n, int k) {
     // Compute the optimal value of ending at the top LEFT and the top RIGHT of
     // the gallery and return the minimum.
     return min(f(n, k, LEFT), f(n, k, RIGHT));
@@ -36,7 +38,7 @@ public class NarrowArtGalleryRecursive {
   // n = The gallery row index
   // k = The number of rooms the curator needs to close
   // c = The column, either LEFT (= 0) or RIGHT (= 1)
-  static int f(int n, int k, int c) {
+  public static int f(int n, int k, int c) {
     // We finished closing all K rooms
     if (k == 0) {
       return 0;
@@ -52,15 +54,16 @@ public class NarrowArtGalleryRecursive {
     int roomValue = gallery[n][c];
     return dp[n][k][c] =
         min(
-            // Close the current room, and take the best solution from 2 rows
-            // back considering the left and right partial states.
-            f(n - 2, k - 1, c) + roomValue,
-            f(n - 2, k - 1, c ^ 1) + roomValue,
             // Close the current room, and take the best value from the partial
             // state directly below the current room.
             f(n - 1, k - 1, c) + roomValue,
+
+            // Invalid diagonal case would block pathway
+            // f(n - 1, k - 1, c ^ 1) + roomValue,
+
             // Don't include the current room. Instead, take the last best value from
             // the previously calculated partial state which includes `k` rooms closed.
+            f(n - 1, k, c ^ 1),
             f(n - 1, k, c));
   }
 
@@ -86,8 +89,10 @@ public class NarrowArtGalleryRecursive {
         sum += gallery[index][LEFT] + gallery[index][RIGHT];
       }
 
-      System.out.printf("%d\n", sum - f(N - 1, K));
-      System.out.printf("%d\n", f(N - 1, K));
+      // System.out.printf("%d\n", sum - f(N - 1, K));
+      // System.out.printf("%d\n", f(N - 1, K));
+      // System.out.printf("%d\n", f(3, 2, RIGHT));
+      System.out.printf("%d\n", f(/*n=*/ 3, /*k=*/ 3, RIGHT));
     }
   }
 }
