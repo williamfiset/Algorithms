@@ -57,17 +57,13 @@ public class NarrowArtGalleryRecursive {
             // Close the current room, and take the best value from the partial
             // state directly below the current room.
             f(n - 1, k - 1, c) + roomValue,
-
-            // Invalid diagonal case would block pathway
-            // f(n - 1, k - 1, c ^ 1) + roomValue,
-
             // Don't include the current room. Instead, take the last best value from
             // the previously calculated partial state which includes `k` rooms closed.
-            f(n - 1, k, c ^ 1),
-            f(n - 1, k, c));
+            f(n - 1, k, LEFT),
+            f(n - 1, k, RIGHT));
   }
 
-  public static void main(String[] Fiset) {
+  static void mainProgram() {
     Scanner sc = new Scanner(System.in);
     while (true) {
       int N = sc.nextInt();
@@ -89,10 +85,107 @@ public class NarrowArtGalleryRecursive {
         sum += gallery[index][LEFT] + gallery[index][RIGHT];
       }
 
-      // System.out.printf("%d\n", sum - f(N - 1, K));
-      // System.out.printf("%d\n", f(N - 1, K));
-      // System.out.printf("%d\n", f(3, 2, RIGHT));
-      System.out.printf("%d\n", f(/*n=*/ 3, /*k=*/ 3, RIGHT));
+      System.out.printf("%d\n", sum - f(N - 1, K));
+    }
+  }
+
+  public static void main(String[] Fiset) {
+    mainProgram();
+    // test1();
+  }
+
+  static void test1() {
+    int N = 6;
+    int K = 4;
+    dp = new Integer[N][K + 1][2];
+
+    // 3, 1
+    // 2, 1
+    // 1, 2
+    // 1, 3
+    // 3, 3
+    // 1, 0
+    //
+    // Gallery has been flipped like it would when inputted:
+    gallery = new int[][]{
+      {1, 0},
+      {3, 3},
+      {1, 3},
+      {1, 2},
+      {2, 1},
+      {3, 1},
+    };
+    f(N-1, K);
+
+    ok(f(0, 4, LEFT), INF);
+    ok(f(0, 4, RIGHT), INF);
+    ok(f(1, 4, LEFT), INF);
+    ok(f(1, 4, RIGHT), INF);
+    ok(f(2, 4, LEFT), INF);
+    ok(f(2, 4, RIGHT), INF);
+    ok(f(3, 4, LEFT), 6);
+    ok(f(3, 4, RIGHT), 8);
+    ok(f(4, 4, LEFT),  4);
+    ok(f(4, 4, RIGHT), 6);
+    ok(f(5, 4, LEFT), 4);
+    ok(f(5, 4, RIGHT), 3);
+
+    ok(f(0, 3, LEFT), INF);
+    ok(f(0, 3, RIGHT), INF);
+    ok(f(1, 3, LEFT), INF);
+    ok(f(1, 3, RIGHT), INF);
+    ok(f(2, 3, LEFT), 5);
+    ok(f(2, 3, RIGHT), 6);
+    ok(f(3, 3, LEFT), 2);
+    ok(f(3, 3, RIGHT), 5);
+    ok(f(4, 3, LEFT), 2);
+    ok(f(4, 3, RIGHT), 2);
+    ok(f(5, 3, LEFT), 2);
+    ok(f(5, 3, RIGHT), 2);
+
+    ok(f(0, 2, LEFT), INF);
+    ok(f(0, 2, RIGHT), INF);
+    ok(f(1, 2, LEFT), 4);
+    ok(f(1, 2, RIGHT), 3);
+    ok(f(2, 2, LEFT), 1);
+    ok(f(2, 2, RIGHT), 3);
+    ok(f(3, 2, LEFT), 1);
+    ok(f(3, 2, RIGHT), 1);
+    ok(f(4, 2, LEFT), 1);
+    ok(f(4, 2, RIGHT), 1);
+    ok(f(5, 2, LEFT), 1);
+    ok(f(5, 2, RIGHT), 1);
+
+    ok(f(0, 1, LEFT), 1);
+    ok(f(0, 1, RIGHT), 0);
+    ok(f(1, 1, LEFT), 0);
+    ok(f(1, 1, RIGHT), 0);
+    ok(f(2, 1, LEFT), 0);
+    ok(f(2, 1, RIGHT), 0);
+    ok(f(3, 1, LEFT), 0);
+    ok(f(3, 1, RIGHT), 0);
+    ok(f(4, 1, LEFT), 0);
+    ok(f(4, 1, RIGHT), 0);
+    ok(f(5, 1, LEFT), 0);
+    ok(f(5, 1, RIGHT), 0);
+
+  }
+  static void ok(int a, int b) {
+    if (a!=b){
+      System.out.println("Error: " + a + " != " + b);
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
