@@ -107,15 +107,16 @@ public class NarrowArtGalleryRecursive {
     // 1, 0
     //
     // Gallery has been flipped like it would when inputted:
-    gallery = new int[][]{
-      {1, 0},
-      {3, 3},
-      {1, 3},
-      {1, 2},
-      {2, 1},
-      {3, 1},
-    };
-    f(N-1, K);
+    gallery =
+        new int[][] {
+          {1, 0},
+          {3, 3},
+          {1, 3},
+          {1, 2},
+          {2, 1},
+          {3, 1},
+        };
+    f(N - 1, K);
 
     ok(f(0, 4, LEFT), INF);
     ok(f(0, 4, RIGHT), INF);
@@ -125,7 +126,7 @@ public class NarrowArtGalleryRecursive {
     ok(f(2, 4, RIGHT), INF);
     ok(f(3, 4, LEFT), 6);
     ok(f(3, 4, RIGHT), 8);
-    ok(f(4, 4, LEFT),  4);
+    ok(f(4, 4, LEFT), 4);
     ok(f(4, 4, RIGHT), 6);
     ok(f(5, 4, LEFT), 4);
     ok(f(5, 4, RIGHT), 3);
@@ -168,24 +169,11 @@ public class NarrowArtGalleryRecursive {
     ok(f(4, 1, RIGHT), 0);
     ok(f(5, 1, LEFT), 0);
     ok(f(5, 1, RIGHT), 0);
-
   }
+
   static void ok(int a, int b) {
-    if (a!=b){
+    if (a != b) {
       System.out.println("Error: " + a + " != " + b);
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
