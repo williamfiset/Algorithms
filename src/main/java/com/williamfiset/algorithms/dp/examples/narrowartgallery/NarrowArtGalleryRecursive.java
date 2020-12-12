@@ -90,8 +90,34 @@ public class NarrowArtGalleryRecursive {
   }
 
   public static void main(String[] Fiset) {
-    mainProgram();
-    // test1();
+    // mainProgram();
+    test2();
+  }
+
+  static void test2() {
+    int N = 5;
+    int K = 4;
+    dp = new Integer[N][K + 1][2];
+
+    // 3, 2
+    // 5, 9
+    // 0, 1
+    // 4, 3
+    // 8, 10
+    //
+    // Gallery has been flipped like it would when inputted:
+    gallery =
+        new int[][] {
+          {8, 10},
+          {4, 3},
+          {0, 1},
+          {5, 9},
+          {3, 2},
+        };
+    System.out.println(f(4, 3, LEFT));
+    System.out.println(f(4, 3, RIGHT));
+    System.out.println(f(3, 3, LEFT));
+    System.out.println(f(3, 3, RIGHT));
   }
 
   static void test1() {
