@@ -100,20 +100,20 @@ public class TspDynamicProgrammingIterative {
     // Reconstruct TSP path from memo table.
     for (int i = 1; i < N; i++) {
 
-      int index = -1;
+      int bestIndex = -1;
+      double bestDist = Double.POSITIVE_INFINITY;
       for (int j = 0; j < N; j++) {
         if (j == start || notIn(j, state)) continue;
-        if (index == -1) index = j;
-        double prevDist = memo[index][state] + distance[index][lastIndex];
         double newDist = memo[j][state] + distance[j][lastIndex];
-        if (newDist < prevDist) {
-          index = j;
+        if (newDist < bestDist) {
+          bestIndex = j;
+          bestDist = newDist;
         }
       }
 
-      tour.add(index);
-      state = state ^ (1 << index);
-      lastIndex = index;
+      tour.add(bestIndex);
+      state = state ^ (1 << bestIndex);
+      lastIndex = bestIndex;
     }
 
     tour.add(start);
