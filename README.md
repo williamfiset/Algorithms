@@ -15,6 +15,7 @@ This repository is contribution friendly :smiley:. If you'd like to add or impro
 This repository provides algorithm implementations in Java, however there are other forks that provide implementations in other languages, most notably:
 
 * **C++/Python**: https://github.com/akzare/Algorithms
+* **Rust**: https://github.com/TianyiShi2001/Algorithms
 
 # Running an algorithm implementation
 
