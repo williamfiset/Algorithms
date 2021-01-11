@@ -1,43 +1,30 @@
-
 import java.util.*;
 
 public class BoardTilingsSolver {
 
   private int[] tiles;
-  
-  private int maxTileLength = 0;
-  private List<Integer> tileSet;
-  private int[] tileFrequency;
+
+  private Map<Integer, Integer> tileFrequency = new HashMap<>();
 
   public BoardTilingsSolver(int[] tiles) {
     this.tiles = tiles;
+    init();
   }
 
   private void init() {
-    int maxTileLength = 0;
-    for (int i = 0; i < tiles.length; i++) {
-      if (tiles[i] > maxTileLength) {
-        maxTileLength = tiles[i];
-      }
-    }
-    tileSet = new ArrayList<>();
-    tileFrequency = new int[maxTileLength+1];
+    // Calculate the tile frequencies
     for (int tile : tiles) {
-      if (tileFrequency[tile] == 0) {
-        tileSet.add(tile);
-      }
-      tileFrequency[tile]++;
+      tileFrequency.put(tile, tileFrequency.getOrDefault(tile, 0) + 1);
     }
   }
 
   public long iterativeSolution(int n) {
-    init();
-    long[] dp = new long[n+1];
+    long[] dp = new long[n + 1];
     dp[0] = 1;
     for (int i = 1; i <= n; i++) {
-      for (int tile : tileSet) {
+      for (int tile : tileFrequency.keySet()) {
         if (i - tile < 0) continue;
-        dp[i] += dp[i - tile] * tileFrequency[tile];
+        dp[i] += dp[i - tile] * tileFrequency.get(tile);
       }
     }
     return dp[n];
@@ -46,7 +33,6 @@ public class BoardTilingsSolver {
   // Works well when there is a low number of (large) tiles and the recursion
   // depth isn't too deep, otherwise you may encounter a stack overflow.
   public long recursiveSolution(int n) {
-    init();
     // Use a Map instead of a List in the hope that the recursion is sparse
     // and that we can save memory by avoiding a large allocation.
     Map<Integer, Long> dp = new HashMap<>();
@@ -60,9 +46,9 @@ public class BoardTilingsSolver {
       return count;
     }
     count = 0L;
-    for (int tile : tileSet) {
+    for (int tile : tileFrequency.keySet()) {
       if (n - tile < 0) continue;
-      count += f(n - tile, dp) * tileFrequency[tile];
+      count += f(n - tile, dp) * tileFrequency.get(tile);
     }
     // Cache (memorize) the solution
     dp.put(n, count);
@@ -94,15 +80,3 @@ public class BoardTilingsSolver {
     // System.out.println("f2(n) total execution time: " + (endTime - startTime));
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
