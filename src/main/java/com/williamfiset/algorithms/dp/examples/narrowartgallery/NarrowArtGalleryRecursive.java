@@ -47,9 +47,9 @@ public class NarrowArtGalleryRecursive {
       return INF;
     }
     // Return the value of this subproblem, if it's already been computed.
-    if (dp[k][r][c] != null) {
-      return dp[k][r][c];
-    }
+    // if (dp[k][r][c] != null) {
+    //   return dp[k][r][c];
+    // }
     // Get the value of the current room at row `r` and column `c`.
     int roomValue = gallery[r][c];
     return dp[k][r][c] =
@@ -59,8 +59,7 @@ public class NarrowArtGalleryRecursive {
             f(k - 1, r - 1, c) + roomValue,
             // Don't include the current room. Instead, take the last best value from
             // the previously calculated partial state which includes `k` rooms closed.
-            f(k, r - 1, LEFT),
-            f(k, r - 1, RIGHT));
+            f(k, r - 1));
   }
 
   static void mainProgram() {
