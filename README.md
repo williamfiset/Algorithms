@@ -144,6 +144,7 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 ### Adhoc
 
 - [:movie_camera:](https://www.youtube.com/watch?v=_tur2nPkIKo) [Magic Cows](https://github.com/williamfiset/Algorithms/blob/master/src/main/java/com/williamfiset/algorithms/dp/examples/magicalcows/MagicalCows.java)
+- [:movie_camera:](https://youtu.be/oQQO_n57SB0) [Narrow Art Gallery](https://github.com/williamfiset/Algorithms/blob/master/src/main/java/com/williamfiset/algorithms/dp/examples/narrowartgallery/NarrowArtGalleryRecursive.java)
 
 ### Tiling problems
 
