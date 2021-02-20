@@ -17,9 +17,27 @@ public class GeneralKDTree {
         root = null;
     }
 
+    public int[] getRoot() {
+        return root.point;
+    }
+
     /* Tree Methods */
     public void insert(int[] toAdd) {
-        //?
+        KDNode newNode = new KDNode(toAdd);
+        int currentAxis = 0;
+        if(root == null) root = newNode;
+        else insertRecursive(newNode, root, currentAxis);
+    }
+
+    public void insertRecursive(KDNode toAdd, KDNode curr, int axis) {
+        if(toAdd.point[axis] < curr.point[axis]) {
+            if(curr.left == null) curr.left = toAdd;
+            else insertRecursive(toAdd, curr.left, (++axis)%k);
+        }
+        else {
+            if(curr.right == null) curr.right = toAdd;
+            else insertRecursive(toAdd, curr.right, (++axis)%k);
+        }
     }
 
     public void search(int[] element) {
@@ -30,7 +48,7 @@ public class GeneralKDTree {
         return null;
     }
 
-    public int[] delete(int[] toRemove) {
+    public int[] remove(int[] toDelete) {
         return null;
     }
 
