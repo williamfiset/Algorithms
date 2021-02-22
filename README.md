@@ -6,6 +6,29 @@
 
 Algorithms and data structures are fundamental to efficient code and good software design. Creating and designing excellent algorithms is required for being an exemplary programmer. This repository's goal is to demonstrate how to correctly implement common data structures and algorithms in the simplest and most elegant ways.
 
+# DD2480 - Group 2 Paragraph
+## Lizard Results
+
+NLOC  |  CCN  | token | PARAM | length | location
+------|-------|-------|-------|--------|-----------
+  58  |   17  |  551  |    1  |    81  |  TreeIsomorphismWithBfs::encodeTree@63-143@./src/main/java/com/williamfiset/algorithms/graphtheory/treealgorithms/TreeIsomorphismWithBfs.java
+  55  |   23  |  469  |    0  |    69  |  TspDynamicProgrammingIterative::solve@55-123@./src/main/java/com/williamfiset/algorithms/graphtheory/TspDynamicProgrammingIterative.java
+  26  |   17  |  399  |    0  |    26  |  SubstringVerificationSuffixArray::SuffixArray::construct@56-81@./src/main/java/com/williamfiset/algorithms/strings/SubstringVerificationSuffixArray.java
+  26  |   17  |  399  |    0  |    26  |  LongestCommonPrefixArray::SuffixArray::construct@54-79@./src/main/java/com/williamfiset/algorithms/strings/LongestCommonPrefixArray.java
+  26  |   17  |  399  |    0  |    26  |  LongestRepeatedSubstring::SuffixArray::construct@58-83@./src/main/java/com/williamfiset/algorithms/strings/LongestRepeatedSubstring.java
+  22  |   31  |  290  |    3  |    66  |  Solution::f@15-80@./src/main/java/com/williamfiset/algorithms/dp/examples/domino-and-tromino-tiling/Solution.java
+  35  |   20  |  593  |    4  |    68  |  LineSegmentLineSegmentIntersection::lineSegmentLineSegmentIntersection@41-108@./src/main/java/com/williamfiset/algorithms/geometry/LineSegmentLineSegmentIntersection.java
+ 113  |   91  | 1384  |    4  |   150  |  QuadTree::Node::knn@166-315@./src/main/java/com/williamfiset/algorithms/datastructures/quadtree/QuadTree.java
+  30  |   17  |  442  |    0  |    31  |  SuffixArrayFast::construct@32-62@./src/main/java/com/williamfiset/algorithms/datastructures/suffixarray/SuffixArrayFast.java
+  83  |   24  |  468  |    3  |    93  |  GenericSegmentTree::GenericSegmentTree@165-257@./src/main/java/com/williamfiset/algorithms/datastructures/segmenttree/GenericSegmentTree.java
+  58  |   16  |  318  |    0  |    68  |  GenericSegmentTree2::GenericSegmentTree2@177-244@./src/main/java/com/williamfiset/algorithms/datastructures/segmenttree/GenericSegmentTree2.java
+  82  |   27  |  736  |    1  |    97  |  TreePrinter::getTreeDisplay@23-119@./src/main/java/com/williamfiset/algorithms/datastructures/utils/TreePrinter.java
+  72  |   21  |  611  |    0  |   101  |  GenericSegmentTreeTest::testAllFunctionCombinations@222-322@./src/test/java/com/williamfiset/algorithms/datastructures/segmenttree/GenericSegmentTreeTest.java
+
+Total nloc | Avg.NLOC | AvgCCN | Avg.token |  Fun Cnt | Warning cnt | Fun Rt | nloc Rt
+-----------|----------|--------|-----------|----------|-------------|--------|---------
+28870   |    9.4   |   2.5  |    84.5   |   2696   |     13      |  0.00  |  0.03
+
 # Contributing
 
 This repository is contribution friendly :smiley:. If you'd like to add or improve an algorithm, your contribution is welcome! Please be sure to checkout the [Wiki](https://github.com/williamfiset/Algorithms/wiki) for instructions.

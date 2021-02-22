@@ -1,6 +1,7 @@
 apply plugin: 'java'
 apply plugin: "com.github.sherter.google-java-format"
 apply plugin: 'application'
+apply plugin: 'jacoco'
 
 mainClassName = findProperty("main") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"
 
@@ -51,6 +52,7 @@ dependencies {
 test {
   dependsOn cleanTest
   testLogging.showStandardStreams = true
+  finalizedBy jacocoTestReport // report is always generated after tests run
 }
 
 tasks.withType(JavaCompile) {
@@ -73,4 +75,11 @@ compileTestJava {
 task buildDependenciesFolder(type: Copy) {
   from configurations.compile
   into './dependencies'
+}
+
+jacocoTestReport {
+  dependsOn test
+  reports {
+    html.enabled = true
+  }
 }
