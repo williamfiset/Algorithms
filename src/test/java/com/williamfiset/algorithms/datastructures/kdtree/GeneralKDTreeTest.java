@@ -21,10 +21,16 @@ public class GeneralKDTreeTest {
         assertThat(kdTree.getRootPoint() == pointRoot).isTrue();
     }
 
+    @Test(expected = Exception.class)
+    public void testBadInsert() {
+        GeneralKDTree kdTree = new GeneralKDTree(2);
+        kdTree.insert(new int[] {1, 2, 3});
+    }
+
     @Test
     public void testSearch() {
         GeneralKDTree kdTree = new GeneralKDTree(4);
-        assertThat(kdTree.search(new int[] {7,5,4,9}) == false).isTrue();
+        assertThat(kdTree.search(new int[] {7,5,4,9})).isFalse();
         int[] point1 = {3,4,3,9};
         int[] point2 = {2,1,5,9};
         int[] point3 = {5,6,9,9};
@@ -33,12 +39,11 @@ public class GeneralKDTreeTest {
         kdTree.insert(point2);
         kdTree.insert(point3);
         kdTree.insert(point4);
-        assertThat(kdTree.search(point1) == true).isTrue();
-        assertThat(kdTree.search(point2) == true).isTrue();
-        assertThat(kdTree.search(point3) == true).isTrue();
-        assertThat(kdTree.search(point4) == true).isTrue();
-        assertThat(kdTree.search(new int[] {7,5,4,9}) == false).isTrue();
-        
+        assertThat(kdTree.search(point1)).isTrue();
+        assertThat(kdTree.search(point2)).isTrue();
+        assertThat(kdTree.search(point3)).isTrue();
+        assertThat(kdTree.search(point4)).isTrue();
+        assertThat(kdTree.search(new int[] {7,5,4,9})).isFalse();
     }
     
 }

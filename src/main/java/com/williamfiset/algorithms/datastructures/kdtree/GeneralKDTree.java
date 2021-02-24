@@ -54,7 +54,7 @@ public class GeneralKDTree {
         if(curr == null) return false;
         int[] currCoords = curr.point;
         if(currCoords.equals(toSearch)) return true;
-        return (toSearch[axis] < currCoords[axis]) ? searchRecursive(toSearch, curr.left, axis+1) : searchRecursive(toSearch, curr.right, axis+1) ;
+        return (toSearch[axis] < currCoords[axis]) ? searchRecursive(toSearch, curr.left, axis+1) : searchRecursive(toSearch, curr.right, axis+1);
     }
 
     //FindMin Method
