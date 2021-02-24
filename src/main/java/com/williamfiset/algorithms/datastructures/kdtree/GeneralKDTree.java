@@ -11,25 +11,30 @@ public class GeneralKDTree {
     private int k;
     private KDNode root;
     
-    /* Definition of the tree */
+    /* KDTREE DEFINITION */
     public GeneralKDTree(int dimensions) {
         k = dimensions;
         root = null;
     }
 
-    public int[] getRoot() {
-        return root.point;
+    /* ATTRIBUTE METHODS */
+    public int getDimensions() {
+        return k;
     }
 
-    /* Tree Methods */
+    public int[] getRootPoint() {
+        return (root == null) ? null : root.point;
+    }
+
+    /* TREE METHODS */
+    //Insert Method
     public void insert(int[] toAdd) {
         KDNode newNode = new KDNode(toAdd);
-        int currentAxis = 0;
         if(root == null) root = newNode;
-        else insertRecursive(newNode, root, currentAxis);
+        else insertRecursive(newNode, root, 0);
     }
 
-    public void insertRecursive(KDNode toAdd, KDNode curr, int axis) {
+    private void insertRecursive(KDNode toAdd, KDNode curr, int axis) {
         if(toAdd.point[axis] < curr.point[axis]) {
             if(curr.left == null) curr.left = toAdd;
             else insertRecursive(toAdd, curr.left, (++axis)%k);
@@ -40,19 +45,29 @@ public class GeneralKDTree {
         }
     }
 
-    public void search(int[] element) {
-        //?
+    //Search Method
+    public boolean search(int[] element) {
+        return searchRecursive(element, root, 0);
     }
 
+    private boolean searchRecursive(int[] toSearch, KDNode curr, int axis) {
+        if(curr == null) return false;
+        int[] currCoords = curr.point;
+        if(currCoords.equals(toSearch)) return true;
+        return (toSearch[axis] < currCoords[axis]) ? searchRecursive(toSearch, curr.left, axis+1) : searchRecursive(toSearch, curr.right, axis+1) ;
+    }
+
+    //FindMin Method
     public int[] findMin(int dim) {
         return null;
     }
 
+    //Remove Method
     public int[] remove(int[] toDelete) {
         return null;
     }
 
-    /* Definition of the tree nodes */
+    /* KDTREE NODE DEFINITION */
     private class KDNode {
 
         private int[] point;
