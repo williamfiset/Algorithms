@@ -36,7 +36,7 @@ public class GeneralKDTree {
     }
 
     private void insertRecursive(KDNode toAdd, KDNode curr, int axis) {
-        if(toAdd.point[axis] < curr.point[axis]) {
+        if(toAdd.compare(curr, axis) < 0) {
             if(curr.left == null) curr.left = toAdd;
             else insertRecursive(toAdd, curr.left, (++axis)%k);
         }
@@ -54,10 +54,8 @@ public class GeneralKDTree {
 
     private boolean searchRecursive(KDNode toSearch, KDNode curr, int axis) {
         if(curr == null) return false;
-        int[] currCoords = curr.point;
-        int[] searchCoords = toSearch.point;
-        if(currCoords.equals(searchCoords)) return true;
-        return (searchCoords[axis] < currCoords[axis]) ? searchRecursive(toSearch, curr.left, axis+1) : searchRecursive(toSearch, curr.right, axis+1);
+        if((curr.point).equals(toSearch.point)) return true;
+        return (toSearch.compare(curr, axis) < 0) ? searchRecursive(toSearch, curr.left, axis+1) : searchRecursive(toSearch, curr.right, axis+1);
     }
 
     //FindMin Method
@@ -83,6 +81,13 @@ public class GeneralKDTree {
             point = coords;
             left = null;
             right = null;
+        }
+
+        public int compare(KDNode compNode, int coord) {
+            int[] a = this.point;
+            int[] b = compNode.point;
+            if(a[coord] == b[coord]) return 0;
+            return (a[coord] < b[coord]) ? -1 : 1;
         }
     }
 }
