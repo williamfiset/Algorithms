@@ -13,7 +13,7 @@ public class GeneralKDTree {
     
     /* KDTREE DEFINITION */
     public GeneralKDTree(int dimensions) {
-        if(k <= 0) throw new IllegalArgumentException("Error: GeneralKDTree must have positive dimensions");
+        if(dimensions <= 0) throw new IllegalArgumentException("Error: GeneralKDTree must have positive dimensions");
         k = dimensions;
         root = null;
     }
