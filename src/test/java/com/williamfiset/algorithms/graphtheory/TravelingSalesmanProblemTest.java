@@ -194,6 +194,18 @@ public class TravelingSalesmanProblemTest {
     }
   }
 
+  @After
+  public void after() {
+    int trues = 0;
+
+    for(boolean elem : TspDynamicProgrammingIterative.array) {
+      System.out.println(elem);
+      if(elem == true) trues++;
+    }
+
+    System.out.println((float) ((float)trues / TspDynamicProgrammingIterative.array.length));
+  }
+
   private double getTourCost(double[][] dist, List<Integer> tour) {
     double total = 0;
     for (int i = 1; i < tour.size(); i++) total += dist[tour.get(i - 1)][tour.get(i)];
