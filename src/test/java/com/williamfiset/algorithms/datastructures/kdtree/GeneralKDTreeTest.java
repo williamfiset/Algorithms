@@ -7,6 +7,16 @@ import org.junit.Test;
 
 public class GeneralKDTreeTest {
 
+    @Test(expected = Exception.class)
+    public void testZeroDimensions() {
+        new GeneralKDTree(0);
+    }
+
+    @Test(expected = Exception.class)
+    public void testNegativeDimensions() {
+        new GeneralKDTree(-5);
+    }
+    
     @Test
     public void testInsert() {
         GeneralKDTree kdTree = new GeneralKDTree(3);
@@ -50,6 +60,18 @@ public class GeneralKDTreeTest {
         assertThat(kdTree.search(point3)).isTrue();
         assertThat(kdTree.search(point4)).isTrue();
         assertThat(kdTree.search(new int[] {7,5,4,9})).isFalse();
+    }
+
+    @Test(expected = Exception.class)
+    public void testNullSearch() {
+        GeneralKDTree kdTree = new GeneralKDTree(2);
+        kdTree.search(null);
+    }
+
+    @Test(expected = Exception.class)
+    public void testBadSearch() {
+        GeneralKDTree kdTree = new GeneralKDTree(2);
+        kdTree.search(new int[] {1, 2, 3});
     }
     
 }

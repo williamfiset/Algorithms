@@ -13,6 +13,7 @@ public class GeneralKDTree {
     
     /* KDTREE DEFINITION */
     public GeneralKDTree(int dimensions) {
+        if(k <= 0) throw new IllegalArgumentException("Error: GeneralKDTree must have positive dimensions");
         k = dimensions;
         root = null;
     }
@@ -47,14 +48,16 @@ public class GeneralKDTree {
 
     //Search Method
     public boolean search(int[] element) {
-        return searchRecursive(element, root, 0);
+        KDNode elemNode = new KDNode(element);
+        return searchRecursive(elemNode, root, 0);
     }
 
-    private boolean searchRecursive(int[] toSearch, KDNode curr, int axis) {
+    private boolean searchRecursive(KDNode toSearch, KDNode curr, int axis) {
         if(curr == null) return false;
         int[] currCoords = curr.point;
-        if(currCoords.equals(toSearch)) return true;
-        return (toSearch[axis] < currCoords[axis]) ? searchRecursive(toSearch, curr.left, axis+1) : searchRecursive(toSearch, curr.right, axis+1);
+        int[] searchCoords = toSearch.point;
+        if(currCoords.equals(searchCoords)) return true;
+        return (searchCoords[axis] < currCoords[axis]) ? searchRecursive(toSearch, curr.left, axis+1) : searchRecursive(toSearch, curr.right, axis+1);
     }
 
     //FindMin Method
