@@ -75,6 +75,7 @@ public class GeneralKDTree {
         private KDNode right;
 
         public KDNode(int[] coords) {
+            if(coords == null) throw new IllegalArgumentException("Error: Null coordinate set passed");
             if(coords.length != k) throw new IllegalArgumentException("Error: Expected " + k + "dimensions, but given " + coords.length);
             point = coords;
             left = null;

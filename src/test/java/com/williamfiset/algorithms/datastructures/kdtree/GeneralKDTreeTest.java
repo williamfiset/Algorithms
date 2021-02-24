@@ -22,6 +22,12 @@ public class GeneralKDTreeTest {
     }
 
     @Test(expected = Exception.class)
+    public void testNullInsert() {
+        GeneralKDTree kdTree = new GeneralKDTree(2);
+        kdTree.insert(null);
+    }
+
+    @Test(expected = Exception.class)
     public void testBadInsert() {
         GeneralKDTree kdTree = new GeneralKDTree(2);
         kdTree.insert(new int[] {1, 2, 3});
