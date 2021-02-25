@@ -7,6 +7,7 @@ import org.junit.Test;
 
 public class GeneralKDTreeTest {
 
+    /* TREE CREATION TESTS */
     @Test(expected = Exception.class)
     public void testZeroDimensions() {
         new GeneralKDTree<>(0);
@@ -17,6 +18,7 @@ public class GeneralKDTreeTest {
         new GeneralKDTree<>(-5);
     }
     
+    /* INSERT METHOD TESTS */
     @Test
     public void testInsert() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(3);
@@ -43,6 +45,7 @@ public class GeneralKDTreeTest {
         kdTree.insert(new Integer[] {1, 2, 3});
     }
 
+    /* SEARCH METHOD TESTS */
     @Test
     public void testSearch() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(4);
@@ -73,5 +76,40 @@ public class GeneralKDTreeTest {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.search(new Integer[] {1, 2, 3});
     }
+
+    /* FINDMIN METHOD TESTS */
+    @Test
+    public void testFindMin() {
+        GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(3);
+        assertThat(kdTree.findMin(0) == null).isTrue();
+        Integer[] min1 = {0,5,4};
+        Integer[] min2 = {3,0,7};
+        Integer[] min3 = {6,6,0};
+        kdTree.insert(new Integer[] {3,7,9});
+        kdTree.insert(min1);
+        kdTree.insert(min3);
+        kdTree.insert(min2);
+        kdTree.insert(new Integer[] {4,7,5});
+        kdTree.insert(new Integer[] {3,4,8});
+        kdTree.insert(new Integer[] {7,7,2});
+        kdTree.insert(new Integer[] {8,9,8});
+        assertThat(kdTree.findMin(0) == min1).isTrue();
+        assertThat(kdTree.findMin(1) == min2).isTrue();
+        assertThat(kdTree.findMin(2) == min3).isTrue();
+    }
+
+    @Test(expected = Exception.class)
+    public void testOOBFindMin() {
+        GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
+        kdTree.findMin(2);
+    }
+
+    @Test(expected = Exception.class)
+    public void testNegativeFindMin() {
+        GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
+        kdTree.findMin(-1);
+    }
+
+    /* REMOVE METHOD TESTS */
     
 }
