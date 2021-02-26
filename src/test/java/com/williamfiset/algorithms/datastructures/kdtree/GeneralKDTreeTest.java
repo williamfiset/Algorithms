@@ -2,19 +2,18 @@ package com.williamfiset.algorithms.datastructures.kdtree;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class GeneralKDTreeTest {
 
     /* TREE CREATION TESTS */
     @Test(expected = Exception.class)
-    public void testZeroDimensions() {
+    public void testDimensionsZero() {
         new GeneralKDTree<>(0);
     }
 
     @Test(expected = Exception.class)
-    public void testNegativeDimensions() {
+    public void testDimensionsNegative() {
         new GeneralKDTree<>(-5);
     }
     
@@ -34,13 +33,13 @@ public class GeneralKDTreeTest {
     }
 
     @Test(expected = Exception.class)
-    public void testNullInsert() {
+    public void testInsertNull() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.insert(null);
     }
 
     @Test(expected = Exception.class)
-    public void testBadInsert() {
+    public void testInsertBadInput() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.insert(new Integer[] {1, 2, 3});
     }
@@ -66,13 +65,13 @@ public class GeneralKDTreeTest {
     }
 
     @Test(expected = Exception.class)
-    public void testNullSearch() {
+    public void testSearchNull() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.search(null);
     }
 
     @Test(expected = Exception.class)
-    public void testBadSearch() {
+    public void testSearchBadInput() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.search(new Integer[] {1, 2, 3});
     }
@@ -99,13 +98,13 @@ public class GeneralKDTreeTest {
     }
 
     @Test(expected = Exception.class)
-    public void testOutOfBoundsFindMin() {
+    public void testFindMinOutOfBounds() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.findMin(2);
     }
 
     @Test(expected = Exception.class)
-    public void testNegativeFindMin() {
+    public void testFindMinNegative() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.findMin(-1);
     }
@@ -167,13 +166,13 @@ public class GeneralKDTreeTest {
     }
 
     @Test(expected = Exception.class)
-    public void testNullDelete() {
+    public void testDeleteNull() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.delete(null);
     }
 
     @Test(expected = Exception.class)
-    public void testBadDelete() {
+    public void testDeleteBadInput() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.delete(new Integer[] {1, 2, 3});
     }
