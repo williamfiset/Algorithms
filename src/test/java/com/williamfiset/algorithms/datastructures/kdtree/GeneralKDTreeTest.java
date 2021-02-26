@@ -99,7 +99,7 @@ public class GeneralKDTreeTest {
     }
 
     @Test(expected = Exception.class)
-    public void testOOBFindMin() {
+    public void testOutOfBoundsFindMin() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.findMin(2);
     }
@@ -110,6 +110,71 @@ public class GeneralKDTreeTest {
         kdTree.findMin(-1);
     }
 
-    /* REMOVE METHOD TESTS */
-    
+    /* DELETE METHOD TESTS */
+    @Test
+    public void testDeleteEmpty() {
+        GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
+        assertThat(kdTree.delete(new Integer[] {1,2}) == null).isTrue();
+    }
+
+    @Test
+    public void testDeleteRoot() {
+        GeneralKDTree<Integer> kdTreeLeaf = new GeneralKDTree<Integer>(3);
+        GeneralKDTree<Integer> kdTreeLeft = new GeneralKDTree<Integer>(3);
+        GeneralKDTree<Integer> kdTreeRight = new GeneralKDTree<Integer>(3);
+        GeneralKDTree<Integer> kdTreeTwo = new GeneralKDTree<Integer>(3);
+        Integer[] rootPoint = {2,2,2};
+        Integer[] leftPoint = {1,1,1};
+        Integer[] rightPoint = {3,3,3};
+        kdTreeLeaf.insert(rootPoint);
+        assertThat(kdTreeLeaf.delete(rootPoint) == rootPoint).isTrue();
+        kdTreeLeft.insert(rootPoint);
+        kdTreeLeft.insert(leftPoint);
+        assertThat(kdTreeLeft.delete(rootPoint) == rootPoint).isTrue();
+        kdTreeRight.insert(rootPoint);
+        kdTreeRight.insert(rightPoint);
+        assertThat(kdTreeRight.delete(rootPoint) == rootPoint).isTrue();
+        kdTreeTwo.insert(rootPoint);
+        kdTreeTwo.insert(leftPoint);
+        kdTreeTwo.insert(rightPoint);
+        assertThat(kdTreeTwo.delete(rootPoint) == rootPoint).isTrue();
+    }
+
+    @Test
+    public void testDelete() {
+        GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(3);
+        assertThat(kdTree.findMin(0) == null).isTrue();
+        Integer[] point1 = {3,7,9};
+        Integer[] point2 = {0,5,4};
+        Integer[] point3 = {6,6,0};
+        Integer[] point4 = {3,0,7};
+        Integer[] point5 = {4,7,5};
+        Integer[] point6 = {3,4,8};
+        Integer[] point7 = {7,7,2};
+        Integer[] point8 = {8,9,8};
+        kdTree.insert(point1);
+        kdTree.insert(point2);
+        kdTree.insert(point3);
+        kdTree.insert(point4);
+        kdTree.insert(point5);
+        kdTree.insert(point6);
+        kdTree.insert(point7);
+        kdTree.insert(point8);
+        assertThat(kdTree.delete(point8) == point8).isTrue();
+        assertThat(kdTree.delete(point5) == point5).isTrue();
+        assertThat(kdTree.delete(point3) == point3).isTrue();
+        assertThat(kdTree.delete(point8) == null).isTrue();
+    }
+
+    @Test(expected = Exception.class)
+    public void testNullDelete() {
+        GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
+        kdTree.delete(null);
+    }
+
+    @Test(expected = Exception.class)
+    public void testBadDelete() {
+        GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
+        kdTree.delete(new Integer[] {1, 2, 3});
+    }
 }

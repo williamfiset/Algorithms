@@ -6,6 +6,8 @@
 
 package com.williamfiset.algorithms.datastructures.kdtree;
 
+import javax.lang.model.util.ElementScanner6;
+
 public class GeneralKDTree<T extends Comparable<T>> {
     
     private int k;
@@ -100,8 +102,78 @@ public class GeneralKDTree<T extends Comparable<T>> {
     }
 
     //Remove Method
-    public T[] remove(int[] toDelete) {
-        return null;
+    public T[] delete(T[] toRemove) {
+        //Return nothing if the point is not present
+        if(!search(toRemove)) return null;
+        //Delete and return root if it should be removed
+        if(toRemove.equals(root.point)) return deleteRecursiveRoot();
+        //Create the comparison point to delete and remove recursively
+        KDNode<T> removeElem = new KDNode<T>(toRemove);
+        return deleteRecursiveSearch(removeElem, root, 0);
+    }
+    
+    public T[] deleteRecursiveRoot() {
+        //Store the point to remove
+        T[] replacedPoint = root.point;
+        //Set the root to null if it has no children
+        if(root.left == null && root.right == null) {
+            root = null;
+            return replacedPoint;
+        }
+        //If a right child exists, find a minimum to replace the root point
+        else if(root.right != null) {
+            root.point = findMinRecursive(0, root.right, 1%k);
+            deleteRecursiveSearch(new KDNode<T>(root.point), root, 0);
+            return replacedPoint;
+        }
+        //Otherwise, get the minimum from the left subtree and make it the right subtree
+        else {
+            root.point = findMinRecursive(0, root.left, 1%k);
+            deleteRecursiveSearch(new KDNode<T>(root.point), root, 0);
+            root.right = root.left;
+            root.left = null;
+            return replacedPoint;
+        }
+    }
+
+    public T[] deleteRecursiveSearch(KDNode<T> toRemove, KDNode<T> curr, int axis) {
+        //If the node to remove is a direct child, extract it and remove it
+        if(curr.right != null && (toRemove.point).equals(curr.right.point)) {
+            T[] removed = deleteRecursiveExtract(toRemove, curr.right, (axis+1)%k);
+            if(removed == null) curr.right = null;
+            return toRemove.point;
+        }
+        else if(curr.left != null && (toRemove.point).equals(curr.left.point)) {
+            T[] removed = deleteRecursiveExtract(toRemove, curr.left, (axis+1)%k);
+            if(removed == null) curr.left = null;
+            return toRemove.point;
+        }
+        //Otherwise, search again at the child that the node would be a child of
+        else {
+            KDNode<T> nextNode = ((toRemove.point[axis]).compareTo(curr.point[axis]) < 0) ? curr.left : curr.right;
+            return deleteRecursiveSearch(toRemove, nextNode, (axis+1)%k);
+        }
+    }
+
+    public T[] deleteRecursiveExtract(KDNode<T> toRemove, KDNode<T> curr, int axis) {
+        //Store the point to remove
+        T[] replacedPoint = curr.point;
+        //Set the node to null if it has no children
+        if(curr.left == null && curr.right == null) return null;
+        //If a right child exists, find a minimum to replace the root point
+        else if(curr.right != null) {
+            curr.point = findMinRecursive(axis, curr.right, (axis+1)%k);
+            deleteRecursiveSearch(new KDNode<T>(curr.point), curr, axis);
+            return replacedPoint;
+        }
+        //Otherwise, get the minimum from the left subtree and make it the right subtree
+        else {
+            curr.point = findMinRecursive(axis, curr.left, (axis+1)%k);
+            deleteRecursiveSearch(new KDNode<T>(curr.point), curr, axis);
+            curr.right = curr.left;
+            curr.left = null;
+            return replacedPoint;
+        }
     }
 
     /* KDTREE NODE DEFINITION */
