@@ -7,12 +7,12 @@ import org.junit.Test;
 public class GeneralKDTreeTest {
 
     /* TREE CREATION TESTS */
-    @Test(expected = Exception.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testDimensionsZero() {
         new GeneralKDTree<>(0);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testDimensionsNegative() {
         new GeneralKDTree<>(-5);
     }
@@ -32,14 +32,14 @@ public class GeneralKDTreeTest {
         assertThat(kdTree.getRootPoint() == pointRoot).isTrue();
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInsertNull() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.insert(null);
     }
 
-    @Test(expected = Exception.class)
-    public void testInsertBadInput() {
+    @Test(expected = IllegalArgumentException.class)
+    public void testInsertMismatchDimensions() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.insert(new Integer[] {1, 2, 3});
     }
@@ -64,14 +64,14 @@ public class GeneralKDTreeTest {
         assertThat(kdTree.search(new Integer[] {7,5,4,9})).isFalse();
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testSearchNull() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.search(null);
     }
 
-    @Test(expected = Exception.class)
-    public void testSearchBadInput() {
+    @Test(expected = IllegalArgumentException.class)
+    public void testSearchMismatchDimensions() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.search(new Integer[] {1, 2, 3});
     }
@@ -97,13 +97,13 @@ public class GeneralKDTreeTest {
         assertThat(kdTree.findMin(2) == min3).isTrue();
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testFindMinOutOfBounds() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.findMin(2);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testFindMinNegative() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.findMin(-1);
@@ -118,21 +118,26 @@ public class GeneralKDTreeTest {
 
     @Test
     public void testDeleteRoot() {
-        GeneralKDTree<Integer> kdTreeLeaf = new GeneralKDTree<Integer>(3);
+        //General Setup
+        GeneralKDTree<Integer> kdTreeBarren = new GeneralKDTree<Integer>(3);
         GeneralKDTree<Integer> kdTreeLeft = new GeneralKDTree<Integer>(3);
         GeneralKDTree<Integer> kdTreeRight = new GeneralKDTree<Integer>(3);
         GeneralKDTree<Integer> kdTreeTwo = new GeneralKDTree<Integer>(3);
         Integer[] rootPoint = {2,2,2};
         Integer[] leftPoint = {1,1,1};
         Integer[] rightPoint = {3,3,3};
-        kdTreeLeaf.insert(rootPoint);
-        assertThat(kdTreeLeaf.delete(rootPoint) == rootPoint).isTrue();
+        //No child test
+        kdTreeBarren.insert(rootPoint);
+        assertThat(kdTreeBarren.delete(rootPoint) == rootPoint).isTrue();
+        //Left child test
         kdTreeLeft.insert(rootPoint);
         kdTreeLeft.insert(leftPoint);
         assertThat(kdTreeLeft.delete(rootPoint) == rootPoint).isTrue();
+        //Right child test
         kdTreeRight.insert(rootPoint);
         kdTreeRight.insert(rightPoint);
         assertThat(kdTreeRight.delete(rootPoint) == rootPoint).isTrue();
+        //Both children test
         kdTreeTwo.insert(rootPoint);
         kdTreeTwo.insert(leftPoint);
         kdTreeTwo.insert(rightPoint);
@@ -141,6 +146,7 @@ public class GeneralKDTreeTest {
 
     @Test
     public void testDelete() {
+        //Tree Setup
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(3);
         assertThat(kdTree.findMin(0) == null).isTrue();
         Integer[] point1 = {3,7,9};
@@ -159,20 +165,21 @@ public class GeneralKDTreeTest {
         kdTree.insert(point6);
         kdTree.insert(point7);
         kdTree.insert(point8);
+        //Delete Action Assertions
         assertThat(kdTree.delete(point8) == point8).isTrue();
         assertThat(kdTree.delete(point5) == point5).isTrue();
         assertThat(kdTree.delete(point3) == point3).isTrue();
         assertThat(kdTree.delete(point8) == null).isTrue();
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testDeleteNull() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.delete(null);
     }
 
-    @Test(expected = Exception.class)
-    public void testDeleteBadInput() {
+    @Test(expected = IllegalArgumentException.class)
+    public void testDeleteMismatchDimensions() {
         GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
         kdTree.delete(new Integer[] {1, 2, 3});
     }

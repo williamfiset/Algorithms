@@ -6,8 +6,6 @@
 
 package com.williamfiset.algorithms.datastructures.kdtree;
 
-import javax.lang.model.util.ElementScanner6;
-
 public class GeneralKDTree<T extends Comparable<T>> {
     
     private int k;
