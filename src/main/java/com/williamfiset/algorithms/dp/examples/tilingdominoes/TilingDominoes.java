@@ -82,11 +82,11 @@ public class TilingDominoes {
     return dp[n];
   }
 
-  // Variation of solution2() , with space = O(n/2).
+  // Variation of solution2(), with space = O(n/2).
   private static int solution2a(int n) {
     if (n % 2 == 1 || n < 0) return 0;
 
-    int[] dp = new int[n / 2 + 2];      // +2 for special case n = 0,
+    int[] dp = new int[n / 2 + 2]; // +2 for special case n = 0,
     dp[0] = 1;
     dp[1] = 3;
     for (int i = 2; i <= n / 2; i++) {
@@ -95,7 +95,7 @@ public class TilingDominoes {
     return dp[n / 2];
   }
 
-  // Variation of solution2() , with space = O(1).
+  // Variation of solution2(), with space = O(1).
   private static int solution2b(int n) {
     if (n % 2 == 1 || n < 0) return 0;
     int dp0 = 1, dp1 = 3;
