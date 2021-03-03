@@ -46,6 +46,9 @@ public class LongestIncreasingSubsequenceFast {
    */
   static int longestIncreasingSubsequenceLength(int[] ar) {
     int size = ar.length;
+    if (size == 0) {
+      return 0;
+    }
     int[] lis = new int[size];
     int len;
     lis[0] = ar[0];
