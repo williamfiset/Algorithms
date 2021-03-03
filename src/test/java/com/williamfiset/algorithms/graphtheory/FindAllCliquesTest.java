@@ -1,4 +1,4 @@
-package com.williamfiset.algorithms.dp;
+package com.williamfiset.algorithms.graphtheory;
 
 import com.williamfiset.algorithms.graphtheory.FindAllCliques;
 import org.junit.After;
