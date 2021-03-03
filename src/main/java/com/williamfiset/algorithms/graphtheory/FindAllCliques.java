@@ -1,5 +1,11 @@
 package com.williamfiset.algorithms.graphtheory;
 
+/**
+ * Finds all cliques (complete sub-graphs) in a given graph.
+ * The algorithm loops and finds all cliques for each given clique size up until the size of the graph itself.
+ *
+ * Complexity: O(n^2)
+ */
 public class FindAllCliques {
     static int size = 10000;
     static int[] vertices = new int[size];
@@ -17,7 +23,7 @@ public class FindAllCliques {
     static boolean isClique(int count) {
         for (int i = 1; i < count; i++) {
             for (int j = i + 1; j < count; j++) {
-                // If any edge is missing
+                // for missing edges
                 if (graph[vertices[i]][vertices[j]] == 0) {
                     return false;
                 }
@@ -35,39 +41,31 @@ public class FindAllCliques {
             if (i < n-1) {
                 System.out.print(vertices[i] + ", ");
             } else {
-                System.out.print(vertices[i] + ";");
-                System.out.println();
+                System.out.println(vertices[i]);
             }
         }
     }
 
     /**
      * Function that finds all the cliques of size s
-     * @param i
-     * @param position
-     * @param s the vertex count of the searched clique
+     * @param i initial index counter
+     * @param currentSize the size of the current sub-graph
+     * @param size the vertex count of the searched clique
      */
-    static void findCliques(int i, int position, int s) {
-        // Check if any vertices from i+1 can be inserted
-        for (int j = i + 1; j <= n - (s - position); j++) {
+    static void findCliques(int i, int currentSize, int size) {
+        // Find insertable vertices
+        for (int j = i + 1; j <= n - (size - currentSize); j++) {
+            if (degree[j] >= size - 1) {
+                vertices[currentSize] = j;
 
-            // If the degree of the graph is sufficient
-            if (degree[j] >= s - 1) {
+               // Max subgraph size achieved
+                if (isClique(currentSize + 1)) {
 
-                // Add the vertex to store
-                vertices[position] = j;
-
-                // If the graph is not a clique of size k
-                // then it cannot be a clique
-                // by adding another edge
-                if (isClique(position + 1)) {
-
-                    // If the length of the clique is
-                    // still less than the desired size
-                    if (position < s) {
-                        findCliques(j, position + 1, s);
+                    // Max subgraph size not yet achieved
+                    if (currentSize < size) {
+                        findCliques(j, currentSize + 1, size);
                     } else {
-                        print(position + 1);
+                        print(currentSize + 1);
                     }
                 }
             }
@@ -76,10 +74,11 @@ public class FindAllCliques {
 
     /**
      * Function that finds all cliques
-     * @param edges
-     * @param n
+     * @param edges the list of edges formed with the nodes of the graph
+     * @param nodesNr the number of nodes of the graph
      */
-    public static void findAllCliques(int[][] edges, int n){
+    public static void findAllCliques(int[][] edges, int nodesNr){
+        n = nodesNr;
         for (int[] edge : edges) {
             graph[edge[0]][edge[1]] = 1;
             graph[edge[1]][edge[0]] = 1;
@@ -101,8 +100,7 @@ public class FindAllCliques {
                 { 4, 5 },
                 { 5, 3 },
         };
-        n = 5;
 
-        findAllCliques(edges, n);
+        findAllCliques(edges, 5);
     }
 }
