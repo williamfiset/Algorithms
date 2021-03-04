@@ -6,7 +6,6 @@ import org.junit.Test;
 /**
  * Checking that the returned values of the two different implementations are equal (consistent).
  */
-
 public class LongestIncreasingSubsequenceFastTest {
   @Test
   public void longestIncreasingSubsequenceFastEmpty() {
