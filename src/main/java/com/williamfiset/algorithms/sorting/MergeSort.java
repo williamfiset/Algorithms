@@ -1,68 +1,69 @@
-/**
- * Mergesort implementation
- *
- * <p>Run with:
- *
- * <p>$ ./gradlew run -Palgorithm=sorting.Mergesort
- *
- * @author William Fiset, william.alexandre.fiset@gmail.com
- */
-package com.williamfiset.algorithms.sorting;
 
-import java.util.Arrays;
+package margesortalgo;
 
-// Mergesort implements InplaceSort for ease of testings, but in reality
-// it is not really a good fit for an inplace sorting algorithm.
-public class MergeSort implements InplaceSort {
 
-  @Override
-  public void sort(int[] values) {
-    int[] sortedValues = MergeSort.mergesort(values);
-    for (int i = 0; i < values.length; i++) {
-      values[i] = sortedValues[i];
-    }
-  }
-
-  public static int[] mergesort(int[] ar) {
-    // Base case is when a single element (which is already sorted)
-    int n = ar.length;
-    if (n <= 1) return ar;
-
-    // Split array into two parts and recursively sort them
-    int[] left = mergesort(Arrays.copyOfRange(ar, 0, n / 2));
-    int[] right = mergesort(Arrays.copyOfRange(ar, n / 2, n));
-
-    // Combine the two arrays into one larger array
-    return merge(left, right);
-  }
-
-  // Merge two sorted arrays into a larger sorted array
-  private static int[] merge(int[] ar1, int[] ar2) {
-    int n1 = ar1.length, n2 = ar2.length;
-    int n = n1 + n2, i1 = 0, i2 = 0;
-    int[] ar = new int[n];
-
-    for (int i = 0; i < n; i++) {
-      if (i1 == n1) {
-        ar[i] = ar2[i2++];
-      } else if (i2 == n2) {
-        ar[i] = ar1[i1++];
-      } else {
-        if (ar1[i1] < ar2[i2]) {
-          ar[i] = ar1[i1++];
-        } else {
-          ar[i] = ar2[i2++];
+public class MergeSort 
+{
+    
+    public void mergeSort(int[] arr, int lo, int hi) 
+    {
+        if(lo < hi)
+        {
+            int mid = (lo+hi) / 2;
+            mergeSort(arr, lo, mid);
+            mergeSort(arr, mid+1, hi);
+            merge(arr, lo, mid, hi);
         }
-      }
     }
-    return ar;
-  }
+    
+    public void merge(int[] arr, int low, int mid, int high) 
+    {
+        int temp[] = new int[high - low +1];
+        int i = low;
+        int j = mid+1;
+        int k = 0;
+        
+        while(i<= mid && j <= high) 
+        {
+            if(arr[i] < arr[j]) 
+            {
+                temp[k] = arr[i];
+                i++;
+                k++;
+            } 
+            else 
+            {
+                temp[k] = arr[j];
+                k++;
+                j++;
+            }       
+        }
+        
+        while(i <= mid) 
+        {
+            temp[k] = arr[i];
+            i++;
+            k++;
+        }
+        
+        while(j <= high) 
+        {
+            temp[k] = arr[j];
+            j++;
+            k++;
+        }
+        
+        int t = 0;
+        for(i = low; i<=high; i++)
+        {
+            arr[i] = temp[t];
+            t++;
+        }
+        
+        
+        
+        
+    }
 
-  public static void main(String[] args) {
-    int[] array = {10, 4, 6, 4, 8, -13, 2, 3};
-    array = MergeSort.mergesort(array);
-    // Prints:
-    // [-13, 2, 3, 4, 4, 6, 8, 10]
-    System.out.println(java.util.Arrays.toString(array));
-  }
+
 }
