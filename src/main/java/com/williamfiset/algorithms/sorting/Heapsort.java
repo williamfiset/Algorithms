@@ -13,62 +13,74 @@ import java.util.*;
 
 public class Heapsort implements InplaceSort {
 
-  @Override
-  public void sort(int[] values) {
-    Heapsort.heapsort(values);
-  }
+    @Override
+    public void sort(int[] values) {
+        Heapsort.heapSort(values);
+    }
 
-  private static void heapsort(int[] ar) {
-    if (ar == null) return;
-    int n = ar.length;
+    private static void heapSort(int[] array) {
+        if (array == null) return;
 
-    // Heapify, converts array into binary heap O(n), see:
+        int size = array.length;
+        buildMaxHeap(array, size);
+
+        // Sorting bit
+        for (int endIndex = size - 1; endIndex >= 0; endIndex--) {
+            swap(array, endIndex, 0);
+            siftDown(array, 0, endIndex);
+        }
+    }
+
+    // Build max heap, converts array into binary heap O(n), see:
     // http://www.cs.umd.edu/~meesh/351/mount/lectures/lect14-heapsort-analysis-part.pdf
-    for (int i = Math.max(0, (n / 2) - 1); i >= 0; i--) {
-      sink(ar, n, i);
+    private static void buildMaxHeap(int[] array, int size) {
+        int parentIndex = Math.max(0, (size - 2) / 2);
+        for (int currentIndex = parentIndex; currentIndex >= 0; currentIndex--) {
+            siftDown(array, currentIndex, size);
+        }
     }
 
-    // Sorting bit
-    for (int i = n - 1; i >= 0; i--) {
-      swap(ar, 0, i);
-      sink(ar, i, 0);
+    private static void siftDown(int[] array, int currentIndex, int endIndex) {
+        boolean hasFinished = false;
+
+        while (!hasFinished) {
+            int leftIndex = currentIndex * 2 + 1;  // Left child node
+            int rightIndex = currentIndex * 2 + 2; // Right child node
+            int largestIndex = currentIndex;
+
+            // Right child is larger than parent
+            if (rightIndex < endIndex && array[rightIndex] > array[largestIndex]) {
+                largestIndex = rightIndex;
+            }
+
+            // Left child is larger than parent
+            if (leftIndex < endIndex && array[leftIndex] > array[largestIndex]) {
+                largestIndex = leftIndex;
+            }
+
+            // Move down the tree following the largest node
+            if (largestIndex != currentIndex) {
+                swap(array, largestIndex, currentIndex);
+                currentIndex = largestIndex;
+            } else {
+                hasFinished = true;
+            }
+        }
     }
-  }
 
-  private static void sink(int[] ar, int n, int i) {
-    while (true) {
-      int left = 2 * i + 1; // Left  node
-      int right = 2 * i + 2; // Right node
-      int largest = i;
-
-      // Right child is larger than parent
-      if (right < n && ar[right] > ar[largest]) largest = right;
-
-      // Left child is larger than parent
-      if (left < n && ar[left] > ar[largest]) largest = left;
-
-      // Move down the tree following the largest node
-      if (largest != i) {
-        swap(ar, largest, i);
-        i = largest;
-      } else break;
+    private static void swap(int[] array, int firstIndex, int secondIndex) {
+        int temporary = array[secondIndex];
+        array[secondIndex] = array[firstIndex];
+        array[firstIndex] = temporary;
     }
-  }
 
-  private static void swap(int[] ar, int i, int j) {
-    int tmp = ar[i];
-    ar[i] = ar[j];
-    ar[j] = tmp;
-  }
+    // Make sure to add to VM parameters "-ea" for assertions to work
+    public static void main(String[] args) {
+        Heapsort sorter = new Heapsort();
+        int[] input = { 10, 4, 6, 4, 8, -13, 2, 3 };
+        int[] expected = { -13, 2, 3, 4, 4, 6, 8, 10 };
+        sorter.sort(input);
+        assert (Arrays.equals(input, expected));
+    }
 
-  /* TESTING */
-
-  public static void main(String[] args) {
-    Heapsort sorter = new Heapsort();
-    int[] array = {10, 4, 6, 4, 8, -13, 2, 3};
-    sorter.sort(array);
-    // Prints:
-    // [-13, 2, 3, 4, 4, 6, 8, 10]
-    System.out.println(java.util.Arrays.toString(array));
-  }
 }
