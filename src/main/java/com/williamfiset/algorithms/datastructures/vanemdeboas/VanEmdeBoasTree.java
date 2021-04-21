@@ -1,4 +1,4 @@
-package com.williamfiset.algorithms.datastructures.vanemdeboastree;
+package com.williamfiset.algorithms.datastructures.vanemdeboas;
 
 public class VanEmdeBoasTree {
 
