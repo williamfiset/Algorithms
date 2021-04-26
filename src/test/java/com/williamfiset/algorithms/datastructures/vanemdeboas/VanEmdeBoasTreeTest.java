@@ -1,4 +1,4 @@
-package com.williamfiset.algorithms.datastructures.vanemdeboastree;
+package com.williamfiset.algorithms.datastructures.vanemdeboas;
 
 import static com.google.common.truth.Truth.assertThat;
 

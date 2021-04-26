@@ -1,4 +1,4 @@
-package com.williamfiset.algorithms.datastructures.vanemdeboastree;
+package com.williamfiset.algorithms.datastructures.vanemdeboas;
 
 /**
  * Van Emde Boas tree is a tree that implements an associative array. It has the following
