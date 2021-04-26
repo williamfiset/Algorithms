@@ -74,7 +74,6 @@ public class VanEmdeBoasTree {
    *
    * @param value Value to delete.
    */
-
   public void delete(int value) {
     delete(root, value);
   }
@@ -141,7 +140,6 @@ public class VanEmdeBoasTree {
    * @param value The value to look behind.
    * @return The next smallest value.
    */
-
   public int predecessor(int value) {
     return predecessor(root, value);
   }
