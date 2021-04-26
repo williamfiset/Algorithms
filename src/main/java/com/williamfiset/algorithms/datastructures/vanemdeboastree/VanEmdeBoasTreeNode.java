@@ -10,13 +10,9 @@ public class VanEmdeBoasTreeNode {
 
   public VanEmdeBoasTreeNode(int size) {
     this.size = size;
+
     min = -1;
     max = -1;
-
-    initializeChildren(size);
-  }
-
-  private void initializeChildren(int size) {
     if (size <= 2) {
       summary = null;
       cluster = null;

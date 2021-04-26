@@ -2,10 +2,9 @@ package com.williamfiset.algorithms.datastructures.vanemdeboastree;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.junit.Test;
 
 public class VanEmdeBoasTreeTest {
@@ -23,7 +22,10 @@ public class VanEmdeBoasTreeTest {
         }
       }
 
-      for (int j = 0; j < 16; j++) {
+      List<Integer> list = IntStream.range(0, 15).boxed().collect(Collectors.toList());
+      Collections.shuffle(list);
+
+      for (int j : list) {
         if (values.contains(j)) {
           assertThat(vanEmdeBoasTree.contains(j)).isTrue();
         } else {
