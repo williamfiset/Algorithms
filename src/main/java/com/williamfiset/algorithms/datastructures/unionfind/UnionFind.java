@@ -86,16 +86,16 @@ public class UnionFind {
     // These elements are already in the same group!
     if (connected(p, q)) return;
 
-    int root1 = find(p);
-    int root2 = find(q);
+    int rootP = find(p);
+    int rootQ = find(q);
 
     // Merge smaller component/set into the larger one.
-    if (sz[root1] < sz[root2]) {
-      sz[root2] += sz[root1];
-      id[root1] = root2;
+    if (sz[rootP] < sz[rootQ]) {
+      sz[rootQ] += sz[rootP];
+      id[rootP] = rootQ;
     } else {
-      sz[root1] += sz[root2];
-      id[root2] = root1;
+      sz[rootP] += sz[rootQ];
+      id[rootQ] = rootP;
     }
 
     // Since the roots found are different we know that the
