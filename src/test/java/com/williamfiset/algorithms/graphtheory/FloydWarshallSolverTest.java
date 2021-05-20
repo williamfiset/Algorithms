@@ -206,4 +206,23 @@ public class FloydWarshallSolverTest {
     List<Integer> fwPath = fw.reconstructShortestPath(s, e);
     assertThat(fwPath).isNull();
   }
+
+  @Test
+  public void testSingleNodeNegativeCycleDetection() {
+    int n = 3, s = 0, e = n - 1;
+    double[][] m = createMatrix(n);
+    m[1][2] = 1000;
+    m[2][2] = -1;
+    m[1][0] = 1;
+    m[2][0] = 1;
+
+    FloydWarshallSolver solver = new FloydWarshallSolver(m);
+    double[][] soln = solver.getApspMatrix();
+
+    // 1 reaches 2 with cost 1000 and then it can go through the edge from 2 to 2 (which is -1) as
+    // many times as wanted and
+    // thus reach 2 with arbitrarily little cost
+    assertThat(soln[1][2]).isEqualTo(NEG_INF);
+    assertThat(soln[1][0]).isEqualTo(NEG_INF);
+  }
 }
