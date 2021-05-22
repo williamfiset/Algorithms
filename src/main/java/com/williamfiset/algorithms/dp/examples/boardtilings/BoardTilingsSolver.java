@@ -36,11 +36,15 @@ public class BoardTilingsSolver {
     // Use a Map instead of a List in the hope that the recursion is sparse
     // and that we can save memory by avoiding a large allocation.
     Map<Integer, Long> dp = new HashMap<>();
-    dp.put(0, 1L);
     return f(n, dp);
   }
 
   private long f(int n, Map<Integer, Long> dp) {
+    // Base case
+    if (n == 0) {
+      return 1;
+    }
+    // Check cache for an answer
     Long count = dp.get(n);
     if (count != null) {
       return count;
