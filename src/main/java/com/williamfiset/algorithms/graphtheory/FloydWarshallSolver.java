@@ -80,7 +80,7 @@ public class FloydWarshallSolver {
     for (int k = 0; k < n; k++)
       for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
-          if (dp[i][k] + dp[k][j] < dp[i][j]) {
+          if (dp[i][k] != POSITIVE_INFINITY && dp[k][j] != POSITIVE_INFINITY && dp[k][k] < 0) {
             dp[i][j] = NEGATIVE_INFINITY;
             next[i][j] = REACHES_NEGATIVE_CYCLE;
           }
