@@ -1,7 +1,7 @@
 /**
  * A generic segment tree implementation that supports several range update and aggregation
- * functions. This implementation of the segment tree differs from the `GenericSegmentTree2` impl
- * in that it stores the segment tree information inside multiple arrays for node.
+ * functions. This implementation of the segment tree differs from the `GenericSegmentTree2` impl in
+ * that it stores the segment tree information inside multiple arrays for node.
  *
  * <p>Run with: ./gradlew run -Palgorithm=datastructures.segmenttree.GenericSegmentTree
  *
@@ -530,9 +530,9 @@ public class GenericSegmentTree {
 
   private static void t() {
     long[] v = {1, 4, 3, 0, 5, 8, -2, 7, 5, 2, 9};
-    GenericSegmentTree st = new GenericSegmentTree(v, SegmentCombinationFn.MIN, RangeUpdateFn.ASSIGN);
+    GenericSegmentTree st =
+        new GenericSegmentTree(v, SegmentCombinationFn.MIN, RangeUpdateFn.ASSIGN);
     st.printDebugInfo();
-
   }
 
   private static void minQueryAssignUpdateExample() {

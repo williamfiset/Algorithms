@@ -81,7 +81,7 @@ public class MinimumWeightPerfectMatchingTest {
       {0, 1},
       {1, 0},
     };
-    
+
     MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
     double cost = mwpm.getMinWeightCost();
     assertThat(cost).isEqualTo(1.0);
@@ -100,7 +100,7 @@ public class MinimumWeightPerfectMatchingTest {
       {1, 2, 0, 2},
       {2, 1, 2, 0},
     };
-    
+
     MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
     double cost = mwpm.getMinWeightCost();
     assertThat(cost).isEqualTo(2.0);
@@ -119,7 +119,7 @@ public class MinimumWeightPerfectMatchingTest {
       {2, 2, 0, 1},
       {2, 2, 1, 0},
     };
-    
+
     MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
     double cost = mwpm.getMinWeightCost();
     assertThat(cost).isEqualTo(2.0);
@@ -140,7 +140,7 @@ public class MinimumWeightPerfectMatchingTest {
       {9, 9, 9, 1, 0, 9},
       {1, 9, 9, 9, 9, 0},
     };
-    
+
     MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
     double cost = mwpm.getMinWeightCost();
     assertThat(cost).isEqualTo(3.0);
@@ -161,7 +161,7 @@ public class MinimumWeightPerfectMatchingTest {
       {9, 9, 1, 9, 0, 9},
       {9, 9, 9, 1, 9, 0},
     };
-    
+
     MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
     double cost = mwpm.getMinWeightCost();
     assertThat(cost).isEqualTo(3.0);

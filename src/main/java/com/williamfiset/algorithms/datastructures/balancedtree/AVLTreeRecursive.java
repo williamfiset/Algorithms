@@ -90,7 +90,7 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
     // Found value in tree.
     return true;
   }
- 
+
   // Insert/add a value to the AVL tree. The value must not be null, O(log(n))
   public boolean insert(T value) {
     if (value == null) return false;

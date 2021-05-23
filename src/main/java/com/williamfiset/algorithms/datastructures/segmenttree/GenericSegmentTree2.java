@@ -14,8 +14,6 @@
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
 import java.util.function.BinaryOperator;
-import com.williamfiset.algorithms.datastructures.utils.TreePrinter;
-import com.williamfiset.algorithms.datastructures.utils.TreePrinter.PrintableNode;
 
 public class GenericSegmentTree2 {
 
@@ -38,7 +36,7 @@ public class GenericSegmentTree2 {
   }
 
   private static class Segment { // implements PrintableNode
-    // TODO(william): investigate if we really need this, it's unlikely that we do since it should 
+    // TODO(william): investigate if we really need this, it's unlikely that we do since it should
     // be able to implicitly determine the index.
     int i;
 

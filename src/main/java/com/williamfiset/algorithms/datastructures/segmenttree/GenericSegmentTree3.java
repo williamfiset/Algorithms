@@ -13,10 +13,6 @@
  */
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
-import java.util.function.BinaryOperator;
-import com.williamfiset.algorithms.datastructures.utils.TreePrinter;
-import com.williamfiset.algorithms.datastructures.utils.TreePrinter.PrintableNode;
-
 public class GenericSegmentTree3 {
 
   // // The type of segment combination function to use
@@ -37,9 +33,11 @@ public class GenericSegmentTree3 {
   //   MULTIPLICATION
   // }
 
-  // // TODO(william): Make this class static if possible to avoid sharing members with parent ST class
+  // // TODO(william): Make this class static if possible to avoid sharing members with parent ST
+  // class
   // private class SegmentNode implements PrintableNode {
-  //   // TODO(william): investigate if we really need this, it's unlikely that we do since it should 
+  //   // TODO(william): investigate if we really need this, it's unlikely that we do since it
+  // should
   //   // be able to implicitly determine the index.
   //   int i;
 
@@ -265,8 +263,10 @@ public class GenericSegmentTree3 {
 
   //   // The size of the segment tree `t`
   //   //
-  //   // TODO(william): Investigate to reduce this space. There are only 2n-1 segments, so we should
-  //   // be able to reduce the space, but may need to reorganize the tree/queries. One idea is to use
+  //   // TODO(william): Investigate to reduce this space. There are only 2n-1 segments, so we
+  // should
+  //   // be able to reduce the space, but may need to reorganize the tree/queries. One idea is to
+  // use
   //   // the Eulerian tour structure of the tree to densely pack the segments.
   //   int N = 4 * n;
 
@@ -316,7 +316,8 @@ public class GenericSegmentTree3 {
   // }
 
   // /**
-  //  * Builds a segment tree by starting with the leaf nodes and combining segment values on callback.
+  //  * Builds a segment tree by starting with the leaf nodes and combining segment values on
+  // callback.
   //  *
   //  * @param i the index of the segment in the segment tree
   //  * @param l the left index (inclusive) of the segment range
@@ -344,7 +345,8 @@ public class GenericSegmentTree3 {
   // }
 
   // /**
-  //  * Returns the query of the range [l, r] on the original `values` array (+ any updates made to it)
+  //  * Returns the query of the range [l, r] on the original `values` array (+ any updates made to
+  // it)
   //  *
   //  * @param l the left endpoint of the range query (inclusive)
   //  * @param r the right endpoint of the range query (inclusive)

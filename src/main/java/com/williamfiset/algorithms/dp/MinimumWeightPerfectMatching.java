@@ -3,6 +3,10 @@
  * given a distance matrix which gives the distance from each node to every other node, and you want
  * to pair up all the nodes to one another minimizing the overall cost.
  *
+ * <p>Tested against: UVA 10911 - Forming Quiz Teams
+ *
+ * <p>To Run: ./gradlew run -Palgorithm=dp.MinimumWeightPerfectMatching
+ *
  * <p>Time Complexity: O(n^2 * 2^n)
  *
  * @author William Fiset
@@ -75,30 +79,37 @@ public class MinimumWeightPerfectMatching {
     // included in the state. Encoding the state this way allows us to compactly represent selecting
     // a subset of the nodes present in the matching. Furthermore, it allows using the '&' binary
     // operator to compare states to see if they overlap and the '|' operator to combine states.
+    //
+    // dp[i] contains the optimal cost of the MWPM for the nodes captured in the binary
+    // representation of `i`. The dp table is always half empty because all states with an odd
+    // number of nodes do not have a MWPM.
     Double[] dp = new Double[1 << n];
 
     // Memo table to save the history of the chosen states. This table is used to reconstruct the
     // chosen pairs of nodes after the algorithm has executed.
     int[] history = new int[1 << n];
 
-    // Singleton pair states with only two nodes are the building blocks of this algorithm. Every
-    // iteration, we try to add singleton pairs to previous states to construct a larger matching.
-    final int numPairs = (n * (n + 1)) / 2;
+    // All the states consisting of pairs of nodes are the building blocks of this algorithm.
+    // In every iteration, we try to add a pair of nodes to previous state to construct a larger
+    // matching.
+    final int numPairs = (n * (n - 1)) / 2;
     int[] pairStates = new int[numPairs];
     double[] pairCost = new double[numPairs];
 
-    for (int i = 0, k = 0; i < n; i++) {
-      for (int j = i + 1; j < n; j++, k++) {
+    int k = 0;
+    for (int i = 0; i < n; i++) {
+      for (int j = i + 1; j < n; j++) {
         int state = (1 << i) | (1 << j);
         dp[state] = cost[i][j];
         pairStates[k] = state;
         pairCost[k] = cost[i][j];
+        k++;
       }
     }
 
     for (int state = 0b11; state < (1 << n); state++) {
-      // Skip states with an odd number of nodes. Check dp[state] instead of 
-      // Integer.bitCount for convenience.
+      // Skip states with an odd number of bits (nodes). It's easier (and faster) to
+      // check dp[state] instead of calling `Integer.bitCount` for the bit count.
       if (dp[state] == null) {
         continue;
       }
@@ -119,6 +130,11 @@ public class MinimumWeightPerfectMatching {
       }
     }
 
+    int nullCount = 0;
+    for (Double d : dp) if (d == null) nullCount++;
+
+    System.out.println(nullCount / (double) (1 << n));
+
     reconstructMatching(history);
 
     minWeightCost = dp[END_STATE];
@@ -132,7 +148,7 @@ public class MinimumWeightPerfectMatching {
   private void reconstructMatching(int[] history) {
     // A map between pairs of nodes that were matched together.
     int[] map = new int[n];
-    int[] leftNodes = new int[n/2];
+    int[] leftNodes = new int[n / 2];
 
     // Reconstruct the matching of pairs of nodes working backwards through computed states.
     for (int i = 0, state = END_STATE; state != 0; state = history[state]) {
@@ -150,10 +166,10 @@ public class MinimumWeightPerfectMatching {
     java.util.Arrays.sort(leftNodes);
 
     matching = new int[n];
-    for (int i = 0; i < n/2; i++) {
-      matching[2*i] = leftNodes[i];
+    for (int i = 0; i < n / 2; i++) {
+      matching[2 * i] = leftNodes[i];
       int rightNode = map[leftNodes[i]];
-      matching[2*i+1] = rightNode;
+      matching[2 * i + 1] = rightNode;
     }
   }
 
