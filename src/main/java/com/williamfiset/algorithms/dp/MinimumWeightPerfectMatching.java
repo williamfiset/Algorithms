@@ -19,6 +19,7 @@ public class MinimumWeightPerfectMatching {
   private double[][] cost;
 
   // Internal
+  private final int END_STATE;
   private boolean solved;
 
   // Outputs
@@ -36,6 +37,7 @@ public class MinimumWeightPerfectMatching {
       throw new IllegalArgumentException(
           "Matrix too large! A matrix that size for the MWPM problem with a time complexity of"
               + "O(n^2*2^n) requires way too much computation and memory for a modern home computer.");
+    END_STATE = (1 << n) - 1;
     this.cost = cost;
   }
 
@@ -69,8 +71,6 @@ public class MinimumWeightPerfectMatching {
   public void solve() {
     if (solved) return;
 
-    final int END_STATE = (1 << n) - 1;
-
     // The DP state is encoded as a bitmask where the i'th bit is flipped on if the i'th node is
     // included in the state. Encoding the state this way allows us to compactly represent selecting
     // a subset of the nodes present in the matching. Furthermore, it allows using the '&' binary
@@ -96,9 +96,12 @@ public class MinimumWeightPerfectMatching {
       }
     }
 
-    for (int state = 0; state < (1 << n); state++) {
-      // A cost of null means the previous state does not exist.
-      if (dp[state] == null) continue;
+    for (int state = 0b11; state < (1 << n); state++) {
+      // Skip states with an odd number of nodes. Check dp[state] instead of 
+      // Integer.bitCount for convenience.
+      if (dp[state] == null) {
+        continue;
+      }
       for (int i = 0; i < numPairs; i++) {
         int pair = pairStates[i];
         // Ignore states which overlap
@@ -116,19 +119,46 @@ public class MinimumWeightPerfectMatching {
       }
     }
 
-    // Reconstruct the matching of pairs of nodes.
-    matching = new int[n];
-    for (int i = 0, state = END_STATE; state != 0; state = history[state]) {
-      int pairUsed = state ^ history[state];
-      matching[i++] = getBitPosition(Integer.lowestOneBit(pairUsed));
-      matching[i++] = getBitPosition(Integer.highestOneBit(pairUsed));
-    }
+    reconstructMatching(history);
 
     minWeightCost = dp[END_STATE];
     solved = true;
   }
 
-  // Gets the zero base index position of the 1 bit in 'k'
+  // Populates the `matching` array with a sorted deterministic matching sorted by lowest node
+  // index. For example, if the perfect matching consists of the pairs (3, 4), (1, 5), (0, 2).
+  // The matching is sorted such that the pairs appear in the ordering: (0, 2), (1, 5), (3, 4).
+  // Furthermore, it is guaranteed that for any pair (a, b) that a < b.
+  private void reconstructMatching(int[] history) {
+    // A map between pairs of nodes that were matched together.
+    int[] map = new int[n];
+    int[] leftNodes = new int[n/2];
+
+    // Reconstruct the matching of pairs of nodes working backwards through computed states.
+    for (int i = 0, state = END_STATE; state != 0; state = history[state]) {
+      // Isolate the pair used by xoring the state with the state used to generate it.
+      int pairUsed = state ^ history[state];
+
+      int leftNode = getBitPosition(Integer.lowestOneBit(pairUsed));
+      int rightNode = getBitPosition(Integer.highestOneBit(pairUsed));
+
+      leftNodes[i++] = leftNode;
+      map[leftNode] = rightNode;
+    }
+
+    // Sort the left nodes in ascending order.
+    java.util.Arrays.sort(leftNodes);
+
+    matching = new int[n];
+    for (int i = 0; i < n/2; i++) {
+      matching[2*i] = leftNodes[i];
+      int rightNode = map[leftNodes[i]];
+      matching[2*i+1] = rightNode;
+    }
+  }
+
+  // Gets the zero base index position of the 1 bit in `k`. `k` must be a power of 2, so there is
+  // only ever 1 bit in the binary representation of k.
   private int getBitPosition(int k) {
     int count = -1;
     while (k > 0) {
@@ -141,6 +171,18 @@ public class MinimumWeightPerfectMatching {
   /* Example */
 
   public static void main(String[] args) {
+    test2();
+    // for (int i = 0; i < 50; i++) {
+    //   System.out.println(i + " " + include(i) + " " + Integer.toBinaryString(i));
+    // }
+  }
+
+  private static String include(int i) {
+    boolean toInclude = Integer.bitCount(i) >= 2 && Integer.bitCount(i) % 2 == 0;
+    return toInclude ? "YES" : " NO";
+  }
+
+  private static void test1() {
     int n = 18;
     List<Point2D> pts = new ArrayList<>();
 
@@ -176,6 +218,21 @@ public class MinimumWeightPerfectMatching {
           (int) pts.get(ii).getY(),
           (int) pts.get(jj).getX(),
           (int) pts.get(jj).getY());
+    }
+  }
+
+  private static void test2() {
+    double[][] costMatrix = {
+      {0, 2, 1, 2},
+      {2, 0, 2, 1},
+      {1, 2, 0, 2},
+      {2, 1, 2, 0},
+    };
+
+    MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
+    double cost = mwpm.getMinWeightCost();
+    if (cost != 2.0) {
+      System.out.println("error cost not 2");
     }
   }
 }

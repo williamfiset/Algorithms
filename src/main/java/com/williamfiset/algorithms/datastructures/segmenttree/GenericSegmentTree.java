@@ -1,6 +1,7 @@
 /**
  * A generic segment tree implementation that supports several range update and aggregation
- * functions.
+ * functions. This implementation of the segment tree differs from the `GenericSegmentTree2` impl
+ * in that it stores the segment tree information inside multiple arrays for node.
  *
  * <p>Run with: ./gradlew run -Palgorithm=datastructures.segmenttree.GenericSegmentTree
  *
@@ -51,6 +52,7 @@ public class GenericSegmentTree {
   // The chosen range combination function
   private BinaryOperator<Long> combinationFn;
 
+  // The Range Update Function (RUF) interface.
   private interface Ruf {
     // base = the existing value
     // tl, tr = the index value of the left/right endpoints, i.e: [tl, tr]
@@ -185,6 +187,7 @@ public class GenericSegmentTree {
     int N = 4 * n;
 
     t = new Long[N];
+    // TODO(william): Change this to be of size n to reduce memory from O(4n) to O(3n)
     lazy = new Long[N];
 
     // Select the specified combination function
@@ -313,15 +316,17 @@ public class GenericSegmentTree {
         rangeQuery1(2 * i + 2, tm + 1, tr, Math.max(l, tm + 1), r));
   }
 
-  // Apply the delta value to the current node and push it to the child segments
+  // Apply the lazy delta value to the current node and push it to the child segments
   private void propagate1(int i, int tl, int tr) {
-    if (lazy[i] != null) {
-      // Apply the delta to the current segment.
-      t[i] = ruf.apply(t[i], tl, tr, lazy[i]);
-      // Push the delta to left/right segments for non-leaf nodes
-      propagateLazy1(i, tl, tr, lazy[i]);
-      lazy[i] = null;
+    // No lazy value to propagate
+    if (lazy[i] == null) {
+      return;
     }
+    // Apply the lazy delta to the current segment.
+    t[i] = ruf.apply(t[i], tl, tr, lazy[i]);
+    // Push the lazy delta to left/right segments for non-leaf nodes
+    propagateLazy1(i, tl, tr, lazy[i]);
+    lazy[i] = null;
   }
 
   private void propagateLazy1(int i, int tl, int tr, long delta) {
@@ -413,11 +418,12 @@ public class GenericSegmentTree {
   ////////////////////////////////////////////////////
 
   public static void main(String[] args) {
+    t();
     // sumQuerySumUpdateExample();
     // minQueryAssignUpdateExample();
     // gcdQueryMulUpdateExample();
     // gcdQueryAssignUpdateExample();
-    productQueryMulUpdateExample();
+    // productQueryMulUpdateExample();
   }
 
   private static void productQueryMulUpdateExample() {
@@ -522,11 +528,20 @@ public class GenericSegmentTree {
     System.out.printf("The sum between indeces [%d, %d] is: %d\n", l, r, st.rangeQuery1(l, r));
   }
 
+  private static void t() {
+    long[] v = {1, 4, 3, 0, 5, 8, -2, 7, 5, 2, 9};
+    GenericSegmentTree st = new GenericSegmentTree(v, SegmentCombinationFn.MIN, RangeUpdateFn.ASSIGN);
+    st.printDebugInfo();
+
+  }
+
   private static void minQueryAssignUpdateExample() {
     //          0, 1, 2, 3,  4
     long[] v = {2, 1, 3, 4, -1};
     GenericSegmentTree st =
         new GenericSegmentTree(v, SegmentCombinationFn.MIN, RangeUpdateFn.ASSIGN);
+
+    // System.out.println(java.util.Arrays.toString(st.t));
 
     int l = 1;
     int r = 3;

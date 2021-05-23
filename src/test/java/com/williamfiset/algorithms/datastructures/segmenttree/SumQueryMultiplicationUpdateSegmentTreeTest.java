@@ -53,7 +53,8 @@ public class SumQueryMultiplicationUpdateSegmentTreeTest {
         int i4 = Math.max(j, k);
 
         // Range update.
-        // Yes, these values will likely cause overflow.
+        // Yes, these values will likely cause overflow through excessive
+        // multiplication of segment values
         long randValue = TestUtils.randValue(-100, +100);
         bruteForceMulRangeUpdate(ar, i3, i4, randValue);
         st.rangeUpdate1(i3, i4, randValue);
@@ -61,7 +62,6 @@ public class SumQueryMultiplicationUpdateSegmentTreeTest {
         // Range query
         long bfSum = bruteForceSum(ar, i1, i2);
         long segTreeSum = st.rangeQuery1(i1, i2);
-        System.out.printf("%d %d\n", bfSum, segTreeSum);
         assertThat(bfSum).isEqualTo(segTreeSum);
       }
     }

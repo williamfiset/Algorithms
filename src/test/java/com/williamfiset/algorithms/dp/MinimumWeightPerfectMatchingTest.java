@@ -7,7 +7,7 @@ import org.junit.*;
 
 public class MinimumWeightPerfectMatchingTest {
 
-  static final int LOOPS = 25;
+  static final int LOOPS = 50;
 
   static class BruteForceMwpm {
     private int n;
@@ -72,6 +72,103 @@ public class MinimumWeightPerfectMatchingTest {
       sequence[i] = sequence[j];
       sequence[j] = tmp;
     }
+  }
+
+  @Test
+  public void testSmallestMatrix1() {
+    // nodes 0 & 1 make the mwpm
+    double[][] costMatrix = {
+      {0, 1},
+      {1, 0},
+    };
+    
+    MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
+    double cost = mwpm.getMinWeightCost();
+    assertThat(cost).isEqualTo(1.0);
+
+    int[] matching = mwpm.getMinWeightCostMatching();
+    int[] expectedMatching = {0, 1};
+    assertThat(matching).isEqualTo(expectedMatching);
+  }
+
+  @Test
+  public void testSmallMatrix1() {
+    // nodes 0 & 2 and 1 & 3 make the mwpm
+    double[][] costMatrix = {
+      {0, 2, 1, 2},
+      {2, 0, 2, 1},
+      {1, 2, 0, 2},
+      {2, 1, 2, 0},
+    };
+    
+    MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
+    double cost = mwpm.getMinWeightCost();
+    assertThat(cost).isEqualTo(2.0);
+
+    int[] matching = mwpm.getMinWeightCostMatching();
+    int[] expectedMatching = {0, 2, 1, 3};
+    assertThat(matching).isEqualTo(expectedMatching);
+  }
+
+  @Test
+  public void testSmallMatrix2() {
+    // nodes 0 & 1 and 2 & 3 make the mwpm
+    double[][] costMatrix = {
+      {0, 1, 2, 2},
+      {1, 0, 2, 2},
+      {2, 2, 0, 1},
+      {2, 2, 1, 0},
+    };
+    
+    MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
+    double cost = mwpm.getMinWeightCost();
+    assertThat(cost).isEqualTo(2.0);
+
+    int[] matching = mwpm.getMinWeightCostMatching();
+    int[] expectedMatching = {0, 1, 2, 3};
+    assertThat(matching).isEqualTo(expectedMatching);
+  }
+
+  @Test
+  public void testMediumMatrix1() {
+    // mwpm between 0 & 5, 1 & 2, 3 & 4
+    double[][] costMatrix = {
+      {0, 9, 9, 9, 9, 1},
+      {9, 0, 1, 9, 9, 9},
+      {9, 1, 0, 9, 9, 9},
+      {9, 9, 9, 0, 1, 9},
+      {9, 9, 9, 1, 0, 9},
+      {1, 9, 9, 9, 9, 0},
+    };
+    
+    MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
+    double cost = mwpm.getMinWeightCost();
+    assertThat(cost).isEqualTo(3.0);
+
+    int[] matching = mwpm.getMinWeightCostMatching();
+    int[] expectedMatching = {0, 5, 1, 2, 3, 4};
+    assertThat(matching).isEqualTo(expectedMatching);
+  }
+
+  @Test
+  public void testMediumMatrix2() {
+    // mwpm between 0 & 1, 2 & 4, 3 & 5
+    double[][] costMatrix = {
+      {0, 1, 9, 9, 9, 9},
+      {1, 0, 9, 9, 9, 9},
+      {9, 9, 0, 9, 1, 9},
+      {9, 9, 9, 0, 9, 1},
+      {9, 9, 1, 9, 0, 9},
+      {9, 9, 9, 1, 9, 0},
+    };
+    
+    MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
+    double cost = mwpm.getMinWeightCost();
+    assertThat(cost).isEqualTo(3.0);
+
+    int[] matching = mwpm.getMinWeightCostMatching();
+    int[] expectedMatching = {0, 1, 2, 4, 3, 5};
+    assertThat(matching).isEqualTo(expectedMatching);
   }
 
   @Test
