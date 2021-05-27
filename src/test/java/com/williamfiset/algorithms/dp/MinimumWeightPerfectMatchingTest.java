@@ -81,6 +81,43 @@ public class MinimumWeightPerfectMatchingTest {
     };
   }
 
+  private static double[][] createEmptyMatrix(int n) {
+    double[][] costMatrix = new double[n][n];
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < n; ++j) {
+        if (i == j) continue;
+        costMatrix[i][j] = 500;
+      }
+    }
+    return costMatrix;
+  }
+
+  private static void addUndirectedWeightedEdge(double[][] g, int from, int to, double weight) {
+    g[from][to] = weight;
+    g[to][from] = weight;
+  }
+
+  @Test
+  public void testSmallGraph_oddSize() {
+    int n = 5;
+    double[][] g = createEmptyMatrix(n);
+    // 0, 2; 3, 4
+    addUndirectedWeightedEdge(g, 0, 1, 8);
+    addUndirectedWeightedEdge(g, 0, 2, 1);
+    addUndirectedWeightedEdge(g, 1, 3, 8);
+    addUndirectedWeightedEdge(g, 2, 3, 8);
+    addUndirectedWeightedEdge(g, 2, 4, 8);
+    addUndirectedWeightedEdge(g, 3, 4, 2);
+
+    MwpmInterface mwpm = new MinimumWeightPerfectMatchingRecursive(g);
+    double cost = mwpm.getMinWeightCost();
+    assertThat(cost).isEqualTo(3.0);
+
+    int[] matching = mwpm.getMatching();
+    int[] expectedMatching = {0, 2, 3, 4};
+    assertThat(matching).isEqualTo(expectedMatching);
+  }
+
   @Test
   public void testSmallestMatrix1() {
     // nodes 0 & 1 make the mwpm

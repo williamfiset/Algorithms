@@ -72,7 +72,7 @@ public class MinimumWeightPerfectMatchingIterative implements MwpmInterface {
     return matching;
   }
 
-  public void solve() {
+  private void solve() {
     if (solved) return;
 
     // The DP state is encoded as a bitmask where the i'th bit is flipped on if the i'th node is

@@ -16,15 +16,20 @@ package com.williamfiset.algorithms.dp;
 import java.awt.geom.*;
 import java.util.*;
 
+// TODO(william): name `WeightedMaximumCardinalityMatching`
 public class MinimumWeightPerfectMatchingRecursive implements MwpmInterface {
 
   // Inputs
-  private final int n;
+  private int n;
   private double[][] cost;
 
   // Internal
   private final int END_STATE;
+  private int artificialNodeId = -1;
+  private boolean isOdd;
   private boolean solved;
+
+  private static final double INF = 987654321;
 
   // Outputs
   private double minWeightCost;
@@ -34,15 +39,38 @@ public class MinimumWeightPerfectMatchingRecursive implements MwpmInterface {
   public MinimumWeightPerfectMatchingRecursive(double[][] cost) {
     if (cost == null) throw new IllegalArgumentException("Input cannot be null");
     n = cost.length;
-    if (n == 0) throw new IllegalArgumentException("Matrix size is zero");
-    if (n % 2 != 0)
-      throw new IllegalArgumentException("Matrix has an odd size, no perfect matching exists.");
-    if (n > 32)
-      throw new IllegalArgumentException(
-          "Matrix too large! A matrix that size for the MWPM problem with a time complexity of"
-              + "O(n^2*2^n) requires way too much computation and memory for a modern home computer.");
+    if (n <= 1) throw new IllegalArgumentException("Invalid matrix size: " + n);
+    setCostMatrix(cost);
     END_STATE = (1 << n) - 1;
-    this.cost = cost;
+  }
+
+  // Sets the cost matrix. If the number of nodes in the graph is odd, add an artificial
+  // node that connects to every other node with a cost of infinity. This will make it easy
+  // to find a perfect matching and remove in the artificial node in the end.
+  private void setCostMatrix(double[][] inputMatrix) {
+    double[][] newCostMatrix = inputMatrix;
+    if (n % 2 != 0) {
+      isOdd = true;
+      newCostMatrix = new double[n + 1][n + 1];
+      double maxValue = Double.MIN_VALUE;
+      for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+          newCostMatrix[i][j] = inputMatrix[i][j];
+          maxValue = Math.max(maxValue, inputMatrix[i][j]);
+        }
+      }
+      if (maxValue > INF) {
+        throw new RuntimeException("INF value of " + INF + " is too small for input.");
+      }
+      for (int i = 0; i < n; i++) {
+        newCostMatrix[n][i] = INF;
+        newCostMatrix[i][n] = INF;
+      }
+      newCostMatrix[n][n] = 0;
+      artificialNodeId = n;
+      n++;
+    }
+    this.cost = newCostMatrix;
   }
 
   public double getMinWeightCost() {
@@ -72,13 +100,15 @@ public class MinimumWeightPerfectMatchingRecursive implements MwpmInterface {
     return matching;
   }
 
-  // Recursive impl
-  // TODO(william): move to another file?
   private void solve() {
     if (solved) return;
     Double[] dp = new Double[1 << n];
     int[] history = new int[1 << n];
     minWeightCost = f(END_STATE, dp, history);
+    // Remove the cost of the artificial node
+    if (isOdd) {
+      minWeightCost -= INF;
+    }
     reconstructMatching(history);
     solved = true;
   }
@@ -139,11 +169,19 @@ public class MinimumWeightPerfectMatchingRecursive implements MwpmInterface {
     // Sort the left nodes in ascending order.
     java.util.Arrays.sort(leftNodes);
 
-    matching = new int[n];
-    for (int i = 0; i < n / 2; i++) {
-      matching[2 * i] = leftNodes[i];
+    int m = isOdd ? n - 2 : n;
+    matching = new int[m];
+
+    for (int i = 0, j = 0; i < n / 2; i++) {
+      int leftNode = leftNodes[i];
       int rightNode = map[leftNodes[i]];
-      matching[2 * i + 1] = rightNode;
+      // Ignore the artificial node when there is an odd number of nodes.
+      if (isOdd && (leftNode == artificialNodeId || rightNode == artificialNodeId)) {
+        continue;
+      }
+      matching[2 * j] = leftNode;
+      matching[2 * j + 1] = rightNode;
+      j++;
     }
   }
 
