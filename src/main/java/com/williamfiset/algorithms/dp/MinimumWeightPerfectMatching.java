@@ -7,7 +7,7 @@
  *
  * <p>To Run: ./gradlew run -Palgorithm=dp.MinimumWeightPerfectMatching
  *
- * <p>Time Complexity: O(n^2 * 2^n)
+ * <p>Time Complexity: O(n * 2^n)
  *
  * @author William Fiset
  */
@@ -46,7 +46,7 @@ public class MinimumWeightPerfectMatching {
   }
 
   public double getMinWeightCost() {
-    solve();
+    solveRecursive();
     return minWeightCost;
   }
 
@@ -68,8 +68,51 @@ public class MinimumWeightPerfectMatching {
    * }</pre>
    */
   public int[] getMinWeightCostMatching() {
-    solve();
+    solveRecursive();
     return matching;
+  }
+
+  // Recursive impl
+  // TODO(william): move to another file?
+  public void solveRecursive() {
+    if (solved) return;
+    Double[] dp = new Double[1 << n];
+    int[] history = new int[1 << n];
+    minWeightCost = f(END_STATE, dp, history);
+    reconstructMatching(history);
+    solved = true;
+  }
+
+  private double f(int state, Double[] dp, int[] history) {
+    if (dp[state] != null) {
+      return dp[state];
+    }
+    if (state == 0) {
+      return 0;
+    }
+    int p1, p2;
+    // Seek to find active bit position (p1)
+    for (p1 = 0; p1 < n; p1++) {
+      if ((state & (1 << p1)) > 0) {
+        break;
+      }
+    }
+    int bestState = -1;
+    double minimum = Double.MAX_VALUE;
+
+    for (p2 = p1 + 1; p2 < n; p2++) {
+      // Position `p2` is on. Try matching the pair (p1, p2) together.
+      if ((state & (1 << p2)) > 0) {
+        int reducedState = state ^ (1 << p1) ^ (1 << p2);
+        double matchCost = f(reducedState, dp, history) + cost[p1][p2];
+        if (matchCost < minimum) {
+          minimum = matchCost;
+          bestState = reducedState;
+        }
+      }
+    }
+    history[state] = bestState;
+    return dp[state] = minimum;
   }
 
   public void solve() {
@@ -107,13 +150,13 @@ public class MinimumWeightPerfectMatching {
       }
     }
 
-    for (int state = 0b11; state < (1 << n); state++) {
+    for (int state = 0b11; state < (1 << n); state++) { // O(2^n)
       // Skip states with an odd number of bits (nodes). It's easier (and faster) to
       // check dp[state] instead of calling `Integer.bitCount` for the bit count.
       if (dp[state] == null) {
         continue;
       }
-      for (int i = 0; i < numPairs; i++) {
+      for (int i = 0; i < numPairs; i++) { // O(n^2)
         int pair = pairStates[i];
         // Ignore states which overlap
         if ((state & pair) != 0) continue;
@@ -129,11 +172,6 @@ public class MinimumWeightPerfectMatching {
         }
       }
     }
-
-    int nullCount = 0;
-    for (Double d : dp) if (d == null) nullCount++;
-
-    System.out.println(nullCount / (double) (1 << n));
 
     reconstructMatching(history);
 
@@ -187,19 +225,20 @@ public class MinimumWeightPerfectMatching {
   /* Example */
 
   public static void main(String[] args) {
-    test2();
+    // test1();
     // for (int i = 0; i < 50; i++) {
-    //   System.out.println(i + " " + include(i) + " " + Integer.toBinaryString(i));
+    //   if (include(i)) System.out.printf("%2d %7s\n", i, Integer.toBinaryString(i));
     // }
   }
 
-  private static String include(int i) {
+  private static boolean include(int i) {
     boolean toInclude = Integer.bitCount(i) >= 2 && Integer.bitCount(i) % 2 == 0;
-    return toInclude ? "YES" : " NO";
+    return toInclude;
   }
 
   private static void test1() {
-    int n = 18;
+    // int n = 18;
+    int n = 6;
     List<Point2D> pts = new ArrayList<>();
 
     // Generate points on a 2D plane which will produce a unique answer
@@ -250,5 +289,8 @@ public class MinimumWeightPerfectMatching {
     if (cost != 2.0) {
       System.out.println("error cost not 2");
     }
+    System.out.println(cost);
+    // System.out.println(mwpm.solve2());
+
   }
 }
