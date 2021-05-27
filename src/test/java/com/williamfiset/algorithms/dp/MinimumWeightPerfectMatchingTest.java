@@ -74,6 +74,13 @@ public class MinimumWeightPerfectMatchingTest {
     }
   }
 
+  private static MwpmInterface[] getImplementations(double[][] costMatrix) {
+    return new MwpmInterface[] {
+      new MinimumWeightPerfectMatchingRecursive(costMatrix),
+      new MinimumWeightPerfectMatchingIterative(costMatrix)
+    };
+  }
+
   @Test
   public void testSmallestMatrix1() {
     // nodes 0 & 1 make the mwpm
@@ -81,14 +88,15 @@ public class MinimumWeightPerfectMatchingTest {
       {0, 1},
       {1, 0},
     };
+    MwpmInterface[] impls = getImplementations(costMatrix);
+    for (MwpmInterface mwpm : impls) {
+      double cost = mwpm.getMinWeightCost();
+      assertThat(cost).isEqualTo(1.0);
 
-    MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
-    double cost = mwpm.getMinWeightCost();
-    assertThat(cost).isEqualTo(1.0);
-
-    int[] matching = mwpm.getMinWeightCostMatching();
-    int[] expectedMatching = {0, 1};
-    assertThat(matching).isEqualTo(expectedMatching);
+      int[] matching = mwpm.getMatching();
+      int[] expectedMatching = {0, 1};
+      assertThat(matching).isEqualTo(expectedMatching);
+    }
   }
 
   @Test
@@ -101,13 +109,15 @@ public class MinimumWeightPerfectMatchingTest {
       {2, 1, 2, 0},
     };
 
-    MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
-    double cost = mwpm.getMinWeightCost();
-    assertThat(cost).isEqualTo(2.0);
+    MwpmInterface[] impls = getImplementations(costMatrix);
+    for (MwpmInterface mwpm : impls) {
+      double cost = mwpm.getMinWeightCost();
+      assertThat(cost).isEqualTo(2.0);
 
-    int[] matching = mwpm.getMinWeightCostMatching();
-    int[] expectedMatching = {0, 2, 1, 3};
-    assertThat(matching).isEqualTo(expectedMatching);
+      int[] matching = mwpm.getMatching();
+      int[] expectedMatching = {0, 2, 1, 3};
+      assertThat(matching).isEqualTo(expectedMatching);
+    }
   }
 
   @Test
@@ -120,13 +130,15 @@ public class MinimumWeightPerfectMatchingTest {
       {2, 2, 1, 0},
     };
 
-    MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
-    double cost = mwpm.getMinWeightCost();
-    assertThat(cost).isEqualTo(2.0);
+    MwpmInterface[] impls = getImplementations(costMatrix);
+    for (MwpmInterface mwpm : impls) {
+      double cost = mwpm.getMinWeightCost();
+      assertThat(cost).isEqualTo(2.0);
 
-    int[] matching = mwpm.getMinWeightCostMatching();
-    int[] expectedMatching = {0, 1, 2, 3};
-    assertThat(matching).isEqualTo(expectedMatching);
+      int[] matching = mwpm.getMatching();
+      int[] expectedMatching = {0, 1, 2, 3};
+      assertThat(matching).isEqualTo(expectedMatching);
+    }
   }
 
   @Test
@@ -141,13 +153,15 @@ public class MinimumWeightPerfectMatchingTest {
       {1, 9, 9, 9, 9, 0},
     };
 
-    MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
-    double cost = mwpm.getMinWeightCost();
-    assertThat(cost).isEqualTo(3.0);
+    MwpmInterface[] impls = getImplementations(costMatrix);
+    for (MwpmInterface mwpm : impls) {
+      double cost = mwpm.getMinWeightCost();
+      assertThat(cost).isEqualTo(3.0);
 
-    int[] matching = mwpm.getMinWeightCostMatching();
-    int[] expectedMatching = {0, 5, 1, 2, 3, 4};
-    assertThat(matching).isEqualTo(expectedMatching);
+      int[] matching = mwpm.getMatching();
+      int[] expectedMatching = {0, 5, 1, 2, 3, 4};
+      assertThat(matching).isEqualTo(expectedMatching);
+    }
   }
 
   @Test
@@ -162,13 +176,15 @@ public class MinimumWeightPerfectMatchingTest {
       {9, 9, 9, 1, 9, 0},
     };
 
-    MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
-    double cost = mwpm.getMinWeightCost();
-    assertThat(cost).isEqualTo(3.0);
+    MwpmInterface[] impls = getImplementations(costMatrix);
+    for (MwpmInterface mwpm : impls) {
+      double cost = mwpm.getMinWeightCost();
+      assertThat(cost).isEqualTo(3.0);
 
-    int[] matching = mwpm.getMinWeightCostMatching();
-    int[] expectedMatching = {0, 1, 2, 4, 3, 5};
-    assertThat(matching).isEqualTo(expectedMatching);
+      int[] matching = mwpm.getMatching();
+      int[] expectedMatching = {0, 1, 2, 4, 3, 5};
+      assertThat(matching).isEqualTo(expectedMatching);
+    }
   }
 
   @Test
@@ -178,14 +194,16 @@ public class MinimumWeightPerfectMatchingTest {
       double[][] costMatrix = new double[n][n];
       randomFillSymmetricMatrix(costMatrix, 100);
 
-      MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
-      int[] matching = mwpm.getMinWeightCostMatching();
-      Set<Integer> set = new HashSet<>();
-      for (int i = 0; i < matching.length; i++) {
-        set.add(matching[i]);
-      }
+      MwpmInterface[] impls = getImplementations(costMatrix);
+      for (MwpmInterface mwpm : impls) {
+        int[] matching = mwpm.getMatching();
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < matching.length; i++) {
+          set.add(matching[i]);
+        }
 
-      assertThat(set.size()).isEqualTo(matching.length);
+        assertThat(set.size()).isEqualTo(matching.length);
+      }
     }
   }
 
@@ -196,15 +214,17 @@ public class MinimumWeightPerfectMatchingTest {
       double[][] costMatrix = new double[n][n];
       randomFillSymmetricMatrix(costMatrix, 100);
 
-      MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
-      int[] matching = mwpm.getMinWeightCostMatching();
-      double totalMinCost = 0;
-      for (int i = 0; i < matching.length / 2; i++) {
-        int ii = matching[2 * i];
-        int jj = matching[2 * i + 1];
-        totalMinCost += costMatrix[ii][jj];
+      MwpmInterface[] impls = getImplementations(costMatrix);
+      for (MwpmInterface mwpm : impls) {
+        int[] matching = mwpm.getMatching();
+        double totalMinCost = 0;
+        for (int i = 0; i < matching.length / 2; i++) {
+          int ii = matching[2 * i];
+          int jj = matching[2 * i + 1];
+          totalMinCost += costMatrix[ii][jj];
+        }
+        assertThat(totalMinCost).isEqualTo(mwpm.getMinWeightCost());
       }
-      assertThat(totalMinCost).isEqualTo(mwpm.getMinWeightCost());
     }
   }
 
@@ -215,11 +235,14 @@ public class MinimumWeightPerfectMatchingTest {
       double[][] costMatrix = new double[n][n];
       randomFillSymmetricMatrix(costMatrix, /*maxValue=*/ 10000);
 
-      MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
-      BruteForceMwpm bfMwpm = new BruteForceMwpm(costMatrix);
-      double dpSoln = mwpm.getMinWeightCost();
-      double bfSoln = bfMwpm.getMinWeightCost();
-      assertThat(dpSoln).isEqualTo(bfSoln);
+      MwpmInterface[] impls = getImplementations(costMatrix);
+      for (MwpmInterface mwpm : impls) {
+        int[] matching = mwpm.getMatching();
+        BruteForceMwpm bfMwpm = new BruteForceMwpm(costMatrix);
+        double dpSoln = mwpm.getMinWeightCost();
+        double bfSoln = bfMwpm.getMinWeightCost();
+        assertThat(dpSoln).isEqualTo(bfSoln);
+      }
     }
   }
 
