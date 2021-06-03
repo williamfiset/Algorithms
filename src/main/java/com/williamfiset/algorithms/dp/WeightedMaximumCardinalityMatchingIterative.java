@@ -5,9 +5,9 @@
  *
  * <p>Tested against: UVA 10911 - Forming Quiz Teams
  *
- * <p>To Run: ./gradlew run -Palgorithm=dp.MinimumWeightPerfectMatchingRecursive
+ * <p>To Run: ./gradlew run -Palgorithm=dp.WeightedMaximumCardinalityMatchingIterative
  *
- * <p>Time Complexity: O(n * 2^n)
+ * <p>Time Complexity: O(n^2 * 2^n)
  *
  * @author William Fiset
  */
@@ -16,61 +16,33 @@ package com.williamfiset.algorithms.dp;
 import java.awt.geom.*;
 import java.util.*;
 
-// TODO(william): name `WeightedMaximumCardinalityMatching`
-public class MinimumWeightPerfectMatchingRecursive implements MwpmInterface {
+public class WeightedMaximumCardinalityMatchingIterative implements MwpmInterface {
 
   // Inputs
-  private int n;
+  private final int n;
   private double[][] cost;
 
   // Internal
   private final int END_STATE;
-  private int artificialNodeId = -1;
-  private boolean isOdd;
   private boolean solved;
-
-  private static final double INF = 987654321;
 
   // Outputs
   private double minWeightCost;
   private int[] matching;
 
   // The cost matrix should be a symmetric (i.e cost[i][j] = cost[j][i])
-  public MinimumWeightPerfectMatchingRecursive(double[][] cost) {
+  public WeightedMaximumCardinalityMatchingIterative(double[][] cost) {
     if (cost == null) throw new IllegalArgumentException("Input cannot be null");
     n = cost.length;
-    if (n <= 1) throw new IllegalArgumentException("Invalid matrix size: " + n);
-    setCostMatrix(cost);
+    if (n == 0) throw new IllegalArgumentException("Matrix size is zero");
+    if (n % 2 != 0)
+      throw new IllegalArgumentException("Matrix has an odd size, no perfect matching exists.");
+    if (n > 32)
+      throw new IllegalArgumentException(
+          "Matrix too large! A matrix that size for the MWPM problem with a time complexity of"
+              + "O(n^2*2^n) requires way too much computation and memory for a modern home computer.");
     END_STATE = (1 << n) - 1;
-  }
-
-  // Sets the cost matrix. If the number of nodes in the graph is odd, add an artificial
-  // node that connects to every other node with a cost of infinity. This will make it easy
-  // to find a perfect matching and remove in the artificial node in the end.
-  private void setCostMatrix(double[][] inputMatrix) {
-    double[][] newCostMatrix = inputMatrix;
-    if (n % 2 != 0) {
-      isOdd = true;
-      newCostMatrix = new double[n + 1][n + 1];
-      double maxValue = Double.MIN_VALUE;
-      for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-          newCostMatrix[i][j] = inputMatrix[i][j];
-          maxValue = Math.max(maxValue, inputMatrix[i][j]);
-        }
-      }
-      if (maxValue > INF) {
-        throw new RuntimeException("INF value of " + INF + " is too small for input.");
-      }
-      for (int i = 0; i < n; i++) {
-        newCostMatrix[n][i] = INF;
-        newCostMatrix[i][n] = INF;
-      }
-      newCostMatrix[n][n] = 0;
-      artificialNodeId = n;
-      n++;
-    }
-    this.cost = newCostMatrix;
+    this.cost = cost;
   }
 
   public double getMinWeightCost() {
@@ -86,7 +58,7 @@ public class MinimumWeightPerfectMatchingRecursive implements MwpmInterface {
    * <p>How to iterate over the pairs:
    *
    * <pre>{@code
-   * MinimumWeightPerfectMatchingRecursive mwpm = ...
+   * WeightedMaximumCardinalityMatchingIterative mwpm = ...
    * int[] matching = mwpm.getMatching();
    * for (int i = 0; i < matching.length / 2; i++) {
    *   int node1 = matching[2*i];
@@ -102,47 +74,66 @@ public class MinimumWeightPerfectMatchingRecursive implements MwpmInterface {
 
   private void solve() {
     if (solved) return;
-    Double[] dp = new Double[1 << n];
-    int[] history = new int[1 << n];
-    minWeightCost = f(END_STATE, dp, history);
-    // Remove the cost of the artificial node
-    if (isOdd) {
-      minWeightCost -= INF;
-    }
-    reconstructMatching(history);
-    solved = true;
-  }
 
-  private double f(int state, Double[] dp, int[] history) {
-    if (dp[state] != null) {
-      return dp[state];
-    }
-    if (state == 0) {
-      return 0;
-    }
-    int p1, p2;
-    // Seek to find active bit position (p1)
-    for (p1 = 0; p1 < n; p1++) {
-      if ((state & (1 << p1)) > 0) {
-        break;
+    // The DP state is encoded as a bitmask where the i'th bit is flipped on if the i'th node is
+    // included in the state. Encoding the state this way allows us to compactly represent selecting
+    // a subset of the nodes present in the matching. Furthermore, it allows using the '&' binary
+    // operator to compare states to see if they overlap and the '|' operator to combine states.
+    //
+    // dp[i] contains the optimal cost of the MWPM for the nodes captured in the binary
+    // representation of `i`. The dp table is always half empty because all states with an odd
+    // number of nodes do not have a MWPM.
+    Double[] dp = new Double[1 << n];
+
+    // Memo table to save the history of the chosen states. This table is used to reconstruct the
+    // chosen pairs of nodes after the algorithm has executed.
+    int[] history = new int[1 << n];
+
+    // All the states consisting of pairs of nodes are the building blocks of this algorithm.
+    // In every iteration, we try to add a pair of nodes to previous state to construct a larger
+    // matching.
+    final int numPairs = (n * (n - 1)) / 2;
+    int[] pairStates = new int[numPairs];
+    double[] pairCost = new double[numPairs];
+
+    int k = 0;
+    for (int i = 0; i < n; i++) {
+      for (int j = i + 1; j < n; j++) {
+        int state = (1 << i) | (1 << j);
+        dp[state] = cost[i][j];
+        pairStates[k] = state;
+        pairCost[k] = cost[i][j];
+        k++;
       }
     }
-    int bestState = -1;
-    double minimum = Double.MAX_VALUE;
 
-    for (p2 = p1 + 1; p2 < n; p2++) {
-      // Position `p2` is on. Try matching the pair (p1, p2) together.
-      if ((state & (1 << p2)) > 0) {
-        int reducedState = state ^ (1 << p1) ^ (1 << p2);
-        double matchCost = f(reducedState, dp, history) + cost[p1][p2];
-        if (matchCost < minimum) {
-          minimum = matchCost;
-          bestState = reducedState;
+    for (int state = 0b11; state < (1 << n); state++) { // O(2^n)
+      // Skip states with an odd number of bits (nodes). It's easier (and faster) to
+      // check dp[state] instead of calling `Integer.bitCount` for the bit count.
+      if (dp[state] == null) {
+        continue;
+      }
+      for (int i = 0; i < numPairs; i++) { // O(n^2)
+        int pair = pairStates[i];
+        // Ignore states which overlap
+        if ((state & pair) != 0) continue;
+
+        int newState = state | pair;
+        double newCost = dp[state] + pairCost[i];
+        if (dp[newState] == null || newCost < dp[newState]) {
+          dp[newState] = newCost;
+          // Save the fact that we went from 'state' -> 'newState'. From this we will be able to
+          // reconstruct which pairs of nodes were taken by looking at 'state' xor 'newState' which
+          // should give us the binary representation (state) of the pair used.
+          history[newState] = state;
         }
       }
     }
-    history[state] = bestState;
-    return dp[state] = minimum;
+
+    reconstructMatching(history);
+
+    minWeightCost = dp[END_STATE];
+    solved = true;
   }
 
   // Populates the `matching` array with a sorted deterministic matching sorted by lowest node
@@ -169,19 +160,11 @@ public class MinimumWeightPerfectMatchingRecursive implements MwpmInterface {
     // Sort the left nodes in ascending order.
     java.util.Arrays.sort(leftNodes);
 
-    int m = isOdd ? n - 2 : n;
-    matching = new int[m];
-
-    for (int i = 0, j = 0; i < n / 2; i++) {
-      int leftNode = leftNodes[i];
+    matching = new int[n];
+    for (int i = 0; i < n / 2; i++) {
+      matching[2 * i] = leftNodes[i];
       int rightNode = map[leftNodes[i]];
-      // Ignore the artificial node when there is an odd number of nodes.
-      if (isOdd && (leftNode == artificialNodeId || rightNode == artificialNodeId)) {
-        continue;
-      }
-      matching[2 * j] = leftNode;
-      matching[2 * j + 1] = rightNode;
-      j++;
+      matching[2 * i + 1] = rightNode;
     }
   }
 
@@ -213,8 +196,8 @@ public class MinimumWeightPerfectMatchingRecursive implements MwpmInterface {
       {1, 9, 9, 9, 9, 0},
     };
 
-    MinimumWeightPerfectMatchingRecursive mwpm =
-        new MinimumWeightPerfectMatchingRecursive(costMatrix);
+    WeightedMaximumCardinalityMatchingIterative mwpm =
+        new WeightedMaximumCardinalityMatchingIterative(costMatrix);
 
     // Print minimum weight perfect matching cost
     double cost = mwpm.getMinWeightCost();

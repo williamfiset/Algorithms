@@ -5,7 +5,7 @@ import static com.google.common.truth.Truth.assertThat;
 import java.util.*;
 import org.junit.*;
 
-public class MinimumWeightPerfectMatchingTest {
+public class WeightedMaximumCardinalityMatchingTest {
 
   static final int LOOPS = 50;
 
@@ -76,8 +76,8 @@ public class MinimumWeightPerfectMatchingTest {
 
   private static MwpmInterface[] getImplementations(double[][] costMatrix) {
     return new MwpmInterface[] {
-      new MinimumWeightPerfectMatchingRecursive(costMatrix),
-      new MinimumWeightPerfectMatchingIterative(costMatrix)
+      new WeightedMaximumCardinalityMatchingRecursive(costMatrix),
+      new WeightedMaximumCardinalityMatchingIterative(costMatrix)
     };
   }
 
@@ -109,7 +109,7 @@ public class MinimumWeightPerfectMatchingTest {
     addUndirectedWeightedEdge(g, 2, 4, 8);
     addUndirectedWeightedEdge(g, 3, 4, 2);
 
-    MwpmInterface mwpm = new MinimumWeightPerfectMatchingRecursive(g);
+    MwpmInterface mwpm = new WeightedMaximumCardinalityMatchingRecursive(g);
     double cost = mwpm.getMinWeightCost();
     assertThat(cost).isEqualTo(3.0);
 
@@ -290,12 +290,15 @@ public class MinimumWeightPerfectMatchingTest {
       double[][] costMatrix = new double[n][n];
       randomFillSymmetricMatrix(costMatrix, /*maxValue=*/ 3);
 
-      MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
-      BruteForceMwpm bfMwpm = new BruteForceMwpm(costMatrix);
-      double dpSoln = mwpm.getMinWeightCost();
-      double bfSoln = bfMwpm.getMinWeightCost();
+      MwpmInterface[] impls = getImplementations(costMatrix);
+      for (MwpmInterface mwpm : impls) {
 
-      assertThat(dpSoln).isEqualTo(bfSoln);
+        BruteForceMwpm bfMwpm = new BruteForceMwpm(costMatrix);
+        double dpSoln = mwpm.getMinWeightCost();
+        double bfSoln = bfMwpm.getMinWeightCost();
+
+        assertThat(dpSoln).isEqualTo(bfSoln);
+      }
     }
   }
 
