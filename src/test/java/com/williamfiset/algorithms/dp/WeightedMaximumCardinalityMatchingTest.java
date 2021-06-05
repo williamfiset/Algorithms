@@ -8,14 +8,13 @@ import org.junit.*;
 public class WeightedMaximumCardinalityMatchingTest {
 
   static final int LOOPS = 50;
-  static final int INF = 1000000;
 
   static class BruteForceMwpm {
     private int n;
-    private double[][] matrix;
+    private Double[][] matrix;
     private double minWeightMatching = Double.POSITIVE_INFINITY;
 
-    public BruteForceMwpm(double[][] matrix) {
+    public BruteForceMwpm(Double[][] matrix) {
       this.matrix = matrix;
       this.n = matrix.length;
     }
@@ -75,25 +74,24 @@ public class WeightedMaximumCardinalityMatchingTest {
     }
   }
 
-  private static MwpmInterface[] getImplementations(double[][] costMatrix) {
-    return new MwpmInterface[] {
-      new WeightedMaximumCardinalityMatchingRecursive(costMatrix),
-      new WeightedMaximumCardinalityMatchingIterative(costMatrix)
+  private static MwpmInterface[] getImplementations(Double[][] costMatrix) {
+    return new MwpmInterface[] {new WeightedMaximumCardinalityMatchingRecursive(costMatrix)
+      // new WeightedMaximumCardinalityMatchingIterative(costMatrix)
     };
   }
 
-  private static double[][] createEmptyMatrix(int n) {
-    double[][] costMatrix = new double[n][n];
+  private static Double[][] createEmptyMatrix(int n) {
+    Double[][] costMatrix = new Double[n][n];
     for (int i = 0; i < n; ++i) {
       for (int j = 0; j < n; ++j) {
         if (i == j) continue;
-        costMatrix[i][j] = INF;
+        costMatrix[i][j] = null;
       }
     }
     return costMatrix;
   }
 
-  private static void addUndirectedWeightedEdge(double[][] g, int from, int to, double weight) {
+  private static void addUndirectedWeightedEdge(Double[][] g, int from, int to, double weight) {
     g[from][to] = weight;
     g[to][from] = weight;
   }
@@ -101,7 +99,7 @@ public class WeightedMaximumCardinalityMatchingTest {
   @Test
   public void testSmallGraph_oddSize() {
     int n = 5;
-    double[][] g = createEmptyMatrix(n);
+    Double[][] g = createEmptyMatrix(n);
     // 0, 2; 3, 4
     addUndirectedWeightedEdge(g, 0, 1, 8);
     addUndirectedWeightedEdge(g, 0, 2, 1);
@@ -122,9 +120,9 @@ public class WeightedMaximumCardinalityMatchingTest {
   @Test
   public void testSmallestMatrix1() {
     // nodes 0 & 1 make the mwpm
-    double[][] costMatrix = {
-      {0, 1},
-      {1, 0},
+    Double[][] costMatrix = {
+      {0.0, 1.0},
+      {1.0, 0.0},
     };
     MwpmInterface[] impls = getImplementations(costMatrix);
     for (MwpmInterface mwpm : impls) {
@@ -140,11 +138,11 @@ public class WeightedMaximumCardinalityMatchingTest {
   @Test
   public void testSmallMatrix1() {
     // nodes 0 & 2 and 1 & 3 make the mwpm
-    double[][] costMatrix = {
-      {0, 2, 1, 2},
-      {2, 0, 2, 1},
-      {1, 2, 0, 2},
-      {2, 1, 2, 0},
+    Double[][] costMatrix = {
+      {0.0, 2.0, 1.0, 2.0},
+      {2.0, 0.0, 2.0, 1.0},
+      {1.0, 2.0, 0.0, 2.0},
+      {2.0, 1.0, 2.0, 0.0},
     };
 
     MwpmInterface[] impls = getImplementations(costMatrix);
@@ -161,11 +159,11 @@ public class WeightedMaximumCardinalityMatchingTest {
   @Test
   public void testSmallMatrix2() {
     // nodes 0 & 1 and 2 & 3 make the mwpm
-    double[][] costMatrix = {
-      {0, 1, 2, 2},
-      {1, 0, 2, 2},
-      {2, 2, 0, 1},
-      {2, 2, 1, 0},
+    Double[][] costMatrix = {
+      {0.0, 1.0, 2.0, 2.0},
+      {1.0, 0.0, 2.0, 2.0},
+      {2.0, 2.0, 0.0, 1.0},
+      {2.0, 2.0, 1.0, 0.0},
     };
 
     MwpmInterface[] impls = getImplementations(costMatrix);
@@ -182,13 +180,13 @@ public class WeightedMaximumCardinalityMatchingTest {
   @Test
   public void testMediumMatrix1() {
     // mwpm between 0 & 5, 1 & 2, 3 & 4
-    double[][] costMatrix = {
-      {0, 9, 9, 9, 9, 1},
-      {9, 0, 1, 9, 9, 9},
-      {9, 1, 0, 9, 9, 9},
-      {9, 9, 9, 0, 1, 9},
-      {9, 9, 9, 1, 0, 9},
-      {1, 9, 9, 9, 9, 0},
+    Double[][] costMatrix = {
+      {0.0, 9.0, 9.0, 9.0, 9.0, 1.0},
+      {9.0, 0.0, 1.0, 9.0, 9.0, 9.0},
+      {9.0, 1.0, 0.0, 9.0, 9.0, 9.0},
+      {9.0, 9.0, 9.0, 0.0, 1.0, 9.0},
+      {9.0, 9.0, 9.0, 1.0, 0.0, 9.0},
+      {1.0, 9.0, 9.0, 9.0, 9.0, 0.0},
     };
 
     MwpmInterface[] impls = getImplementations(costMatrix);
@@ -205,13 +203,13 @@ public class WeightedMaximumCardinalityMatchingTest {
   @Test
   public void testMediumMatrix2() {
     // mwpm between 0 & 1, 2 & 4, 3 & 5
-    double[][] costMatrix = {
-      {0, 1, 9, 9, 9, 9},
-      {1, 0, 9, 9, 9, 9},
-      {9, 9, 0, 9, 1, 9},
-      {9, 9, 9, 0, 9, 1},
-      {9, 9, 1, 9, 0, 9},
-      {9, 9, 9, 1, 9, 0},
+    Double[][] costMatrix = {
+      {0.0, 1.0, 9.0, 9.0, 9.0, 9.0},
+      {1.0, 0.0, 9.0, 9.0, 9.0, 9.0},
+      {9.0, 9.0, 0.0, 9.0, 1.0, 9.0},
+      {9.0, 9.0, 9.0, 0.0, 9.0, 1.0},
+      {9.0, 9.0, 1.0, 9.0, 0.0, 9.0},
+      {9.0, 9.0, 9.0, 1.0, 9.0, 0.0},
     };
 
     MwpmInterface[] impls = getImplementations(costMatrix);
@@ -228,11 +226,11 @@ public class WeightedMaximumCardinalityMatchingTest {
   @Test
   public void testMediumGraph_evenSize_fromSlides() {
     int n = 6;
-    double[][] g = createEmptyMatrix(n);
+    Double[][] g = createEmptyMatrix(n);
 
     addUndirectedWeightedEdge(g, 0, 1, 7);
     addUndirectedWeightedEdge(g, 0, 2, 6);
-    addUndirectedWeightedEdge(g, 0, 4, 11);
+    addUndirectedWeightedEdge(g, 0, 4, -1);
     addUndirectedWeightedEdge(g, 1, 3, 1);
     addUndirectedWeightedEdge(g, 1, 4, 3);
     addUndirectedWeightedEdge(g, 1, 5, 5);
@@ -251,10 +249,32 @@ public class WeightedMaximumCardinalityMatchingTest {
   }
 
   @Test
+  public void testMediumGraph_evenSize_nonPerfectMatchingFromSlides() {
+    int n = 6;
+    Double[][] g = createEmptyMatrix(n);
+
+    addUndirectedWeightedEdge(g, 0, 1, 6);
+    addUndirectedWeightedEdge(g, 1, 2, 7);
+    addUndirectedWeightedEdge(g, 1, 5, 8);
+    addUndirectedWeightedEdge(g, 1, 4, 9);
+    addUndirectedWeightedEdge(g, 1, 3, 10);
+    addUndirectedWeightedEdge(g, 3, 4, 11);
+
+    MwpmInterface mwpm = new WeightedMaximumCardinalityMatchingRecursive(g);
+    double cost = mwpm.getMinWeightCost();
+    assertThat(cost).isEqualTo(17);
+
+    int[] matching = mwpm.getMatching();
+
+    int[] expectedMatching = {0, 1, 3, 4};
+    assertThat(matching).isEqualTo(expectedMatching);
+  }
+
+  @Test
   public void testMatchingOutputsUniqueNodes() {
     for (int loop = 0; loop < LOOPS; loop++) {
       int n = Math.max(1, (int) (Math.random() * 11)) * 2; // n is either 2,4,6,8,10,12,14,16,18,20
-      double[][] costMatrix = new double[n][n];
+      Double[][] costMatrix = new Double[n][n];
       randomFillSymmetricMatrix(costMatrix, 100);
 
       MwpmInterface[] impls = getImplementations(costMatrix);
@@ -274,7 +294,7 @@ public class WeightedMaximumCardinalityMatchingTest {
   public void testMatchingAndCostAreConsistent() {
     for (int loop = 0; loop < LOOPS; loop++) {
       int n = Math.max(1, (int) (Math.random() * 11)) * 2; // n is either 2,4,6,8,10,12,14,16,18,20
-      double[][] costMatrix = new double[n][n];
+      Double[][] costMatrix = new Double[n][n];
       randomFillSymmetricMatrix(costMatrix, 100);
 
       MwpmInterface[] impls = getImplementations(costMatrix);
@@ -295,7 +315,7 @@ public class WeightedMaximumCardinalityMatchingTest {
   public void testAgainstBruteForce_largeValues() {
     for (int loop = 0; loop < LOOPS; loop++) {
       int n = Math.max(1, (int) (Math.random() * 6)) * 2; // n is either 2,4,6,8, or 10
-      double[][] costMatrix = new double[n][n];
+      Double[][] costMatrix = new Double[n][n];
       randomFillSymmetricMatrix(costMatrix, /*maxValue=*/ 10000);
 
       MwpmInterface[] impls = getImplementations(costMatrix);
@@ -313,7 +333,7 @@ public class WeightedMaximumCardinalityMatchingTest {
   public void testAgainstBruteForce_smallValues() {
     for (int loop = 0; loop < LOOPS; loop++) {
       int n = Math.max(1, (int) (Math.random() * 6)) * 2; // n is either 2,4,6,8, or 10
-      double[][] costMatrix = new double[n][n];
+      Double[][] costMatrix = new Double[n][n];
       randomFillSymmetricMatrix(costMatrix, /*maxValue=*/ 3);
 
       MwpmInterface[] impls = getImplementations(costMatrix);
@@ -328,7 +348,7 @@ public class WeightedMaximumCardinalityMatchingTest {
     }
   }
 
-  public void randomFillSymmetricMatrix(double[][] dist, int maxValue) {
+  public void randomFillSymmetricMatrix(Double[][] dist, int maxValue) {
     for (int i = 0; i < dist.length; i++) {
       for (int j = i + 1; j < dist.length; j++) {
         double val = (int) (Math.random() * maxValue);

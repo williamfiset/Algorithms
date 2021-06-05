@@ -34,8 +34,9 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
   private double minWeightCost;
   private int[] matching;
 
-  // The cost matrix should be a symmetric (i.e cost[i][j] = cost[j][i])
-  public WeightedMaximumCardinalityMatchingRecursive(double[][] cost) {
+  // The cost matrix should be a symmetric (i.e cost[i][j] = cost[j][i]) and have a cost of `null`
+  // between nodes i and j if no edge exists between those two nodes.
+  public WeightedMaximumCardinalityMatchingRecursive(Double[][] cost) {
     if (cost == null) throw new IllegalArgumentException("Input cannot be null");
     n = cost.length;
     if (n <= 1) throw new IllegalArgumentException("Invalid matrix size: " + n);
@@ -46,16 +47,17 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
   // Sets the cost matrix. If the number of nodes in the graph is odd, add an artificial
   // node that connects to every other node with a cost of infinity. This will make it easy
   // to find a perfect matching and remove in the artificial node in the end.
-  private void setCostMatrix(double[][] inputMatrix) {
-    double[][] newCostMatrix = inputMatrix;
+  private void setCostMatrix(Double[][] inputMatrix) {
+    double[][] newCostMatrix = null;
     if (n % 2 != 0) {
       isOdd = true;
       newCostMatrix = new double[n + 1][n + 1];
       double maxValue = Double.MIN_VALUE;
       for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-          newCostMatrix[i][j] = inputMatrix[i][j];
-          maxValue = Math.max(maxValue, inputMatrix[i][j]);
+          double edgeCost = inputMatrix[i][j] == null ? INF : inputMatrix[i][j];
+          newCostMatrix[i][j] = edgeCost;
+          maxValue = Math.max(maxValue, edgeCost);
         }
       }
       if (maxValue > INF) {
@@ -68,6 +70,14 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
       newCostMatrix[n][n] = 0;
       artificialNodeId = n;
       n++;
+    } else {
+      newCostMatrix = new double[n][n];
+      for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+          double edgeCost = inputMatrix[i][j] == null ? INF : inputMatrix[i][j];
+          newCostMatrix[i][j] = edgeCost;
+        }
+      }
     }
     this.cost = newCostMatrix;
   }
@@ -105,9 +115,12 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
     int[] history = new int[1 << n];
     minWeightCost = f(END_STATE, dp, history);
     // Remove the cost of the artificial node
-    if (isOdd) {
-      minWeightCost -= INF;
-    }
+    // if (isOdd) {
+    //   minWeightCost -= INF;
+    // }
+    // TODO(william): This isn't very elegant, or error proof...
+    // Remove cost of edges that were matched, but which don't actually exist.
+    while (minWeightCost > INF) minWeightCost -= INF;
     reconstructMatching(history);
     solved = true;
   }
@@ -153,6 +166,8 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
     int[] map = new int[n];
     int[] leftNodes = new int[n / 2];
 
+    int matchingSize = 0;
+
     // Reconstruct the matching of pairs of nodes working backwards through computed states.
     for (int i = 0, state = END_STATE; state != 0; state = history[state]) {
       // Isolate the pair used by xoring the state with the state used to generate it.
@@ -163,13 +178,18 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
 
       leftNodes[i++] = leftNode;
       map[leftNode] = rightNode;
+
+      if (cost[leftNode][rightNode] != INF) matchingSize++;
     }
+
+    matchingSize = matchingSize * 2;
 
     // Sort the left nodes in ascending order.
     java.util.Arrays.sort(leftNodes);
 
-    int m = isOdd ? n - 2 : n;
-    matching = new int[m];
+    // int m = isOdd ? n - 2 : n;
+    // matching = new int[m];
+    matching = new int[matchingSize];
 
     for (int i = 0, j = 0; i < n / 2; i++) {
       int leftNode = leftNodes[i];
@@ -178,9 +198,12 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
       if (isOdd && (leftNode == artificialNodeId || rightNode == artificialNodeId)) {
         continue;
       }
-      matching[2 * j] = leftNode;
-      matching[2 * j + 1] = rightNode;
-      j++;
+      // Only match edges which actually exist
+      if (cost[leftNode][rightNode] != INF) {
+        matching[2 * j] = leftNode;
+        matching[2 * j + 1] = rightNode;
+        j++;
+      }
     }
   }
 
@@ -203,13 +226,13 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
 
   private static void test() {
     // mwpm is expected to be between nodes: 0 & 5, 1 & 2, 3 & 4
-    double[][] costMatrix = {
-      {0, 9, 9, 9, 9, 1},
-      {9, 0, 1, 9, 9, 9},
-      {9, 1, 0, 9, 9, 9},
-      {9, 9, 9, 0, 1, 9},
-      {9, 9, 9, 1, 0, 9},
-      {1, 9, 9, 9, 9, 0},
+    Double[][] costMatrix = {
+      {0.0, 9.0, 9.0, 9.0, 9.0, 1.0},
+      {9.0, 0.0, 1.0, 9.0, 9.0, 9.0},
+      {9.0, 1.0, 0.0, 9.0, 9.0, 9.0},
+      {9.0, 9.0, 9.0, 0.0, 1.0, 9.0},
+      {9.0, 9.0, 9.0, 1.0, 0.0, 9.0},
+      {1.0, 9.0, 9.0, 9.0, 9.0, 0.0},
     };
 
     WeightedMaximumCardinalityMatchingRecursive mwpm =
