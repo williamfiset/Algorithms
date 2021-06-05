@@ -18,6 +18,32 @@ import java.util.*;
 
 public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterface {
 
+  private static class MatchingCost {
+    double cost = 0;
+    int impossibleEdgeMatches = 0;
+
+    public MatchingCost() {}
+
+    public MatchingCost(double cost) {
+      this.cost = cost;
+    }
+
+    public MatchingCost(double cost, int iem) {
+      this.cost = cost;
+      this.impossibleEdgeMatches = iem;
+    }
+
+    public MatchingCost(MatchingCost mc) {
+      this.cost = mc.cost;
+      this.impossibleEdgeMatches = mc.impossibleEdgeMatches;
+    }
+
+    @Override
+    public String toString() {
+      return cost + " " + impossibleEdgeMatches;
+    }
+  }
+
   // Inputs
   private int n;
   private Double[][] cost;
@@ -103,44 +129,22 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
 
   private void solve() {
     if (solved) return;
-    Rv[] dp = new Rv[1 << n];
+    MatchingCost[] dp = new MatchingCost[1 << n];
     int[] history = new int[1 << n];
 
-    Rv rv = f(END_STATE, dp, history);
-    minWeightCost = rv.cost;
+    MatchingCost mc = f(END_STATE, dp, history);
+    minWeightCost = mc.cost;
 
     reconstructMatching(history);
     solved = true;
   }
 
-  // Rv = Return Value
-  private static class Rv {
-    int invisibleEdgesSelected = 0;
-    double cost = Double.MAX_VALUE;
-
-    public Rv() {}
-
-    public Rv(double cost) {
-      this.cost = cost;
-    }
-
-    public Rv(Rv rv) {
-      this.cost = rv.cost;
-      this.invisibleEdgesSelected = rv.invisibleEdgesSelected;
-    }
-
-    @Override
-    public String toString() {
-      return cost + " " + invisibleEdgesSelected;
-    }
-  }
-
-  private Rv f(int state, Rv[] dp, int[] history) {
+  private MatchingCost f(int state, MatchingCost[] dp, int[] history) {
     if (dp[state] != null) {
       return dp[state];
     }
     if (state == 0) {
-      return new Rv(0);
+      return new MatchingCost();
     }
     int p1, p2;
     // Seek to find active bit position (p1)
@@ -151,71 +155,41 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
     }
 
     int bestState = -1;
-    Rv rv = new Rv();
-    rv.invisibleEdgesSelected = 99999;
+    MatchingCost bestMatchingCost = new MatchingCost(Double.MAX_VALUE, Integer.MAX_VALUE / 2);
 
     for (p2 = p1 + 1; p2 < n; p2++) {
       // Position `p2` is on. Try matching the pair (p1, p2) together.
       if ((state & (1 << p2)) > 0) {
         int reducedState = state ^ (1 << p1) ^ (1 << p2);
-        Rv matchCost = new Rv(f(reducedState, dp, history));
-        if (cost[p1][p2] == null) {
-          matchCost.invisibleEdgesSelected++;
-        } else {
-          matchCost.cost += cost[p1][p2];
-        }
-        if (shouldUpdateMinVal(rv, matchCost)) {
-          rv = new Rv(matchCost);
+        MatchingCost matchCost = new MatchingCost(f(reducedState, dp, history));
+        updateMatchingCost(matchCost, cost[p1][p2]);
+
+        if (shouldUpdateMatchingCost(bestMatchingCost, matchCost)) {
+          bestMatchingCost = new MatchingCost(matchCost);
           bestState = reducedState;
         }
       }
     }
     history[state] = bestState;
-    return dp[state] = new Rv(rv);
+    return dp[state] = bestMatchingCost;
   }
 
-  private static boolean shouldUpdateMinVal(Rv rv1, Rv rv2) {
-    if (rv2.invisibleEdgesSelected < rv1.invisibleEdgesSelected) {
+  private void updateMatchingCost(MatchingCost mc, Double value) {
+    if (value == null) {
+      mc.impossibleEdgeMatches++;
+    } else {
+      mc.cost += value;
+    }
+  }
+
+  private static boolean shouldUpdateMatchingCost(MatchingCost mc1, MatchingCost mc2) {
+    if (mc2.impossibleEdgeMatches < mc1.impossibleEdgeMatches) {
       return true;
     }
-    if (rv1.invisibleEdgesSelected == rv2.invisibleEdgesSelected && rv2.cost < rv1.cost) {
+    if (mc1.impossibleEdgeMatches == mc2.impossibleEdgeMatches && mc2.cost < mc1.cost) {
       return true;
     }
     return false;
-  }
-
-  private double ff(int state, Double[] dp, int[] history) {
-    if (dp[state] != null) {
-      return dp[state];
-    }
-    if (state == 0) {
-      return 0;
-    }
-    int p1, p2;
-    // Seek to find active bit position (p1)
-    for (p1 = 0; p1 < n; p1++) {
-      if ((state & (1 << p1)) > 0) {
-        break;
-      }
-    }
-    int bestState = -1;
-    double minimum = Double.MAX_VALUE;
-
-    for (p2 = p1 + 1; p2 < n; p2++) {
-      // Position `p2` is on. Try matching the pair (p1, p2) together.
-      if ((state & (1 << p2)) > 0) {
-        int reducedState = state ^ (1 << p1) ^ (1 << p2);
-        double matchCost = ff(reducedState, dp, history) + cost[p1][p2];
-        System.out.printf("Match cost: %f\n", matchCost);
-        if (matchCost < minimum) {
-          minimum = matchCost;
-          bestState = reducedState;
-        }
-        System.out.printf("%f | %f\n", cost[p1][p2], minimum);
-      }
-    }
-    history[state] = bestState;
-    return dp[state] = minimum;
   }
 
   // Populates the `matching` array with a sorted deterministic matching sorted by lowest node
