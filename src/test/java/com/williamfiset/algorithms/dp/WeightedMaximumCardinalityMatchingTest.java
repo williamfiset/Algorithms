@@ -8,6 +8,7 @@ import org.junit.*;
 public class WeightedMaximumCardinalityMatchingTest {
 
   static final int LOOPS = 50;
+  static final int INF = 1000000;
 
   static class BruteForceMwpm {
     private int n;
@@ -86,7 +87,7 @@ public class WeightedMaximumCardinalityMatchingTest {
     for (int i = 0; i < n; ++i) {
       for (int j = 0; j < n; ++j) {
         if (i == j) continue;
-        costMatrix[i][j] = 500;
+        costMatrix[i][j] = INF;
       }
     }
     return costMatrix;
@@ -222,6 +223,31 @@ public class WeightedMaximumCardinalityMatchingTest {
       int[] expectedMatching = {0, 1, 2, 4, 3, 5};
       assertThat(matching).isEqualTo(expectedMatching);
     }
+  }
+
+  @Test
+  public void testMediumGraph_evenSize_fromSlides() {
+    int n = 6;
+    double[][] g = createEmptyMatrix(n);
+
+    addUndirectedWeightedEdge(g, 0, 1, 7);
+    addUndirectedWeightedEdge(g, 0, 2, 6);
+    addUndirectedWeightedEdge(g, 0, 4, 11);
+    addUndirectedWeightedEdge(g, 1, 3, 1);
+    addUndirectedWeightedEdge(g, 1, 4, 3);
+    addUndirectedWeightedEdge(g, 1, 5, 5);
+    addUndirectedWeightedEdge(g, 2, 4, 5);
+    addUndirectedWeightedEdge(g, 3, 5, 3);
+    addUndirectedWeightedEdge(g, 4, 5, 8);
+
+    MwpmInterface mwpm = new WeightedMaximumCardinalityMatchingRecursive(g);
+    double cost = mwpm.getMinWeightCost();
+    assertThat(cost).isEqualTo(12);
+
+    int[] matching = mwpm.getMatching();
+
+    int[] expectedMatching = {0, 2, 1, 4, 3, 5};
+    assertThat(matching).isEqualTo(expectedMatching);
   }
 
   @Test
