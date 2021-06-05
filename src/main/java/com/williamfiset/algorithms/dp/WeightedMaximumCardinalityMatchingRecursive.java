@@ -20,15 +20,13 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
 
   // Inputs
   private int n;
-  private double[][] cost;
+  private Double[][] cost;
 
   // Internal
   private final int END_STATE;
   private int artificialNodeId = -1;
   private boolean isOdd;
   private boolean solved;
-
-  private static final double INF = 987654321;
 
   // Outputs
   private double minWeightCost;
@@ -48,37 +46,31 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
   // node that connects to every other node with a cost of infinity. This will make it easy
   // to find a perfect matching and remove in the artificial node in the end.
   private void setCostMatrix(Double[][] inputMatrix) {
-    double[][] newCostMatrix = null;
-    if (n % 2 != 0) {
-      isOdd = true;
-      newCostMatrix = new double[n + 1][n + 1];
-      double maxValue = Double.MIN_VALUE;
-      for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-          double edgeCost = inputMatrix[i][j] == null ? INF : inputMatrix[i][j];
-          newCostMatrix[i][j] = edgeCost;
-          maxValue = Math.max(maxValue, edgeCost);
-        }
-      }
-      if (maxValue > INF) {
-        throw new RuntimeException("INF value of " + INF + " is too small for input.");
-      }
-      for (int i = 0; i < n; i++) {
-        newCostMatrix[n][i] = INF;
-        newCostMatrix[i][n] = INF;
-      }
-      newCostMatrix[n][n] = 0;
-      artificialNodeId = n;
-      n++;
+    isOdd = (n % 2 == 0) ? false : true;
+    Double[][] newCostMatrix = null;
+
+    if (isOdd) {
+      newCostMatrix = new Double[n + 1][n + 1];
     } else {
-      newCostMatrix = new double[n][n];
-      for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-          double edgeCost = inputMatrix[i][j] == null ? INF : inputMatrix[i][j];
-          newCostMatrix[i][j] = edgeCost;
-        }
+      newCostMatrix = new Double[n][n];
+    }
+
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < n; ++j) {
+        newCostMatrix[i][j] = inputMatrix[i][j];
       }
     }
+
+    if (isOdd) {
+      for (int i = 0; i < n; i++) {
+        newCostMatrix[n][i] = null;
+        newCostMatrix[i][n] = null;
+      }
+      newCostMatrix[n][n] = 0.0;
+      artificialNodeId = n;
+      n++;
+    }
+
     this.cost = newCostMatrix;
   }
 
@@ -111,21 +103,88 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
 
   private void solve() {
     if (solved) return;
-    Double[] dp = new Double[1 << n];
+    Rv[] dp = new Rv[1 << n];
     int[] history = new int[1 << n];
-    minWeightCost = f(END_STATE, dp, history);
-    // Remove the cost of the artificial node
-    // if (isOdd) {
-    //   minWeightCost -= INF;
-    // }
-    // TODO(william): This isn't very elegant, or error proof...
-    // Remove cost of edges that were matched, but which don't actually exist.
-    while (minWeightCost > INF) minWeightCost -= INF;
+
+    Rv rv = f(END_STATE, dp, history);
+    minWeightCost = rv.cost;
+
     reconstructMatching(history);
     solved = true;
   }
 
-  private double f(int state, Double[] dp, int[] history) {
+  // Rv = Return Value
+  private static class Rv {
+    int invisibleEdgesSelected = 0;
+    double cost = Double.MAX_VALUE;
+
+    public Rv() {}
+
+    public Rv(double cost) {
+      this.cost = cost;
+    }
+
+    public Rv(Rv rv) {
+      this.cost = rv.cost;
+      this.invisibleEdgesSelected = rv.invisibleEdgesSelected;
+    }
+
+    @Override
+    public String toString() {
+      return cost + " " + invisibleEdgesSelected;
+    }
+  }
+
+  private Rv f(int state, Rv[] dp, int[] history) {
+    if (dp[state] != null) {
+      return dp[state];
+    }
+    if (state == 0) {
+      return new Rv(0);
+    }
+    int p1, p2;
+    // Seek to find active bit position (p1)
+    for (p1 = 0; p1 < n; p1++) {
+      if ((state & (1 << p1)) > 0) {
+        break;
+      }
+    }
+
+    int bestState = -1;
+    Rv rv = new Rv();
+    rv.invisibleEdgesSelected = 99999;
+
+    for (p2 = p1 + 1; p2 < n; p2++) {
+      // Position `p2` is on. Try matching the pair (p1, p2) together.
+      if ((state & (1 << p2)) > 0) {
+        int reducedState = state ^ (1 << p1) ^ (1 << p2);
+        Rv matchCost = new Rv(f(reducedState, dp, history));
+        if (cost[p1][p2] == null) {
+          matchCost.invisibleEdgesSelected++;
+        } else {
+          matchCost.cost += cost[p1][p2];
+        }
+        if (shouldUpdateMinVal(rv, matchCost)) {
+          rv = new Rv(matchCost);
+          bestState = reducedState;
+        }
+      }
+    }
+    history[state] = bestState;
+    return dp[state] = new Rv(rv);
+  }
+
+  private static boolean shouldUpdateMinVal(Rv rv1, Rv rv2) {
+    if (rv2.invisibleEdgesSelected < rv1.invisibleEdgesSelected) {
+      return true;
+    }
+    if (rv1.invisibleEdgesSelected == rv2.invisibleEdgesSelected && rv2.cost < rv1.cost) {
+      return true;
+    }
+    return false;
+  }
+
+  private double ff(int state, Double[] dp, int[] history) {
     if (dp[state] != null) {
       return dp[state];
     }
@@ -146,11 +205,13 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
       // Position `p2` is on. Try matching the pair (p1, p2) together.
       if ((state & (1 << p2)) > 0) {
         int reducedState = state ^ (1 << p1) ^ (1 << p2);
-        double matchCost = f(reducedState, dp, history) + cost[p1][p2];
+        double matchCost = ff(reducedState, dp, history) + cost[p1][p2];
+        System.out.printf("Match cost: %f\n", matchCost);
         if (matchCost < minimum) {
           minimum = matchCost;
           bestState = reducedState;
         }
+        System.out.printf("%f | %f\n", cost[p1][p2], minimum);
       }
     }
     history[state] = bestState;
@@ -179,16 +240,13 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
       leftNodes[i++] = leftNode;
       map[leftNode] = rightNode;
 
-      if (cost[leftNode][rightNode] != INF) matchingSize++;
+      if (cost[leftNode][rightNode] != null) matchingSize++;
     }
-
-    matchingSize = matchingSize * 2;
 
     // Sort the left nodes in ascending order.
     java.util.Arrays.sort(leftNodes);
 
-    // int m = isOdd ? n - 2 : n;
-    // matching = new int[m];
+    matchingSize = matchingSize * 2;
     matching = new int[matchingSize];
 
     for (int i = 0, j = 0; i < n / 2; i++) {
@@ -199,7 +257,7 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
         continue;
       }
       // Only match edges which actually exist
-      if (cost[leftNode][rightNode] != INF) {
+      if (cost[leftNode][rightNode] != null) {
         matching[2 * j] = leftNode;
         matching[2 * j + 1] = rightNode;
         j++;
