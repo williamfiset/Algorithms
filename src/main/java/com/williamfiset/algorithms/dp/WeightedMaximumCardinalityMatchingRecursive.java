@@ -20,8 +20,8 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
 
   // A `MatchingCost` object captures the cost of a matching. Because we allow matching nodes which
   // do not have edges between them we define `impossibleEdgeMatches` to track the number of times
-  // this happens. When comparing two MatchingCost objects, the one with the fewest number of 
-  // impossible edges matches is ranked higher and ties broken based on cost, see the 
+  // this happens. When comparing two MatchingCost objects, the one with the fewest number of
+  // impossible edges matches is ranked higher and ties broken based on cost, see the
   // `isBetterMatchingCost` method below.
   private static class MatchingCost {
     double cost = 0;
@@ -37,6 +37,20 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
     public MatchingCost(MatchingCost mc) {
       this.cost = mc.cost;
       this.impossibleEdgeMatches = mc.impossibleEdgeMatches;
+    }
+
+    public static MatchingCost createInfiniteValueMatchingCost() {
+      return new MatchingCost(Double.MAX_VALUE, Integer.MAX_VALUE / 2);
+    }
+
+    // Updates the MatchingCost with the value of a particular edge. If the specified edge value is
+    // `null`, then the edge doesn't actually exist in the graph.
+    public void updateMatchingCost(Double edgeCost) {
+      if (edgeCost == null) {
+        impossibleEdgeMatches++;
+      } else {
+        cost += edgeCost;
+      }
     }
 
     // Checks if the current matching cost is better than `mc`
@@ -144,8 +158,8 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
     MatchingCost[] dp = new MatchingCost[1 << n];
     int[] history = new int[1 << n];
 
-    MatchingCost mc = f(END_STATE, dp, history);
-    minWeightCost = mc.cost;
+    MatchingCost matchingCost = f(END_STATE, dp, history);
+    minWeightCost = matchingCost.cost;
 
     reconstructMatching(history);
     solved = true;
@@ -167,7 +181,7 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
     }
 
     int bestState = -1;
-    MatchingCost bestMatchingCost = new MatchingCost(Double.MAX_VALUE, Integer.MAX_VALUE / 2);
+    MatchingCost bestMatchingCost = MatchingCost.createInfiniteValueMatchingCost();
 
     for (p2 = p1 + 1; p2 < n; p2++) {
       // Position `p2` is on. Try matching the pair (p1, p2) together.
@@ -175,7 +189,7 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
         int reducedState = state ^ (1 << p1) ^ (1 << p2);
 
         MatchingCost matchCost = new MatchingCost(f(reducedState, dp, history));
-        updateMatchingCost(matchCost, cost[p1][p2]);
+        matchCost.updateMatchingCost(cost[p1][p2]);
 
         if (matchCost.isBetterMatchingCost(bestMatchingCost)) {
           bestMatchingCost = matchCost;
@@ -185,14 +199,6 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
     }
     history[state] = bestState;
     return dp[state] = bestMatchingCost;
-  }
-
-  private void updateMatchingCost(MatchingCost mc, Double value) {
-    if (value == null) {
-      mc.impossibleEdgeMatches++;
-    } else {
-      mc.cost += value;
-    }
   }
 
   // Populates the `matching` array with a sorted deterministic matching sorted by lowest node
@@ -217,7 +223,9 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
       leftNodes[i++] = leftNode;
       map[leftNode] = rightNode;
 
-      if (cost[leftNode][rightNode] != null) matchingSize++;
+      if (cost[leftNode][rightNode] != null) {
+        matchingSize++;
+      }
     }
 
     // Sort the left nodes in ascending order.
