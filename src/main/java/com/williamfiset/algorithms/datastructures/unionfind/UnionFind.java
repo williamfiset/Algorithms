@@ -93,9 +93,11 @@ public class UnionFind {
     if (sz[root1] < sz[root2]) {
       sz[root2] += sz[root1];
       id[root1] = root2;
+      id[root2] = 0;
     } else {
       sz[root1] += sz[root2];
       id[root2] = root1;
+      id[root1] = 0;
     }
 
     // Since the roots found are different we know that the
