@@ -75,7 +75,7 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
   private Double[][] cost;
 
   // Internal
-  private final int END_STATE;
+  private final int FULL_STATE;
   private int artificialNodeId = -1;
   private boolean isOdd;
   private boolean solved;
@@ -91,7 +91,7 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
     n = cost.length;
     if (n <= 1) throw new IllegalArgumentException("Invalid matrix size: " + n);
     setCostMatrix(cost);
-    END_STATE = (1 << n) - 1;
+    FULL_STATE = (1 << n) - 1;
   }
 
   // Sets the cost matrix. If the number of nodes in the graph is odd, add an artificial
@@ -158,7 +158,7 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
     MatchingCost[] dp = new MatchingCost[1 << n];
     int[] history = new int[1 << n];
 
-    MatchingCost matchingCost = f(END_STATE, dp, history);
+    MatchingCost matchingCost = f(FULL_STATE, dp, history);
     minWeightCost = matchingCost.cost;
 
     reconstructMatching(history);
@@ -197,6 +197,7 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
         }
       }
     }
+
     history[state] = bestState;
     return dp[state] = bestMatchingCost;
   }
@@ -213,7 +214,7 @@ public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterfac
     int matchingSize = 0;
 
     // Reconstruct the matching of pairs of nodes working backwards through computed states.
-    for (int i = 0, state = END_STATE; state != 0; state = history[state]) {
+    for (int i = 0, state = FULL_STATE; state != 0; state = history[state]) {
       // Isolate the pair used by xoring the state with the state used to generate it.
       int pairUsed = state ^ history[state];
 
