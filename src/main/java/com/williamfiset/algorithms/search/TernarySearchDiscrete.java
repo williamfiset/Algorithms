@@ -41,7 +41,7 @@ public class TernarySearchDiscrete {
       } else if (res1 > res2) lo = mid1;
       else hi = mid2;
     }
-    return lo;
+    return f(lo);
   }
 
   public static void main(String[] args) {
