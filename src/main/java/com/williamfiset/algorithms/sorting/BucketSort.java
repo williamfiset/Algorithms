@@ -38,6 +38,7 @@ public class BucketSort implements InplaceSort {
     // Place each element in a bucket
     for (int i = 0; i < N; i++) {
       int bi = (ar[i] - minValue) / M;
+      System.out.printf("%d placed into bucket %d\n", ar[i], bi);
       List<Integer> bucket = buckets.get(bi);
       bucket.add(ar[i]);
     }
