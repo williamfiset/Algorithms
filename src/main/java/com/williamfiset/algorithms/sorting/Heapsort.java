@@ -21,10 +21,11 @@ public class Heapsort implements InplaceSort {
   private static void heapsort(int[] ar) {
     if (ar == null) return;
     int n = ar.length;
+    if (n <= 1) return;
 
     // Heapify, converts array into binary heap O(n), see:
     // http://www.cs.umd.edu/~meesh/351/mount/lectures/lect14-heapsort-analysis-part.pdf
-    for (int i = Math.max(0, (n / 2) - 1); i >= 0; i--) {
+    for (int i = (n / 2) - 1; i >= 0; i--) {
       sink(ar, n, i);
     }
 
