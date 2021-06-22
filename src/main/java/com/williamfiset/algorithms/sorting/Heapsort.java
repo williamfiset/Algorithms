@@ -30,7 +30,7 @@ public class Heapsort implements InplaceSort {
     }
 
     // Sorting bit
-    for (int i = n - 1; i >= 0; i--) {
+    for (int i = n - 1; i > 0; i--) {
       swap(ar, 0, i);
       sink(ar, i, 0);
     }
