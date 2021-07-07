@@ -20,7 +20,7 @@ public class SelectionSort implements InplaceSort {
     if (array == null) return;
     final int N = array.length;
 
-    for (int i = 0; i < N; i++) {
+    for (int i = 0; i < N-1; i++) {
       // Find the index beyond i with a lower value than i
       int swapIndex = i;
       for (int j = i + 1; j < N; j++) {
