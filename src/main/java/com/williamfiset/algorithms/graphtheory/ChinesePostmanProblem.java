@@ -1,5 +1,9 @@
 /**
  * This file is still a WIP
+ * 
+ * Still need to:
+ * - Implemented undirected edge eulerain path algo
+ * 
  *
  * <p>./gradlew run -Palgorithm=graphtheory.ChinesePostmanProblem
  */
@@ -123,6 +127,16 @@ public class ChinesePostmanProblem {
       System.out.print("]\n");
     }
 
+    EulerianPathDirectedEdgesAdjacencyList eulerPathSolver = new EulerianPathDirectedEdgesAdjacencyList(g);
+    List<Edge> cppTour = eulerPathSolver.getEulerianPath();
+
+    double tourTotal = 0;
+    for (Edge edge : cppTour) {
+      System.out.printf("%d -> %d with cost: %f\n", edge.from, edge.to, edge.cost);
+      tourTotal += edge.cost;
+    }
+    System.out.println(tourTotal);
+    System.out.println(tourTotal/2.0);
   }
 
   private static Edge findEdge(List<List<Edge>> g, int to, int from) {
@@ -489,8 +503,8 @@ public class ChinesePostmanProblem {
   }
 
   public static void main(String[] args) {
-    // cppTest1();
-    eulerTest1();
+    cppTest1();
+    // eulerTest1();
   }
 
   private static void eulerTest1() {
