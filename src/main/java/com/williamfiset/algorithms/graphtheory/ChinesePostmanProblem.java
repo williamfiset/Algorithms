@@ -1,9 +1,7 @@
 /**
  * This file is still a WIP
- * 
- * Still need to:
- * - Implemented undirected edge eulerain path algo
- * 
+ *
+ * <p>Still need to: - Implemented undirected edge eulerain path algo
  *
  * <p>./gradlew run -Palgorithm=graphtheory.ChinesePostmanProblem
  */
@@ -127,7 +125,8 @@ public class ChinesePostmanProblem {
       System.out.print("]\n");
     }
 
-    EulerianPathDirectedEdgesAdjacencyList eulerPathSolver = new EulerianPathDirectedEdgesAdjacencyList(g);
+    EulerianPathDirectedEdgesAdjacencyList eulerPathSolver =
+        new EulerianPathDirectedEdgesAdjacencyList(g);
     List<Edge> cppTour = eulerPathSolver.getEulerianPath();
 
     double tourTotal = 0;
@@ -136,7 +135,7 @@ public class ChinesePostmanProblem {
       tourTotal += edge.cost;
     }
     System.out.println(tourTotal);
-    System.out.println(tourTotal/2.0);
+    System.out.println(tourTotal / 2.0);
   }
 
   private static Edge findEdge(List<List<Edge>> g, int to, int from) {
@@ -154,7 +153,8 @@ public class ChinesePostmanProblem {
 
   private static class WeightedMaximumCardinalityMatchingRecursive {
 
-    // A `MatchingCost` object captures the cost of a matching. Because we allow matching nodes which
+    // A `MatchingCost` object captures the cost of a matching. Because we allow matching nodes
+    // which
     // do not have edges between them we define `impossibleEdgeMatches` to track the number of times
     // this happens. When comparing two MatchingCost objects, the one with the fewest number of
     // impossible edges matches is ranked higher and ties broken based on cost, see the
@@ -179,7 +179,8 @@ public class ChinesePostmanProblem {
         return new MatchingCost(Double.MAX_VALUE, Integer.MAX_VALUE / 2);
       }
 
-      // Updates the MatchingCost with the value of a particular edge. If the specified edge value is
+      // Updates the MatchingCost with the value of a particular edge. If the specified edge value
+      // is
       // `null`, then the edge doesn't actually exist in the graph.
       public void updateMatchingCost(Double edgeCost) {
         if (edgeCost == null) {
@@ -399,7 +400,8 @@ public class ChinesePostmanProblem {
     }
   } // WeightedMaximumCardinalityMatchingRecursive
 
-  // TODO(william): implement tests for this modified Eulerian path algo. It should be able to return
+  // TODO(william): implement tests for this modified Eulerian path algo. It should be able to
+  // return
   // the correct edges from a multi graph. The other impl in this repo bans multigraphs.
   private static class EulerianPathDirectedEdgesAdjacencyList {
 
@@ -482,7 +484,6 @@ public class ChinesePostmanProblem {
         path.addFirst(nextEdge);
       }
     }
-
   } // EulerianPathDirectedEdgesAdjacencyList
 
   public static List<List<Edge>> createEmptyGraph(int n) {
@@ -523,7 +524,7 @@ public class ChinesePostmanProblem {
     }
   }
 
-  private static void cppTest1(){
+  private static void cppTest1() {
     int n = 6;
     List<List<Edge>> g = createEmptyGraph(n);
     addUndirectedEdge(g, 0, 1, 5);
@@ -538,5 +539,3 @@ public class ChinesePostmanProblem {
     ChinesePostmanProblem cpp = new ChinesePostmanProblem(g);
   }
 }
-
-

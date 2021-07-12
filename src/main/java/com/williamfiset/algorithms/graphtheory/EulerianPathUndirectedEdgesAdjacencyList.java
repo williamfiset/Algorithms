@@ -1,7 +1,7 @@
 /**
  * Implementation of finding an Eulerian Path on a n undirected graph.
- * 
- * This impl is still a WIP
+ *
+ * <p>This impl is still a WIP
  *
  * <p>Run: ./gradlew run -Palgorithm=graphtheory.EulerianPathUndirectedEdgesAdjacencyList
  *
@@ -10,11 +10,6 @@
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.graphtheory;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 public class EulerianPathUndirectedEdgesAdjacencyList {
 
