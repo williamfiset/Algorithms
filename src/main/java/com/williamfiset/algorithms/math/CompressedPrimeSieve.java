@@ -27,7 +27,7 @@ public class CompressedPrimeSieve {
   }
 
   // Returns true if the bit for n is off (meaning n is a prime).
-  // Note: do use this method to access numbers outside your prime sieve range!
+  // Note: do not use this method to access numbers outside your prime sieve range!
   private static boolean isNotSet(long[] arr, int n) {
     if (n < 2) return false; // n is not prime
     if (n == 2) return true; // two is prime
@@ -50,7 +50,7 @@ public class CompressedPrimeSieve {
     // if (limit < 2) return 0; // uncomment for primeCount purposes
     // int primeCount = (int) Math.ceil(limit / 2.0); // Counts number of primes <= limit
     long[] chunks = new long[numChunks];
-    chunks[0] = 1; // 1 as not prime
+    chunks[0] = 1; // 1 is not prime
     for (int i = 3; i <= sqrtLimit; i += 2)
       if (isNotSet(chunks, i))
         for (int j = i * i; j <= limit; j += i)
