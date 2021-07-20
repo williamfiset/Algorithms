@@ -65,6 +65,10 @@ public class KnapsackUnbounded {
     // the best possible value for each knapsack weight
     int[] DP = new int[maxWeight + 1];
 
+    // 2D DPMatrix for backtracking 
+    int[][] DPMatrix = new int[N + 1][maxWeight + 1];
+    int maxIndex = 0; 
+    
     // Consider all possible knapsack sizes
     for (int sz = 1; sz <= maxWeight; sz++) {
 
@@ -74,12 +78,51 @@ public class KnapsackUnbounded {
         // First check that we can include this item (we can't include it if
         // it's too heavy for our knapsack). Assumming it fits inside the
         // knapsack check if including this element would be profitable.
-        if (sz - W[i] >= 0 && DP[sz - W[i]] + V[i] > DP[sz]) DP[sz] = DP[sz - W[i]] + V[i];
+        if (sz - W[i] >= 0 && DP[sz - W[i]] + V[i] > DP[sz]) {
+        	DP[sz] = DP[sz - W[i]] + V[i];
+        	DPMatrix[i][sz] = DP[sz - W[i]] + V[i];
+        	maxIndex = i;
+        } 
       }
+    }
+    
+    // Array to store quantity for each item
+    int [] quantity = new int[N + 1];
+    
+    int value1 = DPMatrix[maxIndex][maxWeight];
+    
+    for(int k = maxWeight; k > 1;k--) {
+  	  int value2 = DPMatrix[maxIndex][k - 1];
+  	  
+  	  if((value1 - value2) == value1) {
+  		  continue;
+  	  }
+  	  else if(value1 == value2){
+  		  for(int i = 0; i < N ; i++) {
+  			  if (value1 == V[i])  {
+  				  quantity[i]  = quantity[i] + 1;
+  			  }
+  		  }	
+  	  }
+  	  else {
+  		  int diff = value1 - value2;
+  		  for(int i = 0; i < N ; i++) {
+  			  if (diff == V[i]) {
+  				  quantity[i]  = quantity[i] + 1;
+  				  value1 = value2;
+  			  } 
+  		  } 
+  	  }
+    }
+    
+    // Display item weight, value and quantity
+    System.out.println("Item\tWeight\tValue\tQuantity");
+    for(int i = 0; i < quantity.length - 1;i++) {
+    	System.out.println((i+1) + "\t" + W[i] + "\t" + V[i] + "\t" + quantity[i]);
     }
 
     // Return the best value achievable
-    return DP[maxWeight];
+    return DPMatrix[maxIndex][maxWeight];
   }
 
   public static void main(String[] args) {
