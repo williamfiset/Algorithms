@@ -28,7 +28,8 @@ public class EditDistance {
     return m;
   }
 
-  // TODO(william): Define whether we're transforming a into b, or b into b. That should matter, right??
+  // TODO(william): Define whether we're transforming a into b, or b into b. That should matter,
+  // right??
   // Count the edit distance to transform `a` into `b`
   public int editDistance() {
     Integer[][] dp = new Integer[a.length + 1][b.length + 1];
@@ -122,30 +123,3 @@ public class EditDistance {
     System.out.println(micahEditDistance(a, b, 2, 3, 10));
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
