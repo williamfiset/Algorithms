@@ -74,8 +74,6 @@ public class LinkedListTest {
     assertThat(list.size()).isEqualTo(4);
     list.addAt(1, 8);
     assertThat(list.size()).isEqualTo(5);
-    list.addAt(100, 8);
-    assertThat(list.size()).isEqualTo(6);
   }
 
   @Test
