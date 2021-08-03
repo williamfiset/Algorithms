@@ -1,11 +1,10 @@
 /**
  * A solution to the edit distance problem
- * 
- * Tested against:
- * https://leetcode.com/problems/edit-distance
- * 
+ *
+ * <p>Tested against: https://leetcode.com/problems/edit-distance
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
- **/
+ */
 package com.williamfiset.algorithms.dp;
 
 public class EditDistanceRecursive {
@@ -92,9 +91,3 @@ public class EditDistanceRecursive {
     System.out.println(solver.editDistance());
   }
 }
-
-
-
-
-
-
