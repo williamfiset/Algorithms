@@ -46,7 +46,7 @@ public class EditDistanceRecursive {
     }
     if (i == a.length) {
       return (b.length - j) * insertionCost;
-     }
+    }
     if (j == b.length) {
       return (a.length - i) * deletionCost;
     }
