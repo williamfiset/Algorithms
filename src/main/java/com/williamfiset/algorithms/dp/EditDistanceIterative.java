@@ -15,7 +15,7 @@ public class EditDistanceIterative {
       String a, String b, int insertionCost, int deletionCost, int substitutionCost) {
 
     final int AL = a.length(), BL = b.length();
-    int[][] arr = new int[AL + 1][BL + 1];
+    int[][] dp = new int[AL + 1][BL + 1];
 
     for (int i = 0; i <= AL; i++) {
       for (int j = (i == 0 ? 1 : 0); j <= BL; j++) {
@@ -24,19 +24,19 @@ public class EditDistanceIterative {
 
         // Substitution
         if (i > 0 && j > 0)
-          min = arr[i - 1][j - 1] + (a.charAt(i - 1) == b.charAt(j - 1) ? 0 : substitutionCost);
+          min = dp[i - 1][j - 1] + (a.charAt(i - 1) == b.charAt(j - 1) ? 0 : substitutionCost);
 
         // Deletion
-        if (i > 0) min = Math.min(min, arr[i - 1][j] + deletionCost);
+        if (i > 0) min = Math.min(min, dp[i - 1][j] + deletionCost);
 
         // Insertion
-        if (j > 0) min = Math.min(min, arr[i][j - 1] + insertionCost);
+        if (j > 0) min = Math.min(min, dp[i][j - 1] + insertionCost);
 
-        arr[i][j] = min;
+        dp[i][j] = min;
       }
     }
 
-    return arr[AL][BL];
+    return dp[AL][BL];
   }
 
   public static void main(String[] args) {

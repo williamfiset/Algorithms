@@ -46,17 +46,17 @@ public class EditDistanceRecursive {
     }
     if (i == a.length) {
       return (b.length - j) * insertionCost;
-    }
+     }
     if (j == b.length) {
       return (a.length - i) * deletionCost;
     }
     if (dp[i][j] != null) {
       return dp[i][j];
     }
-    int substitute = f(dp, i + 1, j + 1) + (a[i] == b[j] ? 0 : substitutionCost);
+    int substituteOrSkip = f(dp, i + 1, j + 1) + (a[i] == b[j] ? 0 : substitutionCost);
     int delete = f(dp, i + 1, j) + deletionCost;
     int insert = f(dp, i, j + 1) + insertionCost;
-    return dp[i][j] = min(substitute, delete, insert);
+    return dp[i][j] = min(substituteOrSkip, delete, insert);
   }
 
   public static void main(String[] args) {

@@ -129,7 +129,8 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 ## Dynamic Programming Classics
 
 - [Coin change problem](src/main/java/com/williamfiset/algorithms/dp/CoinChange.java) **- O(nW)**
-- [Edit distance](src/main/java/com/williamfiset/algorithms/dp/EditDistance.java) **- O(nm)**
+- [Edit distance (iterative)](src/main/java/com/williamfiset/algorithms/dp/EditDistanceIterative.java) **- O(nm)**
+- [Edit distance (recursive)](src/main/java/com/williamfiset/algorithms/dp/EditDistanceRecursive.java) **- O(nm)**
 - [:movie_camera:](https://www.youtube.com/watch?v=cJ21moQpofY) [Knapsack 0/1](src/main/java/com/williamfiset/algorithms/dp/Knapsack_01.java) **- O(nW)**
 - [Knapsack unbounded (0/∞)](src/main/java/com/williamfiset/algorithms/dp/KnapsackUnbounded.java) **- O(nW)**
 - [Maximum contiguous subarray](src/main/java/com/williamfiset/algorithms/dp/MaximumSubarray.java) **- O(n)**
