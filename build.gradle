@@ -1,6 +1,8 @@
 apply plugin: 'java'
 apply plugin: "com.github.sherter.google-java-format"
 apply plugin: 'application'
+apply plugin: 'jacoco'
+apply plugin: "org.sonarqube" version "2.7"
 
 mainClassName = findProperty("main") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"
 
@@ -74,3 +76,12 @@ task buildDependenciesFolder(type: Copy) {
   from configurations.compile
   into './dependencies'
 }
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+check.dependsOn jacocoTestReport

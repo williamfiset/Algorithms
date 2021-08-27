@@ -8,6 +8,9 @@ jdk:
 
 sudo: false
 
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
 addons:
   apt:
     packages:
@@ -16,3 +19,4 @@ addons:
 script:
   - ./gradlew googleJavaFormat
   - ./gradlew build
+  - ./gradlew test sonarqube -Dsonar.host.url=https://sonar.josdem.io
