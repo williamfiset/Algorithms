@@ -19,4 +19,4 @@ addons:
 script:
   - ./gradlew googleJavaFormat
   - ./gradlew build
-  - ./gradlew test 
+  - ./gradlew test -Dsonar.host.url=https://sonar.josdem.io

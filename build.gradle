@@ -26,6 +26,7 @@ buildscript {
 
 apply plugin: 'org.sonarqube'
 // Require Java 8
+version = '0.0.1'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -97,10 +98,10 @@ check.dependsOn jacocoTestReport
 
 //systemProp.sonar.host.url=http://localhost:9000
 
-/*sonarqube {
+sonarqube {
     properties {
-        property 'sonar.host.url', 'http://localhost:9000'
-        // Insert other SonarQube properties here
+        //property 'sonar.host.url', 'http://localhost:9000'
+        //Insert other SonarQube properties here
         property 'sonar.projectName', 'Example of SonarQube Scanner for Gradle Usage (multimodule with Jacoco code coverage)'
         property 'sonar.projectKey', 'org.sonarqube.gradle-multi-module-jacoco'
     }
@@ -108,4 +109,4 @@ check.dependsOn jacocoTestReport
 
 tasks.named('sonarqube').configure {
     dependsOn test
-}*/
+}
