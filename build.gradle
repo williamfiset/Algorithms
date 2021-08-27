@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: "com.github.sherter.google-java-format"
 apply plugin: 'application'
 apply plugin: 'jacoco'
-apply plugin: 'org.sonarqube'
+ 
 
 mainClassName = findProperty("main") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"
 
@@ -15,9 +15,14 @@ buildscript {
   dependencies {
     // https://github.com/sherter/google-java-format-gradle-plugin
     classpath "gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.8"
+    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3"
+    //implementation 'com.google.guava:guava:29.0-jre'
+    //testImplementation 'junit:junit:4.13.1'
+
   }
 }
 
+apply plugin: 'org.sonarqube'
 // Require Java 8
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -26,6 +31,8 @@ repositories {
   mavenLocal()
   mavenCentral()
 }
+
+//project.tasks["sonarqube"].dependsOn "test"
 
 // Describe all project deps. Use 'testCompile' for test dependencies and
 // 'compile' for project dependencies.
@@ -85,3 +92,18 @@ jacocoTestReport {
 }
 
 check.dependsOn jacocoTestReport
+
+//systemProp.sonar.host.url=http://localhost:9000
+
+sonarqube {
+    properties {
+        property 'sonar.host.url', 'http://localhost:9000'
+        // Insert other SonarQube properties here
+        property 'sonar.projectName', 'Example of SonarQube Scanner for Gradle Usage (multimodule with Jacoco code coverage)'
+        property 'sonar.projectKey', 'org.sonarqube.gradle-multi-module-jacoco'
+    }
+}
+
+tasks.named('sonarqube').configure {
+    dependsOn test
+}
