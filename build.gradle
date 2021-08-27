@@ -15,7 +15,7 @@ buildscript {
   dependencies {
     // https://github.com/sherter/google-java-format-gradle-plugin
     classpath "gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.8"
-    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3"
+    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5"
     //implementation 'com.google.guava:guava:29.0-jre'
     //testImplementation 'junit:junit:4.13.1'
 
@@ -95,7 +95,7 @@ check.dependsOn jacocoTestReport
 
 //systemProp.sonar.host.url=http://localhost:9000
 
-sonarqube {
+/*sonarqube {
     properties {
         property 'sonar.host.url', 'http://localhost:9000'
         // Insert other SonarQube properties here
@@ -106,4 +106,4 @@ sonarqube {
 
 tasks.named('sonarqube').configure {
     dependsOn test
-}
+}*/
