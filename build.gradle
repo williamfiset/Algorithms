@@ -15,7 +15,7 @@ buildscript {
   dependencies {
     // https://github.com/sherter/google-java-format-gradle-plugin
     classpath "gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.8"
-    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5"
+    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7"
     //implementation 'com.google.guava:guava:29.0-jre'
     //testImplementation 'junit:junit:4.13.1'
 
