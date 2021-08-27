@@ -1,0 +1,18 @@
+language: java
+install: skip
+
+dist: trusty
+
+jdk:
+  - oraclejdk8
+
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+
+script:
+  - ./gradlew googleJavaFormat
+  - ./gradlew build
