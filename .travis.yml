@@ -21,4 +21,9 @@ script:
   - ./gradlew build
   - ./gradlew test sonarqube -Dsonar.host.url=https://sonar.josdem.io
 
- 
+ cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'
+    - '$HOME/.gradle'
+    - '.gradle'
