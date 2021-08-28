@@ -126,7 +126,6 @@ public class KnapsackUnbounded {
   }
 
   public static void main(String[] args) {
-
     int[] W = {3, 6, 2};
     int[] V = {5, 20, 3};
     int knapsackValue = unboundedKnapsackSpaceEfficient(10, W, V);
