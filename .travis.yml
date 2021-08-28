@@ -22,38 +22,6 @@ before_script:
 script:
   - ./gradlew googleJavaFormat
   - ./gradlew build
-  - coverage.xml
-  - ./gradlew test -Dsonar.host.url=https://sonar.josdem.io
+  - ./gradlew test sonarqube -Dsonar.host.url=https://sonar.josdem.io
 
-  ################ CODE CLIMATE #########################3
-# Cache gems
-#cache:
-#  bundler: true
-#  directories:
-#    - node_modules
-
-addons:
-  chrome: stable
-  #firefox: latest
-
-env:
-  global:
-    CC_TEST_REPORTER_ID=fc0bcf661df0e2fe2f2f69edb18b9066b3644b0995a9c79497c5d27af0483272
-
-before_install:                        
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  #- export DISPLAY=:99.0                # Display number for xvfb (for headless browser testing)
-  #- sh -e /etc/init.d/xvfb start        # Start xvfb (for headless browser testing)
-        
-
-# Pipe the coverage data to Code Climate
-after_script:
-  - ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.backend.json coverage/backend/.resultset.json # Format backend coverage
-  - ./cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.frontend.json coverage/frontend/lcov.info  # Format frontend coverage
-  - ./cc-test-reporter sum-coverage coverage/codeclimate.*.json -p 2                  # Sum both coverage parts into coverage/codeclimate.json
-  - if [[ "$TRAVIS_TEST_RESULT" == 0 ]]; then ./cc-test-reporter upload-coverage; fi  # Upload coverage/codeclimate.json
-  - ./cc-test-reporter after-build
-
-
-##################################3######################################
+ 
