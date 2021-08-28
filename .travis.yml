@@ -32,6 +32,6 @@ jobs:
    include:
      - stage: "Unit Tests & SonarCloud Analysis"
        script:
-         - gradle jacocoTestReport
-         - gradle sonarqube -Dsonar.login=$SONAR_TOKEN -Dsonar.projectKey=$SONAR_PROJECT_KEY
+         - ./gradlew jacocoTestReport
+         - ./gradlew sonarqube -Dsonar.login=$SONAR_TOKEN -Dsonar.projectKey=$SONAR_PROJECT_KEY
 
