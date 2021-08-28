@@ -103,8 +103,10 @@ sonarqube {
     properties {
         //property 'sonar.host.url', 'http://localhost:9000'
         //Insert other SonarQube properties here
-        property 'sonar.projectName', 'Example of SonarQube Scanner for Gradle Usage (multimodule with Jacoco code coverage)'
-        property 'sonar.projectKey', 'org.sonarqube.gradle-multi-module-jacoco'
+        //property 'sonar.projectName', 'Example of SonarQube Scanner for Gradle Usage (multimodule with Jacoco code coverage)'
+        //property 'sonar.projectKey', 'org.sonarqube.gradle-multi-module-jacoco'
+        //property 'sonar.projectName', 'Example of SonarQube Scanner for Gradle Usage (multimodule with Jacoco code coverage)'
+        property 'sonar.projectKey', 'yulingggg_Algorithms'
     }
 }
 

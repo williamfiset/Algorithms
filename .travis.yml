@@ -25,6 +25,8 @@ script:
   - ./gradlew googleJavaFormat
   - ./gradlew build
   - ./gradlew test 
+  - ./gradlew jacocoTestReport
+  - sonar-scanner
 
 jobs:
    include:
