@@ -23,10 +23,10 @@ script:
 
   ################ CODE CLIMATE #########################3
 # Cache gems
-cache:
-  bundler: true
-  directories:
-    - node_modules
+#cache:
+#  bundler: true
+#  directories:
+#    - node_modules
 
 addons:
   chrome: stable
