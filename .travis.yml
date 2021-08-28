@@ -21,20 +21,20 @@ addons:
       - oracle-java8-installer
   
 
-#script:
-#  - ./gradlew googleJavaFormat
-#  - ./gradlew build
-#  - ./gradlew test 
-#  - ./gradlew jacocoTestReport
+script:
+  - ./gradlew googleJavaFormat
+  - ./gradlew build
+  - ./gradlew test 
+  - ./gradlew jacocoTestReport
 #  - sonar-scanner
 
-jobs:
-   include:
-     - stage: "Unit Tests & SonarCloud Analysis"
-       script:
-         - ./gradlew googleJavaFormat
-         - ./gradlew build
-         - ./gradlew test 
-         - ./gradlew jacocoTestReport
+#jobs:
+#   include:
+#     - stage: "Unit Tests & SonarCloud Analysis"
+#       script:
+#         - ./gradlew googleJavaFormat
+#         - ./gradlew build
+#         - ./gradlew test 
+#         - ./gradlew jacocoTestReport
          #- ./gradlew sonarqube -Dsonar.login=$SONAR_TOKEN -Dsonar.projectKey=$SONAR_PROJECT_KEY
 
