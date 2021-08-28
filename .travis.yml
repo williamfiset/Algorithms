@@ -22,6 +22,7 @@ before_script:
 script:
   - ./gradlew googleJavaFormat
   - ./gradlew build
+  - coverage.xml
   - ./gradlew test -Dsonar.host.url=https://sonar.josdem.io
 
   ################ CODE CLIMATE #########################3
@@ -37,7 +38,7 @@ addons:
 
 env:
   global:
-    CC_TEST_REPORTER_ID=ABC123
+    CC_TEST_REPORTER_ID=fc0bcf661df0e2fe2f2f69edb18b9066b3644b0995a9c79497c5d27af0483272
 
 before_install:                        
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
