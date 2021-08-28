@@ -3,7 +3,6 @@ apply plugin: "com.github.sherter.google-java-format"
 apply plugin: 'application'
 apply plugin: 'jacoco'
  
-
 mainClassName = findProperty("main") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"
 
 buildscript {
@@ -16,15 +15,12 @@ buildscript {
     // https://github.com/sherter/google-java-format-gradle-plugin
     classpath "gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.8"
     classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7"
-    //implementation 'com.google.guava:guava:29.0-jre'
-    //testImplementation 'junit:junit:4.13.1'
-    //testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2' 
-    //implementation 'com.google.guava:guava:30.1.1-jre' 
-
   }
 }
 
+// Apply plugin for sonarqube
 apply plugin: 'org.sonarqube'
+
 // Require Java 8
 version = '0.0.1'
 sourceCompatibility = 1.8
@@ -34,8 +30,6 @@ repositories {
   mavenLocal()
   mavenCentral()
 }
-
-//project.tasks["sonarqube"].dependsOn "test"
 
 // Describe all project deps. Use 'testCompile' for test dependencies and
 // 'compile' for project dependencies.
@@ -87,6 +81,7 @@ task buildDependenciesFolder(type: Copy) {
   into './dependencies'
 }
 
+// Jacoco Test Report for Code Coverage Test
 jacocoTestReport {
     reports {
         xml.enabled = true
@@ -96,17 +91,8 @@ jacocoTestReport {
 
 check.dependsOn jacocoTestReport
 
-//check.dependsOn jacocoTestReport
-
-//systemProp.sonar.host.url=http://localhost:9000
-
 sonarqube {
     properties {
-        //property 'sonar.host.url', 'http://localhost:9000'
-        //Insert other SonarQube properties here
-        //property 'sonar.projectName', 'Example of SonarQube Scanner for Gradle Usage (multimodule with Jacoco code coverage)'
-        //property 'sonar.projectKey', 'org.sonarqube.gradle-multi-module-jacoco'
-        //property 'sonar.projectName', 'Example of SonarQube Scanner for Gradle Usage (multimodule with Jacoco code coverage)'
         property 'sonar.projectKey', 'yulingggg_Algorithms'
     }
 }
