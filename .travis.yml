@@ -12,12 +12,24 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 addons:
+  sonarcloud:
+     organization: "yulingggg"
+     token:
+       secure: $SONAR_TOKEN
   apt:
     packages:
       - oracle-java8-installer
+  
 
 script:
   - ./gradlew googleJavaFormat
   - ./gradlew build
   - ./gradlew test 
+
+jobs:
+   include:
+     - stage: "Unit Tests & SonarCloud Analysis"
+       script:
+         - gradle jacocoTestReport
+         - gradle sonarqube -Dsonar.login=$SONAR_TOKEN -Dsonar.projectKey=$SONAR_PROJECT_KEY
 
