@@ -16,6 +16,9 @@ addons:
     packages:
       - oracle-java8-installer
 
+before_script:
+  - ./cc-test-reporter before-build
+
 script:
   - ./gradlew googleJavaFormat
   - ./gradlew build
@@ -36,7 +39,7 @@ env:
   global:
     CC_TEST_REPORTER_ID=ABC123
 
-before_install:                        # Install node version from .nvmrc
+before_install:                        
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   #- export DISPLAY=:99.0                # Display number for xvfb (for headless browser testing)
@@ -49,6 +52,7 @@ after_script:
   - ./cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.frontend.json coverage/frontend/lcov.info  # Format frontend coverage
   - ./cc-test-reporter sum-coverage coverage/codeclimate.*.json -p 2                  # Sum both coverage parts into coverage/codeclimate.json
   - if [[ "$TRAVIS_TEST_RESULT" == 0 ]]; then ./cc-test-reporter upload-coverage; fi  # Upload coverage/codeclimate.json
+  - ./cc-test-reporter after-build
 
 
 ##################################3######################################
