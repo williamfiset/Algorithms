@@ -16,9 +16,6 @@ addons:
     packages:
       - oracle-java8-installer
 
-before_script:
-  - ./cc-test-reporter before-build
-
 script:
   - ./gradlew googleJavaFormat
   - ./gradlew build
