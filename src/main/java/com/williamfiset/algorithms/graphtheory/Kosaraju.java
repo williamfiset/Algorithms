@@ -1,13 +1,16 @@
 /**
  * Implementation of Kosaraju's SCC algorithm
- * 
+ *
+ * <p>Verified against:
+ *
+ * <ul>
+ *   <li>https://open.kattis.com/problems/equivalences
+ *   <li>https://open.kattis.com/problems/runningmom
+ * </ul>
+ *
  * <p>./gradlew run -Palgorithm=graphtheory.Kosaraju
- **/
-
+ */
 package com.williamfiset.algorithms.graphtheory;
-
-import static com.williamfiset.algorithms.utils.graphutils.Utils.addDirectedEdge;
-import static com.williamfiset.algorithms.utils.graphutils.Utils.createEmptyAdjacencyList;
 
 import java.util.*;
 
@@ -63,11 +66,9 @@ public class Kosaraju {
     }
     createTransverseGraph();
 
-    System.out.println(stack);
-
     Arrays.fill(visited, false);
-    
-    while(!stack.isEmpty()) {
+
+    while (!stack.isEmpty()) {
       int top = stack.pop();
       if (!visited[top]) {
         dfs2(top);
@@ -147,15 +148,3 @@ public class Kosaraju {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
