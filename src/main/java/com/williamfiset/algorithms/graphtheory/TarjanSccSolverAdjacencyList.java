@@ -1,9 +1,13 @@
 /**
  * An implementation of Tarjan's Strongly Connected Components algorithm using an adjacency list.
  *
- * <p>Verified against: -
- * https://www.hackerearth.com/practice/algorithms/graphs/strongly-connected-components/tutorial/ -
- * https://open.kattis.com/problems/equivalences - https://open.kattis.com/problems/runningmom
+ * <p>Verified against:
+ *
+ * <ul>
+ *   <li>https://open.kattis.com/problems/equivalences
+ *   <li>https://open.kattis.com/problems/runningmom
+ *   <li>https://www.hackerearth.com/practice/algorithms/graphs/strongly-connected-components/tutorial
+ * </ul>
  *
  * <p>Time complexity: O(V+E)
  *

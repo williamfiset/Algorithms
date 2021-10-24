@@ -34,8 +34,9 @@ public class CoinChange {
         dp[i][j] = dp[i - 1][j];
 
         // Try selecting this coin if it's better
-        if (j - coinValue >= 0 && dp[i][j - coinValue] + 1 < dp[i][j])
+        if (j - coinValue >= 0 && dp[i][j - coinValue] + 1 < dp[i][j]) {
           dp[i][j] = dp[i][j - coinValue] + 1;
+        }
       }
     }
 
