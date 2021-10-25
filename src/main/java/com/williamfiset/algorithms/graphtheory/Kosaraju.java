@@ -24,6 +24,9 @@ public class Kosaraju {
 
   private Deque<Integer> stack;
 
+  // The post order forest traversal of the original graph resulting from the first DFS.
+  private List<Integer> postOrderTraversal;
+
   private List<List<Integer>> graph;
   private List<List<Integer>> transverseGraph;
 
@@ -33,7 +36,7 @@ public class Kosaraju {
     this.graph = graph;
   }
 
-  private void createTransverseGraph() {
+  private void createTransposeGraph() {
     transverseGraph = createGraph(n);
     for (int u = 0; u < n; u++) {
       for (int v : graph.get(u)) {
@@ -59,24 +62,25 @@ public class Kosaraju {
     sccCount = 0;
     sccs = new int[n];
     visited = new boolean[n];
-    stack = new ArrayDeque<>();
+    postOrderTraversal = new ArrayList<>();
 
     for (int i = 0; i < n; i++) {
       dfs1(i);
     }
-    createTransverseGraph();
 
     Arrays.fill(visited, false);
+    createTransposeGraph();
 
-    while (!stack.isEmpty()) {
-      int top = stack.pop();
-      if (!visited[top]) {
-        dfs2(top);
+    for (int i = n - 1; i >= 0; i--) {
+      int node = postOrderTraversal.get(i);
+      if (!visited[node]) {
+        dfs2(node);
         sccCount++;
       }
     }
   }
 
+  // Traverse the original graph and push nodes to the `stack` on the callback.
   private void dfs1(int from) {
     if (visited[from]) {
       return;
@@ -85,9 +89,10 @@ public class Kosaraju {
     for (int to : graph.get(from)) {
       dfs1(to);
     }
-    stack.push(from);
+    postOrderTraversal.add(from);
   }
 
+  // Traverse the transverse graph and label all the encountered nodes as part of the sane SCC.
   private void dfs2(int from) {
     if (visited[from]) {
       return;
@@ -112,6 +117,33 @@ public class Kosaraju {
   }
 
   public static void main(String[] args) {
+    // example1();
+    example2();
+  }
+
+  private static void example2() {
+    // [8, 9, 5, 4, 7, 3, 2, 6, 1, 0]
+    // [5, 4, 8, 9, 3, 2, 7, 1, 6, 0]
+    int n = 10;
+    List<List<Integer>> graph = createGraph(n);
+
+    addEdge(graph, 0, 1);
+    addEdge(graph, 1, 2);
+    addEdge(graph, 1, 6);
+    addEdge(graph, 2, 3);
+    addEdge(graph, 3, 4);
+    addEdge(graph, 3, 7);
+    addEdge(graph, 4, 5);
+    addEdge(graph, 5, 9);
+    addEdge(graph, 6, 1);
+    addEdge(graph, 7, 2);
+    addEdge(graph, 8, 4);
+    addEdge(graph, 9, 8);
+
+    runKosaraju(graph);
+  }
+
+  private static void example1() {
     int n = 8;
     List<List<Integer>> graph = createGraph(n);
 
@@ -129,6 +161,16 @@ public class Kosaraju {
     addEdge(graph, 7, 3);
     addEdge(graph, 5, 0);
 
+    // Prints:
+    // Number of Strongly Connected Components: 3
+    // Nodes: [3, 7] form a Strongly Connected Component.
+    // Nodes: [4, 5, 6] form a Strongly Connected Component.
+    // Nodes: [0, 1, 2] form a Strongly Connected Component.
+    runKosaraju(graph);
+  }
+
+  private static void runKosaraju(List<List<Integer>> graph) {
+    int n = graph.size();
     Kosaraju solver = new Kosaraju(graph);
     int[] sccs = solver.getSccs();
     Map<Integer, List<Integer>> multimap = new HashMap<>();
@@ -137,11 +179,6 @@ public class Kosaraju {
       multimap.get(sccs[i]).add(i);
     }
 
-    // Prints:
-    // Number of Strongly Connected Components: 3
-    // Nodes: [3, 7] form a Strongly Connected Component.
-    // Nodes: [4, 5, 6] form a Strongly Connected Component.
-    // Nodes: [0, 1, 2] form a Strongly Connected Component.
     System.out.printf("Number of Strongly Connected Components: %d\n", solver.sccCount());
     for (List<Integer> scc : multimap.values()) {
       System.out.println("Nodes: " + scc + " form a Strongly Connected Component.");
