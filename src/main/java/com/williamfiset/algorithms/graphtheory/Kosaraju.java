@@ -28,19 +28,19 @@ public class Kosaraju {
   private List<Integer> postOrderTraversal;
 
   private List<List<Integer>> graph;
-  private List<List<Integer>> transverseGraph;
+  private List<List<Integer>> transposeGraph;
 
   public Kosaraju(List<List<Integer>> graph) {
     if (graph == null) throw new IllegalArgumentException("Graph cannot be null.");
-    n = graph.size();
     this.graph = graph;
+    n = graph.size();
   }
 
   private void createTransposeGraph() {
-    transverseGraph = createGraph(n);
+    transposeGraph = createGraph(n);
     for (int u = 0; u < n; u++) {
       for (int v : graph.get(u)) {
-        addEdge(transverseGraph, v, u);
+        addEdge(transposeGraph, v, u);
       }
     }
   }
@@ -58,7 +58,7 @@ public class Kosaraju {
     return sccs;
   }
 
-  public void solve() {
+  private void solve() {
     sccCount = 0;
     sccs = new int[n];
     visited = new boolean[n];
@@ -71,13 +71,20 @@ public class Kosaraju {
     Arrays.fill(visited, false);
     createTransposeGraph();
 
-    for (int i = n - 1; i >= 0; i--) {
-      int node = postOrderTraversal.get(i);
+    // Reverse the post order traversal to make iterating through it
+    // in the next step more intuitive.
+    Collections.reverse(postOrderTraversal);
+
+    // System.out.println(postOrderTraversal);
+
+    for (int node : postOrderTraversal) {
       if (!visited[node]) {
         dfs2(node);
         sccCount++;
       }
     }
+
+    solved = true;
   }
 
   // Traverse the original graph and push nodes to the `stack` on the callback.
@@ -98,7 +105,7 @@ public class Kosaraju {
       return;
     }
     visited[from] = true;
-    for (int to : transverseGraph.get(from)) {
+    for (int to : transposeGraph.get(from)) {
       dfs2(to);
     }
     sccs[from] = sccCount;
@@ -118,7 +125,25 @@ public class Kosaraju {
 
   public static void main(String[] args) {
     // example1();
-    example2();
+    // example2();
+    example3();
+  }
+
+  private static void example3() {
+    int n = 6;
+    List<List<Integer>> graph = createGraph(n);
+
+    // [4, 2, 5, 0, 3, 1]
+    addEdge(graph, 0, 2);
+    addEdge(graph, 0, 5);
+    addEdge(graph, 1, 0);
+    addEdge(graph, 1, 3);
+    addEdge(graph, 2, 4);
+    addEdge(graph, 3, 1);
+    addEdge(graph, 3, 5);
+    addEdge(graph, 4, 0);
+
+    runKosaraju(graph);
   }
 
   private static void example2() {
