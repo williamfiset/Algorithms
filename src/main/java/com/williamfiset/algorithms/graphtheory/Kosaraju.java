@@ -22,8 +22,6 @@ public class Kosaraju {
   private int[] sccs;
   private boolean[] visited;
 
-  private Deque<Integer> stack;
-
   // The post order forest traversal of the original graph resulting from the first DFS.
   private List<Integer> postOrderTraversal;
 
@@ -34,15 +32,6 @@ public class Kosaraju {
     if (graph == null) throw new IllegalArgumentException("Graph cannot be null.");
     this.graph = graph;
     n = graph.size();
-  }
-
-  private void createTransposeGraph() {
-    transposeGraph = createGraph(n);
-    for (int u = 0; u < n; u++) {
-      for (int v : graph.get(u)) {
-        addEdge(transposeGraph, v, u);
-      }
-    }
   }
 
   // Returns the number of strongly connected components in the graph.
@@ -75,8 +64,6 @@ public class Kosaraju {
     // in the next step more intuitive.
     Collections.reverse(postOrderTraversal);
 
-    // System.out.println(postOrderTraversal);
-
     for (int node : postOrderTraversal) {
       if (!visited[node]) {
         dfs2(node);
@@ -87,7 +74,7 @@ public class Kosaraju {
     solved = true;
   }
 
-  // Traverse the original graph and push nodes to the `stack` on the callback.
+  // Traverse the original graph and add nodes to the post order traversal on the callback.
   private void dfs1(int from) {
     if (visited[from]) {
       return;
@@ -111,6 +98,15 @@ public class Kosaraju {
     sccs[from] = sccCount;
   }
 
+  private void createTransposeGraph() {
+    transposeGraph = createGraph(n);
+    for (int u = 0; u < n; u++) {
+      for (int v : graph.get(u)) {
+        addEdge(transposeGraph, v, u);
+      }
+    }
+  }
+
   // Initializes adjacency list with n nodes.
   public static List<List<Integer>> createGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>(n);
@@ -124,9 +120,49 @@ public class Kosaraju {
   }
 
   public static void main(String[] args) {
-    // example1();
+    example1();
     // example2();
-    example3();
+    // example3();
+    // example4();
+    // exampleFromCp4();
+  }
+
+  private static void exampleFromCp4() {
+    int n = 8;
+    List<List<Integer>> graph = createGraph(n);
+
+    addEdge(graph, 0, 1);
+    addEdge(graph, 1, 3);
+    addEdge(graph, 2, 1);
+    addEdge(graph, 3, 2);
+    addEdge(graph, 3, 4);
+    addEdge(graph, 4, 5);
+    addEdge(graph, 5, 7);
+    addEdge(graph, 6, 4);
+    addEdge(graph, 7, 6);
+
+    runKosaraju(graph);
+  }
+
+  private static void example4() {
+    int n = 8;
+    List<List<Integer>> graph = createGraph(n);
+
+    // [0, 3, 2, 1, 7, 6, 5, 4]
+    addEdge(graph, 0, 2);
+    addEdge(graph, 0, 3);
+    addEdge(graph, 0, 5);
+    addEdge(graph, 1, 4);
+    addEdge(graph, 1, 7);
+    addEdge(graph, 2, 1);
+    addEdge(graph, 3, 0);
+    addEdge(graph, 3, 4);
+    addEdge(graph, 4, 2);
+    addEdge(graph, 5, 7);
+    addEdge(graph, 6, 5);
+    addEdge(graph, 7, 6);
+
+    runKosaraju(graph);
   }
 
   private static void example3() {

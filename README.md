@@ -226,11 +226,12 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 - [:movie_camera:](https://www.youtube.com/watch?v=cIBFEhD77b4) [Kahn's algorithm (topological sort, adjacency list)](src/main/java/com/williamfiset/algorithms/graphtheory/Kahns.java) **- O(E+V)**
 - [Kruskal's min spanning tree algorithm (edge list, union find)](src/main/java/com/williamfiset/algorithms/graphtheory/KruskalsEdgeList.java) **- O(Elog(E))**
 - [:movie_camera:](https://www.youtube.com/watch?v=JZBQLXgSGfs) [Kruskal's min spanning tree algorithm (edge list, union find, lazy sorting)](src/main/java/com/williamfiset/algorithms/graphtheory/KruskalsEdgeListPartialSortSolver.java) **- O(Elog(E))**
+- [Kosaraju's strongly connected components algorithm (adjacency list)](src/main/java/com/williamfiset/algorithms/graphtheory/Kosaraju.java) **- O(V+E)**
 - [:movie_camera:](https://www.youtube.com/watch?v=jsmMtJpPnhU) [Prim's min spanning tree algorithm (lazy version, adjacency list)](src/main/java/com/williamfiset/algorithms/graphtheory/LazyPrimsAdjacencyList.java) **- O(Elog(E))**
 - [Prim's min spanning tree algorithm (lazy version, adjacency matrix)](src/main/java/com/williamfiset/algorithms/graphtheory/LazyPrimsAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
 - [:movie_camera:](https://www.youtube.com/watch?v=xq3ABa-px_g) [Prim's min spanning tree algorithm (eager version, adjacency list)](src/main/java/com/williamfiset/algorithms/graphtheory/EagerPrimsAdjacencyList.java) **- O(Elog(V))**
 - [Steiner tree (minimum spanning tree generalization)](src/main/java/com/williamfiset/algorithms/graphtheory/SteinerTree.java) **- O(V<sup>3</sup> + V<sup>2</sup> _ 2<sup>T</sup> + V _ 3<sup>T</sup>)**
-- [:movie_camera:](https://www.youtube.com/watch?v=wUgWX0nc4NY) [Tarjan's strongly connected components algorithm (adjacency list) ](src/main/java/com/williamfiset/algorithms/graphtheory/TarjanSccSolverAdjacencyList.java) **- O(V+E)**
+- [:movie_camera:](https://www.youtube.com/watch?v=wUgWX0nc4NY) [Tarjan's strongly connected components algorithm (adjacency list)](src/main/java/com/williamfiset/algorithms/graphtheory/TarjanSccSolverAdjacencyList.java) **- O(V+E)**
 - [:movie_camera:](https://www.youtube.com/watch?v=eL-KzMXSXXI) [Topological sort (acyclic graph, adjacency list)](src/main/java/com/williamfiset/algorithms/graphtheory/TopologicalSortAdjacencyList.java) **- O(V+E)**
 - [Topological sort (acyclic graph, adjacency matrix)](src/main/java/com/williamfiset/algorithms/graphtheory/TopologicalSortAdjacencyMatrix.java) **- O(V<sup>2</sup>)**
 - [Traveling Salesman Problem (brute force)](src/main/java/com/williamfiset/algorithms/graphtheory/TspBruteForce.java) **- O(n!)**
