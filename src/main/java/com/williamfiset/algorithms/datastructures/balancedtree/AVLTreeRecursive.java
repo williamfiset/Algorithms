@@ -248,23 +248,24 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
         // swap the node we wish to remove with its left child.
       } else if (node.right == null) {
         return node.left;
-
-        // When removing a node from a binary tree with two links the
-        // successor of the node being removed can either be the largest
-        // value in the left subtree or the smallest value in the right
-        // subtree. As a heuristic, I will remove from the subtree with
-        // the greatest hieght in hopes that this may help with balancing.
+        
+        // When removing a node from a binary tree with two links
+        // choose either predecessor or successor of the node being removed. 
+        // Predecessor is the largest value in the left subtree, successor
+        // is the smallest value in the right subtree. As a heuristic,
+        // I will remove from the subtree with the greatest hieght in hopes 
+        // that this may help with balancing.
       } else {
 
         // Choose to remove from left subtree
         if (node.left.height > node.right.height) {
 
-          // Swap the value of the successor into the node.
-          T successorValue = findMax(node.left);
-          node.value = successorValue;
+          // Swap the value of the predecessor into the node.
+          T predecessorValue = findMax(node.left);
+          node.value = predecessorValue;
 
           // Find the largest node in the left subtree.
-          node.left = remove(node.left, successorValue);
+          node.left = remove(node.left, predecessorValue);
 
         } else {
 
