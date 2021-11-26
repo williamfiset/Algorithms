@@ -197,12 +197,12 @@ public class DoublyLinkedList<T> implements Iterable<T> {
         trav = trav.next;
       }
       // Search from the back of the list
-    } else
+    } else {
       for (i = size - 1, trav = tail; i != index; i--) {
         trav = trav.prev;
       }
-
-    return remove(trav);
+      
+      return remove(trav);
   }
 
   // Remove a particular value in the linked list, O(n)
