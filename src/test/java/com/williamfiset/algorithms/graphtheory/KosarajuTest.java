@@ -36,7 +36,6 @@ public class KosarajuTest {
     List<List<Integer>> g = createGraph(n);
 
     Kosaraju solver = new Kosaraju(g);
-    solver.solve();
 
     int[] actual = solver.getSccs();
     int[] expected = new int[n];
@@ -57,7 +56,6 @@ public class KosarajuTest {
     addEdge(g, 4, 2);
 
     Kosaraju solver = new Kosaraju(g);
-    solver.solve();
 
     List<List<Integer>> expectedSccs =
         ImmutableList.of(ImmutableList.of(0, 1), ImmutableList.of(2, 3, 4));
@@ -79,7 +77,6 @@ public class KosarajuTest {
     addEdge(g, 4, 0);
 
     Kosaraju solver = new Kosaraju(g);
-    solver.solve();
 
     List<List<Integer>> expectedSccs = ImmutableList.of(ImmutableList.of(0, 1, 2, 3, 4));
 
@@ -100,7 +97,6 @@ public class KosarajuTest {
     addEdge(g, 6, 3);
 
     Kosaraju solver = new Kosaraju(g);
-    solver.solve();
 
     List<List<Integer>> expectedSccs =
         ImmutableList.of(
@@ -139,7 +135,6 @@ public class KosarajuTest {
     addEdge(g, 9, 11);
 
     Kosaraju solver = new Kosaraju(g);
-    solver.solve();
 
     List<List<Integer>> expectedSccs =
         ImmutableList.of(
@@ -185,7 +180,6 @@ public class KosarajuTest {
     addEdge(g, 4, 5);
 
     Kosaraju solver = new Kosaraju(g);
-    solver.solve();
 
     List<List<Integer>> expectedSccs =
         ImmutableList.of(
@@ -218,7 +212,6 @@ public class KosarajuTest {
     addEdge(g, 7, 5);
 
     Kosaraju solver = new Kosaraju(g);
-    solver.solve();
 
     List<List<Integer>> expectedSccs =
         ImmutableList.of(
