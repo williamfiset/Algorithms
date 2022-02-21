@@ -58,7 +58,7 @@ public class EdmondsKarpExample {
     }
   }
 
-  private abstract static class NetworkFlowSolverBase {
+  public abstract static class NetworkFlowSolverBase {
 
     // To avoid overflow, set infinity to a value less than Long.MAX_VALUE;
     static final long INF = Long.MAX_VALUE / 2;
@@ -166,7 +166,7 @@ public class EdmondsKarpExample {
     public abstract void solve();
   }
 
-  private static class EdmondsKarpSolver extends NetworkFlowSolverBase {
+  public static class EdmondsKarpSolver extends NetworkFlowSolverBase {
 
     /**
      * Creates an instance of a flow network solver. Use the {@link #addEdge(int, int, int)} method
@@ -191,7 +191,7 @@ public class EdmondsKarpExample {
       } while (flow != 0);
     }
 
-    private long bfs() {
+    public long bfs() {
       // Initialize BFS queue and add starting source node.
       Queue<Integer> q = new ArrayDeque<>(n);
       visit(s);
@@ -233,7 +233,7 @@ public class EdmondsKarpExample {
 
   public static void main(String[] args) {
     // n is the number of nodes including the source and the sink.
-    int n = 11;
+    int n = 6;
 
     int s = n - 2;
     int t = n - 1;
@@ -241,28 +241,35 @@ public class EdmondsKarpExample {
     NetworkFlowSolverBase solver = new EdmondsKarpSolver(n, s, t);
 
     // Edges from source
-    solver.addEdge(s, 0, 5);
-    solver.addEdge(s, 1, 10);
-    solver.addEdge(s, 2, 5);
+    solver.addEdge(s, 0, 11);
+    solver.addEdge(s, 1, 12);
 
-    // Middle edges
-    solver.addEdge(0, 3, 10);
-    solver.addEdge(1, 0, 15);
-    solver.addEdge(1, 4, 20);
-    solver.addEdge(2, 5, 10);
-    solver.addEdge(3, 4, 25);
-    solver.addEdge(3, 6, 10);
-    solver.addEdge(4, 2, 5);
-    solver.addEdge(4, 7, 30);
-    solver.addEdge(5, 7, 5);
-    solver.addEdge(5, 8, 10);
-    solver.addEdge(7, 3, 15);
-    solver.addEdge(7, 8, 5);
+    solver.addEdge(0,2, 12);
+    solver.addEdge(1,0,1);
+    solver.addEdge(1,3,11);
+    solver.addEdge(3,2, 7);
 
-    // Edges to sink
-    solver.addEdge(6, t, 5);
-    solver.addEdge(7, t, 15);
-    solver.addEdge(8, t, 10);
+//    solver.addEdge(2, t, 19);
+//    solver.addEdge(3,t, 4);
+
+//    // Middle edges
+//    solver.addEdge(0, 3, 10);
+//    solver.addEdge(1, 0, 15);
+//    solver.addEdge(1, 4, 20);
+//    solver.addEdge(2, 5, 10);
+//    solver.addEdge(3, 4, 25);
+//    solver.addEdge(3, 6, 10);
+//    solver.addEdge(4, 2, 5);
+//    solver.addEdge(4, 7, 30);
+//    solver.addEdge(5, 7, 5);
+//    solver.addEdge(5, 8, 10);
+//    solver.addEdge(7, 3, 15);
+//    solver.addEdge(7, 8, 5);
+//
+//    // Edges to sink
+//    solver.addEdge(6, t, 5);
+//    solver.addEdge(7, t, 15);
+//    solver.addEdge(8, t, 10);
 
     // Prints:
     // Maximum Flow is: 20
