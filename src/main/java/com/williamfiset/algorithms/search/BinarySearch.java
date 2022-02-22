@@ -26,10 +26,8 @@ public class BinarySearch {
     do {
 
       // Find the middle point
-      //mid = (hi + lo) / 2.0;  // Here is the bug, Cause when dealing with big or huge number, overflow will be happened 
-      
-      //The following line to fix it 
-      mid = lo + ((hi - lo) / 2.0)
+
+      mid = (hi - lo) >>> 1
       //  
 
       // Compute the value of our function for the middle point
