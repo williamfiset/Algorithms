@@ -27,7 +27,7 @@ public class BinarySearch {
 
       // Find the middle point
 
-      mid = (hi - lo) >>> 1
+      mid = (hi + lo) >>> 1 ; 
       //  
 
       // Compute the value of our function for the middle point
