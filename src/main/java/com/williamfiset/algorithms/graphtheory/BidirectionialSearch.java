@@ -29,7 +29,7 @@ public class BidirectionialSearch {
         this.graph = graph;
     }
 
-    private void bfs(String direction) {
+    public void bfs(String direction) {
         if(direction == "forward"){
             int currentNode = srcQueue.poll();
             List<Edge> edges = graph.get(currentNode);
@@ -54,7 +54,7 @@ public class BidirectionialSearch {
     }
 
     // Find intersecting node between the two BFS's
-    private int isIntersecting() {
+    public int isIntersecting() {
 
         return -1;
     }
@@ -64,7 +64,7 @@ public class BidirectionialSearch {
         return path;
     }
 
-    private List<Integer> bidirectionalSearch(int src, int dest){
+    public List<Integer> bidirectionalSearch(int src, int dest){
         // Add source to its queue and mark as visited
         // Parent is -1
         srcQueue.offer(src);
