@@ -66,6 +66,11 @@ public class GraphTest {
 	
   }
   
+  @Test(expected = Exception.class)
+  public void removeNodeOutOfBoundExceptionTest() {
+	graph.removeNode(4);
+  }
+  
   @Test
   public void addEdgesTest() {
 	
@@ -75,6 +80,16 @@ public class GraphTest {
 	assertThat(graph.getGraph().get(2).getEdges().size()).isEqualTo(3);
 	assertThat(graph.getGraph().get(3).getEdges().size()).isEqualTo(3);
 	
+  }
+  
+  @Test(expected = Exception.class)
+  public void addEdgeOutOfBoundExceptionTest_TwoNodes() {
+	graph.addEdge(4,5);
+  }
+  
+  @Test(expected = Exception.class)
+  public void addEdgeOutOfBoundExceptionTest_OneNode() {
+	graph.addEdge(2,4);
   }
   
   @Test
@@ -97,6 +112,16 @@ public class GraphTest {
 	assertThat(graph.getGraph().get(2).getEdges()).isEmpty();
 	assertThat(graph.getGraph().get(3).getEdges()).isEmpty();
 	
+  }
+  
+  @Test(expected = Exception.class)
+  public void removeEdgeOutOfBoundExceptionTest_TwoNodes() {
+	graph.removeEdge(4,5);
+  }
+  
+  @Test(expected = Exception.class)
+  public void removeEdgeOutOfBoundExceptionTest_OneNode() {
+	graph.removeEdge(2,4);
   }
  
 

@@ -132,7 +132,12 @@ public class Graph {
   * 
   * @param id - The id of the node to return
   */
-  public Node getNode(Integer id){  
+  public Node getNode(Integer id){ 
+    // Check if the node exists, if not throw an exception
+	if(!graph.containsKey(id)){
+		throw new IndexOutOfBoundsException();
+	}
+	
 	return graph.get(id);
 	  
   }
@@ -157,6 +162,11 @@ public class Graph {
   * @param id - The id of the node to remove
   */
   public void removeNode(Integer id){
+	// Check if the node exists, if not throw an exception
+	if(!graph.containsKey(id)){
+		throw new IndexOutOfBoundsException();
+	}
+	  
 	Node node = getNode(id);
 	List<Edge> edges = node.getEdges();
 	
@@ -180,7 +190,12 @@ public class Graph {
   * @param id1 - The id of the first node
   * @param id2 - The id of the second node
   */
-  public void addEdge(Integer id1, Integer id2){  
+  public void addEdge(Integer id1, Integer id2){
+    // Check if both nodes exists, if not throw an exception
+	if(!graph.containsKey(id1) && !graph.containsKey(id2)){
+		throw new IndexOutOfBoundsException();
+	}
+	
 	Node node1 = graph.get(id1);
 	Node node2 = graph.get(id2);
 	
@@ -196,6 +211,11 @@ public class Graph {
   * @param idTo - The id of the node the edge connects to
   */
   public void removeEdge(Integer idFrom, Integer idTo){
+	// Check if both nodes exists, if not throw an exception
+	if(!graph.containsKey(idFrom) && !graph.containsKey(idTo)){
+		throw new IndexOutOfBoundsException();
+	}
+	
 	Node nodeFrom = getNode(idFrom);
 	Node nodeTo = getNode(idTo);
 	
