@@ -32,7 +32,12 @@ public class Graph {
       this.from = from;
       this.to = to;
     }
-	  
+	public Integer getFrom() {
+		return from;
+	}
+	public Integer getTo() {
+		return to;
+	}
   }
   
   /**

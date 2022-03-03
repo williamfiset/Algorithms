@@ -1,81 +1,131 @@
+/**
+ * An implementation of bidirectional search using BFS forward and backward
+ *
+ *
+ * @authors Johan Ekberg & David Östling
+ */
 package com.williamfiset.algorithms.graphtheory;
+
+import com.williamfiset.algorithms.datastructures.graph.Graph;
+import com.williamfiset.algorithms.datastructures.graph.Graph.Edge;
+import com.williamfiset.algorithms.datastructures.graph.Graph.Node;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
-
-
 
 public class BidirectionialSearch {
     boolean[] srcVisited;
     boolean[] destVisited;
     Deque<Integer> srcQueue;
     Deque<Integer> destQueue;
-    List<List<Edge>> graph;
-    List<Integer> srcParent;
-    List<Integer> destParent;
-
+    Graph graph;
+    int[] srcParent;
+    int[] destParent;
     
-
-//*********************************ALGORITHM_IMPLEMENTATION***********************************/
-
-    public BidirectionialSearch(List<List<Edge>> graph, int n){
+    /**
+     * 
+     * @param graph The graph to be searched
+     * @param n Number of nodes in the graph
+     */
+    public BidirectionialSearch(Graph graph, int n){
         srcVisited = new boolean[n];
         destVisited = new boolean[n];
-        srcParent = new ArrayList<Integer>(n);
-        destParent = new ArrayList<Integer>(n);
+        srcParent = new int[n];
+        destParent = new int[n];
+        srcQueue = new ArrayDeque<>(n);
+        destQueue = new ArrayDeque<>(n);
         this.graph = graph;
     }
 
+    /**
+     * Performs one step of BFS in the desired direction 
+     * @param direction Direction of the bfs - forward or backward
+     */
     public void bfs(String direction) {
         if(direction == "forward"){
             int currentNode = srcQueue.poll();
-            List<Edge> edges = graph.get(currentNode);
+            List<Edge> edges = graph.getNode(currentNode).getEdges();
             for (Edge e : edges) {
-                if(!srcVisited[e.to]){
-                    srcQueue.offer(e.to);
-                    srcVisited[e.to] = true;
-                    srcParent.set(e.to, currentNode);
+                if(!srcVisited[e.getTo()]){
+                    srcQueue.offer(e.getTo());
+                    srcVisited[e.getTo()] = true;
+                    srcParent[e.getTo()] = currentNode;
                 }
             }
         } else {
             int currentNode = destQueue.poll();
-            List<Edge> edges = graph.get(currentNode);
+            List<Edge> edges = graph.getNode(currentNode).getEdges();
             for (Edge e : edges) {
-                if(!destVisited[e.to]){
-                    destQueue.offer(e.to);
-                    destVisited[e.to] = true;
-                    destParent.set(e.to, currentNode);
+                if(!destVisited[e.getTo()]){
+                    destQueue.offer(e.getTo());
+                    destVisited[e.getTo()] = true;
+                    destParent[e.getTo()] = currentNode;
                 }
             }
         }
     }
 
-    // Find intersecting node between the two BFS's
+    /**
+     * Find intersecting node between the two BFS's
+     * @return the number of nodes in the graph or -1
+     */
     public int isIntersecting() {
-
+        HashMap<Integer, Node> g = graph.getGraph();
+        for (Integer n : g.keySet()) {
+            if(srcVisited[n] && destVisited[n])
+                return n;
+        }
         return -1;
     }
-    // Returns the path from source to destination
+
+    /**
+     * Returns the path from source to destination
+     * @param src the source node
+     * @param dest the destination node
+     * @param intersectingNode the node where both directions of the bfs intersects
+     * @return the smallest path 
+     */
     private List<Integer> getPath(int src, int dest, int intersectingNode) {
         List<Integer> path = new ArrayList<Integer>();
+        path.add(intersectingNode);
+        int temp = intersectingNode;
+
+        while (temp != src){
+            path.add(srcParent[temp]);
+            temp = srcParent[temp];
+        }
+        Collections.reverse(path);
+        temp = intersectingNode;
+
+        while (temp != dest){
+            path.add(destParent[temp]);
+            temp = destParent[temp];
+        }
         return path;
     }
 
+    /**
+     * 
+     * @param src the source node
+     * @param dest the destination node
+     * @return
+     */
     public List<Integer> bidirectionalSearch(int src, int dest){
         // Add source to its queue and mark as visited
         // Parent is -1
         srcQueue.offer(src);
         srcVisited[src] = true;
-        srcParent.set(0, -1);
+        srcParent[src] = -1;
 
         // Add destination to its queue and mark as visited
         // Parent is -1
-        destQueue.offer(src);
-        destVisited[src] = true;
-        destParent.set(0, -1);
+        destQueue.offer(dest);
+        destVisited[dest] = true;
+        destParent[dest] = -1;
 
         while(!srcQueue.isEmpty() && !destQueue.isEmpty()){
             // BFS in forward direction from src
@@ -92,60 +142,29 @@ public class BidirectionialSearch {
 
 
 
-    //*********************************GRAPH_CREATION***********************************/
-
-    public static class Edge {
-        int from, to;
-            public Edge(int from, int to) {
-              this.from = from;
-              this.to = to;
-            }
-        }
-    // Initialize an empty adjacency list that can hold up to n nodes.
-  public static List<List<Edge>> createEmptyGraph(int n) {
-    List<List<Edge>> graph = new ArrayList<>(n);
-    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
-    return graph;
-  }
-
-  // Add a directed edge from node 'u' to node 'v' with cost 'cost'.
-  public static void addDirectedEdge(List<List<Edge>> graph, int u, int v, int cost) {
-    graph.get(u).add(new Edge(u, v));
-  }
-
-  // Add an undirected edge between nodes 'u' and 'v'.
-  public static void addUndirectedEdge(List<List<Edge>> graph, int u, int v, int cost) {
-    addDirectedEdge(graph, u, v, cost);
-    addDirectedEdge(graph, v, u, cost);
-  }
-
-  // Add an undirected unweighted edge between nodes 'u' and 'v'. The edge added
-  // will have a weight of 1 since its intended to be unweighted.
-  public static void addUnweightedUndirectedEdge(List<List<Edge>> graph, int u, int v) {
-    addUndirectedEdge(graph, u, v, 1);
-  }
     public static void main(String[] args) {
-            // BFS example #1 from slides.
-        final int n = 13;
-        List<List<Edge>> graph = createEmptyGraph(n);
+        // Graph example
+        final int n = 15;
+        Graph g = new Graph();
+        for (int i = 0; i < n; i++) {
+            g.addNode(i);
+        }
+        g.addEdge(0, 4);
+        g.addEdge(1, 4);
+        g.addEdge(2, 5);
+        g.addEdge(3, 5);
+        g.addEdge(4, 6);
+        g.addEdge(5, 6);
+        g.addEdge(6, 7);
+        g.addEdge(7, 8);
+        g.addEdge(8, 9);
+        g.addEdge(9, 11);
+        g.addEdge(9, 12);
+        g.addEdge(8, 10);
+        g.addEdge(10, 13);
+        g.addEdge(10, 14);
 
-        addUnweightedUndirectedEdge(graph, 0, 7);
-        addUnweightedUndirectedEdge(graph, 0, 9);
-        addUnweightedUndirectedEdge(graph, 0, 11);
-        addUnweightedUndirectedEdge(graph, 7, 11);
-        addUnweightedUndirectedEdge(graph, 7, 6);
-        addUnweightedUndirectedEdge(graph, 7, 3);
-        addUnweightedUndirectedEdge(graph, 6, 5);
-        addUnweightedUndirectedEdge(graph, 3, 4);
-        addUnweightedUndirectedEdge(graph, 2, 3);
-        addUnweightedUndirectedEdge(graph, 2, 12);
-        addUnweightedUndirectedEdge(graph, 12, 8);
-        addUnweightedUndirectedEdge(graph, 8, 1);
-        addUnweightedUndirectedEdge(graph, 1, 10);
-        addUnweightedUndirectedEdge(graph, 10, 9);
-        addUnweightedUndirectedEdge(graph, 9, 8);
-
-        BidirectionialSearch solver = new BidirectionialSearch(graph, n);
+        BidirectionialSearch solver = new BidirectionialSearch(g, n);
         int src = 0;
         int dest = 10;
         List<Integer> path = solver.bidirectionalSearch(src, dest);
