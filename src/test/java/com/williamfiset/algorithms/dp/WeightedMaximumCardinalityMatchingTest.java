@@ -302,25 +302,37 @@ public class WeightedMaximumCardinalityMatchingTest {
 
     MwpmInterface mwpm = new WeightedMaximumCardinalityMatchingRecursive(g);
     double cost = mwpm.getMinWeightCost();
-    assertThat(cost).isEqualTo(-1.0 + -3.0 + -5.0 + (-3 * 50 * INF));
+    double expectedCost = -1.0 + -3.0 + -5.0 + (-3 * 50 * INF);
+    assertThat(cost).isEqualTo(expectedCost);
 
     int[] matching = mwpm.getMatching();
     int[] expectedMatching = {0, 1, 2, 3, 4, 5};
     assertThat(matching).isEqualTo(expectedMatching);
+    assertOptimalMatching(matching, g, expectedCost);
   }
 
   @Test
   public void testDisjointGraph() {
-    int n = 6;
+    int n = 8;
     Double[][] g = createEmptyMatrix(n);
+    addUndirectedWeightedEdge(g, 0, 1, 3);
+    addUndirectedWeightedEdge(g, 0, 2, 5);
+    addUndirectedWeightedEdge(g, 1, 2, 1);
+    addUndirectedWeightedEdge(g, 1, 3, 4);
+    addUndirectedWeightedEdge(g, 2, 3, 2);
+
+    addUndirectedWeightedEdge(g, 4, 5, 3);
+    addUndirectedWeightedEdge(g, 4, 6, 5);
+    addUndirectedWeightedEdge(g, 5, 6, 1);
+    addUndirectedWeightedEdge(g, 5, 7, 4);
+    addUndirectedWeightedEdge(g, 6, 7, 2);
 
     MwpmInterface mwpm = new WeightedMaximumCardinalityMatchingRecursive(g);
     double cost = mwpm.getMinWeightCost();
-    assertThat(cost).isEqualTo(0);
+    assertThat(cost).isEqualTo(10);
 
     int[] matching = mwpm.getMatching();
-    int[] expectedMatching = {};
-    assertThat(matching).isEqualTo(expectedMatching);
+    assertOptimalMatching(matching, g, 10);
   }
 
   @Test
@@ -376,14 +388,7 @@ public class WeightedMaximumCardinalityMatchingTest {
 
       MwpmInterface[] impls = getImplementations(costMatrix);
       for (MwpmInterface mwpm : impls) {
-        int[] matching = mwpm.getMatching();
-        double totalMinCost = 0;
-        for (int i = 0; i < matching.length / 2; i++) {
-          int ii = matching[2 * i];
-          int jj = matching[2 * i + 1];
-          totalMinCost += costMatrix[ii][jj];
-        }
-        assertThat(totalMinCost).isEqualTo(mwpm.getMinWeightCost());
+        assertOptimalMatching(mwpm.getMatching(), costMatrix, mwpm.getMinWeightCost());
       }
     }
   }
@@ -432,5 +437,14 @@ public class WeightedMaximumCardinalityMatchingTest {
         dist[i][j] = dist[j][i] = val;
       }
     }
+  }
+
+  private void assertOptimalMatching(
+      int[] matching, Double[][] costMatrix, double expectedMatchingCost) {
+    double total = 0;
+    for (int i = 0; i < matching.length; i += 2) {
+      total += costMatrix[matching[i]][matching[i + 1]];
+    }
+    assertThat(total).isEqualTo(expectedMatchingCost);
   }
 }
