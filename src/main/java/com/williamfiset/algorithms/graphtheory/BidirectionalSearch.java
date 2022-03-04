@@ -17,7 +17,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 
-public class BidirectionialSearch {
+public class BidirectionalSearch {
     boolean[] srcVisited;
     boolean[] destVisited;
     Deque<Integer> srcQueue;
@@ -31,7 +31,7 @@ public class BidirectionialSearch {
      * @param graph The graph to be searched
      * @param n Number of nodes in the graph
      */
-    public BidirectionialSearch(Graph graph, int n){
+    public BidirectionalSearch(Graph graph, int n){
         srcVisited = new boolean[n];
         destVisited = new boolean[n];
         srcParent = new int[n];
@@ -164,7 +164,7 @@ public class BidirectionialSearch {
         g.addEdge(10, 13);
         g.addEdge(10, 14);
 
-        BidirectionialSearch solver = new BidirectionialSearch(g, n);
+        BidirectionalSearch solver = new BidirectionalSearch(g, n);
         int src = 0;
         int dest = 10;
         List<Integer> path = solver.bidirectionalSearch(src, dest);

@@ -37,7 +37,7 @@ public class BidirectionalSearchTest {
         int src = 0;
         int dest = 14;
 
-        BidirectionialSearch solver = new BidirectionialSearch(g, n);
+        BidirectionalSearch solver = new BidirectionalSearch(g, n);
         List<Integer> actualPath = solver.bidirectionalSearch(src, dest);
         if(actualPath == null)
             fail();
@@ -63,7 +63,7 @@ public class BidirectionalSearchTest {
         g.addEdge(0, 2);
         g.addEdge(0, 3);
         g.addEdge(0, 4);
-        BidirectionialSearch bds = new BidirectionialSearch(g, n);
+        BidirectionalSearch bds = new BidirectionalSearch(g, n);
         bds.srcQueue.offer(0);
         bds.srcVisited[0] = true;
         bds.bfs("forward");
@@ -89,7 +89,7 @@ public class BidirectionalSearchTest {
         g.addEdge(0, 2);
         g.addEdge(0, 3);
         g.addEdge(0, 4);
-        BidirectionialSearch bds = new BidirectionialSearch(g, n);
+        BidirectionalSearch bds = new BidirectionalSearch(g, n);
         bds.destQueue.offer(0);
         bds.destVisited[0] = true;
         bds.bfs("backward");
@@ -121,7 +121,7 @@ public class BidirectionalSearchTest {
         int src = 0;
         int dest = 6;
 
-        BidirectionialSearch solver = new BidirectionialSearch(g, n);
+        BidirectionalSearch solver = new BidirectionalSearch(g, n);
         List<Integer> actualPath = solver.bidirectionalSearch(src, dest);
         if(actualPath == null)
             fail();
@@ -142,7 +142,7 @@ public class BidirectionalSearchTest {
         int src = 0;
         int dest = 3;
 
-        BidirectionialSearch solver = new BidirectionialSearch(g, n);
+        BidirectionalSearch solver = new BidirectionalSearch(g, n);
         List<Integer> actualPath = solver.bidirectionalSearch(src, dest);
         assertNull(actualPath);
     }
