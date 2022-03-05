@@ -14,16 +14,18 @@ import java.util.HashMap;
 public class Graph {
   
   private HashMap<Integer, Node> graph;
+
   private ArrayList<Node> nodes;
   private ArrayList<Edge> edges;
-
 
   /** 
   * An edge class that represents a directed edge between two nodes
   */
   public static class Edge {
+
 	private Integer from;
 	private Integer to;
+
 	
 	/**
     * Initiates a single edge between the two nodes specified
@@ -43,6 +45,8 @@ public class Graph {
     public Integer getTo() {
 	  return to;
     }
+
+
   }
   
   /**
@@ -53,7 +57,8 @@ public class Graph {
   public static class Node {
     public Integer id;
     private List<Edge> edges;
-	public int color;
+    public int color;
+
 
 	/**
 	* Initiates a single node with a specified id
@@ -62,8 +67,8 @@ public class Graph {
     */
     public Node(Integer id) {
       this.id = id;
-	  edges = new ArrayList<Edge>();
-	  this.color = -1;
+	    edges = new ArrayList<Edge>();
+	    this.color = -1;
     }
 	
 	/**
@@ -219,6 +224,7 @@ public class Graph {
 	node1.addNewEdge(node2);
 	edges.add(new Edge(id1, id2));
 	edges.add(new Edge(id2, id1));
+
   }
   
   /**
@@ -251,5 +257,9 @@ public class Graph {
   public ArrayList<Edge> getEdges() {
 	return edges;
 }
+
+	
+	  
+  }
 
 }
