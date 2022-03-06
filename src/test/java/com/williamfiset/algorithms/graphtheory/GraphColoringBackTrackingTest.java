@@ -48,12 +48,24 @@ public class GraphColoringBackTrackingTest {
 	  
   }
 
+  private void addDisconnectedData(){
+    graph.addNode(1);
+    graph.addNode(2);
+    graph.addNode(3);
+    graph.addNode(4);
+    
+    graph.addEdge(1,2);
+    graph.addEdge(4,3); 
+  }
+
   private boolean allNodesColorDifferent(Graph g) {
 
     ArrayList<Edge> edgesList = g.getEdges();
     for (Edge e: edgesList) {
         if (g.getNode(e.getFrom()).color == g.getNode(e.getTo()).color)
             return false;
+        if (g.getNode(e.getFrom()).color == -1)
+          return false;
     }
     return true;
   }
@@ -77,4 +89,31 @@ public class GraphColoringBackTrackingTest {
     bt.colorGraph(graph, 4);
     assertTrue(allNodesColorDifferent(graph));
     }
+
+  @Test
+  public void disconnectedTest1() {
+    addDisconnectedData();
+
+    GraphColoringBackTracking bt = new GraphColoringBackTracking();
+    bt.colorGraph(graph, 4);
+    assertTrue(allNodesColorDifferent(graph));
+  }
+
+  @Test
+  public void impossibleCaseTest_TooFewColors() {
+    addSimpleData();
+	
+    GraphColoringBackTracking bt = new GraphColoringBackTracking();
+	  assertFalse(bt.colorGraph(graph, 0));
+	  assertFalse(bt.colorGraph(graph, -2));
+  }
+
+  @Test
+  public void impossibleCaseTest_OneColors() {
+    graph.addNode(1);
+    graph.addNode(2);
+
+    GraphColoringBackTracking bt = new GraphColoringBackTracking();
+	  assertTrue(bt.colorGraph(graph, 1));
+  }
 }
