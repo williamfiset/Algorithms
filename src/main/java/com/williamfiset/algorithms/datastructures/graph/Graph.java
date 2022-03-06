@@ -14,13 +14,18 @@ import java.util.HashMap;
 public class Graph {
   
   private HashMap<Integer, Node> graph;
-  
+
+  private ArrayList<Node> nodes;
+  private ArrayList<Edge> edges;
+
   /** 
   * An edge class that represents a directed edge between two nodes
   */
   public static class Edge {
-	Integer from;
-	Integer to;
+
+	private Integer from;
+	private Integer to;
+
 	
 	/**
     * Initiates a single edge between the two nodes specified
@@ -32,7 +37,16 @@ public class Graph {
       this.from = from;
       this.to = to;
     }
-	  
+
+    public Integer getFrom() {
+		return from;
+    }
+
+    public Integer getTo() {
+	  return to;
+    }
+
+
   }
   
   /**
@@ -41,8 +55,10 @@ public class Graph {
   *
   */
   public static class Node {
-    Integer id;
+    public Integer id;
     private List<Edge> edges;
+    public int color;
+
 
 	/**
 	* Initiates a single node with a specified id
@@ -51,7 +67,8 @@ public class Graph {
     */
     public Node(Integer id) {
       this.id = id;
-	  edges = new ArrayList<Edge>();
+	    edges = new ArrayList<Edge>();
+	    this.color = -1;
     }
 	
 	/**
@@ -117,6 +134,8 @@ public class Graph {
   */
   public Graph(){
 	graph = new HashMap<>();
+	nodes = new ArrayList<Node>();
+	edges = new ArrayList<Edge>();
   }
   
   /**
@@ -152,6 +171,7 @@ public class Graph {
 	
 	// Add the new node to the list
 	graph.putIfAbsent(id, node);
+	nodes.add(node);
 	  
   }
   
@@ -181,6 +201,7 @@ public class Graph {
 	
 	// Remove the node once done
 	graph.remove(id);
+	nodes.remove(node);
 	  
   }
   
@@ -201,7 +222,9 @@ public class Graph {
 	
 	// Add the new edge between the two nodes
 	node1.addNewEdge(node2);
-	
+	edges.add(new Edge(id1, id2));
+	edges.add(new Edge(id2, id1));
+
   }
   
   /**
@@ -222,8 +245,16 @@ public class Graph {
 	//Removes both directions of the edge
 	nodeFrom.removeEdge(idTo);
 	nodeTo.removeEdge(idFrom);
-	
+	edges.remove(new Edge(idFrom, idTo));
+	edges.remove(new Edge(idTo, idFrom));
 	  
   }
 
+  public ArrayList<Node> getNodes() {
+	  return nodes;
+  }
+
+  public ArrayList<Edge> getEdges() {
+	return edges;
+  }
 }

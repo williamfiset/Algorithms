@@ -11,7 +11,9 @@ package com.williamfiset.algorithms.dp;
 
 public class CoinChange {
 
-  private static final int INF = 987654321;
+  // TODO(william): setting an explicit infinity could lead to a wrong answer for
+  // very large values. Prefer to use null instead.
+  private static final int INF = Integer.MAX_VALUE / 2;
 
   public static int coinChange(int[] coins, int amount) {
 
