@@ -256,10 +256,5 @@ public class Graph {
 
   public ArrayList<Edge> getEdges() {
 	return edges;
-}
-
-	
-	  
   }
-
 }

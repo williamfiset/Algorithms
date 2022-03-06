@@ -87,4 +87,24 @@ public class GraphColoringBackTracking extends GraphColoringAbstract {
        return this.colorGraphUsingBackTrack(G, vertices, 0, noOfColors);
 
    }
+
+   public static void main(String[] args) {
+    // create new graph
+    Graph graph = new Graph();
+
+    // add nodes and edges
+    graph.addNode(1);
+	graph.addNode(2);
+	graph.addNode(3);
+	
+	graph.addEdge(1,2);
+	graph.addEdge(1,3);
+	graph.addEdge(2,3);
+	graph.addEdge(2,3); 
+
+    GraphColoringBackTracking bt = new GraphColoringBackTracking();
+
+    // Since 4 colors are enough for this graph, result would be true
+    boolean result = bt.colorGraph(graph, 4);
+   }
 }
