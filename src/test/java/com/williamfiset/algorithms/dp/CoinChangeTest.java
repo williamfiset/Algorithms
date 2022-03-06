@@ -43,7 +43,7 @@ public class CoinChangeTest {
         selectedCoinsSum += v;
       }
       if (solution.minCoins == -1) {
-        assertThat(solution.selectedCoins.size()).isEqualTo(0);        
+        assertThat(solution.selectedCoins.size()).isEqualTo(0);
       } else {
         // Verify that the size of the selected coins is equal to the optimal solution.
         assertThat(solution.selectedCoins.size()).isEqualTo(solution.minCoins);

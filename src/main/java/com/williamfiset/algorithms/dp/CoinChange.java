@@ -5,10 +5,10 @@
  *
  * <p>Tested against: https://leetcode.com/problems/coin-change
  *
- * Run locally:
- * 
- * ./gradlew run -Palgorithm=dp.CoinChange
- * 
+ * <p>Run locally:
+ *
+ * <p>./gradlew run -Palgorithm=dp.CoinChange
+ *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.dp;
@@ -66,7 +66,7 @@ public class CoinChange {
       }
     }
 
-    // p(dp);
+    p(dp);
 
     Solution solution = new Solution();
 
@@ -78,7 +78,7 @@ public class CoinChange {
     }
 
     for (int change = n, coinIndex = m; coinIndex > 0; ) {
-      int coinValue = coins[coinIndex-1];
+      int coinValue = coins[coinIndex - 1];
       boolean canSelectCoin = change - coinValue >= 0;
       if (canSelectCoin && dp[coinIndex][change - coinValue] < dp[coinIndex][change]) {
         solution.selectedCoins.add(coinValue);
@@ -145,7 +145,17 @@ public class CoinChange {
   public static void main(String[] args) {
     // example1();
     // example2();
-    example3();
+    // example3();
+    example4();
+  }
+
+  private static void example4() {
+    int n = 11;
+    int[] coins = {2, 4, 1};
+    System.out.println(coinChange(coins, n).minCoins);
+    System.out.println(coinChangeSpaceEfficient(coins, n));
+    System.out.println(coinChangeRecursive(coins, n));
+    System.out.println(coinChange(coins, n).selectedCoins);
   }
 
   private static void example1() {
