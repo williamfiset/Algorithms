@@ -83,9 +83,6 @@ public class CoinChange {
       if (canSelectCoin && dp[coinIndex][change - coinValue] < dp[coinIndex][change]) {
         solution.selectedCoins.add(coinValue);
         change -= coinValue;
-      } else if (canSelectCoin && dp[coinIndex][change - coinValue] == dp[coinIndex][change]) {
-        System.out.println("here");
-        change -= coinValue;
       } else {
         coinIndex--;
       }
