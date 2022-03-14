@@ -15,26 +15,21 @@ package com.williamfiset.algorithms.dp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CoinChange {
 
   public static class Solution {
-    int minCoins;
+    // Contains the minimum number of coins to make a certain amount, if an optimal solution exists.
+    Optional<Integer> minCoins = Optional.empty();
+
+    // The coins selected as part of the optimal solution.
     List<Integer> selectedCoins = new ArrayList<Integer>();
   }
 
   // TODO(william): setting an explicit infinity could lead to a wrong answer for
   // very large values. Prefer to use null instead.
   private static final int INF = Integer.MAX_VALUE / 2;
-
-  private static void p(int[][] dp) {
-    for (int[] r : dp) {
-      for (int v : r) {
-        System.out.printf("%4d, ", v == INF ? -1 : v);
-      }
-      System.out.println();
-    }
-  }
 
   public static Solution coinChange(int[] coins, final int n) {
     if (coins == null) throw new IllegalArgumentException("Coins array is null");
@@ -70,11 +65,10 @@ public class CoinChange {
 
     Solution solution = new Solution();
 
-    // The amount we wanted to make cannot be made :/
-    if (dp[m][n] == INF) {
-      solution.minCoins = -1;
+    if (dp[m][n] != INF) {
+      solution.minCoins = Optional.of(dp[m][n]);
     } else {
-      solution.minCoins = dp[m][n];
+      return solution;
     }
 
     for (int change = n, coinIndex = m; coinIndex > 0; ) {
@@ -91,7 +85,7 @@ public class CoinChange {
     return solution;
   }
 
-  public static int coinChangeSpaceEfficient(int[] coins, int n) {
+  public static Solution coinChangeSpaceEfficient(int[] coins, int n) {
     if (coins == null) throw new IllegalArgumentException("Coins array is null");
 
     // Initialize table and set everything to infinity except first cell
@@ -107,11 +101,31 @@ public class CoinChange {
       }
     }
 
-    // The amount we wanted to make cannot be made :/
-    if (dp[n] == INF) return -1;
+    Solution solution = new Solution();
+    if (dp[n] != INF) {
+      solution.minCoins = Optional.of(dp[n]);
+    } else {
+      return solution;
+    }
+
+    for (int i = n; i > 0; ) {
+      int selectedCoinValue = INF;
+      int cellWithFewestCoins = dp[i];
+      for (int coin : coins) {
+        if (i - coin < 0) {
+          continue;
+        }
+        if (dp[i - coin] < cellWithFewestCoins) {
+          cellWithFewestCoins = dp[i - coin];
+          selectedCoinValue = coin;
+        }
+      }
+      solution.selectedCoins.add(selectedCoinValue);
+      i -= selectedCoinValue;
+    }
 
     // Return the minimum number of coins needed
-    return dp[n];
+    return solution;
   }
 
   // The recursive approach has the advantage that it does not have to visit
@@ -142,6 +156,23 @@ public class CoinChange {
     return dp[n] = (minCoins == INF) ? -1 : minCoins;
   }
 
+  // DP table print function. Used for debugging.
+  private static void p(int[][] dp) {
+    for (int[] r : dp) {
+      for (int v : r) {
+        System.out.printf("%4d, ", v == INF ? -1 : v);
+      }
+      System.out.println();
+    }
+  }
+
+  private static void p(int[] dp) {
+    for (int v : dp) {
+      System.out.printf("%4d, ", v == INF ? -1 : v);
+    }
+    System.out.println();
+  }
+
   public static void main(String[] args) {
     // example1();
     // example2();
@@ -152,10 +183,10 @@ public class CoinChange {
   private static void example4() {
     int n = 11;
     int[] coins = {2, 4, 1};
-    System.out.println(coinChange(coins, n).minCoins);
+    // System.out.println(coinChange(coins, n).minCoins);
     System.out.println(coinChangeSpaceEfficient(coins, n));
-    System.out.println(coinChangeRecursive(coins, n));
-    System.out.println(coinChange(coins, n).selectedCoins);
+    // System.out.println(coinChangeRecursive(coins, n));
+    // System.out.println(coinChange(coins, n).selectedCoins);
   }
 
   private static void example1() {
