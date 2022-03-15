@@ -5,256 +5,288 @@
  */
 package com.williamfiset.algorithms.datastructures.linkedlist;
 
+
+class Node<T> {
+  private T data;
+  private Node<T> prev;
+  private Node<T> next;
+
+  public Node(T data, Node<T> prev, Node<T> next) {
+    this.data = data;
+    this.prev = prev;
+    this.next = next;
+  }
+
+  public T getData() {
+    return this.data;
+  }
+
+  public void setData(T data) {
+    this.data = data;
+  }
+
+  public Node<T> getPrev() {
+    return this.prev;
+  }
+  
+  public void setPrev(Node<T> node) {
+    this.prev = node;
+  }
+
+  public Node<T> getNext() {
+    return this.next;
+  }
+
+  public void setNext(Node<T> node) {
+    this.next = node;
+  }
+
+  public String toString() {
+    return this.data.toString();
+  }
+}
+
 public class DoublyLinkedList<T> implements Iterable<T> {
   private int size = 0;
   private Node<T> head = null;
   private Node<T> tail = null;
 
-  // Internal node class to represent data
-  private static class Node<T> {
-    private T data;
-    private Node<T> prev, next;
-
-    public Node(T data, Node<T> prev, Node<T> next) {
-      this.data = data;
-      this.prev = prev;
-      this.next = next;
-    }
-
-    @Override
-    public String toString() {
-      return data.toString();
-    }
-  }
-
-  // Empty this linked list, O(n)
   public void clear() {
-    Node<T> trav = head;
+    Node<T> trav = this.head;
+
     while (trav != null) {
-      Node<T> next = trav.next;
-      trav.prev = trav.next = null;
-      trav.data = null;
+      Node<T> next = trav.getNext();
+
+      trav.setData(null);
+      trav.setNext(null);
+      trav.setPrev(null);
+
       trav = next;
     }
-    head = tail = trav = null;
-    size = 0;
+
+    this.size = 0;
+    this.head = null;
+    this.tail = null;
+    trav = null;
   }
 
-  // Return the size of this linked list
   public int size() {
-    return size;
+    return this.size;
   }
 
-  // Is this linked list empty?
   public boolean isEmpty() {
-    return size() == 0;
+    return this.size() == 0;
   }
 
-  // Add an element to the tail of the linked list, O(1)
-  public void add(T elem) {
-    addLast(elem);
+  public void add(T element) {
+    this.addLast(element);
   }
 
-  // Add a node to the tail of the linked list, O(1)
-  public void addLast(T elem) {
-    if (isEmpty()) {
-      head = tail = new Node<T>(elem, null, null);
-    } else {
-      tail.next = new Node<T>(elem, tail, null);
-      tail = tail.next;
+  public void addLast(T element) {
+    if (this.isEmpty()) {
+      this.head = this.tail = new Node(element, null, null);
     }
-    size++;
-  }
-
-  // Add an element to the beginning of this linked list, O(1)
-  public void addFirst(T elem) {
-    if (isEmpty()) {
-      head = tail = new Node<T>(elem, null, null);
-    } else {
-      head.prev = new Node<T>(elem, null, head);
-      head = head.prev;
+    else {
+      Node<T> node = new Node(element, this.tail, null);
+      this.tail.setNext(node);
+      this.tail = node;
     }
-    size++;
+    ++this.size;
   }
 
-  // Add an element at a specified index
-  public void addAt(int index, T data) throws Exception {
-    if (index < 0 || index > size) {
+  public void addFirst(T element) {
+    if (this.isEmpty()) {
+      this.head = this.tail = new Node(element, null, null);
+    }
+    else {
+      Node<T> node = new Node(element, null, this.head);
+      this.head.setPrev(node);
+      this.head = node;
+    }
+  }
+
+  public void addAt(int index, T element) throws Exception {
+    if (index < 0 || index > this.size()) {
       throw new Exception("Illegal Index");
     }
-    if (index == 0) {
-      addFirst(data);
-      return;
+    else if (index == 0) {
+      this.addFirst(element);
     }
-
-    if (index == size) {
-      addLast(data);
-      return;
+    else if (index == this.size) {
+      this.addLast(element);
     }
+    else {
+      Node<T> trav = null;
+      for (int i = 0; i < index; ++i) {
+        trav = (i == 0) ? this.head : trav.getNext();
+      }
 
-    Node<T> temp = head;
-    for (int i = 0; i < index - 1; i++) {
-      temp = temp.next;
+      Node<T> node = new Node(element, trav, trav.getNext());
+      trav.getNext().setPrev(node);
+      trav.setNext(node);
+      ++this.size;
     }
-    Node<T> newNode = new Node<>(data, temp, temp.next);
-    temp.next.prev = newNode;
-    temp.next = newNode;
-
-    size++;
   }
 
-  // Check the value of the first node if it exists, O(1)
   public T peekFirst() {
-    if (isEmpty()) throw new RuntimeException("Empty list");
-    return head.data;
+    if (this.isEmpty()) {
+      throw new RuntimeException("Empty list");
+    }
+    else {
+      return this.head.getData();
+    }
   }
 
-  // Check the value of the last node if it exists, O(1)
   public T peekLast() {
-    if (isEmpty()) throw new RuntimeException("Empty list");
-    return tail.data;
+    if (this.isEmpty()) {
+      throw new RuntimeException("Empty list");
+    }
+    else {
+      return this.tail.getData();
+    }
   }
 
-  // Remove the first value at the head of the linked list, O(1)
   public T removeFirst() {
-    // Can't remove data from an empty list
-    if (isEmpty()) throw new RuntimeException("Empty list");
+    if (this.isEmpty()) {
+      throw new RuntimeException("Empty list");
+    }
+    else {
+      T data = this.head.getData();
+      this.head = this.head.getNext();
+      --this.size;
 
-    // Extract the data at the head and move
-    // the head pointer forwards one node
-    T data = head.data;
-    head = head.next;
-    --size;
+      if (this.isEmpty()) {
+        this.tail = null;
+      }
+      else {
+        this.head.setPrev(null);
+      }
 
-    // If the list is empty set the tail to null
-    if (isEmpty()) tail = null;
-
-    // Do a memory cleanup of the previous node
-    else head.prev = null;
-
-    // Return the data that was at the first node we just removed
-    return data;
+      return data;
+    }
   }
 
-  // Remove the last value at the tail of the linked list, O(1)
   public T removeLast() {
-    // Can't remove data from an empty list
-    if (isEmpty()) throw new RuntimeException("Empty list");
+    if (this.isEmpty()) {
+      throw new RuntimeException("Empty list");
+    }
+    else {
+      T data = this.tail.getData();
+      this.tail = this.tail.getPrev();
+      --this.size;
 
-    // Extract the data at the tail and move
-    // the tail pointer backwards one node
-    T data = tail.data;
-    tail = tail.prev;
-    --size;
+      if (this.isEmpty()) {
+        this.head = null;
+      }
+      else {
+        this.tail.setNext(null);
+      }
 
-    // If the list is now empty set the head to null
-    if (isEmpty()) head = null;
-
-    // Do a memory clean of the node that was just removed
-    else tail.next = null;
-
-    // Return the data that was in the last node we just removed
-    return data;
+      return data;
+    }
   }
 
-  // Remove an arbitrary node from the linked list, O(1)
   private T remove(Node<T> node) {
-    // If the node to remove is somewhere either at the
-    // head or the tail handle those independently
-    if (node.prev == null) return removeFirst();
-    if (node.next == null) return removeLast();
+    /* if the node is the head */
+    if (node.getPrev() == null) {
+      return this.removeFirst();
+    }
+    /* if the node is the tail */
+    else if (node.getNext() == null) {
+      return this.removeLast();
+    }
+    /* otherwise */
+    else {
+      T data = node.getData();
+      --this.size;
 
-    // Make the pointers of adjacent nodes skip over 'node'
-    node.next.prev = node.prev;
-    node.prev.next = node.next;
+      node.getNext().setPrev(node.getPrev());
+      node.getPrev().setNext(node.getNext());
 
-    // Temporarily store the data we want to return
-    T data = node.data;
+      /* clean up */
+      node.setData(null);
+      node.setPrev(null);
+      node.setNext(null);
+      node = null;
 
-    // Memory cleanup
-    node.data = null;
-    node = node.prev = node.next = null;
-
-    --size;
-
-    // Return the data in the node we just removed
-    return data;
+      return data;
+    }
   }
 
-  // Remove a node at a particular index, O(n)
   public T removeAt(int index) {
-    // Make sure the index provided is valid
-    if (index < 0 || index >= size) {
+    if (index < 0 || index >= this.size()) {
       throw new IllegalArgumentException();
     }
+    else {
+      int midIndex = 0 + this.size() >>> 1;
+      Node<T> node = null;
 
-    int i;
-    Node<T> trav;
-
-    // Search from the front of the list
-    if (index < size / 2) {
-      for (i = 0, trav = head; i != index; i++) {
-        trav = trav.next;
+      if (index < midIndex) {
+        for (int i = 0; i < midIndex; ++i) {
+          node = (i == 0) ? this.head : node.getNext();
+          if (i == index) {
+            break;
+          }
+        }
       }
-      // Search from the back of the list
-    } else {
-      for (i = size - 1, trav = tail; i != index; i--) {
-        trav = trav.prev;
+      else {
+        for (int i = this.size() - 1; i >= midIndex; --i) {
+          node = (i == this.size() - 1) ? this.tail : node.getPrev();
+          if (i == index) {
+            break;
+          }
+        }
       }
+      T data = node.getData();
+      this.remove(node);        
+      return data;
     }
-    return remove(trav);
   }
-
-  // Remove a particular value in the linked list, O(n)
+  
   public boolean remove(Object obj) {
-    Node<T> trav = head;
+    Node<T> node = null;
 
-    // Support searching for null
-    if (obj == null) {
-      for (trav = head; trav != null; trav = trav.next) {
-        if (trav.data == null) {
-          remove(trav);
-          return true;
-        }
+    for (int i = 0; i < this.size(); ++i) {
+      node = (i == 0) ? this.head : node.getNext();
+      if (obj == null && node.getData() == null) {
+        this.remove(node);
+        return true;
       }
-      // Search for non null object
-    } else {
-      for (trav = head; trav != null; trav = trav.next) {
-        if (obj.equals(trav.data)) {
-          remove(trav);
-          return true;
+      else {
+        if (obj.equals(node.getData())) {
+          this.remove(node);
+        return true;
         }
       }
     }
+
+    /* if you can't find the value in the linkedlist */
     return false;
   }
 
-  // Find the index of a particular value in the linked list, O(n)
   public int indexOf(Object obj) {
-    int index = 0;
-    Node<T> trav = head;
+    int index = -1;
+    Node<T> node = null;
 
-    // Support searching for null
-    if (obj == null) {
-      for (; trav != null; trav = trav.next, index++) {
-        if (trav.data == null) {
-          return index;
-        }
+    for (int i = 0; i < this.size(); ++i) {
+      node = (i == 0) ? this.head : node.getNext();
+      if (obj == null && node.getData() == null) {
+        index = i;
+        break;
       }
-      // Search for non null object
-    } else {
-      for (; trav != null; trav = trav.next, index++) {
-        if (obj.equals(trav.data)) {
-          return index;
+      else {
+        if (obj.equals(node.getData())) {
+          index = i;
+          break;
         }
       }
     }
-    return -1;
+
+    return index;
   }
 
-  // Check is a value is contained within the linked list
   public boolean contains(Object obj) {
-    return indexOf(obj) != -1;
+    return this.indexOf(obj) > -1;
   }
 
   @Override
@@ -269,8 +301,8 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
       @Override
       public T next() {
-        T data = trav.data;
-        trav = trav.next;
+        T data = trav.getData();
+        trav = trav.getNext();
         return data;
       }
 
@@ -283,17 +315,15 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("[ ");
-    Node<T> trav = head;
-    while (trav != null) {
-      sb.append(trav.data);
-      if (trav.next != null) {
-        sb.append(", ");
-      }
-      trav = trav.next;
+    String string = "[";
+    Node<T> node = null;
+  
+    for (int i = 0; i < this.size(); ++i) {
+      node = (i == 0) ? this.head : node.getNext();
+      string += (i < this.size() - 1) ? node.getData() + ", " : node.getData();
     }
-    sb.append(" ]");
-    return sb.toString();
+
+    string += "]";
+    return string;
   }
 }
