@@ -17,6 +17,7 @@ public class QuadTree {
   private static int NORTH_WEST = 2;
   private static int SOUTH_EAST = 3;
   private static int SOUTH_WEST = 4;
+  private static int UNDEFINED_QUADRANT = 0;
 
   private static boolean isNorth(int dir) {
     return dir == NORTH_EAST || dir == NORTH_WEST;
@@ -30,9 +31,41 @@ public class QuadTree {
       x = xx;
     }
 
+    public long getX() {
+      return x;
+    }
+
+    public long getY() {
+      return y;
+    }
+
     @Override
     public String toString() {
       return "(" + x + "," + y + ")";
+    }
+  }
+
+  class CellType {
+    private final boolean horizontal;
+    private final boolean vertical;
+    private final boolean diagonal;
+
+    public CellType(double radius, long xDist, long yDist){
+      horizontal = radius >= xDist;
+      vertical = radius >= yDist;
+      diagonal = horizontal && vertical;
+    }
+
+    public boolean isHorizontal() {
+      return horizontal;
+    }
+
+    public boolean isVertical() {
+      return vertical;
+    }
+
+    public boolean isDiagonal() {
+      return diagonal;
     }
   }
 
@@ -184,28 +217,45 @@ public class QuadTree {
         }
       }
 
-      int pointQuadrant = 0;
+      Pt point = new Pt(x, y);
 
-      // Dig to find the quadrant (x, y) belongs to.
-      if (nw != null && region.contains(x, y)) {
-        nw.knn(k, x, y, heap);
-        pointQuadrant = NORTH_WEST;
-      } else if (ne != null && region.contains(x, y)) {
-        ne.knn(k, x, y, heap);
-        pointQuadrant = NORTH_EAST;
-      } else if (sw != null && region.contains(x, y)) {
-        sw.knn(k, x, y, heap);
-        pointQuadrant = SOUTH_WEST;
-      } else if (se != null && region.contains(x, y)) { // Use else clause?
-        se.knn(k, x, y, heap);
-        pointQuadrant = SOUTH_EAST;
-      }
+      int pointQuadrant = findQuadrant(k, point, heap);
 
       if (pointQuadrant == 0) {
         // System.out.println("UNDEFINED QUADRANT?");
         // return;
       }
 
+      findKnnRecursively(k, point, heap, pointQuadrant);
+
+    } // method
+
+    // Method that digs to find the quadrant (x, y) belongs to.
+    private int findQuadrant(int k, Pt point, PriorityQueue<SortedPt> heap){
+      long x = point.getX();
+      long y = point.getY();
+
+      if (nw != null && region.contains(x, y)) {
+        nw.knn(k, x, y, heap);
+        return NORTH_WEST;
+      } else if (ne != null && region.contains(x, y)) {
+        ne.knn(k, x, y, heap);
+        return NORTH_EAST;
+      } else if (sw != null && region.contains(x, y)) {
+        sw.knn(k, x, y, heap);
+        return SOUTH_WEST;
+      } else if (se != null && region.contains(x, y)) { // Use else clause?
+        se.knn(k, x, y, heap);
+        return SOUTH_EAST;
+      } else {
+        return UNDEFINED_QUADRANT;
+      }
+    }
+
+    private void findKnnRecursively(int k, Pt point, PriorityQueue<SortedPt> heap, int pointQuadrant){
+      // Get Point Coordinates
+      long x = point.getX();
+      long y = point.getY();
       // Get largest radius.
       double radius = heap.isEmpty() ? POSITIVE_INFINITY : heap.peek().dist;
 
@@ -218,34 +268,12 @@ public class QuadTree {
       long dx = Math.abs(x - cx);
       long dy = Math.abs(y - cy);
 
-      boolean checkHorizontalCell = radius >= dx;
-      boolean checkVerticalCell = radius >= dy;
-      boolean checkDiagonalCell = checkHorizontalCell && checkVerticalCell;
+      CellType cellType = new CellType(radius, dx, dy);
 
       // TODO(williamfiset): Refactor.
       if (heap.size() == k) {
 
-        if (isNorth(pointQuadrant)) {
-          if (pointQuadrant == NORTH_WEST) {
-            if (checkHorizontalCell) if (ne != null) ne.knn(k, x, y, heap);
-            if (checkVerticalCell) if (sw != null) sw.knn(k, x, y, heap);
-            if (checkDiagonalCell) if (se != null) se.knn(k, x, y, heap);
-          } else {
-            if (checkHorizontalCell) if (nw != null) nw.knn(k, x, y, heap);
-            if (checkVerticalCell) if (se != null) se.knn(k, x, y, heap);
-            if (checkDiagonalCell) if (nw != null) nw.knn(k, x, y, heap);
-          }
-        } else {
-          if (pointQuadrant == SOUTH_WEST) {
-            if (checkHorizontalCell) if (se != null) se.knn(k, x, y, heap);
-            if (checkVerticalCell) if (nw != null) nw.knn(k, x, y, heap);
-            if (checkDiagonalCell) if (ne != null) ne.knn(k, x, y, heap);
-          } else {
-            if (checkHorizontalCell) if (sw != null) sw.knn(k, x, y, heap);
-            if (checkVerticalCell) if (ne != null) ne.knn(k, x, y, heap);
-            if (checkDiagonalCell) if (nw != null) nw.knn(k, x, y, heap);
-          }
-        }
+        reprocessKnn(k, point, heap, pointQuadrant, cellType);
 
         // Still need to find k - heap.size() nodes!
       } else {
@@ -257,9 +285,8 @@ public class QuadTree {
 
           if (quadrant == pointQuadrant) continue;
           radius = heap.isEmpty() ? POSITIVE_INFINITY : heap.peek().dist;
-          checkHorizontalCell = radius >= dx;
-          checkVerticalCell = radius >= dy;
-          checkDiagonalCell = checkHorizontalCell && checkVerticalCell;
+
+          CellType cellType2 = new CellType(radius, dx, dy);
 
           // No validation
           if (heap.size() != k) {
@@ -287,32 +314,38 @@ public class QuadTree {
 
             // must intersect
           } else {
-
-            if (isNorth(pointQuadrant)) {
-              if (pointQuadrant == NORTH_WEST) {
-                if (checkHorizontalCell) if (ne != null) ne.knn(k, x, y, heap);
-                if (checkVerticalCell) if (sw != null) sw.knn(k, x, y, heap);
-                if (checkDiagonalCell) if (se != null) se.knn(k, x, y, heap);
-              } else {
-                if (checkHorizontalCell) if (nw != null) nw.knn(k, x, y, heap);
-                if (checkVerticalCell) if (se != null) se.knn(k, x, y, heap);
-                if (checkDiagonalCell) if (nw != null) nw.knn(k, x, y, heap);
-              }
-            } else {
-              if (pointQuadrant == SOUTH_WEST) {
-                if (checkHorizontalCell) if (se != null) se.knn(k, x, y, heap);
-                if (checkVerticalCell) if (nw != null) nw.knn(k, x, y, heap);
-                if (checkDiagonalCell) if (ne != null) ne.knn(k, x, y, heap);
-              } else {
-                if (checkHorizontalCell) if (sw != null) sw.knn(k, x, y, heap);
-                if (checkVerticalCell) if (ne != null) ne.knn(k, x, y, heap);
-                if (checkDiagonalCell) if (nw != null) nw.knn(k, x, y, heap);
-              }
-            }
+            reprocessKnn(k, point, heap, pointQuadrant, cellType2);
           }
         } // for
       } // if
-    } // method
+    }
+
+    private void reprocessKnn(int k, Pt point, PriorityQueue<SortedPt> heap, int pointQuadrant, CellType cellType){
+      long x = point.getX();
+      long y = point.getY();
+      if (isNorth(pointQuadrant)) {
+        if (pointQuadrant == NORTH_WEST) {
+          if (cellType.isHorizontal()) if (ne != null) ne.knn(k, x, y, heap);
+          if (cellType.isVertical()) if (sw != null) sw.knn(k, x, y, heap);
+          if (cellType.isDiagonal()) if (se != null) se.knn(k, x, y, heap);
+        } else {
+          if (cellType.isHorizontal()) if (nw != null) nw.knn(k, x, y, heap);
+          if (cellType.isVertical()) if (se != null) se.knn(k, x, y, heap);
+          if (cellType.isDiagonal()) if (nw != null) nw.knn(k, x, y, heap);
+        }
+      } else {
+        if (pointQuadrant == SOUTH_WEST) {
+          if (cellType.isHorizontal()) if (se != null) se.knn(k, x, y, heap);
+          if (cellType.isVertical()) if (nw != null) nw.knn(k, x, y, heap);
+          if (cellType.isDiagonal()) if (ne != null) ne.knn(k, x, y, heap);
+        } else {
+          if (cellType.isHorizontal()) if (sw != null) sw.knn(k, x, y, heap);
+          if (cellType.isVertical()) if (ne != null) ne.knn(k, x, y, heap);
+          if (cellType.isDiagonal()) if (nw != null) nw.knn(k, x, y, heap);
+        }
+      }
+    }
+
   } // node
 
   public static class Rect {

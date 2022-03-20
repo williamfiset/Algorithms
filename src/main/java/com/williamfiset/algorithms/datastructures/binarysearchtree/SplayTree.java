@@ -5,7 +5,10 @@
 package com.williamfiset.algorithms.datastructures.binarysearchtree;
 
 import com.williamfiset.algorithms.datastructures.utils.TreePrinter;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -81,6 +84,25 @@ public class SplayTree<T extends Comparable<T>> {
 
       return TreePrinter.getTreeDisplay(this);
     }
+
+    public ArrayList<BinaryTree<T>> split(T node) {
+      BinaryTree<T> right;
+      BinaryTree<T> left;
+
+      if (node.compareTo(this.getData()) > 0) {
+        right = this.getRight();
+        left = this;
+        left.setRight(null);
+      } else {
+        left = this.getLeft();
+        right = this;
+        right.setLeft(null);
+      }
+      ArrayList<BinaryTree<T>> l_r = new ArrayList<>();
+      l_r.add(left);
+      l_r.add(right);
+      return l_r;
+    }
   }
 
   /** Public Methods * */
@@ -113,7 +135,7 @@ public class SplayTree<T extends Comparable<T>> {
     }
     splay(node);
 
-    ArrayList<BinaryTree<T>> l_r = split(node);
+    ArrayList<BinaryTree<T>> l_r = root.split(node);
 
     BinaryTree<T> left = l_r.get(0);
     BinaryTree<T> right = l_r.get(1);
@@ -159,14 +181,14 @@ public class SplayTree<T extends Comparable<T>> {
     return temp.getData();
   }
 
-  /** * To FindMax Of Tree with specified root * */
+  /** To FindMax Of Tree with specified root * */
   public T findMax(BinaryTree<T> root) {
     BinaryTree<T> temp = root;
     while (temp.getRight() != null) temp = temp.getRight();
     return temp.getData();
   }
 
-  /** * To FindMin Of Tree with specified root * */
+  /** To FindMin Of Tree with specified root * */
   public T findMin(BinaryTree<T> root) {
     BinaryTree<T> temp = root;
     while (temp.getLeft() != null) temp = temp.getLeft();
@@ -235,26 +257,6 @@ public class SplayTree<T extends Comparable<T>> {
     this.root = splayUtil(root, node);
 
     return this.root;
-  }
-
-  private ArrayList<BinaryTree<T>> split(T node) {
-    BinaryTree<T> right;
-    BinaryTree<T> left;
-
-    if (node.compareTo(root.getData()) > 0) {
-      right = root.getRight();
-      left = root;
-      left.setRight(null);
-    } else {
-      left = root.getLeft();
-      right = root;
-      right.setLeft(null);
-    }
-    ArrayList<BinaryTree<T>> l_r = new ArrayList<>();
-    l_r.add(left);
-    l_r.add(right);
-
-    return l_r;
   }
 
   private BinaryTree<T> join(BinaryTree<T> L, BinaryTree<T> R) {
