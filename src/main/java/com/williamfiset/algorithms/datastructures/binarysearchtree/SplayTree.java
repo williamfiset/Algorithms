@@ -5,10 +5,7 @@
 package com.williamfiset.algorithms.datastructures.binarysearchtree;
 
 import com.williamfiset.algorithms.datastructures.utils.TreePrinter;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -98,10 +95,10 @@ public class SplayTree<T extends Comparable<T>> {
         right = this;
         right.setLeft(null);
       }
-      ArrayList<BinaryTree<T>> l_r = new ArrayList<>();
-      l_r.add(left);
-      l_r.add(right);
-      return l_r;
+      ArrayList<BinaryTree<T>> leftAndRightSubTrees = new ArrayList<>();
+      leftAndRightSubTrees.add(left);
+      leftAndRightSubTrees.add(right);
+      return leftAndRightSubTrees;
     }
   }
 
@@ -135,10 +132,10 @@ public class SplayTree<T extends Comparable<T>> {
     }
     splay(node);
 
-    ArrayList<BinaryTree<T>> l_r = root.split(node);
+    ArrayList<BinaryTree<T>> leftAndRightSubTrees = root.split(node);
 
-    BinaryTree<T> left = l_r.get(0);
-    BinaryTree<T> right = l_r.get(1);
+    BinaryTree<T> left = leftAndRightSubTrees.get(0);
+    BinaryTree<T> right = leftAndRightSubTrees.get(1);
 
     root = new BinaryTree<>(node);
     root.setLeft(left);

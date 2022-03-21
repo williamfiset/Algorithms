@@ -50,7 +50,7 @@ public class QuadTree {
     private final boolean vertical;
     private final boolean diagonal;
 
-    public CellType(double radius, long xDist, long yDist){
+    public CellType(double radius, long xDist, long yDist) {
       horizontal = radius >= xDist;
       vertical = radius >= yDist;
       diagonal = horizontal && vertical;
@@ -227,11 +227,10 @@ public class QuadTree {
       }
 
       findKnnRecursively(k, point, heap, pointQuadrant);
-
     } // method
 
     // Method that digs to find the quadrant (x, y) belongs to.
-    private int findQuadrant(int k, Pt point, PriorityQueue<SortedPt> heap){
+    private int findQuadrant(int k, Pt point, PriorityQueue<SortedPt> heap) {
       long x = point.getX();
       long y = point.getY();
 
@@ -252,7 +251,8 @@ public class QuadTree {
       }
     }
 
-    private void findKnnRecursively(int k, Pt point, PriorityQueue<SortedPt> heap, int pointQuadrant){
+    private void findKnnRecursively(
+        int k, Pt point, PriorityQueue<SortedPt> heap, int pointQuadrant) {
       // Get Point Coordinates
       long x = point.getX();
       long y = point.getY();
@@ -320,7 +320,8 @@ public class QuadTree {
       } // if
     }
 
-    private void reprocessKnn(int k, Pt point, PriorityQueue<SortedPt> heap, int pointQuadrant, CellType cellType){
+    private void reprocessKnn(
+        int k, Pt point, PriorityQueue<SortedPt> heap, int pointQuadrant, CellType cellType) {
       long x = point.getX();
       long y = point.getY();
       if (isNorth(pointQuadrant)) {
@@ -345,7 +346,6 @@ public class QuadTree {
         }
       }
     }
-
   } // node
 
   public static class Rect {
