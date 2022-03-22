@@ -82,6 +82,7 @@ public class SplayTree<T extends Comparable<T>> {
       return TreePrinter.getTreeDisplay(this);
     }
 
+    /** Returns a list of BinaryTrees containing left and right subtree of the provided node* */
     public ArrayList<BinaryTree<T>> split(T node) {
       BinaryTree<T> right;
       BinaryTree<T> left;
