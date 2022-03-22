@@ -6,13 +6,13 @@ class Solution {
   public int numTilings(int N) {
     n = N;
     dp = new Long[n + 1][1 << 2];
-    long ans = f(0, true, true);
+    long ans = findCount(0, true, true);
     return (int) ans;
   }
 
   // t1 - whether tile 1 is available
   // t2 - whether tile 2 is available
-  static long f(int i, boolean t1, boolean t2) {
+  static long findCount(int i, boolean t1, boolean t2) {
     // Finished fully tiling the board.
     if (i == n) {
       return 1;
@@ -33,48 +33,48 @@ class Solution {
     // Placing:
     // XX
     // X
-    if (t1 && t2 && t3) count += f(i + 1, false, true);
+    if (t1 && t2 && t3) count += findCount(i + 1, false, true);
 
     // Placing:
     // X
     // XX
-    if (t1 && t2 && t4) count += f(i + 1, true, false);
+    if (t1 && t2 && t4) count += findCount(i + 1, true, false);
 
     // Placing:
     // XX
     // #X
-    if (t1 && !t2 && t3 && t4) count += f(i + 1, false, false);
+    if (t1 && !t2 && t3 && t4) count += findCount(i + 1, false, false);
 
     // Placing:
     // #X
     // XX
-    if (!t1 && t2 && t3 && t4) count += f(i + 1, false, false);
+    if (!t1 && t2 && t3 && t4) count += findCount(i + 1, false, false);
 
     // Placing
     // X
     // X
-    if (t1 && t2) count += f(i + 1, true, true);
+    if (t1 && t2) count += findCount(i + 1, true, true);
 
     // Placing two horizontals. We don't place 2 verticals because
     // that's accounted for with the single vertical tile:
     // XX
     // XX
-    if (t1 && t2 && t3 && t4) count += f(i + 1, false, false);
+    if (t1 && t2 && t3 && t4) count += findCount(i + 1, false, false);
 
     // Placing:
     // XX
     // #
-    if (t1 && !t2 && t3) count += f(i + 1, false, true);
+    if (t1 && !t2 && t3) count += findCount(i + 1, false, true);
 
     // Placing:
     // #
     // XX
-    if (!t1 && t2 && t4) count += f(i + 1, true, false);
+    if (!t1 && t2 && t4) count += findCount(i + 1, true, false);
 
     // Current column is already fully tiled, so move to next column
     // #
     // #
-    if (!t1 && !t2) count += f(i + 1, true, true);
+    if (!t1 && !t2) count += findCount(i + 1, true, true);
 
     return dp[i][state] = count % MOD;
   }
