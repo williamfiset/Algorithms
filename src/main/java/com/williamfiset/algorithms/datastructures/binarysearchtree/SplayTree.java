@@ -150,7 +150,7 @@ public class SplayTree<T extends Comparable<T>> {
 
     BinaryTree<T> searchResult = splay(node);
 
-    if (searchResult.getData().compareTo(node) != 0) return null;
+    if (searchResult == null || searchResult.getData().compareTo(node) != 0) return null;
 
     BinaryTree<T> leftSubtree = root.getLeft();
     BinaryTree<T> rightSubtree = root.getRight();
