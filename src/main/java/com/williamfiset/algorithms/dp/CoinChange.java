@@ -20,7 +20,7 @@ import java.util.Optional;
 public class CoinChange {
 
   public static class Solution {
-    // Contains the minimum number of coins to make a certain amount, if an optimal solution exists.
+    // Contains the minimum number of coins to make a certain amount, if a solution exists.
     Optional<Integer> minCoins = Optional.empty();
 
     // The coins selected as part of the optimal solution.
@@ -94,9 +94,12 @@ public class CoinChange {
     dp[0] = 0;
 
     for (int i = 1; i <= n; i++) {
-      for (int coinValue : coins) {
-        if (i - coinValue >= 0 && dp[i - coinValue] + 1 < dp[i]) {
-          dp[i] = dp[i - coinValue] + 1;
+      for (int coin : coins) {
+        if (i - coin < 0) {
+          continue;
+        }
+        if (dp[i - coin] + 1 < dp[i]) {
+          dp[i] = dp[i - coin] + 1;
         }
       }
     }
