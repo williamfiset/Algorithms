@@ -253,7 +253,7 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
         // successor of the node being removed can either be the largest
         // value in the left subtree or the smallest value in the right
         // subtree. As a heuristic, I will remove from the subtree with
-        // the greatest hieght in hopes that this may help with balancing.
+        // the greatest height in hopes that this may help with balancing.
       } else {
 
         // Choose to remove from left subtree
