@@ -1,0 +1,29 @@
+package com.williamfiset.algorithms.math;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class IsPrimeTest {
+
+	@Test
+	public void testNotPrime() {
+
+		// test 1
+		Assert.assertEquals(false, IsPrime.isPrime(1));
+	}
+
+	public void testIsPrime() {
+		// test 2
+		Assert.assertEquals(false, IsPrime.isPrime(2));
+	}
+
+	public void testnotPrime2() {
+		// test 3
+		Assert.assertEquals(false, IsPrime.isPrime(5));
+
+	}
+
+	private IsPrime createTestSubject() {
+		return new IsPrime();
+	}
+}
