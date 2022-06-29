@@ -6,6 +6,7 @@
  * given time for it to work correctly.
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
+ * @contribuitor César Miranda Meza, cmirandameza3@hotmail.com
  */
 package com.williamfiset.algorithms.datastructures.stack;
 
@@ -13,11 +14,13 @@ public class IntStack implements Stack<Integer> {
 
   private int[] ar;
   private int pos = 0;
+  private int maxSize;
 
   // maxSize is the maximum number of items
   // that can be in the queue at any given time
   public IntStack(int maxSize) {
-    ar = new int[maxSize];
+	ar = new int[maxSize];
+	this.maxSize = maxSize;
   }
 
   // Returns the number of elements insize the stack
@@ -33,18 +36,21 @@ public class IntStack implements Stack<Integer> {
   // Returns the element at the top of the stack
   @Override
   public Integer peek() {
+	if (isEmpty()) throw new IllegalArgumentException("Illegal use of \"peek()\" method. There is no data stored in the current Stack.");
     return ar[pos - 1];
   }
 
   // Add an element to the top of the stack
   @Override
   public void push(Integer value) {
+	if (this.maxSize == size()) throw new IllegalArgumentException("Illegal use of \"push()\" method. The data stored/pushed into the current Stack has exceeded the size limit.");
     ar[pos++] = value;
   }
 
   // Make sure you check that the stack is not empty before calling pop!
   @Override
   public Integer pop() {
+	if (isEmpty()) throw new IllegalArgumentException("Illegal use of \"pop()\" method. There is no data stored in the current Stack.");
     return ar[--pos];
   }
 
