@@ -63,12 +63,12 @@ public class DynamicArray<T> implements Iterable<T> {
   public T removeAt(int rm_index) {
     if (rm_index >= len || rm_index < 0) throw new IndexOutOfBoundsException();
     T data = arr[rm_index];
-    T[] new_arr = (T[]) new Object[len - 1];
+    T[] new_arr = (T[]) new Object[--capacity];
     for (int i = 0, j = 0; i < len; i++, j++)
       if (i == rm_index) j--; // Skip over rm_index by fixing j temporarily
       else new_arr[j] = arr[i];
     arr = new_arr;
-    capacity = --len;
+    len --;
     return data;
   }
 
