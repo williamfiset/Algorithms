@@ -90,7 +90,6 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 - [Splay Tree](src/main/java/com/williamfiset/algorithms/datastructures/binarysearchtree/SplayTree.java)
 - [:movie_camera:](https://www.youtube.com/watch?v=PEnFFiQe1pM) [Dynamic Array](src/main/java/com/williamfiset/algorithms/datastructures/dynamicarray)
   - [Dynamic array (integer only, fast)](src/main/java/com/williamfiset/algorithms/datastructures/dynamicarray/IntArray.java)
-  - [Dynamic array (generic)](src/main/java/com/williamfiset/algorithms/datastructures/dynamicarray/DynamicArray.java)
 - [:movie_camera:](https://www.youtube.com/watch?v=RgITNht_f4Q) [Fenwick Tree](src/main/java/com/williamfiset/algorithms/datastructures/fenwicktree)
   - [Fenwick Tree (range query, point updates)](src/main/java/com/williamfiset/algorithms/datastructures/fenwicktree/FenwickTreeRangeQueryPointUpdate.java)
   - [Fenwick Tree (range update, point query)](src/main/java/com/williamfiset/algorithms/datastructures/fenwicktree/FenwickTreeRangeUpdatePointQuery.java)
