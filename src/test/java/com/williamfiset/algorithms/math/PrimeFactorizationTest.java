@@ -34,7 +34,8 @@ public class PrimeFactorizationTest {
         assertThat(PrimeFactorization.isPrime(1)).isFalse();
         assertThat(PrimeFactorization.isPrime(2)).isTrue();
         assertThat(PrimeFactorization.isPrime(3)).isTrue();
-        assertThat(PrimeFactorization.isPrime(2 % 2)).isFalse();
-        assertThat(PrimeFactorization.isPrime(3 % 3)).isFalse();
+        assertThat(PrimeFactorization.isPrime(100)).isTrue();
+        assertThat(PrimeFactorization.isPrime(666)).isTrue();
+        assertThat(PrimeFactorization.isPrime(7)).isFalse();
     }
 }

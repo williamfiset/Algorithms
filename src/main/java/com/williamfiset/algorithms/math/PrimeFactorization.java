@@ -58,7 +58,7 @@ public class PrimeFactorization {
   }
 
   public static void main(String[] args) {
-    System.out.println(primeFactorization(7));
+    System.out.println(primeFactorization(7));// [7]
     System.out.println(primeFactorization(100)); // [2,2,5,5]
     System.out.println(primeFactorization(666)); // [2,3,3,37]
     System.out.println(primeFactorization(872342345)); // [5, 7, 7, 67, 19, 2797]
