@@ -28,7 +28,7 @@ public class PrimeFactorization {
     return factors;
   }
 
-  private static long pollardRho(long n) {
+  public static long pollardRho(long n) {
     if (n % 2 == 0) return 2;
     long x = 2 + (long) (999999 * Math.random());
     long c = 2 + (long) (999999 * Math.random());
@@ -44,11 +44,11 @@ public class PrimeFactorization {
     return d;
   }
 
-  private static long gcd(long a, long b) {
+  public static long gcd(long a, long b) {
     return b == 0 ? a : gcd(b, a % b);
   }
 
-  private static boolean isPrime(final long n) {
+  public static boolean isPrime(final long n) {
     if (n < 2) return false;
     if (n == 2 || n == 3) return true;
     if (n % 2 == 0 || n % 3 == 0) return false;
@@ -58,7 +58,7 @@ public class PrimeFactorization {
   }
 
   public static void main(String[] args) {
-    System.out.println(primeFactorization(7)); // [7]
+    System.out.println(primeFactorization(7));
     System.out.println(primeFactorization(100)); // [2,2,5,5]
     System.out.println(primeFactorization(666)); // [2,3,3,37]
     System.out.println(primeFactorization(872342345)); // [5, 7, 7, 67, 19, 2797]
