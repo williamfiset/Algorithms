@@ -26,6 +26,7 @@ public class IsPrime {
     System.out.println(isPrime(5));
     System.out.println(isPrime(31));
     System.out.println(isPrime(1433));
+    System.out.println(isPrime(8));
     System.out.println(isPrime(8763857775536878331L));
   }
 }
