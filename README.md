@@ -9,11 +9,11 @@ Algorithms and data structures are fundamental to efficient code and good softwa
 
 # Contributing
 
-This repository is contribution friendly :smiley:. If you'd like to add or improve an algorithm, your contribution is welcome! Please be sure to checkout the [Wiki](https://github.com/williamfiset/Algorithms/wiki) for instructions.
+This repository is contribution friendly :smiley:. If you'd like to add or improve an algorithm, your contribution is welcome! Please be sure to check out the [Wiki](https://github.com/williamfiset/Algorithms/wiki) for instructions.
 
 ### Other programming languages?
 
-This repository provides algorithm implementations in Java, however there are other forks that provide implementations in other languages, most notably:
+This repository provides algorithm implementations in Java, however, there are other forks that provide implementations in other languages, most notably:
 
 * **C++/Python**: https://github.com/akzare/Algorithms
 * **Rust**: https://github.com/TianyiShi2001/Algorithms
@@ -24,7 +24,7 @@ To compile and run any of the algorithms here, you need at least JDK version 8. 
 
 ## Running with Gradle (recommended)
 
-This project supports the [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). The Gradle wrapper automatically downloads Gradle at the first time it runs, so expect a delay when running the first command below.
+This project supports the [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). The Gradle wrapper automatically downloads Gradle the first time it runs, so expect a delay when running the first command below.
 
 If you are on Windows, use `gradlew.bat` instead of `./gradlew` below.
 
