@@ -1,3 +1,5 @@
+package com.williamfiset.algorithms.dp.examples.narrowartgallery;
+
 /**
  * Solution to the Narrow Art Gallery problem from the 2014 ICPC North America Qualifier
  *
