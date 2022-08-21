@@ -1,3 +1,5 @@
+package com.williamfiset.algorithms.dp.examples.editdistance;
+
 import java.io.*;
 import java.util.*;
 

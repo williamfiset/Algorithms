@@ -1,3 +1,5 @@
+package com.williamfiset.algorithms.dp.examples.magicalcows;
+
 /**
  * Solution to Magical Cows (https://open.kattis.com/problems/magicalcows)
  *

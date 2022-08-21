@@ -1,3 +1,5 @@
+package com.williamfiset.algorithms.dp.examples.tilingdominoes;
+
 /**
  * Solution to Tri Tiling (https://open.kattis.com/problems/tritiling)
  *
