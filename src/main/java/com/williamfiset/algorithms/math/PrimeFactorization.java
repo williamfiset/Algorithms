@@ -28,7 +28,7 @@ public class PrimeFactorization {
     return factors;
   }
 
-  public static long pollardRho(long n) {
+  private static long pollardRho(long n) {
     if (n % 2 == 0) return 2;
     long x = 2 + (long) (999999 * Math.random());
     long c = 2 + (long) (999999 * Math.random());
@@ -44,11 +44,11 @@ public class PrimeFactorization {
     return d;
   }
 
-  public static long gcd(long a, long b) {
+  private static long gcd(long a, long b) {
     return b == 0 ? a : gcd(b, a % b);
   }
 
-  public static boolean isPrime(final long n) {
+  private static boolean isPrime(final long n) {
     if (n < 2) return false;
     if (n == 2 || n == 3) return true;
     if (n % 2 == 0 || n % 3 == 0) return false;
