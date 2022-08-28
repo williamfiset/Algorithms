@@ -1,19 +1,20 @@
 package test.java.com.williamfiset.algorithms.math;
 
-import static com.google.common.truth.Truth.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import org.junit.*;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-public class ArmstrongNumberTest {
+class ArmstrongNumberTest {
+
     @Test
     @DisplayName("Valid inputs and invalid inputs")
     public void armstrongNumberTest(){
-        ArmstrongNumber armstrong = new Armstrong();
-        assertThat(armstrong.isArmstrongNumber(1)).isTrue();
-        assertThat(armstrong.isArmstrongNumber(153)).isTrue();
-        assertThat(armstrong.isArmstrongNumber(10)).isFalse();
-        assertThat(armstrong.isArmstrongNumber(300)).isFalse();
+    	assertTrue(ArmstrongNumber.isArmstrongNumber(1));
+        assertTrue(ArmstrongNumber.isArmstrongNumber(153));
+        assertFalse(ArmstrongNumber.isArmstrongNumber(10));
+        assertFalse(ArmstrongNumber.isArmstrongNumber(300));
     }
+
 }

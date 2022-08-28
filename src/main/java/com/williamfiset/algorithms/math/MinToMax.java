@@ -1,12 +1,12 @@
 package main.java.com.williamfiset.algorithms.math;
-import java.util.*;
-
+import java.text.DecimalFormat;
 public class MinToMax {
     /*
      * Functionality to get the 
      * smallest, median and largest value 
      * from an array
      */
+	
     public static int MaxResult(int[] array){
         int n = array[0];
 
@@ -17,12 +17,14 @@ public class MinToMax {
         }
         return n;
     }
+    
     public static float MedianResult(int[] array){
-        float A = array[0];
+    	float A = array[0];
         for(int i = 1; i < array.length; i++){
             A = A + array[i];
         }
-        return (A/array.length);
+        float n = (A/array.length);
+        return n;
     }
     public static int MinResult(int[] array){
         int n = array[0];

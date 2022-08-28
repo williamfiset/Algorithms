@@ -27,23 +27,23 @@ public class MinToMaxTest {
     //Median
     @Test
     public void testeMedian1(){
-        int[] array1 = {1,2,3,4,8};
-        assertEquals(3.6, MinToMax.MedianResult(array));
+        int[] array1 = {2,2,4,4,8};
+        assertEquals(4, MinToMax.MedianResult(array1));
     }
     @Test
     public void testeMedian2(){
-        int[] array3 = {4,3,5,7};
-        assertEquals(4.75, MinToMax.MedianResult(array));
+        int[] array2 = {4,3,5,7};
+        assertEquals(4.75, MinToMax.MedianResult(array2));
     }
     @Test
     public void testeMedian3(){
-        int[] array = {0,0,0,0,0,0};
-        assertEquals(0, MinToMax.MedianResult(array));
+        int[] array3 = {0,0,0,0,0,0};
+        assertEquals(0, MinToMax.MedianResult(array3));
     }
     @Test
     public void testeMedian4(){
         int[] array4 = {-1,0,-3,-9};
-        assertEquals(-3.25, MinToMax.MedianResult(array));
+        assertEquals(-3.25, MinToMax.MedianResult(array4));
     }
     //Max
     @Test
