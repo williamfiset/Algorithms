@@ -3,18 +3,18 @@ name: Actions CI
 
 on:
   push:
-    braches: [ master ]
+    branches: [ master ]
   pull_request:
     branches: [ master ]
     
-  jobs:
-    build:
-      runs-on: ubuntu-lastest
-      
-      step:
-      - uses: actions/checkout@v2
-      - uses: dbelyaev/action-checkstyle@v0.5.1
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review
-          level: warning
+jobs:
+  build:
+    runs-on: ubuntu-lastest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: dbelyaev/action-checkstyle@v0.5.1
+      with:
+        github_token: ${{ secrets.github_token }}
+        reporter: github-pr-review
+        level: warning
