@@ -27,7 +27,6 @@ jobs:
       
     - name: Run all tests
       run: |
-        ./gradlew build
         ./gradlew test
         bash <(curl -s https://codecov.io/bash)
         
@@ -35,6 +34,7 @@ jobs:
       id: jacoco
       uses: codecov/codecov-action@v1
       with:
+        github-token: ${{ secrets.github_token }}
         file: ./**/target/site/jacoco/jacoco.xml
         min-coverage-overall: 40
         min-coverage-changed-files: 60
