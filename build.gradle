@@ -88,6 +88,8 @@ test {
 
 jacocoTestReport {
     reports {
-        xml.required = true
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
     }
 }
