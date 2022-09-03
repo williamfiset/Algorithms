@@ -6,8 +6,8 @@ name: Java CI with Gradle
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  #pull_request:
+   #branches: [ master ]
 
 jobs:
   build:
@@ -24,3 +24,11 @@ jobs:
       run: chmod +x gradlew
     - name: Run all tests
       run: ./gradlew test
+      
+    - uses: codecov/codecov-action@v1
+      with:
+        github-token: ${{ secrets.github_token }}
+        file: ./**/target/site/jacoco/jacoco.xml
+        name: codecov
+        after_success:
+          bash <(curl -s https://codecov.io/bash)-
