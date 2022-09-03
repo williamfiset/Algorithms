@@ -34,4 +34,6 @@ jobs:
         github-token: ${{ secrets.github_token }}
         file: ./**/target/site/jacoco/jacoco.xml
         name: codecov
-    - run: bash <(curl -s https://codecov.io/bash)
+        after_success:
+          bash <(curl -s https://codecov.io/bash)
+
