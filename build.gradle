@@ -1,7 +1,6 @@
 apply plugin: 'java'
 apply plugin: "com.github.sherter.google-java-format"
 apply plugin: 'application'
-apply plugin: 'jacoco'
 
 mainClassName = findProperty("main") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"
 
@@ -74,32 +73,4 @@ compileTestJava {
 task buildDependenciesFolder(type: Copy) {
   from configurations.compile
   into './dependencies'
-}
-
-jacoco {
-    toolVersion = "0.7.1.201405082137"
-    reportsDir = file("$buildDir/customJacocoReportDir")
-}
-
-test {
-  useJUnitPlatform()
-  finalizedBy jacocoTestReport // report is always generated after tests run
-}
-
-jacocoTestReport {
-    // The JaCoCo plugin adds a JacocoTaskExtension extension to all tasks of type Test.
-    // Use task state to include or not task execution data
-    // https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskState.html
-    // This declaration will be used as a closure, notice there no wrapping parenthesis
-    executionData tasks.withType(Test).findAll { it.state.executed }
-    
-    // If the above instruction really don't work, there maybe some things that intervene in the process, in this case, you may be a bit more lucky with this instruction
-    // executionData { tasks.withType(Test).findAll { it.jacoco.destinationFile.exists() }*.jacoco.destinationFile }
-
-    reports {
-        xml.enabled true
-        xml.destination(file("${jacoco.reportsDir}/all-tests/jacocoAllTestReport.xml"))
-        html.enabled true
-        html.destination(file("${jacoco.reportsDir}/all-tests/html"))
-    }
 }
