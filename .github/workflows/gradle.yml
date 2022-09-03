@@ -35,8 +35,7 @@ jobs:
       id: jacoco
       uses: codecov/codecov-action@v1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        paths: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
+        file: ./**/target/site/jacoco/jacoco.xml
         min-coverage-overall: 40
         min-coverage-changed-files: 60
         
