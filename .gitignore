@@ -23,3 +23,6 @@ bin/
 # Mac files
 .DS_Store
 .idea/
+
+# Kotlin folder?
+*/META-INF/*

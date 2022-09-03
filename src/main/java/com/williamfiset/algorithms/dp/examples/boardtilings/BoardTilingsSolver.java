@@ -1,3 +1,5 @@
+package com.williamfiset.algorithms.dp.examples.boardtilings;
+
 import java.util.*;
 
 public class BoardTilingsSolver {

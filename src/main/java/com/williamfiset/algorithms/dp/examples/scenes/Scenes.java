@@ -1,3 +1,5 @@
+package com.williamfiset.algorithms.dp.examples.scenes;
+
 /**
  * Solution to the Mountain Scenes problem (https://open.kattis.com/problems/scenes)
  *

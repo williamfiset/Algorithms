@@ -14,7 +14,7 @@
  *
  * <p>Run: $ java -cp src/main/java com/williamfiset/algorithms/dp/examples/HouseRobber
  */
-package com.williamfiset.algorithms.dp.examples;
+package com.williamfiset.algorithms.dp.examples.houserobber;
 
 import java.util.*;
 
