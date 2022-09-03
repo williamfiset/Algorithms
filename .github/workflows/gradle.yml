@@ -23,11 +23,16 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Run all tests
-      run: ./gradlew test
+      run: |
+        ./gradlew test
+        ./gradlew testCoverage
       
-    - uses: codecov/codecov-action@v1
+    - name: Add coverage to PR
+      id: jacoco
+      uses: codecov/codecov-action@v1
       with:
-        github-token: ${{ secrets.github_token }}
-        file: ./**/target/site/jacoco/jacoco.xml
-        name: codecov
-        run: chmod +x codecov 
+        token: ${{ secrets.GITHUB_TOKEN }}
+        paths: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
+        min-coverage-overall: 40
+        min-coverage-changed-files: 60
+        
