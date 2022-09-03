@@ -24,3 +24,13 @@ jobs:
       run: chmod +x gradlew
     - name: Run all tests
       run: ./gradlew test
+      
+    - name: Embold scan step
+      id: embold
+      uses: embold/github-action-docker@v0.2
+      with:
+       embold-url: https://app.embold.io/integration/PeiShan01
+       embold-token: ${{ secrets.EMBOLD_TOKEN }}
+       repo-uid: 479d77130cb09372d19754ae71793e1f
+       # Uncomment the below line for verbose logging
+       # verbose: true
