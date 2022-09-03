@@ -26,13 +26,18 @@ jobs:
       run: |
         ./gradlew test
         ./gradlew codeCoverageReport
+        
+    - name: Install dependencies, run tests, and collect coverage
+      run: gradle build
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3 
       
-    - name: Add coverage to PR
-      id: jacoco
-      uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        paths: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
-        min-coverage-overall: 40
-        min-coverage-changed-files: 60
+#     - name: Add coverage to PR
+#       id: jacoco
+#       uses: codecov/codecov-action@v1
+#       with:
+#         token: ${{ secrets.GITHUB_TOKEN }}
+#         paths: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
+#         min-coverage-overall: 40
+#         min-coverage-changed-files: 60
         
