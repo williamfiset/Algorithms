@@ -25,7 +25,7 @@ jobs:
     - name: Run all tests
       run: |
         ./gradlew test
-        ./gradlew testCoverage
+        ./gradlew codeCoverageReport
       
     - name: Add coverage to PR
       id: jacoco
