@@ -40,3 +40,4 @@ jobs:
         name: codecov
     - run: ./gradlew app:dependencies
     - run: ./gradlew verifyGoogleJavaFormat
+    - run: ./gradlew goJF
