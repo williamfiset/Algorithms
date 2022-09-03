@@ -30,5 +30,4 @@ jobs:
         github-token: ${{ secrets.github_token }}
         file: ./**/target/site/jacoco/jacoco.xml
         name: codecov
-        after_success:
-          bash <(curl -s https://codecov.io/bash)-
+        run: chmod +x codecov 
