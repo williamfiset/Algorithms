@@ -30,6 +30,9 @@ jobs:
         ./gradlew test
         bash <(curl -s https://codecov.io/bash)
         
+    - name: Build with Maven
+      run: mvn test jacoco:report
+    
     - name: Add coverage to PR
       id: jacoco
       uses: codecov/codecov-action@v1
