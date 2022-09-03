@@ -29,7 +29,7 @@ jobs:
         java-version: 1.8
         distribution: 'temurin'
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - run: chmod +x gradlew
         
     - run: mvn -B test -P coverage --no-transfer-progress
     - uses: codecov/codecov-action@v1
