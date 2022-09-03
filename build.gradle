@@ -82,11 +82,8 @@ jacoco {
 }
 
 test {
-    jacoco {
-        append = false
-        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
-        classDumpFile = file("$buildDir/jacoco/classpathdumps")
-    }
+  useJUnitPlatform()
+  finalizedBy jacocoTestReport // report is always generated after tests run
 }
 
 jacocoTestReport {
