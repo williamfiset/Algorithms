@@ -1,0 +1,12 @@
+language: java
+before_install:
+  - pyenv install 3.6.0
+  - pip install requests
+  - chmod +x gradlew
+  - chmod +x gradle/wrapper/gradle-wrapper.jar
+script:
+  - ./gradlew build
+  - ./gradlew test
+  - bash <(curl -s https://codecov.io/bash)
+  - python request.py
+  - ./upstream.sh
