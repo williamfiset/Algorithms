@@ -38,4 +38,5 @@ jobs:
       with:
         file: ./**/target/site/jacoco/jacoco.xml
         name: codecov
+    - run: ./gradlew app:dependencies
     - run: ./gradlew verifyGoogleJavaFormat
