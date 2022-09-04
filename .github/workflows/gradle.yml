@@ -21,7 +21,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-        distribution: 'zulu'
       
     - name: Run all tests
       run: |
@@ -30,7 +29,7 @@ jobs:
       
     - uses: codecov/codecov-action@v1
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+        token: 6d8fe275-2a15-4b54-9418-b1f67d2570f7
         file: ./**/target/site/jacoco/jacoco.xml
         name: codecov
         run: chmod +x codecov 
