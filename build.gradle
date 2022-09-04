@@ -56,16 +56,12 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform()
-
-    moduleOptions {
-        runOnClasspath = true
-    }
-}
-
-test {
   dependsOn cleanTest
   testLogging.showStandardStreams = true
+  
+  moduleOptions {
+      runOnClasspath = true
+  }
 }
 
 tasks.withType(JavaCompile) {
