@@ -26,4 +26,12 @@ jobs:
       run: |
         ./gradlew test
         bash <(curl -s https://codecov.io/bash)
-      
+    
+    - name: Run Test Coverage
+      run: ./gradlew jacocoTestReport
+
+    - name: Generate JaCoCo Badge
+      uses: cicirello/jacoco-badge-generator@v2
+      with:
+        generate-branches-badge: true
+        jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
