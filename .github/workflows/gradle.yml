@@ -27,9 +27,9 @@ jobs:
         ./gradlew test
         bash <(curl -s https://codecov.io/bash)
       
-    - uses: codecov/codecov-action@v1
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
       with:
-        token: 6d8fe275-2a15-4b54-9418-b1f67d2570f7
-        file: ./**/target/site/jacoco/jacoco.xml
-        name: codecov
-        run: chmod +x codecov 
+        # no need token for public #
+        token: ${{ secrets.CODECOV_TOKEN }}
+        name: codecov-umbrella-third-party
