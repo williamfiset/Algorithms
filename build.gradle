@@ -7,7 +7,6 @@ apply plugin: 'jacoco'
 //apply from: '../jacoco.gradle'
 
 mainClassName = findProperty("main") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"
-testClassName = findProperty("test") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"
 
 buildscript {
   repositories {
@@ -54,6 +53,14 @@ dependencies {
 
   // Test mocking framework
   testCompile "org.mockito:mockito-core:1.+"
+}
+
+test {
+    useJUnitPlatform()
+
+    moduleOptions {
+        runOnClasspath = true
+    }
 }
 
 test {
