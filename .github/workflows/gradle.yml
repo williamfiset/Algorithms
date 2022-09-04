@@ -25,10 +25,24 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
       
+    - name: Run Coverage
+      run: |
+        chmod +x gradlew
+        ./gradlew testCoverage  
+    
     - name: Run all tests
       run: |
         ./gradlew test
         bash <(curl -s https://codecov.io/bash)
+        
+    - name: Add coverage to PR
+      id: jacoco
+      uses: madrapps/jacoco-report@v1.2
+      with:
+        paths: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
+        min-coverage-overall: 40
+        min-coverage-changed-files: 60
         
     # check java style
     # added by PS
@@ -39,12 +53,4 @@ jobs:
         reporter: github-pr-review
         level: warning
         
-    - name: Add coverage to PR
-      id: jacoco
-      uses: codecov/codecov-action@v1
-      with:
-        github-token: ${{ secrets.github_token }}
-        file: ./**/target/site/jacoco/jacoco.xml
-        min-coverage-overall: 40
-        min-coverage-changed-files: 60
         
