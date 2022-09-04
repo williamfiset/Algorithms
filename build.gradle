@@ -6,7 +6,8 @@ apply plugin: 'application'
 apply plugin: 'jacoco' 
 //apply from: '../jacoco.gradle'
 
-mainClassName = findProperty["main", "test"] ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"
+mainClassName = (findProperty("main") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"),
+                (findProperty("test") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass')
 
 buildscript {
   repositories {
