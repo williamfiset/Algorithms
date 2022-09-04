@@ -27,12 +27,17 @@ jobs:
       run: |
         ./gradlew test
         bash <(curl -s https://codecov.io/bash)
-    - name: Generate Coverage Report
-      run: mvn clean verify
       
     - name: Run Test Coverage
       run: ./gradlew jacocoTestReport
-
+      
+    - uses: codecov/codecov-action@v1
+      with:
+        github-token: ${{6d8fe275-2a15-4b54-9418-b1f67d2570f7}}
+        file: ./**/target/site/jacoco/jacoco.xml
+        name: codecov
+        run: chmod +x codecov 
+        
     - name: Generate JaCoCo Badge
       uses: cicirello/jacoco-badge-generator@v2
       with:
