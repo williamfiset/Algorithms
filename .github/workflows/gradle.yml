@@ -22,8 +22,9 @@ jobs:
       with:
         java-version: 1.8
         
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - name: generated report in the Jacoco directory.
+      run: ./gradlew testDevDebugUnitTestCoverageVerification
+      #run: chmod +x gradlew#
       
     - name: Run Coverage
       run: |
