@@ -33,7 +33,7 @@ jobs:
       
     - uses: codecov/codecov-action@v1
       with:
-        github-token: ${{6d8fe275-2a15-4b54-9418-b1f67d2570f7}}
+        token: ${{ secrets.CODECOV_TOKEN }}
         file: ./**/target/site/jacoco/jacoco.xml
         name: codecov
         run: chmod +x codecov 
