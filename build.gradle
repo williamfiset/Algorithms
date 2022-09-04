@@ -81,6 +81,18 @@ task buildDependenciesFolder(type: Copy) {
   into './dependencies'
 }
 
+buildscript {
+    repositories { 
+        google()
+        ...
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.0'
+        //Jacoco Plugin
+        classpath "org.jacoco:org.jacoco.core:0.8.7"
+    }
+}
+
 // new add thing - 3
 jacocoTestReport {
     reports {
