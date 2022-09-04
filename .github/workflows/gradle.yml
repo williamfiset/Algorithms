@@ -28,24 +28,9 @@ jobs:
         ./gradlew test
         bash <(curl -s https://codecov.io/bash)
       
-    - name: Run Test Coverage
-      run: ./gradlew jacocoTestReport
-      
     - uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./**/target/site/jacoco/jacoco.xml
         name: codecov
         run: chmod +x codecov 
-        
-    - name: Generate JaCoCo Badge
-      uses: cicirello/jacoco-badge-generator@v2
-      with:
-        generate-branches-badge: true
-        jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
-        
-    - name: Archive Jacoco reports
-      uses: actions/upload-artifact@v3
-      with:
-        name: jacoco-reports
-        path: test-coverage/target/site/jacoco-aggregate
