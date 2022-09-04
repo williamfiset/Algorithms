@@ -4,7 +4,6 @@ apply plugin: 'application'
 
 // new add on thing - 1
 apply plugin: 'jacoco' 
-apply from: '../app/jacoco.gradle' // the path to your jacoco.gradle file
 
 mainClassName = findProperty("main") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"
 
