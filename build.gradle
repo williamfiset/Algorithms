@@ -2,6 +2,9 @@ apply plugin: 'java'
 apply plugin: "com.github.sherter.google-java-format"
 apply plugin: 'application'
 
+// add on new thing - 1
+apply plugin: 'jacoco' 
+
 mainClassName = findProperty("main") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"
 
 buildscript {
@@ -74,3 +77,19 @@ task buildDependenciesFolder(type: Copy) {
   from configurations.implementation
   into './dependencies'
 }
+
+// add on new thing - 2
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+        csv.enabled true
+    }
+}
+
+check.dependsOn jacocoTestReport
+
+test {
+    finalizedBy jacocoTestReport
+}
+
