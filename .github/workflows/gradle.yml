@@ -22,19 +22,19 @@ jobs:
       with:
         java-version: 1.8
         
-    - name: generated report in the Jacoco directory.
-      run: ./gradlew testDevDebugUnitTestCoverageVerification
-      #run: chmod +x gradlew#
-      
-    - name: Run Coverage
-      run: |
-        chmod +x gradlew
-        ./gradlew testCoverage  
+#     - name: generated report in the Jacoco directory.
+#       run: ./gradlew testDevDebugUnitTestCoverageVerification
+#       #run: chmod +x gradlew#
     
     - name: Run all tests
       run: |
         ./gradlew test
         bash <(curl -s https://codecov.io/bash)
+        
+    - name: Run Coverage
+      run: |
+        chmod +x gradlew
+        ./gradlew testCoverage 
         
     - name: Add coverage to PR
       id: jacoco
