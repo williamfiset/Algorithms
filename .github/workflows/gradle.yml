@@ -6,8 +6,8 @@ name: Java CI with Gradle
 on:
   push:
     branches: [ master ]
-  #pull_request:
-   #branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
     - name: Run all tests
       run: |
         ./gradlew test
-        bash <(curl -s https://codecov.io/bash)
+        #bash <(curl -s https://codecov.io/bash)
       
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
