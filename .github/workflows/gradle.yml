@@ -47,17 +47,3 @@ jobs:
         # no need token for public #
         token: ${{ secrets.CODECOV_TOKEN }}
         name: codecov-umbrella-third-party
-        
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      with:
-          # Additional arguments for the sonarcloud scanner
-          args:             
-            # Unique keys of your project and organization. You can find them in SonarCloud > Information (bottom-left menu)
-            # mandatory
-            -Dsonar.projectKey=zhiyong0501_Algorithms
-            -Dsonar.organization=zhiyong010501
-
