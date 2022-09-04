@@ -22,15 +22,14 @@ jobs:
       with:
         java-version: 1.8
         distribution: 'zulu'
-        
-    - name: Generate Coverage Report
-      run: mvn clean verify
       
     - name: Run all tests
       run: |
         ./gradlew test
         bash <(curl -s https://codecov.io/bash)
-    
+    - name: Generate Coverage Report
+      run: mvn clean verify
+      
     - name: Run Test Coverage
       run: ./gradlew jacocoTestReport
 
