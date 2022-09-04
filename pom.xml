@@ -1,23 +1,853 @@
-<build>
-  <plugins>
-    <plugin>
-      <groupId>org.jacoco</groupId>
-      <artifactId>jacoco-maven-plugin</artifactId>
-      <version>0.8.8</version>
-      <executions>
-        <execution>
-          <goals>
-            <goal>prepare-agent</goal>
-          </goals>
-        </execution>
-        <execution>
-          <id>generate-code-coverage-report</id>
-          <phase>test</phase>
-          <goals>
-            <goal>report</goal>
-          </goals>
-        </execution>
-      </executions>
-      </plugin>
-  </plugins>
-</build>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2022 Goldman Sachs and others.
+  ~ All rights reserved. This program and the accompanying materials
+  ~ are made available under the terms of the Eclipse Public License v1.0
+  ~ and Eclipse Distribution License v. 1.0 which accompany this distribution.
+  ~ The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+  ~ and the Eclipse Distribution License is available at
+  ~ http://www.eclipse.org/org/documents/edl-v10.php.
+  -->
+
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.eclipse.collections</groupId>
+    <artifactId>eclipse-collections-parent</artifactId>
+    <version>12.0.0-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
+
+    <name>Eclipse Collections Parent Project</name>
+
+    <description>Eclipse Collections is a collections framework for Java. It has JDK-compatible List, Set and Map
+        implementations with a rich API and set of utility classes that work with any JDK compatible Collections,
+        Arrays, Maps or Strings. The iteration protocol was inspired by the Smalltalk collection framework.
+    </description>
+
+    <url>https://github.com/eclipse/eclipse-collections</url>
+
+    <inceptionYear>2004</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>Eclipse Public License - v 1.0</name>
+            <url>https://www.eclipse.org/legal/epl-v10.html</url>
+            <distribution>repo</distribution>
+        </license>
+        <license>
+            <name>Eclipse Distribution License - v 1.0</name>
+            <url>https://www.eclipse.org/licenses/edl-v10.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/eclipse/eclipse-collections</url>
+        <connection>scm:git:https://github.com/eclipse/eclipse-collections.git</connection>
+        <developerConnection>scm:git:https://github.com/eclipse/eclipse-collections.git</developerConnection>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/eclipse/eclipse-collections/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>GitHub Actions</system>
+        <url>https://github.com/eclipse/eclipse-collections/actions</url>
+    </ciManagement>
+
+    <mailingLists>
+        <mailingList>
+            <name>collections-dev</name>
+            <subscribe>https://dev.eclipse.org/mailman/listinfo/collections-dev</subscribe>
+            <unsubscribe>https://dev.eclipse.org/mailman/listinfo/collections-dev</unsubscribe>
+            <post>collections-dev@eclipse.org</post>
+            <archive>https://dev.eclipse.org/mhonarc/lists/collections-dev</archive>
+        </mailingList>
+    </mailingLists>
+
+    <developers>
+        <developer>
+            <name>Craig P. Motlin</name>
+        </developer>
+
+        <developer>
+            <name>Donald Raab</name>
+        </developer>
+
+        <developer>
+            <name>Mohammad A. Rezaei</name>
+        </developer>
+
+        <developer>
+            <name>Hiroshi Ito</name>
+        </developer>
+
+        <developer>
+            <name>Nikhil J. Nanivadekar</name>
+        </developer>
+
+        <developer>
+            <name>Sirisha Pratha</name>
+        </developer>
+    </developers>
+
+    <modules>
+        <module>eclipse-collections-code-generator</module>
+        <module>eclipse-collections-code-generator-maven-plugin</module>
+        <module>eclipse-collections-api</module>
+        <module>eclipse-collections</module>
+        <module>eclipse-collections-testutils</module>
+        <module>eclipse-collections-forkjoin</module>
+        <module>unit-tests</module>
+        <module>serialization-tests</module>
+        <module>jcstress-tests</module>
+        <module>junit-trait-runner</module>
+        <module>unit-tests-java8</module>
+        <module>test-coverage</module>
+        <module>p2-repository</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <slf4j.version>1.7.32</slf4j.version>
+        <clover.version>4.4.1</clover.version>
+        <scala.version>2.12.15</scala.version>
+        <guava.version>31.0.1-jre</guava.version>
+        <trove4j.version>3.0.3</trove4j.version>
+        <checkstyle.version>10.1</checkstyle.version>
+        <checkstyle.plugin.version>3.1.2</checkstyle.plugin.version>
+        <jacoco.plugin.version>0.8.7</jacoco.plugin.version>
+        <junit.version>4.13.2</junit.version>
+
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.fork>true</maven.compiler.fork>
+        <maven.compiler.meminitial>2048m</maven.compiler.meminitial>
+        <maven.compiler.maxmem>2048m</maven.compiler.maxmem>
+
+        <argLine></argLine>
+
+        <project.previous.version>11.0.0</project.previous.version>
+    </properties>
+
+    <pluginRepositories>
+
+        <pluginRepository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2</url>
+            <name>Maven Plugin Repository</name>
+
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+
+        <pluginRepository>
+            <id>repo.eclipse.org</id>
+            <url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
+        </pluginRepository>
+
+    </pluginRepositories>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-nop</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${scala.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <defaultGoal>clean install checkstyle:check</defaultGoal>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>eu.stamp-project</groupId>
+                    <artifactId>pitmp-maven-plugin</artifactId>
+                    <version>1.3.7</version>
+                    <configuration>
+                        <verbose>false</verbose>
+                        <timestampedReports>false</timestampedReports>
+                        <targetModules>
+                            <param>unit-tests</param>
+                        </targetModules>
+                        <skippedModules>
+                            <param>eclipse-collections-code-generator</param>
+                            <param>eclipse-collections-code-generator-maven-plugin</param>
+                            <param>p2-feature</param>
+                            <param>p2-repository</param>
+                            <param>p2-repository</param>
+                        </skippedModules>
+                        <avoidCallsTo>
+                            <avoidCallsTo>java.util.logging</avoidCallsTo>
+                            <avoidCallsTo>org.apache.log4j</avoidCallsTo>
+                            <avoidCallsTo>org.slf4j</avoidCallsTo>
+                            <avoidCallsTo>org.apache.commons.logging</avoidCallsTo>
+                        </avoidCallsTo>
+                        <maxMutationsPerClass>1</maxMutationsPerClass>
+                        <additionalClasspathElements>target/generated-sources/java/*</additionalClasspathElements>
+                        <excludedClasses>
+                            <param>org.eclipse.collections.impl.lazy.parallel*</param>
+                            <param>org.eclipse.collections.impl.parallel*</param>
+                            <param>org.eclipse.collections.impl.map.mutable.Concurrent*</param>
+                            <param>org.eclipse.collections.impl.collector.Collectors2</param>
+                            <param>java.util.stream.*</param>
+                            <param>org.eclipse.collections.impl.*Char*</param>
+                            <param>org.eclipse.collections.impl.*Float*</param>
+                            <param>org.eclipse.collections.impl.*Long*</param>
+                            <param>org.eclipse.collections.impl.*Double*</param>
+                            <param>org.eclipse.collections.impl.*Byte*</param>
+                            <param>org.eclipse.collections.impl.*Short*</param>
+                            <param>org.eclipse.collections.impl.*Iterable*</param>
+                            <param>org.eclipse.collections.impl.*Multimap*</param>
+                            <param>org.eclipse.collections.impl.*Composite*</param>
+                            <param>org.eclipse.collections.impl.*Interval*</param>
+                            <param>org.eclipse.collections.impl.*Adapter*</param>
+                            <param>org.eclipse.collections.impl.*Concurrent*</param>
+                            <param>org.eclipse.collections.impl.*Parallel*</param>
+                            <param>org.eclipse.collections.impl.*Synchronized*</param>
+                            <param>org.eclipse.collections.impl.*Unmodifiable*</param>
+                            <param>org.eclipse.collections.impl.*Immutable*</param>
+                            <param>org.eclipse.collections.impl.*MultiReader*</param>
+                            <param>org.eclipse.collections.impl.*FixedSize*</param>
+                            <param>org.eclipse.collections.impl.*Collectors*</param>
+                        </excludedClasses>
+                        <excludedTestClasses>
+                            <param>org.eclipse.collections.impl.lazy.parallel*</param>
+                            <param>org.eclipse.collections.impl.parallel*</param>
+                            <param>org.eclipse.collections.impl.*Char*</param>
+                            <param>org.eclipse.collections.impl.*Float*</param>
+                            <param>org.eclipse.collections.impl.*Long*</param>
+                            <param>org.eclipse.collections.impl.*Double*</param>
+                            <param>org.eclipse.collections.impl.*Byte*</param>
+                            <param>org.eclipse.collections.impl.*Short*</param>
+                            <param>org.eclipse.collections.impl.*Iterable*</param>
+                            <param>org.eclipse.collections.impl.*Multimap*</param>
+                            <param>org.eclipse.collections.impl.*Composite*</param>
+                            <param>org.eclipse.collections.impl.*Interval*</param>
+                            <param>org.eclipse.collections.impl.*Adapter*</param>
+                            <param>org.eclipse.collections.impl.*Concurrent*</param>
+                            <param>org.eclipse.collections.impl.*Parallel*</param>
+                            <param>org.eclipse.collections.impl.*Synchronized*</param>
+                            <param>org.eclipse.collections.impl.*Unmodifiable*</param>
+                            <param>org.eclipse.collections.impl.*Immutable*</param>
+                            <param>org.eclipse.collections.impl.*MultiReader*</param>
+                            <param>org.eclipse.collections.impl.*FixedSize*</param>
+                            <param>org.eclipse.collections.impl.*Collectors*</param>
+                        </excludedTestClasses>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.1.2</version>
+                    <executions>
+                        <execution>
+                            <id>analyze</id>
+                            <goals>
+                                <goal>analyze-only</goal>
+                            </goals>
+                            <configuration>
+                                <failOnWarning>true</failOnWarning>
+                                <ignoredUnusedDeclaredDependencies>
+                                    <ignoredUnusedDeclaredDependency>
+                                        com.google.code.findbugs:jsr305:jar
+                                    </ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>
+                                        ch.qos.logback:logback-classic:jar
+                                    </ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>
+                                        org.slf4j:slf4j-nop:jar
+                                    </ignoredUnusedDeclaredDependency>
+                                </ignoredUnusedDeclaredDependencies>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-plugin-plugin</artifactId>
+                    <version>3.6.2</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>3.0-r1585899</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.11.0</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.2.1</version>
+                    <executions>
+                        <execution>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                    <executions>
+                        <execution>
+                            <id>enforce</id>
+                            <configuration>
+                                <rules>
+                                    <DependencyConvergence />
+                                    <requireJavaVersion>
+                                        <version>1.8.0</version>
+                                    </requireJavaVersion>
+                                    <requireMavenVersion>
+                                        <version>3.1.1</version>
+                                    </requireMavenVersion>
+                                    <requirePluginVersions>
+                                        <unCheckedPluginList>
+                                            org.eclipse.collections:eclipse-collections-code-generator-maven-plugin,
+                                            org.eclipse.ebr:ebr-maven-plugin,
+                                            org.eclipse.ebr:ebr-tycho-extras-plugin
+                                        </unCheckedPluginList>
+                                    </requirePluginVersions>
+                                </rules>
+                            </configuration>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>2.8.1</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>clirr-maven-plugin</artifactId>
+                    <version>2.8</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>net.alchim31.maven</groupId>
+                    <artifactId>scala-maven-plugin</artifactId>
+                    <version>4.3.1</version>
+                    <configuration>
+                        <scalaVersion>${scala.version}</scalaVersion>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>compile</goal>
+                                <goal>testCompile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>report</id>
+                            <phase>prepare-package</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.22.2</version>
+                    <configuration>
+                        <includes>
+                            <include>**/*Test.java</include>
+                        </includes>
+                        <argLine>-XX:-OmitStackTraceInFastThrow -Xms1024m -Xmx2048m @{argLine}</argLine>
+                        <runOrder>random</runOrder>
+                        <!--<forkCount>2C</forkCount>-->
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>2.7.1</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${checkstyle.plugin.version}</version>
+                    <configuration>
+                        <configLocation>checkstyle-configuration.xml</configLocation>
+                        <logViolationsToConsole>true</logViolationsToConsole>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        <cacheFile>${basedir}/target/checkstyleCache</cacheFile>
+                        <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>${checkstyle.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.eclipse.cbi.maven.plugins</groupId>
+                    <artifactId>eclipse-jarsigner-plugin</artifactId>
+                    <version>1.3.2</version>
+                </plugin>
+                <!--This plugin's configuration is used to store Eclipse m2e
+                    settings only. It has no influence on the Maven build itself. -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            org.eclipse.collections
+                                        </groupId>
+                                        <artifactId>
+                                            eclipse-collections-code-generator-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [7.1.0-SNAPSHOT,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>generate</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute>
+                                            <runOnIncremental>false</runOnIncremental>
+                                            <runOnConfiguration>true</runOnConfiguration>
+                                        </execute>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>biz.aQute.bnd</groupId>
+                    <artifactId>bnd-maven-plugin</artifactId>
+                    <version>5.1.1</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>bnd-process</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <doctitle>Eclipse Collections - ${project.version}</doctitle>
+                    <windowtitle>Eclipse Collections - ${project.version}</windowtitle>
+                    <show>public</show>
+                    <detectJavaApiLink>true</detectJavaApiLink>
+                    <links>
+                        <link>http://junit.sourceforge.net/javadoc/</link>
+                        <link>https://docs.oracle.com/javase/8/docs/api/</link>
+                    </links>
+                    <destDir>${project.version}</destDir>
+                    <doclint>html,syntax,accessibility</doclint>
+                    <excludePackageNames>
+                        org.openjdk,org.eclipse.collections.impl.jmh,org.eclipse.collections.codegenerator,org.eclipse.collections.codegenerator.maven
+                    </excludePackageNames>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>aggregate</id>
+                        <inherited>false</inherited>
+                        <goals>
+                            <goal>aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+    <reporting>
+        <plugins>
+
+            <plugin>
+                <artifactId>maven-jxr-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <doctitle>Eclipse Collections - ${project.version}</doctitle>
+                    <windowtitle>Eclipse Collections - ${project.version}</windowtitle>
+                    <show>public</show>
+                    <detectJavaApiLink>true</detectJavaApiLink>
+                    <links>
+                        <link>http://junit.sourceforge.net/javadoc/</link>
+                        <link>https://docs.oracle.com/javase/8/docs/api/</link>
+                    </links>
+                    <destDir>${project.version}</destDir>
+                    <doclint>html,syntax,accessibility</doclint>
+                    <excludePackageNames>
+                        org.openjdk,org.eclipse.collections.impl.jmh,org.eclipse.collections.codegenerator,org.eclipse.collections.codegenerator.maven
+                    </excludePackageNames>
+                    <additionalOptions>-html5</additionalOptions>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <id>aggregate</id>
+                        <inherited>false</inherited>
+                        <reports>
+                            <report>aggregate</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <configuration>
+                    <configLocation>checkstyle-configuration.xml</configLocation>
+                    <logViolationsToConsole>true</logViolationsToConsole>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>dependency-updates-report</report>
+                            <report>plugin-updates-report</report>
+                            <report>property-updates-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+
+        </plugins>
+    </reporting>
+
+    <profiles>
+
+        <profile>
+            <id>java-8</id>
+
+            <activation>
+                <jdk>1.8</jdk>
+            </activation>
+
+            <modules>
+                <module>scala-unit-tests</module>
+                <module>jmh-scala-tests</module>
+                <module>jmh-tests</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>all</id>
+
+            <modules>
+                <module>eclipse-collections-code-generator</module>
+                <module>eclipse-collections-code-generator-maven-plugin</module>
+                <module>eclipse-collections-api</module>
+                <module>eclipse-collections</module>
+                <module>eclipse-collections-testutils</module>
+                <module>eclipse-collections-forkjoin</module>
+                <module>unit-tests</module>
+                <module>serialization-tests</module>
+                <module>acceptance-tests</module>
+                <module>performance-tests</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>clover-optimize</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.atlassian.maven.plugins</groupId>
+                        <artifactId>maven-clover2-plugin</artifactId>
+                        <version>${clover.version}</version>
+                        <executions>
+                            <execution>
+                                <id>setup</id>
+                                <phase>process-sources</phase>
+                                <goals>
+                                    <goal>setup</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>other</id>
+                                <goals>
+                                    <goal>optimize</goal>
+                                    <goal>snapshot</goal>
+                                    <goal>log</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>clover</id>
+
+            <modules>
+                <module>eclipse-collections-code-generator</module>
+                <module>eclipse-collections-code-generator-maven-plugin</module>
+                <module>eclipse-collections-api</module>
+                <module>eclipse-collections</module>
+                <module>eclipse-collections-testutils</module>
+                <module>unit-tests</module>
+                <module>serialization-tests</module>
+                <module>acceptance-tests</module>
+            </modules>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.atlassian.maven.plugins</groupId>
+                        <artifactId>maven-clover2-plugin</artifactId>
+                        <version>${clover.version}</version>
+                        <configuration>
+                            <licenseLocation>${clover.license}</licenseLocation>
+                            <contextFilters>@deprecated</contextFilters>
+                            <generateHistorical>true</generateHistorical>
+                            <historyDir>${user.home}/clover/${project.artifactId}</historyDir>
+                            <includesAllSourceRoots>true</includesAllSourceRoots>
+                            <instrumentLambda>block</instrumentLambda>
+                            <excludes>
+                                <exclude>**/FileUtils.java</exclude>
+                                <exclude>**/GenerateMojo.java</exclude>
+                                <exclude>**/EclipseCollectionsCodeGenerator.java</exclude>
+                                <exclude>**/Primitive.java</exclude>
+                                <exclude>**/IntegerOrStringRenderer.java</exclude>
+                                <exclude>**/jmh/**/*.java</exclude>
+                            </excludes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>setup</id>
+                                <phase>process-test-sources</phase>
+                                <goals>
+                                    <goal>setup</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </profile>
+
+        <profile>
+            <id>release-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.eclipse.cbi.maven.plugins</groupId>
+                        <artifactId>eclipse-jarsigner-plugin</artifactId>
+                        <version>1.3.2</version>
+                        <executions>
+                            <execution>
+                                <id>jarsign</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+</project>
