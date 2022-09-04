@@ -34,4 +34,4 @@ jobs:
       uses: cicirello/jacoco-badge-generator@v2
       with:
         generate-branches-badge: true
-        jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
+        jacoco-html-file: build/reports/jacoco/test/jacocoTestReport.html
