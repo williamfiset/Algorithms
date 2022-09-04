@@ -1,0 +1,32 @@
+apply plugin: 'jacoco'
+jacoco {
+ toolVersion = "0.8.6"
+ reportsDir = file("$buildDir/reports")
+}
+
+task jacocoTestReportDebug(type: JacocoReport, dependsOn: ['testDevDebugUnitTest']) {
+ // "debug" build type for test coverage
+ group = "reporting"
+ description = "Generate unified Jacoco code coverage report"
+
+ reports {
+     xml.enabled false
+     csv.enabled false
+ }
+
+ // update this to include any areas we don't need or cannot test
+ def fileFilter = []
+
+ def javaDebugTree = fileTree(dir: "${buildDir}/intermediates/javac/devDebug", excludes: fileFilter)
+ def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/devDebug", excludes: fileFilter)
+ def mainSrc = "${project.projectDir}/src/main/java"
+
+ sourceDirectories.from = files([mainSrc])
+ classDirectories.from = files([javaDebugTree, kotlinDebugTree])
+ 
+ // Target both java and kotlin build folder
+ executionData.from = fileTree(dir: "$buildDir", includes: [
+         "jacoco/testDevDebugUnitTest.exec",
+         "outputs/code-coverage/connected/*coverage.ec"
+ ])
+}
