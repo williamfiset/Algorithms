@@ -21,7 +21,11 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    
+        distribution: 'zulu'
+        
+    - name: Generate Coverage Report
+      run: mvn clean verify
+      
     - name: Run all tests
       run: |
         ./gradlew test
@@ -34,4 +38,10 @@ jobs:
       uses: cicirello/jacoco-badge-generator@v2
       with:
         generate-branches-badge: true
-        jacoco-html-file: build/reports/jacoco/test/jacocoTestReport.html
+        jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
+        
+    - name: Archive Jacoco reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: jacoco-reports
+        path: test-coverage/target/site/jacoco-aggregate
