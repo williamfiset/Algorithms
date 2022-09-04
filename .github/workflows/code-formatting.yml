@@ -22,7 +22,7 @@ jobs:
         java-version: 1.8
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Verify all Java files are formatted correctly according to the Google Java Style Guide
-      run: |
-        ./gradlew verifyGoogleJavaFormat
-        echo "Run the command './gradlew goJF' to fix Java formatting if this workflow fails"
+#     - name: Verify all Java files are formatted correctly according to the Google Java Style Guide
+#       run: |
+#         ./gradlew verifyGoogleJavaFormat
+#         echo "Run the command './gradlew goJF' to fix Java formatting if this workflow fails"

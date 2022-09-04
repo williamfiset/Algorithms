@@ -2,6 +2,10 @@ apply plugin: 'java'
 apply plugin: "com.github.sherter.google-java-format"
 apply plugin: 'application'
 
+// new add on thing - 1
+apply plugin: 'jacoco' 
+//apply from: '../jacoco.gradle'
+
 mainClassName = findProperty("main") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"
 
 buildscript {
@@ -13,6 +17,9 @@ buildscript {
   dependencies {
     // https://github.com/sherter/google-java-format-gradle-plugin
     classpath "gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.8"
+    
+    // new add on thing - 2
+    classpath "org.junit.platform:junit-platform-gradle-plugin:1.0.0-M4"
   }
 }
 
@@ -51,6 +58,10 @@ dependencies {
 test {
   dependsOn cleanTest
   testLogging.showStandardStreams = true
+  
+  moduleOptions {
+      runOnClasspath = true
+  }
 }
 
 tasks.withType(JavaCompile) {
@@ -73,4 +84,20 @@ compileTestJava {
 task buildDependenciesFolder(type: Copy) {
   from configurations.implementation
   into './dependencies'
+}
+
+// new add thing - 3
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+        csv.enabled true
+    }
+}
+
+check.dependsOn jacocoTestReport
+
+
+test {
+    finalizedBy jacocoTestReport
 }

@@ -1,0 +1,123 @@
+apply plugin: 'jacoco'
+jacoco {
+    toolVersion = "0.8.7"
+}
+project.afterEvaluate {
+    if (android.hasProperty("applicationVariants")) {
+        android.applicationVariants.all { variant ->
+            createVariantCoverage(variant)
+        }
+    } else if (android.hasProperty("libraryVariants")) {
+        android.libraryVariants.all { variant ->
+            createVariantCoverage(variant)
+        }
+    }
+}
+ext.excludes = [
+                  '**/databinding/*Binding.*',
+                  '**/R.class',
+                  '**/R$*.class',
+                  '**/BuildConfig.*',
+                  '**/Manifest*.*',
+                  '**/*Test*.*',
+                  'android/**/*.*',
+                  // butterKnife
+                  '**/*$ViewInjector*.*',
+                  '**/*$ViewBinder*.*',
+                  '**/Lambda$*.class',
+                  '**/Lambda.class',
+                 '**/*Lambda.class',
+                 '**/*Lambda*.class',                
+                  '**/*_MembersInjector.class',
+                  '**/Dagger*Component*.*',
+                  '**/*Module_*Factory.class',
+                  '**/di/module/*',
+                  '**/*_Factory*.*',
+                  '**/*Module*.*',
+                  '**/*Dagger*.*',
+                  '**/*Hilt*.*',
+                  // kotlin
+                  '**/*MapperImpl*.*',
+                  '**/*$ViewInjector*.*',
+                  '**/*$ViewBinder*.*',
+                  '**/BuildConfig.*',
+                  '**/*Component*.*',
+                  '**/*BR*.*',
+                  '**/Manifest*.*',
+                  '**/*$Lambda$*.*',
+                  '**/*Companion*.*',
+                  '**/*Module*.*',
+                  '**/*Dagger*.*',
+                  '**/*Hilt*.*',
+                  '**/*MembersInjector*.*',
+                  '**/*_MembersInjector.class',
+                  '**/*_Factory*.*',
+                  '**/*_Provide*Factory*.*',
+                  '**/*Extensions*.*'
+            ]
+def createVariantCoverage(variant) {
+    def variantName = variant.name
+    def testTaskName = "test${variantName.capitalize()}UnitTest"
+
+    // Add unit test coverage tasks
+    tasks.create(name: "${testTaskName}Coverage", type: JacocoReport, dependsOn: "$testTaskName") {
+        group = "Reporting"
+        description = "Generate Jacoco coverage reports for the ${variantName.capitalize()} build."
+
+        reports {
+            html.enabled = true
+        }
+
+        def javaClasses = fileTree(dir: variant.javaCompileProvider.get().destinationDir, excludes: project.excludes)
+        def kotlinClasses = fileTree(dir: "${buildDir}/tmp/kotlin-classes/${variantName}", excludes: project.excludes)
+        getClassDirectories().setFrom(files([javaClasses, kotlinClasses]))
+
+        getSourceDirectories().setFrom(files([
+                "$project.projectDir/src/main/java",
+                "$project.projectDir/src/${variantName}/java",
+                "$project.projectDir/src/main/kotlin",
+                "$project.projectDir/src/${variantName}/kotlin"
+        ]))
+
+        getExecutionData().setFrom(files("${project.buildDir}/outputs/unit_test_code_coverage/${variantName}UnitTest/${testTaskName}.exec"))
+
+        doLast {
+            def m = new File("${project.buildDir}/reports/jacoco/${testTaskName}Coverage/html/index.html")
+                    .text =~ /Total[^%]*>(\d?\d?\d?%)/
+            if (m) {
+                println "Test coverage: ${m[0][1]}"
+            }
+        }
+    }
+
+    // Add unit test coverage verification tasks
+    tasks.create(name: "${testTaskName}CoverageVerification", type: JacocoCoverageVerification, dependsOn: "${testTaskName}Coverage") {
+        group = "Reporting"
+        description = "Verifies Jacoco coverage for the ${variantName.capitalize()} build."
+        violationRules {
+            rule {
+                limit {
+                    minimum = 0
+                }
+            }
+            rule {
+                element = 'BUNDLE'
+                limit {
+                    counter = 'LINE'
+                    value = 'COVEREDRATIO'
+                    minimum = 0.30
+               }
+            }
+        }
+        def javaClasses = fileTree(dir: variant.javaCompileProvider.get().destinationDir, excludes: project.excludes)
+        def kotlinClasses = fileTree(dir: "${buildDir}/tmp/kotlin-classes/${variantName}", excludes: project.excludes)
+        getClassDirectories().setFrom(files([javaClasses, kotlinClasses]))
+        getSourceDirectories().setFrom(files([
+                "$project.projectDir/src/main/java",
+                "$project.projectDir/src/${variantName}/java",
+                "$project.projectDir/src/main/kotlin",
+                "$project.projectDir/src/${variantName}/kotlin"
+        ]))
+        getExecutionData().setFrom(files("${project.buildDir}/outputs/unit_test_code_coverage/${variantName}UnitTest/${testTaskName}.exec"))
+    }
+}
