@@ -1,6 +1,5 @@
 package com.williamfiset.algorithms.math;
 
-import com.williamfiset.algorithms.other.BitManipulations;
 import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertThat;
