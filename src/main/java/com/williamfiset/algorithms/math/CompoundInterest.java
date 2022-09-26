@@ -7,6 +7,7 @@ public class CompoundInterest {
         return Math.round(unroundedNum*100.00)/100.00;
     }
     public static void main(String[] args) {
+        //example cases
         System.out.println(CompoundInterest(100,0.12,12,2));
         System.out.println(CompoundInterest(2001,0.21,4,8));
     }

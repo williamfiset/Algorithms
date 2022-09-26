@@ -8,6 +8,7 @@ import java.util.*;
 
 public class CompoundInterestTest {
     @Test
+    //example tests
     public void testInterest() {
         assertThat(CompoundInterest.CompoundInterest(120,0.1,12,2)).isEqualTo(146.45);
         assertThat(CompoundInterest.CompoundInterest(.5,0.25,4,12)).isEqualTo(9.18);
