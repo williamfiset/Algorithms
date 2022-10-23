@@ -1,5 +1,6 @@
 package com.williamfiset.algorithms.graphtheory;
 
+import java.util.List;
 import java.util.Scanner;
 import java.util.Arrays;
 
@@ -9,6 +10,13 @@ public class HamiltonianCycle {
         private int[]   path;
         private int[][] graph;
 
+        public void setGraph(int[][] graph1){
+            this.graph=graph1;
+        }
+
+        public int[] getPath(){
+            return this.path;
+        }
         /** Function to find cycle
          * Take the graph as input
          * And will print "No solution" if the graph has no HamiltionianCycle
@@ -16,8 +24,9 @@ public class HamiltonianCycle {
          * **/
         public void findHamiltonianCycle(int[][] g)
         {
+            if(g==null)throw new IllegalArgumentException("Graph cannot be null.");
             V = g.length;
-            path = new int[V];
+            path = new int[V+1];
             Arrays.fill(path, -1);
             graph = g;
             try
@@ -25,10 +34,11 @@ public class HamiltonianCycle {
                 path[0] = 0;
                 pathCount = 1;
                 solve(0);
-                System.out.println("No solution");
+                System.out.print("No solution");
             }
             catch (Exception e)
             {
+                path[V]=path[0];
                 System.out.println(e.getMessage());
                 display();
             }
@@ -66,6 +76,7 @@ public class HamiltonianCycle {
                     path[--pathCount] = -1;
                 }
             }
+
         }
 
         /** function to check if path is already selected **/
