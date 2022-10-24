@@ -10,20 +10,10 @@ import static com.google.common.truth.Truth.assertThat;
 public class CombSortTest {
     static Random random = new Random();
 
-    @Test
-    public void testGetMax() {
-        int[] array = {5, 7, 1, 13, 1013, 287, 912};
-        assertThat(RadixSort.getMax(array)).isEqualTo(1013);
-    }
+    CombSort ob = new CombSort();
 
     @Test
-    public void testCalculateNumberOfDigits() {
-        assertThat(RadixSort.calculateNumberOfDigits(1089)).isEqualTo(4);
-        assertThat(RadixSort.calculateNumberOfDigits(19)).isEqualTo(2);
-    }
-
-    @Test
-    public void randomRadixSort_smallNumbers() {
+    public void randomCombSort_smallNumbers() {
         for (int size = 0; size < 1000; size++) {
             int[] values = new int[size];
             for (int i = 0; i < size; i++) {
@@ -32,8 +22,7 @@ public class CombSortTest {
             int[] copy = values.clone();
 
             Arrays.sort(values);
-            RadixSort.radixSort(copy);
-
+            ob.sort(copy);
             assertThat(values).isEqualTo(copy);
         }
     }
@@ -48,7 +37,7 @@ public class CombSortTest {
             int[] copy = values.clone();
 
             Arrays.sort(values);
-            RadixSort.radixSort(copy);
+            ob.sort(copy);
 
             assertThat(values).isEqualTo(copy);
         }
