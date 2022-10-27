@@ -10,7 +10,7 @@ import static com.google.common.truth.Truth.assertThat;
 public class CombSortTest {
     static Random random = new Random();
 
-    CombSort ob = new CombSort();
+    CombSort combSort = new CombSort();
 
     @Test
     public void randomCombSort_smallNumbers() {
@@ -22,7 +22,7 @@ public class CombSortTest {
             int[] copy = values.clone();
 
             Arrays.sort(values);
-            ob.sort(copy);
+            combSort.combsort(copy,2);
             assertThat(values).isEqualTo(copy);
         }
     }
@@ -37,7 +37,7 @@ public class CombSortTest {
             int[] copy = values.clone();
 
             Arrays.sort(values);
-            ob.sort(copy);
+            combSort.combsort(copy,2);
 
             assertThat(values).isEqualTo(copy);
         }

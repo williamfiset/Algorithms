@@ -2,70 +2,65 @@ package com.williamfiset.algorithms.sorting;
 
 import java.util.Scanner;
 
-class CombSort
+public class CombSort
 {
-    // To find gap between elements
-    int getNextGap(int gap)
-    {
-        // Shrink gap by Shrink factor
-        gap = (gap*10)/13;
-        if (gap < 1)
-            return 1;
-        return gap;
-    }
 
-    // Function to sort arr[] using Comb Sort
-    void sort(int arr[])
+    // Function to sort list using Comb Sort
+    public void combsort(int sortlist[],int gapnumber)
     {
-        int n = arr.length;
+        int n = sortlist.length;
 
-        // initialize gap
+        // initialize gap to length of the list
         int gap = n;
 
-        // Initialize swapped as true to make sure that
-        // loop runs
-        boolean swapped = true;
+        // Initialize swapflag
+        int swapflag = 1;
 
         // Keep running while gap is more than 1 and last
         // iteration caused a swap
-        while (gap != 1 || swapped == true)
+        while (gap != 1 || swapflag == 1)
         {
             // Find next gap
-            gap = getNextGap(gap);
-
-            // Initialize swapped as false so that we can
-            // check if swap happened or not
-            swapped = false;
+            // To find gap between elements
+             gap = (gap)/gapnumber;
+             if (gap < 1){
+                 gap=1;
+             }
+             System.out.println(gap);
+            // Initialize swapflag
+            swapflag = 0;
 
             // Compare all elements with current gap
             for (int i=0; i<n-gap; i++)
             {
-                if (arr[i] > arr[i+gap])
+                if (sortlist[i] > sortlist[i+gap])
                 {
-                    // Swap arr[i] and arr[i+gap]
-                    int temp = arr[i];
-                    arr[i] = arr[i+gap];
-                    arr[i+gap] = temp;
-
+                    int temp = sortlist[i];
+                    sortlist[i] = sortlist[i+gap];
+                    sortlist[i+gap] = temp;
                     // Set swapped
-                    swapped = true;
+                    swapflag = 1;
                 }
             }
         }
     }
 
-    // Driver method
+    /**main method, allow users enter number the want to sort, and then scan the number into a int list,
+     * the program will use comb sort to sort the int list and print it out for users
+    */
     public static void main(String args[])
     {
-        CombSort ob = new CombSort();
+        CombSort combSort = new CombSort();
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter number of the numbers you want to sort");
-        int V = scan.nextInt();
+        int n = scan.nextInt();
+        System.out.println("Enter number of gap you want to use in the sort");
+        int n1 = scan.nextInt();
         System.out.println("Enter the numbers:");
-        int[] arr = new int[V];
-        for (int i=0;i<V;i++)
+        int[] arr = new int[n];
+        for (int i=0;i<n;i++)
             arr[i]=scan.nextInt();
-        ob.sort(arr);
+        combSort.combsort(arr,n1);
         System.out.println("sorted array");
         for (int i=0; i<arr.length; ++i)
             System.out.print(arr[i] + " ");
