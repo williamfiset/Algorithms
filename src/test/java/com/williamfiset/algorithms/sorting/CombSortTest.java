@@ -22,8 +22,7 @@ public class CombSortTest {
             int[] copy = values.clone();
 
             Arrays.sort(values);
-            ob.sort(copy);
-            assertThat(values).isEqualTo(copy);
+            ob.sort(copy);            assertThat(values).isEqualTo(copy);
         }
     }
 

@@ -32,7 +32,6 @@ class CombSort
         {
             // Find next gap
             gap = getNextGap(gap);
-
             // Initialize swapped as false so that we can
             // check if swap happened or not
             swapped = false;
