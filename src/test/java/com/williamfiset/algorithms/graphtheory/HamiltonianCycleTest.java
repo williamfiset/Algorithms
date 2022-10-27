@@ -35,7 +35,7 @@ public class HamiltonianCycleTest {
         HamiltonianCycle solver;
         solver = new HamiltonianCycle();
         solver.setGraph(graph);
-        solver.findHamiltonianCycle(graph);
+        solver.getHamiltonCircuit(graph);
     }
 
     //valid test 1
@@ -68,7 +68,7 @@ public class HamiltonianCycleTest {
         HamiltonianCycle solver;
         solver = new HamiltonianCycle();
         solver.setGraph(graph);
-        solver.findHamiltonianCycle(graph);
+        solver.getHamiltonCircuit(graph);
         assertThat(solver.getPath()).isEqualTo(result);
     }
 
@@ -118,7 +118,7 @@ public class HamiltonianCycleTest {
         HamiltonianCycle solver;
         solver = new HamiltonianCycle();
         solver.setGraph(graph);
-        solver.findHamiltonianCycle(graph);
+        solver.getHamiltonCircuit(graph);
         Assert.assertEquals("No solution",outContent.toString());
     }
 }
