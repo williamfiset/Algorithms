@@ -7,26 +7,8 @@
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
-package com.williamfiset.algorithms.linearalgebra;
 
-/**
- * This is an implementation of finding the determinant of an nxn matrix using Laplace/cofactor
- * expansion. Although this method is mathematically beautiful, it is computationally intensive and
- * not practical for matrices beyond the size of 7-8.
- *
- * <p>Time Complexity: ~O((n+2)!)
- *
- * @author William Fiset, william.alexandre.fiset@gmail.com
- */
-/**
- * This is an implementation of finding the determinant of an nxn matrix using Laplace/cofactor
- * expansion. Although this method is mathematically beautiful, it is computationally intensive and
- * not practical for matrices beyond the size of 7-8.
- *
- * <p>Time Complexity: ~O((n+2)!)
- *
- * @author William Fiset, william.alexandre.fiset@gmail.com
- */
+package com.williamfiset.algorithms.linearalgebra;
 
 public class MatrixDeterminantLaplaceExpansion {
 
