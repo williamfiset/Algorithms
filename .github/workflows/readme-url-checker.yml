@@ -11,9 +11,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Set up Ruby 2.6
+
+    - name: Set up Ruby
     - uses: actions/checkout@v3
     - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.0' # Not needed with a .ruby-version file
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - run: bundle exec rake
+
     - name: Install Awesome Bot
       run: gem install awesome_bot
     - name: Run Awesome Bot
