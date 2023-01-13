@@ -12,7 +12,8 @@ public class GeneticAlgorithm_textSearch {
 
   // Target sentence
   static final String TARGET = "to be or not to be that is the question";
-  static final char[] ALPHA = " abcdefghijklmnopqrstuvwxyz".toCharArray();;
+  static final char[] ALPHA = " abcdefghijklmnopqrstuvwxyz".toCharArray();
+  ;
   static final int TL = TARGET.length();
 
   static final Random RANDOM = new Random();
