@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Format
+format='^(Feat|Fix|Update|Refactor|Cut|Merge|Doc):(.|\s)*\. (Resolves|Refs) \#[0-9]+.?$'
+
+while read local_ref local_sha remote_ref remote_sha
+do
+  if [ "$local_sha" = "$remote_sha" ]; then
+    continue
+  fi
+
+  # For each commit
+  for commit in $(git rev-list "$local_sha" "^$remote_sha")
+  do
+    message=$(git log -1 --format=%B $commit)
+
+    # Check against format
+    if ! echo "$message" | grep -Eq "$format"; then
+      echo "ERROR: Expected format (regexp): $format"
+      echo "ERROR: Commit message: $message"
+      exit 1
+    fi
+  done
+done
