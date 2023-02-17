@@ -28,36 +28,55 @@ public class Simplex {
   // coefficients negated. M[i][j] is the coefficient of the (j-1)th term in the
   // (i-1)th constraint (0 based).
   public static double simplex(double[][] m) {
+    //I want to print a on each branch of the program
     while (true) {
+      System.out.println("simplex: Branch 0");
       double min = -EPS;
       int c = -1;
       for (int j = 1; j < m[0].length; j++) {
+        System.out.println("simplex: Branch 1");
         if (m[0][j] < min) {
+          System.out.println("simplex: Branch 2");
           min = m[0][j];
           c = j;
         }
       }
-      if (c < 0) break;
+      if (c < 0) {
+        System.out.println("simplex: Branch 3");
+        break;
+      };
       min = Double.MAX_VALUE;
       int r = -1;
       for (int i = 1; i < m.length; i++) {
+        System.out.println("simplex: Branch 4");
         if (m[i][c] > EPS) {
+          System.out.println("simplex: Branch 5");
           double v = m[i][0] / m[i][c];
           if (v < min) {
+            System.out.println("simplex: Branch 6");
             min = v;
             r = i;
           }
         }
       }
       double v = m[r][c];
-      for (int j = 0; j < m[r].length; j++) m[r][j] /= v;
+      for (int j = 0; j < m[r].length; j++) {
+        System.out.println("simplex: Branch 7");
+        m[r][j] /= v;
+      };
       for (int i = 0; i < m.length; i++) {
+        System.out.println("simplex: Branch 8");
         if (i != r) {
+          System.out.println("simplex: Branch 9");
           v = m[i][c];
-          for (int j = 0; j < m[i].length; j++) m[i][j] -= m[r][j] * v;
+          for (int j = 0; j < m[i].length; j++){
+            System.out.println("simplex: Branch 10");
+            m[i][j] -= m[r][j] * v;
+          };
         }
       }
     }
+    System.out.println("simplex: Main Branch");
     return m[0][0];
   }
 }
