@@ -10,10 +10,7 @@ buildscript {
 plugins {
   // https://github.com/sherter/google-java-format-gradle-plugin
   // id "com.github.sherter.google-java-format" version "0.9"
-    id 'jacoco'
-}
-jacoco {
-    toolVersion = "0.8.7"
+  id 'jacoco'
 }
 apply plugin: 'java'
 apply plugin: 'application'
@@ -48,6 +45,9 @@ dependencies {
 
   // Test mocking framework
   testImplementation "org.mockito:mockito-core:1.+"
+
+  // Jacoco
+  implementation 'org.jacoco:org.jacoco.core:0.8.7'
 }
 
 test {
@@ -75,4 +75,8 @@ compileTestJava {
 task buildDependenciesFolder(type: Copy) {
   from configurations.implementation
   into './dependencies'
+}
+
+jacoco {
+  toolVersion = "0.8.7"
 }
