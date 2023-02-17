@@ -41,10 +41,16 @@ public class LineSegmentLineSegmentIntersection {
   public static Pt[] lineSegmentLineSegmentIntersection(Pt p1, Pt p2, Pt p3, Pt p4) {
 
     // No intersection.
-    if (!segmentsIntersect(p1, p2, p3, p4)) return new Pt[] {};
+    if (!segmentsIntersect(p1, p2, p3, p4)) {
+      System.out.println("lineSegmentLineSegmentIntersection: branch 0");
+      return new Pt[] {};
+    };
 
     // Both segments are a single point.
-    if (p1.equals(p2) && p2.equals(p3) && p3.equals(p4)) return new Pt[] {p1};
+    if (p1.equals(p2) && p2.equals(p3) && p3.equals(p4)) {
+      System.out.println("lineSegmentLineSegmentIntersection: branch 1");
+      return new Pt[] {p1};
+    };
 
     List<Pt> endpoints = getCommonEndpoints(p1, p2, p3, p4);
     int n = endpoints.size();
@@ -53,31 +59,61 @@ public class LineSegmentLineSegmentIntersection {
     // NOTE: checking only n == 1 is insufficient to return early
     // because the solution might be a sub segment.
     boolean singleton = p1.equals(p2) || p3.equals(p4);
-    if (n == 1 && singleton) return new Pt[] {endpoints.get(0)};
+    if (n == 1 && singleton) {
+      System.out.println("lineSegmentLineSegmentIntersection: branch 2");
+      return new Pt[] {endpoints.get(0)};
+    }
 
     // Segments are equal.
-    if (n == 2) return new Pt[] {endpoints.get(0), endpoints.get(1)};
+    if (n == 2) {
+      System.out.println("lineSegmentLineSegmentIntersection: branch 3");
+      return new Pt[] {endpoints.get(0), endpoints.get(1)};
+    }
 
     boolean collinearSegments = (orientation(p1, p2, p3) == 0) && (orientation(p1, p2, p4) == 0);
 
     // The intersection will be a sub-segment of the two
     // segments since they overlap each other.
     if (collinearSegments) {
+      System.out.println("lineSegmentLineSegmentIntersection: branch 4");
 
       // Segment #2 is enclosed in segment #1
-      if (pointOnLine(p1, p2, p3) && pointOnLine(p1, p2, p4)) return new Pt[] {p3, p4};
+      if (pointOnLine(p1, p2, p3) && pointOnLine(p1, p2, p4)) {
+        System.out.println("lineSegmentLineSegmentIntersection: branch 5");
+        return new Pt[] {p3, p4};
+      };
 
       // Segment #1 is enclosed in segment #2
-      if (pointOnLine(p3, p4, p1) && pointOnLine(p3, p4, p2)) return new Pt[] {p1, p2};
+      if (pointOnLine(p3, p4, p1) && pointOnLine(p3, p4, p2)) {
+        System.out.println("lineSegmentLineSegmentIntersection: branch 6");
+        return new Pt[] {p1, p2};
+      };
 
       // The subsegment is part of segment #1 and part of segment #2.
       // Find the middle points which correspond to this segment.
-      Pt midPoint1 = pointOnLine(p1, p2, p3) ? p3 : p4;
-      Pt midPoint2 = pointOnLine(p3, p4, p1) ? p1 : p2;
+      Pt midPoint1;
+      Pt midPoint2;
+      if (pointOnLine(p1, p2, p3)) {
+        System.out.println("lineSegmentLineSegmentIntersection: branch 7");
+        midPoint1 = p3;
+      }
+      else {
+        midPoint1 = p4;
+      }
+      if (pointOnLine(p3, p4, p1)) {
+        System.out.println("lineSegmentLineSegmentIntersection: branch 8");
+        midPoint2 = p1;
+      }
+      else {
+        midPoint2 = p2;
+      }
 
       // There is actually only one middle point!
-      if (midPoint1.equals(midPoint2)) return new Pt[] {midPoint1};
-
+      if (midPoint1.equals(midPoint2)) {
+        System.out.println("lineSegmentLineSegmentIntersection: branch 9");
+        return new Pt[] {midPoint1};
+      }
+      System.out.println("lineSegmentLineSegmentIntersection: branch 10");
       return new Pt[] {midPoint1, midPoint2};
     }
 
@@ -85,6 +121,7 @@ public class LineSegmentLineSegmentIntersection {
 
     // Segment #1 is a vertical line.
     if (abs(p1.x - p2.x) < EPS) {
+      System.out.println("lineSegmentLineSegmentIntersection: branch 11");
       double m = (p4.y - p3.y) / (p4.x - p3.x);
       double b = p3.y - m * p3.x;
       return new Pt[] {new Pt(p1.x, m * p1.x + b)};
@@ -92,6 +129,7 @@ public class LineSegmentLineSegmentIntersection {
 
     // Segment #2 is a vertical line.
     if (abs(p3.x - p4.x) < EPS) {
+      System.out.println("lineSegmentLineSegmentIntersection: branch 12");
       double m = (p2.y - p1.y) / (p2.x - p1.x);
       double b = p1.y - m * p1.x;
       return new Pt[] {new Pt(p3.x, m * p3.x + b)};
@@ -104,6 +142,7 @@ public class LineSegmentLineSegmentIntersection {
     double x = (b2 - b1) / (m1 - m2);
     double y = (m1 * b2 - m2 * b1) / (m1 - m2);
 
+    System.out.println("lineSegmentLineSegmentIntersection: main_branch 13");
     return new Pt[] {new Pt(x, y)};
   }
 

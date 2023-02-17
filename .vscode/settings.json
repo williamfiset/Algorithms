@@ -1,0 +1,4 @@
+{
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.debug.settings.onBuildFailureProceed": true
+}

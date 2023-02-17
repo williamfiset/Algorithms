@@ -12,7 +12,6 @@ plugins {
   // id "com.github.sherter.google-java-format" version "0.9"
   id 'jacoco'
 }
-
 apply plugin: 'java'
 apply plugin: 'application'
 // Formatting tool doesn't support Java 17+
@@ -24,13 +23,13 @@ repositories {
   mavenLocal()
   mavenCentral()
 }
-
 // Describe all project deps. Use 'testCompile' for test dependencies and
 // 'compile' for project dependencies.
 dependencies {
   // Apache commons lang
   testImplementation 'org.apache.commons:commons-lang3:3.6'
 
+  implementation 'org.jacoco:org.jacoco.core:0.8.7'
   // JUnit framework
   testImplementation 'junit:junit:4.+'
 
