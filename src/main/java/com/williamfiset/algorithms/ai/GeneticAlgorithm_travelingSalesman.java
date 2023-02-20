@@ -24,12 +24,15 @@ public class GeneticAlgorithm_travelingSalesman {
   static final double POWER_INC = 0.0001;
 
   static double tsp(double[][] adjacencyMatrix) {
+    /* CCN = 13-1+2=14*/
 
     power = 1.0;
     final int N = adjacencyMatrix.length;
 
     double max = Double.NEGATIVE_INFINITY;
+    /* 1 CCN */
     for (double[] row : adjacencyMatrix) {
+      /* 1 CCN */
       for (double elem : row) {
         max = Math.max(max, elem);
       }
@@ -38,6 +41,7 @@ public class GeneticAlgorithm_travelingSalesman {
     // Create initial population
     Individual[] generation = new Individual[P + 1];
     Individual[] nextGeneration = new Individual[P + 1];
+    /* 1 CCN */
     for (int i = 1; i <= P; i++) generation[i] = new Individual(N);
 
     // Stores the ranges of individuals in the selection roulette
@@ -51,6 +55,7 @@ public class GeneticAlgorithm_travelingSalesman {
     Individual fittestIndv = null;
     double fittestIndvFitness = Double.NEGATIVE_INFINITY;
 
+    /* THE WHOLE FOR BLOCK HAS 10 CCN */
     for (int epoch = 1; epoch <= MAX_EPOCH; epoch++, power += POWER_INC) {
 
       // Compute the total fitness sum across all individuals in order
