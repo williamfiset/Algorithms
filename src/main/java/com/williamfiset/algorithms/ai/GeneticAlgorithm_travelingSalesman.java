@@ -89,29 +89,36 @@ public class GeneticAlgorithm_travelingSalesman {
                 System.out.printf("Epoch: %d, %.0f, %.0f\n", epoch, bestEpochTravelCost, bestTravelCost);
 
             // Selection process
-            for (int i = 1; i <= P; i++) {
-
-                // Perform individual selection and crossover
-                Individual parent1 = selectIndividual(generation, lo, hi);
-                Individual parent2 = selectIndividual(generation, lo, hi);
-                Individual child = crossover(parent1, parent2, N);
-
-                // Apply mutations to all parts of the DNA
-                // according to a predefined mutation rate
-                for (int j = 0; j < N; j++) {
-                    if (Math.random() < MUTATION_RATE) {
-                        mutate(child);
-                    }
-                }
-
-                nextGeneration[i] = child;
-            }
-
-            generation = nextGeneration;
+            generation = selectNextGeneration(N, generation, nextGeneration, lo, hi);
         }
 
         return trueTravelCost(fittestIndv, adjacencyMatrix, N);
         // return tour;
+    }
+
+    private static Individual[] selectNextGeneration(int N, Individual[] generation, Individual[] nextGeneration, double[] lo, double[] hi) {
+        for (int i = 1; i <= P; i++) {
+
+            // Perform individual selection and crossover
+            Individual parent1 = selectIndividual(generation, lo, hi);
+            Individual parent2 = selectIndividual(generation, lo, hi);
+            Individual child = crossover(parent1, parent2, N);
+
+            // Apply mutations to all parts of the DNA
+            // according to a predefined mutation rate
+            mutateAll(N, child);
+
+            nextGeneration[i] = child;
+        }
+        return nextGeneration;
+    }
+
+    private static void mutateAll(int N, Individual child) {
+        for (int j = 0; j < N; j++) {
+            if (Math.random() < MUTATION_RATE) {
+                mutate(child);
+            }
+        }
     }
 
     private static void getNormalizedFitness(double[][] adjacencyMatrix, int N, Individual[] generation, double[] fitness, double[] lo, double[] hi) {
