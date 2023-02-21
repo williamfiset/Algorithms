@@ -13,8 +13,8 @@ public class GeneticAlgorithm_travelingSalesman {
   static final Random RANDOM = new Random();
 
   // Genetic algorithm parameters (P = Population)
-  static final int P = 250;
-  static final int MAX_EPOCH = 100000;
+  static final int P = 3;
+  static final int MAX_EPOCH = 5;
   static final double MUTATION_RATE = 0.015;
 
   // The power variable tweaks the weight of the fitness function
@@ -29,19 +29,15 @@ public class GeneticAlgorithm_travelingSalesman {
     power = 1.0;
     final int N = adjacencyMatrix.length;
 
-    double max = Double.NEGATIVE_INFINITY;
     /* 1 CCN */
-    for (double[] row : adjacencyMatrix) {
-      /* 1 CCN */
-      for (double elem : row) {
-        max = Math.max(max, elem);
-      }
-    }
+    // find the max element in the adjacency matrix
+    double max = getMaxElement(adjacencyMatrix);
 
     // Create initial population
     Individual[] generation = new Individual[P + 1];
     Individual[] nextGeneration = new Individual[P + 1];
     /* 1 CCN */
+    // generate current generation (size=P)
     for (int i = 1; i <= P; i++) generation[i] = new Individual(N);
 
     // Stores the ranges of individuals in the selection roulette
@@ -62,6 +58,7 @@ public class GeneticAlgorithm_travelingSalesman {
       // to be able to normalize and assign importance percentages
       double fitnessSum = 0;
 
+      // for each individual in current generation, calculate its fitness
       for (int i = 1; i <= P; i++) {
         Individual in = generation[i];
         fitness[i] = fitness(in, adjacencyMatrix, max, N);
@@ -77,6 +74,7 @@ public class GeneticAlgorithm_travelingSalesman {
       for (int i = 1; i <= P; i++) {
 
         Individual in = generation[i];
+        // normalize individual fitness
         double norm = fitness[i] / fitnessSum;
 
         lo[i] = hi[i - 1] = lo[i - 1] + norm;
@@ -85,6 +83,7 @@ public class GeneticAlgorithm_travelingSalesman {
 
           bestEpochIndv = in;
           bestEpochFitness = fitness[i];
+          // fittestIndv is the best individual so far in all the epoch
           if (fittestIndv == null) fittestIndv = in;
 
           // Compute the true tour distance
@@ -131,6 +130,17 @@ public class GeneticAlgorithm_travelingSalesman {
     return trueTravelCost(fittestIndv, adjacencyMatrix, N);
     // return tour;
 
+  }
+
+  private static double getMaxElement(double[][] adjacencyMatrix) {
+    double max = Double.NEGATIVE_INFINITY;
+    for (double[] row : adjacencyMatrix) {
+      /* 1 CCN */
+      for (double elem : row) {
+        max = Math.max(max, elem);
+      }
+    }
+    return max;
   }
 
   // Returns an approximate fitness of a give tour
