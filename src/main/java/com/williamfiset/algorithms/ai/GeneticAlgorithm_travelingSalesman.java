@@ -13,7 +13,7 @@ public class GeneticAlgorithm_travelingSalesman {
     static final Random RANDOM = new Random();
 
     // Genetic algorithm parameters (P = Population)
-    static final int P = 3;
+    static final int P = 100;
     static final int MAX_EPOCH = 5;
     static final double MUTATION_RATE = 0.015;
 
@@ -24,7 +24,6 @@ public class GeneticAlgorithm_travelingSalesman {
     static final double POWER_INC = 0.0001;
 
     static double tsp(double[][] adjacencyMatrix) {
-        /* CCN = 13-1+2=14*/
 
         power = 1.0;
         final int N = adjacencyMatrix.length;
@@ -47,11 +46,10 @@ public class GeneticAlgorithm_travelingSalesman {
         Individual fittestIndv = null;
         double fittestIndvFitness = Double.NEGATIVE_INFINITY;
 
-        /* THE WHOLE FOR BLOCK HAS 10 CCN */
         for (int epoch = 1; epoch <= MAX_EPOCH; epoch++, power += POWER_INC) {
 
             // for each individual in current generation, calculate its fitness and normalized fitness
-            getNormalizedFitness(adjacencyMatrix, N, generation, fitness, lo, hi);
+            getNormalizedFitness(P, adjacencyMatrix, N, generation, fitness, lo, hi);
 
             // Track epoch fittest individual
             Individual bestEpochIndv = null;
@@ -121,13 +119,13 @@ public class GeneticAlgorithm_travelingSalesman {
         }
     }
 
-    private static void getNormalizedFitness(double[][] adjacencyMatrix, int N, Individual[] generation, double[] fitness, double[] lo, double[] hi) {
+    public static void getNormalizedFitness(int population, double[][] adjacencyMatrix, int N, Individual[] generation, double[] fitness, double[] lo, double[] hi) {
         // find the max element in the adjacency matrix
         double max = getMaxElement(adjacencyMatrix);
 
         double fitnessSum = 0;
         /* 1 CCN */
-        for (int i = 1; i <= P; i++) {
+        for (int i = 1; i <= population; i++) {
             Individual in = generation[i];
             fitness[i] = fitness(in, adjacencyMatrix, max, N);
             fitnessSum += fitness[i];
@@ -136,13 +134,13 @@ public class GeneticAlgorithm_travelingSalesman {
 
         // normalize individual fitness
         /* 1 CCN */
-        for (int i = 1; i <= P; i++) {
+        for (int i = 1; i <= population; i++) {
             double norm = fitness[i] / fitnessSum;
             lo[i] = hi[i - 1] = lo[i - 1] + norm;
         }
     }
 
-    private static double getMaxElement(double[][] adjacencyMatrix) {
+    public static double getMaxElement(double[][] adjacencyMatrix) {
         double max = Double.NEGATIVE_INFINITY;
         for (double[] row : adjacencyMatrix) {
             /* 1 CCN */
