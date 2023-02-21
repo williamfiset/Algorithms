@@ -5,7 +5,29 @@ import static com.williamfiset.algorithms.ai.GeneticAlgorithm_travelingSalesman.
 
 import org.junit.*;
 
+import java.util.Arrays;
+
 public class GeneticAlgorithm_travelingSalesmanTest {
+
+    boolean[] branches = new boolean[7];
+
+    @Test
+    public void testTspReturnsCorrectResult1() {
+        double[][] matrix = {{0, 10, 15, 20}, {5, 0, 9, 10}, {6, 13, 0, 12}, {8, 8, 9, 0}};
+        Arrays.fill(branches, false);
+        double result = GeneticAlgorithm_travelingSalesman.tsp(matrix, branches);
+        printBranches(branches);
+        assertThat(35.0).isEqualTo(result);
+    }
+
+    @Test
+    public void testTspReturnsCorrectResult2() {
+        double[][] matrix = {{0, 1, 5}, {1, 0, 2}, {5, 2, 0}};
+        Arrays.fill(branches, false);
+        double result = GeneticAlgorithm_travelingSalesman.tsp(matrix, branches);
+        printBranches(branches);
+        assertThat(8.0).isEqualTo(result);
+    }
 
     @Test
     public void testGetNormalizedFitness() {
@@ -37,20 +59,6 @@ public class GeneticAlgorithm_travelingSalesmanTest {
     }
 
     @Test
-    public void testTspReturnsCorrectResult1() {
-        double[][] matrix = {{0, 10, 15, 20}, {5, 0, 9, 10}, {6, 13, 0, 12}, {8, 8, 9, 0}};
-        double result = GeneticAlgorithm_travelingSalesman.tsp(matrix);
-        assertThat(35.0).isEqualTo(result);
-    }
-
-    @Test
-    public void testTspReturnsCorrectResult2() {
-        double[][] matrix = {{0, 1, 5}, {1, 0, 2}, {5, 2, 0}};
-        double result = GeneticAlgorithm_travelingSalesman.tsp(matrix);
-        assertThat(8.0).isEqualTo(result);
-    }
-
-    @Test
     public void testGetMaxElement() {
         double[][] adjacencyMatrix = {
                 {1.0, 2.0, 3.0},
@@ -60,5 +68,15 @@ public class GeneticAlgorithm_travelingSalesmanTest {
         double expectedMax = 11.0;
         double actualMax = getMaxElement(adjacencyMatrix);
         assertThat(expectedMax).isEqualTo(actualMax);
+    }
+
+    public void printBranches(boolean[] branches) {
+        for (int i = 0; i < branches.length; i++) {
+            if (branches[i]) {
+                System.out.printf("Branch %d was taken\n", i);
+            } else {
+                System.out.printf("Branch %d was not taken\n", i);
+            }
+        }
     }
 }

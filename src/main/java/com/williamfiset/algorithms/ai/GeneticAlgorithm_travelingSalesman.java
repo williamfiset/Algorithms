@@ -14,7 +14,7 @@ public class GeneticAlgorithm_travelingSalesman {
 
     // Genetic algorithm parameters (P = Population)
     static final int P = 100;
-    static final int MAX_EPOCH = 5;
+    static final int MAX_EPOCH = 100;
     static final double MUTATION_RATE = 0.015;
 
     // The power variable tweaks the weight of the fitness function
@@ -23,7 +23,7 @@ public class GeneticAlgorithm_travelingSalesman {
     static double power;
     static final double POWER_INC = 0.0001;
 
-    static double tsp(double[][] adjacencyMatrix) {
+    static double tsp(double[][] adjacencyMatrix, boolean[] branches) {
 
         power = 1.0;
         final int N = adjacencyMatrix.length;
@@ -33,7 +33,10 @@ public class GeneticAlgorithm_travelingSalesman {
         Individual[] nextGeneration = new Individual[P + 1];
         /* 1 CCN */
         // generate current generation (size=P)
-        for (int i = 1; i <= P; i++) generation[i] = new Individual(N);
+        for (int i = 1; i <= P; i++) {
+            generation[i] = new Individual(N);
+            branches[0] = true;
+        }
 
         // Stores the ranges of individuals in the selection roulette
         double[] lo = new double[P + 1];
@@ -47,6 +50,7 @@ public class GeneticAlgorithm_travelingSalesman {
         double fittestIndvFitness = Double.NEGATIVE_INFINITY;
 
         for (int epoch = 1; epoch <= MAX_EPOCH; epoch++, power += POWER_INC) {
+            branches[1] = true;
 
             // for each individual in current generation, calculate its fitness and normalized fitness
             getNormalizedFitness(P, adjacencyMatrix, N, generation, fitness, lo, hi);
@@ -57,15 +61,20 @@ public class GeneticAlgorithm_travelingSalesman {
 
             // Setup selection roulette
             for (int i = 1; i <= P; i++) {
+                branches[2] = true;
 
                 Individual in = generation[i];
 
                 if (fitness[i] > bestEpochFitness) {
+                    branches[3] = true;
 
                     bestEpochIndv = in;
                     bestEpochFitness = fitness[i];
                     // fittestIndv is the best individual so far in all the epoch
-                    if (fittestIndv == null) fittestIndv = in;
+                    if (fittestIndv == null) {
+                        branches[4] = true;
+                        fittestIndv = in;
+                    }
 
                     // Compute the true tour distance
                     double bestEpochTravelCost = trueTravelCost(bestEpochIndv, adjacencyMatrix, N);
@@ -73,6 +82,7 @@ public class GeneticAlgorithm_travelingSalesman {
 
                     // Update fittest individual info
                     if (bestEpochTravelCost <= bestTravelCost) {
+                        branches[5] = true;
                         tour = in.cities.clone();
                         fittestIndv = in;
                         fittestIndvFitness = bestEpochTravelCost;
@@ -83,8 +93,10 @@ public class GeneticAlgorithm_travelingSalesman {
             double bestEpochTravelCost = trueTravelCost(bestEpochIndv, adjacencyMatrix, N);
             double bestTravelCost = trueTravelCost(fittestIndv, adjacencyMatrix, N);
 
-            if (epoch % 100 == 0)
+            if (epoch % 100 == 0) {
+                branches[6] = true;
                 System.out.printf("Epoch: %d, %.0f, %.0f\n", epoch, bestEpochTravelCost, bestTravelCost);
+            }
 
             // Selection process
             generation = selectNextGeneration(N, generation, nextGeneration, lo, hi);
@@ -239,6 +251,9 @@ public class GeneticAlgorithm_travelingSalesman {
 
     public static void main(String[] args) {
 
+        boolean[] branches = new boolean[7];
+        Arrays.fill(branches, false);
+
         int n = 64;
 
         double[][] m = new double[n][n];
@@ -258,7 +273,7 @@ public class GeneticAlgorithm_travelingSalesman {
         int first = path.get(0);
         m[last][first] = 1.0;
 
-        System.out.println(tsp(m));
+        System.out.println(tsp(m, branches));
     }
 
     // An individual in the TSP is an order in which
