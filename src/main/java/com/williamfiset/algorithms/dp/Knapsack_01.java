@@ -37,16 +37,17 @@ public class Knapsack_01 {
     for (int i = 1; i <= N; i++) {
 
       // Get the value and weight of the item
-      int w = W[i - 1], v = V[i - 1];
+      int weight = W[i - 1], value = V[i - 1];
 
       for (int sz = 1; sz <= capacity; sz++) {
 
         // Consider not picking this element
         DP[i][sz] = DP[i - 1][sz];
-
+        int oldProfit = DP[i][sz];
+        int newProfit = DP[i - 1][sz - weight] + value;
         // Consider including the current element and
         // see if this would be more profitable
-        if (sz >= w && DP[i - 1][sz - w] + v > DP[i][sz]) DP[i][sz] = DP[i - 1][sz - w] + v;
+        if (sz >= weight &&  newProfit > oldProfit) DP[i][sz] = DP[i - 1][sz - weight] + value;
       }
     }
 
