@@ -43,7 +43,7 @@ public class Knapsack_01 {
 
         // Consider not picking this element
         DP[i][sz] = DP[i - 1][sz];
-        int oldProfit = DP[i][sz];
+        int oldProfit = DP[i][sz];    //Introduced explaining variable for code readability
         int newProfit = DP[i - 1][sz - weight] + value;
         // Consider including the current element and
         // see if this would be more profitable
