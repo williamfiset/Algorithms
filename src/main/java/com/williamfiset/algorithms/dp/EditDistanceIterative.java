@@ -14,8 +14,12 @@ public class EditDistanceIterative {
   public static int editDistance(
       String a, String b, int insertionCost, int deletionCost, int substitutionCost) {
 
+    return extractedMethod(a, b, insertionCost, deletionCost, substitutionCost);
+  }
+
+  public static int extractedMethod(String a, String b, int insertionCost, int deletionCost, int substitutionCost) {
     final int AL = a.length(), BL = b.length();
-    int[][] dp = new int[AL + 1][BL + 1];
+    int[][] arr = new int[AL + 1][BL + 1];
 
     for (int i = 0; i <= AL; i++) {
       for (int j = (i == 0 ? 1 : 0); j <= BL; j++) {
@@ -24,19 +28,19 @@ public class EditDistanceIterative {
 
         // Substitution
         if (i > 0 && j > 0)
-          min = dp[i - 1][j - 1] + (a.charAt(i - 1) == b.charAt(j - 1) ? 0 : substitutionCost);
+          min = arr[i - 1][j - 1] + (a.charAt(i - 1) == b.charAt(j - 1) ? 0 : substitutionCost);
 
         // Deletion
-        if (i > 0) min = Math.min(min, dp[i - 1][j] + deletionCost);
+        if (i > 0) min = Math.min(min, arr[i - 1][j] + deletionCost);
 
         // Insertion
-        if (j > 0) min = Math.min(min, dp[i][j - 1] + insertionCost);
+        if (j > 0) min = Math.min(min, arr[i][j - 1] + insertionCost);
 
-        dp[i][j] = min;
+        arr[i][j] = min;
       }
     }
 
-    return dp[AL][BL];
+    return arr[AL][BL];
   }
 
   public static void main(String[] args) {
