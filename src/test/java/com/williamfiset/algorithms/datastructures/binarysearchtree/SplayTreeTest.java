@@ -15,7 +15,7 @@ public class SplayTreeTest {
     SplayTree<Integer> splayTree = new SplayTree<>();
     List<Integer> data = TestUtils.randomIntegerList(100, MIN, MAX);
     for (int i : data) {
-      splayTree.insert(i);
+      splayTree.insertNode(i);
       assertThat(splayTree.getRoot().getData()).isEqualTo(i);
     }
   }
@@ -28,15 +28,15 @@ public class SplayTreeTest {
             100); // Note : we dont want duplicate values here to test "search" after "delete"
     // should assertNull
     for (int i : data) {
-      splayTree.insert(i);
+      splayTree.insertNode(i);
       assertThat(splayTree.getRoot().getData()).isEqualTo(i);
     }
     for (int i : data) {
-      assertThat(splayTree.search(i)).isNotNull();
+      assertThat(splayTree.searchNode(i)).isNotNull();
     }
     for (int i : data) {
-      splayTree.delete(i);
-      assertThat(splayTree.search(i)).isNull();
+      splayTree.deleteNode(i);
+      assertThat(splayTree.searchNode(i)).isNull();
     }
   }
 
@@ -45,7 +45,7 @@ public class SplayTreeTest {
     SplayTree<Integer> splayTree = new SplayTree<>();
     List<Integer> data = TestUtils.randomIntegerList(100, MIN, MAX);
     for (int i : data) {
-      splayTree.insert(i);
+      splayTree.insertNode(i);
       assertThat(splayTree.getRoot().getData()).isEqualTo(i);
     }
   }
@@ -55,8 +55,8 @@ public class SplayTreeTest {
     SplayTree<Integer> splayTree = new SplayTree<>();
     List<Integer> data = TestUtils.sortedIntegerList(-50, 50);
     for (int i : data) {
-      splayTree.insert(i);
-      assertThat(splayTree.findMax(splayTree.getRoot())).isEqualTo(i);
+      splayTree.insertNode(i);
+      assertThat(splayTree.findMaximumNode(splayTree.getRoot())).isEqualTo(i);
     }
   }
 
@@ -69,19 +69,19 @@ public class SplayTreeTest {
 
     // insertion
     for (int i : data) {
-      assertThat(pq.add(i)).isEqualTo(splayTree.insert(i) != null);
+      assertThat(pq.add(i)).isEqualTo(splayTree.insertNode(i) != null);
     }
     // searching
     for (int i : data) {
-      assertThat(splayTree.search(i).getData().equals(i)).isEqualTo(pq.contains(i));
+      assertThat(splayTree.searchNode(i).getData().equals(i)).isEqualTo(pq.contains(i));
     }
     // findMax & delete
     while (!pq.isEmpty()) {
-      Integer splayTreeMax = splayTree.findMax();
+      Integer splayTreeMax = splayTree.findMaximumNode();
       assertThat(pq.peek()).isEqualTo(splayTreeMax);
 
-      splayTree.delete(splayTreeMax);
-      assertThat(splayTree.search(splayTreeMax)).isNull();
+      splayTree.deleteNode(splayTreeMax);
+      assertThat(splayTree.searchNode(splayTreeMax)).isNull();
       pq.remove(splayTreeMax);
       assertThat(pq.contains(splayTreeMax)).isFalse();
     }

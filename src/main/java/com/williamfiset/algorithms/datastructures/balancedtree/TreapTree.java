@@ -7,6 +7,7 @@
  */
 package com.williamfiset.algorithms.datastructures.balancedtree;
 
+import com.williamfiset.algorithms.datastructures.binarysearchtree.SplayTree;
 import com.williamfiset.algorithms.datastructures.utils.TreePrinter;
 import java.awt.*;
 import java.util.Random;
@@ -40,6 +41,16 @@ public class TreapTree<T extends Comparable<T>> {
 
     public void setValue(T value) {
       this.value = value;
+    }
+
+    @Override
+    public SplayTree.BinaryTree getLeftChild() {
+      return null;
+    }
+
+    @Override
+    public SplayTree.BinaryTree getRightChild() {
+      return null;
     }
 
     @Override

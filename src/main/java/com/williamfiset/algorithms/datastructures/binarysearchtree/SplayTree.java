@@ -57,6 +57,16 @@ public class SplayTree<T extends Comparable<T>> {
     }
 
     @Override
+    public TreePrinter.PrintableNode getLeft() {
+      return null;
+    }
+
+    @Override
+    public TreePrinter.PrintableNode getRight() {
+      return null;
+    }
+
+    @Override
     public String getText() {
       return data.toString();
     }

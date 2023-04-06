@@ -66,7 +66,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
     // Remove a value from this binary tree if it exists, O(n)
     public boolean removeDuplicateElement(T element) {
         if (contains(element)) {
-            root = removeElement(root, element);
+            BinarySearchTreeMethods binarySearchTreeMethods = new BinarySearchTreeMethods();
+            root = binarySearchTreeMethods.removeElement(root, element);
             nodeCount--;
             return true;
         }
@@ -174,32 +175,33 @@ public class BinarySearchTree<T extends Comparable<T>> {
         else return true;
     }
 
-    // New method added to encapsulate remove functionality.
-    // We only call this method if we know the element is in the tree.
-    private Node removeElement(Node node, T element) {
-        if (node == null) {
-            return null;
-        }
+   public class BinarySearchTreeMethods{
+       // New method added to encapsulate remove functionality.
+       // We only call this method if we know the element is in the tree.
+       public Node removeElement(Node node, T element) {
+           if (node == null) {
+               return null;
+           }
 
-        int elementToCompare = element.compareTo(node.data);
-        if (elementToCompare < 0) {
-            node.left = removeElement(node.left, element);
-        } else if (elementToCompare > 0) {
-            node.right = removeElement(node.right, element);
-        } else {
-            if (node.left == null) {
-                return node.right;
-            } else if (node.right == null) {
-                return node.left;
-            } else {
-                Node temporaryNode = findLeftmostNode(node.right);
-                node.data = temporaryNode.data;
-                node.right = removeElement(node.right, temporaryNode.data);
-            }
-        }
-        return node;
-    }
-
+           int elementToCompare = element.compareTo(node.data);
+           if (elementToCompare < 0) {
+               node.left = removeElement(node.left, element);
+           } else if (elementToCompare > 0) {
+               node.right = removeElement(node.right, element);
+           } else {
+               if (node.left == null) {
+                   return node.right;
+               } else if (node.right == null) {
+                   return node.left;
+               } else {
+                   Node temporaryNode = findLeftmostNode(node.right);
+                   node.data = temporaryNode.data;
+                   node.right = removeElement(node.right, temporaryNode.data);
+               }
+           }
+           return node;
+       }
+   }
     // Computes the height of the tree, O(n)
     public int heightOfTree() {
         return heightOfTree(root);

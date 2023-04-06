@@ -2,6 +2,8 @@
 // https://stackoverflow.com/questions/4965335/how-to-print-binary-tree-diagram
 package com.williamfiset.algorithms.datastructures.utils;
 
+import com.williamfiset.algorithms.datastructures.binarysearchtree.SplayTree;
+
 import java.util.*;
 
 public class TreePrinter {
@@ -9,7 +11,11 @@ public class TreePrinter {
   /** Node that can be printed */
   public interface PrintableNode {
 
-    // Get left child
+    SplayTree.BinaryTree getLeftChild();
+
+    SplayTree.BinaryTree getRightChild();
+
+      // Get left child
     public PrintableNode getLeft();
 
     // Get right child

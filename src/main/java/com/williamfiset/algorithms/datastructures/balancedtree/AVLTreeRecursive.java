@@ -6,6 +6,7 @@
  */
 package com.williamfiset.algorithms.datastructures.balancedtree;
 
+import com.williamfiset.algorithms.datastructures.binarysearchtree.SplayTree;
 import com.williamfiset.algorithms.datastructures.utils.TreePrinter;
 import com.williamfiset.algorithms.datastructures.utils.TreePrinter.PrintableNode;
 
@@ -27,6 +28,16 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
 
     public Node(T value) {
       this.value = value;
+    }
+
+    @Override
+    public SplayTree.BinaryTree getLeftChild() {
+      return null;
+    }
+
+    @Override
+    public SplayTree.BinaryTree getRightChild() {
+      return null;
     }
 
     @Override
