@@ -85,20 +85,4 @@ public abstract class SuffixArray {
       }
     }
   }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("-----i-----SA-----LCP---Suffix\n");
-
-    for (int i = 0; i < N; i++) {
-      int suffixLen = N - sa[i];
-      char[] suffixArray = new char[suffixLen];
-      for (int j = sa[i], k = 0; j < N; j++, k++) suffixArray[k] = (char) T[j];
-      String suffix = new String(suffixArray);
-      String formattedStr = String.format("% 7d % 7d % 7d %s\n", i, sa[i], lcp[i], suffix);
-      sb.append(formattedStr);
-    }
-    return sb.toString();
-  }
 }

@@ -20,7 +20,7 @@ public class SuffixArrayMed extends SuffixArray {
       return cmp;
     }
 
-    @Override
+    //Push Down refactoring on the toString() method.
     public String toString() {
       return originalIndex + " -> (" + firstHalf + ", " + secondHalf + ")";
     }
