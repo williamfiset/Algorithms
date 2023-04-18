@@ -22,6 +22,8 @@ jobs:
         java-version: 8
         distribution: 'temurin'
         cache: 'gradle'
+    - name: Validate Gradle Wrapper
+      uses: gradle/wrapper-validation-action@v1
     - name: Setup and execute tests via Gradle
       uses: gradle/gradle-build-action@v2
       with:
