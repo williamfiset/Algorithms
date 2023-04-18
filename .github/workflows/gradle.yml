@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [ master ]
 
+permissions:
+  checks: write
+
 jobs:
   build:
 
@@ -29,3 +32,9 @@ jobs:
       with:
         gradle-version: wrapper
         arguments: test
+    - name: Publish Test Results
+      if: ${{ always() }}
+      uses: mikepenz/action-junit-report@v3
+      with:
+        report_paths: "**/TEST-*.xml"
+        exclude_sources: build/
