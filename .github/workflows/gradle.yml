@@ -38,6 +38,7 @@ jobs:
       with:
         report_paths: "**/TEST-*.xml"
         exclude_sources: build/
+        annotate_only: ${{ github.event_name == 'pull_request' }}
 
   style-check:
     name: Code Formatting Check
