@@ -22,7 +22,8 @@ jobs:
         java-version: 8
         distribution: 'temurin'
         cache: 'gradle'
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Run all tests
-      run: ./gradlew test
+    - name: Setup and execute tests via Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: wrapper
+        arguments: test

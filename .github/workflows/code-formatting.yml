@@ -23,9 +23,16 @@ jobs:
         distribution: 'temurin'
         cache: 'gradle'
     # The google formatter is broken atm. Disabling for now.
-    # - name: Grant execute permission for gradlew
-    #   run: chmod +x gradlew
-    # - name: Verify all Java files are formatted correctly according to the Google Java Style Guide
-    #   run: |
-    #     ./gradlew verifyGoogleJavaFormat
-    #     echo "Run the command './gradlew goJF' to fix Java formatting if this workflow fails"
+    - name: Verify all Java files are formatted correctly according to the Google Java Style Guide using Gradle
+      uses: gradle/gradle-build-action@v2
+      if: ${{ false }}
+      id: verifygooglejavaformat
+      with:
+        gradle-version: wrapper
+        arguments: verifyGoogleJavaFormat
+    - name: Create summary if format check failed
+      if: ${{ false }}
+      # Enable this when Google Java formatter is enabled
+      # if: ${{ steps.verifygooglejavaformat.outcome == 'failure' }}
+      run: |
+        echo "Run the command `./gradlew goJF` to fix Java formatting." >> $GITHUB_STEP_SUMMARY
