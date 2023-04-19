@@ -18,7 +18,7 @@ ft.get(1); // 11
 ft.get(4); // 6
 ft.get(5); // 5
 
-ft.updateRange(3, 6, -20); // Add -20 to interval [1, 4] in O(log(n))
+ft.updateRange(3, 6, -20); // Add -20 to interval [3, 6] in O(log(n))
 ft.get(3); // -7
 ft.get(4); // -14
 ft.get(5); // -15
