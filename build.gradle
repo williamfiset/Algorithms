@@ -24,6 +24,12 @@ repositories {
   mavenCentral()
 }
 
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(11))
+  }
+}
+
 // Describe all project deps. Use 'testCompile' for test dependencies and
 // 'compile' for project dependencies.
 dependencies {
