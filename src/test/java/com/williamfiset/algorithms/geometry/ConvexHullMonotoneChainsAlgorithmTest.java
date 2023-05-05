@@ -4,7 +4,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableList;
 import java.awt.geom.*;
-import org.junit.*;
+
+import org.junit.jupiter.api.*;
 
 public class ConvexHullMonotoneChainsAlgorithmTest {
 

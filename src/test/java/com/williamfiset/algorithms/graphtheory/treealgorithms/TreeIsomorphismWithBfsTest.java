@@ -13,7 +13,8 @@ import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorp
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs.treesAreIsomorphic;
 
 import java.util.*;
-import org.junit.*;
+
+import org.junit.jupiter.api.*;
 
 public class TreeIsomorphismWithBfsTest {
 

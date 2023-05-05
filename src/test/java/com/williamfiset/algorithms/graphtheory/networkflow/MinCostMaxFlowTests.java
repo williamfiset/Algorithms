@@ -3,13 +3,14 @@ package com.williamfiset.algorithms.graphtheory.networkflow;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.util.*;
-import org.junit.*;
+
+import org.junit.jupiter.api.*;
 
 public class MinCostMaxFlowTests {
 
   List<NetworkFlowSolverBase> solvers;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     solvers = new ArrayList<>();
   }

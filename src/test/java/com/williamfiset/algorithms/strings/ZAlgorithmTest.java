@@ -2,13 +2,12 @@ package com.williamfiset.algorithms.strings;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 public class ZAlgorithmTest {
   private ZAlgorithm underTest;
 
-  @Before
+  @BeforeEach
   public void setup() {
     underTest = new ZAlgorithm();
   }
