@@ -29,12 +29,10 @@ dependencies {
   // Apache commons lang
   testImplementation 'org.apache.commons:commons-lang3:3.6'
 
-  // JUnit framework
-  testImplementation 'junit:junit:4.+'
-
   // JUnit 5 / Jupiter
-  testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
-   
+  testImplementation('org.junit.jupiter:junit-jupiter:5.9.3')
+  testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.3')
+
   // Google Guava lib
   testImplementation group: 'com.google.guava', name: 'guava', version: '22.0'
 
