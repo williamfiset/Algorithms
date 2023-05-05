@@ -7,7 +7,8 @@ package com.williamfiset.algorithms.datastructures.segmenttree;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.williamfiset.algorithms.utils.TestUtils;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 public class GenericSegmentTreeTest {
 

@@ -1,9 +1,10 @@
 package com.williamfiset.algorithms.datastructures.hashtable;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
-import org.junit.*;
+import org.junit.jupiter.api.*;
 
 public class HashTableQuadraticProbingTest {
 
@@ -40,34 +41,34 @@ public class HashTableQuadraticProbingTest {
 
   HashTableQuadraticProbing<Integer, Integer> map;
 
-  @Before
+  @BeforeEach
   public void setup() {
     map = new HashTableQuadraticProbing<>();
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testNullKey() {
-    map.put(null, 5);
+    assertThrows(IllegalArgumentException.class, () -> map.put(null, 5));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testIllegalCreation1() {
-    new HashTableQuadraticProbing<>(-3, 0.5);
+    assertThrows(IllegalArgumentException.class, () -> new HashTableQuadraticProbing<>(-3, 0.5));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testIllegalCreation2() {
-    new HashTableQuadraticProbing<>(5, Double.POSITIVE_INFINITY);
+    assertThrows(IllegalArgumentException.class, () -> new HashTableQuadraticProbing<>(5, Double.POSITIVE_INFINITY));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testIllegalCreation3() {
-    new HashTableQuadraticProbing<>(6, -0.5);
+    assertThrows(IllegalArgumentException.class, () -> new HashTableQuadraticProbing<>(6, -0.5));
   }
 
   @Test
   public void testLegalCreation() {
-    new HashTableQuadraticProbing<>(6, 0.9);
+    assertDoesNotThrow(() -> new HashTableQuadraticProbing<>(6, 0.9));
   }
 
   @Test
@@ -141,20 +142,24 @@ public class HashTableQuadraticProbingTest {
     }
   }
 
-  @Test(expected = java.util.ConcurrentModificationException.class)
+  @Test
   public void testConcurrentModificationException() {
-    map.add(1, 1);
-    map.add(2, 1);
-    map.add(3, 1);
-    for (Integer key : map) map.add(4, 4);
+    assertThrows(ConcurrentModificationException.class, () -> {
+      map.add(1, 1);
+      map.add(2, 1);
+      map.add(3, 1);
+      for (Integer key : map) map.add(4, 4);
+    });
   }
 
-  @Test(expected = java.util.ConcurrentModificationException.class)
+  @Test
   public void testConcurrentModificationException2() {
-    map.add(1, 1);
-    map.add(2, 1);
-    map.add(3, 1);
-    for (Integer key : map) map.remove(2);
+    assertThrows(ConcurrentModificationException.class, () -> {
+      map.add(1, 1);
+      map.add(2, 1);
+      map.add(3, 1);
+      for (Integer key : map) map.remove(2);
+    });
   }
 
   @Test

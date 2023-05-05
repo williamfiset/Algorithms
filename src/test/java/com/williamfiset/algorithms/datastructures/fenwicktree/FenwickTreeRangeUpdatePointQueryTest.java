@@ -1,9 +1,9 @@
 package com.williamfiset.algorithms.datastructures.fenwicktree;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 public class FenwickTreeRangeUpdatePointQueryTest {
 
@@ -31,14 +31,14 @@ public class FenwickTreeRangeUpdatePointQueryTest {
 
   static long UNUSED_VAL;
 
-  @Before
+  @BeforeEach
   public void setup() {
     UNUSED_VAL = randValue();
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testIllegalCreation() {
-    new FenwickTreeRangeUpdatePointQuery(null);
+    assertThrows(IllegalArgumentException.class, () -> new FenwickTreeRangeUpdatePointQuery(null));
   }
 
   @Test

@@ -6,8 +6,8 @@ import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.*;
 
 public class BloomFilterTest {
 
@@ -20,7 +20,7 @@ public class BloomFilterTest {
   static final int TEST_SZ = 1000;
   static final int LOOPS = 1000;
 
-  @Before
+  @BeforeEach
   public void setup() {}
 
   @Test

@@ -2,8 +2,7 @@ package com.williamfiset.algorithms.datastructures.quadtree;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 public class QuadTreeTest {
 
@@ -11,7 +10,7 @@ public class QuadTreeTest {
   static final int TEST_SZ = 1000;
   static final int MAX_RAND_NUM = +2000;
 
-  @Before
+  @BeforeEach
   public void setup() {}
 
   @Test

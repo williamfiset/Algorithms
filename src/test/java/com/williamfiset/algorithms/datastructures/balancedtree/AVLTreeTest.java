@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.*;
 
 public class AVLTreeTest {
 
@@ -18,7 +18,7 @@ public class AVLTreeTest {
 
   private AVLTreeRecursive<Integer> tree;
 
-  @Before
+  @BeforeEach
   public void setup() {
     tree = new AVLTreeRecursive<>();
   }

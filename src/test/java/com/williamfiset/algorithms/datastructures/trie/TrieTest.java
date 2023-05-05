@@ -1,47 +1,60 @@
 package com.williamfiset.algorithms.datastructures.trie;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.*;
+import org.junit.jupiter.api.*;
 
 public class TrieTest {
 
-  // @Before public void setup() { }
+  // @BeforeEach public void setup() { }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testBadTrieDelete1() {
-    Trie t = new Trie();
-    t.insert("some string");
-    t.delete("some string", 0);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Trie t = new Trie();
+      t.insert("some string");
+      t.delete("some string", 0);
+    });
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testBadTrieDelete2() {
-    Trie t = new Trie();
-    t.insert("some string");
-    t.delete("some string", -1);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Trie t = new Trie();
+      t.insert("some string");
+      t.delete("some string", -1);
+    });
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testBadTrieDelete3() {
-    Trie t = new Trie();
-    t.insert("some string");
-    t.delete("some string", -345);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Trie t = new Trie();
+      t.insert("some string");
+      t.delete("some string", -345);
+    });
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testBadTrieInsert() {
-    (new Trie()).insert(null);
+    assertThrows(IllegalArgumentException.class, () -> {
+      (new Trie()).insert(null);
+    });
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testBadTrieCount() {
-    (new Trie()).count(null);
+    assertThrows(IllegalArgumentException.class, () -> {
+      (new Trie()).count(null);
+    });
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testBadTrieContains() {
-    (new Trie()).contains(null);
+    assertThrows(IllegalArgumentException.class, () -> {
+      (new Trie()).contains(null);
+    });
   }
 
   @Test

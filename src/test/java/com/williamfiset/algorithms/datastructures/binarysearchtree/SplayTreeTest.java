@@ -4,7 +4,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.williamfiset.algorithms.datastructures.utils.TestUtils;
 import java.util.*;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 public class SplayTreeTest {
 

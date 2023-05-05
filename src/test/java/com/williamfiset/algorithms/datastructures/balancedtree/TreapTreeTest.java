@@ -1,13 +1,14 @@
 package com.williamfiset.algorithms.datastructures.balancedtree;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.*;
 
 public class TreapTreeTest {
 
@@ -18,14 +19,14 @@ public class TreapTreeTest {
 
   private TreapTree<Integer> tree;
 
-  @Before
+  @BeforeEach
   public void setup() {
     tree = new TreapTree<>();
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testNullInsertion() {
-    tree.insert(null);
+    assertThrows(IllegalArgumentException.class, () -> tree.insert(null));
   }
 
   @Test

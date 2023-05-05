@@ -1,10 +1,11 @@
 package com.williamfiset.algorithms.datastructures.balancedtree;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.*;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.*;
 
 public class RedBlackTreeTest {
 
@@ -15,14 +16,14 @@ public class RedBlackTreeTest {
 
   private RedBlackTree<Integer> tree;
 
-  @Before
+  @BeforeEach
   public void setup() {
     tree = new RedBlackTree<>();
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testNullInsertion() {
-    tree.insert(null);
+    assertThrows(IllegalArgumentException.class, () -> tree.insert(null));
   }
 
   @Test

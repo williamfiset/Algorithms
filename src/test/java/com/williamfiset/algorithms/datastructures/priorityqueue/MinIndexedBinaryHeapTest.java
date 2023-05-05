@@ -1,6 +1,7 @@
 package com.williamfiset.algorithms.datastructures.priorityqueue;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,21 +10,22 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Random;
-import org.junit.*;
+
+import org.junit.jupiter.api.*;
 
 public class MinIndexedBinaryHeapTest {
 
-  @Before
+  @BeforeEach
   public void setup() {}
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testIllegalSizeOfNegativeOne() {
-    new MinIndexedBinaryHeap<String>(-1);
+    assertThrows(IllegalArgumentException.class, () -> new MinIndexedBinaryHeap<String>(-1));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testIllegalSizeOfZero() {
-    new MinIndexedBinaryHeap<String>(0);
+    assertThrows(IllegalArgumentException.class, () -> new MinIndexedBinaryHeap<String>(0));
   }
 
   @Test
@@ -45,11 +47,13 @@ public class MinIndexedBinaryHeapTest {
     assertThat(pq.contains(3)).isFalse();
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testDuplicateKeys() {
-    MinIndexedBinaryHeap<String> pq = new MinIndexedBinaryHeap<String>(10);
-    pq.insert(5, "abcdef");
-    pq.insert(5, "xyz");
+    assertThrows(IllegalArgumentException.class, () -> {
+      MinIndexedBinaryHeap<String> pq = new MinIndexedBinaryHeap<String>(10);
+      pq.insert(5, "abcdef");
+      pq.insert(5, "xyz");
+    });
   }
 
   @Test
