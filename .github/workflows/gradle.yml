@@ -9,9 +9,12 @@ on:
   pull_request:
     branches: [ master ]
 
-jobs:
-  build:
+permissions:
+  checks: write
 
+jobs:
+  test:
+    name: Test
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +25,46 @@ jobs:
         java-version: 8
         distribution: 'temurin'
         cache: 'gradle'
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Run all tests
-      run: ./gradlew test
+    - name: Validate Gradle Wrapper
+      uses: gradle/wrapper-validation-action@v1
+    - name: Setup and execute tests via Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: wrapper
+        arguments: test
+    - name: Publish Test Results
+      if: ${{ always() }}
+      uses: mikepenz/action-junit-report@v3
+      with:
+        report_paths: "**/TEST-*.xml"
+        exclude_sources: build/
+        annotate_only: ${{ github.event_name == 'pull_request' }}
+
+  style-check:
+    name: Code Formatting Check
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v3
+      with:
+        java-version: 8
+        distribution: 'temurin'
+        cache: 'gradle'
+    - name: Validate Gradle Wrapper
+      uses: gradle/wrapper-validation-action@v1
+    # The google formatter is broken atm. Disabling for now.
+    - name: Verify all Java files are formatted correctly according to the Google Java Style Guide using Gradle
+      uses: gradle/gradle-build-action@v2
+      if: ${{ false }}
+      id: verifygooglejavaformat
+      with:
+        gradle-version: wrapper
+        arguments: verifyGoogleJavaFormat
+    - name: Create summary if format check failed
+      if: ${{ false }}
+      # Enable this when Google Java formatter is enabled
+      # if: ${{ steps.verifygooglejavaformat.outcome == 'failure' }}
+      run: |
+        echo "Run the command `./gradlew goJF` to fix Java formatting." >> $GITHUB_STEP_SUMMARY
