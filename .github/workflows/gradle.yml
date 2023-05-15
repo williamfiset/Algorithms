@@ -54,17 +54,13 @@ jobs:
         cache: 'gradle'
     - name: Validate Gradle Wrapper
       uses: gradle/wrapper-validation-action@v1
-    # The google formatter is broken atm. Disabling for now.
     - name: Verify all Java files are formatted correctly according to the Google Java Style Guide using Gradle
       uses: gradle/gradle-build-action@v2
-      if: ${{ false }}
       id: verifygooglejavaformat
       with:
         gradle-version: wrapper
-        arguments: verifyGoogleJavaFormat
+        arguments: spotlessJavaCheck
     - name: Create summary if format check failed
-      if: ${{ false }}
-      # Enable this when Google Java formatter is enabled
-      # if: ${{ steps.verifygooglejavaformat.outcome == 'failure' }}
+      if: ${{ steps.verifygooglejavaformat.outcome == 'failure' }}
       run: |
-        echo "Run the command `./gradlew goJF` to fix Java formatting." >> $GITHUB_STEP_SUMMARY
+        echo "Run the command `./gradlew spotlessApply` to fix Java formatting." >> $GITHUB_STEP_SUMMARY
