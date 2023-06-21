@@ -11,58 +11,85 @@ public class TravelingSalesmanProblemTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testTspRecursiveInvalidStartNode() {
-    double[][] dist = {
-      {1, 2, 3},
-      {4, 5, 6},
-      {7, 8, 9}
-    };
-    new TspDynamicProgrammingRecursive(321, dist);
+    new TspDynamicProgrammingRecursive(321, new double[5][5]);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void testTspIterativeInvalidStartNode() {
-    double[][] dist = {
-      {1, 2, 3},
-      {4, 5, 6},
-      {7, 8, 9}
-    };
-    new TspDynamicProgrammingIterative(321, dist);
+  public void testTspIterativeStartNodeTooLarge() {
+    new TspDynamicProgrammingIterative(321, new double[5][5]);
   }
 
-  @Test(expected = IllegalStateException.class)
+  @Test(expected = IllegalArgumentException.class)
+  public void testTspIterativeNegativeStartNode() {
+    new TspDynamicProgrammingIterative(-1, new double[5][5]);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
   public void testTspRecursiveNonSquareMatrix() {
-    double[][] dist = {
-      {1, 2, 3},
-      {4, 5, 6}
-    };
-    new TspDynamicProgrammingRecursive(dist);
+    new TspDynamicProgrammingRecursive(new double[5][4]);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testTspIterativeNonSquareMatrix() {
-    double[][] dist = {
-      {1, 2, 3},
-      {4, 5, 6}
-    };
-    new TspDynamicProgrammingIterative(dist);
+    new TspDynamicProgrammingIterative(new double[5][4]);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testTspRecursiveSmallGraph() {
-    double[][] dist = {
-      {0, 1},
-      {1, 0}
-    };
-    new TspDynamicProgrammingRecursive(dist);
+    new TspDynamicProgrammingRecursive(new double[2][2]);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testTspIterativeSmallGraph() {
-    double[][] dist = {
-      {0, 1},
-      {1, 0}
-    };
-    new TspDynamicProgrammingIterative(dist);
+    new TspDynamicProgrammingIterative(new double[2][2]);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testTspIterativeTooLargeGraph() {
+    new TspDynamicProgrammingIterative(new double[33][33]);
+  }
+
+  /* Test that the cached execution time of getTour() is less than 20% of the uncached run time.
+  TODO: The three tests below could be refactored using a decorator timing function
+  (in Python: https://realpython.com/primer-on-python-decorators/#timing-functions) */
+  @Test
+  public void testGetTourCaching() {
+    TspDynamicProgrammingIterative solver = initValidSolver();
+    long startTime = System.nanoTime();
+    solver.getTour();
+    long uncachedRunTime = System.nanoTime() - startTime;
+
+    long newStartTime = System.nanoTime();
+    solver.getTour();
+    long cachedRunTime = System.nanoTime() - newStartTime;
+    assertThat(cachedRunTime < 0.2*uncachedRunTime);
+  }
+
+  // Test that the cached execution time of getTourCost() is less than 20% of the uncached run time.
+  @Test
+  public void testGetTourCostCaching() {
+    TspDynamicProgrammingIterative solver = initValidSolver();
+    long startTime = System.nanoTime();
+    solver.getTourCost();
+    long uncachedRunTime = System.nanoTime() - startTime;
+
+    long newStartTime = System.nanoTime();
+    solver.getTourCost();
+    long cachedRunTime = System.nanoTime() - newStartTime;
+    assertThat(cachedRunTime < 0.2*uncachedRunTime);  }
+
+  // Test that the cached execution time of solve() is less than 20% of the uncached run time.
+  @Test
+  public void testSolveCaching() {
+    TspDynamicProgrammingIterative solver = initValidSolver();
+    long startTime = System.nanoTime();
+    solver.solve();
+    long uncachedRunTime = System.nanoTime() - startTime;
+
+    long newStartTime = System.nanoTime();
+    solver.solve();
+    long cachedRunTime = System.nanoTime() - newStartTime;
+    assertThat(cachedRunTime < 0.2*uncachedRunTime);
   }
 
   @Test
@@ -143,9 +170,9 @@ public class TravelingSalesmanProblemTest {
 
       for (int startNode = 0; startNode < n; startNode++) {
         TspDynamicProgrammingRecursive dpRecursiveSolver =
-            new TspDynamicProgrammingRecursive(startNode, dist);
+                new TspDynamicProgrammingRecursive(startNode, dist);
         TspDynamicProgrammingIterative dpIterativeSolver =
-            new TspDynamicProgrammingIterative(startNode, dist);
+                new TspDynamicProgrammingIterative(startNode, dist);
 
         double dp1 = dpRecursiveSolver.getTourCost();
         double dp2 = dpIterativeSolver.getTourCost();
@@ -198,5 +225,19 @@ public class TravelingSalesmanProblemTest {
     double total = 0;
     for (int i = 1; i < tour.size(); i++) total += dist[tour.get(i - 1)][tour.get(i)];
     return total;
+  }
+
+  private TspDynamicProgrammingIterative initValidSolver() {
+    int n = 6;
+    double[][] distanceMatrix = new double[n][n];
+    for (double[] row : distanceMatrix) java.util.Arrays.fill(row, 10000);
+    distanceMatrix[5][0] = 10;
+    distanceMatrix[1][5] = 12;
+    distanceMatrix[4][1] = 2;
+    distanceMatrix[2][4] = 4;
+    distanceMatrix[3][2] = 6;
+    distanceMatrix[0][3] = 8;
+    int startNode = 0;
+    return new TspDynamicProgrammingIterative(startNode, distanceMatrix);
   }
 }
