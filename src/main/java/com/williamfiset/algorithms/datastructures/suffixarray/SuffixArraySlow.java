@@ -32,7 +32,7 @@ public class SuffixArraySlow extends SuffixArray {
       return len - other.len;
     }
 
-    @Override
+    //Push Down refactoring on the toString() method.
     public String toString() {
       return new String(text, index, len);
     }

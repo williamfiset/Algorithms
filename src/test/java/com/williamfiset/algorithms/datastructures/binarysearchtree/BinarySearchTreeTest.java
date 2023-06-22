@@ -93,17 +93,17 @@ public class BinarySearchTreeTest {
     BinarySearchTree<String> tree = new BinarySearchTree<>();
     assertThat(tree.isEmpty()).isTrue();
 
-    tree.add("Hello World!");
+    tree.addElement("Hello World!");
     assertThat(tree.isEmpty()).isFalse();
   }
 
   @Test
   public void testSize() {
     BinarySearchTree<String> tree = new BinarySearchTree<>();
-    assertThat(tree.size()).isEqualTo(0);
+    assertThat(tree.sizeOfTree()).isEqualTo(0);
 
-    tree.add("Hello World!");
-    assertThat(tree.size()).isEqualTo(1);
+    tree.addElement("Hello World!");
+    assertThat(tree.sizeOfTree()).isEqualTo(1);
   }
 
   @Test
@@ -117,29 +117,29 @@ public class BinarySearchTreeTest {
     //  A
 
     // No tree
-    assertThat(tree.height()).isEqualTo(0);
+    assertThat(tree.heightOfTree()).isEqualTo(0);
 
     // Layer One
-    tree.add("M");
-    assertThat(tree.height()).isEqualTo(1);
+    tree.addElement("M");
+    assertThat(tree.heightOfTree()).isEqualTo(1);
 
     // Layer Two
-    tree.add("J");
-    assertThat(tree.height()).isEqualTo(2);
-    tree.add("S");
-    assertThat(tree.height()).isEqualTo(2);
+    tree.addElement("J");
+    assertThat(tree.heightOfTree()).isEqualTo(2);
+    tree.addElement("S");
+    assertThat(tree.heightOfTree()).isEqualTo(2);
 
     // Layer Three
-    tree.add("B");
-    assertThat(tree.height()).isEqualTo(3);
-    tree.add("N");
-    assertThat(tree.height()).isEqualTo(3);
-    tree.add("Z");
-    assertThat(tree.height()).isEqualTo(3);
+    tree.addElement("B");
+    assertThat(tree.heightOfTree()).isEqualTo(3);
+    tree.addElement("N");
+    assertThat(tree.heightOfTree()).isEqualTo(3);
+    tree.addElement("Z");
+    assertThat(tree.heightOfTree()).isEqualTo(3);
 
     // Layer 4
-    tree.add("A");
-    assertThat(tree.height()).isEqualTo(4);
+    tree.addElement("A");
+    assertThat(tree.heightOfTree()).isEqualTo(4);
   }
 
   @Test
@@ -147,13 +147,13 @@ public class BinarySearchTreeTest {
 
     // Add element which does not yet exist
     BinarySearchTree<Character> tree = new BinarySearchTree<>();
-    assertThat(tree.add('A')).isTrue();
+    assertThat(tree.addElement('A')).isTrue();
 
     // Add duplicate element
-    assertThat(tree.add('A')).isFalse();
+    assertThat(tree.addElement('A')).isFalse();
 
     // Add a second element which is not a duplicate
-    assertThat(tree.add('B')).isTrue();
+    assertThat(tree.addElement('B')).isTrue();
   }
 
   @Test
@@ -161,22 +161,22 @@ public class BinarySearchTreeTest {
 
     // Try removing an element which doesn't exist
     BinarySearchTree<Character> tree = new BinarySearchTree<>();
-    tree.add('A');
-    assertThat(tree.size()).isEqualTo(1);
-    assertThat(tree.remove('B')).isFalse();
-    assertThat(tree.size()).isEqualTo(1);
+    tree.addElement('A');
+    assertThat(tree.sizeOfTree()).isEqualTo(1);
+    assertThat(tree.removeDuplicateElement('B')).isFalse();
+    assertThat(tree.sizeOfTree()).isEqualTo(1);
 
     // Try removing an element which does exist
-    tree.add('B');
-    assertThat(tree.size()).isEqualTo(2);
-    assertThat(tree.remove('B')).isTrue();
-    assertThat(tree.size()).isEqualTo(1);
-    assertThat(tree.height()).isEqualTo(1);
+    tree.addElement('B');
+    assertThat(tree.sizeOfTree()).isEqualTo(2);
+    assertThat(tree.removeDuplicateElement('B')).isTrue();
+    assertThat(tree.sizeOfTree()).isEqualTo(1);
+    assertThat(tree.heightOfTree()).isEqualTo(1);
 
     // Try removing the root
-    assertThat(tree.remove('A')).isTrue();
-    assertThat(tree.size()).isEqualTo(0);
-    assertThat(tree.height()).isEqualTo(0);
+    assertThat(tree.removeDuplicateElement('A')).isTrue();
+    assertThat(tree.sizeOfTree()).isEqualTo(0);
+    assertThat(tree.heightOfTree()).isEqualTo(0);
   }
 
   @Test
@@ -185,9 +185,9 @@ public class BinarySearchTreeTest {
     // Setup tree
     BinarySearchTree<Character> tree = new BinarySearchTree<>();
 
-    tree.add('B');
-    tree.add('A');
-    tree.add('C');
+    tree.addElement('B');
+    tree.addElement('A');
+    tree.addElement('C');
 
     // Try looking for an element which doesn't exist
     assertThat(tree.contains('D')).isFalse();
@@ -207,14 +207,14 @@ public class BinarySearchTreeTest {
 
     BinarySearchTree<Integer> bst = new BinarySearchTree<>();
 
-    bst.add(1);
-    bst.add(2);
-    bst.add(3);
+    bst.addElement(1);
+    bst.addElement(2);
+    bst.addElement(3);
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.PRE_ORDER);
 
     while (iter.hasNext()) {
-      bst.add(0);
+      bst.addElement(0);
       iter.next();
     }
   }
@@ -224,14 +224,14 @@ public class BinarySearchTreeTest {
 
     BinarySearchTree<Integer> bst = new BinarySearchTree<>();
 
-    bst.add(1);
-    bst.add(2);
-    bst.add(3);
+    bst.addElement(1);
+    bst.addElement(2);
+    bst.addElement(3);
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.IN_ORDER);
 
     while (iter.hasNext()) {
-      bst.add(0);
+      bst.addElement(0);
       iter.next();
     }
   }
@@ -241,14 +241,14 @@ public class BinarySearchTreeTest {
 
     BinarySearchTree<Integer> bst = new BinarySearchTree<>();
 
-    bst.add(1);
-    bst.add(2);
-    bst.add(3);
+    bst.addElement(1);
+    bst.addElement(2);
+    bst.addElement(3);
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.POST_ORDER);
 
     while (iter.hasNext()) {
-      bst.add(0);
+      bst.addElement(0);
       iter.next();
     }
   }
@@ -258,14 +258,14 @@ public class BinarySearchTreeTest {
 
     BinarySearchTree<Integer> bst = new BinarySearchTree<>();
 
-    bst.add(1);
-    bst.add(2);
-    bst.add(3);
+    bst.addElement(1);
+    bst.addElement(2);
+    bst.addElement(3);
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.LEVEL_ORDER);
 
     while (iter.hasNext()) {
-      bst.add(0);
+      bst.addElement(0);
       iter.next();
     }
   }
@@ -275,14 +275,14 @@ public class BinarySearchTreeTest {
 
     BinarySearchTree<Integer> bst = new BinarySearchTree<>();
 
-    bst.add(1);
-    bst.add(2);
-    bst.add(3);
+    bst.addElement(1);
+    bst.addElement(2);
+    bst.addElement(3);
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.PRE_ORDER);
 
     while (iter.hasNext()) {
-      bst.remove(2);
+      bst.removeDuplicateElement(2);
       iter.next();
     }
   }
@@ -292,14 +292,14 @@ public class BinarySearchTreeTest {
 
     BinarySearchTree<Integer> bst = new BinarySearchTree<>();
 
-    bst.add(1);
-    bst.add(2);
-    bst.add(3);
+    bst.addElement(1);
+    bst.addElement(2);
+    bst.addElement(3);
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.IN_ORDER);
 
     while (iter.hasNext()) {
-      bst.remove(2);
+      bst.removeDuplicateElement(2);
       iter.next();
     }
   }
@@ -309,14 +309,14 @@ public class BinarySearchTreeTest {
 
     BinarySearchTree<Integer> bst = new BinarySearchTree<>();
 
-    bst.add(1);
-    bst.add(2);
-    bst.add(3);
+    bst.addElement(1);
+    bst.addElement(2);
+    bst.addElement(3);
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.POST_ORDER);
 
     while (iter.hasNext()) {
-      bst.remove(2);
+      bst.removeDuplicateElement(2);
       iter.next();
     }
   }
@@ -326,14 +326,14 @@ public class BinarySearchTreeTest {
 
     BinarySearchTree<Integer> bst = new BinarySearchTree<>();
 
-    bst.add(1);
-    bst.add(2);
-    bst.add(3);
+    bst.addElement(1);
+    bst.addElement(2);
+    bst.addElement(3);
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.LEVEL_ORDER);
 
     while (iter.hasNext()) {
-      bst.remove(2);
+      bst.removeDuplicateElement(2);
       iter.next();
     }
   }
@@ -346,7 +346,7 @@ public class BinarySearchTreeTest {
       int size = i;
       BinarySearchTree<Integer> tree = new BinarySearchTree<>();
       List<Integer> lst = genRandList(size);
-      for (Integer value : lst) tree.add(value);
+      for (Integer value : lst) tree.addElement(value);
 
       Collections.shuffle(lst);
       // Remove all the elements we just placed in the tree
@@ -354,9 +354,9 @@ public class BinarySearchTreeTest {
 
         Integer value = lst.get(j);
 
-        assertThat(tree.remove(value)).isTrue();
+        assertThat(tree.removeDuplicateElement(value)).isTrue();
         assertThat(tree.contains(value)).isFalse();
-        assertThat(tree.size()).isEqualTo(size - j - 1);
+        assertThat(tree.sizeOfTree()).isEqualTo(size - j - 1);
       }
 
       assertThat(tree.isEmpty()).isTrue();
@@ -381,7 +381,7 @@ public class BinarySearchTreeTest {
     // Construct Binary Tree and test tree
     for (Integer value : input) {
       testTree = TestTreeNode.add(testTree, value);
-      tree.add(value);
+      tree.addElement(value);
     }
 
     // Generate the expected output for the particular traversal

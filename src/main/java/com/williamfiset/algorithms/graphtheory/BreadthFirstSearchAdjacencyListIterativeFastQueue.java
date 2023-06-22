@@ -7,47 +7,6 @@ package com.williamfiset.algorithms.graphtheory;
 
 import java.util.*;
 
-// A custom implementation of a circular integer only queue which is
-// extremely quick and lightweight. In terms of performance it can outperform
-// java.util.ArrayDeque (Java's fastest queue implementation) by a factor of 40+!
-// However, the downside is you need to know an upper bound on the number of elements
-// that will be inside the queue at any given time for this queue to work.
-class IntQueue {
-
-  private int[] ar;
-  private int front, end, sz;
-
-  // max_sz is the maximum number of items
-  // that can be in the queue at any given time
-  public IntQueue(int max_sz) {
-    front = end = 0;
-    this.sz = max_sz + 1;
-    ar = new int[sz];
-  }
-
-  public boolean isEmpty() {
-    return front == end;
-  }
-
-  public int peek() {
-    return ar[front];
-  }
-
-  // Add an element to the queue
-  public void enqueue(int value) {
-    ar[end] = value;
-    if (++end == sz) end = 0;
-    if (end == front) throw new RuntimeException("Queue too small!");
-  }
-
-  // Make sure you check is the queue is not empty before calling dequeue!
-  public int dequeue() {
-    int ret_val = ar[front];
-    if (++front == sz) front = 0;
-    return ret_val;
-  }
-}
-
 public class BreadthFirstSearchAdjacencyListIterativeFastQueue {
 
   static class Edge {
