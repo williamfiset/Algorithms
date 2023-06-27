@@ -3,7 +3,9 @@ package com.williamfiset.algorithms.datastructures.stack;
 import java.util.Arrays;
 import java.util.EmptyStackException;
 
-/** @author liujingkun */
+/**
+ * @author liujingkun
+ */
 public class ArrayStack<T> implements Stack<T> {
   private int size;
   private int capacity;

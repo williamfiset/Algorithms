@@ -11,50 +11,62 @@ public class TrieTest {
 
   @Test
   public void testBadTrieDelete1() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      Trie t = new Trie();
-      t.insert("some string");
-      t.delete("some string", 0);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          Trie t = new Trie();
+          t.insert("some string");
+          t.delete("some string", 0);
+        });
   }
 
   @Test
   public void testBadTrieDelete2() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      Trie t = new Trie();
-      t.insert("some string");
-      t.delete("some string", -1);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          Trie t = new Trie();
+          t.insert("some string");
+          t.delete("some string", -1);
+        });
   }
 
   @Test
   public void testBadTrieDelete3() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      Trie t = new Trie();
-      t.insert("some string");
-      t.delete("some string", -345);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          Trie t = new Trie();
+          t.insert("some string");
+          t.delete("some string", -345);
+        });
   }
 
   @Test
   public void testBadTrieInsert() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      (new Trie()).insert(null);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          (new Trie()).insert(null);
+        });
   }
 
   @Test
   public void testBadTrieCount() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      (new Trie()).count(null);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          (new Trie()).count(null);
+        });
   }
 
   @Test
   public void testBadTrieContains() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      (new Trie()).contains(null);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          (new Trie()).contains(null);
+        });
   }
 
   @Test

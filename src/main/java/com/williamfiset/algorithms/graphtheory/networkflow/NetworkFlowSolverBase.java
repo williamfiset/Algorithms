@@ -1,4 +1,6 @@
-/** @author William Fiset, william.alexandre.fiset@gmail.com */
+/**
+ * @author William Fiset, william.alexandre.fiset@gmail.com
+ */
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import java.util.ArrayList;

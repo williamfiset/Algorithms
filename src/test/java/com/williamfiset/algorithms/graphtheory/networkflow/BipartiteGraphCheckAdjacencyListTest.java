@@ -2,9 +2,8 @@ package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import java.util.*;
-
 import com.williamfiset.algorithms.utils.graphutils.Utils;
+import java.util.*;
 import org.junit.jupiter.api.*;
 
 public class BipartiteGraphCheckAdjacencyListTest {

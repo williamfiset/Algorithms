@@ -3,7 +3,6 @@ package com.williamfiset.algorithms.datastructures.sparsetable;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.util.*;
-
 import org.junit.jupiter.api.*;
 
 public class SparseTableTest {

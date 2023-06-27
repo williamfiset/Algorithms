@@ -1,4 +1,6 @@
-/** @author Rohit Mazumder, mazumder.rohit7@gmai.com */
+/**
+ * @author Rohit Mazumder, mazumder.rohit7@gmai.com
+ */
 package com.williamfiset.algorithms.math;
 
 import java.math.BigInteger;

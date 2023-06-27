@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
-
 import org.junit.jupiter.api.*;
 
 public class HashTableLinearProbingTest {
@@ -59,7 +58,9 @@ public class HashTableLinearProbingTest {
 
   @Test
   public void testIllegalCreation2() {
-    assertThrows(IllegalArgumentException.class, () -> new HashTableLinearProbing<>(5, Double.POSITIVE_INFINITY));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> new HashTableLinearProbing<>(5, Double.POSITIVE_INFINITY));
   }
 
   @Test
@@ -124,22 +125,26 @@ public class HashTableLinearProbingTest {
 
   @Test
   public void testConcurrentModificationException() {
-    assertThrows(ConcurrentModificationException.class, () -> {
-      map.add(1, 1);
-      map.add(2, 1);
-      map.add(3, 1);
-      for (Integer key : map) map.add(4, 4);
-    });
+    assertThrows(
+        ConcurrentModificationException.class,
+        () -> {
+          map.add(1, 1);
+          map.add(2, 1);
+          map.add(3, 1);
+          for (Integer key : map) map.add(4, 4);
+        });
   }
 
   @Test
   public void testConcurrentModificationException2() {
-    assertThrows(ConcurrentModificationException.class, () -> {
-      map.add(1, 1);
-      map.add(2, 1);
-      map.add(3, 1);
-      for (Integer key : map) map.remove(2);
-    });
+    assertThrows(
+        ConcurrentModificationException.class,
+        () -> {
+          map.add(1, 1);
+          map.add(2, 1);
+          map.add(3, 1);
+          for (Integer key : map) map.remove(2);
+        });
   }
 
   @Test

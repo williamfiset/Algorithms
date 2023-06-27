@@ -6,7 +6,6 @@ import static java.util.Objects.isNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import org.junit.jupiter.api.*;
 
 public class BoyerMooreStringSearchTest {

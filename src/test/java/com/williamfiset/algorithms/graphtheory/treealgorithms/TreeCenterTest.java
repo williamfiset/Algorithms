@@ -11,7 +11,6 @@ import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenter.
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenter.findTreeCenters;
 
 import java.util.*;
-
 import org.junit.jupiter.api.*;
 
 public class TreeCenterTest {

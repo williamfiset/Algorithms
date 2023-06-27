@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Random;
-
 import org.junit.jupiter.api.*;
 
 public class MinIndexedBinaryHeapTest {
@@ -49,11 +48,13 @@ public class MinIndexedBinaryHeapTest {
 
   @Test
   public void testDuplicateKeys() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      MinIndexedBinaryHeap<String> pq = new MinIndexedBinaryHeap<String>(10);
-      pq.insert(5, "abcdef");
-      pq.insert(5, "xyz");
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          MinIndexedBinaryHeap<String> pq = new MinIndexedBinaryHeap<String>(10);
+          pq.insert(5, "abcdef");
+          pq.insert(5, "xyz");
+        });
   }
 
   @Test
