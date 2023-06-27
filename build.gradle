@@ -7,14 +7,12 @@ buildscript {
 }
 
 plugins {
-  // https://github.com/sherter/google-java-format-gradle-plugin
-  // id "com.github.sherter.google-java-format" version "0.9"
+  // https://github.com/diffplug/spotless
+  id("com.diffplug.spotless") version "6.18.0"
 }
 
 apply plugin: 'java'
 apply plugin: 'application'
-// Formatting tool doesn't support Java 17+
-// apply plugin: "com.github.sherter.google-java-format"
 
 mainClassName = findProperty("main") ?: "com.williamfiset.algorithms.${findProperty("algorithm") ?: 'missingPackage.missingClass'}"
 
@@ -42,6 +40,12 @@ dependencies {
 
   // Test mocking framework
   testImplementation "org.mockito:mockito-core:5.+"
+}
+
+spotless {
+  java {
+    googleJavaFormat()
+  }
 }
 
 test {
