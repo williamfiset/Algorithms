@@ -6,8 +6,8 @@ import static java.util.Objects.isNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.*;
 
 public class BoyerMooreStringSearchTest {
 
@@ -15,7 +15,7 @@ public class BoyerMooreStringSearchTest {
   private Random random;
   private final int MAX_ITERATION = 20;
 
-  @Before
+  @BeforeEach
   public void setup() {
     underTest = new BoyerMooreStringSearch();
     random = new Random();

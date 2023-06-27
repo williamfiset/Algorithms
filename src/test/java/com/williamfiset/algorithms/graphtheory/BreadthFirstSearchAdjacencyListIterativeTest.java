@@ -6,25 +6,26 @@ import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacenc
 import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.createEmptyGraph;
 import static java.lang.Math.max;
 import static java.lang.Math.random;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.*;
 
 public class BreadthFirstSearchAdjacencyListIterativeTest {
 
   BreadthFirstSearchAdjacencyListIterative solver;
 
-  @Before
+  @BeforeEach
   public void setup() {
     solver = null;
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testNullGraphInput() {
-    new BreadthFirstSearchAdjacencyListIterative(null);
+    assertThrows(IllegalArgumentException.class, () -> new BreadthFirstSearchAdjacencyListIterative(null));
   }
 
   @Test

@@ -2,15 +2,16 @@ package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.williamfiset.algorithms.graphtheory.networkflow.NetworkFlowSolverBase.Edge;
 import java.util.*;
-import org.junit.*;
+
+import com.williamfiset.algorithms.graphtheory.networkflow.NetworkFlowSolverBase.Edge;
+import org.junit.jupiter.api.*;
 
 public class MaxFlowTests {
 
   List<NetworkFlowSolverBase> solvers;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     solvers = new ArrayList<>();
   }

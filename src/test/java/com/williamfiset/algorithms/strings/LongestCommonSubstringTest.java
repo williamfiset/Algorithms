@@ -6,10 +6,11 @@ package com.williamfiset.algorithms.strings;
 import static com.google.common.truth.Truth.assertThat;
 import static com.williamfiset.algorithms.strings.LongestCommonSubstring.LcsSolver;
 
+import java.util.*;
+
 import com.google.common.collect.ImmutableList;
 import com.williamfiset.algorithms.utils.TestUtils;
-import java.util.*;
-import org.junit.*;
+import org.junit.jupiter.api.*;
 
 public class LongestCommonSubstringTest {
 

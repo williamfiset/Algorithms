@@ -3,13 +3,14 @@ package com.williamfiset.algorithms.graphtheory;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.util.*;
-import org.junit.*;
+
+import org.junit.jupiter.api.*;
 
 public class EulerianPathDirectedEdgesAdjacencyListTest {
 
   EulerianPathDirectedEdgesAdjacencyList solver;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     solver = null;
   }

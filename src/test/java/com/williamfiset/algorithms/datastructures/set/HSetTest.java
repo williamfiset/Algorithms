@@ -7,7 +7,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import org.junit.*;
+
+import org.junit.jupiter.api.*;
 
 // You can set the hash value of this object to be whatever you want
 // This makes it great for testing special cases.
@@ -40,7 +41,7 @@ public class HSetTest {
 
   HSet<Integer> hs;
 
-  @Before
+  @BeforeEach
   public void setup() {
     hs = new HSet<>();
   }

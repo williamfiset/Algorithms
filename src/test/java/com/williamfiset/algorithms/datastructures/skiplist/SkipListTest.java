@@ -8,9 +8,9 @@
  */
 package com.williamfiset.algorithms.datastructures.skiplist;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.*;
+import org.junit.jupiter.api.*;
 
 public class SkipListTest {
 
@@ -22,11 +22,11 @@ public class SkipListTest {
 
     sl.insert(10);
     sl.insert(25);
-    assertTrue("Index should be 2", sl.getIndex(25) == 2);
+    assertEquals(2, sl.getIndex(25), "Index should be 2");
 
     sl.insert(13);
     sl.insert(14);
-    assertTrue("Index should be 3", sl.getIndex(14) == 3);
+    assertEquals(3, sl.getIndex(14), "Index should be 3");
   }
 
   @Test
@@ -34,7 +34,7 @@ public class SkipListTest {
   public void testIndexWithNonExistingValue() {
     SkipList sl = new SkipList(4, 1, 45);
 
-    assertTrue("Index should be -1", sl.getIndex(44) == -1);
+    assertEquals(-1, sl.getIndex(44), "Index should be -1");
   }
 
   @Test
@@ -43,9 +43,9 @@ public class SkipListTest {
   public void testInsertGreaterThanMaxValue() {
     SkipList sl = new SkipList(3, 1, 65);
 
-    assertTrue("Insert should return false", sl.insert(66) == false);
-    assertTrue("Insert should return false", sl.insert(103) == false);
-    assertTrue("Insert should return false", sl.insert(67) == false);
+    assertFalse(sl.insert(66), "Insert should return false");
+    assertFalse(sl.insert(103), "Insert should return false");
+    assertFalse(sl.insert(67), "Insert should return false");
   }
 
   @Test
@@ -54,10 +54,10 @@ public class SkipListTest {
   public void testInsertLesserThanMinValue() {
     SkipList sl = new SkipList(3, 10, 83);
 
-    assertTrue("Insert should return false", sl.insert(5) == false);
-    assertTrue("Insert should return false", sl.insert(4) == false);
-    assertTrue("Insert should return false", sl.insert(3) == false);
-    assertTrue("Insert should return false", sl.insert(2) == false);
+    assertFalse(sl.insert(5), "Insert should return false");
+    assertFalse(sl.insert(4), "Insert should return false");
+    assertFalse(sl.insert(3), "Insert should return false");
+    assertFalse(sl.insert(2), "Insert should return false");
   }
 
   @Test
@@ -67,14 +67,14 @@ public class SkipListTest {
     sl.insert(5);
     sl.insert(8);
 
-    assertTrue("Size should be 4", sl.size() == 4);
-    assertTrue("Object with key 5 should be found", sl.find(5));
-    assertTrue("Object with key 8 should be found", sl.find(8));
+    assertEquals(4, sl.size(), "Size should be 4");
+    assertTrue(sl.find(5), "Object with key 5 should be found");
+    assertTrue(sl.find(8), "Object with key 8 should be found");
 
     sl.remove(5);
 
-    assertTrue("Size should be 3", sl.size() == 3);
-    assertFalse("Object with key 5 shouldn't be found", sl.find(5));
+    assertEquals(3, sl.size(), "Size should be 3");
+    assertFalse(sl.find(5), "Object with key 5 shouldn't be found");
   }
 
   @Test
@@ -82,19 +82,19 @@ public class SkipListTest {
   public void testSize() {
     SkipList sl = new SkipList(3, 1, 10);
 
-    assertTrue("Size should be initialized to 2", sl.size() == 2);
+    assertEquals(2, sl.size(), "Size should be initialized to 2");
 
     sl.insert(3);
     sl.insert(4);
     sl.insert(5);
 
-    assertTrue("Size should be 5", sl.size() == 5);
-    assertFalse("Size shouldn't be 4", sl.size() == 4);
+    assertEquals(5, sl.size(), "Size should be 5");
+    assertNotEquals(4, sl.size(), "Size shouldn't be 4");
 
     sl.remove(3);
     sl.remove(4);
 
-    assertTrue("Size should be 3", sl.size() == 3);
+    assertEquals(3, sl.size(), "Size should be 3");
   }
 
   @Test
@@ -112,13 +112,13 @@ public class SkipListTest {
     sl.insert(30);
     sl.insert(24);
 
-    assertTrue("Size should be 11", sl.size() == 11);
-    assertTrue("Object with key 43 should be found", sl.find(43));
-    assertFalse("Object with key 44 shouldn't be found", sl.find(44));
+    assertEquals(11, sl.size(), "Size should be 11");
+    assertTrue(sl.find(43), "Object with key 43 should be found");
+    assertFalse(sl.find(44), "Object with key 44 shouldn't be found");
 
     sl.remove(43);
 
-    assertFalse("Object with key 43 shouldn't be found", sl.find(43));
+    assertFalse(sl.find(43), "Object with key 43 shouldn't be found");
   }
 
   @Test
@@ -128,12 +128,12 @@ public class SkipListTest {
     SkipList sl = new SkipList(2, 2, 5);
     sl.insert(4);
 
-    assertFalse("Duplicate insert should return false", sl.insert(4));
-    assertTrue("Duplicate should not exist, size should be 3", sl.size() == 3);
+    assertFalse(sl.insert(4), "Duplicate insert should return false");
+    assertEquals(3, sl.size(), "Duplicate should not exist, size should be 3");
 
     sl.remove(4);
 
-    assertFalse("Element exist after removal", sl.find(4));
+    assertFalse(sl.find(4), "Element exist after removal");
   }
 
   @Test
@@ -141,12 +141,12 @@ public class SkipListTest {
   public void testRemoveNonExisting() {
     SkipList sl = new SkipList(2, 2, 5);
 
-    assertFalse("Remove should return false when Object does not exist", sl.remove(4));
+    assertFalse(sl.remove(4), "Remove should return false when Object does not exist");
 
     sl.insert(4);
 
-    assertTrue("Object should be removable", sl.remove(4));
-    assertFalse("Remove should return false when it has already been removed", sl.remove(4));
+    assertTrue(sl.remove(4), "Object should be removable");
+    assertFalse(sl.remove(4), "Remove should return false when it has already been removed");
   }
 
   @Test
@@ -154,7 +154,7 @@ public class SkipListTest {
   public void testRemoveHeadTail() {
     SkipList sl = new SkipList(3, 1, 10);
 
-    assertFalse("Head shouldn't be removable", sl.remove(1));
-    assertFalse("Tail shouldn't be removable", sl.remove(10));
+    assertFalse(sl.remove(1), "Head shouldn't be removable");
+    assertFalse(sl.remove(10), "Tail shouldn't be removable");
   }
 }

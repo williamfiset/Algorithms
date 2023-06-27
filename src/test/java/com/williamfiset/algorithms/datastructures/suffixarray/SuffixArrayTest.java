@@ -4,7 +4,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.security.SecureRandom;
 import java.util.Random;
-import org.junit.*;
+
+import org.junit.jupiter.api.*;
 
 public class SuffixArrayTest {
 
@@ -18,7 +19,7 @@ public class SuffixArrayTest {
 
   String ASCII_LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-  @Before
+  @BeforeEach
   public void setup() {}
 
   @Test

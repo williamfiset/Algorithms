@@ -9,15 +9,17 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.addUndirectedEdge;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.createEmptyGraph;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism.treesAreIsomorphic;
+import static org.junit.Assert.assertThrows;
 
 import java.util.*;
-import org.junit.*;
+
+import org.junit.jupiter.api.*;
 
 public class TreeIsomorphismTest {
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void emptyTreeThrowsException() {
-    treesAreIsomorphic(createEmptyGraph(0), createEmptyGraph(1));
+    assertThrows(IllegalArgumentException.class, () -> treesAreIsomorphic(createEmptyGraph(0), createEmptyGraph(1)));
   }
 
   @Test

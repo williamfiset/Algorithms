@@ -2,8 +2,11 @@ package com.williamfiset.algorithms.datastructures.unionfind;
 
 // import static org.junit.Assert.*;
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class UnionFindTest {
 
@@ -218,18 +221,9 @@ public class UnionFindTest {
     assertThat(uf.size()).isEqualTo(5);
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testBadUnionFindCreation1() {
-    new UnionFind(-1);
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testBadUnionFindCreation2() {
-    new UnionFind(-3463);
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testBadUnionFindCreation3() {
-    new UnionFind(0);
+  @ParameterizedTest(name = "Size: {0}")
+  @ValueSource(ints = {-1, -3463, 0})
+  public void testBadUnionFindCreation(int size) {
+    assertThrows(IllegalArgumentException.class, () -> new UnionFind(size));
   }
 }

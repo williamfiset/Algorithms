@@ -3,25 +3,30 @@
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.williamfiset.algorithms.utils.TestUtils;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.*;
 
 public class SegmentTreeWithPointersTest {
 
-  @Before
+  @BeforeEach
   public void setup() {}
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testIllegalSegmentTreeCreation1() {
-    Node tree = new Node(null);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Node tree = new Node(null);
+    });
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testIllegalSegmentTreeCreation2() {
-    int size = -10;
-    Node tree = new Node(size);
+    assertThrows(IllegalArgumentException.class, () -> {
+      int size = -10;
+      Node tree = new Node(size);
+    });
   }
 
   @Test

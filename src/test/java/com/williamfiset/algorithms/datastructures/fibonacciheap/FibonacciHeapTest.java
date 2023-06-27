@@ -2,6 +2,7 @@ package com.williamfiset.algorithms.datastructures.fibonacciheap;
 
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Collections.sort;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,9 +10,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.Random;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.*;
 
 // Disclaimer: Based by help of
 // "http://langrsoft.com/jeff/2011/11/test-driving-a-heap-based-priority-queue/">Test-Driving a
@@ -22,12 +22,12 @@ public final class FibonacciHeapTest {
 
   private Queue<Integer> queue;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     queue = new FibonacciHeap<Integer>();
   }
 
-  @After
+  @AfterEach
   public void tearDown() {
     queue = null;
   }
@@ -157,8 +157,8 @@ public final class FibonacciHeapTest {
     assertThat(queue.size()).isEqualTo(4);
   }
 
-  @Test(expected = NoSuchElementException.class)
+  @Test
   public void elementThrowsException() {
-    queue.element();
+    assertThrows(NoSuchElementException.class, () -> queue.element());
   }
 }

@@ -1,11 +1,13 @@
 package com.williamfiset.algorithms.datastructures.linkedlist;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.junit.*;
+
+import org.junit.jupiter.api.*;
 
 public class LinkedListTest {
   private static final int LOOPS = 10000;
@@ -15,7 +17,7 @@ public class LinkedListTest {
 
   DoublyLinkedList<Integer> list;
 
-  @Before
+  @BeforeEach
   public void setup() {
     list = new DoublyLinkedList<>();
   }
@@ -26,24 +28,24 @@ public class LinkedListTest {
     assertThat(list.size()).isEqualTo(0);
   }
 
-  @Test(expected = Exception.class)
+  @Test
   public void testRemoveFirstOfEmpty() {
-    list.removeFirst();
+    assertThrows(Exception.class, () -> list.removeFirst());
   }
 
-  @Test(expected = Exception.class)
+  @Test
   public void testRemoveLastOfEmpty() {
-    list.removeLast();
+    assertThrows(Exception.class, () -> list.removeLast());
   }
 
-  @Test(expected = Exception.class)
+  @Test
   public void testPeekFirstOfEmpty() {
-    list.peekFirst();
+    assertThrows(Exception.class, () -> list.peekFirst());
   }
 
-  @Test(expected = Exception.class)
+  @Test
   public void testPeekLastOfEmpty() {
-    list.peekLast();
+    assertThrows(Exception.class, () -> list.peekLast());
   }
 
   @Test

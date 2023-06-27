@@ -5,7 +5,7 @@ import static com.google.common.truth.Truth.assertThat;
 import com.williamfiset.algorithms.utils.TestUtils;
 import java.util.Arrays;
 import java.util.EnumSet;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 // Test all sorting algorithms under various constraints.
 //
