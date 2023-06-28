@@ -73,7 +73,6 @@ public class MinimumWeightPerfectMatching {
   }
 
   // Recursive impl
-  // TODO(william): move to another file?
   public void solveRecursive() {
     if (solved) return;
     Double[] dp = new Double[1 << n];
