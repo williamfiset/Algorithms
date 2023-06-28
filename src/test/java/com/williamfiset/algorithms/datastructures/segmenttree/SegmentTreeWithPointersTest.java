@@ -6,7 +6,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.williamfiset.algorithms.utils.TestUtils;
-
 import org.junit.jupiter.api.*;
 
 public class SegmentTreeWithPointersTest {
@@ -16,17 +15,21 @@ public class SegmentTreeWithPointersTest {
 
   @Test
   public void testIllegalSegmentTreeCreation1() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      Node tree = new Node(null);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          Node tree = new Node(null);
+        });
   }
 
   @Test
   public void testIllegalSegmentTreeCreation2() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      int size = -10;
-      Node tree = new Node(size);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          int size = -10;
+          Node tree = new Node(size);
+        });
   }
 
   @Test

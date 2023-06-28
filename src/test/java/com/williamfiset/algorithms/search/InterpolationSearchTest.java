@@ -9,10 +9,7 @@ public class InterpolationSearchTest {
 
   private static Arguments[] inputs() {
     return new Arguments[] {
-      Arguments.of(2, 2),
-      Arguments.of(5, 5),
-      Arguments.of(-1, -1),
-      Arguments.of(8, -1)
+      Arguments.of(2, 2), Arguments.of(5, 5), Arguments.of(-1, -1), Arguments.of(8, -1)
     };
   }
 

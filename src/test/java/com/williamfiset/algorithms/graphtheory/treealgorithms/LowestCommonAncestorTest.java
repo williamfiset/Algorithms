@@ -4,9 +4,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.LowestCommonAncestor.addUndirectedEdge;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.LowestCommonAncestor.createEmptyGraph;
 
-import java.util.*;
-
 import com.williamfiset.algorithms.graphtheory.treealgorithms.LowestCommonAncestor.TreeNode;
+import java.util.*;
 import org.junit.jupiter.api.*;
 
 public class LowestCommonAncestorTest {

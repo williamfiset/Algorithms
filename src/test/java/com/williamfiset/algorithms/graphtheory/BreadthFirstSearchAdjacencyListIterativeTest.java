@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.junit.jupiter.api.*;
 
 public class BreadthFirstSearchAdjacencyListIterativeTest {
@@ -25,7 +24,8 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
 
   @Test
   public void testNullGraphInput() {
-    assertThrows(IllegalArgumentException.class, () -> new BreadthFirstSearchAdjacencyListIterative(null));
+    assertThrows(
+        IllegalArgumentException.class, () -> new BreadthFirstSearchAdjacencyListIterative(null));
   }
 
   @Test

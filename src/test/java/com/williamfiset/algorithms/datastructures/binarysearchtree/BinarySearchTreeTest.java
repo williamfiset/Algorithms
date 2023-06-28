@@ -10,7 +10,6 @@ import java.util.ConcurrentModificationException;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
-
 import org.junit.jupiter.api.*;
 
 class TestTreeNode {
@@ -214,12 +213,14 @@ public class BinarySearchTreeTest {
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.PRE_ORDER);
 
-    assertThrows(ConcurrentModificationException.class, () -> {
-      while (iter.hasNext()) {
-        bst.add(0);
-        iter.next();
-      }
-    });
+    assertThrows(
+        ConcurrentModificationException.class,
+        () -> {
+          while (iter.hasNext()) {
+            bst.add(0);
+            iter.next();
+          }
+        });
   }
 
   @Test
@@ -233,12 +234,14 @@ public class BinarySearchTreeTest {
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.IN_ORDER);
 
-    assertThrows(ConcurrentModificationException.class, () -> {
-      while (iter.hasNext()) {
-        bst.add(0);
-        iter.next();
-      }
-    });
+    assertThrows(
+        ConcurrentModificationException.class,
+        () -> {
+          while (iter.hasNext()) {
+            bst.add(0);
+            iter.next();
+          }
+        });
   }
 
   @Test
@@ -252,12 +255,14 @@ public class BinarySearchTreeTest {
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.POST_ORDER);
 
-    assertThrows(ConcurrentModificationException.class, () -> {
-      while (iter.hasNext()) {
-        bst.add(0);
-        iter.next();
-      }
-    });
+    assertThrows(
+        ConcurrentModificationException.class,
+        () -> {
+          while (iter.hasNext()) {
+            bst.add(0);
+            iter.next();
+          }
+        });
   }
 
   @Test
@@ -271,12 +276,14 @@ public class BinarySearchTreeTest {
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.LEVEL_ORDER);
 
-    assertThrows(ConcurrentModificationException.class, () -> {
-      while (iter.hasNext()) {
-        bst.add(0);
-        iter.next();
-      }
-    });
+    assertThrows(
+        ConcurrentModificationException.class,
+        () -> {
+          while (iter.hasNext()) {
+            bst.add(0);
+            iter.next();
+          }
+        });
   }
 
   @Test
@@ -290,12 +297,14 @@ public class BinarySearchTreeTest {
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.PRE_ORDER);
 
-    assertThrows(ConcurrentModificationException.class, () -> {
-      while (iter.hasNext()) {
-        bst.remove(2);
-        iter.next();
-      }
-    });
+    assertThrows(
+        ConcurrentModificationException.class,
+        () -> {
+          while (iter.hasNext()) {
+            bst.remove(2);
+            iter.next();
+          }
+        });
   }
 
   @Test
@@ -309,12 +318,14 @@ public class BinarySearchTreeTest {
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.IN_ORDER);
 
-    assertThrows(ConcurrentModificationException.class, () -> {
-      while (iter.hasNext()) {
-        bst.remove(2);
-        iter.next();
-      }
-    });
+    assertThrows(
+        ConcurrentModificationException.class,
+        () -> {
+          while (iter.hasNext()) {
+            bst.remove(2);
+            iter.next();
+          }
+        });
   }
 
   @Test
@@ -328,12 +339,14 @@ public class BinarySearchTreeTest {
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.POST_ORDER);
 
-    assertThrows(ConcurrentModificationException.class, () -> {
-      while (iter.hasNext()) {
-        bst.remove(2);
-        iter.next();
-      }
-    });
+    assertThrows(
+        ConcurrentModificationException.class,
+        () -> {
+          while (iter.hasNext()) {
+            bst.remove(2);
+            iter.next();
+          }
+        });
   }
 
   @Test
@@ -347,12 +360,14 @@ public class BinarySearchTreeTest {
 
     Iterator<Integer> iter = bst.traverse(TreeTraversalOrder.LEVEL_ORDER);
 
-    assertThrows(ConcurrentModificationException.class, () -> {
-      while (iter.hasNext()) {
-        bst.remove(2);
-        iter.next();
-      }
-    });
+    assertThrows(
+        ConcurrentModificationException.class,
+        () -> {
+          while (iter.hasNext()) {
+            bst.remove(2);
+            iter.next();
+          }
+        });
   }
 
   @Test

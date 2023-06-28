@@ -19,7 +19,7 @@ public class TreeIsomorphism {
 
     // Useful constructor for root node.
     public TreeNode(int id) {
-      this(id, /*parent=*/ null);
+      this(id, /* parent= */ null);
     }
 
     public TreeNode(int id, TreeNode parent) {

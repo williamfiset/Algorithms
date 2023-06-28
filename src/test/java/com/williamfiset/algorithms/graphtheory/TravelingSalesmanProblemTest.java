@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.*;
-
 import org.junit.jupiter.api.*;
 
 public class TravelingSalesmanProblemTest {
@@ -18,7 +17,8 @@ public class TravelingSalesmanProblemTest {
       {4, 5, 6},
       {7, 8, 9}
     };
-    assertThrows(IllegalArgumentException.class, () -> new TspDynamicProgrammingRecursive(321, dist));
+    assertThrows(
+        IllegalArgumentException.class, () -> new TspDynamicProgrammingRecursive(321, dist));
   }
 
   @Test
@@ -28,7 +28,8 @@ public class TravelingSalesmanProblemTest {
       {4, 5, 6},
       {7, 8, 9}
     };
-    assertThrows(IllegalArgumentException.class, () -> new TspDynamicProgrammingIterative(321, dist));
+    assertThrows(
+        IllegalArgumentException.class, () -> new TspDynamicProgrammingIterative(321, dist));
   }
 
   @Test

@@ -8,9 +8,8 @@ package com.williamfiset.algorithms.graphtheory;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
-import java.util.*;
-
 import com.google.common.collect.ImmutableList;
+import java.util.*;
 import org.junit.jupiter.api.*;
 
 public class KosarajuTest {

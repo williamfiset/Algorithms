@@ -3,7 +3,6 @@ package com.williamfiset.algorithms.geometry;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.awt.geom.*;
-
 import org.junit.jupiter.api.*;
 
 public class MinimumCostConvexPolygonTriangulationTest {

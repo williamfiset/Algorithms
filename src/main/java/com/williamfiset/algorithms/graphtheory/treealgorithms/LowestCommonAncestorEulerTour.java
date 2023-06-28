@@ -94,7 +94,7 @@ public class LowestCommonAncestorEulerTour {
 
     // Useful constructor for root node.
     public TreeNode(int index) {
-      this(index, /*parent=*/ null);
+      this(index, /* parent= */ null);
     }
 
     public TreeNode(int index, TreeNode parent) {
@@ -192,7 +192,7 @@ public class LowestCommonAncestorEulerTour {
     last = new int[n];
 
     // Do depth first search to construct Euler tour.
-    dfs(root, /*depth=*/ 0);
+    dfs(root, /* depth= */ 0);
 
     // Initialize and build sparse table on the `nodeDepth` array which will
     // allow us to index into the `nodeOrder` array and return the LCA.

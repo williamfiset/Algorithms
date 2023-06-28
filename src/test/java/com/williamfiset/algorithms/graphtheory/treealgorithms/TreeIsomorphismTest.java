@@ -12,14 +12,15 @@ import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorp
 import static org.junit.Assert.assertThrows;
 
 import java.util.*;
-
 import org.junit.jupiter.api.*;
 
 public class TreeIsomorphismTest {
 
   @Test
   public void emptyTreeThrowsException() {
-    assertThrows(IllegalArgumentException.class, () -> treesAreIsomorphic(createEmptyGraph(0), createEmptyGraph(1)));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> treesAreIsomorphic(createEmptyGraph(0), createEmptyGraph(1)));
   }
 
   @Test

@@ -11,7 +11,6 @@ import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterL
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImpl.findTreeCenters;
 
 import java.util.*;
-
 import org.junit.jupiter.api.*;
 
 public class TreeCenterLongestPathImplTest {
