@@ -6,7 +6,6 @@ package com.williamfiset.algorithms.dp.examples.scenes;
  * <p>Solution by: William Fiset
  */
 import java.io.*;
-import java.util.*;
 
 public class Scenes {
 
