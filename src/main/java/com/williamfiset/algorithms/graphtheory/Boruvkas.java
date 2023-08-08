@@ -17,6 +17,7 @@ public class Boruvkas {
     public String toString() {
       return String.format("%d %d, cost: %d", u, v, cost);
     }
+
     // @Override
     public int compareTo(Edge other) {
       int cmp = cost - other.cost;
