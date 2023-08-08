@@ -8,7 +8,7 @@ buildscript {
 
 plugins {
   // https://github.com/diffplug/spotless
-  id("com.diffplug.spotless") version "6.18.0"
+  id("com.diffplug.spotless") version "6.20.0"
 }
 
 apply plugin: 'java'
@@ -25,14 +25,14 @@ repositories {
 // 'compile' for project dependencies.
 dependencies {
   // Apache commons lang
-  testImplementation 'org.apache.commons:commons-lang3:3.12.0'
+  testImplementation 'org.apache.commons:commons-lang3:3.13.0'
 
   // JUnit 5 / Jupiter
-  testImplementation('org.junit.jupiter:junit-jupiter:5.9.3')
-  testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.3')
+  testImplementation('org.junit.jupiter:junit-jupiter:5.10.0')
+  testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.0')
 
   // Google Guava lib
-  testImplementation group: 'com.google.guava', name: 'guava', version: '23.0'
+  testImplementation group: 'com.google.guava', name: 'guava', version: '32.1.2-jre'
 
   // Google Truth test framework
   // https://mvnrepository.com/artifact/com.google.truth/truth

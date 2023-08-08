@@ -57,6 +57,7 @@ public class TreapTree<T extends Comparable<T>> {
       return value.toString();
     }
   }
+
   // The root node of the Treap tree.
   public Node root;
 
