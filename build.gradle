@@ -53,6 +53,10 @@ test {
   testLogging.showStandardStreams = true
 }
 
+tasks.named('test', Test) {
+  useJUnitPlatform()
+}
+
 tasks.withType(JavaCompile) {
   options.encoding = 'UTF-8'
   options.compilerArgs += [
