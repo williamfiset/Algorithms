@@ -20,6 +20,7 @@ package com.williamfiset.algorithms.graphtheory.examples;
 
 import static java.lang.Math.*;
 
+import com.williamfiset.algorithms.graphtheory.CostComparingEdge;
 import java.util.*;
 
 public class EagerPrimsExample {
@@ -28,7 +29,7 @@ public class EagerPrimsExample {
 
   public static void main(String[] args) {
     int n = 7;
-    List<List<Edge>> g = createEmptyGraph(n);
+    List<List<CostComparingEdge>> g = createEmptyGraph(n);
 
     addUndirectedEdge(g, 0, 1, 9);
     addUndirectedEdge(g, 0, 2, 0);
@@ -50,8 +51,8 @@ public class EagerPrimsExample {
     } else {
       System.out.println("MST cost: " + solver.getMstCost());
       System.out.println("MST edges:");
-      for (Edge e : solver.getMst()) {
-        System.out.println(String.format("  (%d, %d, %d)", e.from, e.to, e.cost));
+      for (CostComparingEdge e : solver.getMst()) {
+        System.out.println(String.format("  (%d, %d, %d)", e.getFrom(), e.getTo(), e.getCost()));
       }
     }
     // MST cost: 9
@@ -67,35 +68,20 @@ public class EagerPrimsExample {
   /* Graph construction helpers. */
 
   // Creates an empty adjacency list graph with n nodes.
-  private static List<List<Edge>> createEmptyGraph(int n) {
-    List<List<Edge>> g = new ArrayList<>();
+  private static List<List<CostComparingEdge>> createEmptyGraph(int n) {
+    List<List<CostComparingEdge>> g = new ArrayList<>();
     for (int i = 0; i < n; i++) g.add(new ArrayList<>());
     return g;
   }
 
-  private static void addDirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
-    g.get(from).add(new Edge(from, to, cost));
+  private static void addDirectedEdge(List<List<CostComparingEdge>> g, int from, int to, int cost) {
+    g.get(from).add(new CostComparingEdge(from, to, cost));
   }
 
-  private static void addUndirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
+  private static void addUndirectedEdge(
+      List<List<CostComparingEdge>> g, int from, int to, int cost) {
     addDirectedEdge(g, from, to, cost);
     addDirectedEdge(g, to, from, cost);
-  }
-
-  // Directed Edge class.
-  private static class Edge implements Comparable<Edge> {
-    int from, to, cost;
-
-    public Edge(int from, int to, int cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-
-    @Override
-    public int compareTo(Edge other) {
-      return cost - other.cost;
-    }
   }
 
   // Solves the MST problem using Prim's algorithm.
@@ -103,19 +89,19 @@ public class EagerPrimsExample {
 
     // Inputs
     private final int n;
-    private final List<List<Edge>> graph;
+    private final List<List<CostComparingEdge>> graph;
 
     // Internal
     private boolean solved;
     private boolean mstExists;
     private boolean[] visited;
-    private MinIndexedDHeap<Edge> ipq;
+    private MinIndexedDHeap<CostComparingEdge> ipq;
 
     // Outputs
     private long minCostSum;
-    private Edge[] mstEdges;
+    private CostComparingEdge[] mstEdges;
 
-    public MinimumSpanningTreeSolver(List<List<Edge>> graph) {
+    public MinimumSpanningTreeSolver(List<List<CostComparingEdge>> graph) {
       if (graph == null || graph.isEmpty()) throw new IllegalArgumentException();
       this.n = graph.size();
       this.graph = graph;
@@ -123,7 +109,7 @@ public class EagerPrimsExample {
 
     // Returns the edges used in finding the minimum spanning tree,
     // or returns null if no MST exists.
-    public Edge[] getMst() {
+    public CostComparingEdge[] getMst() {
       solve();
       return mstExists ? mstEdges : null;
     }
@@ -145,7 +131,7 @@ public class EagerPrimsExample {
 
       int m = n - 1, edgeCount = 0;
       visited = new boolean[n];
-      mstEdges = new Edge[m];
+      mstEdges = new CostComparingEdge[m];
 
       // The degree of the d-ary heap supporting the IPQ can greatly impact performance, especially
       // on dense graphs. The base 2 logarithm of n is a decent value based on my quick experiments
@@ -158,10 +144,10 @@ public class EagerPrimsExample {
 
       while (!ipq.isEmpty() && edgeCount != m) {
         int destNodeIndex = ipq.peekMinKeyIndex(); // equivalently: edge.to
-        Edge edge = ipq.pollMinValue();
+        CostComparingEdge edge = ipq.pollMinValue();
 
         mstEdges[edgeCount++] = edge;
-        minCostSum += edge.cost;
+        minCostSum += edge.getCost();
 
         relaxEdgesAtNode(destNodeIndex);
       }
@@ -174,10 +160,10 @@ public class EagerPrimsExample {
       visited[currentNodeIndex] = true;
 
       // edges will never be null if the createEmptyGraph method was used to build the graph.
-      List<Edge> edges = graph.get(currentNodeIndex);
+      List<CostComparingEdge> edges = graph.get(currentNodeIndex);
 
-      for (Edge edge : edges) {
-        int destNodeIndex = edge.to;
+      for (CostComparingEdge edge : edges) {
+        int destNodeIndex = edge.getTo();
 
         // Skip edges pointing to already visited nodes.
         if (visited[destNodeIndex]) continue;

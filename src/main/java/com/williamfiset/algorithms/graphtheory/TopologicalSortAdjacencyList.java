@@ -15,30 +15,24 @@ import java.util.*;
 
 public class TopologicalSortAdjacencyList {
 
-  // Helper Edge class to describe edges in the graph
-  static class Edge {
-    int from, to, weight;
-
-    public Edge(int f, int t, int w) {
-      from = f;
-      to = t;
-      weight = w;
-    }
-  }
-
   // Helper method that performs a depth first search on the graph to give
   // us the topological ordering we want. Instead of maintaining a stack
   // of the nodes we see we simply place them inside the ordering array
   // in reverse order for simplicity.
   private static int dfs(
-      int i, int at, boolean[] visited, int[] ordering, Map<Integer, List<Edge>> graph) {
+      int i,
+      int at,
+      boolean[] visited,
+      int[] ordering,
+      Map<Integer, List<WeightedEdge<Integer>>> graph) {
 
     visited[at] = true;
 
-    List<Edge> edges = graph.get(at);
+    List<WeightedEdge<Integer>> edges = graph.get(at);
 
     if (edges != null)
-      for (Edge edge : edges) if (!visited[edge.to]) i = dfs(i, edge.to, visited, ordering, graph);
+      for (WeightedEdge<Integer> edge : edges)
+        if (!visited[edge.getTo()]) i = dfs(i, edge.getTo(), visited, ordering, graph);
 
     ordering[i] = at;
     return i - 1;
@@ -52,7 +46,8 @@ public class TopologicalSortAdjacencyList {
   // in the adjacency list since you can have singleton nodes with no edges which
   // wouldn't be present in the adjacency list but are still part of the graph!
   //
-  public static int[] topologicalSort(Map<Integer, List<Edge>> graph, int numNodes) {
+  public static int[] topologicalSort(
+      Map<Integer, List<WeightedEdge<Integer>>> graph, int numNodes) {
 
     int[] ordering = new int[numNodes];
     boolean[] visited = new boolean[numNodes];
@@ -72,7 +67,8 @@ public class TopologicalSortAdjacencyList {
   // in the adjacency list since you can have singleton nodes with no edges which
   // wouldn't be present in the adjacency list but are still part of the graph!
   //
-  public static Integer[] dagShortestPath(Map<Integer, List<Edge>> graph, int start, int numNodes) {
+  public static Integer[] dagShortestPath(
+      Map<Integer, List<WeightedEdge<Integer>>> graph, int start, int numNodes) {
 
     int[] topsort = topologicalSort(graph, numNodes);
     Integer[] dist = new Integer[numNodes];
@@ -82,13 +78,13 @@ public class TopologicalSortAdjacencyList {
 
       int nodeIndex = topsort[i];
       if (dist[nodeIndex] != null) {
-        List<Edge> adjacentEdges = graph.get(nodeIndex);
+        List<WeightedEdge<Integer>> adjacentEdges = graph.get(nodeIndex);
         if (adjacentEdges != null) {
-          for (Edge edge : adjacentEdges) {
+          for (WeightedEdge<Integer> edge : adjacentEdges) {
 
-            int newDist = dist[nodeIndex] + edge.weight;
-            if (dist[edge.to] == null) dist[edge.to] = newDist;
-            else dist[edge.to] = Math.min(dist[edge.to], newDist);
+            int newDist = dist[nodeIndex] + edge.getCost();
+            if (dist[edge.getTo()] == null) dist[edge.getTo()] = newDist;
+            else dist[edge.getTo()] = Math.min(dist[edge.getTo()], newDist);
           }
         }
       }
@@ -102,17 +98,17 @@ public class TopologicalSortAdjacencyList {
 
     // Graph setup
     final int N = 7;
-    Map<Integer, List<Edge>> graph = new HashMap<>();
+    Map<Integer, List<WeightedEdge<Integer>>> graph = new HashMap<>();
     for (int i = 0; i < N; i++) graph.put(i, new ArrayList<>());
-    graph.get(0).add(new Edge(0, 1, 3));
-    graph.get(0).add(new Edge(0, 2, 2));
-    graph.get(0).add(new Edge(0, 5, 3));
-    graph.get(1).add(new Edge(1, 3, 1));
-    graph.get(1).add(new Edge(1, 2, 6));
-    graph.get(2).add(new Edge(2, 3, 1));
-    graph.get(2).add(new Edge(2, 4, 10));
-    graph.get(3).add(new Edge(3, 4, 5));
-    graph.get(5).add(new Edge(5, 4, 7));
+    graph.get(0).add(new WeightedEdge<>(0, 1, 3));
+    graph.get(0).add(new WeightedEdge<>(0, 2, 2));
+    graph.get(0).add(new WeightedEdge<>(0, 5, 3));
+    graph.get(1).add(new WeightedEdge<>(1, 3, 1));
+    graph.get(1).add(new WeightedEdge<>(1, 2, 6));
+    graph.get(2).add(new WeightedEdge<>(2, 3, 1));
+    graph.get(2).add(new WeightedEdge<>(2, 4, 10));
+    graph.get(3).add(new WeightedEdge<>(3, 4, 5));
+    graph.get(5).add(new WeightedEdge<>(5, 4, 7));
 
     int[] ordering = topologicalSort(graph, N);
 

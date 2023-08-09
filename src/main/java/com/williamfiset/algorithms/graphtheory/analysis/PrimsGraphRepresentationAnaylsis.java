@@ -95,6 +95,7 @@ package com.williamfiset.algorithms.graphtheory.analysis;
 
 import static java.lang.Math.*;
 
+import com.williamfiset.algorithms.graphtheory.CostComparingEdge;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
@@ -102,38 +103,23 @@ import java.util.concurrent.TimeUnit;
 
 public class PrimsGraphRepresentationAnaylsis {
 
-  private static class Edge implements Comparable<Edge> {
-    int from, to, cost;
-
-    public Edge(int from, int to, int cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-
-    @Override
-    public int compareTo(Edge other) {
-      return cost - other.cost;
-    }
-  }
-
   private static class PrimsAdjList {
 
     // Inputs
     private final int n;
-    private final List<List<Edge>> graph;
+    private final List<List<CostComparingEdge>> graph;
 
     // Internal
     private boolean solved;
     private boolean mstExists;
     private boolean[] visited;
-    private MinIndexedDHeap<Edge> ipq;
+    private MinIndexedDHeap<CostComparingEdge> ipq;
 
     // Outputs
     private long minCostSum;
-    private Edge[] mstEdges;
+    private CostComparingEdge[] mstEdges;
 
-    public PrimsAdjList(List<List<Edge>> graph) {
+    public PrimsAdjList(List<List<CostComparingEdge>> graph) {
       if (graph == null || graph.isEmpty()) throw new IllegalArgumentException();
       this.n = graph.size();
       this.graph = graph;
@@ -141,7 +127,7 @@ public class PrimsGraphRepresentationAnaylsis {
 
     // Returns the edges used in finding the minimum spanning tree,
     // or returns null if no MST exists.
-    public Edge[] getMst() {
+    public CostComparingEdge[] getMst() {
       solve();
       return mstExists ? mstEdges : null;
     }
@@ -155,10 +141,10 @@ public class PrimsGraphRepresentationAnaylsis {
       visited[currentNodeIndex] = true;
 
       // edges will never be null if the createEmptyGraph method was used to build the graph.
-      List<Edge> edges = graph.get(currentNodeIndex);
+      List<CostComparingEdge> edges = graph.get(currentNodeIndex);
 
-      for (Edge edge : edges) {
-        int destNodeIndex = edge.to;
+      for (CostComparingEdge edge : edges) {
+        int destNodeIndex = edge.getTo();
 
         // Skip edges pointing to already visited nodes.
         if (visited[destNodeIndex]) continue;
@@ -180,7 +166,7 @@ public class PrimsGraphRepresentationAnaylsis {
 
       int m = n - 1, edgeCount = 0;
       visited = new boolean[n];
-      mstEdges = new Edge[m];
+      mstEdges = new CostComparingEdge[m];
 
       // The degree of the d-ary heap supporting the IPQ can greatly impact performance, especially
       // on dense graphs. The base 2 logarithm of n is a decent value based on my quick experiments
@@ -193,10 +179,10 @@ public class PrimsGraphRepresentationAnaylsis {
 
       while (!ipq.isEmpty() && edgeCount != m) {
         int destNodeIndex = ipq.peekMinKeyIndex(); // equivalently: edge.to
-        Edge edge = ipq.pollMinValue();
+        CostComparingEdge edge = ipq.pollMinValue();
 
         mstEdges[edgeCount++] = edge;
-        minCostSum += edge.cost;
+        minCostSum += edge.getCost();
 
         relaxEdgesAtNode(destNodeIndex);
       }
@@ -208,17 +194,17 @@ public class PrimsGraphRepresentationAnaylsis {
     /* Graph construction helpers. */
 
     // Creates an empty adjacency list graph with n nodes.
-    static List<List<Edge>> createEmptyGraph(int n) {
-      List<List<Edge>> g = new ArrayList<>();
+    static List<List<CostComparingEdge>> createEmptyGraph(int n) {
+      List<List<CostComparingEdge>> g = new ArrayList<>();
       for (int i = 0; i < n; i++) g.add(new ArrayList<>());
       return g;
     }
 
-    static void addDirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
-      g.get(from).add(new Edge(from, to, cost));
+    static void addDirectedEdge(List<List<CostComparingEdge>> g, int from, int to, int cost) {
+      g.get(from).add(new CostComparingEdge(from, to, cost));
     }
 
-    static void addUndirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
+    static void addUndirectedEdge(List<List<CostComparingEdge>> g, int from, int to, int cost) {
       addDirectedEdge(g, from, to, cost);
       addDirectedEdge(g, to, from, cost);
     }
@@ -238,7 +224,7 @@ public class PrimsGraphRepresentationAnaylsis {
 
     // Outputs
     private long minCostSum;
-    private Edge[] mstEdges;
+    private CostComparingEdge[] mstEdges;
 
     public PrimsAdjMatrix(Integer[][] graph) {
       if (graph == null || graph.length == 0 || graph[0].length != graph.length)
@@ -249,7 +235,7 @@ public class PrimsGraphRepresentationAnaylsis {
 
     // Returns the edges used in finding the minimum spanning tree,
     // or returns null if no MST exists.
-    public Edge[] getMst() {
+    public CostComparingEdge[] getMst() {
       // Unimplemented.
       return null;
     }
@@ -345,7 +331,7 @@ public class PrimsGraphRepresentationAnaylsis {
       TimeUnit.SECONDS.sleep(2);
 
       int n = 5000;
-      List<List<Edge>> g1 = PrimsAdjList.createEmptyGraph(n);
+      List<List<CostComparingEdge>> g1 = PrimsAdjList.createEmptyGraph(n);
       Integer[][] g2 = PrimsAdjMatrix.createEmptyGraph(n);
 
       int numEdgesIncluded = 0;

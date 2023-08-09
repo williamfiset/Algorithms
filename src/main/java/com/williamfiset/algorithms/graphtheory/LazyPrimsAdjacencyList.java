@@ -12,36 +12,21 @@ import java.util.*;
 
 public class LazyPrimsAdjacencyList {
 
-  static class Edge implements Comparable<Edge> {
-    int from, to, cost;
-
-    public Edge(int from, int to, int cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-
-    @Override
-    public int compareTo(Edge other) {
-      return cost - other.cost;
-    }
-  }
-
   // Inputs
   private final int n;
-  private final List<List<Edge>> graph;
+  private final List<List<CostComparingEdge>> graph;
 
   // Internal
   private boolean solved;
   private boolean mstExists;
   private boolean[] visited;
-  private PriorityQueue<Edge> pq;
+  private PriorityQueue<CostComparingEdge> pq;
 
   // Outputs
   private long minCostSum;
-  private Edge[] mstEdges;
+  private CostComparingEdge[] mstEdges;
 
-  public LazyPrimsAdjacencyList(List<List<Edge>> graph) {
+  public LazyPrimsAdjacencyList(List<List<CostComparingEdge>> graph) {
     if (graph == null || graph.isEmpty()) throw new IllegalArgumentException();
     this.n = graph.size();
     this.graph = graph;
@@ -49,7 +34,7 @@ public class LazyPrimsAdjacencyList {
 
   // Returns the edges used in finding the minimum spanning tree,
   // or returns null if no MST exists.
-  public Edge[] getMst() {
+  public CostComparingEdge[] getMst() {
     solve();
     return mstExists ? mstEdges : null;
   }
@@ -63,9 +48,9 @@ public class LazyPrimsAdjacencyList {
     visited[nodeIndex] = true;
 
     // edges will never be null if the createEmptyGraph method was used to build the graph.
-    List<Edge> edges = graph.get(nodeIndex);
-    for (Edge e : edges)
-      if (!visited[e.to]) {
+    List<CostComparingEdge> edges = graph.get(nodeIndex);
+    for (CostComparingEdge e : edges)
+      if (!visited[e.getTo()]) {
         // System.out.printf("(%d, %d, %d)\n", e.from, e.to, e.cost);
         pq.offer(e);
       }
@@ -79,21 +64,21 @@ public class LazyPrimsAdjacencyList {
     int m = n - 1, edgeCount = 0;
     pq = new PriorityQueue<>();
     visited = new boolean[n];
-    mstEdges = new Edge[m];
+    mstEdges = new CostComparingEdge[m];
 
     // Add initial set of edges to the priority queue starting at node 0.
     addEdges(0);
 
     // Loop while the MST is not complete.
     while (!pq.isEmpty() && edgeCount != m) {
-      Edge edge = pq.poll();
-      int nodeIndex = edge.to;
+      CostComparingEdge edge = pq.poll();
+      int nodeIndex = edge.getTo();
 
       // Skip any edge pointing to an already visited node.
       if (visited[nodeIndex]) continue;
 
       mstEdges[edgeCount++] = edge;
-      minCostSum += edge.cost;
+      minCostSum += edge.getCost();
 
       addEdges(nodeIndex);
     }
@@ -104,17 +89,17 @@ public class LazyPrimsAdjacencyList {
 
   /* Graph construction helpers. */
 
-  static List<List<Edge>> createEmptyGraph(int n) {
-    List<List<Edge>> g = new ArrayList<>();
+  static List<List<CostComparingEdge>> createEmptyGraph(int n) {
+    List<List<CostComparingEdge>> g = new ArrayList<>();
     for (int i = 0; i < n; i++) g.add(new ArrayList<>());
     return g;
   }
 
-  static void addDirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
-    g.get(from).add(new Edge(from, to, cost));
+  static void addDirectedEdge(List<List<CostComparingEdge>> g, int from, int to, int cost) {
+    g.get(from).add(new CostComparingEdge(from, to, cost));
   }
 
-  static void addUndirectedEdge(List<List<Edge>> g, int from, int to, int cost) {
+  static void addUndirectedEdge(List<List<CostComparingEdge>> g, int from, int to, int cost) {
     addDirectedEdge(g, from, to, cost);
     addDirectedEdge(g, to, from, cost);
   }
@@ -130,7 +115,7 @@ public class LazyPrimsAdjacencyList {
 
   private static void example1() {
     int n = 10;
-    List<List<Edge>> g = createEmptyGraph(n);
+    List<List<CostComparingEdge>> g = createEmptyGraph(n);
 
     addUndirectedEdge(g, 0, 1, 5);
     addUndirectedEdge(g, 1, 2, 4);
@@ -158,8 +143,9 @@ public class LazyPrimsAdjacencyList {
       System.out.println("No MST does not exists");
     } else {
       System.out.println("MST cost: " + cost);
-      for (Edge e : solver.getMst()) {
-        System.out.println(String.format("from: %d, to: %d, cost: %d", e.from, e.to, e.cost));
+      for (CostComparingEdge e : solver.getMst()) {
+        System.out.println(
+            String.format("from: %d, to: %d, cost: %d", e.getFrom(), e.getTo(), e.getCost()));
       }
     }
 
@@ -178,7 +164,7 @@ public class LazyPrimsAdjacencyList {
 
   private static void firstGraphFromSlides() {
     int n = 7;
-    List<List<Edge>> g = createEmptyGraph(n);
+    List<List<CostComparingEdge>> g = createEmptyGraph(n);
 
     addUndirectedEdge(g, 0, 1, 9);
     addUndirectedEdge(g, 0, 2, 0);
@@ -200,15 +186,16 @@ public class LazyPrimsAdjacencyList {
       System.out.println("No MST does not exists");
     } else {
       System.out.println("MST cost: " + cost);
-      for (Edge e : solver.getMst()) {
-        System.out.println(String.format("from: %d, to: %d, cost: %d", e.from, e.to, e.cost));
+      for (CostComparingEdge e : solver.getMst()) {
+        System.out.println(
+            String.format("from: %d, to: %d, cost: %d", e.getFrom(), e.getTo(), e.getCost()));
       }
     }
   }
 
   private static void squareGraphFromSlides() {
     int n = 9;
-    List<List<Edge>> g = createEmptyGraph(n);
+    List<List<CostComparingEdge>> g = createEmptyGraph(n);
 
     addUndirectedEdge(g, 0, 1, 6);
     addUndirectedEdge(g, 0, 3, 3);
@@ -230,15 +217,16 @@ public class LazyPrimsAdjacencyList {
       System.out.println("No MST does not exists");
     } else {
       System.out.println("MST cost: " + cost);
-      for (Edge e : solver.getMst()) {
-        System.out.println(String.format("from: %d, to: %d, cost: %d", e.from, e.to, e.cost));
+      for (CostComparingEdge e : solver.getMst()) {
+        System.out.println(
+            String.format("from: %d, to: %d, cost: %d", e.getFrom(), e.getTo(), e.getCost()));
       }
     }
   }
 
   private static void lazyPrimsDemoFromSlides() {
     int n = 8;
-    List<List<Edge>> g = createEmptyGraph(n);
+    List<List<CostComparingEdge>> g = createEmptyGraph(n);
 
     addDirectedEdge(g, 0, 1, 10);
     addDirectedEdge(g, 0, 2, 1);
@@ -283,8 +271,9 @@ public class LazyPrimsAdjacencyList {
       System.out.println("No MST does not exists");
     } else {
       System.out.println("MST cost: " + cost);
-      for (Edge e : solver.getMst()) {
-        System.out.println(String.format("from: %d, to: %d, cost: %d", e.from, e.to, e.cost));
+      for (CostComparingEdge e : solver.getMst()) {
+        System.out.println(
+            String.format("from: %d, to: %d, cost: %d", e.getFrom(), e.getTo(), e.getCost()));
       }
     }
   }

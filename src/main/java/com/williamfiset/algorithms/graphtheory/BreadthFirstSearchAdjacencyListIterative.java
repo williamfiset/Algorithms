@@ -15,21 +15,11 @@ import java.util.List;
 
 public class BreadthFirstSearchAdjacencyListIterative {
 
-  public static class Edge {
-    int from, to, cost;
-
-    public Edge(int from, int to, int cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-  }
-
   private int n;
   private Integer[] prev;
-  private List<List<Edge>> graph;
+  private List<List<WeightedEdge<Integer>>> graph;
 
-  public BreadthFirstSearchAdjacencyListIterative(List<List<Edge>> graph) {
+  public BreadthFirstSearchAdjacencyListIterative(List<List<WeightedEdge<Integer>>> graph) {
     if (graph == null) throw new IllegalArgumentException("Graph can not be null");
     n = graph.size();
     this.graph = graph;
@@ -65,41 +55,44 @@ public class BreadthFirstSearchAdjacencyListIterative {
     // Continue until the BFS is done.
     while (!queue.isEmpty()) {
       int node = queue.poll();
-      List<Edge> edges = graph.get(node);
+      List<WeightedEdge<Integer>> edges = graph.get(node);
 
       // Loop through all edges attached to this node. Mark nodes as visited once they're
       // in the queue. This will prevent having duplicate nodes in the queue and speedup the BFS.
-      for (Edge edge : edges) {
-        if (!visited[edge.to]) {
-          visited[edge.to] = true;
-          prev[edge.to] = node;
-          queue.offer(edge.to);
+      for (WeightedEdge<Integer> edge : edges) {
+        if (!visited[edge.getTo()]) {
+          visited[edge.getTo()] = true;
+          prev[edge.getTo()] = node;
+          queue.offer(edge.getTo());
         }
       }
     }
   }
 
   // Initialize an empty adjacency list that can hold up to n nodes.
-  public static List<List<Edge>> createEmptyGraph(int n) {
-    List<List<Edge>> graph = new ArrayList<>(n);
+  public static List<List<WeightedEdge<Integer>>> createEmptyGraph(int n) {
+    List<List<WeightedEdge<Integer>>> graph = new ArrayList<>(n);
     for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
     return graph;
   }
 
   // Add a directed edge from node 'u' to node 'v' with cost 'cost'.
-  public static void addDirectedEdge(List<List<Edge>> graph, int u, int v, int cost) {
-    graph.get(u).add(new Edge(u, v, cost));
+  public static void addDirectedEdge(
+      List<List<WeightedEdge<Integer>>> graph, int u, int v, int cost) {
+    graph.get(u).add(new WeightedEdge<>(u, v, cost));
   }
 
   // Add an undirected edge between nodes 'u' and 'v'.
-  public static void addUndirectedEdge(List<List<Edge>> graph, int u, int v, int cost) {
+  public static void addUndirectedEdge(
+      List<List<WeightedEdge<Integer>>> graph, int u, int v, int cost) {
     addDirectedEdge(graph, u, v, cost);
     addDirectedEdge(graph, v, u, cost);
   }
 
   // Add an undirected unweighted edge between nodes 'u' and 'v'. The edge added
   // will have a weight of 1 since its intended to be unweighted.
-  public static void addUnweightedUndirectedEdge(List<List<Edge>> graph, int u, int v) {
+  public static void addUnweightedUndirectedEdge(
+      List<List<WeightedEdge<Integer>>> graph, int u, int v) {
     addUndirectedEdge(graph, u, v, 1);
   }
 
@@ -108,7 +101,7 @@ public class BreadthFirstSearchAdjacencyListIterative {
   public static void main(String[] args) {
     // BFS example #1 from slides.
     final int n = 13;
-    List<List<Edge>> graph = createEmptyGraph(n);
+    List<List<WeightedEdge<Integer>>> graph = createEmptyGraph(n);
 
     addUnweightedUndirectedEdge(graph, 0, 7);
     addUnweightedUndirectedEdge(graph, 0, 9);
