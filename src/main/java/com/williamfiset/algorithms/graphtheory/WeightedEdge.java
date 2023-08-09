@@ -12,6 +12,7 @@ public class WeightedEdge<T extends Number> extends Edge {
   /** The weight (cost) associated with this edge */
   private T cost;
 
+  /** The condition that the cost must satisfy */
   private Predicate<T> costCondition;
 
   /**
