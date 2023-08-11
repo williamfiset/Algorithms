@@ -58,7 +58,7 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
 
   // These three methods are used to dictate how the probing is to actually
   // occur for whatever open addressing scheme you are implementing.
-  protected abstract void setupProbing(K key);
+  protected void setupProbing(K key) {}
 
   protected abstract int probe(int x);
 

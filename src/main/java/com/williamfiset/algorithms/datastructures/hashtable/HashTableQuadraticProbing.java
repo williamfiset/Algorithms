@@ -34,10 +34,6 @@ public class HashTableQuadraticProbing<K, V> extends HashTableOpenAddressingBase
     return Integer.highestOneBit(n) << 1;
   }
 
-  // No setup required for quadratic probing.
-  @Override
-  protected void setupProbing(K key) {}
-
   @Override
   protected int probe(int x) {
     // Quadratic probing function (x^2+x)/2
