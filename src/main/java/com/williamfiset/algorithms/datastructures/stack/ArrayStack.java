@@ -12,7 +12,7 @@ public class ArrayStack<T> implements Stack<T> {
   private Object[] data;
 
   public ArrayStack() {
-    capacity = 16;
+    capacity = 1;
     data = new Object[capacity];
   }
 
@@ -39,11 +39,20 @@ public class ArrayStack<T> implements Stack<T> {
     capacity *= 2;
     data = Arrays.copyOf(data, capacity);
   }
+  
+  // Decrase the capacity of storing more elements to half of what it was.
+  private void decreaseCapacity() {
+    capacity /= 2;
+    data = Arrays.copyOf(data, capacity);
+  }
 
   @Override
   @SuppressWarnings("unchecked")
   public T pop() {
     if (isEmpty()) throw new EmptyStackException();
+	if (size() == capacity/2) {
+      decreaseCapacity();
+    }
     T elem = (T) data[--size];
     data[size] = null;
     return elem;

@@ -103,6 +103,67 @@ public class DoublyLinkedList<T> implements Iterable<T> {
     size++;
   }
 
+  /**
+   * Change the value of a currently existing node with a specified data at a
+   * specified index.
+   * 
+   * @author César Miranda Meza, cmirandameza3@hotmail.com
+   * CREATION DATE: June 27, 2022.
+   * LAST UPDATE: N/A.
+   */
+  public void set(int index, T data) throws Exception {
+    if (index < 0 || index > size) {
+      throw new Exception("Illegal Index");
+    }
+    
+    int i;
+    Node<T> trav;
+    
+    // Search from the front of the list
+    if (index < size / 2) {
+      for (i = 0, trav = head; i != index; i++) {
+        trav = trav.next;
+      }
+      // Search from the back of the list
+    } else {
+      for (i = size - 1, trav = tail; i != index; i--) {
+        trav = trav.prev;
+      }
+    }
+    
+    trav.data = data; // Change the desired data in the desired node.
+  }
+  
+  /**
+   * Get the value of a currently existing node with a specified index.
+   * 
+   * @author César Miranda Meza, cmirandameza3@hotmail.com
+   * CREATION DATE: June 27, 2022.
+   * LAST UPDATE: N/A.
+   */
+  public T get(int index) throws Exception {
+    if (index < 0 || index > size) {
+      throw new Exception("Illegal Index");
+    }
+    
+    int i;
+    Node<T> trav;
+    
+    // Search from the front of the list
+    if (index < size / 2) {
+      for (i = 0, trav = head; i != index; i++) {
+        trav = trav.next;
+      }
+      // Search from the back of the list
+    } else {
+      for (i = size - 1, trav = tail; i != index; i--) {
+        trav = trav.prev;
+      }
+    }
+    
+    return trav.data; // return the data contained in the specified node.
+  }
+  
   // Check the value of the first node if it exists, O(1)
   public T peekFirst() {
     if (isEmpty()) throw new RuntimeException("Empty list");
