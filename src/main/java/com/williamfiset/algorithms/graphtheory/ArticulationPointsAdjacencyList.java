@@ -56,14 +56,16 @@ public class ArticulationPointsAdjacencyList {
 
     visited[at] = true;
     low[at] = ids[at] = id++;
+    int components = 0;
 
     List<Integer> edges = graph.get(at);
     for (Integer to : edges) {
       if (to == parent) continue;
       if (!visited[to]) {
+        components++;
         dfs(root, to, at);
         low[at] = min(low[at], low[to]);
-        if (ids[at] <= low[to]) {
+        if (parent == -1 && components > 1 || parent != -1 && ids[at] <= low[to]) {
           isArticulationPoint[at] = true;
         }
       } else {
