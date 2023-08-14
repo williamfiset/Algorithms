@@ -134,9 +134,9 @@ public class PrimsGraphRepresentationAnaylsis {
     private Edge[] mstEdges;
 
     public PrimsAdjList(List<List<Edge>> graph) {
-      if (graph == null || graph.isEmpty()) throw new IllegalArgumentException();
+      this.graph = Objects.requireNonNull(graph);
+      if (graph.isEmpty()) throw new IllegalArgumentException();
       this.n = graph.size();
-      this.graph = graph;
     }
 
     // Returns the edges used in finding the minimum spanning tree,
@@ -241,10 +241,10 @@ public class PrimsGraphRepresentationAnaylsis {
     private Edge[] mstEdges;
 
     public PrimsAdjMatrix(Integer[][] graph) {
-      if (graph == null || graph.length == 0 || graph[0].length != graph.length)
+      this.graph = Objects.requireNonNull(graph);
+      if (graph.length == 0 || graph[0].length != graph.length)
         throw new IllegalArgumentException();
       this.n = graph.length;
-      this.graph = graph;
     }
 
     // Returns the edges used in finding the minimum spanning tree,
@@ -473,7 +473,7 @@ public class PrimsGraphRepresentationAnaylsis {
 
     public void insert(int ki, T value) {
       if (contains(ki)) throw new IllegalArgumentException("index already exists; received: " + ki);
-      valueNotNullOrThrow(value);
+      Objects.requireNonNull(value);
       pm[ki] = sz;
       im[sz] = ki;
       values[ki] = value;
@@ -587,20 +587,15 @@ public class PrimsGraphRepresentationAnaylsis {
 
     private void keyExistsAndValueNotNullOrThrow(int ki, Object value) {
       keyExistsOrThrow(ki);
-      valueNotNullOrThrow(value);
+      Objects.requireNonNull(value);
     }
 
     private void keyExistsOrThrow(int ki) {
       if (!contains(ki)) throw new NoSuchElementException("Index does not exist; received: " + ki);
     }
 
-    private void valueNotNullOrThrow(Object value) {
-      if (value == null) throw new IllegalArgumentException("value cannot be null");
-    }
-
     private void keyInBoundsOrThrow(int ki) {
-      if (ki < 0 || ki >= N)
-        throw new IllegalArgumentException("Key index out of bounds; received: " + ki);
+      if (ki < 0 || ki >= N) throw new IndexOutOfBoundsException(ki);
     }
 
     /* Test functions */

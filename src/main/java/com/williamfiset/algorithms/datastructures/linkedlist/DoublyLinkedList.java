@@ -105,20 +105,20 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
   // Check the value of the first node if it exists, O(1)
   public T peekFirst() {
-    if (isEmpty()) throw new RuntimeException("Empty list");
+    if (isEmpty()) throw new IllegalStateException("Empty list");
     return head.data;
   }
 
   // Check the value of the last node if it exists, O(1)
   public T peekLast() {
-    if (isEmpty()) throw new RuntimeException("Empty list");
+    if (isEmpty()) throw new IllegalStateException("Empty list");
     return tail.data;
   }
 
   // Remove the first value at the head of the linked list, O(1)
   public T removeFirst() {
     // Can't remove data from an empty list
-    if (isEmpty()) throw new RuntimeException("Empty list");
+    if (isEmpty()) throw new IllegalStateException("Empty list");
 
     // Extract the data at the head and move
     // the head pointer forwards one node
@@ -139,7 +139,7 @@ public class DoublyLinkedList<T> implements Iterable<T> {
   // Remove the last value at the tail of the linked list, O(1)
   public T removeLast() {
     // Can't remove data from an empty list
-    if (isEmpty()) throw new RuntimeException("Empty list");
+    if (isEmpty()) throw new IllegalStateException("Empty list");
 
     // Extract the data at the tail and move
     // the tail pointer backwards one node
@@ -185,7 +185,7 @@ public class DoublyLinkedList<T> implements Iterable<T> {
   public T removeAt(int index) {
     // Make sure the index provided is valid
     if (index < 0 || index >= size) {
-      throw new IllegalArgumentException();
+      throw new IndexOutOfBoundsException(index);
     }
 
     int i;

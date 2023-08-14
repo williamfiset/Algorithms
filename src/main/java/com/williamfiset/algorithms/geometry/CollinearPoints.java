@@ -11,6 +11,7 @@ package com.williamfiset.algorithms.geometry;
 import static java.lang.Math.*;
 
 import java.awt.geom.Point2D;
+import java.util.Objects;
 
 public class CollinearPoints {
 
@@ -23,6 +24,10 @@ public class CollinearPoints {
   // to the left from the frame of reference of standing at point a
   // and facing point b.
   public static int collinear(Point2D a, Point2D b, Point2D c) {
+
+    Objects.requireNonNull(a);
+    Objects.requireNonNull(b);
+    Objects.requireNonNull(c);
 
     if (a.distance(b) < EPS) throw new IllegalArgumentException("a cannot equal b");
 

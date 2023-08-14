@@ -9,6 +9,7 @@
 package com.williamfiset.algorithms.geometry;
 
 import java.awt.geom.Point2D;
+import java.util.Objects;
 
 public class ConvexPolygonArea {
 
@@ -17,7 +18,7 @@ public class ConvexPolygonArea {
   // method is an array of N+1 points where points[0] = points[N]
   public static double convexPolygonArea(Point2D[] points) {
 
-    int N = points.length - 1;
+    int N = Objects.requireNonNull(points).length - 1;
 
     if (N < 3 || points[0] != points[N])
       throw new IllegalArgumentException(

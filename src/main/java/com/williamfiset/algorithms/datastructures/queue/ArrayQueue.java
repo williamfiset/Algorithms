@@ -1,5 +1,7 @@
 package com.williamfiset.algorithms.datastructures.queue;
 
+import java.util.NoSuchElementException;
+
 /**
  * Besides the Generics, the loss of property of size is another difference between ArrayQueue and
  * IntQueue. The size of ArrayQueue is calculated by the formula, as are empty status and full
@@ -27,7 +29,7 @@ public class ArrayQueue<T> implements Queue<T> {
   @Override
   public void offer(T elem) {
     if (isFull()) {
-      throw new RuntimeException("Queue is full");
+      throw new IllegalStateException("Queue is full");
     }
     data[rear++] = elem;
     rear = adjustIndex(rear, data.length);
@@ -37,7 +39,7 @@ public class ArrayQueue<T> implements Queue<T> {
   @SuppressWarnings("unchecked")
   public T poll() {
     if (isEmpty()) {
-      throw new RuntimeException("Queue is empty");
+      throw new NoSuchElementException("Queue is empty");
     }
     front = adjustIndex(front, data.length);
     return (T) data[front++];
@@ -47,7 +49,7 @@ public class ArrayQueue<T> implements Queue<T> {
   @SuppressWarnings("unchecked")
   public T peek() {
     if (isEmpty()) {
-      throw new RuntimeException("Queue is empty");
+      throw new NoSuchElementException("Queue is empty");
     }
     front = adjustIndex(front, data.length);
     return (T) data[front];

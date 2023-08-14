@@ -22,7 +22,7 @@ public class FenwickTreeRangeUpdatePointQuery {
   // does not get used, O(n) construction.
   public FenwickTreeRangeUpdatePointQuery(long[] values) {
 
-    if (values == null) throw new IllegalArgumentException("Values array cannot be null!");
+    if (values == null) throw new NullPointerException("Values array cannot be null!");
 
     N = values.length;
     values[0] = 0L;

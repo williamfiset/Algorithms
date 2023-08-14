@@ -12,6 +12,7 @@ import static java.lang.Math.min;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ArticulationPointsAdjacencyList {
 
@@ -22,7 +23,7 @@ public class ArticulationPointsAdjacencyList {
   private List<List<Integer>> graph;
 
   public ArticulationPointsAdjacencyList(List<List<Integer>> graph, int n) {
-    if (graph == null || n <= 0 || graph.size() != n) throw new IllegalArgumentException();
+    if (n <= 0 || Objects.requireNonNull(graph).size() != n) throw new IllegalArgumentException();
     this.graph = graph;
     this.n = n;
   }

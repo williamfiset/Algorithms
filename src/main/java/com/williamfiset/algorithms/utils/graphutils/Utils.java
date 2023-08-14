@@ -7,6 +7,7 @@ package com.williamfiset.algorithms.utils.graphutils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public final class Utils {
 
@@ -24,12 +25,12 @@ public final class Utils {
 
   /** Adds an unweighted directed edge from the node at index 'from' to the node at index 'to'. */
   public static void addDirectedEdge(List<List<Integer>> graph, int from, int to) {
-    if (graph == null) throw new IllegalArgumentException("graph cannot be null");
+    Objects.requireNonNull(graph);
     int n = graph.size();
     if (from < 0 || from >= n)
-      throw new IllegalArgumentException("'from' node index out of bounds; received: " + from);
+      throw new IndexOutOfBoundsException("'from' node index out of bounds; received: " + from);
     if (to < 0 || to >= n)
-      throw new IllegalArgumentException("'to' node index out of bounds; received: " + to);
+      throw new IndexOutOfBoundsException("'to' node index out of bounds; received: " + to);
     graph.get(from).add(to);
   }
 

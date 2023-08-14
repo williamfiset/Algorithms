@@ -22,14 +22,14 @@ public class IntArray implements Iterable<Integer> {
 
   // Initialize the array with a certain capacity
   public IntArray(int capacity) {
-    if (capacity < 0) throw new IllegalArgumentException("Illegal Capacity: " + capacity);
+    if (capacity < 0) throw new NegativeArraySizeException("Illegal Capacity: " + capacity);
     this.capacity = capacity;
     arr = new int[capacity];
   }
 
   // Given an array make it a dynamic array!
   public IntArray(int[] array) {
-    if (array == null) throw new IllegalArgumentException("Array cannot be null");
+    if (array == null) throw new NullPointerException("Array cannot be null");
     arr = java.util.Arrays.copyOf(array, array.length);
     capacity = len = array.length;
   }

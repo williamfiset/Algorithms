@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -106,9 +107,7 @@ public class BinaryHeapQuickRemovals<T extends Comparable<T>> {
   // element must not be null, O(log(n))
   public void add(T elem) {
 
-    if (elem == null) throw new IllegalArgumentException();
-
-    heap.add(elem);
+    heap.add(Objects.requireNonNull(elem));
     int indexOfLastElem = size() - 1;
     mapAdd(elem, indexOfLastElem);
 

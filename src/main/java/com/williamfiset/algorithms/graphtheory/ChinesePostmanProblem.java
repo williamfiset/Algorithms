@@ -224,7 +224,7 @@ public class ChinesePostmanProblem {
     // The cost matrix should be a symmetric (i.e cost[i][j] = cost[j][i]) and have a cost of `null`
     // between nodes i and j if no edge exists between those two nodes.
     public WeightedMaximumCardinalityMatchingRecursive(Double[][] cost) {
-      if (cost == null) throw new IllegalArgumentException("Input cannot be null");
+      Objects.requireNonNull(cost);
       n = cost.length;
       if (n <= 1) throw new IllegalArgumentException("Invalid matrix size: " + n);
       setCostMatrix(cost);
@@ -412,9 +412,8 @@ public class ChinesePostmanProblem {
     private List<List<Edge>> graph;
 
     public EulerianPathDirectedEdgesAdjacencyList(List<List<Edge>> graph) {
-      if (graph == null) throw new IllegalArgumentException("Graph cannot be null");
+      this.graph = Objects.requireNonNull(graph);
       n = graph.size();
-      this.graph = graph;
       path = new LinkedList<>();
     }
 

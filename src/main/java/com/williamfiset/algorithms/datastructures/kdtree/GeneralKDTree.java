@@ -185,7 +185,7 @@ public class GeneralKDTree<T extends Comparable<T>> {
     private KDNode<E> right;
 
     public KDNode(E[] coords) {
-      if (coords == null) throw new IllegalArgumentException("Error: Null coordinate set passed");
+      if (coords == null) throw new NullPointerException("Error: Null coordinate set passed");
       if (coords.length != k)
         throw new IllegalArgumentException(
             "Error: Expected " + k + "dimensions, but given " + coords.length);

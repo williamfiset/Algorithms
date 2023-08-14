@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class EulerianPathDirectedEdgesAdjacencyList {
 
@@ -27,9 +28,8 @@ public class EulerianPathDirectedEdgesAdjacencyList {
   private List<List<Integer>> graph;
 
   public EulerianPathDirectedEdgesAdjacencyList(List<List<Integer>> graph) {
-    if (graph == null) throw new IllegalArgumentException("Graph cannot be null");
+    this.graph = Objects.requireNonNull(graph);
     n = graph.size();
-    this.graph = graph;
     path = new LinkedList<>();
   }
 
