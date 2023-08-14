@@ -6,6 +6,7 @@ package com.williamfiset.algorithms.datastructures.binarysearchtree;
 
 import com.williamfiset.algorithms.datastructures.utils.TreePrinter;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -30,13 +31,7 @@ public class SplayTree<T extends Comparable<T>> {
     private BinaryTree<T> leftChild, rightChild;
 
     public BinaryTree(T data) {
-      if (data == null) {
-        try {
-          throw new Exception("Null data not allowed into tree");
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      } else this.data = data;
+      this.data = Objects.requireNonNull(data);
     }
 
     @Override
@@ -67,13 +62,7 @@ public class SplayTree<T extends Comparable<T>> {
     }
 
     public void setData(T data) {
-      if (data == null) {
-        try {
-          throw new Exception("Null data not allowed into tree");
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      } else this.data = data;
+      this.data = Objects.requireNonNull(data);
     }
 
     @Override

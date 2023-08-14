@@ -78,9 +78,9 @@ public class DoublyLinkedList<T> implements Iterable<T> {
   }
 
   // Add an element at a specified index
-  public void addAt(int index, T data) throws Exception {
+  public void addAt(int index, T data) {
     if (index < 0 || index > size) {
-      throw new Exception("Illegal Index");
+      throw new IndexOutOfBoundsException(index);
     }
     if (index == 0) {
       addFirst(data);
