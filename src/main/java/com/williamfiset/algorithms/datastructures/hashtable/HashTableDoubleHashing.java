@@ -44,7 +44,7 @@ public class HashTableDoubleHashing<K extends SecondaryHash, V>
   // probing so that all the cells can be reached.
   @Override
   protected void adjustCapacity() {
-    while (!(new BigInteger(String.valueOf(capacity)).isProbablePrime(20))) {
+    while (!(BigInteger.valueOf(capacity).isProbablePrime(20))) {
       capacity++;
     }
   }
