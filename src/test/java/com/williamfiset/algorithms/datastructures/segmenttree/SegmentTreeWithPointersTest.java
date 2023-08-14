@@ -16,7 +16,7 @@ public class SegmentTreeWithPointersTest {
   @Test
   public void testIllegalSegmentTreeCreation1() {
     assertThrows(
-        IllegalArgumentException.class,
+        NullPointerException.class,
         () -> {
           Node tree = new Node(null);
         });
