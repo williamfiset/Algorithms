@@ -17,7 +17,7 @@ public class RabinKarp {
   // same value as '   ' since 0*95^0 = 0*95^0 + 0*95^1 + 0*95^2
   private static final long ALPHABET_BASE = 95 + 1;
   private static final long[] ALPHABET = new long[127];
-  private static final BigInteger BIG_ALPHA = new BigInteger(String.valueOf(ALPHABET_BASE));
+  private static final BigInteger BIG_ALPHA = BigInteger.valueOf(ALPHABET_BASE);
 
   // More primes: 1009, 1013, 1019, 10007, 10009, 10037, 100003, 100019, 100043, 1000003, 1000033,
   // 1000037,
@@ -35,7 +35,7 @@ public class RabinKarp {
 
     // Compute modular inverses for chosen mod values
     for (int i = 0; i < N_HASHES; i++) {
-      java.math.BigInteger mod = new java.math.BigInteger(String.valueOf(MODS[i]));
+      java.math.BigInteger mod = java.math.BigInteger.valueOf(MODS[i]);
       MOD_INVERSES[i] = BIG_ALPHA.modInverse(mod).longValue();
       BIG_MODS[i] = mod;
     }
@@ -83,7 +83,7 @@ public class RabinKarp {
     long[] patternHash = computeHash(pattern);
     long[] rollingHash = computeHash(text.substring(0, PL));
 
-    final BigInteger BIG_PL = new BigInteger(String.valueOf(PL));
+    final BigInteger BIG_PL = BigInteger.valueOf(PL);
     final long[] POWERS = new long[N_HASHES];
     for (int i = 0; i < N_HASHES; i++)
       POWERS[i] = BIG_ALPHA.modPow(BIG_PL, BIG_MODS[i]).longValue();
@@ -121,7 +121,7 @@ public class RabinKarp {
     long[] patternHash = computeHash(pattern);
     long[] rollingHash = computeHash(text.substring(TL - PL, TL));
 
-    final BigInteger BIG_PL = new BigInteger(String.valueOf(PL));
+    final BigInteger BIG_PL = BigInteger.valueOf(PL);
     final long[] POWERS = new long[N_HASHES];
     for (int i = 0; i < N_HASHES; i++)
       POWERS[i] = BIG_ALPHA.modPow(BIG_PL, BIG_MODS[i]).longValue();
