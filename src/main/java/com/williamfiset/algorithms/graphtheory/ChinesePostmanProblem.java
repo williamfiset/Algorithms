@@ -13,26 +13,22 @@ public class ChinesePostmanProblem {
 
   // An edge class to represent a directed edge
   // between two nodes with a certain cost.
-  public static class Edge {
-    double cost;
-    int from, to;
+  public static class ChinesePostmanEdge extends WeightedEdge<Double> {
 
-    public Edge(int from, int to, double cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
+    public ChinesePostmanEdge(int from, int to, double cost) {
+      super(from, to, cost);
     }
 
     @Override
     public String toString() {
-      return "(" + from + ", " + to + ", " + cost + ")";
+      return "(" + getFrom() + ", " + getTo() + ", " + getCost() + ")";
     }
   }
 
   private int n;
   private int[] inDegree;
 
-  public ChinesePostmanProblem(List<List<Edge>> g) {
+  public ChinesePostmanProblem(List<List<WeightedEdge<Double>>> g) {
     this.n = g.size();
     // TODO(william): Make a copy of this graph.
 
@@ -40,9 +36,9 @@ public class ChinesePostmanProblem {
 
     inDegree = new int[n];
 
-    for (List<Edge> edges : g) {
-      for (Edge edge : edges) {
-        inDegree[edge.from]++;
+    for (List<WeightedEdge<Double>> edges : g) {
+      for (WeightedEdge<Double> edge : edges) {
+        inDegree[edge.getFrom()]++;
       }
     }
 
@@ -76,16 +72,16 @@ public class ChinesePostmanProblem {
       }
 
       int fromNodeId = mapping.get(i);
-      for (Edge edge : g.get(i)) {
+      for (WeightedEdge<Double> edge : g.get(i)) {
         // Skip nodes which are not odd. Only connect odd node to odd node
-        if (inDegree[edge.to] % 2 == 0) {
+        if (inDegree[edge.getTo()] % 2 == 0) {
           continue;
         }
 
         // System.out.printf("edge.to = %d, inDegree[edge.to] = %d\n", edge.to, inDegree[edge.to]);
-        int toNodeId = mapping.get(edge.to);
+        int toNodeId = mapping.get(edge.getTo());
         // System.out.printf("%d -> %d | %d -> %d\n", edge.from, edge.to, fromNodeId, toNodeId);
-        matrix[fromNodeId][toNodeId] = edge.cost;
+        matrix[fromNodeId][toNodeId] = edge.getCost();
       }
     }
 
@@ -104,11 +100,12 @@ public class ChinesePostmanProblem {
         int to = invMapping.get(node2);
 
         // Seek time can be made into a lookup, but these graphs are generally quite small.
-        Edge edge = findEdge(g, from, to);
-        System.out.printf("%d -> %d | %d -> %d | cost = %f\n", node1, node2, from, to, edge.cost);
+        WeightedEdge<Double> edge = findEdge(g, from, to);
+        System.out.printf(
+            "%d -> %d | %d -> %d | cost = %f\n", node1, node2, from, to, edge.getCost());
 
-        Edge e1 = new Edge(from, to, edge.cost);
-        Edge e2 = new Edge(to, from, edge.cost);
+        WeightedEdge<Double> e1 = new ChinesePostmanEdge(from, to, edge.getCost());
+        WeightedEdge<Double> e2 = new ChinesePostmanEdge(to, from, edge.getCost());
 
         // // Augment existing graph with new edges
         g.get(from).add(e1);
@@ -119,7 +116,7 @@ public class ChinesePostmanProblem {
     // Print augmented graph
     for (int i = 0; i < n; i++) {
       System.out.printf("%d -> [", i);
-      for (Edge e : g.get(i)) {
+      for (WeightedEdge<Double> e : g.get(i)) {
         System.out.print(e + ", ");
       }
       System.out.print("]\n");
@@ -127,20 +124,21 @@ public class ChinesePostmanProblem {
 
     EulerianPathDirectedEdgesAdjacencyList eulerPathSolver =
         new EulerianPathDirectedEdgesAdjacencyList(g);
-    List<Edge> cppTour = eulerPathSolver.getEulerianPath();
+    List<WeightedEdge<Double>> cppTour = eulerPathSolver.getEulerianPath();
 
     double tourTotal = 0;
-    for (Edge edge : cppTour) {
-      System.out.printf("%d -> %d with cost: %f\n", edge.from, edge.to, edge.cost);
-      tourTotal += edge.cost;
+    for (WeightedEdge<Double> edge : cppTour) {
+      System.out.printf("%d -> %d with cost: %f\n", edge.getFrom(), edge.getTo(), edge.getCost());
+      tourTotal += edge.getCost();
     }
     System.out.println(tourTotal);
     System.out.println(tourTotal / 2.0);
   }
 
-  private static Edge findEdge(List<List<Edge>> g, int to, int from) {
-    for (Edge e : g.get(from)) {
-      if (e.to == to) {
+  private static WeightedEdge<Double> findEdge(
+      List<List<WeightedEdge<Double>>> g, int to, int from) {
+    for (WeightedEdge<Double> e : g.get(from)) {
+      if (e.getTo() == to) {
         return e;
       }
     }
@@ -408,10 +406,10 @@ public class ChinesePostmanProblem {
     private final int n;
     private int edgeCount;
     private int[] in, out;
-    private LinkedList<Edge> path;
-    private List<List<Edge>> graph;
+    private LinkedList<WeightedEdge<Double>> path;
+    private List<List<WeightedEdge<Double>>> graph;
 
-    public EulerianPathDirectedEdgesAdjacencyList(List<List<Edge>> graph) {
+    public EulerianPathDirectedEdgesAdjacencyList(List<List<WeightedEdge<Double>>> graph) {
       if (graph == null) throw new IllegalArgumentException("Graph cannot be null");
       n = graph.size();
       this.graph = graph;
@@ -420,7 +418,7 @@ public class ChinesePostmanProblem {
 
     // Returns a list of edgeCount + 1 node ids that give the Eulerian path or
     // null if no path exists or the graph is disconnected.
-    public List<Edge> getEulerianPath() {
+    public List<WeightedEdge<Double>> getEulerianPath() {
       setUp();
 
       if (!graphHasEulerianPath()) {
@@ -431,7 +429,7 @@ public class ChinesePostmanProblem {
 
       // Instead of returning the 'path' as a linked list return
       // the solution as a primitive array for convenience.
-      List<Edge> soln = new ArrayList<>();
+      List<WeightedEdge<Double>> soln = new ArrayList<>();
       for (int i = 0; !path.isEmpty(); i++) soln.add(path.removeFirst());
 
       return soln;
@@ -446,9 +444,9 @@ public class ChinesePostmanProblem {
 
       // Compute in and out node degrees.
       for (int from = 0; from < n; from++) {
-        for (Edge e : graph.get(from)) {
-          in[e.to]++;
-          out[e.from]++;
+        for (WeightedEdge<Double> e : graph.get(from)) {
+          in[e.getTo()]++;
+          out[e.getFrom()]++;
           edgeCount++;
         }
       }
@@ -479,26 +477,28 @@ public class ChinesePostmanProblem {
     // Perform DFS to find Eulerian path.
     private void dfs(int at) {
       while (out[at] != 0) {
-        Edge nextEdge = graph.get(at).get(--out[at]);
-        dfs(nextEdge.to);
+        WeightedEdge<Double> nextEdge = graph.get(at).get(--out[at]);
+        dfs(nextEdge.getTo());
         path.addFirst(nextEdge);
       }
     }
   } // EulerianPathDirectedEdgesAdjacencyList
 
-  public static List<List<Edge>> createEmptyGraph(int n) {
-    List<List<Edge>> g = new ArrayList<>();
+  public static List<List<WeightedEdge<Double>>> createEmptyGraph(int n) {
+    List<List<WeightedEdge<Double>>> g = new ArrayList<>();
     for (int i = 0; i < n; i++) {
       g.add(new ArrayList<>());
     }
     return g;
   }
 
-  public static void addDirectedEdge(List<List<Edge>> g, int from, int to, double cost) {
-    g.get(from).add(new Edge(from, to, cost));
+  public static void addDirectedEdge(
+      List<List<WeightedEdge<Double>>> g, int from, int to, double cost) {
+    g.get(from).add(new WeightedEdge<>(from, to, cost));
   }
 
-  public static void addUndirectedEdge(List<List<Edge>> g, int from, int to, double cost) {
+  public static void addUndirectedEdge(
+      List<List<WeightedEdge<Double>>> g, int from, int to, double cost) {
     addDirectedEdge(g, from, to, cost);
     addDirectedEdge(g, to, from, cost);
   }
@@ -510,7 +510,7 @@ public class ChinesePostmanProblem {
 
   private static void eulerTest1() {
     int n = 2;
-    List<List<Edge>> g = createEmptyGraph(n);
+    List<List<WeightedEdge<Double>>> g = createEmptyGraph(n);
     addDirectedEdge(g, 0, 0, 0);
     addDirectedEdge(g, 0, 1, 1);
     addDirectedEdge(g, 0, 1, 2);
@@ -518,15 +518,15 @@ public class ChinesePostmanProblem {
     addDirectedEdge(g, 1, 0, 4);
     addDirectedEdge(g, 1, 1, 5);
     EulerianPathDirectedEdgesAdjacencyList solver = new EulerianPathDirectedEdgesAdjacencyList(g);
-    List<Edge> path = solver.getEulerianPath();
-    for (Edge edge : path) {
-      System.out.printf("%d -> %d with cost: %f\n", edge.from, edge.to, edge.cost);
+    List<WeightedEdge<Double>> path = solver.getEulerianPath();
+    for (WeightedEdge<Double> edge : path) {
+      System.out.printf("%d -> %d with cost: %f\n", edge.getFrom(), edge.getTo(), edge.getCost());
     }
   }
 
   private static void cppTest1() {
     int n = 6;
-    List<List<Edge>> g = createEmptyGraph(n);
+    List<List<WeightedEdge<Double>>> g = createEmptyGraph(n);
     addUndirectedEdge(g, 0, 1, 5);
     addUndirectedEdge(g, 0, 2, 3);
     addUndirectedEdge(g, 0, 3, 2);

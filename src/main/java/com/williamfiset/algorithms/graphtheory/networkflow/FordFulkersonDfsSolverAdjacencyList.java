@@ -46,13 +46,13 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
     // At sink node, return augmented path flow.
     if (node == t) return flow;
 
-    List<Edge> edges = graph[node];
+    List<NetworkEdge> edges = graph[node];
     visit(node);
 
-    for (Edge edge : edges) {
+    for (NetworkEdge edge : edges) {
       long rcap = edge.remainingCapacity();
-      if (rcap > 0 && !visited(edge.to)) {
-        long bottleNeck = dfs(edge.to, min(flow, rcap));
+      if (rcap > 0 && !visited(edge.getTo())) {
+        long bottleNeck = dfs(edge.getTo(), min(flow, rcap));
 
         // Augment flow with bottle neck value
         if (bottleNeck > 0) {
@@ -107,11 +107,12 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
 
     System.out.println(solver.getMaxFlow());
 
-    List<Edge>[] g = solver.getGraph();
-    for (List<Edge> edges : g) {
-      for (Edge e : edges) {
-        if (e.to == s || e.from == t) continue;
-        if (e.from == s || e.to == t || e.from < e.to) System.out.println(e.toString(s, t));
+    List<NetworkEdge>[] g = solver.getGraph();
+    for (List<NetworkEdge> edges : g) {
+      for (NetworkEdge e : edges) {
+        if (e.getTo() == s || e.getFrom() == t) continue;
+        if (e.getFrom() == s || e.getTo() == t || e.getFrom() < e.getTo())
+          System.out.println(e.toString(s, t));
         // System.out.println(e.residual.toString(s, t));
       }
     }
@@ -136,9 +137,9 @@ public class FordFulkersonDfsSolverAdjacencyList extends NetworkFlowSolverBase {
 
     System.out.println(solver.getMaxFlow());
 
-    List<Edge>[] g = solver.getGraph();
-    for (List<Edge> edges : g) {
-      for (Edge e : edges) {
+    List<NetworkEdge>[] g = solver.getGraph();
+    for (List<NetworkEdge> edges : g) {
+      for (NetworkEdge e : edges) {
         System.out.println(e.toString(s, t));
         // System.out.println(e.residual.toString(s, t));
       }

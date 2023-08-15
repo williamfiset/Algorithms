@@ -9,20 +9,10 @@ import java.util.*;
 
 public class DepthFirstSearchAdjacencyListIterative {
 
-  static class Edge {
-    int from, to, cost;
-
-    public Edge(int from, int to, int cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-  }
-
   // Perform a depth first search on a graph with n nodes
   // from a starting point to count the number of nodes
   // in a given component.
-  static int dfs(Map<Integer, List<Edge>> graph, int start, int n) {
+  static int dfs(Map<Integer, List<WeightedEdge<Integer>>> graph, int start, int n) {
 
     int count = 0;
     boolean[] visited = new boolean[n];
@@ -35,13 +25,13 @@ public class DepthFirstSearchAdjacencyListIterative {
     while (!stack.isEmpty()) {
       int node = stack.pop();
       count++;
-      List<Edge> edges = graph.get(node);
+      List<WeightedEdge<Integer>> edges = graph.get(node);
 
       if (edges != null) {
-        for (Edge edge : edges) {
-          if (!visited[edge.to]) {
-            stack.push(edge.to);
-            visited[edge.to] = true;
+        for (WeightedEdge<Integer> edge : edges) {
+          if (!visited[edge.getTo()]) {
+            stack.push(edge.getTo());
+            visited[edge.getTo()] = true;
           }
         }
       }
@@ -54,19 +44,19 @@ public class DepthFirstSearchAdjacencyListIterative {
   public static void main(String[] args) {
 
     // Create a fully connected graph
-    //           (0)
-    //           / \
-    //        5 /   \ 4
-    //         /     \
-    // 10     <   -2  >
-    //   +->(2)<------(1)      (4)
-    //   +--- \       /
-    //         \     /
-    //        1 \   / 6
-    //           > <
-    //           (3)
+    // (0)
+    // / \
+    // 5 / \ 4
+    // / \
+    // 10 < -2 >
+    // +->(2)<------(1) (4)
+    // +--- \ /
+    // \ /
+    // 1 \ / 6
+    // > <
+    // (3)
     int numNodes = 5;
-    Map<Integer, List<Edge>> graph = new HashMap<>();
+    Map<Integer, List<WeightedEdge<Integer>>> graph = new HashMap<>();
     addDirectedEdge(graph, 0, 1, 4);
     addDirectedEdge(graph, 0, 2, 5);
     addDirectedEdge(graph, 1, 2, -2);
@@ -84,12 +74,13 @@ public class DepthFirstSearchAdjacencyListIterative {
   }
 
   // Helper method to setup graph
-  private static void addDirectedEdge(Map<Integer, List<Edge>> graph, int from, int to, int cost) {
-    List<Edge> list = graph.get(from);
+  private static void addDirectedEdge(
+      Map<Integer, List<WeightedEdge<Integer>>> graph, int from, int to, int cost) {
+    List<WeightedEdge<Integer>> list = graph.get(from);
     if (list == null) {
-      list = new ArrayList<Edge>();
+      list = new ArrayList<WeightedEdge<Integer>>();
       graph.put(from, list);
     }
-    list.add(new Edge(from, to, cost));
+    list.add(new WeightedEdge<>(from, to, cost));
   }
 }

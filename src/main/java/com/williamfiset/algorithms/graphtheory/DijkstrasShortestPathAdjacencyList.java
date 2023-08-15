@@ -21,19 +21,6 @@ public class DijkstrasShortestPathAdjacencyList {
   // Small epsilon value to comparing double values.
   private static final double EPS = 1e-6;
 
-  // An edge class to represent a directed edge
-  // between two nodes with a certain cost.
-  public static class Edge {
-    double cost;
-    int from, to;
-
-    public Edge(int from, int to, double cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-  }
-
   // Node class to track the nodes to visit while running Dijkstra's
   public static class Node {
     int id;
@@ -48,7 +35,7 @@ public class DijkstrasShortestPathAdjacencyList {
   private int n;
   private double[] dist;
   private Integer[] prev;
-  private List<List<Edge>> graph;
+  private List<List<WeightedEdge<Double>>> graph;
 
   private Comparator<Node> comparator =
       new Comparator<Node>() {
@@ -83,13 +70,13 @@ public class DijkstrasShortestPathAdjacencyList {
    * @param to - The index of the node the directed edge end at.
    * @param cost - The cost of the edge.
    */
-  public void addEdge(int from, int to, int cost) {
-    graph.get(from).add(new Edge(from, to, cost));
+  public void addEdge(int from, int to, double cost) {
+    graph.get(from).add(new WeightedEdge<>(from, to, cost));
   }
 
   // Use {@link #addEdge} method to add edges to the graph and use this method
   // to retrieve the constructed graph.
-  public List<List<Edge>> getGraph() {
+  public List<List<WeightedEdge<Double>>> getGraph() {
     return graph;
   }
 
@@ -136,20 +123,20 @@ public class DijkstrasShortestPathAdjacencyList {
       // processing this node so we can ignore it.
       if (dist[node.id] < node.value) continue;
 
-      List<Edge> edges = graph.get(node.id);
+      List<WeightedEdge<Double>> edges = graph.get(node.id);
       for (int i = 0; i < edges.size(); i++) {
-        Edge edge = edges.get(i);
+        WeightedEdge<Double> edge = edges.get(i);
 
         // You cannot get a shorter path by revisiting
         // a node you have already visited before.
-        if (visited[edge.to]) continue;
+        if (visited[edge.getTo()]) continue;
 
         // Relax edge by updating minimum cost if applicable.
-        double newDist = dist[edge.from] + edge.cost;
-        if (newDist < dist[edge.to]) {
-          prev[edge.to] = edge.from;
-          dist[edge.to] = newDist;
-          pq.offer(new Node(edge.to, dist[edge.to]));
+        double newDist = dist[edge.getFrom()] + edge.getCost();
+        if (newDist < dist[edge.getTo()]) {
+          prev[edge.getTo()] = edge.getFrom();
+          dist[edge.getTo()] = newDist;
+          pq.offer(new Node(edge.getTo(), dist[edge.getTo()]));
         }
       }
       // Once we've visited all the nodes spanning from the end

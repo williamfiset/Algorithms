@@ -3,6 +3,7 @@
  */
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
+import com.williamfiset.algorithms.graphtheory.WeightedEdge;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,21 +12,19 @@ public abstract class NetworkFlowSolverBase {
   // To avoid overflow, set infinity to a value less than Long.MAX_VALUE;
   protected static final long INF = Long.MAX_VALUE / 2;
 
-  public static class Edge {
-    public int from, to;
-    public Edge residual;
-    public long flow, cost;
+  public static class NetworkEdge extends WeightedEdge<Long> {
+    public NetworkEdge residual;
+    public long flow;
     public final long capacity, originalCost;
 
-    public Edge(int from, int to, long capacity) {
+    public NetworkEdge(int from, int to, long capacity) {
       this(from, to, capacity, 0 /* unused */);
     }
 
-    public Edge(int from, int to, long capacity, long cost) {
-      this.from = from;
-      this.to = to;
+    public NetworkEdge(int from, int to, long capacity, long cost) {
+      super(from, to, cost);
       this.capacity = capacity;
-      this.originalCost = this.cost = cost;
+      this.originalCost = cost;
     }
 
     public boolean isResidual() {
@@ -42,8 +41,8 @@ public abstract class NetworkFlowSolverBase {
     }
 
     public String toString(int s, int t) {
-      String u = (from == s) ? "s" : ((from == t) ? "t" : String.valueOf(from));
-      String v = (to == s) ? "s" : ((to == t) ? "t" : String.valueOf(to));
+      String u = (getFrom() == s) ? "s" : ((getFrom() == t) ? "t" : Integer.toString(getFrom()));
+      String v = (getTo() == s) ? "s" : ((getTo() == t) ? "t" : Integer.toString(getTo()));
       return String.format(
           "Edge %s -> %s | flow = %d | capacity = %d | is residual: %s",
           u, v, flow, capacity, isResidual());
@@ -57,7 +56,7 @@ public abstract class NetworkFlowSolverBase {
   protected long minCost;
 
   protected boolean[] minCut;
-  protected List<Edge>[] graph;
+  protected List<NetworkEdge>[] graph;
 
   // 'visited' and 'visitedToken' are variables used for graph sub-routines to
   // track whether a node has been visited or not. In particular, node 'i' was
@@ -91,7 +90,7 @@ public abstract class NetworkFlowSolverBase {
   @SuppressWarnings("unchecked")
   private void initializeGraph() {
     graph = new List[n];
-    for (int i = 0; i < n; i++) graph[i] = new ArrayList<Edge>();
+    for (int i = 0; i < n; i++) graph[i] = new ArrayList<NetworkEdge>();
   }
 
   /**
@@ -103,8 +102,8 @@ public abstract class NetworkFlowSolverBase {
    */
   public void addEdge(int from, int to, long capacity) {
     if (capacity < 0) throw new IllegalArgumentException("Capacity < 0");
-    Edge e1 = new Edge(from, to, capacity);
-    Edge e2 = new Edge(to, from, 0);
+    NetworkEdge e1 = new NetworkEdge(from, to, capacity);
+    NetworkEdge e2 = new NetworkEdge(to, from, 0);
     e1.residual = e2;
     e2.residual = e1;
     graph[from].add(e1);
@@ -113,8 +112,8 @@ public abstract class NetworkFlowSolverBase {
 
   /** Cost variant of {@link #addEdge(int, int, int)} for min-cost max-flow */
   public void addEdge(int from, int to, long capacity, long cost) {
-    Edge e1 = new Edge(from, to, capacity, cost);
-    Edge e2 = new Edge(to, from, 0, -cost);
+    NetworkEdge e1 = new NetworkEdge(from, to, capacity, cost);
+    NetworkEdge e2 = new NetworkEdge(to, from, 0, -cost);
     e1.residual = e2;
     e2.residual = e1;
     graph[from].add(e1);
@@ -142,7 +141,7 @@ public abstract class NetworkFlowSolverBase {
    * Edge#flow} compared to the {@link Edge#capacity} in each edge. This is useful if you want to
    * figure out which edges were used during the max flow.
    */
-  public List<Edge>[] getGraph() {
+  public List<NetworkEdge>[] getGraph() {
     execute();
     return graph;
   }
