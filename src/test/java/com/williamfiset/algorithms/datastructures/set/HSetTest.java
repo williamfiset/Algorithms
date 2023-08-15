@@ -26,7 +26,9 @@ class ConstObj {
 
   @Override
   public boolean equals(Object o) {
-    return data == ((ConstObj) o).data;
+    if (this == o) return true;
+    else if (o instanceof ConstObj) return data == ((ConstObj) o).data;
+    else return false;
   }
 }
 

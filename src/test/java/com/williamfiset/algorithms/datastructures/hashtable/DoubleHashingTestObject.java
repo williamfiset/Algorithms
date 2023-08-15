@@ -88,10 +88,13 @@ public class DoubleHashingTestObject implements SecondaryHash {
 
   @Override
   public boolean equals(Object o) {
-    DoubleHashingTestObject obj = (DoubleHashingTestObject) o;
-    if (hash != obj.hash) return false;
-    if (intData != null) return intData.equals(obj.intData);
-    if (vectorData != null) return java.util.Arrays.equals(vectorData, obj.vectorData);
-    return stringData.equals(obj.stringData);
+    if (this == o) return true;
+    else if (o instanceof DoubleHashingTestObject) {
+      DoubleHashingTestObject obj = (DoubleHashingTestObject) o;
+      if (hash != obj.hash) return false;
+      if (intData != null) return intData.equals(obj.intData);
+      if (vectorData != null) return java.util.Arrays.equals(vectorData, obj.vectorData);
+      return stringData.equals(obj.stringData);
+    } else return false;
   }
 }
