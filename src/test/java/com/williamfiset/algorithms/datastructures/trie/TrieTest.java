@@ -45,7 +45,7 @@ public class TrieTest {
   @Test
   public void testBadTrieInsert() {
     assertThrows(
-        IllegalArgumentException.class,
+        NullPointerException.class,
         () -> {
           (new Trie()).insert(null);
         });
@@ -54,7 +54,7 @@ public class TrieTest {
   @Test
   public void testBadTrieCount() {
     assertThrows(
-        IllegalArgumentException.class,
+        NullPointerException.class,
         () -> {
           (new Trie()).count(null);
         });
@@ -63,7 +63,7 @@ public class TrieTest {
   @Test
   public void testBadTrieContains() {
     assertThrows(
-        IllegalArgumentException.class,
+        NullPointerException.class,
         () -> {
           (new Trie()).contains(null);
         });

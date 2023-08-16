@@ -11,6 +11,7 @@ package com.williamfiset.algorithms.graphtheory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class TspDynamicProgrammingIterative {
 
@@ -25,10 +26,13 @@ public class TspDynamicProgrammingIterative {
   }
 
   public TspDynamicProgrammingIterative(int start, double[][] distance) {
+
+    Objects.requireNonNull(distance);
     N = distance.length;
 
     if (N <= 2) throw new IllegalStateException("N <= 2 not yet supported.");
-    if (N != distance[0].length) throw new IllegalStateException("Matrix must be square (n x n)");
+    if (N != distance[0].length)
+      throw new IllegalArgumentException("Matrix must be square (n x n)");
     if (start < 0 || start >= N) throw new IllegalArgumentException("Invalid start node.");
     if (N > 32)
       throw new IllegalArgumentException(

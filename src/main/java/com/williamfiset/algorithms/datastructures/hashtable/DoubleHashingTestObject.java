@@ -6,6 +6,7 @@
  */
 package com.williamfiset.algorithms.datastructures.hashtable;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class DoubleHashingTestObject implements SecondaryHash {
@@ -35,15 +36,13 @@ public class DoubleHashingTestObject implements SecondaryHash {
   }
 
   public DoubleHashingTestObject(int[] data) {
-    if (data == null) throw new IllegalArgumentException("Cannot be null");
-    vectorData = data;
+    vectorData = Objects.requireNonNull(data);
     vectorHash();
     computeHash();
   }
 
   public DoubleHashingTestObject(String data) {
-    if (data == null) throw new IllegalArgumentException("Cannot be null");
-    stringData = data;
+    stringData = Objects.requireNonNull(data);
     stringHash();
     computeHash();
   }

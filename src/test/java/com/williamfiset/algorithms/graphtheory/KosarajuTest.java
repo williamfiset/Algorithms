@@ -28,7 +28,7 @@ public class KosarajuTest {
 
   @Test
   public void nullGraphConstructor() {
-    assertThrowsExactly(IllegalArgumentException.class, () -> new Kosaraju(null));
+    assertThrowsExactly(NullPointerException.class, () -> new Kosaraju(null));
   }
 
   @Test

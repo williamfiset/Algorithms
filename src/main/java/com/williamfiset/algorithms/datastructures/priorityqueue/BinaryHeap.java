@@ -8,6 +8,7 @@ package com.williamfiset.algorithms.datastructures.priorityqueue;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public class BinaryHeap<T extends Comparable<T>> {
 
@@ -90,9 +91,7 @@ public class BinaryHeap<T extends Comparable<T>> {
   // element must not be null, O(log(n))
   public void add(T elem) {
 
-    if (elem == null) throw new IllegalArgumentException();
-
-    heap.add(elem);
+    heap.add(Objects.requireNonNull(elem));
 
     int indexOfLastElem = size() - 1;
     swim(indexOfLastElem);

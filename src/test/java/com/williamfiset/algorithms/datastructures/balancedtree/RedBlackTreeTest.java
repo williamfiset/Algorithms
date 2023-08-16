@@ -22,7 +22,7 @@ public class RedBlackTreeTest {
 
   @Test
   public void testNullInsertion() {
-    assertThrows(IllegalArgumentException.class, () -> tree.insert(null));
+    assertThrows(NullPointerException.class, () -> tree.insert(null));
   }
 
   @Test

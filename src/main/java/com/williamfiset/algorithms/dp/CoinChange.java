@@ -32,7 +32,7 @@ public class CoinChange {
   private static final int INF = Integer.MAX_VALUE / 2;
 
   public static Solution coinChange(int[] coins, final int n) {
-    if (coins == null) throw new IllegalArgumentException("Coins array is null");
+    if (coins == null) throw new NullPointerException("Coins array is null");
     if (coins.length == 0) throw new IllegalArgumentException("No coin values :/");
     for (int coin : coins) {
       if (coin <= 0) {
@@ -86,7 +86,7 @@ public class CoinChange {
   }
 
   public static Solution coinChangeSpaceEfficient(int[] coins, int n) {
-    if (coins == null) throw new IllegalArgumentException("Coins array is null");
+    if (coins == null) throw new NullPointerException("Coins array is null");
 
     // Initialize table and set everything to infinity except first cell
     int[] dp = new int[n + 1];
@@ -135,7 +135,7 @@ public class CoinChange {
   // all possible states like the tabular approach does. This can speedup
   // things especially if the coin denominations are large.
   public static int coinChangeRecursive(int[] coins, int n) {
-    if (coins == null) throw new IllegalArgumentException("Coins array is null");
+    if (coins == null) throw new NullPointerException("Coins array is null");
     if (n < 0) return -1;
 
     int[] dp = new int[n + 1];

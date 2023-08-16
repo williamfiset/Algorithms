@@ -1,7 +1,7 @@
 package com.williamfiset.algorithms.datastructures.stack;
 
 import java.util.Arrays;
-import java.util.EmptyStackException;
+import java.util.NoSuchElementException;
 
 /**
  * @author liujingkun
@@ -43,7 +43,7 @@ public class ArrayStack<T> implements Stack<T> {
   @Override
   @SuppressWarnings("unchecked")
   public T pop() {
-    if (isEmpty()) throw new EmptyStackException();
+    if (isEmpty()) throw new NoSuchElementException();
     T elem = (T) data[--size];
     data[size] = null;
     return elem;
@@ -52,7 +52,7 @@ public class ArrayStack<T> implements Stack<T> {
   @Override
   @SuppressWarnings("unchecked")
   public T peek() {
-    if (isEmpty()) throw new EmptyStackException();
+    if (isEmpty()) throw new NoSuchElementException();
     return (T) data[size - 1];
   }
 }

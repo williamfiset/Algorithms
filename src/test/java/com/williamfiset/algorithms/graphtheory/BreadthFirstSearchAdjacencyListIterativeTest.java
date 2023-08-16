@@ -25,7 +25,7 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
   @Test
   public void testNullGraphInput() {
     assertThrows(
-        IllegalArgumentException.class, () -> new BreadthFirstSearchAdjacencyListIterative(null));
+        NullPointerException.class, () -> new BreadthFirstSearchAdjacencyListIterative(null));
   }
 
   @Test

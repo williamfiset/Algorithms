@@ -52,7 +52,7 @@ public class HashTableLinearProbingTest {
 
   @Test
   public void testNullKey() {
-    assertThrows(IllegalArgumentException.class, () -> map.put(null, 5));
+    assertThrows(NullPointerException.class, () -> map.put(null, 5));
   }
 
   @Test

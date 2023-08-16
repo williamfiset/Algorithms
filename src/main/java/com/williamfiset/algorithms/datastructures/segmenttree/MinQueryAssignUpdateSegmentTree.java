@@ -32,7 +32,7 @@ public class MinQueryAssignUpdateSegmentTree {
 
   public MinQueryAssignUpdateSegmentTree(long[] values) {
     if (values == null) {
-      throw new IllegalArgumentException("Segment tree values cannot be null.");
+      throw new NullPointerException("Segment tree values cannot be null.");
     }
 
     n = values.length;

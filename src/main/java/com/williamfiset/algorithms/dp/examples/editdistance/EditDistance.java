@@ -10,11 +10,8 @@ public class EditDistance {
 
   public EditDistance(
       String a, String b, int insertionCost, int deletionCost, int substitutionCost) {
-    if (a == null || b == null) {
-      throw new IllegalArgumentException("Input string must not be null");
-    }
-    this.a = a.toCharArray();
-    this.b = b.toCharArray();
+    this.a = Objects.requireNonNull(a).toCharArray();
+    this.b = Objects.requireNonNull(b).toCharArray();
     this.insertionCost = insertionCost;
     this.deletionCost = deletionCost;
     this.substitutionCost = substitutionCost;

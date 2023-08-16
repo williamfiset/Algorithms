@@ -33,7 +33,7 @@ public class TspDynamicProgrammingRecursive {
 
   public TspDynamicProgrammingRecursive(int startNode, double[][] distance) {
 
-    this.distance = distance;
+    this.distance = Objects.requireNonNull(distance);
     N = distance.length;
     START_NODE = startNode;
 

@@ -27,7 +27,7 @@ public class Trie {
   // contains a prefix already in the trie
   public boolean insert(String key, int numInserts) {
 
-    if (key == null) throw new IllegalArgumentException("Null not permitted in trie");
+    if (key == null) throw new NullPointerException("Null not permitted in trie");
     if (numInserts <= 0)
       throw new IllegalArgumentException("numInserts has to be greater than zero");
 
@@ -114,7 +114,7 @@ public class Trie {
   // Returns the count of a particular prefix
   public int count(String key) {
 
-    if (key == null) throw new IllegalArgumentException("Null not permitted");
+    if (key == null) throw new NullPointerException("Null not permitted");
 
     Node node = root;
 

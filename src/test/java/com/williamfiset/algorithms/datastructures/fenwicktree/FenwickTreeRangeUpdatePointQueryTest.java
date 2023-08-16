@@ -38,7 +38,7 @@ public class FenwickTreeRangeUpdatePointQueryTest {
 
   @Test
   public void testIllegalCreation() {
-    assertThrows(IllegalArgumentException.class, () -> new FenwickTreeRangeUpdatePointQuery(null));
+    assertThrows(NullPointerException.class, () -> new FenwickTreeRangeUpdatePointQuery(null));
   }
 
   @Test

@@ -10,6 +10,7 @@ package com.williamfiset.algorithms.other;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Objects;
 
 public class SlidingWindowMaximum {
 
@@ -19,8 +20,7 @@ public class SlidingWindowMaximum {
   Deque<Integer> deque = new ArrayDeque<>();
 
   public SlidingWindowMaximum(int[] values) {
-    if (values == null) throw new IllegalArgumentException();
-    this.values = values;
+    this.values = Objects.requireNonNull(values);
     N = values.length;
   }
 

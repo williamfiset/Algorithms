@@ -146,7 +146,7 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
   public boolean insert(T val) {
     if (val == null) {
-      throw new IllegalArgumentException("Red-Black tree does not allow null values.");
+      throw new NullPointerException("Red-Black tree does not allow null values.");
     }
 
     Node x = root, y = NIL;
