@@ -13,9 +13,6 @@
  */
 package com.williamfiset.algorithms.dp;
 
-import java.awt.geom.*;
-import java.util.*;
-
 public class WeightedMaximumCardinalityMatchingRecursive implements MwpmInterface {
 
   // A `MatchingCost` object captures the cost of a matching. Because we allow matching nodes which

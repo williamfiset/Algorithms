@@ -9,8 +9,6 @@
  */
 package com.williamfiset.algorithms.sorting;
 
-import java.util.*;
-
 public class Heapsort implements InplaceSort {
 
   @Override

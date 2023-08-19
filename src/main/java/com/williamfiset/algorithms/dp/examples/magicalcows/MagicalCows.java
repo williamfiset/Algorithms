@@ -15,7 +15,6 @@ package com.williamfiset.algorithms.dp.examples.magicalcows;
  * double the number of cows you always get an even number.
  */
 import java.io.*;
-import java.util.*;
 
 public class MagicalCows {
 

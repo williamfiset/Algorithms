@@ -23,7 +23,7 @@ public final class FibonacciHeapTest {
 
   @BeforeEach
   public void setUp() {
-    queue = new FibonacciHeap<Integer>();
+    queue = new FibonacciHeap<>();
   }
 
   @AfterEach
@@ -92,7 +92,7 @@ public final class FibonacciHeapTest {
   @Test
   public void returnsOrderedItemsFromRandomInsert() {
     final Random r = new Random(System.currentTimeMillis());
-    final List<Integer> expected = new ArrayList<Integer>();
+    final List<Integer> expected = new ArrayList<>();
 
     for (int i = 0; i < 1000; i++) {
       Integer number = r.nextInt(10000);
@@ -111,7 +111,7 @@ public final class FibonacciHeapTest {
 
   @Test
   public void addAllAndContinsItem() {
-    Collection<Integer> c = new ArrayList<Integer>();
+    Collection<Integer> c = new ArrayList<>();
 
     c.add(50);
     c.add(100);
@@ -150,7 +150,6 @@ public final class FibonacciHeapTest {
     queue.offer(21);
 
     assertThat(queue.isEmpty()).isFalse();
-    ;
     assertThat(queue.peek()).isEqualTo(20);
     assertThat(queue.element()).isEqualTo(20);
     assertThat(queue.size()).isEqualTo(4);
