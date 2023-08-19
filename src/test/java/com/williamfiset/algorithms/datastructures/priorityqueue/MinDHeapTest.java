@@ -195,6 +195,7 @@ public class MinDHeapTest {
     assertThat(pq.poll()).isEqualTo(11);
     assertThat(pq.poll()).isEqualTo(13);
   }
+
   /*
   @Test
   public void testRandomizedPolling() {

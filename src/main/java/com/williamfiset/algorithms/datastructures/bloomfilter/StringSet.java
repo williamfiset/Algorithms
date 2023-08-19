@@ -53,11 +53,11 @@ public class StringSet {
     rollingHashes = new long[N_HASHES];
     bloomFilter = new BloomFilter(mods);
 
-    java.math.BigInteger bigAlpha = new java.math.BigInteger(String.valueOf(ALPHABET_SZ));
+    java.math.BigInteger bigAlpha = java.math.BigInteger.valueOf(ALPHABET_SZ);
 
     // Assuming all mods are primes each mod value will have a modular inverse
     for (int i = 0; i < N_HASHES; i++) {
-      java.math.BigInteger mod = new java.math.BigInteger(String.valueOf(MODS[i]));
+      java.math.BigInteger mod = java.math.BigInteger.valueOf(MODS[i]);
       MOD_INVERSES[i] = bigAlpha.modInverse(mod).intValue();
     }
 

@@ -17,12 +17,14 @@ public class KruskalsEdgeListPartialSortSolver {
 
   static class Edge implements Comparable<Edge> {
     int u, v, cost;
+
     // 'u' and 'v' are nodes indexes and 'cost' is the cost of taking this edge.
     public Edge(int u, int v, int cost) {
       this.u = u;
       this.v = v;
       this.cost = cost;
     }
+
     // Sort edges based on cost.
     @Override
     public int compareTo(Edge other) {

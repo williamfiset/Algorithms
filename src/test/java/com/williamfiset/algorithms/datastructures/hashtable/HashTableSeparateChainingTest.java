@@ -25,8 +25,11 @@ public class HashTableSeparateChainingTest {
 
     @Override
     public boolean equals(Object o) {
-      HashObject ho = (HashObject) o;
-      return hashCode() == ho.hashCode() && data == ho.data;
+      if (this == o) return true;
+      else if (o instanceof HashObject) {
+        HashObject ho = (HashObject) o;
+        return hashCode() == ho.hashCode() && data == ho.data;
+      } else return false;
     }
   }
 

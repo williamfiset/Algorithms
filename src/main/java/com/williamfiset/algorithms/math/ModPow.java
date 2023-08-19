@@ -11,6 +11,8 @@
  */
 package com.williamfiset.algorithms.math;
 
+import java.math.BigInteger;
+
 public class ModPow {
 
   // The values placed into the modPow function cannot be greater
@@ -87,12 +89,12 @@ public class ModPow {
   // Example usage
   public static void main(String[] args) {
 
-    java.math.BigInteger A, N, M, r1;
+    BigInteger A, N, M, r1;
     long a, n, m, r2;
 
-    A = new java.math.BigInteger("3");
-    N = new java.math.BigInteger("4");
-    M = new java.math.BigInteger("1000000");
+    A = BigInteger.valueOf(3);
+    N = BigInteger.valueOf(4);
+    M = BigInteger.valueOf(1000000);
     a = A.longValue();
     n = N.longValue();
     m = M.longValue();
@@ -102,9 +104,9 @@ public class ModPow {
     r2 = modPow(a, n, m); // 81
     System.out.println(r1 + " " + r2);
 
-    A = new java.math.BigInteger("-45");
-    N = new java.math.BigInteger("12345");
-    M = new java.math.BigInteger("987654321");
+    A = BigInteger.valueOf(-45);
+    N = BigInteger.valueOf(12345);
+    M = BigInteger.valueOf(987654321);
     a = A.longValue();
     n = N.longValue();
     m = M.longValue();
@@ -114,9 +116,9 @@ public class ModPow {
     r2 = modPow(a, n, m); // 323182557
     System.out.println(r1 + " " + r2);
 
-    A = new java.math.BigInteger("6");
-    N = new java.math.BigInteger("-66");
-    M = new java.math.BigInteger("101");
+    A = BigInteger.valueOf(6);
+    N = BigInteger.valueOf(-66);
+    M = BigInteger.valueOf(101);
     a = A.longValue();
     n = N.longValue();
     m = M.longValue();
@@ -126,9 +128,9 @@ public class ModPow {
     r2 = modPow(a, n, m); // 84
     System.out.println(r1 + " " + r2);
 
-    A = new java.math.BigInteger("-5");
-    N = new java.math.BigInteger("-7");
-    M = new java.math.BigInteger("1009");
+    A = BigInteger.valueOf(-5);
+    N = BigInteger.valueOf(-7);
+    M = BigInteger.valueOf(1009);
     a = A.longValue();
     n = N.longValue();
     m = M.longValue();
@@ -139,9 +141,9 @@ public class ModPow {
     System.out.println(r1 + " " + r2);
 
     for (int i = 0; i < 1000; i++) {
-      A = new java.math.BigInteger(a + "");
-      N = new java.math.BigInteger(n + "");
-      M = new java.math.BigInteger(m + "");
+      A = BigInteger.valueOf(a);
+      N = BigInteger.valueOf(n);
+      M = BigInteger.valueOf(m);
       a = Math.random() < 0.5 ? randLong(MAX) : -randLong(MAX);
       n = randLong();
       m = randLong(MAX);

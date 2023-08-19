@@ -53,9 +53,9 @@ public class AnagramSet {
 
     // // Assuming all mods are primes each mod value will have a modular inverse
     for (int i = 0; i < N_HASHES; i++) {
-      java.math.BigInteger mod = new java.math.BigInteger(String.valueOf(MODS[i]));
+      java.math.BigInteger mod = java.math.BigInteger.valueOf(MODS[i]);
       for (int j = 0; j < PRIMES.length; j++) {
-        java.math.BigInteger prime = new java.math.BigInteger(String.valueOf(PRIMES[j]));
+        java.math.BigInteger prime = java.math.BigInteger.valueOf(PRIMES[j]);
         MOD_INVERSES[i][j] = prime.modInverse(mod).intValue();
       }
     }
