@@ -84,6 +84,7 @@ public class SortingTest {
         sorter.sort(copy);
 
         assertThat(values).isEqualTo(copy);
+        //this is a testcase for the sorting algorithms
       }
     }
   }
