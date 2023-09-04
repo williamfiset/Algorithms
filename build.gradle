@@ -8,7 +8,7 @@ buildscript {
 
 plugins {
   // https://github.com/diffplug/spotless
-  id("com.diffplug.spotless") version "6.20.0"
+  id("com.diffplug.spotless") version "6.21.0"
 }
 
 apply plugin: 'java'
