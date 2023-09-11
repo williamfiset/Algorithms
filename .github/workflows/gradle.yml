@@ -33,7 +33,7 @@ jobs:
         arguments: test
     - name: Publish Test Results
       if: ${{ always() }}
-      uses: mikepenz/action-junit-report@v3
+      uses: mikepenz/action-junit-report@v4
       with:
         report_paths: "**/TEST-*.xml"
         exclude_sources: build/
