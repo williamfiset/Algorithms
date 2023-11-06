@@ -29,7 +29,7 @@ dependencies {
 
   // JUnit 5 / Jupiter
   testImplementation('org.junit.jupiter:junit-jupiter:5.10.0')
-  testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.0')
+  testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.1')
 
   // Google Guava lib
   testImplementation group: 'com.google.guava', name: 'guava', version: '32.1.2-jre'
