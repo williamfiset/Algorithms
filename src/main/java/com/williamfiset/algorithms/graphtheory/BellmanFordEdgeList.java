@@ -42,7 +42,7 @@ public class BellmanFordEdgeList {
     boolean relaxedAnEdge = true;
 
     // For each vertex, apply relaxation for all the edges
-    for (int v = 0; v < V - 1 && relaxedAnEdge; v++) {
+    for (int v = 0; v <= V - 1 && relaxedAnEdge; v++) {
       relaxedAnEdge = false;
       for (Edge edge : edges) {
         if (dist[edge.from] + edge.cost < dist[edge.to]) {
@@ -56,7 +56,7 @@ public class BellmanFordEdgeList {
     // of a negative cycle. A negative cycle has occurred if we
     // can find a better path beyond the optimal solution.
     relaxedAnEdge = true;
-    for (int v = 0; v < V - 1 && relaxedAnEdge; v++) {
+    for (int v = 0; v <= V - 1 && relaxedAnEdge; v++) {
       relaxedAnEdge = false;
       for (Edge edge : edges) {
         if (dist[edge.from] + edge.cost < dist[edge.to]) {
@@ -72,7 +72,7 @@ public class BellmanFordEdgeList {
 
   public static void main(String[] args) {
 
-    int E = 10, V = 9, start = 0;
+    int E = 10, V = 8, start = 0;
     Edge[] edges = new Edge[E];
     edges[0] = new Edge(0, 1, 1);
     edges[1] = new Edge(1, 2, 1);
