@@ -28,5 +28,14 @@ as seen in the image below, when tested with intellij coverage testing, the enti
 <br>
 ![no alt](readMeImages/branch2img1.png)
 <br>
-In the image below, we’re checking coverage with our own tool
+In the image below, we’re checking coverage with our own tool and we get 1/3rd coverage on the final iteration, since it doesn't check for negative cycles nor for setting negative infinity
 <br>
+![no alt](readMeImages/branch2img2.png)
+<br><br>
+In the image below, you can see an added test `testNegativeCycle` which introduces a negative cycle to be tested to improve coverage
+<br><br>
+![no alt](readMeImages/branch2img3.png)
+<br><br>
+With the addition of this function, the coverage has been improved to 100% both in our own tool and in intellij coverage tool as can be seen in the image below:
+<br>
+![no alt](readMeImages/branch2img4.png)
