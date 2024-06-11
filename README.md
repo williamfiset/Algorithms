@@ -20,7 +20,7 @@ In the image below, we can see that the built-in tool also states 100% coverage
 ## Work done in mt_branch2:
 
 The `SteinerTree` class contains the `floydWarshall` function [here](src/main/java/com/williamfiset/algorithms/graphtheory/SteinerTree.java). <br>
-The `SteinerTreeTest` class contains the tests for the Steiner Trees [here](src/test/java/com/williamfiset/algorithms/datastructures/stack/StackTest.java).
+The `SteinerTreeTest` class contains the tests for the Steiner Trees [here](src/test/java/com/williamfiset/algorithms/graphtheory/SteinerTreeTest.java).
 <br><br>
 Within the floydWarshall function we need to check whether the steiner tree has a negative cycle, since negative cycles can invalidate any distance calculation.
 <br><br>
