@@ -5,6 +5,8 @@
  */
 package com.williamfiset.algorithms.geometry;
 
+import com.williamfiset.algorithms.CoverageTracker;
+
 import static java.lang.Math.*;
 
 import java.awt.geom.Point2D;
@@ -45,10 +47,12 @@ public class Line {
   // Normalize the line in general form
   public void normalise() {
     if (abs(b) < EPS) {
+      CoverageTracker.setBranchReached(0);
       c /= a;
       a = 1;
       b = 0;
     } else {
+      CoverageTracker.setBranchReached(1);
       a = (abs(a) < EPS) ? 0 : a / b;
       c /= b;
       b = 1;
@@ -76,30 +80,38 @@ public class Line {
   // and returns null if line1 and line2 are parallel
   public static Point2D intersection(Line l1, Line l2) {
 
-    l1.normalise();
+    l1.normalise();//Branches 0 & 1 are in normalise().
     l2.normalise();
+    CoverageTracker.setBranchReached(2);
 
     // Lines are parallel
-    if (abs(l1.a - l2.a) < EPS && abs(l1.b - l2.b) < EPS) return null;
-
+    if (abs(l1.a - l2.a) < EPS && abs(l1.b - l2.b) < EPS) {
+      CoverageTracker.setBranchReached(3);
+      return null;
+    }
+    CoverageTracker.setBranchReached(4);
     double x = Double.NaN, y = Double.NaN;
     if (abs(l1.b) < EPS) {
+      CoverageTracker.setBranchReached(5);
       x = l1.c / l1.a;
       y = (l2.c - l2.a * x) / l2.b;
     } else if (abs(l2.b) < EPS) {
+      CoverageTracker.setBranchReached(6);
       x = l2.c / l2.a;
       y = (l1.c - l1.a * x) / l1.b;
     } else if (abs(l1.a) < EPS) {
+      CoverageTracker.setBranchReached(7);
       y = l1.c / l1.b;
       x = (l2.c - l2.b * y) / l2.a;
     } else if (abs(l2.a) < EPS) {
+      CoverageTracker.setBranchReached(8);
       y = l2.c / l2.b;
       x = (l1.c - l1.b * y) / l1.a;
     } else {
+      CoverageTracker.setBranchReached(9);
       x = (l1.c - l2.c) / (l1.a - l2.a);
       y = (l1.c - l1.a * x) / l1.b;
     }
-
     return new Point2D.Double(x, y);
   }
 
