@@ -10,6 +10,8 @@
  */
 package com.williamfiset.algorithms.graphtheory;
 
+import com.williamfiset.algorithms.CoverageTracker;
+
 import java.util.*;
 
 public class SteinerTree {
@@ -98,7 +100,7 @@ public class SteinerTree {
       for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
           if (distance[i][k] + distance[k][j] < distance[i][j]) {
-            CoverageTracker.setBranchReached(1); // Coverage flag for distance update
+            CoverageTracker.setBranchReached(0); // Coverage flag for distance update
             distance[i][j] = distance[i][k] + distance[k][j];
           }
 
@@ -108,43 +110,13 @@ public class SteinerTree {
       for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
           if (distance[i][k] + distance[k][j] < distance[i][j]) {
-            CoverageTracker.setBranchReached(2); // Coverage flag for detecting negative cycle
+            CoverageTracker.setBranchReached(1); // Coverage flag for detecting negative cycle
             distance[i][j] = Double.NEGATIVE_INFINITY;
-            CoverageTracker.setBranchReached(3); // Coverage flag for setting negative infinity
+            CoverageTracker.setBranchReached(2); // Coverage flag for setting negative infinity
           }
 
-    CoverageTracker.writeCoverageToConsole();
   }
 
-  public class CoverageTracker {
-    private static Map<Integer, Boolean> branchCoverage = new HashMap<>();
-
-    // Initialize branch coverage map with branch IDs and set all flags to false
-    static {
-      branchCoverage.put(1, false); //
-      branchCoverage.put(2, false); //
-      branchCoverage.put(3, false); //
-    }
-
-    // Method to set a flag for a branch when it's reached
-    public static void setBranchReached(int branchID) {
-      branchCoverage.put(branchID, true);
-    }
-
-    // Method to get coverage information
-    public static Map<Integer, Boolean> getBranchCoverage() {
-      return branchCoverage;
-    }
-
-    // Method to write branch coverage information to console
-    public static void writeCoverageToConsole() {
-      System.out.println("Branch Coverage Information:");
-      for (Map.Entry<Integer, Boolean> entry : branchCoverage.entrySet()) {
-        System.out.println("Branch ID: " + entry.getKey() + ", Covered: " + entry.getValue());
-      }
-    }
-
-  }
 
   // Examples
   public static void main(String[] args) {

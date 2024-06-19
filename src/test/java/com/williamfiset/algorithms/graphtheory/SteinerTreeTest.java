@@ -2,6 +2,7 @@ package com.williamfiset.algorithms.graphtheory;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.williamfiset.algorithms.CoverageTracker;
 import org.junit.jupiter.api.*;
 
 public class SteinerTreeTest {
@@ -97,6 +98,7 @@ public class SteinerTreeTest {
 
   @Test
   public void testNegativeCycle() {
+    CoverageTracker.setTotalBranches(3);
     double[][] matrixWithNegativeCycle =
             new double[][] {
                     {0, 1, -2, INF},
@@ -110,6 +112,8 @@ public class SteinerTreeTest {
         assertThat(matrixWithNegativeCycle[i][j]).isEqualTo(Double.NEGATIVE_INFINITY);
       }
     }
+    CoverageTracker.writeCoverageToConsole();
+
   }
 
   private double testSteiner(double[][] distances, int... subsetToConnect) {
