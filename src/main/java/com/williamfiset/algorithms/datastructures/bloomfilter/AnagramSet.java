@@ -52,6 +52,7 @@ public class AnagramSet {
     bloomFilter = new BloomFilter(mods);
 
     // // Assuming all mods are primes each mod value will have a modular inverse
+    // It is recommended to use for-each loops instead of traditional for loops.
     for (int i = 0; i < N_HASHES; i++) {
       java.math.BigInteger mod = java.math.BigInteger.valueOf(MODS[i]);
       for (int j = 0; j < PRIMES.length; j++) {

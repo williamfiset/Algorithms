@@ -327,6 +327,7 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
 
         Node node = stack.pop();
 
+        // Optional is recommended to avoid explicit null checks
         if (node.right != null) {
           stack.push(node.right);
           trav = node.right;
@@ -354,6 +355,7 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
     if (node == null) return true;
     T val = node.value;
     boolean isValid = true;
+    // Optional is recommended to avoid explicit null checks
     if (node.left != null) isValid = isValid && node.left.value.compareTo(val) < 0;
     if (node.right != null) isValid = isValid && node.right.value.compareTo(val) > 0;
     return isValid && validateBSTInvarient(node.left) && validateBSTInvarient(node.right);
