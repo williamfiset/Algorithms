@@ -293,7 +293,7 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 - [Counting sort](src/main/java/com/williamfiset/algorithms/sorting/CountingSort.java) **- O(n + k)**
 - [Heapsort](src/main/java/com/williamfiset/algorithms/sorting/Heapsort.java) **- O(nlog(n))**
 - [Insertion sort](src/main/java/com/williamfiset/algorithms/sorting/InsertionSort.java) **- O(n<sup>2</sup>)**
-- [Mergesort](src/main/java/com/williamfiset/algorithms/sorting/MergeSort.java) **- O(nlog(n))**
+- [:movie_camera:](https://www.youtube.com/watch?v=-3u1C1URNZY) [Mergesort](src/main/java/com/williamfiset/algorithms/sorting/MergeSort.java) **- O(nlog(n))**
 - [Quicksort (in-place, Hoare partitioning)](src/main/java/com/williamfiset/algorithms/sorting/QuickSort.java) **- Θ(nlog(n))**
 - [Quicksort3 (Dutch National Flag algorithm)](src/main/java/com/williamfiset/algorithms/sorting/QuickSort3.java) **- Θ(nlog(n))**
 - [Selection sort](src/main/java/com/williamfiset/algorithms/sorting/SelectionSort.java) **- O(n<sup>2</sup>)**
