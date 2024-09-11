@@ -88,6 +88,7 @@ public abstract class SuffixArray {
 
   @Override
   public String toString() {
+    if (!constructedLcpArray) buildLcpArray();
     StringBuilder sb = new StringBuilder();
     sb.append("-----i-----SA-----LCP---Suffix\n");
 
