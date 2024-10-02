@@ -8,23 +8,27 @@ package com.williamfiset.algorithms.search;
 public class InterpolationSearch {
 
   /**
-   * A fast alternative to a binary search when the elements are uniformly distributed. This
-   * algorithm runs in a time complexity of ~O(log(log(n))).
+   * Searches for the given value in an ordered list containing uniformly distributed values using
+   * interpolation search.
    *
    * @param nums - an ordered list containing uniformly distributed values.
    * @param val - the value we're looking for in 'nums'
+   * @return the index of the value if it is found, otherwise -1.
    */
   public static int interpolationSearch(int[] nums, int val) {
-    int lo = 0, mid = 0, hi = nums.length - 1;
-    while (nums[lo] <= val && nums[hi] >= val) {
-      mid = lo + ((val - nums[lo]) * (hi - lo)) / (nums[hi] - nums[lo]);
+    int lo = 0, hi = nums.length - 1;
+    while (lo <= hi && val >= nums[lo] && val <= nums[hi]) {
+      // Interpolate the index of the mid-point element to be closer to our target value
+      int mid = lo + ((val - nums[lo]) * (hi - lo)) / (nums[hi] - nums[lo]);
+      if (nums[mid] == val) {
+        return mid;
+      }
       if (nums[mid] < val) {
         lo = mid + 1;
-      } else if (nums[mid] > val) {
+      } else {
         hi = mid - 1;
-      } else return mid;
+      }
     }
-    if (nums[lo] == val) return lo;
     return -1;
   }
 
