@@ -2,7 +2,7 @@ package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.williamfiset.algorithms.graphtheory.networkflow.NetworkFlowSolverBase.Edge;
+import com.williamfiset.algorithms.graphtheory.networkflow.NetworkFlowSolverBase.NetworkEdge;
 import java.util.*;
 import org.junit.jupiter.api.*;
 
@@ -173,14 +173,14 @@ public class MaxFlowTests {
     addEdge(9, t, 60);
 
     for (NetworkFlowSolverBase solver : solvers) {
-      List<Edge>[] g = solver.getGraph();
+      List<NetworkEdge>[] g = solver.getGraph();
       int[] inFlows = new int[n];
       int[] outFlows = new int[n];
       for (int i = 0; i < n; i++) {
-        List<Edge> edges = g[i];
-        for (Edge e : edges) {
-          inFlows[e.from] += e.flow;
-          outFlows[e.to] += e.flow;
+        List<NetworkEdge> edges = g[i];
+        for (NetworkEdge e : edges) {
+          inFlows[e.getFrom()] += e.flow;
+          outFlows[e.getTo()] += e.flow;
         }
       }
 

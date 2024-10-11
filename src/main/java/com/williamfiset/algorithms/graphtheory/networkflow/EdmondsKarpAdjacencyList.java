@@ -41,7 +41,7 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
   }
 
   private long bfs() {
-    Edge[] prev = new Edge[n];
+    NetworkEdge[] prev = new NetworkEdge[n];
 
     // The queue can be optimized to use a faster queue
     Queue<Integer> q = new ArrayDeque<>(n);
@@ -53,12 +53,12 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
       int node = q.poll();
       if (node == t) break;
 
-      for (Edge edge : graph[node]) {
+      for (NetworkEdge edge : graph[node]) {
         long cap = edge.remainingCapacity();
-        if (cap > 0 && !visited(edge.to)) {
-          visit(edge.to);
-          prev[edge.to] = edge;
-          q.offer(edge.to);
+        if (cap > 0 && !visited(edge.getTo())) {
+          visit(edge.getTo());
+          prev[edge.getTo()] = edge;
+          q.offer(edge.getTo());
         }
       }
     }
@@ -69,11 +69,12 @@ public class EdmondsKarpAdjacencyList extends NetworkFlowSolverBase {
     long bottleNeck = Long.MAX_VALUE;
 
     // Find augmented path and bottle neck
-    for (Edge edge = prev[t]; edge != null; edge = prev[edge.from])
+    for (NetworkEdge edge = prev[t]; edge != null; edge = prev[edge.getFrom()])
       bottleNeck = min(bottleNeck, edge.remainingCapacity());
 
     // Retrace augmented path and update flow values.
-    for (Edge edge = prev[t]; edge != null; edge = prev[edge.from]) edge.augment(bottleNeck);
+    for (NetworkEdge edge = prev[t]; edge != null; edge = prev[edge.getFrom()])
+      edge.augment(bottleNeck);
 
     // Return bottleneck flow
     return bottleNeck;

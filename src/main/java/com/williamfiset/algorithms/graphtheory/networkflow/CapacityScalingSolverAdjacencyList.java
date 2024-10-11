@@ -69,14 +69,14 @@ public class CapacityScalingSolverAdjacencyList extends NetworkFlowSolverBase {
     // At sink node, return augmented path flow.
     if (node == t) return flow;
 
-    List<Edge> edges = graph[node];
+    List<NetworkEdge> edges = graph[node];
     visit(node);
 
-    for (Edge edge : edges) {
+    for (NetworkEdge edge : edges) {
       long cap = edge.remainingCapacity();
-      if (cap >= delta && !visited(edge.to)) {
+      if (cap >= delta && !visited(edge.getTo())) {
 
-        long bottleNeck = dfs(edge.to, min(flow, cap));
+        long bottleNeck = dfs(edge.getTo(), min(flow, cap));
 
         // Augment flow with bottle neck value
         if (bottleNeck > 0) {

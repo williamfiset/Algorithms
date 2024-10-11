@@ -54,25 +54,10 @@ public class KruskalsEdgeList {
     }
   }
 
-  static class Edge implements Comparable<Edge> {
-    int from, to, cost;
-
-    public Edge(int from, int to, int cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-
-    @Override
-    public int compareTo(Edge other) {
-      return cost - other.cost;
-    }
-  }
-
   // Given a graph represented as an edge list this method finds
   // the Minimum Spanning Tree (MST) cost if there exists
   // a MST, otherwise it returns null.
-  static Long kruskals(Edge[] edges, int n) {
+  static Long kruskals(CostComparingEdge[] edges, int n) {
 
     if (edges == null) return null;
 
@@ -80,14 +65,14 @@ public class KruskalsEdgeList {
     java.util.Arrays.sort(edges);
     UnionFind uf = new UnionFind(n);
 
-    for (Edge edge : edges) {
+    for (CostComparingEdge edge : edges) {
 
       // Skip this edge to avoid creating a cycle in MST
-      if (uf.connected(edge.from, edge.to)) continue;
+      if (uf.connected(edge.getFrom(), edge.getTo())) continue;
 
       // Include this edge
-      uf.union(edge.from, edge.to);
-      sum += edge.cost;
+      uf.union(edge.getFrom(), edge.getTo());
+      sum += edge.getCost();
 
       // Optimization to stop early if we found
       // a MST that includes all the nodes

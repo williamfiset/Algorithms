@@ -9,19 +9,9 @@ import java.util.*;
 
 public class DepthFirstSearchAdjacencyListRecursive {
 
-  static class Edge {
-    int from, to, cost;
-
-    public Edge(int from, int to, int cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-  }
-
   // Perform a depth first search on the graph counting
   // the number of nodes traversed starting at some position
-  static long dfs(int at, boolean[] visited, Map<Integer, List<Edge>> graph) {
+  static long dfs(int at, boolean[] visited, Map<Integer, List<WeightedEdge<Integer>>> graph) {
 
     // We have already visited this node
     if (visited[at]) return 0L;
@@ -31,10 +21,10 @@ public class DepthFirstSearchAdjacencyListRecursive {
     long count = 1;
 
     // Visit all edges adjacent to where we're at
-    List<Edge> edges = graph.get(at);
+    List<WeightedEdge<Integer>> edges = graph.get(at);
     if (edges != null) {
-      for (Edge edge : edges) {
-        count += dfs(edge.to, visited, graph);
+      for (WeightedEdge<Integer> edge : edges) {
+        count += dfs(edge.getTo(), visited, graph);
       }
     }
 
@@ -57,7 +47,7 @@ public class DepthFirstSearchAdjacencyListRecursive {
     //           > <
     //           (3)
     int numNodes = 5;
-    Map<Integer, List<Edge>> graph = new HashMap<>();
+    Map<Integer, List<WeightedEdge<Integer>>> graph = new HashMap<>();
     addDirectedEdge(graph, 0, 1, 4);
     addDirectedEdge(graph, 0, 2, 5);
     addDirectedEdge(graph, 1, 2, -2);
@@ -75,12 +65,13 @@ public class DepthFirstSearchAdjacencyListRecursive {
   }
 
   // Helper method to setup graph
-  private static void addDirectedEdge(Map<Integer, List<Edge>> graph, int from, int to, int cost) {
-    List<Edge> list = graph.get(from);
+  private static void addDirectedEdge(
+      Map<Integer, List<WeightedEdge<Integer>>> graph, int from, int to, int cost) {
+    List<WeightedEdge<Integer>> list = graph.get(from);
     if (list == null) {
-      list = new ArrayList<Edge>();
+      list = new ArrayList<WeightedEdge<Integer>>();
       graph.put(from, list);
     }
-    list.add(new Edge(from, to, cost));
+    list.add(new WeightedEdge<>(from, to, cost));
   }
 }

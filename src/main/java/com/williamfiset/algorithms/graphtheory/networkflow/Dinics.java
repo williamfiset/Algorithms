@@ -59,11 +59,11 @@ public class Dinics extends NetworkFlowSolverBase {
     q.offer(s);
     while (!q.isEmpty()) {
       int node = q.poll();
-      for (Edge edge : graph[node]) {
+      for (NetworkEdge edge : graph[node]) {
         long cap = edge.remainingCapacity();
-        if (cap > 0 && level[edge.to] == -1) {
-          level[edge.to] = level[node] + 1;
-          q.offer(edge.to);
+        if (cap > 0 && level[edge.getTo()] == -1) {
+          level[edge.getTo()] = level[node] + 1;
+          q.offer(edge.getTo());
         }
       }
     }
@@ -75,11 +75,11 @@ public class Dinics extends NetworkFlowSolverBase {
     final int numEdges = graph[at].size();
 
     for (; next[at] < numEdges; next[at]++) {
-      Edge edge = graph[at].get(next[at]);
+      NetworkEdge edge = graph[at].get(next[at]);
       long cap = edge.remainingCapacity();
-      if (cap > 0 && level[edge.to] == level[at] + 1) {
+      if (cap > 0 && level[edge.getTo()] == level[at] + 1) {
 
-        long bottleNeck = dfs(edge.to, next, min(flow, cap));
+        long bottleNeck = dfs(edge.getTo(), next, min(flow, cap));
         if (bottleNeck > 0) {
           edge.augment(bottleNeck);
           return bottleNeck;

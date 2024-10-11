@@ -1,7 +1,6 @@
 package com.williamfiset.algorithms.graphtheory;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.Edge;
 import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.addUnweightedUndirectedEdge;
 import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.createEmptyGraph;
 import static java.lang.Math.max;
@@ -31,7 +30,7 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
   @Test
   public void testSingletonGraph() {
     int n = 1;
-    List<List<Edge>> graph = createEmptyGraph(n);
+    List<List<WeightedEdge<Integer>>> graph = createEmptyGraph(n);
 
     solver = new BreadthFirstSearchAdjacencyListIterative(graph);
     List<Integer> path = solver.reconstructPath(0, 0);
@@ -43,7 +42,7 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
   @Test
   public void testTwoNodeGraph() {
     int n = 2;
-    List<List<Edge>> graph = createEmptyGraph(n);
+    List<List<WeightedEdge<Integer>>> graph = createEmptyGraph(n);
     addUnweightedUndirectedEdge(graph, 0, 1);
     solver = new BreadthFirstSearchAdjacencyListIterative(graph);
 
@@ -58,7 +57,8 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
   @Test
   public void testThreeNodeGraph() {
     int n = 3;
-    List<List<Edge>> graph = BreadthFirstSearchAdjacencyListIterative.createEmptyGraph(n);
+    List<List<WeightedEdge<Integer>>> graph =
+        BreadthFirstSearchAdjacencyListIterative.createEmptyGraph(n);
     addUnweightedUndirectedEdge(graph, 0, 1);
     addUnweightedUndirectedEdge(graph, 2, 1);
     solver = new BreadthFirstSearchAdjacencyListIterative(graph);
@@ -76,7 +76,7 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
   public void testShortestPathAgainstBellmanFord() {
     int loops = 150;
     for (int i = 0, n = 1; i < loops; i++, n++) {
-      List<List<Edge>> graph = createEmptyGraph(n);
+      List<List<WeightedEdge<Integer>>> graph = createEmptyGraph(n);
       double[][] graph2 = generateRandomGraph(graph, n);
 
       int s = (int) (random() * n);
@@ -90,7 +90,7 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
     }
   }
 
-  public static double[][] generateRandomGraph(List<List<Edge>> graph1, int n) {
+  public static double[][] generateRandomGraph(List<List<WeightedEdge<Integer>>> graph1, int n) {
     boolean[][] edgeMatrix = new boolean[n][n];
     double[][] graph2 = new double[n][n];
     for (double[] r : graph2) Arrays.fill(r, Double.POSITIVE_INFINITY);

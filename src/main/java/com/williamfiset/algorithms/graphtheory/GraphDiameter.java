@@ -14,15 +14,6 @@ import java.util.*;
 
 public class GraphDiameter {
 
-  static class Edge {
-    int from, to;
-
-    public Edge(int from, int to) {
-      this.from = from;
-      this.to = to;
-    }
-  }
-
   // Separate each breadth first search layer with a DEPTH_TOKEN
   // to easily determine the distance to other nodes
   static final int DEPTH_TOKEN = -1;
@@ -68,9 +59,9 @@ public class GraphDiameter {
         List<Edge> edges = graph.get(id);
         if (edges != null) {
           for (Edge edge : edges) {
-            if (visited.get(edge.to) != VISITED_TOKEN) {
-              visited.put(edge.to, VISITED_TOKEN);
-              queue.offer(edge.to);
+            if (visited.get(edge.getTo()) != VISITED_TOKEN) {
+              visited.put(edge.getTo(), VISITED_TOKEN);
+              queue.offer(edge.getTo());
             }
           }
         }

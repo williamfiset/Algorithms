@@ -50,20 +50,10 @@ class IntQueue {
 
 public class BreadthFirstSearchAdjacencyListIterativeFastQueue {
 
-  static class Edge {
-    int from, to, cost;
-
-    public Edge(int from, int to, int cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-  }
-
   // Perform a breadth first search on a graph with n nodes
   // from a starting point to count the number of nodes
   // in a given component.
-  static int bfs(Map<Integer, List<Edge>> graph, int start, int n) {
+  static int bfs(Map<Integer, List<WeightedEdge<Integer>>> graph, int start, int n) {
 
     int count = 0;
     boolean[] visited = new boolean[n];
@@ -99,16 +89,16 @@ public class BreadthFirstSearchAdjacencyListIterativeFastQueue {
 
         count++;
 
-        List<Edge> edges = graph.get(node);
+        List<WeightedEdge<Integer>> edges = graph.get(node);
         if (edges != null) {
 
           // Loop through all edges attached to this node. Mark nodes as
           // visited once they're in the queue. This will prevent having
           // duplicate nodes in the queue and speedup the BFS.
-          for (Edge edge : edges) {
-            if (!visited[edge.to]) {
-              visited[edge.to] = true;
-              queue.enqueue(edge.to);
+          for (WeightedEdge<Integer> edge : edges) {
+            if (!visited[edge.getTo()]) {
+              visited[edge.getTo()] = true;
+              queue.enqueue(edge.getTo());
             }
           }
         }
@@ -123,7 +113,7 @@ public class BreadthFirstSearchAdjacencyListIterativeFastQueue {
 
     // Create a fully connected graph
     int numNodes = 8;
-    Map<Integer, List<Edge>> graph = new HashMap<>();
+    Map<Integer, List<WeightedEdge<Integer>>> graph = new HashMap<>();
     addDirectedEdge(graph, 1, 2, 1);
     addDirectedEdge(graph, 1, 2, 1); // Double edge
     addDirectedEdge(graph, 1, 3, 1);
@@ -154,12 +144,13 @@ public class BreadthFirstSearchAdjacencyListIterativeFastQueue {
   }
 
   // Helper method to setup graph
-  private static void addDirectedEdge(Map<Integer, List<Edge>> graph, int from, int to, int cost) {
-    List<Edge> list = graph.get(from);
+  private static void addDirectedEdge(
+      Map<Integer, List<WeightedEdge<Integer>>> graph, int from, int to, int cost) {
+    List<WeightedEdge<Integer>> list = graph.get(from);
     if (list == null) {
-      list = new ArrayList<Edge>();
+      list = new ArrayList<WeightedEdge<Integer>>();
       graph.put(from, list);
     }
-    list.add(new Edge(from, to, cost));
+    list.add(new WeightedEdge<>(from, to, cost));
   }
 }

@@ -8,18 +8,6 @@ package com.williamfiset.algorithms.graphtheory;
 
 public class BellmanFordEdgeList {
 
-  // A directed edge
-  public static class Edge {
-    double cost;
-    int from, to;
-
-    public Edge(int from, int to, double cost) {
-      this.to = to;
-      this.from = from;
-      this.cost = cost;
-    }
-  }
-
   /**
    * An implementation of the Bellman-Ford algorithm. The algorithm finds the shortest path between
    * a starting node and all other nodes in the graph. The algorithm also detects negative cycles.
@@ -30,7 +18,7 @@ public class BellmanFordEdgeList {
    * @param V - The number of vertices in the graph.
    * @param start - The id of the starting node
    */
-  public static double[] bellmanFord(Edge[] edges, int V, int start) {
+  public static double[] bellmanFord(WeightedEdge<Double>[] edges, int V, int start) {
 
     double[] dist = new double[V];
     java.util.Arrays.fill(dist, Double.POSITIVE_INFINITY);
@@ -44,9 +32,9 @@ public class BellmanFordEdgeList {
     // For each vertex, apply relaxation for all the edges
     for (int v = 0; v < V - 1 && relaxedAnEdge; v++) {
       relaxedAnEdge = false;
-      for (Edge edge : edges) {
-        if (dist[edge.from] + edge.cost < dist[edge.to]) {
-          dist[edge.to] = dist[edge.from] + edge.cost;
+      for (WeightedEdge<Double> edge : edges) {
+        if (dist[edge.getFrom()] + edge.getCost() < dist[edge.getTo()]) {
+          dist[edge.getTo()] = dist[edge.getFrom()] + edge.getCost();
           relaxedAnEdge = true;
         }
       }
@@ -58,9 +46,9 @@ public class BellmanFordEdgeList {
     relaxedAnEdge = true;
     for (int v = 0; v < V - 1 && relaxedAnEdge; v++) {
       relaxedAnEdge = false;
-      for (Edge edge : edges) {
-        if (dist[edge.from] + edge.cost < dist[edge.to]) {
-          dist[edge.to] = Double.NEGATIVE_INFINITY;
+      for (WeightedEdge<Double> edge : edges) {
+        if (dist[edge.getFrom()] + edge.getCost() < dist[edge.getTo()]) {
+          dist[edge.getTo()] = Double.NEGATIVE_INFINITY;
           relaxedAnEdge = true;
         }
       }
@@ -70,20 +58,21 @@ public class BellmanFordEdgeList {
     return dist;
   }
 
+  @SuppressWarnings("unchecked")
   public static void main(String[] args) {
 
     int E = 10, V = 9, start = 0;
-    Edge[] edges = new Edge[E];
-    edges[0] = new Edge(0, 1, 1);
-    edges[1] = new Edge(1, 2, 1);
-    edges[2] = new Edge(2, 4, 1);
-    edges[3] = new Edge(4, 3, -3);
-    edges[4] = new Edge(3, 2, 1);
-    edges[5] = new Edge(1, 5, 4);
-    edges[6] = new Edge(1, 6, 4);
-    edges[7] = new Edge(5, 6, 5);
-    edges[8] = new Edge(6, 7, 4);
-    edges[9] = new Edge(5, 7, 3);
+    WeightedEdge<Double>[] edges = new WeightedEdge[E];
+    edges[0] = new WeightedEdge<>(0, 1, 1d);
+    edges[1] = new WeightedEdge<>(1, 2, 1d);
+    edges[2] = new WeightedEdge<>(2, 4, 1d);
+    edges[3] = new WeightedEdge<>(4, 3, -3d);
+    edges[4] = new WeightedEdge<>(3, 2, 1d);
+    edges[5] = new WeightedEdge<>(1, 5, 4d);
+    edges[6] = new WeightedEdge<>(1, 6, 4d);
+    edges[7] = new WeightedEdge<>(5, 6, 5d);
+    edges[8] = new WeightedEdge<>(6, 7, 4d);
+    edges[9] = new WeightedEdge<>(5, 7, 3d);
 
     double[] d = bellmanFord(edges, V, start);
 

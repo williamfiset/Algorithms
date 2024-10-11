@@ -32,15 +32,15 @@ public class MinCostMaxFlowWithBellmanFord extends NetworkFlowSolverBase {
   public void solve() {
 
     // Sum up the bottlenecks on each augmenting path to find the max flow and min cost.
-    List<Edge> path;
+    List<NetworkEdge> path;
     while ((path = getAugmentingPath()).size() != 0) {
 
       // Find bottle neck edge value along path.
       long bottleNeck = Long.MAX_VALUE;
-      for (Edge edge : path) bottleNeck = min(bottleNeck, edge.remainingCapacity());
+      for (NetworkEdge edge : path) bottleNeck = min(bottleNeck, edge.remainingCapacity());
 
       // Retrace path while augmenting the flow
-      for (Edge edge : path) {
+      for (NetworkEdge edge : path) {
         edge.augment(bottleNeck);
         minCost += bottleNeck * edge.originalCost;
       }
@@ -54,28 +54,28 @@ public class MinCostMaxFlowWithBellmanFord extends NetworkFlowSolverBase {
    * Use the Bellman-Ford algorithm (which work with negative edge weights) to find an augmenting
    * path through the flow network.
    */
-  private List<Edge> getAugmentingPath() {
+  private List<NetworkEdge> getAugmentingPath() {
     long[] dist = new long[n];
     Arrays.fill(dist, INF);
     dist[s] = 0;
 
-    Edge[] prev = new Edge[n];
+    NetworkEdge[] prev = new NetworkEdge[n];
 
     // For each vertex, relax all the edges in the graph, O(VE)
     for (int i = 0; i < n - 1; i++) {
       for (int from = 0; from < n; from++) {
-        for (Edge edge : graph[from]) {
-          if (edge.remainingCapacity() > 0 && dist[from] + edge.cost < dist[edge.to]) {
-            dist[edge.to] = dist[from] + edge.cost;
-            prev[edge.to] = edge;
+        for (NetworkEdge edge : graph[from]) {
+          if (edge.remainingCapacity() > 0 && dist[from] + edge.getCost() < dist[edge.getTo()]) {
+            dist[edge.getTo()] = dist[from] + edge.getCost();
+            prev[edge.getTo()] = edge;
           }
         }
       }
     }
 
     // Retrace augmenting path from sink back to the source.
-    LinkedList<Edge> path = new LinkedList<>();
-    for (Edge edge = prev[t]; edge != null; edge = prev[edge.from]) path.addFirst(edge);
+    LinkedList<NetworkEdge> path = new LinkedList<>();
+    for (NetworkEdge edge = prev[t]; edge != null; edge = prev[edge.getFrom()]) path.addFirst(edge);
     return path;
   }
 

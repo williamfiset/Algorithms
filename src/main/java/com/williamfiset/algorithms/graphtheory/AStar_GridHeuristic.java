@@ -7,20 +7,10 @@ public class AStar_GridHeuristic {
 
   // An edge class to represent a directed edge
   // between two nodes with a certain non-negative cost.
-  static class Edge {
-    double cost;
-    int from, to;
+  static class NonNegativeCostEdge extends WeightedEdge<Double> {
 
-    public Edge(int from, int to, double cost) {
-      if (cost < 0) throw new IllegalArgumentException("No negative edge weights");
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-
-    @Override
-    public String toString() {
-      return from + ":" + to;
+    public NonNegativeCostEdge(int from, int to, double cost) {
+      super(from, to, cost, c -> c >= 0d);
     }
   }
 
@@ -55,7 +45,12 @@ public class AStar_GridHeuristic {
   // starting node and the destination node the returned value is set to be
   // Double.POSITIVE_INFINITY.
   public static double astar(
-      double[] X, double[] Y, Map<Integer, List<Edge>> graph, int start, int end, int n) {
+      double[] X,
+      double[] Y,
+      Map<Integer, List<NonNegativeCostEdge>> graph,
+      int start,
+      int end,
+      int n) {
 
     // In the event that you wish to rebuild the shortest path
     // you can do so using the prev array and starting at some node 'end'
@@ -87,24 +82,24 @@ public class AStar_GridHeuristic {
 
       if (node.id == end) return G[end];
 
-      List<Edge> edges = graph.get(node.id);
+      List<NonNegativeCostEdge> edges = graph.get(node.id);
       if (edges != null) {
         for (int i = 0; i < edges.size(); i++) {
 
-          Edge edge = edges.get(i);
-          if (closedSet.contains(edge.to)) continue;
+          NonNegativeCostEdge edge = edges.get(i);
+          if (closedSet.contains(edge.getTo())) continue;
 
-          double g = node.g + edge.cost;
-          double h = heuristic(X, Y, edge.to, end);
+          double g = node.g + edge.getCost();
+          double h = heuristic(X, Y, edge.getTo(), end);
 
-          if (g < G[edge.to] || !openSet.contains(edge.to)) {
+          if (g < G[edge.getTo()] || !openSet.contains(edge.getTo())) {
 
-            G[edge.to] = g;
+            G[edge.getTo()] = g;
             // prev[edge.to] = edge.from;
 
-            if (!openSet.contains(edge.to)) {
-              pq.offer(new Node(edge.to, g, h));
-              openSet.add(edge.to);
+            if (!openSet.contains(edge.getTo())) {
+              pq.offer(new Node(edge.getTo(), g, h));
+              openSet.add(edge.getTo());
             }
           }
         }
@@ -130,7 +125,7 @@ public class AStar_GridHeuristic {
     Random RANDOM = new Random();
 
     int n = 20 * 20;
-    Map<Integer, List<Edge>> graph = new HashMap<>();
+    Map<Integer, List<NonNegativeCostEdge>> graph = new HashMap<>();
     for (int i = 0; i < n; i++) graph.put(i, new ArrayList<>());
 
     double[] X = new double[n];
@@ -185,10 +180,10 @@ public class AStar_GridHeuristic {
   }
 
   static void addEdge(
-      Map<Integer, List<Edge>> graph, int f, int t, int fx, int fy, int tx, int ty) {
+      Map<Integer, List<NonNegativeCostEdge>> graph, int f, int t, int fx, int fy, int tx, int ty) {
     double dx = Math.abs(fx - tx);
     double dy = Math.abs(fy - ty);
-    graph.get(f).add(new Edge(f, t, dx + dy));
+    graph.get(f).add(new NonNegativeCostEdge(f, t, dx + dy));
   }
 
   // Node class to track the nodes to visit while running Dijkstra's
@@ -213,7 +208,8 @@ public class AStar_GridHeuristic {
   // from a starting node to an ending node. If there is no path between the
   // starting node and the destination node the returned value is set to be
   // Double.POSITIVE_INFINITY.
-  public static double dijkstra(Map<Integer, List<Edge>> graph, int start, int end, int n) {
+  public static double dijkstra(
+      Map<Integer, List<NonNegativeCostEdge>> graph, int start, int end, int n) {
 
     // Maintain an array of the minimum distance to each node
     double[] dists = new double[n];
@@ -243,21 +239,21 @@ public class AStar_GridHeuristic {
       // processing this node so we can ignore it.
       if (node.value > dists[node.id]) continue;
 
-      List<Edge> edges = graph.get(node.id);
+      List<NonNegativeCostEdge> edges = graph.get(node.id);
       if (edges != null) {
         for (int i = 0; i < edges.size(); i++) {
-          Edge edge = edges.get(i);
+          NonNegativeCostEdge edge = edges.get(i);
 
           // You cannot get a shorter path by revisiting
           // a node you have already visited before
-          if (visited[edge.to]) continue;
+          if (visited[edge.getTo()]) continue;
 
           // Update minimum cost if applicable
-          double newDist = dists[edge.from] + edge.cost;
-          if (newDist < dists[edge.to]) {
-            // prev[edge.to] = edge.from;
-            dists[edge.to] = newDist;
-            pq.offer(new DNode(edge.to, dists[edge.to]));
+          double newDist = dists[edge.getFrom()] + edge.getCost();
+          if (newDist < dists[edge.getTo()]) {
+            // prev[edge.getTo()] = edge.getFrom();
+            dists[edge.getTo()] = newDist;
+            pq.offer(new DNode(edge.getTo(), dists[edge.getTo()]));
           }
         }
       }
