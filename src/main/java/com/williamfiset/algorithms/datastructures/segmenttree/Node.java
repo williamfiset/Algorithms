@@ -19,7 +19,7 @@ public class Node {
   int minPos, maxPos, min = 0, sum = 0, lazy = 0;
 
   public Node(int[] values) {
-    if (values == null) throw new IllegalArgumentException("Null input to segment tree.");
+    if (values == null) throw new NullPointerException("Null input to segment tree.");
     buildTree(0, values.length);
     for (int i = 0; i < values.length; i++) {
       update(i, i + 1, values[i]);

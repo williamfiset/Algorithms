@@ -64,8 +64,7 @@ public class LongestCommonSubstring {
     private boolean constructedLcpArray = false;
 
     public SuffixArray(int[] text) {
-      if (text == null) throw new IllegalArgumentException("Text cannot be null.");
-      this.T = text;
+      this.T = Objects.requireNonNull(text);
       this.N = text.length;
     }
 
@@ -315,7 +314,7 @@ public class LongestCommonSubstring {
 
     // TODO(williamfiset): support LCS with strings as int arrays for larger alphabet sizes.
     public LcsSolver(String[] strings) {
-      if (strings == null || strings.length <= 1)
+      if (Objects.requireNonNull(strings).length <= 1)
         throw new IllegalArgumentException("Invalid strings array provided.");
       this.strings = strings;
     }
@@ -503,8 +502,7 @@ public class LongestCommonSubstring {
     Deque<Integer> deque = new ArrayDeque<>();
 
     public SlidingWindowMinimum(int[] values) {
-      if (values == null) throw new IllegalArgumentException();
-      this.values = values;
+      this.values = Objects.requireNonNull(values);
       N = values.length;
     }
 

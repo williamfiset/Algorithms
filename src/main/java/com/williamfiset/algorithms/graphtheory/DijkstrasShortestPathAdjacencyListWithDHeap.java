@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class DijkstrasShortestPathAdjacencyListWithDHeap {
 
@@ -138,8 +139,9 @@ public class DijkstrasShortestPathAdjacencyListWithDHeap {
    *     'end' are not connected then an empty array is returned.
    */
   public List<Integer> reconstructPath(int start, int end) {
-    if (end < 0 || end >= n) throw new IllegalArgumentException("Invalid node index");
-    if (start < 0 || start >= n) throw new IllegalArgumentException("Invalid node index");
+    if (end < 0 || end >= n) throw new IndexOutOfBoundsException("Invalid node index: " + end);
+    if (start < 0 || start >= n)
+      throw new IndexOutOfBoundsException("Invalid node index: " + start);
     List<Integer> path = new ArrayList<>();
     double dist = dijkstra(start, end);
     if (dist == Double.POSITIVE_INFINITY) return path;
@@ -233,7 +235,7 @@ public class DijkstrasShortestPathAdjacencyListWithDHeap {
 
     public void insert(int ki, T value) {
       if (contains(ki)) throw new IllegalArgumentException("index already exists; received: " + ki);
-      valueNotNullOrThrow(value);
+      Objects.requireNonNull(value);
       pm[ki] = sz;
       im[sz] = ki;
       values[ki] = value;
@@ -347,20 +349,15 @@ public class DijkstrasShortestPathAdjacencyListWithDHeap {
 
     private void keyExistsAndValueNotNullOrThrow(int ki, Object value) {
       keyExistsOrThrow(ki);
-      valueNotNullOrThrow(value);
+      Objects.requireNonNull(value);
     }
 
     private void keyExistsOrThrow(int ki) {
       if (!contains(ki)) throw new NoSuchElementException("Index does not exist; received: " + ki);
     }
 
-    private void valueNotNullOrThrow(Object value) {
-      if (value == null) throw new IllegalArgumentException("value cannot be null");
-    }
-
     private void keyInBoundsOrThrow(int ki) {
-      if (ki < 0 || ki >= N)
-        throw new IllegalArgumentException("Key index out of bounds; received: " + ki);
+      if (ki < 0 || ki >= N) throw new IndexOutOfBoundsException(ki);
     }
   }
 }

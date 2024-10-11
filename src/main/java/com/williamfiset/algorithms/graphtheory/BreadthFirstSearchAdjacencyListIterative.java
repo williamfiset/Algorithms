@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
+import java.util.Objects;
 
 public class BreadthFirstSearchAdjacencyListIterative {
 
@@ -30,9 +31,8 @@ public class BreadthFirstSearchAdjacencyListIterative {
   private List<List<Edge>> graph;
 
   public BreadthFirstSearchAdjacencyListIterative(List<List<Edge>> graph) {
-    if (graph == null) throw new IllegalArgumentException("Graph can not be null");
+    this.graph = Objects.requireNonNull(graph);
     n = graph.size();
-    this.graph = graph;
   }
 
   /**

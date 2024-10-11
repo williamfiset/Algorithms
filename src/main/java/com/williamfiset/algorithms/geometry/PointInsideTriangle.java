@@ -11,6 +11,7 @@ package com.williamfiset.algorithms.geometry;
 import static java.lang.Math.*;
 
 import java.awt.geom.Point2D;
+import java.util.Objects;
 
 public class PointInsideTriangle {
 
@@ -60,6 +61,9 @@ public class PointInsideTriangle {
   // to the left from the frame of reference of standing at point a
   // and facing point b.
   private static int collinear(Point2D a, Point2D b, Point2D c) {
+    Objects.requireNonNull(a);
+    Objects.requireNonNull(b);
+    Objects.requireNonNull(c);
     double ax = a.getX(), ay = a.getY();
     double bx = b.getX(), by = b.getY();
     double cx = c.getX(), cy = c.getY();

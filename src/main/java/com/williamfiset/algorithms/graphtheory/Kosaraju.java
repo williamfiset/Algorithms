@@ -29,8 +29,7 @@ public class Kosaraju {
   private List<List<Integer>> transposeGraph;
 
   public Kosaraju(List<List<Integer>> graph) {
-    if (graph == null) throw new IllegalArgumentException("Graph cannot be null.");
-    this.graph = graph;
+    this.graph = Objects.requireNonNull(graph);
     n = graph.size();
   }
 

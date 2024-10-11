@@ -24,8 +24,8 @@ public class BridgesAdjacencyListIterative {
   private static int CALLBACK_TOKEN = -2;
 
   public BridgesAdjacencyListIterative(List<List<Integer>> graph, int n) {
-    if (graph == null || n <= 0 || graph.size() != n) throw new IllegalArgumentException();
-    this.graph = graph;
+    this.graph = Objects.requireNonNull(graph);
+    if (n <= 0 || graph.size() != n) throw new IllegalArgumentException();
     this.n = n;
   }
 

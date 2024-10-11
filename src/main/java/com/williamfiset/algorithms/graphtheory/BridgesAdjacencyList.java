@@ -12,6 +12,7 @@ import static java.lang.Math.min;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BridgesAdjacencyList {
 
@@ -23,8 +24,8 @@ public class BridgesAdjacencyList {
   private List<Integer> bridges;
 
   public BridgesAdjacencyList(List<List<Integer>> graph, int n) {
-    if (graph == null || n <= 0 || graph.size() != n) throw new IllegalArgumentException();
-    this.graph = graph;
+    this.graph = Objects.requireNonNull(graph);
+    if (n <= 0 || graph.size() != n) throw new IllegalArgumentException();
     this.n = n;
   }
 

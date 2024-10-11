@@ -71,7 +71,7 @@ public final class FibonacciHeap<E> implements Queue<E> {
 
   public boolean add(E e) {
     if (e == null) {
-      throw new IllegalArgumentException(
+      throw new NullPointerException(
           "Null elements not allowed in this FibonacciHeap implementation.");
     }
 

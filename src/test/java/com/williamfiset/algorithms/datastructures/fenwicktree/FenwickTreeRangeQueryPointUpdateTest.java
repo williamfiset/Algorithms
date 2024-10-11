@@ -171,7 +171,7 @@ public class FenwickTreeRangeQueryPointUpdateTest {
 
   @Test
   public void testIllegalCreation() {
-    assertThrows(IllegalArgumentException.class, () -> new FenwickTreeRangeQueryPointUpdate(null));
+    assertThrows(NullPointerException.class, () -> new FenwickTreeRangeQueryPointUpdate(null));
   }
 
   // Generate a list of random numbers, one based

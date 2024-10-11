@@ -9,6 +9,8 @@
  */
 package com.williamfiset.algorithms.datastructures.queue;
 
+import java.util.NoSuchElementException;
+
 public class IntQueue implements Queue<Integer> {
 
   private int[] data;
@@ -35,7 +37,7 @@ public class IntQueue implements Queue<Integer> {
   @Override
   public Integer peek() {
     if (isEmpty()) {
-      throw new RuntimeException("Queue is empty");
+      throw new NoSuchElementException("Queue is empty");
     }
     front = front % data.length;
     return data[front];
@@ -49,7 +51,7 @@ public class IntQueue implements Queue<Integer> {
   @Override
   public void offer(Integer value) {
     if (isFull()) {
-      throw new RuntimeException("Queue too small!");
+      throw new IllegalStateException("Queue too small!");
     }
     data[end++] = value;
     size++;
@@ -60,7 +62,7 @@ public class IntQueue implements Queue<Integer> {
   @Override
   public Integer poll() {
     if (size == 0) {
-      throw new RuntimeException("Queue is empty");
+      throw new NoSuchElementException("Queue is empty");
     }
     size--;
     front = front % data.length;

@@ -68,13 +68,13 @@ public class RangeQueryPointUpdateSegmentTree {
       SegmentCombinationFn segmentCombinationFunction,
       RangeUpdateFn rangeUpdateFunction) {
     if (values == null) {
-      throw new IllegalArgumentException("Segment tree values cannot be null.");
+      throw new NullPointerException("Segment tree values cannot be null.");
     }
     if (segmentCombinationFunction == null) {
-      throw new IllegalArgumentException("Please specify a valid segment combination function.");
+      throw new NullPointerException("Please specify a valid segment combination function.");
     }
     if (rangeUpdateFunction == null) {
-      throw new IllegalArgumentException("Please specify a valid range update function.");
+      throw new NullPointerException("Please specify a valid range update function.");
     }
     n = values.length;
     this.segmentCombinationFn = segmentCombinationFunction;
