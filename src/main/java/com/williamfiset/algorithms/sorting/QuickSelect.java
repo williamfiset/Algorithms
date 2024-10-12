@@ -17,7 +17,7 @@ public class QuickSelect {
       if (splitPoint == index) {
         return ar[splitPoint];
       } else if (splitPoint > index) {
-        return quickSelect(ar, k, lo, splitPoint);
+        return quickSelect(ar, k, lo, splitPoint - 1);
       }
       return quickSelect(ar, k, splitPoint + 1, hi);
     }
@@ -50,8 +50,9 @@ public class QuickSelect {
   public static void main(String[] args) {
     QuickSelect quickSelect = new QuickSelect();
     int[] array = {-10, 4, 6, 4, 8, -13, 1, 3};
-    int kthLargestElement = quickSelect.quickSelect(array, 3);
-    // Prints: 1
-    System.out.println(kthLargestElement);
+    int kthSmallestElement = quickSelect.quickSelect(array, 3);
+    // Prints: 3 (3rd smallest element)
+    System.out.println(kthSmallestElement);
   }
 }
+
