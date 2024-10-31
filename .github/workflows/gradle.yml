@@ -27,7 +27,7 @@ jobs:
     - name: Validate Gradle Wrapper
       uses: gradle/wrapper-validation-action@v3
     - name: Setup and execute tests via Gradle
-      uses: gradle/gradle-build-action@v2
+      uses: gradle/gradle-build-action@v3
       with:
         gradle-version: wrapper
         arguments: test
@@ -53,7 +53,7 @@ jobs:
     - name: Validate Gradle Wrapper
       uses: gradle/wrapper-validation-action@v3
     - name: Verify all Java files are formatted correctly according to the Google Java Style Guide using Gradle
-      uses: gradle/gradle-build-action@v2
+      uses: gradle/gradle-build-action@v3
       id: verifygooglejavaformat
       with:
         gradle-version: wrapper
