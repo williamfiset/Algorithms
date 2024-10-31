@@ -25,7 +25,7 @@ jobs:
         java-version: 11
         distribution: 'temurin'
     - name: Validate Gradle Wrapper
-      uses: gradle/wrapper-validation-action@v1
+      uses: gradle/wrapper-validation-action@v3
     - name: Setup and execute tests via Gradle
       uses: gradle/gradle-build-action@v2
       with:
@@ -51,7 +51,7 @@ jobs:
         java-version: 11
         distribution: 'temurin'
     - name: Validate Gradle Wrapper
-      uses: gradle/wrapper-validation-action@v1
+      uses: gradle/wrapper-validation-action@v3
     - name: Verify all Java files are formatted correctly according to the Google Java Style Guide using Gradle
       uses: gradle/gradle-build-action@v2
       id: verifygooglejavaformat
