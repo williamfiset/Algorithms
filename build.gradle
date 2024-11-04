@@ -36,7 +36,7 @@ dependencies {
 
   // Google Truth test framework
   // https://mvnrepository.com/artifact/com.google.truth/truth
-  testImplementation group: 'com.google.truth', name: 'truth', version: '1.1.5'
+  testImplementation group: 'com.google.truth', name: 'truth', version: '1.4.4'
 
   // Test mocking framework
   testImplementation "org.mockito:mockito-core:5.+"
