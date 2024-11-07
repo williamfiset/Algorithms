@@ -61,10 +61,10 @@ public class BoyerMooreStringSearch {
 
   public static void main(String[] args) {
     BoyerMooreStringSearch searcher = new BoyerMooreStringSearch();
-    String t = "ABABAAABAABAB";
-    String p = "AA";
+    String inputText = "ABABAAABAABAB";
+    String pattern = "AA";
 
     // Prints: [4, 5, 8]
-    System.out.println(searcher.findOccurrences(t, p));
+    System.out.println(searcher.findOccurrences(inputText, pattern));
   }
 }
