@@ -18,9 +18,7 @@ public class MergeSort implements InplaceSort {
   @Override
   public void sort(int[] values) {
     int[] sortedValues = MergeSort.mergesort(values);
-    for (int i = 0; i < values.length; i++) {
-      values[i] = sortedValues[i];
-    }
+    System.arraycopy(sortedValues, 0, values, 0, values.length);
   }
 
   public static int[] mergesort(int[] ar) {

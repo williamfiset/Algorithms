@@ -1,11 +1,12 @@
 package com.williamfiset.algorithms.sorting;
 
-import static com.google.common.truth.Truth.assertThat;
-
-import com.williamfiset.algorithms.utils.TestUtils;
 import java.util.Arrays;
 import java.util.EnumSet;
+
 import org.junit.jupiter.api.Test;
+
+import static com.google.common.truth.Truth.assertThat;
+import com.williamfiset.algorithms.utils.TestUtils;
 
 // Test all sorting algorithms under various constraints.
 //
@@ -25,6 +26,7 @@ public class SortingTest {
     QUICK_SORT(new QuickSort()),
     QUICK_SORT3(new QuickSort3()),
     RADIX_SORT(new RadixSort()),
+    SHELL_SORT(new ShellSort()),
     SELECTION_SORT(new SelectionSort());
 
     private InplaceSort algorithm;
@@ -49,6 +51,7 @@ public class SortingTest {
           SortingAlgorithm.QUICK_SORT,
           SortingAlgorithm.QUICK_SORT3,
           SortingAlgorithm.RADIX_SORT,
+          SortingAlgorithm.SHELL_SORT,
           SortingAlgorithm.SELECTION_SORT);
 
   @Test
