@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -76,6 +77,35 @@ public class StackTest {
     assertThat(stack.size()).isEqualTo(1);
     assertThat((int) stack.pop()).isEqualTo(1);
     assertThat(stack.size()).isEqualTo(0);
+    assertThat(stack.isEmpty()).isTrue();
+  }
+
+  @Test
+  public void testIteratorLifoOrder() {
+    ListStack<Integer> stack = new ListStack<>();
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+
+    List<Integer> iterated = new ArrayList<>();
+    for (Integer v : stack) iterated.add(v);
+
+    // Expect iteration from top (3) to bottom (1)
+    assertThat(iterated).containsExactly(3, 2, 1).inOrder();
+
+    // Iterator should not have removed elements
+    assertThat(stack.size()).isEqualTo(3);
+    assertThat(stack.peek()).isEqualTo(3);
+  }
+
+  @Test
+  public void testIteratorOnEmptyStack() {
+    ListStack<Integer> stack = new ListStack<>();
+
+    List<Integer> iterated = new ArrayList<>();
+    for (Integer v : stack) iterated.add(v);
+
+    assertThat(iterated).isEmpty();
     assertThat(stack.isEmpty()).isTrue();
   }
 }
