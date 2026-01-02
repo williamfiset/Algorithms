@@ -55,6 +55,6 @@ public class ListStack<T> implements Iterable<T>, Stack<T> {
   // Allow users to iterate through the stack using an iterator
   @Override
   public java.util.Iterator<T> iterator() {
-    return list.iterator();
+    return list.descendingIterator();
   }
 }
