@@ -19,8 +19,9 @@ application {
 }
 
 repositories {
-  mavenLocal()
-  mavenCentral()
+    maven { url 'https://maven.google.com' }
+    gradlePluginPortal()
+    mavenCentral()
 }
 
 // Describe all project deps. Use 'testCompile' for test dependencies and
