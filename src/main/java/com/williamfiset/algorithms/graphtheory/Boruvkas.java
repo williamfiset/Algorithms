@@ -5,35 +5,9 @@ import java.util.*;
 
 public class Boruvkas {
 
-  static class Edge {
-    int u, v, cost;
-
-    public Edge(int u, int v, int cost) {
-      this.u = u;
-      this.v = v;
-      this.cost = cost;
-    }
-
-    public String toString() {
-      return String.format("%d %d, cost: %d", u, v, cost);
-    }
-
-    // @Override
-    public int compareTo(Edge other) {
-      int cmp = cost - other.cost;
-      // Break ties by picking lexicographically smallest edge pair.
-      if (cmp == 0) {
-        cmp = u - other.u;
-        if (cmp == 0) return v - other.v;
-        return cmp;
-      }
-      return cmp;
-    }
-  }
-
   // Inputs
   private final int n, m; // Num nodes, num edges
-  private final Edge[] graph; // Edge list
+  private final CostComparingEdge[] graph; // Edge list
 
   // Internal
   private boolean solved;
@@ -41,9 +15,9 @@ public class Boruvkas {
 
   // Outputs
   private long minCostSum;
-  private List<Edge> mst;
+  private List<CostComparingEdge> mst;
 
-  public Boruvkas(int n, int m, Edge[] graph) {
+  public Boruvkas(int n, int m, CostComparingEdge[] graph) {
     if (graph == null) throw new IllegalArgumentException();
     this.graph = graph;
     this.n = n;
@@ -52,7 +26,7 @@ public class Boruvkas {
 
   // Returns the edges used in finding the minimum spanning tree, or returns
   // null if no MST exists.
-  public List<Edge> getMst() {
+  public List<CostComparingEdge> getMst() {
     solve();
     return mstExists ? mst : null;
   }
@@ -85,19 +59,19 @@ public class Boruvkas {
       boolean stop = true;
 
       for (int i = 0; i < graph.length; i++) {
-        Edge e = graph[i];
-        if (e.u == e.v) continue;
-        int uc = uf.id[e.u], vc = uf.id[e.v];
+        CostComparingEdge e = graph[i];
+        if (e.getFrom() == e.getTo()) continue;
+        int uc = uf.id[e.getFrom()], vc = uf.id[e.getTo()];
         if (uc == vc) continue;
         // if (cheapest[vc] == -1 || e.compareTo(graph[cheapest[vc]]) < 0) { stop = false;
         // cheapest[vc] = i; }
         // if (cheapest[uc] == -1 || e.compareTo(graph[cheapest[uc]]) < 0) { stop = false;
         // cheapest[uc] = i; }
-        if (cheapest[vc] == -1 || e.cost < graph[cheapest[vc]].cost) {
+        if (cheapest[vc] == -1 || e.getCost() < graph[cheapest[vc]].getCost()) {
           stop = false;
           cheapest[vc] = i;
         }
-        if (cheapest[uc] == -1 || e.cost < graph[cheapest[uc]].cost) {
+        if (cheapest[uc] == -1 || e.getCost() < graph[cheapest[uc]].getCost()) {
           stop = false;
           cheapest[uc] = i;
         }
@@ -107,13 +81,13 @@ public class Boruvkas {
 
       for (int i = 0; i < n; i++) {
         if (cheapest[i] == -1) continue;
-        Edge e = graph[cheapest[i]];
+        CostComparingEdge e = graph[cheapest[i]];
         // cheapest[i] = -1;
-        if (uf.connected(e.u, e.v)) continue;
+        if (uf.connected(e.getFrom(), e.getTo())) continue;
 
         mst.add(e);
-        minCostSum += e.cost;
-        uf.union(e.u, e.v);
+        minCostSum += e.getCost();
+        uf.union(e.getFrom(), e.getTo());
 
         // TODO(williamfiset): Optimization is to remove e from graph.
       }
@@ -133,8 +107,8 @@ public class Boruvkas {
 
     // check that it is acyclic
     UnionFind uf = new UnionFind(n);
-    for (Edge e : mst) {
-      int u = e.u, v = e.v;
+    for (CostComparingEdge e : mst) {
+      int u = e.getFrom(), v = e.getTo();
       if (uf.connected(u, v)) {
         System.err.println("Not a forest");
         return false;
@@ -143,8 +117,8 @@ public class Boruvkas {
     }
 
     // check that it is a spanning forest
-    for (Edge e : mst) {
-      int u = e.u, v = e.v;
+    for (CostComparingEdge e : mst) {
+      int u = e.getFrom(), v = e.getTo();
       if (!uf.connected(u, v)) {
         System.err.println("Not a spanning forest");
         return false;
@@ -152,20 +126,20 @@ public class Boruvkas {
     }
 
     // check that it is a minimal spanning forest (cut optimality conditions)
-    for (Edge e : mst) {
+    for (CostComparingEdge e : mst) {
 
       // all edges in MST except e
       uf = new UnionFind(n);
-      for (Edge f : mst) {
-        int x = f.u, y = f.v;
+      for (CostComparingEdge f : mst) {
+        int x = f.getFrom(), y = f.getTo();
         if (f != e) uf.union(x, y);
       }
 
       // check that e is min weight edge in crossing cut
-      for (Edge f : graph) {
-        int x = f.u, y = f.v;
+      for (CostComparingEdge f : graph) {
+        int x = f.getFrom(), y = f.getTo();
         if (!uf.connected(x, y)) {
-          if (f.cost < e.cost) {
+          if (f.getCost() < e.getCost()) {
             System.err.println("Edge " + f + " violates cut optimality conditions");
             return false;
           }
@@ -178,34 +152,34 @@ public class Boruvkas {
   public static void main(String[] args) {
 
     int n = 10, m = 18, i = 0;
-    Edge[] g = new Edge[m];
+    CostComparingEdge[] g = new CostComparingEdge[m];
 
     // Edges are treated as undirected
-    g[i++] = new Edge(0, 1, 5);
-    g[i++] = new Edge(0, 3, 4);
-    g[i++] = new Edge(0, 4, 1);
-    g[i++] = new Edge(1, 2, 4);
-    g[i++] = new Edge(1, 3, 2);
-    g[i++] = new Edge(2, 7, 4);
-    g[i++] = new Edge(2, 8, 1);
-    g[i++] = new Edge(2, 9, 2);
-    g[i++] = new Edge(3, 6, 11);
-    g[i++] = new Edge(3, 7, 2);
-    g[i++] = new Edge(4, 3, 2);
-    g[i++] = new Edge(4, 5, 1);
-    g[i++] = new Edge(5, 3, 5);
-    g[i++] = new Edge(5, 6, 7);
-    g[i++] = new Edge(6, 7, 1);
-    g[i++] = new Edge(6, 8, 4);
-    g[i++] = new Edge(7, 8, 6);
-    g[i++] = new Edge(9, 8, 0);
+    g[i++] = new CostComparingEdge(0, 1, 5);
+    g[i++] = new CostComparingEdge(0, 3, 4);
+    g[i++] = new CostComparingEdge(0, 4, 1);
+    g[i++] = new CostComparingEdge(1, 2, 4);
+    g[i++] = new CostComparingEdge(1, 3, 2);
+    g[i++] = new CostComparingEdge(2, 7, 4);
+    g[i++] = new CostComparingEdge(2, 8, 1);
+    g[i++] = new CostComparingEdge(2, 9, 2);
+    g[i++] = new CostComparingEdge(3, 6, 11);
+    g[i++] = new CostComparingEdge(3, 7, 2);
+    g[i++] = new CostComparingEdge(4, 3, 2);
+    g[i++] = new CostComparingEdge(4, 5, 1);
+    g[i++] = new CostComparingEdge(5, 3, 5);
+    g[i++] = new CostComparingEdge(5, 6, 7);
+    g[i++] = new CostComparingEdge(6, 7, 1);
+    g[i++] = new CostComparingEdge(6, 8, 4);
+    g[i++] = new CostComparingEdge(7, 8, 6);
+    g[i++] = new CostComparingEdge(9, 8, 0);
 
     Boruvkas solver = new Boruvkas(n, m, g);
 
     Long ans = solver.getMstCost();
     if (ans != null) {
       System.out.println("MST cost: " + ans);
-      for (Edge e : solver.getMst()) {
+      for (CostComparingEdge e : solver.getMst()) {
         System.out.println(e);
       }
     } else {

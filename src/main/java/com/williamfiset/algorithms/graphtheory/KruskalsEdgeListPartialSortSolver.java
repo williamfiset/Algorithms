@@ -15,45 +15,28 @@ import java.util.PriorityQueue;
 
 public class KruskalsEdgeListPartialSortSolver {
 
-  static class Edge implements Comparable<Edge> {
-    int u, v, cost;
-
-    // 'u' and 'v' are nodes indexes and 'cost' is the cost of taking this edge.
-    public Edge(int u, int v, int cost) {
-      this.u = u;
-      this.v = v;
-      this.cost = cost;
-    }
-
-    // Sort edges based on cost.
-    @Override
-    public int compareTo(Edge other) {
-      return cost - other.cost;
-    }
-  }
-
   // Inputs
   private int n;
-  private List<Edge> edges;
+  private List<CostComparingEdge> edges;
 
   // Internal
   private boolean solved;
   private boolean mstExists;
 
   // Outputs
-  private Edge[] mst;
+  private CostComparingEdge[] mst;
   private long mstCost;
 
   // edges - A list of undirected edges.
   // n     - The number of nodes in the input graph.
-  public KruskalsEdgeListPartialSortSolver(List<Edge> edges, int n) {
+  public KruskalsEdgeListPartialSortSolver(List<CostComparingEdge> edges, int n) {
     if (edges == null || n <= 1) throw new IllegalArgumentException();
     this.edges = edges;
     this.n = n;
   }
 
   // Gets the Minimum Spanning Tree (MST) of the input graph or null if no MST.
-  public Edge[] getMst() {
+  public CostComparingEdge[] getMst() {
     kruskals();
     return mstExists ? mst : null;
   }
@@ -68,23 +51,23 @@ public class KruskalsEdgeListPartialSortSolver {
     if (solved) return;
 
     // Heapify operation in constructor transforms list of edges into a binary heap in O(n)
-    PriorityQueue<Edge> pq = new PriorityQueue<>(edges);
+    PriorityQueue<CostComparingEdge> pq = new PriorityQueue<>(edges);
     UnionFind uf = new UnionFind(n);
 
     int index = 0;
-    mst = new Edge[n - 1];
+    mst = new CostComparingEdge[n - 1];
 
     while (!pq.isEmpty()) {
       // Use heap to poll the next cheapest edge. Polling avoids the need to sort
       // the edges before loop in the event that the algorithm terminates early.
-      Edge edge = pq.poll();
+      CostComparingEdge edge = pq.poll();
 
       // Skip this edge to avoid creating a cycle in MST.
-      if (uf.connected(edge.u, edge.v)) continue;
+      if (uf.connected(edge.getFrom(), edge.getTo())) continue;
 
       // Include this edge
-      uf.union(edge.u, edge.v);
-      mstCost += edge.cost;
+      uf.union(edge.getFrom(), edge.getTo());
+      mstCost += edge.getCost();
       mst[index++] = edge;
 
       // Stop early if we found a MST that includes all the nodes.
@@ -146,26 +129,26 @@ public class KruskalsEdgeListPartialSortSolver {
 
   public static void main(String[] args) {
     int numNodes = 10;
-    List<Edge> edges = new ArrayList<>();
+    List<CostComparingEdge> edges = new ArrayList<>();
 
-    edges.add(new Edge(0, 1, 5));
-    edges.add(new Edge(1, 2, 4));
-    edges.add(new Edge(2, 9, 2));
-    edges.add(new Edge(0, 4, 1));
-    edges.add(new Edge(0, 3, 4));
-    edges.add(new Edge(1, 3, 2));
-    edges.add(new Edge(2, 7, 4));
-    edges.add(new Edge(2, 8, 1));
-    edges.add(new Edge(9, 8, 0));
-    edges.add(new Edge(4, 5, 1));
-    edges.add(new Edge(5, 6, 7));
-    edges.add(new Edge(6, 8, 4));
-    edges.add(new Edge(4, 3, 2));
-    edges.add(new Edge(5, 3, 5));
-    edges.add(new Edge(3, 6, 11));
-    edges.add(new Edge(6, 7, 1));
-    edges.add(new Edge(3, 7, 2));
-    edges.add(new Edge(7, 8, 6));
+    edges.add(new CostComparingEdge(0, 1, 5));
+    edges.add(new CostComparingEdge(1, 2, 4));
+    edges.add(new CostComparingEdge(2, 9, 2));
+    edges.add(new CostComparingEdge(0, 4, 1));
+    edges.add(new CostComparingEdge(0, 3, 4));
+    edges.add(new CostComparingEdge(1, 3, 2));
+    edges.add(new CostComparingEdge(2, 7, 4));
+    edges.add(new CostComparingEdge(2, 8, 1));
+    edges.add(new CostComparingEdge(9, 8, 0));
+    edges.add(new CostComparingEdge(4, 5, 1));
+    edges.add(new CostComparingEdge(5, 6, 7));
+    edges.add(new CostComparingEdge(6, 8, 4));
+    edges.add(new CostComparingEdge(4, 3, 2));
+    edges.add(new CostComparingEdge(5, 3, 5));
+    edges.add(new CostComparingEdge(3, 6, 11));
+    edges.add(new CostComparingEdge(6, 7, 1));
+    edges.add(new CostComparingEdge(3, 7, 2));
+    edges.add(new CostComparingEdge(7, 8, 6));
 
     KruskalsEdgeListPartialSortSolver solver;
     solver = new KruskalsEdgeListPartialSortSolver(edges, numNodes);
@@ -175,8 +158,9 @@ public class KruskalsEdgeListPartialSortSolver {
       System.out.println("No MST does not exists");
     } else {
       System.out.println("MST cost: " + cost);
-      for (Edge e : solver.getMst()) {
-        System.out.println(String.format("Used edge (%d, %d) with cost: %d", e.u, e.v, e.cost));
+      for (CostComparingEdge e : solver.getMst()) {
+        System.out.println(
+            String.format("Used edge (%d, %d) with cost: %d", e.getFrom(), e.getTo(), e.getCost()));
       }
     }
 

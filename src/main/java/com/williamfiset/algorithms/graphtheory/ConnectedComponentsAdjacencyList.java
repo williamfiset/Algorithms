@@ -16,25 +16,15 @@ import java.util.*;
 
 public class ConnectedComponentsAdjacencyList {
 
-  static class Edge {
-    int from, to, cost;
-
-    public Edge(int from, int to, int cost) {
-      this.from = from;
-      this.to = to;
-      this.cost = cost;
-    }
-  }
-
-  static int countConnectedComponents(Map<Integer, List<Edge>> graph, int n) {
+  static int countConnectedComponents(Map<Integer, List<WeightedEdge<Integer>>> graph, int n) {
 
     UnionFind uf = new UnionFind(n);
 
     for (int i = 0; i < n; i++) {
-      List<Edge> edges = graph.get(i);
+      List<WeightedEdge<Integer>> edges = graph.get(i);
       if (edges != null) {
-        for (Edge edge : edges) {
-          uf.unify(edge.from, edge.to);
+        for (WeightedEdge<Integer> edge : edges) {
+          uf.unify(edge.getFrom(), edge.getTo());
         }
       }
     }
@@ -46,7 +36,7 @@ public class ConnectedComponentsAdjacencyList {
   public static void main(String[] args) {
 
     final int numNodes = 7;
-    Map<Integer, List<Edge>> graph = new HashMap<>();
+    Map<Integer, List<WeightedEdge<Integer>>> graph = new HashMap<>();
 
     // Setup a graph with four connected components
     // namely: {0,1,2}, {3,4}, {5}, {6}
@@ -62,14 +52,14 @@ public class ConnectedComponentsAdjacencyList {
 
   // Helper method to setup graph
   private static void addUndirectedEdge(
-      Map<Integer, List<Edge>> graph, int from, int to, int cost) {
-    List<Edge> list = graph.get(from);
+      Map<Integer, List<WeightedEdge<Integer>>> graph, int from, int to, int cost) {
+    List<WeightedEdge<Integer>> list = graph.get(from);
     if (list == null) {
-      list = new ArrayList<Edge>();
+      list = new ArrayList<WeightedEdge<Integer>>();
       graph.put(from, list);
     }
-    list.add(new Edge(from, to, cost));
-    list.add(new Edge(to, from, cost));
+    list.add(new WeightedEdge<>(from, to, cost));
+    list.add(new WeightedEdge<>(to, from, cost));
   }
 }
 
