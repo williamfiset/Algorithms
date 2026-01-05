@@ -17,6 +17,7 @@ maven.install(
         "org.junit.jupiter:junit-jupiter:5.10.0",
         "org.junit.jupiter:junit-jupiter-engine:5.10.0",
         "org.junit.platform:junit-platform-launcher:1.10.0",
+        "org.junit.platform:junit-platform-console:1.10.0",
 
         # Apache Commons Lang
         "org.apache.commons:commons-lang3:3.17.0",

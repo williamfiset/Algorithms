@@ -1,0 +1,3 @@
+# Root BUILD file for the algorithms workspace
+
+exports_files(["rules_jvm_external++maven+maven_install.json"])
