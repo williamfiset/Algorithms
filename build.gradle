@@ -35,7 +35,7 @@ dependencies {
   testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.0')
 
   // Google Guava lib
-  testImplementation group: 'com.google.guava', name: 'guava', version: '33.4.0-jre'
+  testImplementation group: 'com.google.guava', name: 'guava', version: '33.5.0-jre'
 
   // Google Truth test framework
   // https://mvnrepository.com/artifact/com.google.truth/truth
