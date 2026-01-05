@@ -31,8 +31,8 @@ dependencies {
   testImplementation 'org.apache.commons:commons-lang3:3.17.0'
 
   // JUnit 5 / Jupiter
-  testImplementation('org.junit.jupiter:junit-jupiter:5.10.0')
-  testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.0')
+  testImplementation('org.junit.jupiter:junit-jupiter:6.0.1')
+  testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:6.0.1')
 
   // Google Guava lib
   testImplementation group: 'com.google.guava', name: 'guava', version: '33.4.0-jre'
