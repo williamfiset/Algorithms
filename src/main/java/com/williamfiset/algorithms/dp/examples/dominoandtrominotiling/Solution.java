@@ -1,4 +1,6 @@
-class Solution {
+package com.williamfiset.algorithms.dp.examples.dominoandtrominotiling;
+
+public class Solution {
   static int n;
   static Long[][] dp;
   static long MOD = 1_000_000_007;
