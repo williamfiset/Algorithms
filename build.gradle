@@ -45,7 +45,7 @@ dependencies {
   testImplementation "org.mockito:mockito-core:5.+"
 
   // JUnit Platform Launcher to run tests from the command line
-  testRuntimeOnly('org.junit.platform:junit-platform-launcher:1.10.0')
+  testRuntimeOnly('org.junit.platform:junit-platform-launcher:6.0.1')
 }
 
 spotless {
