@@ -3,7 +3,7 @@ name: Bazel Tests
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
   bazel-test:
