@@ -1,4 +1,4 @@
-name: Bazel Tests
+name: Run Bazel Tests
 
 on:
   pull_request:
@@ -16,6 +16,11 @@ jobs:
 
       - name: Set up Bazel
         uses: bazelbuild/setup-bazelisk@v3
+        with:
+          bazelisk-version: latest
+
+      - name: Bazel version
+        run: bazel version
 
       - name: Run Bazel tests
         run: |
