@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.sparsetable.SparseTableTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:52.515Z" hostname="be:36:ce:0e:06:f7" time="0.138">
+  <properties/>
+  <testcase name="randomArrayTests()" classname="com.williamfiset.algorithms.datastructures.sparsetable.SparseTableTest" time="0.07"/>
+  <testcase name="simple()" classname="com.williamfiset.algorithms.datastructures.sparsetable.SparseTableTest" time="0.0"/>
+  <testcase name="verifyIndexIsAlwaysLeftmostPosition_randomized()" classname="com.williamfiset.algorithms.datastructures.sparsetable.SparseTableTest" time="0.032"/>
+  <testcase name="verifyIndexIsAlwaysLeftmostPositionWhenThereAreCollisions()" classname="com.williamfiset.algorithms.datastructures.sparsetable.SparseTableTest" time="0.0"/>
+  <testcase name="smallRangeRandomArrayTests()" classname="com.williamfiset.algorithms.datastructures.sparsetable.SparseTableTest" time="0.036"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

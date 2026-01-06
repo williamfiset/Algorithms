@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" tests="20" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:46.773Z" hostname="be:36:ce:0e:06:f7" time="1.319">
+  <properties/>
+  <testcase name="testRandomizedRemoveAt()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.219"/>
+  <testcase name="testRandomizedRemoving()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.743"/>
+  <testcase name="testPeekFirst()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <testcase name="testAddLast()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <testcase name="testAddAt()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <testcase name="testClear()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <testcase name="testPeeking()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.001"/>
+  <testcase name="testToString()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <testcase name="testRemoveFirst()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <testcase name="testRandomizedIndexOf()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.354"/>
+  <testcase name="testEmptyList()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <testcase name="testRemoveFirstOfEmpty()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <testcase name="testAddFirst()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <testcase name="testRemoveLastOfEmpty()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <testcase name="testRemoveAt()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <testcase name="testRemoving()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <testcase name="testRemoveLast()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <testcase name="testPeekLastOfEmpty()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <testcase name="testPeekLast()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <testcase name="testPeekFirstOfEmpty()" classname="com.williamfiset.algorithms.datastructures.linkedlist.LinkedListTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

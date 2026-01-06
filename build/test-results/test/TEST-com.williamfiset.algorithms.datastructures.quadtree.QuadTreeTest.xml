@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.quadtree.QuadTreeTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:49.155Z" hostname="be:36:ce:0e:06:f7" time="1.058">
+  <properties/>
+  <testcase name="testCountingPoints()" classname="com.williamfiset.algorithms.datastructures.quadtree.QuadTreeTest" time="0.0"/>
+  <testcase name="randomizedQueryTests()" classname="com.williamfiset.algorithms.datastructures.quadtree.QuadTreeTest" time="1.057"/>
+  <testcase name="testRectIntersection()" classname="com.williamfiset.algorithms.datastructures.quadtree.QuadTreeTest" time="0.0"/>
+  <testcase name="testRectContainment()" classname="com.williamfiset.algorithms.datastructures.quadtree.QuadTreeTest" time="0.0"/>
+  <testcase name="testPointContainment()" classname="com.williamfiset.algorithms.datastructures.quadtree.QuadTreeTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:28.299Z" hostname="be:36:ce:0e:06:f7" time="17.512">
+  <properties/>
+  <testcase name="testLeftRightRotation()" classname="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" time="0.0"/>
+  <testcase name="testNumberDoesntExist()" classname="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" time="0.0"/>
+  <testcase name="testNullInsertion()" classname="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" time="0.001"/>
+  <testcase name="interestingCase1()" classname="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" time="0.0"/>
+  <testcase name="testRightRightRotation()" classname="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" time="0.0"/>
+  <testcase name="testTreeContainsNull()" classname="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" time="0.0"/>
+  <testcase name="testTreeHeight()" classname="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" time="0.051"/>
+  <testcase name="testRandomizedValueInsertionsAgainstTreeSet()" classname="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" time="0.123"/>
+  <testcase name="testLeftLeftRotation()" classname="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" time="0.0"/>
+  <testcase name="testRemoval()" classname="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" time="0.0"/>
+  <testcase name="testLeftUncleCase()" classname="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" time="0.0"/>
+  <testcase name="randomRemoveTests()" classname="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" time="17.333"/>
+  <testcase name="testRightLeftRotation()" classname="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" time="0.0"/>
+  <testcase name="testRightUncleCase()" classname="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" time="0.0"/>
+  <testcase name="testNullRemoval()" classname="com.williamfiset.algorithms.datastructures.balancedtree.RedBlackTreeTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

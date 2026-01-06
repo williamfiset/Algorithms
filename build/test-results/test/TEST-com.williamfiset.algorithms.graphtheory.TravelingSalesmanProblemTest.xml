@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.graphtheory.TravelingSalesmanProblemTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:53.673Z" hostname="be:36:ce:0e:06:f7" time="0.122">
+  <properties/>
+  <testcase name="testTspRecursiveNonSquareMatrix()" classname="com.williamfiset.algorithms.graphtheory.TravelingSalesmanProblemTest" time="0.0"/>
+  <testcase name="testDifferentStartingNodes()" classname="com.williamfiset.algorithms.graphtheory.TravelingSalesmanProblemTest" time="0.012"/>
+  <testcase name="testGeneratedTour()" classname="com.williamfiset.algorithms.graphtheory.TravelingSalesmanProblemTest" time="0.031"/>
+  <testcase name="testTsp_small1()" classname="com.williamfiset.algorithms.graphtheory.TravelingSalesmanProblemTest" time="0.0"/>
+  <testcase name="testTspRecursiveSmallGraph()" classname="com.williamfiset.algorithms.graphtheory.TravelingSalesmanProblemTest" time="0.001"/>
+  <testcase name="testTspRecursiveInvalidStartNode()" classname="com.williamfiset.algorithms.graphtheory.TravelingSalesmanProblemTest" time="0.0"/>
+  <testcase name="testTspIterativePerformance()" classname="com.williamfiset.algorithms.graphtheory.TravelingSalesmanProblemTest" time="0.023"/>
+  <testcase name="testTspIterativeSmallGraph()" classname="com.williamfiset.algorithms.graphtheory.TravelingSalesmanProblemTest" time="0.001"/>
+  <testcase name="testTspRecursivePerformance()" classname="com.williamfiset.algorithms.graphtheory.TravelingSalesmanProblemTest" time="0.027"/>
+  <testcase name="testTspIterativeInvalidStartNode()" classname="com.williamfiset.algorithms.graphtheory.TravelingSalesmanProblemTest" time="0.0"/>
+  <testcase name="testDpVsBf()" classname="com.williamfiset.algorithms.graphtheory.TravelingSalesmanProblemTest" time="0.025"/>
+  <testcase name="testTspIterativeNonSquareMatrix()" classname="com.williamfiset.algorithms.graphtheory.TravelingSalesmanProblemTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

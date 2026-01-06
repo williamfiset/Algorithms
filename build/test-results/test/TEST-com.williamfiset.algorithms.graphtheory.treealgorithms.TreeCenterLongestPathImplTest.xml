@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImplTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:54.395Z" hostname="be:36:ce:0e:06:f7" time="0.0">
+  <properties/>
+  <testcase name="twoNodeTree()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImplTest" time="0.0"/>
+  <testcase name="singleton()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImplTest" time="0.0"/>
+  <testcase name="simpleTest1()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImplTest" time="0.0"/>
+  <testcase name="simpleTest2()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImplTest" time="0.0"/>
+  <testcase name="simpleTest3()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImplTest" time="0.0"/>
+  <testcase name="simpleTest4()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImplTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

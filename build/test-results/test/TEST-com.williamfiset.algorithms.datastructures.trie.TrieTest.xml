@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.trie.TrieTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:52.661Z" hostname="be:36:ce:0e:06:f7" time="0.002">
+  <properties/>
+  <testcase name="testBadTrieContains()" classname="com.williamfiset.algorithms.datastructures.trie.TrieTest" time="0.0"/>
+  <testcase name="testClear()" classname="com.williamfiset.algorithms.datastructures.trie.TrieTest" time="0.0"/>
+  <testcase name="testCount()" classname="com.williamfiset.algorithms.datastructures.trie.TrieTest" time="0.001"/>
+  <testcase name="testBadTrieDelete1()" classname="com.williamfiset.algorithms.datastructures.trie.TrieTest" time="0.0"/>
+  <testcase name="testBadTrieDelete2()" classname="com.williamfiset.algorithms.datastructures.trie.TrieTest" time="0.0"/>
+  <testcase name="testBadTrieDelete3()" classname="com.williamfiset.algorithms.datastructures.trie.TrieTest" time="0.0"/>
+  <testcase name="testBadTrieInsert()" classname="com.williamfiset.algorithms.datastructures.trie.TrieTest" time="0.0"/>
+  <testcase name="testContains()" classname="com.williamfiset.algorithms.datastructures.trie.TrieTest" time="0.0"/>
+  <testcase name="testEdgeCases()" classname="com.williamfiset.algorithms.datastructures.trie.TrieTest" time="0.0"/>
+  <testcase name="testDelete()" classname="com.williamfiset.algorithms.datastructures.trie.TrieTest" time="0.0"/>
+  <testcase name="testBadTrieCount()" classname="com.williamfiset.algorithms.datastructures.trie.TrieTest" time="0.001"/>
+  <testcase name="testInsert()" classname="com.williamfiset.algorithms.datastructures.trie.TrieTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

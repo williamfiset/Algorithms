@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.dp.CoinChangeTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:52.667Z" hostname="be:36:ce:0e:06:f7" time="0.026">
+  <properties/>
+  <testcase name="testCoinChangeSelectedCoins()" classname="com.williamfiset.algorithms.dp.CoinChangeTest" time="0.007"/>
+  <testcase name="testCoinChangeSpaceEfficientSelectedCoins()" classname="com.williamfiset.algorithms.dp.CoinChangeTest" time="0.007"/>
+  <testcase name="testCoinChange()" classname="com.williamfiset.algorithms.dp.CoinChangeTest" time="0.012"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

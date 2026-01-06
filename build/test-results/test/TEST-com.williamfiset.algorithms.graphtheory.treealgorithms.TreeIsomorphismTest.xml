@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:55.254Z" hostname="be:36:ce:0e:06:f7" time="0.701">
+  <properties/>
+  <testcase name="simpleTest()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismTest" time="0.001"/>
+  <testcase name="testSmall()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismTest" time="0.0"/>
+  <testcase name="singletonTreesAreIsomorphic()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismTest" time="0.0"/>
+  <testcase name="differentNumberOfNodes()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismTest" time="0.0"/>
+  <testcase name="testIsomorphismEquivilanceAgainstOtherImpl()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismTest" time="0.699"/>
+  <testcase name="testSimilarChains()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismTest" time="0.0"/>
+  <testcase name="testTwoNodeTree()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismTest" time="0.0"/>
+  <testcase name="emptyTreeThrowsException()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

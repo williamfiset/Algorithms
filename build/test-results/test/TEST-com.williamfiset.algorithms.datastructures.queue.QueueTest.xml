@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.queue.QueueTest" tests="21" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:50.248Z" hostname="be:36:ce:0e:06:f7" time="0.012">
+  <properties/>
+  <testcase name="[1] com.williamfiset.algorithms.datastructures.queue.ArrayQueue@2320fa6f" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.005"/>
+  <testcase name="[2] com.williamfiset.algorithms.datastructures.queue.LinkedQueue@3f6db3fb" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.001"/>
+  <testcase name="[3] com.williamfiset.algorithms.datastructures.queue.IntQueue@52de51b6" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[1] com.williamfiset.algorithms.datastructures.queue.ArrayQueue@68ad99fe" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[2] com.williamfiset.algorithms.datastructures.queue.LinkedQueue@485e36bc" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[3] com.williamfiset.algorithms.datastructures.queue.IntQueue@781f10f2" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.001"/>
+  <testcase name="[1] com.williamfiset.algorithms.datastructures.queue.ArrayQueue@2a79d4b1" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[2] com.williamfiset.algorithms.datastructures.queue.LinkedQueue@2e9fda69" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[3] com.williamfiset.algorithms.datastructures.queue.IntQueue@17cdf2d0" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[1] com.williamfiset.algorithms.datastructures.queue.ArrayQueue@1755e85b" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[2] com.williamfiset.algorithms.datastructures.queue.LinkedQueue@736d6a5c" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[3] com.williamfiset.algorithms.datastructures.queue.IntQueue@2371aaca" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[1] com.williamfiset.algorithms.datastructures.queue.ArrayQueue@5b529706" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[2] com.williamfiset.algorithms.datastructures.queue.LinkedQueue@63fdab07" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[3] com.williamfiset.algorithms.datastructures.queue.IntQueue@7b5a12ae" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[1] com.williamfiset.algorithms.datastructures.queue.ArrayQueue@5553d0f5" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.001"/>
+  <testcase name="[2] com.williamfiset.algorithms.datastructures.queue.LinkedQueue@14dda234" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[3] com.williamfiset.algorithms.datastructures.queue.IntQueue@3f390d63" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[1] com.williamfiset.algorithms.datastructures.queue.ArrayQueue@74a6a609" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[2] com.williamfiset.algorithms.datastructures.queue.LinkedQueue@2374d36a" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <testcase name="[3] com.williamfiset.algorithms.datastructures.queue.IntQueue@54d18072" classname="com.williamfiset.algorithms.datastructures.queue.QueueTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

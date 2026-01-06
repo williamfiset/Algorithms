@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.sorting.RadixSortTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:57.763Z" hostname="be:36:ce:0e:06:f7" time="0.131">
+  <properties/>
+  <testcase name="randomRadixSort_smallNumbers()" classname="com.williamfiset.algorithms.sorting.RadixSortTest" time="0.061"/>
+  <testcase name="testCalculateNumberOfDigits()" classname="com.williamfiset.algorithms.sorting.RadixSortTest" time="0.0"/>
+  <testcase name="randomRadixSort_largeNumbers()" classname="com.williamfiset.algorithms.sorting.RadixSortTest" time="0.069"/>
+  <testcase name="testGetMax()" classname="com.williamfiset.algorithms.sorting.RadixSortTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

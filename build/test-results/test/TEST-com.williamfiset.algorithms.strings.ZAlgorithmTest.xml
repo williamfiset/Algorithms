@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.strings.ZAlgorithmTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:49:00.724Z" hostname="be:36:ce:0e:06:f7" time="0.0">
+  <properties/>
+  <testcase name="textContainsAllDistinctCharacters()" classname="com.williamfiset.algorithms.strings.ZAlgorithmTest" time="0.0"/>
+  <testcase name="shouldReturnEmptyArrayOnNullOrEmptyInput()" classname="com.williamfiset.algorithms.strings.ZAlgorithmTest" time="0.0"/>
+  <testcase name="textContainsRepeatedPattern()" classname="com.williamfiset.algorithms.strings.ZAlgorithmTest" time="0.0"/>
+  <testcase name="textContainsASingleCharacterRepeated()" classname="com.williamfiset.algorithms.strings.ZAlgorithmTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

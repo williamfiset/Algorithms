@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.segmenttree.SumQuerySumUpdateSegmentTreeTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:51.422Z" hostname="be:36:ce:0e:06:f7" time="0.006">
+  <properties/>
+  <testcase name="testRandomRangeSumUpdatesWithSumRangeQueries()" classname="com.williamfiset.algorithms.datastructures.segmenttree.SumQuerySumUpdateSegmentTreeTest" time="0.006"/>
+  <testcase name="simpleTest()" classname="com.williamfiset.algorithms.datastructures.segmenttree.SumQuerySumUpdateSegmentTreeTest" time="0.0"/>
+  <testcase name="simpleTest2()" classname="com.williamfiset.algorithms.datastructures.segmenttree.SumQuerySumUpdateSegmentTreeTest" time="0.0"/>
+  <testcase name="simpleTest3()" classname="com.williamfiset.algorithms.datastructures.segmenttree.SumQuerySumUpdateSegmentTreeTest" time="0.0"/>
+  <testcase name="simpleTest4()" classname="com.williamfiset.algorithms.datastructures.segmenttree.SumQuerySumUpdateSegmentTreeTest" time="0.0"/>
+  <testcase name="simpleTest5()" classname="com.williamfiset.algorithms.datastructures.segmenttree.SumQuerySumUpdateSegmentTreeTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

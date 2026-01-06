@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.graphtheory.networkflow.MaxFlowTests" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:53.796Z" hostname="be:36:ce:0e:06:f7" time="0.369">
+  <properties/>
+  <testcase name="testSmallFlowGraph()" classname="com.williamfiset.algorithms.graphtheory.networkflow.MaxFlowTests" time="0.001"/>
+  <testcase name="testFlowInEqualsFlowOut()" classname="com.williamfiset.algorithms.graphtheory.networkflow.MaxFlowTests" time="0.0"/>
+  <testcase name="evilNetwork1()" classname="com.williamfiset.algorithms.graphtheory.networkflow.MaxFlowTests" time="0.367"/>
+  <testcase name="testMediumSizeFlowGraph()" classname="com.williamfiset.algorithms.graphtheory.networkflow.MaxFlowTests" time="0.0"/>
+  <testcase name="testDisconnectedGraph()" classname="com.williamfiset.algorithms.graphtheory.networkflow.MaxFlowTests" time="0.0"/>
+  <testcase name="classicNetwork()" classname="com.williamfiset.algorithms.graphtheory.networkflow.MaxFlowTests" time="0.0"/>
+  <testcase name="lineGraphTest()" classname="com.williamfiset.algorithms.graphtheory.networkflow.MaxFlowTests" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

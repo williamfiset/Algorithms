@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.sorting.SortingTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:57.894Z" hostname="be:36:ce:0e:06:f7" time="2.061">
+  <properties/>
+  <testcase name="verifySortingAlgorithms_smallPositiveIntegersOnly()" classname="com.williamfiset.algorithms.sorting.SortingTest" time="1.056"/>
+  <testcase name="verifySortingAlgorithms_smallNegativeIntegersOnly()" classname="com.williamfiset.algorithms.sorting.SortingTest" time="1.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

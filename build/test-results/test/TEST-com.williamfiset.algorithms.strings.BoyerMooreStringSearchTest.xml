@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.strings.BoyerMooreStringSearchTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:59.955Z" hostname="be:36:ce:0e:06:f7" time="0.003">
+  <properties/>
+  <testcase name="shouldReturnEmptyForPatternLengthLargerThenText()" classname="com.williamfiset.algorithms.strings.BoyerMooreStringSearchTest" time="0.0"/>
+  <testcase name="shouldReturnDynamicString()" classname="com.williamfiset.algorithms.strings.BoyerMooreStringSearchTest" time="0.002"/>
+  <testcase name="shouldReturnEmptyListOnNullInput()" classname="com.williamfiset.algorithms.strings.BoyerMooreStringSearchTest" time="0.0"/>
+  <testcase name="shouldReturnOneOccurrence()" classname="com.williamfiset.algorithms.strings.BoyerMooreStringSearchTest" time="0.0"/>
+  <testcase name="shouldReturnMultipleOccurrences()" classname="com.williamfiset.algorithms.strings.BoyerMooreStringSearchTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.segmenttree.MinQuerySumUpdateSegmentTreeTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:50.980Z" hostname="be:36:ce:0e:06:f7" time="0.432">
+  <properties/>
+  <testcase name="testRandomRangeSumUpdatesWithSumRangeQueries()" classname="com.williamfiset.algorithms.datastructures.segmenttree.MinQuerySumUpdateSegmentTreeTest" time="0.431"/>
+  <testcase name="simpleTest()" classname="com.williamfiset.algorithms.datastructures.segmenttree.MinQuerySumUpdateSegmentTreeTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

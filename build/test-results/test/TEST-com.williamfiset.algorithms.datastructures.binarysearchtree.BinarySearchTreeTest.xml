@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" tests="19" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:45.865Z" hostname="be:36:ce:0e:06:f7" time="0.016">
+  <properties/>
+  <testcase name="testAdd()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.001"/>
+  <testcase name="concurrentModificationErrorPreOrder()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.001"/>
+  <testcase name="concurrentModificationErrorRemovingInOrderOrder()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.0"/>
+  <testcase name="testSize()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.0"/>
+  <testcase name="concurrentModificationErrorLevelOrder()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.001"/>
+  <testcase name="concurrentModificationErrorInOrderOrder()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.0"/>
+  <testcase name="testPostOrderTraversal()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.003"/>
+  <testcase name="testPreOrderTraversal()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.002"/>
+  <testcase name="concurrentModificationErrorRemovingPreOrder()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.001"/>
+  <testcase name="testContains()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.0"/>
+  <testcase name="testInOrderTraversal()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.001"/>
+  <testcase name="testLevelOrderTraversal()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.002"/>
+  <testcase name="randomRemoveTests()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.002"/>
+  <testcase name="testHeight()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.0"/>
+  <testcase name="concurrentModificationErrorRemovingPostOrder()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.0"/>
+  <testcase name="concurrentModificationErrorRemovingLevelOrder()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.0"/>
+  <testcase name="testIsEmpty()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.0"/>
+  <testcase name="testRemove()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.001"/>
+  <testcase name="concurrentModificationErrorPostOrder()" classname="com.williamfiset.algorithms.datastructures.binarysearchtree.BinarySearchTreeTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

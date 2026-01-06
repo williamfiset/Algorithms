@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTree2Test" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:50.260Z" hostname="be:36:ce:0e:06:f7" time="0.069">
+  <properties/>
+  <testcase name="testAllFunctionCombinations()" classname="com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTree2Test" time="0.067"/>
+  <testcase name="testSumQuerySumUpdate_Simple()" classname="com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTree2Test" time="0.0"/>
+  <testcase name="testSumQueryMulUpdate_simple()" classname="com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTree2Test" time="0.0"/>
+  <testcase name="testSumQuerySumUpdate_RangeUpdate()" classname="com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTree2Test" time="0.0"/>
+  <testcase name="maxQueryMulUpdate_simple()" classname="com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTree2Test" time="0.0"/>
+  <testcase name="minQueryMulUpdate_simple()" classname="com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTree2Test" time="0.001"/>
+  <testcase name="minQuerySumUpdates_simple()" classname="com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTree2Test" time="0.0"/>
+  <testcase name="testSumQueryAssignUpdate_simple()" classname="com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTree2Test" time="0.0"/>
+  <testcase name="maxminQueryMulUpdate_simple()" classname="com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTree2Test" time="0.0"/>
+  <testcase name="maxQuerySumUpdate_simple()" classname="com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTree2Test" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

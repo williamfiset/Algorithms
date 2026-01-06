@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.geometry.MinimumCostConvexPolygonTriangulationTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:53.081Z" hostname="be:36:ce:0e:06:f7" time="0.0">
+  <properties/>
+  <testcase name="MinimumCostConvexPolygonTriangulationConvex()" classname="com.williamfiset.algorithms.geometry.MinimumCostConvexPolygonTriangulationTest" time="0.0"/>
+  <testcase name="MinimumCostConvexPolygonTriangulationInvalidTest()" classname="com.williamfiset.algorithms.geometry.MinimumCostConvexPolygonTriangulationTest" time="0.0"/>
+  <testcase name="MinimumCostConvexPolygonTriangulationBasicTest()" classname="com.williamfiset.algorithms.geometry.MinimumCostConvexPolygonTriangulationTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

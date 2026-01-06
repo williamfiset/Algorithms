@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:48.723Z" hostname="be:36:ce:0e:06:f7" time="0.431">
+  <properties/>
+  <testcase name="testTestIncreaseKeyNoUpdate()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.001"/>
+  <testcase name="testPeekAndPollMinIndex()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.0"/>
+  <testcase name="testPeekAndPollMinValue()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.0"/>
+  <testcase name="testTestDecreaseKeyNoUpdate()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.0"/>
+  <testcase name="testLegalSize()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.0"/>
+  <testcase name="testRandomInsertionsAndRemovals()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.256"/>
+  <testcase name="testOperations()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.0"/>
+  <testcase name="testContainsInvalidKey()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.0"/>
+  <testcase name="testInsertionAndValueOf()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.0"/>
+  <testcase name="testTestIncreaseKey()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.0"/>
+  <testcase name="testUpdateKeyValue()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.0"/>
+  <testcase name="testIllegalSizeOfNegativeOne()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.001"/>
+  <testcase name="testDuplicateKeys()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.0"/>
+  <testcase name="testRandomInsertionsAndPolls()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.172"/>
+  <testcase name="testContainsValidKey()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.0"/>
+  <testcase name="testIllegalSizeOfZero()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.0"/>
+  <testcase name="testTestDecreaseKey()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinIndexedBinaryHeapTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:46.279Z" hostname="be:36:ce:0e:06:f7" time="0.255">
+  <properties/>
+  <testcase name="testLegalCreation()" classname="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" time="0.001"/>
+  <testcase name="removeTestComplex1()" classname="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" time="0.0"/>
+  <testcase name="testTableSize()" classname="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" time="0.014"/>
+  <testcase name="testIllegalCreation1()" classname="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" time="0.0"/>
+  <testcase name="testIllegalCreation2()" classname="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" time="0.001"/>
+  <testcase name="testIllegalCreation3()" classname="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" time="0.001"/>
+  <testcase name="testUpdatingValue()" classname="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" time="0.0"/>
+  <testcase name="testRandomMapOperations()" classname="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" time="0.097"/>
+  <testcase name="randomRemove()" classname="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" time="0.024"/>
+  <testcase name="randomIteratorTests()" classname="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" time="0.04"/>
+  <testcase name="removeTest()" classname="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" time="0.0"/>
+  <testcase name="testConcurrentModificationException2()" classname="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" time="0.0"/>
+  <testcase name="testIterator()" classname="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" time="0.073"/>
+  <testcase name="testNullKey()" classname="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" time="0.001"/>
+  <testcase name="testConcurrentModificationException()" classname="com.williamfiset.algorithms.datastructures.hashtable.HashTableQuadraticProbingTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTreeTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:50.329Z" hostname="be:36:ce:0e:06:f7" time="0.169">
+  <properties/>
+  <testcase name="testAllFunctionCombinations()" classname="com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTreeTest" time="0.169"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

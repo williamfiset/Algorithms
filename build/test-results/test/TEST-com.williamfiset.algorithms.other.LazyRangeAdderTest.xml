@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.other.LazyRangeAdderTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:55.956Z" hostname="be:36:ce:0e:06:f7" time="0.068">
+  <properties/>
+  <testcase name="rangeUpdateTest1()" classname="com.williamfiset.algorithms.other.LazyRangeAdderTest" time="0.0"/>
+  <testcase name="rangeUpdateTest2()" classname="com.williamfiset.algorithms.other.LazyRangeAdderTest" time="0.0"/>
+  <testcase name="randomRangeAdditionTests()" classname="com.williamfiset.algorithms.other.LazyRangeAdderTest" time="0.068"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" tests="20" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:59.958Z" hostname="be:36:ce:0e:06:f7" time="0.765">
+  <properties/>
+  <testcase name="testLargeAlphabet()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.003"/>
+  <testcase name="multipleKValueTest1()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.0"/>
+  <testcase name="multipleKValueTest2()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.001"/>
+  <testcase name="multipleKValueTest3()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.0"/>
+  <testcase name="multipleKValueTest4()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.0"/>
+  <testcase name="multipleKValueTest5()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.0"/>
+  <testcase name="smallStrings()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.0"/>
+  <testcase name="noLongestCommonSubstringTest()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.001"/>
+  <testcase name="kValueTest2()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.0"/>
+  <testcase name="kValueTest3()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.0"/>
+  <testcase name="kValueTest4()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.0"/>
+  <testcase name="randomLcssWithBruteForceSolver1()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.088"/>
+  <testcase name="randomLcssWithBruteForceSolver2()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.67"/>
+  <testcase name="randomLcssWithBruteForceSolver3()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.002"/>
+  <testcase name="kValueTest()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.0"/>
+  <testcase name="simple1()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.0"/>
+  <testcase name="simple2()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.0"/>
+  <testcase name="simple3()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.0"/>
+  <testcase name="simple4()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.0"/>
+  <testcase name="simple5()" classname="com.williamfiset.algorithms.strings.LongestCommonSubstringTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

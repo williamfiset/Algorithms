@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:52.693Z" hostname="be:36:ce:0e:06:f7" time="0.385">
+  <properties/>
+  <testcase name="testHarderWmcm_fromSlides()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.001"/>
+  <testcase name="testSmallestMatrix1()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.0"/>
+  <testcase name="testSmallMatrix1()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.0"/>
+  <testcase name="testSmallMatrix2()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.0"/>
+  <testcase name="testNegativeEdgeWeights()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.0"/>
+  <testcase name="testAgainstBruteForce_largeValues()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.206"/>
+  <testcase name="testAgainstBruteForce_smallValues()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.166"/>
+  <testcase name="testMediumMatrix1()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.0"/>
+  <testcase name="testMediumMatrix2()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.0"/>
+  <testcase name="testMediumGraph_evenSize_fromSlides()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.0"/>
+  <testcase name="testMatchingOutputsUniqueNodes()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.007"/>
+  <testcase name="testSmallGraph_oddSize()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.0"/>
+  <testcase name="testDisjointGraph()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.0"/>
+  <testcase name="testNegativeEdge_smallerThanINFWeights()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.0"/>
+  <testcase name="testMediumGraph_evenSize_nonPerfectMatchingFromSlides()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.0"/>
+  <testcase name="testMatchingAndCostAreConsistent()" classname="com.williamfiset.algorithms.dp.WeightedMaximumCardinalityMatchingTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

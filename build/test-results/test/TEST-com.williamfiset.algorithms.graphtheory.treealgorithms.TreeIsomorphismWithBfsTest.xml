@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfsTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:55.955Z" hostname="be:36:ce:0e:06:f7" time="0.0">
+  <properties/>
+  <testcase name="testSlidesExample()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfsTest" time="0.0"/>
+  <testcase name="testSmall()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfsTest" time="0.0"/>
+  <testcase name="testSingleton()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfsTest" time="0.0"/>
+  <testcase name="t()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfsTest" time="0.0"/>
+  <testcase name="testSimilarChains()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfsTest" time="0.0"/>
+  <testcase name="testTwoNodeTree()" classname="com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfsTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.graphtheory.FloydWarshallSolverTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:53.264Z" hostname="be:36:ce:0e:06:f7" time="0.323">
+  <properties/>
+  <testcase name="testApspAgainstBellmanFord_nonNegativeEdgeWeights()" classname="com.williamfiset.algorithms.graphtheory.FloydWarshallSolverTest" time="0.042"/>
+  <testcase name="testSingleNodeNegativeCycleDetection()" classname="com.williamfiset.algorithms.graphtheory.FloydWarshallSolverTest" time="0.0"/>
+  <testcase name="testApspAgainstBellmanFord_withNegativeEdgeWeights()" classname="com.williamfiset.algorithms.graphtheory.FloydWarshallSolverTest" time="0.054"/>
+  <testcase name="testPathReconstructionBellmanFord_nonNegativeEdgeWeights()" classname="com.williamfiset.algorithms.graphtheory.FloydWarshallSolverTest" time="0.225"/>
+  <testcase name="testNegativeCycleGraph()" classname="com.williamfiset.algorithms.graphtheory.FloydWarshallSolverTest" time="0.0"/>
+  <testcase name="testDirectedGraph()" classname="com.williamfiset.algorithms.graphtheory.FloydWarshallSolverTest" time="0.0"/>
+  <testcase name="testNegativeCyclePropagation()" classname="com.williamfiset.algorithms.graphtheory.FloydWarshallSolverTest" time="0.002"/>
+  <testcase name="testSimpleNegativeCycleDetection()" classname="com.williamfiset.algorithms.graphtheory.FloydWarshallSolverTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

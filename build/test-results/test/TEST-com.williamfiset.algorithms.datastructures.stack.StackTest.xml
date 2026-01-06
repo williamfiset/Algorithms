@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.stack.StackTest" tests="23" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:52.654Z" hostname="be:36:ce:0e:06:f7" time="0.005">
+  <properties/>
+  <testcase name="[1] com.williamfiset.algorithms.datastructures.stack.ListStack@476b0ae6" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[2] com.williamfiset.algorithms.datastructures.stack.ArrayStack@549949be" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.001"/>
+  <testcase name="[3] com.williamfiset.algorithms.datastructures.stack.IntStack@4b3a45f1" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[1] com.williamfiset.algorithms.datastructures.stack.ListStack@17a87e37" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[2] com.williamfiset.algorithms.datastructures.stack.ArrayStack@3eeb318f" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[3] com.williamfiset.algorithms.datastructures.stack.IntStack@20a14b55" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[1] com.williamfiset.algorithms.datastructures.stack.ListStack@39ad977d" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[2] com.williamfiset.algorithms.datastructures.stack.ArrayStack@6da00fb9" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[3] com.williamfiset.algorithms.datastructures.stack.IntStack@a202ccb" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[1] com.williamfiset.algorithms.datastructures.stack.ListStack@20f12539" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[2] com.williamfiset.algorithms.datastructures.stack.ArrayStack@75b25825" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[3] com.williamfiset.algorithms.datastructures.stack.IntStack@18025ced" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[1] com.williamfiset.algorithms.datastructures.stack.ListStack@13cf7d52" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[2] com.williamfiset.algorithms.datastructures.stack.ArrayStack@3a3e4aff" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[3] com.williamfiset.algorithms.datastructures.stack.IntStack@5d2a4eed" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[1] com.williamfiset.algorithms.datastructures.stack.ListStack@57459491" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[2] com.williamfiset.algorithms.datastructures.stack.ArrayStack@3f0846c6" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[3] com.williamfiset.algorithms.datastructures.stack.IntStack@77a98a6a" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="testIteratorOnEmptyStack()" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[1] com.williamfiset.algorithms.datastructures.stack.ListStack@62452cc9" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[2] com.williamfiset.algorithms.datastructures.stack.ArrayStack@5a7005d" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="[3] com.williamfiset.algorithms.datastructures.stack.IntStack@5bc9ba1d" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <testcase name="testIteratorLifoOrder()" classname="com.williamfiset.algorithms.datastructures.stack.StackTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

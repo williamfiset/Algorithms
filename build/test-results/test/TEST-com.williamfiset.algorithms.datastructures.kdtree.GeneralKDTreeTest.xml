@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:46.769Z" hostname="be:36:ce:0e:06:f7" time="0.003">
+  <properties/>
+  <testcase name="testDeleteEmpty()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.0"/>
+  <testcase name="testSearchMismatchDimensions()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.001"/>
+  <testcase name="testDimensionsZero()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.001"/>
+  <testcase name="testSearchNull()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.0"/>
+  <testcase name="testDimensionsNegative()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.0"/>
+  <testcase name="testFindMin()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.0"/>
+  <testcase name="testFindMinNegative()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.0"/>
+  <testcase name="testDeleteMismatchDimensions()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.0"/>
+  <testcase name="testInsertNull()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.001"/>
+  <testcase name="testDeleteNull()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.0"/>
+  <testcase name="testDeleteRoot()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.0"/>
+  <testcase name="testDelete()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.0"/>
+  <testcase name="testInsert()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.0"/>
+  <testcase name="testSearch()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.0"/>
+  <testcase name="testInsertMismatchDimensions()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.0"/>
+  <testcase name="testFindMinOutOfBounds()" classname="com.williamfiset.algorithms.datastructures.kdtree.GeneralKDTreeTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

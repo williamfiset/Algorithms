@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.priorityqueue.MinDHeapTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:48.155Z" hostname="be:36:ce:0e:06:f7" time="0.567">
+  <properties/>
+  <testcase name="testClear()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinDHeapTest" time="0.001"/>
+  <testcase name="testEmpty()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinDHeapTest" time="0.0"/>
+  <testcase name="testRemovingDuplicates()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinDHeapTest" time="0.0"/>
+  <testcase name="testPriorityRandomOperations()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinDHeapTest" time="0.143"/>
+  <testcase name="testHeapProperty()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinDHeapTest" time="0.0"/>
+  <testcase name="testPriorityQueueSizeParam()" classname="com.williamfiset.algorithms.datastructures.priorityqueue.MinDHeapTest" time="0.423"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

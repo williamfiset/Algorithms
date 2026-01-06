@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.fenwicktree.FenwickTreeRangeQueryPointUpdateTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:45.906Z" hostname="be:36:ce:0e:06:f7" time="0.07">
+  <properties/>
+  <testcase name="testRandomizedSetSumQueries()" classname="com.williamfiset.algorithms.datastructures.fenwicktree.FenwickTreeRangeQueryPointUpdateTest" time="0.037"/>
+  <testcase name="testReusability()" classname="com.williamfiset.algorithms.datastructures.fenwicktree.FenwickTreeRangeQueryPointUpdateTest" time="0.01"/>
+  <testcase name="testIntervalSumNegativeValues()" classname="com.williamfiset.algorithms.datastructures.fenwicktree.FenwickTreeRangeQueryPointUpdateTest" time="0.0"/>
+  <testcase name="testIntervalSumPositiveValues()" classname="com.williamfiset.algorithms.datastructures.fenwicktree.FenwickTreeRangeQueryPointUpdateTest" time="0.0"/>
+  <testcase name="testIllegalCreation()" classname="com.williamfiset.algorithms.datastructures.fenwicktree.FenwickTreeRangeQueryPointUpdateTest" time="0.0"/>
+  <testcase name="testIntervalSumNegativeValues2()" classname="com.williamfiset.algorithms.datastructures.fenwicktree.FenwickTreeRangeQueryPointUpdateTest" time="0.0"/>
+  <testcase name="testRandomizedStaticSumQueries()" classname="com.williamfiset.algorithms.datastructures.fenwicktree.FenwickTreeRangeQueryPointUpdateTest" time="0.021"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

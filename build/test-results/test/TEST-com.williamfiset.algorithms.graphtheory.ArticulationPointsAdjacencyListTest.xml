@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.graphtheory.ArticulationPointsAdjacencyListTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:53.081Z" hostname="be:36:ce:0e:06:f7" time="0.001">
+  <properties/>
+  <testcase name="testStarGraphWithRootNotInMiddle()" classname="com.williamfiset.algorithms.graphtheory.ArticulationPointsAdjacencyListTest" time="0.0"/>
+  <testcase name="testMultiCycleGraph()" classname="com.williamfiset.algorithms.graphtheory.ArticulationPointsAdjacencyListTest" time="0.001"/>
+  <testcase name="testButterflyGraphWithThreeWings()" classname="com.williamfiset.algorithms.graphtheory.ArticulationPointsAdjacencyListTest" time="0.0"/>
+  <testcase name="testClosedCycle()" classname="com.williamfiset.algorithms.graphtheory.ArticulationPointsAdjacencyListTest" time="0.0"/>
+  <testcase name="testThreeNodeLineGraph()" classname="com.williamfiset.algorithms.graphtheory.ArticulationPointsAdjacencyListTest" time="0.0"/>
+  <testcase name="testButterflyGraph()" classname="com.williamfiset.algorithms.graphtheory.ArticulationPointsAdjacencyListTest" time="0.0"/>
+  <testcase name="testBiConnectedGraph()" classname="com.williamfiset.algorithms.graphtheory.ArticulationPointsAdjacencyListTest" time="0.0"/>
+  <testcase name="testDisconnectedGraph()" classname="com.williamfiset.algorithms.graphtheory.ArticulationPointsAdjacencyListTest" time="0.0"/>
+  <testcase name="testStarGraphWithRootAsMiddle()" classname="com.williamfiset.algorithms.graphtheory.ArticulationPointsAdjacencyListTest" time="0.0"/>
+  <testcase name="testSingleNodeGraph()" classname="com.williamfiset.algorithms.graphtheory.ArticulationPointsAdjacencyListTest" time="0.0"/>
+  <testcase name="testTwoNodeGraph()" classname="com.williamfiset.algorithms.graphtheory.ArticulationPointsAdjacencyListTest" time="0.0"/>
+  <testcase name="testTreeCase()" classname="com.williamfiset.algorithms.graphtheory.ArticulationPointsAdjacencyListTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:53.263Z" hostname="be:36:ce:0e:06:f7" time="0.001">
+  <properties/>
+  <testcase name="testSimpleGraph()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testPathUniqueStartAndEndNodes()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testEmptyGraph()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testGraphWithNoEdges()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testMultiPartDisconnectedGraph2()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testGraphWithUniquePath()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testOneNodeSelfLoopGraph()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testMultiPartDisconnectedGraph()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testInvalidGraph1()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.001"/>
+  <testcase name="testInvalidGraph2()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testInvalidGraph3()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testInvalidGraph4()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testGraphAllEqualEdgeFrequency2()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testOneNodeMultipleSelfLoopsGraph()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testSomewhatComplexPath()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testGraphAllEqualEdgeFrequency()" classname="com.williamfiset.algorithms.graphtheory.EulerianPathDirectedEdgesAdjacencyListTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

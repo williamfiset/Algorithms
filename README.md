@@ -1,5 +1,4 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![Java CI with Gradle](https://github.com/williamfiset/Algorithms/workflows/Java%20CI%20with%20Gradle/badge.svg)
 ![README Checker](https://github.com/williamfiset/Algorithms/workflows/README%20URL%20Checker/badge.svg)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=JUP2HZ6JUPB5C)
 
@@ -7,72 +6,64 @@
 
 Algorithms and data structures are fundamental to efficient code and good software design. Creating and designing excellent algorithms is required for being an exemplary programmer. This repository's goal is to demonstrate how to correctly implement common data structures and algorithms in the simplest and most elegant ways.
 
-### Other programming languages?
-
-This repository provides algorithm implementations in Java, however, there are other forks that provide implementations in other languages, most notably:
-
-* **C++/Python**: https://github.com/akzare/Algorithms
-* **Rust**: https://github.com/TianyiShi2001/Algorithms
-
 # Running an algorithm implementation
 
-To compile and run any of the algorithms here, you need at least JDK version 8. Gradle can make things more convenient for you, but it is not required.
+To compile and run any of the algorithms here, you need at least JDK version 8 and [Bazel](https://bazel.build/).
 
-## Running with Gradle (recommended)
+## Running with Bazel (recommended)
 
-This project supports the [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). The Gradle wrapper automatically downloads Gradle the first time it runs, so expect a delay when running the first command below.
-
-If you are on Windows, use `gradlew.bat` instead of `./gradlew` below.
+This project uses [Bazel](https://bazel.build/) as its build system. Install Bazel by following the [official installation guide](https://bazel.build/install).
 
 Run a single algorithm like this:
 
-```
-./gradlew run -Palgorithm=<algorithm-subpackage>.<algorithm-class>
-```
-
-Alternatively, you can run a single algorithm specifying the full class name
-
-```
-./gradlew run -Pmain=<algorithm-fully-qualified-class-name>
-
+```bash
+bazel run //src/main/java/com/williamfiset/algorithms/<subpackage>:<ClassName>
 ```
 
 For instance:
 
-```
-./gradlew run -Palgorithm=search.BinarySearch
+```bash
+bazel run //src/main/java/com/williamfiset/algorithms/search:BinarySearch
 ```
 
-or
+Run all tests:
 
+```bash
+bazel test //src/test/...
 ```
-./gradlew run -Pmain=com.williamfiset.algorithms.search.BinarySearch
+
+Run tests for a specific package:
+
+```bash
+bazel test //src/test/java/com/williamfiset/algorithms/sorting:all
 ```
 
 ## Compiling and running with only a JDK
 
+If you don't want to use Bazel, you can compile and run with just the JDK:
+
 ### Create a classes folder
 
-```
+```bash
 cd Algorithms
 mkdir classes
 ```
 
 ### Compile the algorithm
 
-```
-javac -sourcepath src/main/java -d classes src/main/java/ <relative-path-to-java-source-file>
+```bash
+javac -sourcepath src/main/java -d classes src/main/java/<relative-path-to-java-source-file>
 ```
 
 ### Run the algorithm
 
-```
+```bash
 java -cp classes <class-fully-qualified-name>
 ```
 
 ### Example
 
-```
+```bash
 $ javac -d classes -sourcepath src/main/java src/main/java/com/williamfiset/algorithms/search/BinarySearch.java
 $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 ```

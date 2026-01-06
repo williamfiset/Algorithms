@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.skiplist.SkipListTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:52.514Z" hostname="be:36:ce:0e:06:f7" time="0.001">
+  <properties/>
+  <testcase name="testInsertGreaterThanMaxValue()" classname="com.williamfiset.algorithms.datastructures.skiplist.SkipListTest" time="0.0"/>
+  <testcase name="testIndex()" classname="com.williamfiset.algorithms.datastructures.skiplist.SkipListTest" time="0.001"/>
+  <testcase name="testFind()" classname="com.williamfiset.algorithms.datastructures.skiplist.SkipListTest" time="0.0"/>
+  <testcase name="testSize()" classname="com.williamfiset.algorithms.datastructures.skiplist.SkipListTest" time="0.0"/>
+  <testcase name="testIndexWithNonExistingValue()" classname="com.williamfiset.algorithms.datastructures.skiplist.SkipListTest" time="0.0"/>
+  <testcase name="testRemoveNonExisting()" classname="com.williamfiset.algorithms.datastructures.skiplist.SkipListTest" time="0.0"/>
+  <testcase name="testRemoveHeadTail()" classname="com.williamfiset.algorithms.datastructures.skiplist.SkipListTest" time="0.0"/>
+  <testcase name="testInsertLesserThanMinValue()" classname="com.williamfiset.algorithms.datastructures.skiplist.SkipListTest" time="0.0"/>
+  <testcase name="testSimpleFunctionality()" classname="com.williamfiset.algorithms.datastructures.skiplist.SkipListTest" time="0.0"/>
+  <testcase name="testDuplicate()" classname="com.williamfiset.algorithms.datastructures.skiplist.SkipListTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

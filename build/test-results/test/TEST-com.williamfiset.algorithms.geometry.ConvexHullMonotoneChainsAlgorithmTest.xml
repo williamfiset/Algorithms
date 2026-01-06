@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.geometry.ConvexHullMonotoneChainsAlgorithmTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:53.078Z" hostname="be:36:ce:0e:06:f7" time="0.002">
+  <properties/>
+  <testcase name="test3Points()" classname="com.williamfiset.algorithms.geometry.ConvexHullMonotoneChainsAlgorithmTest" time="0.002"/>
+  <testcase name="testEmptyCase()" classname="com.williamfiset.algorithms.geometry.ConvexHullMonotoneChainsAlgorithmTest" time="0.0"/>
+  <testcase name="repeatedSinglePoint()" classname="com.williamfiset.algorithms.geometry.ConvexHullMonotoneChainsAlgorithmTest" time="0.0"/>
+  <testcase name="convexHullRedundantPoints()" classname="com.williamfiset.algorithms.geometry.ConvexHullMonotoneChainsAlgorithmTest" time="0.0"/>
+  <testcase name="test1Point()" classname="com.williamfiset.algorithms.geometry.ConvexHullMonotoneChainsAlgorithmTest" time="0.0"/>
+  <testcase name="uniquePointsOnHull()" classname="com.williamfiset.algorithms.geometry.ConvexHullMonotoneChainsAlgorithmTest" time="0.0"/>
+  <testcase name="test2Points()" classname="com.williamfiset.algorithms.geometry.ConvexHullMonotoneChainsAlgorithmTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

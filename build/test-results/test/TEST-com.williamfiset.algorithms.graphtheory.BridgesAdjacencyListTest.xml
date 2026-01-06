@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.graphtheory.BridgesAdjacencyListTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:53.262Z" hostname="be:36:ce:0e:06:f7" time="0.001">
+  <properties/>
+  <testcase name="graphWithCyclesTest()" classname="com.williamfiset.algorithms.graphtheory.BridgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testDisconnectedGraph()" classname="com.williamfiset.algorithms.graphtheory.BridgesAdjacencyListTest" time="0.0"/>
+  <testcase name="testGraphInSlides()" classname="com.williamfiset.algorithms.graphtheory.BridgesAdjacencyListTest" time="0.001"/>
+  <testcase name="testTreeCase()" classname="com.williamfiset.algorithms.graphtheory.BridgesAdjacencyListTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

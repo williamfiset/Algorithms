@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.fibonacciheap.FibonacciHeapTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:45.988Z" hostname="be:36:ce:0e:06:f7" time="0.007">
+  <properties/>
+  <testcase name="singletonQueueReturnsSoleItemOnPoll()" classname="com.williamfiset.algorithms.datastructures.fibonacciheap.FibonacciHeapTest" time="0.001"/>
+  <testcase name="returnsOrderedItemsFromRandomInsert()" classname="com.williamfiset.algorithms.datastructures.fibonacciheap.FibonacciHeapTest" time="0.003"/>
+  <testcase name="clearQueue()" classname="com.williamfiset.algorithms.datastructures.fibonacciheap.FibonacciHeapTest" time="0.0"/>
+  <testcase name="offerPeekAndElement()" classname="com.williamfiset.algorithms.datastructures.fibonacciheap.FibonacciHeapTest" time="0.0"/>
+  <testcase name="isEmptyAfterSoleElementRemoved()" classname="com.williamfiset.algorithms.datastructures.fibonacciheap.FibonacciHeapTest" time="0.001"/>
+  <testcase name="insertSingleItem()" classname="com.williamfiset.algorithms.datastructures.fibonacciheap.FibonacciHeapTest" time="0.0"/>
+  <testcase name="noLongerEmptyAfterAdd()" classname="com.williamfiset.algorithms.datastructures.fibonacciheap.FibonacciHeapTest" time="0.0"/>
+  <testcase name="elementThrowsException()" classname="com.williamfiset.algorithms.datastructures.fibonacciheap.FibonacciHeapTest" time="0.001"/>
+  <testcase name="insertSameValuesAndReturnsOrderedItems()" classname="com.williamfiset.algorithms.datastructures.fibonacciheap.FibonacciHeapTest" time="0.0"/>
+  <testcase name="emptyWhenCreated()" classname="com.williamfiset.algorithms.datastructures.fibonacciheap.FibonacciHeapTest" time="0.0"/>
+  <testcase name="returnsOrderedItems()" classname="com.williamfiset.algorithms.datastructures.fibonacciheap.FibonacciHeapTest" time="0.001"/>
+  <testcase name="addAllAndContinsItem()" classname="com.williamfiset.algorithms.datastructures.fibonacciheap.FibonacciHeapTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

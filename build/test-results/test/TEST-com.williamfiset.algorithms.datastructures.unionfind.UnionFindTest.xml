@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.williamfiset.algorithms.datastructures.unionfind.UnionFindTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-01-03T14:48:52.664Z" hostname="be:36:ce:0e:06:f7" time="0.002">
+  <properties/>
+  <testcase name="Size: -1" classname="com.williamfiset.algorithms.datastructures.unionfind.UnionFindTest" time="0.002"/>
+  <testcase name="Size: -3463" classname="com.williamfiset.algorithms.datastructures.unionfind.UnionFindTest" time="0.0"/>
+  <testcase name="Size: 0" classname="com.williamfiset.algorithms.datastructures.unionfind.UnionFindTest" time="0.0"/>
+  <testcase name="testConnectivity()" classname="com.williamfiset.algorithms.datastructures.unionfind.UnionFindTest" time="0.0"/>
+  <testcase name="testSize()" classname="com.williamfiset.algorithms.datastructures.unionfind.UnionFindTest" time="0.0"/>
+  <testcase name="testComponentSize()" classname="com.williamfiset.algorithms.datastructures.unionfind.UnionFindTest" time="0.0"/>
+  <testcase name="testNumComponents()" classname="com.williamfiset.algorithms.datastructures.unionfind.UnionFindTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
