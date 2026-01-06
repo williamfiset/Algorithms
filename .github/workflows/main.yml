@@ -1,0 +1,24 @@
+name: Run Bazel Tests
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  bazel-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Algorithms repo
+        uses: actions/checkout@v4
+
+      - name: Set up Bazel
+        uses: bazelbuild/setup-bazelisk@v3
+
+      - name: Bazel version
+        run: bazel version
+
+      - name: Run Bazel tests
+        run: |
+          bazel test //src/test/...
