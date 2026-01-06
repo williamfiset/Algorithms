@@ -5,6 +5,8 @@
  */
 package com.williamfiset.algorithms.datastructures.suffixarray;
 
+import java.util.Objects;
+
 public abstract class SuffixArray {
 
   // Length of the suffix array
@@ -23,8 +25,7 @@ public abstract class SuffixArray {
   private boolean constructedLcpArray = false;
 
   public SuffixArray(int[] text) {
-    if (text == null) throw new IllegalArgumentException("Text cannot be null.");
-    this.T = text;
+    this.T = Objects.requireNonNull(text);
     this.N = text.length;
   }
 

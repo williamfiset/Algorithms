@@ -104,7 +104,7 @@ public class HashTableSeparateChaining<K, V> implements Iterable<K> {
 
   public V insert(K key, V value) {
 
-    if (key == null) throw new IllegalArgumentException("Null key");
+    if (key == null) throw new NullPointerException("Null key");
     Entry<K, V> newEntry = new Entry<>(key, value);
     int bucketIndex = normalizeIndex(newEntry.hash);
     return bucketInsertEntry(bucketIndex, newEntry);

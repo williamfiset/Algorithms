@@ -76,8 +76,7 @@ public class QuadTree {
 
     // Construct a quad tree for a particular region.
     public Node(Rect region) {
-      if (region == null) throw new IllegalArgumentException("Illegal argument");
-      this.region = region;
+      this.region = Objects.requireNonNull(region);
       X = new long[NUM_POINTS];
       Y = new long[NUM_POINTS];
     }

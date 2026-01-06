@@ -13,6 +13,8 @@
  */
 package com.williamfiset.algorithms.dp;
 
+import java.util.Objects;
+
 public class KnapsackUnbounded {
 
   /**
@@ -24,7 +26,7 @@ public class KnapsackUnbounded {
    */
   public static int unboundedKnapsack(int maxWeight, int[] W, int[] V) {
 
-    if (W == null || V == null || W.length != V.length || maxWeight < 0)
+    if (Objects.requireNonNull(W).length != Objects.requireNonNull(V).length || maxWeight < 0)
       throw new IllegalArgumentException("Invalid input");
 
     final int N = W.length;
@@ -56,7 +58,7 @@ public class KnapsackUnbounded {
 
   public static int unboundedKnapsackSpaceEfficient(int maxWeight, int[] W, int[] V) {
 
-    if (W == null || V == null || W.length != V.length)
+    if (Objects.requireNonNull(W).length != Objects.requireNonNull(V).length)
       throw new IllegalArgumentException("Invalid input");
 
     final int N = W.length;

@@ -23,7 +23,7 @@ public class TarjanSccSolverAdjacencyListTest {
 
   @Test
   public void nullGraphConstructor() {
-    assertThrows(IllegalArgumentException.class, () -> new TarjanSccSolverAdjacencyList(null));
+    assertThrows(NullPointerException.class, () -> new TarjanSccSolverAdjacencyList(null));
   }
 
   @Test

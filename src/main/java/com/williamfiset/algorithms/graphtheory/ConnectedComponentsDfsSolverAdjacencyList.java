@@ -23,9 +23,8 @@ public class ConnectedComponentsDfsSolverAdjacencyList {
    * @param graph - An undirected graph as an adjacency list.
    */
   public ConnectedComponentsDfsSolverAdjacencyList(List<List<Integer>> graph) {
-    if (graph == null) throw new NullPointerException();
+    this.graph = Objects.requireNonNull(graph);
     this.n = graph.size();
-    this.graph = graph;
   }
 
   public int[] getComponents() {

@@ -42,9 +42,9 @@ public class LazyPrimsAdjacencyList {
   private Edge[] mstEdges;
 
   public LazyPrimsAdjacencyList(List<List<Edge>> graph) {
-    if (graph == null || graph.isEmpty()) throw new IllegalArgumentException();
+    this.graph = Objects.requireNonNull(graph);
+    if (graph.isEmpty()) throw new IllegalArgumentException();
     this.n = graph.size();
-    this.graph = graph;
   }
 
   // Returns the edges used in finding the minimum spanning tree,

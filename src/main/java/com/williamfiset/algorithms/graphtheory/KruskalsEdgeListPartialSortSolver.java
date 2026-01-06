@@ -11,6 +11,7 @@ package com.williamfiset.algorithms.graphtheory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.PriorityQueue;
 
 public class KruskalsEdgeListPartialSortSolver {
@@ -47,8 +48,8 @@ public class KruskalsEdgeListPartialSortSolver {
   // edges - A list of undirected edges.
   // n     - The number of nodes in the input graph.
   public KruskalsEdgeListPartialSortSolver(List<Edge> edges, int n) {
-    if (edges == null || n <= 1) throw new IllegalArgumentException();
-    this.edges = edges;
+    this.edges = Objects.requireNonNull(edges);
+    if (n <= 1) throw new IllegalArgumentException();
     this.n = n;
   }
 

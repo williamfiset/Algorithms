@@ -10,6 +10,7 @@ package com.williamfiset.algorithms.graphtheory.networkflow;
 
 import com.williamfiset.algorithms.utils.graphutils.Utils;
 import java.util.List;
+import java.util.Objects;
 
 public class BipartiteGraphCheckAdjacencyList {
 
@@ -23,9 +24,8 @@ public class BipartiteGraphCheckAdjacencyList {
   public static final int RED = 0b10, BLACK = (RED ^ 1);
 
   public BipartiteGraphCheckAdjacencyList(List<List<Integer>> graph) {
-    if (graph == null) throw new IllegalArgumentException("Graph cannot be null.");
+    this.graph = Objects.requireNonNull(graph);
     n = graph.size();
-    this.graph = graph;
   }
 
   // Checks whether the input graph is bipartite.

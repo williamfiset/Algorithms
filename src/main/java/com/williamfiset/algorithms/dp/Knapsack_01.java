@@ -13,6 +13,7 @@ package com.williamfiset.algorithms.dp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Knapsack_01 {
 
@@ -25,7 +26,7 @@ public class Knapsack_01 {
    */
   public static int knapsack(int capacity, int[] W, int[] V) {
 
-    if (W == null || V == null || W.length != V.length || capacity < 0)
+    if (Objects.requireNonNull(W).length != Objects.requireNonNull(V).length || capacity < 0)
       throw new IllegalArgumentException("Invalid input");
 
     final int N = W.length;

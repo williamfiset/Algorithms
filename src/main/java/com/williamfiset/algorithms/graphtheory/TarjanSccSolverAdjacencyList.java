@@ -33,9 +33,8 @@ public class TarjanSccSolverAdjacencyList {
   private static final int UNVISITED = -1;
 
   public TarjanSccSolverAdjacencyList(List<List<Integer>> graph) {
-    if (graph == null) throw new IllegalArgumentException("Graph cannot be null.");
+    this.graph = Objects.requireNonNull(graph);
     n = graph.size();
-    this.graph = graph;
   }
 
   // Returns the number of strongly connected components in the graph.

@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.PriorityQueue;
 
 public class DijkstrasShortestPathAdjacencyList {
@@ -72,8 +73,7 @@ public class DijkstrasShortestPathAdjacencyList {
 
   public DijkstrasShortestPathAdjacencyList(int n, Comparator<Node> comparator) {
     this(n);
-    if (comparator == null) throw new IllegalArgumentException("Comparator cannot be null");
-    this.comparator = comparator;
+    this.comparator = Objects.requireNonNull(comparator);
   }
 
   /**
@@ -100,8 +100,9 @@ public class DijkstrasShortestPathAdjacencyList {
    *     'end' are not connected then an empty array is returned.
    */
   public List<Integer> reconstructPath(int start, int end) {
-    if (end < 0 || end >= n) throw new IllegalArgumentException("Invalid node index");
-    if (start < 0 || start >= n) throw new IllegalArgumentException("Invalid node index");
+    if (end < 0 || end >= n) throw new IndexOutOfBoundsException("Invalid node index: " + end);
+    if (start < 0 || start >= n)
+      throw new IndexOutOfBoundsException("Invalid node index: " + start);
     double dist = dijkstra(start, end);
     List<Integer> path = new ArrayList<>();
     if (dist == Double.POSITIVE_INFINITY) return path;

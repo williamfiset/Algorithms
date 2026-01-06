@@ -44,8 +44,7 @@ public class Boruvkas {
   private List<Edge> mst;
 
   public Boruvkas(int n, int m, Edge[] graph) {
-    if (graph == null) throw new IllegalArgumentException();
-    this.graph = graph;
+    this.graph = Objects.requireNonNull(graph);
     this.n = n;
     this.m = m;
   }

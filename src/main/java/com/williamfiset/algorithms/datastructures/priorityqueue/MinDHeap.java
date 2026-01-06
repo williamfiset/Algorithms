@@ -5,6 +5,8 @@
  */
 package com.williamfiset.algorithms.datastructures.priorityqueue;
 
+import java.util.Objects;
+
 @SuppressWarnings("unchecked")
 public class MinDHeap<T extends Comparable<T>> {
 
@@ -61,8 +63,7 @@ public class MinDHeap<T extends Comparable<T>> {
 
   // Adds a none null element to the priority queue
   public void add(T elem) {
-    if (elem == null) throw new IllegalArgumentException("No null elements please :)");
-    heap[sz] = elem;
+    heap[sz] = Objects.requireNonNull(elem);
     swim(sz);
     sz++;
   }

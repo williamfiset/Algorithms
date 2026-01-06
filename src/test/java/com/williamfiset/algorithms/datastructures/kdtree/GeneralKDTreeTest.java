@@ -36,7 +36,7 @@ public class GeneralKDTreeTest {
   @Test
   public void testInsertNull() {
     GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
-    assertThrows(IllegalArgumentException.class, () -> kdTree.insert(null));
+    assertThrows(NullPointerException.class, () -> kdTree.insert(null));
   }
 
   @Test
@@ -68,7 +68,7 @@ public class GeneralKDTreeTest {
   @Test
   public void testSearchNull() {
     GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
-    assertThrows(IllegalArgumentException.class, () -> kdTree.search(null));
+    assertThrows(NullPointerException.class, () -> kdTree.search(null));
   }
 
   @Test
@@ -176,7 +176,7 @@ public class GeneralKDTreeTest {
   @Test
   public void testDeleteNull() {
     GeneralKDTree<Integer> kdTree = new GeneralKDTree<Integer>(2);
-    assertThrows(IllegalArgumentException.class, () -> kdTree.delete(null));
+    assertThrows(NullPointerException.class, () -> kdTree.delete(null));
   }
 
   @Test

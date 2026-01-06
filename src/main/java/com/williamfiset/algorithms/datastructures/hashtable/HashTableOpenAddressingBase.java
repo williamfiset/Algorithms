@@ -172,7 +172,7 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
   // Place a key-value pair into the hash-table. If the value already
   // exists inside the hash-table then the value is updated.
   public V insert(K key, V val) {
-    if (key == null) throw new IllegalArgumentException("Null key");
+    if (key == null) throw new NullPointerException("Null key");
     if (usedBuckets >= threshold) resizeTable();
 
     setupProbing(key);
@@ -229,7 +229,7 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
 
   // Returns true/false on whether a given key exists within the hash-table
   public boolean hasKey(K key) {
-    if (key == null) throw new IllegalArgumentException("Null key");
+    if (key == null) throw new NullPointerException("Null key");
 
     setupProbing(key);
     final int offset = normalizeIndex(key.hashCode());
@@ -273,7 +273,7 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
   // NOTE: returns null if the value is null AND also returns
   // null if the key does not exists.
   public V get(K key) {
-    if (key == null) throw new IllegalArgumentException("Null key");
+    if (key == null) throw new NullPointerException("Null key");
 
     setupProbing(key);
     final int offset = normalizeIndex(key.hashCode());
@@ -319,7 +319,7 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
   // NOTE: returns null if the value is null AND also returns
   // null if the key does not exists.
   public V remove(K key) {
-    if (key == null) throw new IllegalArgumentException("Null key");
+    if (key == null) throw new NullPointerException("Null key");
 
     setupProbing(key);
     final int offset = normalizeIndex(key.hashCode());

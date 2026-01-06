@@ -33,7 +33,7 @@ public class WeightedMaximumCardinalityMatchingIterative implements MwpmInterfac
 
   // The cost matrix should be a symmetric (i.e cost[i][j] = cost[j][i])
   public WeightedMaximumCardinalityMatchingIterative(double[][] cost) {
-    if (cost == null) throw new IllegalArgumentException("Input cannot be null");
+    this.cost = Objects.requireNonNull(cost);
     n = cost.length;
     if (n == 0) throw new IllegalArgumentException("Matrix size is zero");
     if (n % 2 != 0)
@@ -43,7 +43,6 @@ public class WeightedMaximumCardinalityMatchingIterative implements MwpmInterfac
           "Matrix too large! A matrix that size for the MWPM problem with a time complexity of"
               + "O(n^2*2^n) requires way too much computation and memory for a modern home computer.");
     END_STATE = (1 << n) - 1;
-    this.cost = cost;
   }
 
   public double getMinWeightCost() {

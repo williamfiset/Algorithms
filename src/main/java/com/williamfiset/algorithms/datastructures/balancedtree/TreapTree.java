@@ -93,7 +93,7 @@ public class TreapTree<T extends Comparable<T>> {
 
   public boolean insert(T val, int priority) {
     if (val == null) {
-      throw new IllegalArgumentException("TreapTree does not allow null values");
+      throw new NullPointerException("TreapTree does not allow null values");
     }
     if (!contains(root, val)) {
       root = insert(this.root, val, priority);
