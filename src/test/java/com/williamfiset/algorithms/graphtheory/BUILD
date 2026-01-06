@@ -12,8 +12,8 @@ JUNIT5_RUNTIME_DEPS = [
 
 TEST_DEPS = [
     "//src/main/java/com/williamfiset/algorithms/graphtheory:graphtheory",
-    "//src/main/java/com/williamfiset/algorithms/graphtheory:networkflow",
-    "//src/main/java/com/williamfiset/algorithms/graphtheory:treealgorithms",
+    "//src/main/java/com/williamfiset/algorithms/graphtheory/networkflow:networkflow",
+    "//src/main/java/com/williamfiset/algorithms/graphtheory/treealgorithms:treealgorithms",
     "//src/main/java/com/williamfiset/algorithms/utils:utils",
     "//src/main/java/com/williamfiset/algorithms/utils/graphutils:graphutils",
     "@maven//:com_google_guava_guava",
@@ -152,98 +152,6 @@ java_test(
     main_class = "org.junit.platform.console.ConsoleLauncher",
     use_testrunner = False,
     args = ["--select-class=com.williamfiset.algorithms.graphtheory.TwoSatSolverAdjacencyListTest"],
-    runtime_deps = JUNIT5_RUNTIME_DEPS,
-    deps = TEST_DEPS,
-)
-
-# Network flow tests
-
-# bazel test //src/test/java/com/williamfiset/algorithms/graphtheory:BipartiteGraphCheckAdjacencyListTest
-java_test(
-    name = "BipartiteGraphCheckAdjacencyListTest",
-    srcs = ["networkflow/BipartiteGraphCheckAdjacencyListTest.java"],
-    main_class = "org.junit.platform.console.ConsoleLauncher",
-    use_testrunner = False,
-    args = ["--select-class=com.williamfiset.algorithms.graphtheory.networkflow.BipartiteGraphCheckAdjacencyListTest"],
-    runtime_deps = JUNIT5_RUNTIME_DEPS,
-    deps = TEST_DEPS,
-)
-
-# Tree algorithm tests
-
-# bazel test //src/test/java/com/williamfiset/algorithms/graphtheory:LowestCommonAncestorEulerTourTest
-java_test(
-    name = "LowestCommonAncestorEulerTourTest",
-    srcs = ["treealgorithms/LowestCommonAncestorEulerTourTest.java"],
-    main_class = "org.junit.platform.console.ConsoleLauncher",
-    use_testrunner = False,
-    args = ["--select-class=com.williamfiset.algorithms.graphtheory.treealgorithms.LowestCommonAncestorEulerTourTest"],
-    runtime_deps = JUNIT5_RUNTIME_DEPS,
-    deps = TEST_DEPS,
-)
-
-# bazel test //src/test/java/com/williamfiset/algorithms/graphtheory:LowestCommonAncestorTest
-java_test(
-    name = "LowestCommonAncestorTest",
-    srcs = ["treealgorithms/LowestCommonAncestorTest.java"],
-    main_class = "org.junit.platform.console.ConsoleLauncher",
-    use_testrunner = False,
-    args = ["--select-class=com.williamfiset.algorithms.graphtheory.treealgorithms.LowestCommonAncestorTest"],
-    runtime_deps = JUNIT5_RUNTIME_DEPS,
-    deps = TEST_DEPS,
-)
-
-# bazel test //src/test/java/com/williamfiset/algorithms/graphtheory:RootingTreeTest
-java_test(
-    name = "RootingTreeTest",
-    srcs = ["treealgorithms/RootingTreeTest.java"],
-    main_class = "org.junit.platform.console.ConsoleLauncher",
-    use_testrunner = False,
-    args = ["--select-class=com.williamfiset.algorithms.graphtheory.treealgorithms.RootingTreeTest"],
-    runtime_deps = JUNIT5_RUNTIME_DEPS,
-    deps = TEST_DEPS,
-)
-
-# bazel test //src/test/java/com/williamfiset/algorithms/graphtheory:TreeCenterLongestPathImplTest
-java_test(
-    name = "TreeCenterLongestPathImplTest",
-    srcs = ["treealgorithms/TreeCenterLongestPathImplTest.java"],
-    main_class = "org.junit.platform.console.ConsoleLauncher",
-    use_testrunner = False,
-    args = ["--select-class=com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterLongestPathImplTest"],
-    runtime_deps = JUNIT5_RUNTIME_DEPS,
-    deps = TEST_DEPS,
-)
-
-# bazel test //src/test/java/com/williamfiset/algorithms/graphtheory:TreeCenterTest
-java_test(
-    name = "TreeCenterTest",
-    srcs = ["treealgorithms/TreeCenterTest.java"],
-    main_class = "org.junit.platform.console.ConsoleLauncher",
-    use_testrunner = False,
-    args = ["--select-class=com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterTest"],
-    runtime_deps = JUNIT5_RUNTIME_DEPS,
-    deps = TEST_DEPS,
-)
-
-# bazel test //src/test/java/com/williamfiset/algorithms/graphtheory:TreeIsomorphismTest
-java_test(
-    name = "TreeIsomorphismTest",
-    srcs = ["treealgorithms/TreeIsomorphismTest.java"],
-    main_class = "org.junit.platform.console.ConsoleLauncher",
-    use_testrunner = False,
-    args = ["--select-class=com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismTest"],
-    runtime_deps = JUNIT5_RUNTIME_DEPS,
-    deps = TEST_DEPS,
-)
-
-# bazel test //src/test/java/com/williamfiset/algorithms/graphtheory:TreeIsomorphismWithBfsTest
-java_test(
-    name = "TreeIsomorphismWithBfsTest",
-    srcs = ["treealgorithms/TreeIsomorphismWithBfsTest.java"],
-    main_class = "org.junit.platform.console.ConsoleLauncher",
-    use_testrunner = False,
-    args = ["--select-class=com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfsTest"],
     runtime_deps = JUNIT5_RUNTIME_DEPS,
     deps = TEST_DEPS,
 )

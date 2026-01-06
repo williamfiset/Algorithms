@@ -12,7 +12,7 @@ JUNIT5_RUNTIME_DEPS = [
 ]
 
 TEST_DEPS = [
-    "//src/main/java/com/williamfiset/algorithms/datastructures:binarysearchtree",
+    "//src/main/java/com/williamfiset/algorithms/datastructures/binarysearchtree:binarysearchtree",
     "//src/main/java/com/williamfiset/algorithms/utils:utils",
     "@maven//:com_google_guava_guava",
     "@maven//:com_google_truth_truth",
@@ -38,7 +38,7 @@ java_test(
     main_class = "org.junit.platform.console.ConsoleLauncher",
     use_testrunner = False,
     runtime_deps = JUNIT5_RUNTIME_DEPS,
-    deps = TEST_DEPS + ["//src/main/java/com/williamfiset/algorithms/datastructures:utils"],
+    deps = TEST_DEPS + ["//src/main/java/com/williamfiset/algorithms/datastructures/utils:utils"],
 )
 
 # Run all tests

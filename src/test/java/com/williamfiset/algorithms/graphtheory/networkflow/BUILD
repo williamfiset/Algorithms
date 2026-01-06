@@ -12,7 +12,7 @@ JUNIT5_RUNTIME_DEPS = [
 
 TEST_DEPS = [
     "//src/main/java/com/williamfiset/algorithms/graphtheory:graphtheory",
-    "//src/main/java/com/williamfiset/algorithms/graphtheory:networkflow",
+    "//src/main/java/com/williamfiset/algorithms/graphtheory/networkflow:networkflow",
     "//src/main/java/com/williamfiset/algorithms/utils:utils",
     "//src/main/java/com/williamfiset/algorithms/utils/graphutils:graphutils",
     "@maven//:com_google_guava_guava",
@@ -30,6 +30,28 @@ java_test(
     main_class = "org.junit.platform.console.ConsoleLauncher",
     use_testrunner = False,
     args = ["--select-class=com.williamfiset.algorithms.graphtheory.networkflow.BipartiteGraphCheckAdjacencyListTest"],
+    runtime_deps = JUNIT5_RUNTIME_DEPS,
+    deps = TEST_DEPS,
+)
+
+# bazel test //src/test/java/com/williamfiset/algorithms/graphtheory/networkflow:MaxFlowTests
+java_test(
+    name = "MaxFlowTests",
+    srcs = ["MaxFlowTests.java"],
+    main_class = "org.junit.platform.console.ConsoleLauncher",
+    use_testrunner = False,
+    args = ["--select-class=com.williamfiset.algorithms.graphtheory.networkflow.MaxFlowTests"],
+    runtime_deps = JUNIT5_RUNTIME_DEPS,
+    deps = TEST_DEPS,
+)
+
+# bazel test //src/test/java/com/williamfiset/algorithms/graphtheory/networkflow:MinCostMaxFlowTests
+java_test(
+    name = "MinCostMaxFlowTests",
+    srcs = ["MinCostMaxFlowTests.java"],
+    main_class = "org.junit.platform.console.ConsoleLauncher",
+    use_testrunner = False,
+    args = ["--select-class=com.williamfiset.algorithms.graphtheory.networkflow.MinCostMaxFlowTests"],
     runtime_deps = JUNIT5_RUNTIME_DEPS,
     deps = TEST_DEPS,
 )

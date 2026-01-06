@@ -12,7 +12,7 @@ JUNIT5_RUNTIME_DEPS = [
 ]
 
 TEST_DEPS = [
-    "//src/main/java/com/williamfiset/algorithms/datastructures:priorityqueue",
+    "//src/main/java/com/williamfiset/algorithms/datastructures/priorityqueue:priorityqueue",
     "//src/main/java/com/williamfiset/algorithms/utils:utils",
     "@maven//:com_google_guava_guava",
     "@maven//:com_google_truth_truth",

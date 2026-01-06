@@ -12,7 +12,7 @@ JUNIT5_RUNTIME_DEPS = [
 
 TEST_DEPS = [
     "//src/main/java/com/williamfiset/algorithms/graphtheory:graphtheory",
-    "//src/main/java/com/williamfiset/algorithms/graphtheory:treealgorithms",
+    "//src/main/java/com/williamfiset/algorithms/graphtheory/treealgorithms:treealgorithms",
     "//src/main/java/com/williamfiset/algorithms/utils:utils",
     "//src/main/java/com/williamfiset/algorithms/utils/graphutils:graphutils",
     "@maven//:com_google_guava_guava",
