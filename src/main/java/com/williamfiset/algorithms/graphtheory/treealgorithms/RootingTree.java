@@ -62,7 +62,7 @@ public class RootingTree {
 
     @Override
     public int hashCode() {
-      return Integer.hashCode(id);
+      return id;
     }
   }
 
