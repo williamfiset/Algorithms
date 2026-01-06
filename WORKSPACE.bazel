@@ -1,3 +1,0 @@
-# This project has been migrated to Bzlmod (MODULE.bazel).
-# WORKSPACE is deprecated and will be removed in Bazel 9.
-# All dependencies are now managed in MODULE.bazel.
