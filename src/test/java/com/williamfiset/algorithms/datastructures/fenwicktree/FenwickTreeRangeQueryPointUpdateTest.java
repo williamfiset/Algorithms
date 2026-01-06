@@ -128,7 +128,7 @@ public class FenwickTreeRangeQueryPointUpdateTest {
 
       for (int j = 0; j < LOOPS / 10; j++) {
 
-        int index = 1 + ((int) Math.random() * n);
+        int index = 1 + (int)(Math.random() * n);
         long rand_val = randValue();
 
         randList[index] += rand_val;

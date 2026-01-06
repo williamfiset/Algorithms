@@ -13,6 +13,7 @@
  */
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
+import java.util.Objects;
 import java.util.function.BinaryOperator;
 
 public class GenericSegmentTree2 {
@@ -146,7 +147,7 @@ public class GenericSegmentTree2 {
           return 0L;
         } else if (x < 0) {
           // s.min was already calculated
-          if (safeMul(s.value, x) == s.min) {
+          if (Objects.equals(safeMul(s.value, x), s.min)) {
             return s.max;
           } else {
             return s.min;
@@ -169,7 +170,7 @@ public class GenericSegmentTree2 {
         if (x == 0) {
           return 0L;
         } else if (x < 0) {
-          if (safeMul(s.value, x) == s.min) {
+          if (Objects.equals(safeMul(s.value, x), s.min)) {
             return s.max;
           } else {
             return s.min;

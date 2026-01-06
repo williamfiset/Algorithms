@@ -5,6 +5,8 @@
  */
 package com.williamfiset.algorithms.datastructures.kdtree;
 
+import java.util.Arrays;
+
 public class GeneralKDTree<T extends Comparable<T>> {
 
   private int k;
@@ -60,7 +62,7 @@ public class GeneralKDTree<T extends Comparable<T>> {
     // If the search fails, the point is not in the tree
     if (curr == null) return false;
     // If the search succeeds, the point is in the tree
-    if ((curr.point).equals(toSearch.point)) return true;
+    if (Arrays.equals(curr.point, toSearch.point)) return true;
     // Otherwise, go where the point would go if it was inserted into the tree
     KDNode<T> nextNode =
         ((toSearch.point[axis]).compareTo(curr.point[axis]) < 0) ? curr.left : curr.right;
@@ -107,7 +109,7 @@ public class GeneralKDTree<T extends Comparable<T>> {
     // Return nothing if the point is not present
     if (!search(toRemove)) return null;
     // Delete and return root if it should be removed
-    if (toRemove.equals(root.point)) return deleteRecursiveRoot();
+    if (Arrays.equals(toRemove, root.point)) return deleteRecursiveRoot();
     // Create the comparison point to delete and remove recursively
     KDNode<T> removeElem = new KDNode<T>(toRemove);
     return deleteRecursiveSearch(removeElem, root, 0);
@@ -139,11 +141,11 @@ public class GeneralKDTree<T extends Comparable<T>> {
 
   private T[] deleteRecursiveSearch(KDNode<T> toRemove, KDNode<T> curr, int axis) {
     // If the node to remove is a direct child, extract it and remove it
-    if (curr.right != null && (toRemove.point).equals(curr.right.point)) {
+    if (curr.right != null && Arrays.equals(toRemove.point, curr.right.point)) {
       T[] removed = deleteRecursiveExtract(toRemove, curr.right, (axis + 1) % k);
       if (removed == null) curr.right = null;
       return toRemove.point;
-    } else if (curr.left != null && (toRemove.point).equals(curr.left.point)) {
+    } else if (curr.left != null && Arrays.equals(toRemove.point, curr.left.point)) {
       T[] removed = deleteRecursiveExtract(toRemove, curr.left, (axis + 1) % k);
       if (removed == null) curr.left = null;
       return toRemove.point;

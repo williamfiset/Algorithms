@@ -207,7 +207,7 @@ public class BinaryHeapTest {
         assertThat(v1).isEqualTo(v2);
         assertThat(pq1.peek()).isEqualTo(pq2.peek());
         assertThat(pq1.size()).isEqualTo(pq2.size());
-        assertThat(pq2.isMinHeap(0));
+        assertThat(pq2.isMinHeap(0)).isTrue();
       }
     }
   }

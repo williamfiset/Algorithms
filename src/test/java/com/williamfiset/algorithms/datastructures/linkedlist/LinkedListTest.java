@@ -81,7 +81,7 @@ public class LinkedListTest {
   public void testRemoveFirst() {
     list.addFirst(3);
     assertThat(list.removeFirst()).isEqualTo(3);
-    assertThat(list.isEmpty());
+    assertThat(list.isEmpty()).isTrue();
   }
 
   @Test
