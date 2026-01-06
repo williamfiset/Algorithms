@@ -1,4 +1,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Bazel Tests](https://github.com/williamfiset/Algorithms/actions/workflows/main.yml/badge.svg)](https://github.com/williamfiset/Algorithms/actions/workflows/main.yml)
 ![README Checker](https://github.com/williamfiset/Algorithms/workflows/README%20URL%20Checker/badge.svg)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=JUP2HZ6JUPB5C)
 
@@ -8,7 +9,7 @@ Algorithms and data structures are fundamental to efficient code and good softwa
 
 # Running an algorithm implementation
 
-To compile and run any of the algorithms here, you need at least JDK version 8 and [Bazel](https://bazel.build/).
+To compile and run any of the algorithms here, you need at least JDK version 8 and [Bazel](https://bazel.build/)
 
 ## Running with Bazel (recommended)
 
