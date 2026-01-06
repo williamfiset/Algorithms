@@ -359,7 +359,7 @@ public class EagerPrimsAdjacencyList {
 
     for (int i = 0; i < n; i++) {
       for (int j = i + 1; j < n; j++) {
-        int r = random.nextInt() % 10;
+        int r = random.nextInt(10);
         EagerPrimsAdjacencyList.addUndirectedEdge(g1, i, j, r);
         LazyPrimsAdjacencyList.addUndirectedEdge(g2, i, j, r);
       }

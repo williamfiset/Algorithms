@@ -59,6 +59,11 @@ public class RootingTree {
       }
       return false;
     }
+
+    @Override
+    public int hashCode() {
+      return Integer.hashCode(id);
+    }
   }
 
   public static TreeNode rootTree(List<List<Integer>> graph, int rootId) {

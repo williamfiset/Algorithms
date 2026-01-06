@@ -68,7 +68,7 @@ public class GraphDiameter {
         List<Edge> edges = graph.get(id);
         if (edges != null) {
           for (Edge edge : edges) {
-            if (visited.get(edge.to) != VISITED_TOKEN) {
+            if (!VISITED_TOKEN.equals(visited.get(edge.to))) {
               visited.put(edge.to, VISITED_TOKEN);
               queue.offer(edge.to);
             }

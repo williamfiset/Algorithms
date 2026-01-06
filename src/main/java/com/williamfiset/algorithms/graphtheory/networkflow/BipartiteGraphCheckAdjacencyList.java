@@ -19,6 +19,7 @@ public class BipartiteGraphCheckAdjacencyList {
   private boolean isBipartite;
   private List<List<Integer>> graph;
 
+  @SuppressWarnings("XorPower")
   public static final int RED = 0b10, BLACK = (RED ^ 1);
 
   public BipartiteGraphCheckAdjacencyList(List<List<Integer>> graph) {
