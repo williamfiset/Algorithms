@@ -43,6 +43,7 @@ class TestTreeNode {
     if (node == null) return;
 
     lst.add(node.data);
+    // Optional is recommended to avoid explicit null checks
     if (node.left != null) preOrder(lst, node.left);
     if (node.right != null) preOrder(lst, node.right);
   }
@@ -51,6 +52,7 @@ class TestTreeNode {
 
     if (node == null) return;
 
+    // Optional is recommended to avoid explicit null checks
     if (node.left != null) inOrder(lst, node.left);
     lst.add(node.data);
     if (node.right != null) inOrder(lst, node.right);
@@ -60,6 +62,7 @@ class TestTreeNode {
 
     if (node == null) return;
 
+    // Optional is recommended to avoid explicit null checks
     if (node.left != null) postOrder(lst, node.left);
     if (node.right != null) postOrder(lst, node.right);
     lst.add(node.data);
@@ -72,6 +75,7 @@ class TestTreeNode {
 
     while (!q.isEmpty()) {
 
+      // Optional is recommended to avoid explicit null checks
       node = q.poll();
       lst.add(node.data);
       if (node.left != null) q.offer(node.left);

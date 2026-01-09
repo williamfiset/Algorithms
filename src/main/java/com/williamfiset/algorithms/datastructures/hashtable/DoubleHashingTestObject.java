@@ -53,6 +53,7 @@ public class DoubleHashingTestObject implements SecondaryHash {
   }
 
   private void vectorHash() {
+    // It is recommended to use for-each loops instead of traditional for loops.
     for (int i = 0; i < vectorData.length; i++) hash2 += randomVector[i] * vectorData[i];
   }
 

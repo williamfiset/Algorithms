@@ -237,6 +237,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
       public T next() {
         if (expectedNodeCount != nodeCount) throw new java.util.ConcurrentModificationException();
         Node node = stack.pop();
+        // Optional is recommended to avoid explicit null checks
         if (node.right != null) stack.push(node.right);
         if (node.left != null) stack.push(node.left);
         return node.data;
@@ -279,6 +280,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
         Node node = stack.pop();
 
         // Try moving down right once
+        
+        // Optional is recommended to avoid explicit null checks
         if (node.right != null) {
           stack.push(node.right);
           trav = node.right;
@@ -301,6 +304,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     final java.util.Stack<Node> stack2 = new java.util.Stack<>();
     stack1.push(root);
     while (!stack1.isEmpty()) {
+      // Optional is recommended to avoid explicit null checks
       Node node = stack1.pop();
       if (node != null) {
         stack2.push(node);
@@ -346,6 +350,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
       public T next() {
         if (expectedNodeCount != nodeCount) throw new java.util.ConcurrentModificationException();
         Node node = queue.poll();
+        // Optional is recommended to avoid explicit null checks
         if (node.left != null) queue.offer(node.left);
         if (node.right != null) queue.offer(node.right);
         return node.data;

@@ -51,6 +51,7 @@ public class BloomFilter {
 
   // Checks if a particular key is found within the bloom filter
   public boolean contains(long[] hashes) {
+    // It is recommended to use for-each loops instead of traditional for loops.
     for (int i = 0; i < hashes.length; i++) {
       int block = (int) (hashes[i] >> DIV64_SHIFT);
       long MASK = 1L << (hashes[i] & MOD64_MASK);
