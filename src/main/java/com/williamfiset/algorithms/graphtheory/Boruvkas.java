@@ -112,54 +112,6 @@ public class Boruvkas {
     solved = true;
   }
 
-  private boolean check() {
-
-    if (!mstExists) return true;
-
-    // check that it is acyclic
-    UnionFind uf = new UnionFind(n);
-    for (Edge e : mst) {
-      int u = e.u, v = e.v;
-      if (uf.connected(u, v)) {
-        System.err.println("Not a forest");
-        return false;
-      }
-      uf.union(u, v);
-    }
-
-    // check that it is a spanning forest
-    for (Edge e : mst) {
-      int u = e.u, v = e.v;
-      if (!uf.connected(u, v)) {
-        System.err.println("Not a spanning forest");
-        return false;
-      }
-    }
-
-    // check that it is a minimal spanning forest (cut optimality conditions)
-    for (Edge e : mst) {
-
-      // all edges in MST except e
-      uf = new UnionFind(n);
-      for (Edge f : mst) {
-        int x = f.u, y = f.v;
-        if (f != e) uf.union(x, y);
-      }
-
-      // check that e is min weight edge in crossing cut
-      for (Edge f : graph) {
-        int x = f.u, y = f.v;
-        if (!uf.connected(x, y)) {
-          if (f.cost < e.cost) {
-            System.err.println("Edge " + f + " violates cut optimality conditions");
-            return false;
-          }
-        }
-      }
-    }
-    return true;
-  }
-
   public static void main(String[] args) {
 
     int n = 10, m = 18, i = 0;

@@ -24,6 +24,17 @@ TEST_DEPS = [
 
 # Core graphtheory tests
 
+# bazel test //src/test/java/com/williamfiset/algorithms/graphtheory:BoruvkasTest
+java_test(
+    name = "BoruvkasTest",
+    srcs = ["BoruvkasTest.java"],
+    main_class = "org.junit.platform.console.ConsoleLauncher",
+    use_testrunner = False,
+    args = ["--select-class=com.williamfiset.algorithms.graphtheory.BoruvkasTest"],
+    runtime_deps = JUNIT5_RUNTIME_DEPS,
+    deps = TEST_DEPS,
+)
+
 # bazel test //src/test/java/com/williamfiset/algorithms/graphtheory:ArticulationPointsAdjacencyListTest
 java_test(
     name = "ArticulationPointsAdjacencyListTest",
