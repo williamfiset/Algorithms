@@ -71,6 +71,7 @@ public class Boruvkas {
     UnionFind uf = new UnionFind(n);
 
     while (uf.components > 1) {
+      boolean stop = true;
       Edge[] cheapest = new Edge[n];
 
       // Find the cheapest edge for each component
@@ -81,11 +82,15 @@ public class Boruvkas {
 
         if (cheapest[root1] == null || e.cost < cheapest[root1].cost) {
           cheapest[root1] = e;
+          stop = false;
         }
         if (cheapest[root2] == null || e.cost < cheapest[root2].cost) {
           cheapest[root2] = e;
+          stop = false;
         }
       }
+
+      if (stop) break;
 
       // Add the cheapest edges to the MST
       for (int i = 0; i < n; i++) {
