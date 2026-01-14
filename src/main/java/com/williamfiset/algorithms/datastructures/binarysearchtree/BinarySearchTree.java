@@ -51,7 +51,9 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
       // Otherwise add this element to the binary tree
     } else {
-      root = add(root, elem);
+      node = add(root, elem);
+      if (isEmpty())
+        root = node
       nodeCount++;
       return true;
     }
