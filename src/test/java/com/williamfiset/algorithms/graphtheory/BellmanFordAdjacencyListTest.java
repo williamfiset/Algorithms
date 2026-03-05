@@ -89,4 +89,136 @@ public class BellmanFordAdjacencyListTest {
     assertThat(dist[2]).isPositiveInfinity();
     assertThat(dist[3]).isEqualTo(10.0); // must NOT be -Inf
   }
+
+  // -------------------------------------------------------------------------
+  // General cases
+  // -------------------------------------------------------------------------
+
+  @Test
+  public void singleNode() {
+    int V = 1;
+    List<BellmanFordAdjacencyList.Edge>[] g = BellmanFordAdjacencyList.createGraph(V);
+
+    double[] dist = BellmanFordAdjacencyList.bellmanFord(g, V, 0);
+
+    assertThat(dist[0]).isEqualTo(0.0);
+  }
+
+  @Test
+  public void twoNodesDirectEdge() {
+    int V = 2;
+    List<BellmanFordAdjacencyList.Edge>[] g = BellmanFordAdjacencyList.createGraph(V);
+    BellmanFordAdjacencyList.addEdge(g, 0, 1, 7);
+
+    double[] dist = BellmanFordAdjacencyList.bellmanFord(g, V, 0);
+
+    assertThat(dist[0]).isEqualTo(0.0);
+    assertThat(dist[1]).isEqualTo(7.0);
+  }
+
+  @Test
+  public void shortestPathChosenOverLonger() {
+    // Two paths from 0 to 2: 0→2 (cost 10) and 0→1→2 (cost 3+4=7)
+    int V = 3;
+    List<BellmanFordAdjacencyList.Edge>[] g = BellmanFordAdjacencyList.createGraph(V);
+    BellmanFordAdjacencyList.addEdge(g, 0, 2, 10);
+    BellmanFordAdjacencyList.addEdge(g, 0, 1, 3);
+    BellmanFordAdjacencyList.addEdge(g, 1, 2, 4);
+
+    double[] dist = BellmanFordAdjacencyList.bellmanFord(g, V, 0);
+
+    assertThat(dist[2]).isEqualTo(7.0);
+  }
+
+  @Test
+  public void negativeEdgeWeightWithoutCycle() {
+    // 0 --1--> 1 --(-2)--> 2; shortest path to 2 is -1
+    int V = 3;
+    List<BellmanFordAdjacencyList.Edge>[] g = BellmanFordAdjacencyList.createGraph(V);
+    BellmanFordAdjacencyList.addEdge(g, 0, 1, 1);
+    BellmanFordAdjacencyList.addEdge(g, 1, 2, -2);
+
+    double[] dist = BellmanFordAdjacencyList.bellmanFord(g, V, 0);
+
+    assertThat(dist[0]).isEqualTo(0.0);
+    assertThat(dist[1]).isEqualTo(1.0);
+    assertThat(dist[2]).isEqualTo(-1.0);
+  }
+
+  @Test
+  public void reachableNegativeCycleMarkedNegativeInfinity() {
+    // 0 --1--> 1 --1--> 2 --(-3)--> 1 (negative cycle: 1→2→1)
+    int V = 3;
+    List<BellmanFordAdjacencyList.Edge>[] g = BellmanFordAdjacencyList.createGraph(V);
+    BellmanFordAdjacencyList.addEdge(g, 0, 1, 1);
+    BellmanFordAdjacencyList.addEdge(g, 1, 2, 1);
+    BellmanFordAdjacencyList.addEdge(g, 2, 1, -3);
+
+    double[] dist = BellmanFordAdjacencyList.bellmanFord(g, V, 0);
+
+    assertThat(dist[0]).isEqualTo(0.0);
+    assertThat(dist[1]).isNegativeInfinity();
+    assertThat(dist[2]).isNegativeInfinity();
+  }
+
+  @Test
+  public void nodeDownstreamOfNegativeCycleMarkedNegativeInfinity() {
+    // Negative cycle 1→2→1, with 2→3 leading out of the cycle.
+    // Node 3 is downstream and must also be -Inf.
+    int V = 4;
+    List<BellmanFordAdjacencyList.Edge>[] g = BellmanFordAdjacencyList.createGraph(V);
+    BellmanFordAdjacencyList.addEdge(g, 0, 1, 1);
+    BellmanFordAdjacencyList.addEdge(g, 1, 2, 1);
+    BellmanFordAdjacencyList.addEdge(g, 2, 1, -3);
+    BellmanFordAdjacencyList.addEdge(g, 2, 3, 5);
+
+    double[] dist = BellmanFordAdjacencyList.bellmanFord(g, V, 0);
+
+    assertThat(dist[3]).isNegativeInfinity();
+  }
+
+  @Test
+  public void disconnectedGraph() {
+    // Nodes 2 and 3 have no path from node 0.
+    int V = 4;
+    List<BellmanFordAdjacencyList.Edge>[] g = BellmanFordAdjacencyList.createGraph(V);
+    BellmanFordAdjacencyList.addEdge(g, 0, 1, 3);
+    BellmanFordAdjacencyList.addEdge(g, 2, 3, 1); // separate component
+
+    double[] dist = BellmanFordAdjacencyList.bellmanFord(g, V, 0);
+
+    assertThat(dist[0]).isEqualTo(0.0);
+    assertThat(dist[1]).isEqualTo(3.0);
+    assertThat(dist[2]).isPositiveInfinity();
+    assertThat(dist[3]).isPositiveInfinity();
+  }
+
+  @Test
+  public void exampleFromMain() {
+    // Reproduces the graph and expected output from the main() method.
+    int V = 9;
+    List<BellmanFordAdjacencyList.Edge>[] g = BellmanFordAdjacencyList.createGraph(V);
+    BellmanFordAdjacencyList.addEdge(g, 0, 1, 1);
+    BellmanFordAdjacencyList.addEdge(g, 1, 2, 1);
+    BellmanFordAdjacencyList.addEdge(g, 2, 4, 1);
+    BellmanFordAdjacencyList.addEdge(g, 4, 3, -3);
+    BellmanFordAdjacencyList.addEdge(g, 3, 2, 1);
+    BellmanFordAdjacencyList.addEdge(g, 1, 5, 4);
+    BellmanFordAdjacencyList.addEdge(g, 1, 6, 4);
+    BellmanFordAdjacencyList.addEdge(g, 5, 6, 5);
+    BellmanFordAdjacencyList.addEdge(g, 6, 7, 4);
+    BellmanFordAdjacencyList.addEdge(g, 5, 7, 3);
+
+    double[] dist = BellmanFordAdjacencyList.bellmanFord(g, V, 0);
+
+    assertThat(dist[0]).isEqualTo(0.0);
+    assertThat(dist[1]).isEqualTo(1.0);
+    assertThat(dist[2]).isNegativeInfinity();
+    assertThat(dist[3]).isNegativeInfinity();
+    assertThat(dist[4]).isNegativeInfinity();
+    assertThat(dist[5]).isEqualTo(5.0);
+    assertThat(dist[6]).isEqualTo(5.0);
+    assertThat(dist[7]).isEqualTo(8.0);
+    assertThat(dist[8]).isPositiveInfinity();
+  }
 }
