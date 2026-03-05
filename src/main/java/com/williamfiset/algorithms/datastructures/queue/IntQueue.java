@@ -25,8 +25,7 @@ public class IntQueue implements Queue<Integer> {
   private int size;
   private int mask; // capacity - 1, for fast modulo via bitwise AND (requires power-of-2 capacity)
 
-  // maxSize is the maximum number of items
-  // that can be in the queue at any given time.
+  // maxSize is the maximum number of items that can be in the queue at any given time.
   // Actual capacity is rounded up to the next power of 2 for fast wrapping.
   public IntQueue(int maxSize) {
     int capacity = 1;
