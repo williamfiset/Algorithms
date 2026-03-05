@@ -1,7 +1,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Bazel Tests](https://github.com/williamfiset/Algorithms/actions/workflows/main.yml/badge.svg)](https://github.com/williamfiset/Algorithms/actions/workflows/main.yml)
 ![README Checker](https://github.com/williamfiset/Algorithms/workflows/README%20URL%20Checker/badge.svg)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=JUP2HZ6JUPB5C)
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa.svg)](https://github.com/sponsors/williamfiset)
 
 # Algorithms & data structures project
 
@@ -303,8 +303,8 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 
 This repository is released under the [MIT license](https://opensource.org/licenses/MIT). In short, this means you are free to use this software in any personal, open-source or commercial projects. Attribution is optional but appreciated.
 
-# Donate
+# Sponsor
 
-Consider donating to support my creation of educational content:
+Consider sponsoring to support my creation of educational content:
 
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=JUP2HZ6JUPB5C)
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa.svg)](https://github.com/sponsors/williamfiset)
