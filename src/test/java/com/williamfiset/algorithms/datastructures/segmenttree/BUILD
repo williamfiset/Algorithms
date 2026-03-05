@@ -19,16 +19,6 @@ TEST_DEPS = [
     "@maven//:junit_junit",
 ] + JUNIT5_DEPS
 
-# bazel test //src/test/java/com/williamfiset/algorithms/datastructures/segmenttree:GenericSegmentTree2Test
-java_test(
-    name = "GenericSegmentTree2Test",
-    srcs = ["GenericSegmentTree2Test.java"],
-    main_class = "org.junit.platform.console.ConsoleLauncher",
-    use_testrunner = False,
-    args = ["--select-class=com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTree2Test"],
-    runtime_deps = JUNIT5_RUNTIME_DEPS,
-    deps = TEST_DEPS,
-)
 
 # bazel test //src/test/java/com/williamfiset/algorithms/datastructures/segmenttree:GenericSegmentTreeTest
 java_test(
