@@ -21,19 +21,6 @@ java_binary(
     runtime_deps = [":segmenttree"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/datastructures/segmenttree:GenericSegmentTree2
-java_binary(
-    name = "GenericSegmentTree2",
-    main_class = "com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTree2",
-    runtime_deps = [":segmenttree"],
-)
-
-# bazel run //src/main/java/com/williamfiset/algorithms/datastructures/segmenttree:GenericSegmentTree3
-java_binary(
-    name = "GenericSegmentTree3",
-    main_class = "com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTree3",
-    runtime_deps = [":segmenttree"],
-)
 
 # bazel run //src/main/java/com/williamfiset/algorithms/datastructures/segmenttree:MaxQuerySumUpdateSegmentTree
 java_binary(
