@@ -271,7 +271,7 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 # Search algorithms
 
 - [Binary search (real numbers)](src/main/java/com/williamfiset/algorithms/search/BinarySearch.java) **- O(log(n))**
-- [Interpolation search (discrete discrete)](src/main/java/com/williamfiset/algorithms/search/InterpolationSearch.java) **- O(n) or O(log(log(n))) with uniform input**
+- [Interpolation search (discrete numbers)](src/main/java/com/williamfiset/algorithms/search/InterpolationSearch.java) **- O(n) or O(log(log(n))) with uniform input**
 - [Ternary search (real numbers)](src/main/java/com/williamfiset/algorithms/search/TernarySearch.java) **- O(log(n))**
 - [Ternary search (discrete numbers)](src/main/java/com/williamfiset/algorithms/search/TernarySearchDiscrete.java) **- O(log(n))**
 
