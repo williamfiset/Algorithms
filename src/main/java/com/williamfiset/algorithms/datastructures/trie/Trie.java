@@ -41,7 +41,7 @@ public class Trie {
    *
    * @param key the string to insert
    * @param numInserts number of times to insert the key
-   * @return true if the key being inserted contains a prefix already in the trie
+   * @return true if the exact word already existed in the trie before this insert
    */
   public boolean insert(String key, int numInserts) {
     if (key == null) throw new IllegalArgumentException("Null not permitted in trie");
@@ -49,9 +49,6 @@ public class Trie {
       throw new IllegalArgumentException("numInserts has to be greater than zero");
 
     Node node = root;
-    boolean createdNewNode = false;
-    boolean isPrefix = false;
-
     for (int i = 0; i < key.length(); ++i) {
       char ch = key.charAt(i);
       Node nextNode = node.children.get(ch);
@@ -59,18 +56,19 @@ public class Trie {
       if (nextNode == null) {
         nextNode = new Node(ch);
         node.children.put(ch, nextNode);
-        createdNewNode = true;
-      } else {
-        if (nextNode.isWordEnding) isPrefix = true;
       }
 
       node = nextNode;
       node.count += numInserts;
     }
 
-    if (node != root) node.isWordEnding = true;
+    // Empty string is not a valid word
+    if (node == root) return false;
 
-    return isPrefix || !createdNewNode;
+    boolean alreadyExisted = node.isWordEnding;
+    node.isWordEnding = true;
+
+    return alreadyExisted;
   }
 
   /** Inserts a key into the trie once. */
