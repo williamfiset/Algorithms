@@ -27,12 +27,15 @@ public class BinaryHeap<T extends Comparable<T>> {
   // Construct a priority queue using heapify in O(n) time, a great explanation can be found at:
   // http://www.cs.umd.edu/~meesh/351/mount/lectures/lect14-heapsort-analysis-part.pdf
   public BinaryHeap(T[] elems) {
-
+    if (elems == null) throw new IllegalArgumentException("Input array cannot be null");
     int heapSize = elems.length;
     heap = new ArrayList<T>(heapSize);
 
     // Place all element in heap
-    for (int i = 0; i < heapSize; i++) heap.add(elems[i]);
+    for (int i = 0; i < heapSize; i++) {
+      if (elems[i] == null) throw new IllegalArgumentException("Elements cannot be null");
+      heap.add(elems[i]);
+    }
 
     // Heapify process, O(n)
     for (int i = Math.max(0, (heapSize / 2) - 1); i >= 0; i--) sink(i);
@@ -40,12 +43,15 @@ public class BinaryHeap<T extends Comparable<T>> {
 
   // Priority queue construction, O(n)
   public BinaryHeap(Collection<T> elems) {
-
+    if (elems == null) throw new IllegalArgumentException("Input collection cannot be null");
     int heapSize = elems.size();
     heap = new ArrayList<T>(heapSize);
 
     // Add all elements of the given collection to the heap
-    heap.addAll(elems);
+    for (T elem : elems) {
+      if (elem == null) throw new IllegalArgumentException("Elements cannot be null");
+      heap.add(elem);
+    }
 
     // Heapify process, O(n)
     for (int i = Math.max(0, (heapSize / 2) - 1); i >= 0; i--) sink(i);
@@ -81,6 +87,7 @@ public class BinaryHeap<T extends Comparable<T>> {
 
   // Test if an element is in heap, O(n)
   public boolean contains(T elem) {
+    if (elem == null) return false;
     // Linear scan to check containment
     for (int i = 0; i < size(); i++) if (heap.get(i).equals(elem)) return true;
     return false;
@@ -89,8 +96,7 @@ public class BinaryHeap<T extends Comparable<T>> {
   // Adds an element to the priority queue, the
   // element must not be null, O(log(n))
   public void add(T elem) {
-
-    if (elem == null) throw new IllegalArgumentException();
+    if (elem == null) throw new IllegalArgumentException("Cannot add null element");
 
     heap.add(elem);
 
@@ -108,7 +114,6 @@ public class BinaryHeap<T extends Comparable<T>> {
 
   // Perform bottom up node swim, O(log(n))
   private void swim(int k) {
-
     // Grab the index of the next parent node WRT to k
     int parent = (k - 1) / 2;
 
@@ -148,11 +153,11 @@ public class BinaryHeap<T extends Comparable<T>> {
 
   // Swap two nodes. Assumes i & j are valid, O(1)
   private void swap(int i, int j) {
-    T elem_i = heap.get(i);
-    T elem_j = heap.get(j);
+    T elemI = heap.get(i);
+    T elemJ = heap.get(j);
 
-    heap.set(i, elem_j);
-    heap.set(j, elem_i);
+    heap.set(i, elemJ);
+    heap.set(j, elemI);
   }
 
   // Removes a particular element in the heap, O(n)
@@ -173,14 +178,14 @@ public class BinaryHeap<T extends Comparable<T>> {
     if (isEmpty()) return null;
 
     int indexOfLastElem = size() - 1;
-    T removed_data = heap.get(i);
+    T removedData = heap.get(i);
     swap(i, indexOfLastElem);
 
     // Obliterate the value
     heap.remove(indexOfLastElem);
 
     // Check if the last element was removed
-    if (i == indexOfLastElem) return removed_data;
+    if (i == indexOfLastElem) return removedData;
     T elem = heap.get(i);
 
     // Try sinking element
@@ -188,7 +193,7 @@ public class BinaryHeap<T extends Comparable<T>> {
 
     // If sinking did not work try swimming
     if (heap.get(i).equals(elem)) swim(i);
-    return removed_data;
+    return removedData;
   }
 
   // Recursively checks if this heap is a min heap
