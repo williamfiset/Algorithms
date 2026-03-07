@@ -8,11 +8,6 @@
  *
  * <p>Space Complexity: O(n*log2(n))
  *
- * <p>Run tests:
- *
- * <p>bazel test
- * //src/test/java/com/williamfiset/algorithms/graphtheory/treealgorithms:LowestCommonAncestorEulerTourTest
- *
  * @author William Fiset
  */
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
