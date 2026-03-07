@@ -8,7 +8,7 @@ package com.williamfiset.algorithms.datastructures.fenwicktree;
 public class FenwickTreeRangeUpdatePointQuery {
 
   // The size of the array holding the Fenwick tree values
-  final int N;
+  private final int N;
 
   // This array contains the original Fenwick tree range
   // values from when it was first created.
