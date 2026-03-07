@@ -1,6 +1,5 @@
 package com.williamfiset.algorithms.datastructures.unionfind;
 
-// import static org.junit.Assert.*;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
