@@ -8,10 +8,6 @@
  *
  * <p>Time Complexity: O(nw)
  *
- * <p>Run with:
- *
- * <p>$ ./gradlew run -Palgorithm=sorting.RadixSort
- *
  * @author EAlexa
  */
 package com.williamfiset.algorithms.sorting;

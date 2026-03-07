@@ -1,10 +1,6 @@
 /**
  * Selection sort implementation
  *
- * <p>Run with:
- *
- * <p>$ ./gradlew run -Palgorithm=sorting.SelectionSort
- *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.sorting;

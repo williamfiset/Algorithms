@@ -1,10 +1,6 @@
 /**
  * Mergesort implementation
  *
- * <p>Run with:
- *
- * <p>$ ./gradlew run -Palgorithm=sorting.Mergesort
- *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.sorting;

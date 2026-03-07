@@ -1,10 +1,6 @@
 /**
  * Bucket sort implementation
  *
- * <p>Run with:
- *
- * <p>$ ./gradlew run -Palgorithm=sorting.BucketSort
- *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.sorting;
@@ -37,7 +33,7 @@ public class BucketSort implements InplaceSort {
 
     // Place each element in a bucket
     for (int i = 0; i < N; i++) {
-      int bi = (ar[i] - minValue) / M;
+      int bi = (ar[i] - minValue) / N;
       List<Integer> bucket = buckets.get(bi);
       bucket.add(ar[i]);
     }

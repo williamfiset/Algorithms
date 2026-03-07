@@ -1,10 +1,6 @@
 /**
  * Implementation of heapsort
  *
- * <p>Run with:
- *
- * <p>$ ./gradlew run -Palgorithm=sorting.Heapsort
- *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.sorting;
