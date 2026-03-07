@@ -6,10 +6,7 @@
  */
 package com.williamfiset.algorithms.datastructures.hashtable;
 
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @SuppressWarnings("unchecked")
 public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
@@ -27,7 +24,7 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
   protected V[] values;
 
   // Special marker token used to indicate the deletion of a key-value pair
-  protected final K TOMBSTONE = (K) (new Object());
+  protected final K TOMBSTONE = (K) new Object();
 
   private static final int DEFAULT_CAPACITY = 7;
   private static final double DEFAULT_LOAD_FACTOR = 0.65;
@@ -73,10 +70,8 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
   }
 
   public void clear() {
-    for (int i = 0; i < capacity; i++) {
-      keys[i] = null;
-      values[i] = null;
-    }
+    Arrays.fill(keys, null);
+    Arrays.fill(values, null);
     keyCount = usedBuckets = 0;
     modificationCount++;
   }
@@ -112,16 +107,22 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
   // Returns a list of keys found in the hash table
   public List<K> keys() {
     List<K> hashtableKeys = new ArrayList<>(size());
-    for (int i = 0; i < capacity; i++)
-      if (keys[i] != null && keys[i] != TOMBSTONE) hashtableKeys.add(keys[i]);
+    for (int i = 0; i < capacity; i++) {
+      if (keys[i] != null && keys[i] != TOMBSTONE) {
+        hashtableKeys.add(keys[i]);
+      }
+    }
     return hashtableKeys;
   }
 
   // Returns a list of non-unique values found in the hash table
   public List<V> values() {
     List<V> hashtableValues = new ArrayList<>(size());
-    for (int i = 0; i < capacity; i++)
-      if (keys[i] != null && keys[i] != TOMBSTONE) hashtableValues.add(values[i]);
+    for (int i = 0; i < capacity; i++) {
+      if (keys[i] != null && keys[i] != TOMBSTONE) {
+        hashtableValues.add(values[i]);
+      }
+    }
     return hashtableValues;
   }
 
@@ -132,26 +133,20 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
 
     threshold = (int) (capacity * loadFactor);
 
-    K[] oldKeyTable = (K[]) new Object[capacity];
-    V[] oldValueTable = (V[]) new Object[capacity];
+    K[] oldKeyTable = keys;
+    V[] oldValueTable = values;
 
-    // Perform key table pointer swap
-    K[] keyTableTmp = keys;
-    keys = oldKeyTable;
-    oldKeyTable = keyTableTmp;
-
-    // Perform value table pointer swap
-    V[] valueTableTmp = values;
-    values = oldValueTable;
-    oldValueTable = valueTableTmp;
+    keys = (K[]) new Object[capacity];
+    values = (V[]) new Object[capacity];
 
     // Reset the key count and buckets used since we are about to
     // re-insert all the keys into the hash-table.
     keyCount = usedBuckets = 0;
 
     for (int i = 0; i < oldKeyTable.length; i++) {
-      if (oldKeyTable[i] != null && oldKeyTable[i] != TOMBSTONE)
+      if (oldKeyTable[i] != null && oldKeyTable[i] != TOMBSTONE) {
         insert(oldKeyTable[i], oldValueTable[i]);
+      }
       oldValueTable[i] = null;
       oldKeyTable[i] = null;
     }
@@ -189,7 +184,6 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
         // The key we're trying to insert already exists in the hash-table,
         // so update its value with the most recent value
         if (keys[i].equals(key)) {
-
           V oldValue = values[i];
           if (j == -1) {
             values[i] = val;
@@ -220,7 +214,6 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
           keys[j] = key;
           values[j] = val;
         }
-
         modificationCount++;
         return null;
       }
@@ -241,15 +234,12 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
       // Ignore deleted cells, but record where the first index
       // of a deleted cell is found to perform lazy relocation later.
       if (keys[i] == TOMBSTONE) {
-
         if (j == -1) j = i;
 
         // We hit a non-null key, perhaps it's the one we're looking for.
       } else if (keys[i] != null) {
-
         // The key we want is in the hash-table!
         if (keys[i].equals(key)) {
-
           // If j != -1 this means we previously encountered a deleted cell.
           // We can perform an optimization by swapping the entries in cells
           // i and j so that the next time we search for this key it will be
@@ -285,15 +275,12 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
       // Ignore deleted cells, but record where the first index
       // of a deleted cell is found to perform lazy relocation later.
       if (keys[i] == TOMBSTONE) {
-
         if (j == -1) j = i;
 
         // We hit a non-null key, perhaps it's the one we're looking for.
       } else if (keys[i] != null) {
-
         // The key we want is in the hash-table!
         if (keys[i].equals(key)) {
-
           // If j != -1 this means we previously encountered a deleted cell.
           // We can perform an optimization by swapping the entries in cells
           // i and j so that the next time we search for this key it will be
@@ -350,12 +337,16 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-
     sb.append("{");
-    for (int i = 0; i < capacity; i++)
-      if (keys[i] != null && keys[i] != TOMBSTONE) sb.append(keys[i] + " => " + values[i] + ", ");
+    boolean first = true;
+    for (int i = 0; i < capacity; i++) {
+      if (keys[i] != null && keys[i] != TOMBSTONE) {
+        if (!first) sb.append(", ");
+        sb.append(keys[i]).append(" => ").append(values[i]);
+        first = false;
+      }
+    }
     sb.append("}");
-
     return sb.toString();
   }
 

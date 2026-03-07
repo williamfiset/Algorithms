@@ -48,6 +48,37 @@ public class HashTableDoubleHashingTest {
   }
 
   @Test
+  public void testKeys() {
+    map.put(new DoubleHashingTestObject(1), 10);
+    map.put(new DoubleHashingTestObject(2), 20);
+    map.put(new DoubleHashingTestObject(3), 30);
+    List<DoubleHashingTestObject> keys = map.keys();
+    assertThat(keys)
+        .containsExactly(
+            new DoubleHashingTestObject(1),
+            new DoubleHashingTestObject(2),
+            new DoubleHashingTestObject(3));
+  }
+
+  @Test
+  public void testValues() {
+    map.put(new DoubleHashingTestObject(1), 10);
+    map.put(new DoubleHashingTestObject(2), 20);
+    map.put(new DoubleHashingTestObject(3), 30);
+    List<Integer> values = map.values();
+    assertThat(values).containsExactly(10, 20, 30);
+  }
+
+  @Test
+  public void testToString() {
+    map.put(new DoubleHashingTestObject(1), 10);
+    String s = map.toString();
+    assertThat(s).startsWith("{");
+    assertThat(s).endsWith("}");
+    assertThat(s).contains(" => 10");
+  }
+
+  @Test
   public void testUpdatingValue() {
     // System.out.println("testUpdatingValue");
     DoubleHashingTestObject o1 = new DoubleHashingTestObject(1);
