@@ -26,6 +26,67 @@ public class BinaryHeapTest {
   }
 
   @Test
+  public void testPeekPollEmpty() {
+    BinaryHeap<Integer> pq = new BinaryHeap<>();
+    assertThat(pq.peek()).isNull();
+    assertThat(pq.poll()).isNull();
+  }
+
+  @Test
+  public void testAddNull() {
+    BinaryHeap<Integer> pq = new BinaryHeap<>();
+    Assertions.assertThrows(IllegalArgumentException.class, () -> pq.add(null));
+  }
+
+  @Test
+  public void testHeapifyNullArray() {
+    Assertions.assertThrows(IllegalArgumentException.class, () -> new BinaryHeap<Integer>((Integer[]) null));
+  }
+
+  @Test
+  public void testHeapifyArrayWithNullElement() {
+    Integer[] array = {1, null, 3};
+    Assertions.assertThrows(IllegalArgumentException.class, () -> new BinaryHeap<Integer>(array));
+  }
+
+  @Test
+  public void testHeapifyNullCollection() {
+    Assertions.assertThrows(IllegalArgumentException.class, () -> new BinaryHeap<Integer>((java.util.Collection<Integer>) null));
+  }
+
+  @Test
+  public void testHeapifyCollectionWithNullElement() {
+    List<Integer> list = new ArrayList<>();
+    list.add(1);
+    list.add(null);
+    Assertions.assertThrows(IllegalArgumentException.class, () -> new BinaryHeap<Integer>(list));
+  }
+
+  @Test
+  public void testContainsNull() {
+    BinaryHeap<Integer> pq = new BinaryHeap<>();
+    pq.add(1);
+    assertThat(pq.contains(null)).isFalse();
+  }
+
+  @Test
+  public void testRemoveNull() {
+    BinaryHeap<Integer> pq = new BinaryHeap<>();
+    pq.add(1);
+    assertThat(pq.remove(null)).isFalse();
+    assertThat(pq.size()).isEqualTo(1);
+  }
+
+  @Test
+  public void testToString() {
+    BinaryHeap<Integer> pq = new BinaryHeap<>();
+    pq.add(1);
+    pq.add(2);
+    assertThat(pq.toString()).contains("1");
+    assertThat(pq.toString()).contains("2");
+  }
+
+  @Test
   public void testHeapProperty() {
 
     BinaryHeap<Integer> q = new BinaryHeap<>();
