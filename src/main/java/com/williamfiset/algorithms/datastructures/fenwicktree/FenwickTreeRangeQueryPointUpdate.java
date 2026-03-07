@@ -5,16 +5,19 @@
  */
 package com.williamfiset.algorithms.datastructures.fenwicktree;
 
+import java.util.Arrays;
+
 public class FenwickTreeRangeQueryPointUpdate {
 
   // The size of the array holding the Fenwick tree values
-  final int N;
+  private final int N;
 
   // This array contains the Fenwick tree ranges
   private long[] tree;
 
-  // Create an empty Fenwick Tree with 'sz' parameter zero based.
+  // Create an empty Fenwick Tree with 'sz' elements (one-based internally).
   public FenwickTreeRangeQueryPointUpdate(int sz) {
+    if (sz < 0) throw new IllegalArgumentException("Size cannot be negative!");
     tree = new long[(N = sz + 1)];
   }
 
@@ -66,6 +69,8 @@ public class FenwickTreeRangeQueryPointUpdate {
   // Returns the sum of the interval [left, right], O(log(n))
   public long sum(int left, int right) {
     if (right < left) throw new IllegalArgumentException("Make sure right >= left");
+    if (left < 1 || right >= N)
+      throw new IndexOutOfBoundsException("Index out of range [1, " + (N - 1) + "]");
     return prefixSum(right) - prefixSum(left - 1);
   }
 
@@ -87,8 +92,13 @@ public class FenwickTreeRangeQueryPointUpdate {
     add(i, v - sum(i, i));
   }
 
+  // Returns the number of elements in the Fenwick tree.
+  public int size() {
+    return N - 1;
+  }
+
   @Override
   public String toString() {
-    return java.util.Arrays.toString(tree);
+    return Arrays.toString(tree);
   }
 }

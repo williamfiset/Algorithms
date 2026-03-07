@@ -21,9 +21,86 @@ public class FenwickTreeRangeQueryPointUpdateTest {
   }
 
   @Test
+  public void testIllegalCreation() {
+    assertThrows(IllegalArgumentException.class, () -> new FenwickTreeRangeQueryPointUpdate(null));
+  }
+
+  @Test
+  public void testNegativeSizeCreation() {
+    assertThrows(IllegalArgumentException.class, () -> new FenwickTreeRangeQueryPointUpdate(-1));
+  }
+
+  @Test
+  public void testEmptyTreeCreation() {
+    FenwickTreeRangeQueryPointUpdate ft = new FenwickTreeRangeQueryPointUpdate(0);
+    assertThat(ft.size()).isEqualTo(0);
+  }
+
+  @Test
+  public void testSingleElement() {
+    long[] ar = {UNUSED_VAL, 7};
+    FenwickTreeRangeQueryPointUpdate ft = new FenwickTreeRangeQueryPointUpdate(ar);
+    assertThat(ft.get(1)).isEqualTo(7);
+    assertThat(ft.sum(1, 1)).isEqualTo(7);
+    assertThat(ft.size()).isEqualTo(1);
+  }
+
+  @Test
+  public void testGetValue() {
+    long[] ar = {UNUSED_VAL, 1, 2, 3, 4, 5};
+    FenwickTreeRangeQueryPointUpdate ft = new FenwickTreeRangeQueryPointUpdate(ar);
+
+    for (int i = 1; i <= 5; i++) {
+      assertThat(ft.get(i)).isEqualTo(i);
+    }
+  }
+
+  @Test
+  public void testSetValue() {
+    long[] ar = {UNUSED_VAL, 1, 2, 3, 4, 5};
+    FenwickTreeRangeQueryPointUpdate ft = new FenwickTreeRangeQueryPointUpdate(ar);
+
+    ft.set(3, 99);
+    assertThat(ft.get(3)).isEqualTo(99);
+    // Other values should be unchanged.
+    assertThat(ft.get(1)).isEqualTo(1);
+    assertThat(ft.get(2)).isEqualTo(2);
+    assertThat(ft.get(4)).isEqualTo(4);
+    assertThat(ft.get(5)).isEqualTo(5);
+    // Sum should reflect the new value.
+    assertThat(ft.sum(1, 5)).isEqualTo(1 + 2 + 99 + 4 + 5);
+  }
+
+  @Test
+  public void testAddValue() {
+    long[] ar = {UNUSED_VAL, 1, 2, 3, 4, 5};
+    FenwickTreeRangeQueryPointUpdate ft = new FenwickTreeRangeQueryPointUpdate(ar);
+
+    ft.add(3, 10);
+    assertThat(ft.get(3)).isEqualTo(13);
+    assertThat(ft.sum(1, 5)).isEqualTo(25);
+  }
+
+  @Test
+  public void testSumRangeInvalid() {
+    long[] ar = {UNUSED_VAL, 1, 2, 3};
+    FenwickTreeRangeQueryPointUpdate ft = new FenwickTreeRangeQueryPointUpdate(ar);
+
+    assertThrows(IllegalArgumentException.class, () -> ft.sum(3, 1));
+  }
+
+  @Test
+  public void testSumRangeOutOfBounds() {
+    long[] ar = {UNUSED_VAL, 1, 2, 3};
+    FenwickTreeRangeQueryPointUpdate ft = new FenwickTreeRangeQueryPointUpdate(ar);
+
+    assertThrows(IndexOutOfBoundsException.class, () -> ft.sum(0, 2));
+    assertThrows(IndexOutOfBoundsException.class, () -> ft.sum(1, 4));
+  }
+
+  @Test
   public void testIntervalSumPositiveValues() {
 
-    // System.out.println("testIntervalSumPositiveValues");
     long[] ar = {UNUSED_VAL, 1, 2, 3, 4, 5, 6};
     FenwickTreeRangeQueryPointUpdate ft = new FenwickTreeRangeQueryPointUpdate(ar);
 
@@ -33,7 +110,6 @@ public class FenwickTreeRangeQueryPointUpdateTest {
     assertThat(ft.sum(1, 3)).isEqualTo(6);
     assertThat(ft.sum(1, 2)).isEqualTo(3);
     assertThat(ft.sum(1, 1)).isEqualTo(1);
-    // assertThat(ft.sum(1, 0)).isEqualTo(0);
 
     assertThat(ft.sum(3, 4)).isEqualTo(7);
     assertThat(ft.sum(2, 6)).isEqualTo(20);
@@ -49,7 +125,6 @@ public class FenwickTreeRangeQueryPointUpdateTest {
   @Test
   public void testIntervalSumNegativeValues() {
 
-    // System.out.println("testIntervalSumNegativeValues");
     long[] ar = {UNUSED_VAL, -1, -2, -3, -4, -5, -6};
     FenwickTreeRangeQueryPointUpdate ft = new FenwickTreeRangeQueryPointUpdate(ar);
 
@@ -71,18 +146,12 @@ public class FenwickTreeRangeQueryPointUpdateTest {
   @Test
   public void testIntervalSumNegativeValues2() {
 
-    // System.out.println("testIntervalSumNegativeValues2");
     long[] ar = {UNUSED_VAL, -76871, -164790};
     FenwickTreeRangeQueryPointUpdate ft = new FenwickTreeRangeQueryPointUpdate(ar);
 
     for (int i = 0; i < LOOPS; i++) {
       assertThat(ft.sum(1, 1)).isEqualTo(-76871);
-      assertThat(ft.sum(1, 1)).isEqualTo(-76871);
       assertThat(ft.sum(1, 2)).isEqualTo(-241661);
-      assertThat(ft.sum(1, 2)).isEqualTo(-241661);
-      assertThat(ft.sum(1, 2)).isEqualTo(-241661);
-      assertThat(ft.sum(2, 2)).isEqualTo(-164790);
-      assertThat(ft.sum(2, 2)).isEqualTo(-164790);
       assertThat(ft.sum(2, 2)).isEqualTo(-164790);
     }
   }
@@ -90,7 +159,6 @@ public class FenwickTreeRangeQueryPointUpdateTest {
   @Test
   public void testRandomizedStaticSumQueries() {
 
-    // System.out.println("testRandomizedStaticSumQueries");
     for (int i = 1; i <= LOOPS; i++) {
 
       long[] randList = genRandList(i);
@@ -110,8 +178,6 @@ public class FenwickTreeRangeQueryPointUpdateTest {
     int lo = lowBound(N);
     int hi = highBound(lo, N);
 
-    // System.out.println("LO: " + lo + " HI: " + hi + " N: " + N);
-
     for (int k = lo; k <= hi; k++) sum += arr[k];
 
     assertThat(ft.sum(lo, hi)).isEqualTo(sum);
@@ -120,7 +186,6 @@ public class FenwickTreeRangeQueryPointUpdateTest {
   @Test
   public void testRandomizedSetSumQueries() {
 
-    // System.out.println("testRandomizedSetSumQueries");
     for (int n = 2; n <= LOOPS; n++) {
 
       long[] randList = genRandList(n);
@@ -128,7 +193,7 @@ public class FenwickTreeRangeQueryPointUpdateTest {
 
       for (int j = 0; j < LOOPS / 10; j++) {
 
-        int index = 1 + (int)(Math.random() * n);
+        int index = 1 + (int) (Math.random() * n);
         long rand_val = randValue();
 
         randList[index] += rand_val;
@@ -157,6 +222,13 @@ public class FenwickTreeRangeQueryPointUpdateTest {
     }
   }
 
+  @Test
+  public void testToString() {
+    long[] ar = {UNUSED_VAL, 1, 2, 3};
+    FenwickTreeRangeQueryPointUpdate ft = new FenwickTreeRangeQueryPointUpdate(ar);
+    assertThat(ft.toString()).isNotEmpty();
+  }
+
   public static int lowBound(int N) {
     return 1 + (int) (Math.random() * N);
   }
@@ -167,11 +239,6 @@ public class FenwickTreeRangeQueryPointUpdateTest {
 
   public static long randValue() {
     return (long) (Math.random() * MAX_RAND_NUM * 2) + MIN_RAND_NUM;
-  }
-
-  @Test
-  public void testIllegalCreation() {
-    assertThrows(IllegalArgumentException.class, () -> new FenwickTreeRangeQueryPointUpdate(null));
   }
 
   // Generate a list of random numbers, one based

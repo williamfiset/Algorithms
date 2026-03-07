@@ -42,6 +42,21 @@ public class FenwickTreeRangeUpdatePointQueryTest {
   }
 
   @Test
+  public void testSingleElement() {
+    long[] values = {UNUSED_VAL, 42};
+    FenwickTreeRangeUpdatePointQuery ft = new FenwickTreeRangeUpdatePointQuery(values);
+    assertThat(ft.get(1)).isEqualTo(42);
+  }
+
+  @Test
+  public void testSingleElementUpdate() {
+    long[] values = {UNUSED_VAL, 42};
+    FenwickTreeRangeUpdatePointQuery ft = new FenwickTreeRangeUpdatePointQuery(values);
+    ft.updateRange(1, 1, 8);
+    assertThat(ft.get(1)).isEqualTo(50);
+  }
+
+  @Test
   public void testFenwickTreeRangeUpdatePointQueryNegativeNumbers() {
 
     long[] values = {UNUSED_VAL, -1, -1, -1, -1, -1};
@@ -96,6 +111,40 @@ public class FenwickTreeRangeUpdatePointQueryTest {
       ft.updateRange(1, n - 1, delta);
       sum += delta;
     }
+  }
+
+  @Test
+  public void testFullRangeUpdate() {
+    long[] values = {UNUSED_VAL, 0, 0, 0, 0, 0};
+    FenwickTreeRangeUpdatePointQuery ft = new FenwickTreeRangeUpdatePointQuery(values);
+    ft.updateRange(1, 5, 5);
+    for (int i = 1; i <= 5; i++) {
+      assertThat(ft.get(i)).isEqualTo(5);
+    }
+  }
+
+  @Test
+  public void testMultipleNonOverlappingUpdates() {
+    long[] values = {UNUSED_VAL, 0, 0, 0, 0, 0, 0};
+    FenwickTreeRangeUpdatePointQuery ft = new FenwickTreeRangeUpdatePointQuery(values);
+    ft.updateRange(1, 2, 10);
+    ft.updateRange(4, 5, 20);
+    assertThat(ft.get(1)).isEqualTo(10);
+    assertThat(ft.get(2)).isEqualTo(10);
+    assertThat(ft.get(3)).isEqualTo(0);
+    assertThat(ft.get(4)).isEqualTo(20);
+    assertThat(ft.get(5)).isEqualTo(20);
+    assertThat(ft.get(6)).isEqualTo(0);
+  }
+
+  @Test
+  public void testNegativeRangeUpdate() {
+    long[] values = {UNUSED_VAL, 10, 10, 10};
+    FenwickTreeRangeUpdatePointQuery ft = new FenwickTreeRangeUpdatePointQuery(values);
+    ft.updateRange(1, 3, -5);
+    assertThat(ft.get(1)).isEqualTo(5);
+    assertThat(ft.get(2)).isEqualTo(5);
+    assertThat(ft.get(3)).isEqualTo(5);
   }
 
   @Test
