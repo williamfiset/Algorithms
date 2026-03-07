@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ArticulationPointsAdjacencyList {
 
-  private int n, id, rootNodeOutcomingEdgeCount;
+  private int n, id, rootNodeOutgoingEdgeCount;
   private boolean solved;
   private int[] low, ids;
   private boolean[] visited, isArticulationPoint;
@@ -40,9 +40,9 @@ public class ArticulationPointsAdjacencyList {
 
     for (int i = 0; i < n; i++) {
       if (!visited[i]) {
-        rootNodeOutcomingEdgeCount = 0;
+        rootNodeOutgoingEdgeCount = 0;
         dfs(i, i, -1);
-        isArticulationPoint[i] = (rootNodeOutcomingEdgeCount > 1);
+        isArticulationPoint[i] = (rootNodeOutgoingEdgeCount > 1);
       }
     }
 
@@ -52,7 +52,7 @@ public class ArticulationPointsAdjacencyList {
 
   private void dfs(int root, int at, int parent) {
 
-    if (parent == root) rootNodeOutcomingEdgeCount++;
+    if (parent == root) rootNodeOutgoingEdgeCount++;
 
     visited[at] = true;
     low[at] = ids[at] = id++;
