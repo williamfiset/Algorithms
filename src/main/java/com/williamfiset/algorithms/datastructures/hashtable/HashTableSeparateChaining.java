@@ -157,7 +157,7 @@ public class HashTableSeparateChaining<K, V> implements Iterable<K> {
     if (existentEntry == null) {
       bucket.add(entry);
       if (++size > threshold) resizeTable();
-      return null;
+      return null; // Use null to indicate that there was no previous entry
     } else {
       V oldVal = existentEntry.value;
       existentEntry.value = entry.value;
@@ -189,6 +189,8 @@ public class HashTableSeparateChaining<K, V> implements Iterable<K> {
           if (bucket == null) newTable[bucketIndex] = bucket = new LinkedList<>();
           bucket.add(entry);
         }
+
+        // Avoid memory leak. Help the GC
         table[i].clear();
         table[i] = null;
       }
@@ -222,16 +224,24 @@ public class HashTableSeparateChaining<K, V> implements Iterable<K> {
 
       @Override
       public boolean hasNext() {
+        // An item was added or removed while iterating
         if (MODIFICATION_COUNT != size) throw new java.util.ConcurrentModificationException();
-        if (bucketIter != null && bucketIter.hasNext()) return true;
 
-        while (++bucketIndex < capacity) {
-          if (table[bucketIndex] != null) {
-            bucketIter = table[bucketIndex].iterator();
-            if (bucketIter.hasNext()) return true;
+        // No iterator or the current iterator is empty
+        if (bucketIter == null || !bucketIter.hasNext()) {
+          // Search next buckets until a valid iterator is found
+          while (++bucketIndex < capacity) {
+            if (table[bucketIndex] != null) {
+              // Make sure this iterator actually has elements -_-
+              java.util.Iterator<Entry<K, V>> nextIter = table[bucketIndex].iterator();
+              if (nextIter.hasNext()) {
+                bucketIter = nextIter;
+                break;
+              }
+            }
           }
         }
-        return false;
+        return bucketIndex < capacity;
       }
 
       @Override

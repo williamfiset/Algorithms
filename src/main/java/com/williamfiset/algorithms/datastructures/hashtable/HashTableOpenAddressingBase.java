@@ -174,9 +174,15 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
     final int offset = normalizeIndex(key.hashCode());
 
     for (int i = offset, j = -1, x = 1; ; i = normalizeIndex(offset + probe(x++))) {
+
+      // The current slot was previously deleted
       if (keys[i] == TOMBSTONE) {
         if (j == -1) j = i;
+
+        // The current cell already contains a key
       } else if (keys[i] != null) {
+        // The key we're trying to insert already exists in the hash-table,
+        // so update its value with the most recent value
         if (keys[i].equals(key)) {
           V oldValue = values[i];
           if (j == -1) {
@@ -190,12 +196,19 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
           modificationCount++;
           return oldValue;
         }
+
+        // Current cell is null so an insertion/update can occur
       } else {
+        // No previously encountered deleted buckets
         if (j == -1) {
           usedBuckets++;
           keyCount++;
           keys[i] = key;
           values[i] = val;
+
+          // Previously seen deleted bucket. Instead of inserting
+          // the new element at i where the null element is insert
+          // it where the deleted token was found.
         } else {
           keyCount++;
           keys[j] = key;
@@ -214,12 +227,25 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
     setupProbing(key);
     final int offset = normalizeIndex(key.hashCode());
 
+    // Start at the original hash value and probe until we find a spot where our key
+    // is or hit a null element in which case our element does not exist.
     for (int i = offset, j = -1, x = 1; ; i = normalizeIndex(offset + probe(x++))) {
+
+      // Ignore deleted cells, but record where the first index
+      // of a deleted cell is found to perform lazy relocation later.
       if (keys[i] == TOMBSTONE) {
         if (j == -1) j = i;
+
+        // We hit a non-null key, perhaps it's the one we're looking for.
       } else if (keys[i] != null) {
+        // The key we want is in the hash-table!
         if (keys[i].equals(key)) {
+          // If j != -1 this means we previously encountered a deleted cell.
+          // We can perform an optimization by swapping the entries in cells
+          // i and j so that the next time we search for this key it will be
+          // found faster. This is called lazy deletion/relocation.
           if (j != -1) {
+            // Swap the key-value pairs of positions i and j.
             keys[j] = keys[i];
             values[j] = values[i];
             keys[i] = TOMBSTONE;
@@ -227,6 +253,8 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
           }
           return true;
         }
+
+        // Key was not found in the hash-table :/
       } else return false;
     }
   }
@@ -240,12 +268,25 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
     setupProbing(key);
     final int offset = normalizeIndex(key.hashCode());
 
+    // Start at the original hash value and probe until we find a spot where our key
+    // is or we hit a null element in which case our element does not exist.
     for (int i = offset, j = -1, x = 1; ; i = normalizeIndex(offset + probe(x++))) {
+
+      // Ignore deleted cells, but record where the first index
+      // of a deleted cell is found to perform lazy relocation later.
       if (keys[i] == TOMBSTONE) {
         if (j == -1) j = i;
+
+        // We hit a non-null key, perhaps it's the one we're looking for.
       } else if (keys[i] != null) {
+        // The key we want is in the hash-table!
         if (keys[i].equals(key)) {
+          // If j != -1 this means we previously encountered a deleted cell.
+          // We can perform an optimization by swapping the entries in cells
+          // i and j so that the next time we search for this key it will be
+          // found faster. This is called lazy deletion/relocation.
           if (j != -1) {
+            // Swap key-values pairs at indexes i and j.
             keys[j] = keys[i];
             values[j] = values[i];
             keys[i] = TOMBSTONE;
@@ -255,6 +296,8 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
             return values[i];
           }
         }
+
+        // Element was not found in the hash-table :/
       } else return null;
     }
   }
@@ -268,9 +311,17 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
     setupProbing(key);
     final int offset = normalizeIndex(key.hashCode());
 
+    // Starting at the original hash probe until we find a spot where our key is
+    // or we hit a null element in which case our element does not exist.
     for (int i = offset, x = 1; ; i = normalizeIndex(offset + probe(x++))) {
+
+      // Ignore deleted cells
       if (keys[i] == TOMBSTONE) continue;
+
+      // Key was not found in hash-table.
       if (keys[i] == null) return null;
+
+      // The key we want to remove is in the hash-table!
       if (keys[i].equals(key)) {
         keyCount--;
         modificationCount++;
@@ -301,6 +352,9 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
 
   @Override
   public Iterator<K> iterator() {
+    // Before the iteration begins record the number of modifications
+    // done to the hash-table. This value should not change as we iterate
+    // otherwise a concurrent modification has occurred :0
     final int MODIFICATION_COUNT = modificationCount;
 
     return new Iterator<K>() {
@@ -308,10 +362,12 @@ public abstract class HashTableOpenAddressingBase<K, V> implements Iterable<K> {
 
       @Override
       public boolean hasNext() {
+        // The contents of the table have been altered
         if (MODIFICATION_COUNT != modificationCount) throw new ConcurrentModificationException();
         return keysLeft != 0;
       }
 
+      // Find the next element and return it
       @Override
       public K next() {
         while (keys[index] == null || keys[index] == TOMBSTONE) index++;
