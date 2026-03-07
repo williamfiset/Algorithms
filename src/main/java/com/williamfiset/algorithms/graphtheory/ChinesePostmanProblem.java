@@ -3,7 +3,7 @@
  *
  * <p>Still need to: - Implemented undirected edge eulerain path algo
  *
- * <p>./gradlew run -Palgorithm=graphtheory.ChinesePostmanProblem
+ * <p>bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:ChinesePostmanProblem
  */
 package com.williamfiset.algorithms.graphtheory;
 

@@ -5,7 +5,7 @@
  * $ git clone https://github.com/williamfiset/algorithms
  *
  * <p>Run: <br>
- * $ ./gradlew run -Palgorithm=datastructures.sparsetable.examples.MinSparseTable
+ * $ bazel run //src/main/java/com/williamfiset/algorithms/datastructures/sparsetable/examples:MinSparseTable
  *
  * <p>Construction complexity: O(nlogn), query complexity: O(1)
  *

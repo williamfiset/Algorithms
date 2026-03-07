@@ -3,7 +3,7 @@
  *
  * <p>This impl is still a WIP
  *
- * <p>Run: ./gradlew run -Palgorithm=graphtheory.EulerianPathUndirectedEdgesAdjacencyList
+ * <p>Run: bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:EulerianPathUndirectedEdgesAdjacencyList
  *
  * <p>Time Complexity: O(E)
  *

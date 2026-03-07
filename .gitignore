@@ -1,5 +1,8 @@
 *.class
 
+# Gradle build outputs
+build/
+
 # Bazel build outputs
 bazel-*
 /bazel-bin

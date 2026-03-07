@@ -1,6 +1,5 @@
 /**
- * gradle test --info --tests
- * "com.williamfiset.algorithms.datastructures.segmenttree.GenericSegmentTreeTest"
+ * bazel test //src/test/java/com/williamfiset/algorithms/datastructures/segmenttree:GenericSegmentTreeTest
  */
 package com.williamfiset.algorithms.datastructures.segmenttree;
 

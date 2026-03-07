@@ -5,7 +5,7 @@
  * $ git clone https://github.com/williamfiset/Algorithms
  *
  * <p>Run: <br>
- * $ ./gradlew run -Palgorithm=graphtheory.treealgorithms.examples.TreeHeight
+ * $ bazel run //src/main/java/com/williamfiset/algorithms/graphtheory/treealgorithms/examples:TreeHeight
  *
  * <p>Time Complexity: O(n)
  *

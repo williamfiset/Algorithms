@@ -8,7 +8,7 @@
  *
  * <p>Verified against: https://open.kattis.com/problems/builddeps
  *
- * <p>./gradlew run -Palgorithm=graphtheory.Kahns
+ * <p>bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:Kahns
  *
  * <p>Time complexity: O(V+E)
  *

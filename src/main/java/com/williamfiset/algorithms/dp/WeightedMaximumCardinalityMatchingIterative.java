@@ -5,7 +5,7 @@
  *
  * <p>Tested against: UVA 10911 - Forming Quiz Teams
  *
- * <p>To Run: ./gradlew run -Palgorithm=dp.WeightedMaximumCardinalityMatchingIterative
+ * <p>To Run: bazel run //src/main/java/com/williamfiset/algorithms/dp:WeightedMaximumCardinalityMatchingIterative
  *
  * <p>Time Complexity: O(n^2 * 2^n)
  *
