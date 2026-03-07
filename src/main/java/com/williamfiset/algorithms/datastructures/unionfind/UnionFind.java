@@ -1,17 +1,30 @@
+package com.williamfiset.algorithms.datastructures.unionfind;
+
 /**
- * UnionFind/Disjoint Set data structure implementation. This code was inspired by the union find
- * implementation found in 'Algorithms Fourth Edition' by Robert Sedgewick and Kevin Wayne.
+ * Union-Find (Disjoint Set)
+ *
+ * Tracks a set of elements partitioned into disjoint subsets. Supports
+ * near-constant-time union and find operations using union by size and
+ * path compression.
+ *
+ * Use cases:
+ *   - Kruskal's minimum spanning tree algorithm
+ *   - Detecting cycles in undirected graphs
+ *   - Connected components in dynamic graphs
+ *
+ * Inspired by 'Algorithms Fourth Edition' by Sedgewick and Wayne.
+ *
+ * Time:  O(α(n)) amortized per find/unify, where α is the inverse Ackermann function
+ * Space: O(n)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
-package com.williamfiset.algorithms.datastructures.unionfind;
-
 public class UnionFind {
 
   // The number of elements in this union find
   private int size;
 
-  // Used to track the size of each of the component
+  // Used to track the size of each component
   private int[] sz;
 
   // id[i] points to the parent of i, if id[i] = i then i is a root node
@@ -20,8 +33,12 @@ public class UnionFind {
   // Tracks the number of components in the union find
   private int numComponents;
 
+  /**
+   * Creates a Union-Find with n elements, each in its own component.
+   *
+   * @param size the number of elements
+   */
   public UnionFind(int size) {
-
     if (size <= 0) throw new IllegalArgumentException("Size <= 0 is not allowed");
 
     this.size = numComponents = size;
@@ -34,16 +51,18 @@ public class UnionFind {
     }
   }
 
-  // Find which component/set 'p' belongs to, takes amortized constant time.
+  /**
+   * Finds the root of the component containing element p.
+   * Uses path compression to flatten the tree structure.
+   *
+   * @param p the element to find the root of
+   * @return the root of the component containing p
+   */
   public int find(int p) {
-
-    // Find the root of the component/set
     int root = p;
     while (root != id[root]) root = id[root];
 
-    // Compress the path leading back to the root.
-    // Doing this operation is called "path compression"
-    // and is what gives us amortized time complexity.
+    // Path compression: point every node along the path directly to root
     while (p != root) {
       int next = id[p];
       id[p] = root;
@@ -53,43 +72,46 @@ public class UnionFind {
     return root;
   }
 
-  // This is an alternative recursive formulation for the find method
+  // Alternative recursive formulation for find with path compression:
   // public int find(int p) {
   //   if (p == id[p]) return p;
   //   return id[p] = find(id[p]);
   // }
 
-  // Return whether or not the elements 'p' and
-  // 'q' are in the same components/set.
+  /** Returns true if elements p and q are in the same component. */
   public boolean connected(int p, int q) {
     return find(p) == find(q);
   }
 
-  // Return the size of the components/set 'p' belongs to
+  /** Returns the size of the component containing element p. */
   public int componentSize(int p) {
     return sz[find(p)];
   }
 
-  // Return the number of elements in this UnionFind/Disjoint set
+  /** Returns the total number of elements. */
   public int size() {
     return size;
   }
 
-  // Returns the number of remaining components/sets
+  /** Returns the number of disjoint components. */
   public int components() {
     return numComponents;
   }
 
-  // Unify the components/sets containing elements 'p' and 'q'
+  /**
+   * Merges the components containing elements p and q.
+   * Uses union by size to keep the tree balanced.
+   *
+   * @param p an element in the first component
+   * @param q an element in the second component
+   */
   public void unify(int p, int q) {
-
-    // These elements are already in the same group!
-    if (connected(p, q)) return;
-
     int root1 = find(p);
     int root2 = find(q);
 
-    // Merge smaller component/set into the larger one.
+    if (root1 == root2) return;
+
+    // Merge smaller component into the larger one
     if (sz[root1] < sz[root2]) {
       sz[root2] += sz[root1];
       id[root1] = root2;
@@ -100,8 +122,6 @@ public class UnionFind {
       sz[root2] = 0;
     }
 
-    // Since the roots found are different we know that the
-    // number of components/sets has decreased by one
     numComponents--;
   }
 }
