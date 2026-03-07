@@ -71,6 +71,7 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
 
   // Return true/false depending on whether a value exists in the tree.
   public boolean contains(T value) {
+    if (value == null) return false;
     return contains(root, value);
   }
 
@@ -299,12 +300,12 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
     return node.value;
   }
 
-  // Returns as iterator to traverse the tree in order.
+  // Returns an iterator to traverse the tree in order.
   public java.util.Iterator<T> iterator() {
 
     final int expectedNodeCount = nodeCount;
-    final java.util.Stack<Node> stack = new java.util.Stack<>();
-    stack.push(root);
+    final java.util.Deque<Node> stack = new java.util.ArrayDeque<>();
+    if (root != null) stack.push(root);
 
     return new java.util.Iterator<T>() {
       Node trav = root;
@@ -350,12 +351,12 @@ public class AVLTreeRecursive<T extends Comparable<T>> implements Iterable<T> {
   // Make sure all left child nodes are smaller in value than their parent and
   // make sure all right child nodes are greater in value than their parent.
   // (Used only for testing)
-  public boolean validateBSTInvarient(Node node) {
+  public boolean validateBSTInvariant(Node node) {
     if (node == null) return true;
     T val = node.value;
     boolean isValid = true;
     if (node.left != null) isValid = isValid && node.left.value.compareTo(val) < 0;
     if (node.right != null) isValid = isValid && node.right.value.compareTo(val) > 0;
-    return isValid && validateBSTInvarient(node.left) && validateBSTInvarient(node.right);
+    return isValid && validateBSTInvariant(node.left) && validateBSTInvariant(node.right);
   }
 }

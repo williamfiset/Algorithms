@@ -1,9 +1,12 @@
 package com.williamfiset.algorithms.datastructures.balancedtree;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 import org.junit.jupiter.api.*;
@@ -35,6 +38,43 @@ public class AVLTreeTest {
   @Test
   public void testTreeContainsNull() {
     assertThat(tree.contains(null)).isFalse();
+  }
+
+  @Test
+  public void testEmptyTree() {
+    assertThat(tree.isEmpty()).isTrue();
+    assertThat(tree.size()).isEqualTo(0);
+    assertThat(tree.height()).isEqualTo(0);
+    assertThat(tree.contains(1)).isFalse();
+  }
+
+  @Test
+  public void testSingleElement() {
+    tree.insert(5);
+    assertThat(tree.isEmpty()).isFalse();
+    assertThat(tree.size()).isEqualTo(1);
+    assertThat(tree.height()).isEqualTo(0);
+    assertThat(tree.contains(5)).isTrue();
+    assertThat(tree.contains(4)).isFalse();
+  }
+
+  @Test
+  public void testDuplicateInsertion() {
+    assertThat(tree.insert(5)).isTrue();
+    assertThat(tree.insert(5)).isFalse();
+    assertThat(tree.size()).isEqualTo(1);
+  }
+
+  @Test
+  public void testRemoveNonExistentElement() {
+    tree.insert(5);
+    assertThat(tree.remove(99)).isFalse();
+    assertThat(tree.size()).isEqualTo(1);
+  }
+
+  @Test
+  public void testRemoveFromEmptyTree() {
+    assertThat(tree.remove(1)).isFalse();
   }
 
   @Test
@@ -106,9 +146,79 @@ public class AVLTreeTest {
   }
 
   @Test
+  public void testRemoveLeafNode() {
+    tree.insert(2);
+    tree.insert(1);
+    tree.insert(3);
+
+    assertThat(tree.remove(1)).isTrue();
+    assertThat(tree.size()).isEqualTo(2);
+    assertThat(tree.contains(1)).isFalse();
+    assertThat(tree.validateBSTInvariant(tree.root)).isTrue();
+  }
+
+  @Test
+  public void testRemoveNodeWithOneChild() {
+    tree.insert(2);
+    tree.insert(1);
+    tree.insert(3);
+    tree.insert(4);
+
+    assertThat(tree.remove(3)).isTrue();
+    assertThat(tree.size()).isEqualTo(3);
+    assertThat(tree.contains(3)).isFalse();
+    assertThat(tree.contains(4)).isTrue();
+    assertThat(tree.validateBSTInvariant(tree.root)).isTrue();
+  }
+
+  @Test
+  public void testRemoveNodeWithTwoChildren() {
+    tree.insert(3);
+    tree.insert(1);
+    tree.insert(5);
+    tree.insert(2);
+    tree.insert(4);
+
+    assertThat(tree.remove(3)).isTrue();
+    assertThat(tree.size()).isEqualTo(4);
+    assertThat(tree.contains(3)).isFalse();
+    assertThat(tree.validateBSTInvariant(tree.root)).isTrue();
+    assertThat(validateBalanceFactorValues(tree.root)).isTrue();
+  }
+
+  @Test
+  public void testRemoveRoot() {
+    tree.insert(5);
+    assertThat(tree.remove(5)).isTrue();
+    assertThat(tree.isEmpty()).isTrue();
+    assertThat(tree.root).isNull();
+  }
+
+  @Test
+  public void testInsertAndRemoveAll() {
+    for (int i = 0; i < 10; i++) tree.insert(i);
+    for (int i = 0; i < 10; i++) {
+      assertThat(tree.remove(i)).isTrue();
+      assertThat(tree.contains(i)).isFalse();
+    }
+    assertThat(tree.isEmpty()).isTrue();
+  }
+
+  @Test
   public void testRandomizedBalanceFactorTest() {
     for (int i = 0; i < TEST_SZ; i++) {
       tree.insert(randValue());
+      assertThat(validateBalanceFactorValues(tree.root)).isTrue();
+    }
+  }
+
+  @Test
+  public void testBalanceFactorAfterRemovals() {
+    List<Integer> values = genRandList(500);
+    for (int v : values) tree.insert(v);
+    Collections.shuffle(values);
+    for (int v : values) {
+      tree.remove(v);
       assertThat(validateBalanceFactorValues(tree.root)).isTrue();
     }
   }
@@ -129,7 +239,18 @@ public class AVLTreeTest {
 
       assertThat(tree.insert(v)).isEqualTo(set.add(v));
       assertThat(tree.size()).isEqualTo(set.size());
-      assertThat(tree.validateBSTInvarient(tree.root)).isTrue();
+      assertThat(tree.validateBSTInvariant(tree.root)).isTrue();
+    }
+  }
+
+  @Test
+  public void testBSTInvariantAfterRemovals() {
+    List<Integer> values = genRandList(500);
+    for (int v : values) tree.insert(v);
+    Collections.shuffle(values);
+    for (int v : values) {
+      tree.remove(v);
+      assertThat(tree.validateBSTInvariant(tree.root)).isTrue();
     }
   }
 
@@ -176,6 +297,85 @@ public class AVLTreeTest {
 
       assertThat(tree.isEmpty()).isTrue();
     }
+  }
+
+  @Test
+  public void testIteratorInOrder() {
+    int[] values = {5, 3, 7, 1, 4, 6, 8};
+    for (int v : values) tree.insert(v);
+
+    List<Integer> result = new ArrayList<>();
+    for (int v : tree) result.add(v);
+
+    assertThat(result).containsExactly(1, 3, 4, 5, 6, 7, 8).inOrder();
+  }
+
+  @Test
+  public void testIteratorOnEmptyTree() {
+    Iterator<Integer> it = tree.iterator();
+    assertThat(it.hasNext()).isFalse();
+  }
+
+  @Test
+  public void testIteratorOnSingleElement() {
+    tree.insert(42);
+    Iterator<Integer> it = tree.iterator();
+    assertThat(it.hasNext()).isTrue();
+    assertThat(it.next()).isEqualTo(42);
+    assertThat(it.hasNext()).isFalse();
+  }
+
+  @Test
+  public void testIteratorConcurrentModificationOnInsert() {
+    tree.insert(1);
+    tree.insert(2);
+    tree.insert(3);
+
+    Iterator<Integer> it = tree.iterator();
+    tree.insert(4);
+
+    assertThrows(ConcurrentModificationException.class, it::hasNext);
+  }
+
+  @Test
+  public void testIteratorConcurrentModificationOnRemove() {
+    tree.insert(1);
+    tree.insert(2);
+    tree.insert(3);
+
+    Iterator<Integer> it = tree.iterator();
+    tree.remove(2);
+
+    assertThrows(ConcurrentModificationException.class, it::next);
+  }
+
+  @Test
+  public void testIteratorRemoveUnsupported() {
+    tree.insert(1);
+    Iterator<Integer> it = tree.iterator();
+    assertThrows(UnsupportedOperationException.class, it::remove);
+  }
+
+  @Test
+  public void testToString() {
+    tree.insert(2);
+    tree.insert(1);
+    tree.insert(3);
+    // Just verify it doesn't throw and returns non-empty output.
+    assertThat(tree.toString()).isNotEmpty();
+  }
+
+  @Test
+  public void testContainsAfterRemoval() {
+    tree.insert(1);
+    tree.insert(2);
+    tree.insert(3);
+
+    assertThat(tree.contains(2)).isTrue();
+    tree.remove(2);
+    assertThat(tree.contains(2)).isFalse();
+    assertThat(tree.contains(1)).isTrue();
+    assertThat(tree.contains(3)).isTrue();
   }
 
   static List<Integer> genRandList(int sz) {
