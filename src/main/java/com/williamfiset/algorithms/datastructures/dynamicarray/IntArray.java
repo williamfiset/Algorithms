@@ -1,7 +1,6 @@
 /**
- * Most of the time when you use an array it's to place integers inside of it, so why not have a
- * super fast integer only array? This file contains an implementation of an integer only array
- * which can outperform Java's ArrayList by about a factor of 10-15x! Enjoy!
+ * A fast dynamic array implementation for primitive ints, avoiding the boxing overhead of
+ * ArrayList&lt;Integer&gt;.
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
@@ -11,8 +10,8 @@ public class IntArray implements Iterable<Integer> {
 
   private static final int DEFAULT_CAP = 1 << 3;
 
-  public int[] arr;
-  public int len = 0;
+  private int[] arr;
+  private int len = 0;
   private int capacity = 0;
 
   // Initialize the array with a default capacity
@@ -44,37 +43,38 @@ public class IntArray implements Iterable<Integer> {
     return len == 0;
   }
 
-  // To get/set values without method call overhead you can do
-  // array_obj.arr[index] instead, you can gain about 10x the speed!
   public int get(int index) {
+    if (index < 0 || index >= len) throw new IndexOutOfBoundsException("Index: " + index);
     return arr[index];
   }
 
   public void set(int index, int elem) {
+    if (index < 0 || index >= len) throw new IndexOutOfBoundsException("Index: " + index);
     arr[index] = elem;
   }
 
   // Add an element to this dynamic array
   public void add(int elem) {
-    if (len + 1 >= capacity) {
+    if (len == capacity) {
       if (capacity == 0) capacity = 1;
-      else capacity *= 2; // double the size
-      arr = java.util.Arrays.copyOf(arr, capacity); // pads with extra 0/null elements
+      else capacity *= 2;
+      arr = java.util.Arrays.copyOf(arr, capacity);
     }
     arr[len++] = elem;
   }
 
   // Removes the element at the specified index in this list.
-  // If possible, avoid calling this method as it take O(n) time
-  // to remove an element (since you have to reconstruct the array!)
+  // If possible, avoid calling this method as it takes O(n) time
+  // to remove an element (since you have to shift elements).
   public void removeAt(int rm_index) {
+    if (rm_index < 0 || rm_index >= len)
+      throw new IndexOutOfBoundsException("Index: " + rm_index);
     System.arraycopy(arr, rm_index + 1, arr, rm_index, len - rm_index - 1);
     --len;
-    --capacity;
   }
 
   // Search and remove an element if it is found in the array
-  // If possible, avoid calling this method as it take O(n) time
+  // If possible, avoid calling this method as it takes O(n) time
   public boolean remove(int elem) {
     for (int i = 0; i < len; i++) {
       if (arr[i] == elem) {
@@ -97,9 +97,7 @@ public class IntArray implements Iterable<Integer> {
   // Perform a binary search on this array to find an element in O(log(n)) time
   // Make sure this array is sorted! Returns a value < 0 if item is not found
   public int binarySearch(int key) {
-    int index = java.util.Arrays.binarySearch(arr, 0, len, key);
-    // if (index < 0) index = -index - 1; // If not found this will tell you where to insert
-    return index;
+    return java.util.Arrays.binarySearch(arr, 0, len, key);
   }
 
   // Sort this array
@@ -130,16 +128,12 @@ public class IntArray implements Iterable<Integer> {
   @Override
   public String toString() {
     if (len == 0) return "[]";
-    else {
-      StringBuilder sb = new StringBuilder(len).append("[");
-      for (int i = 0; i < len - 1; i++) sb.append(arr[i] + ", ");
-      return sb.append(arr[len - 1] + "]").toString();
-    }
+    StringBuilder sb = new StringBuilder().append("[");
+    for (int i = 0; i < len - 1; i++) sb.append(arr[i]).append(", ");
+    return sb.append(arr[len - 1]).append("]").toString();
   }
 
-  // Example usage
   public static void main(String[] args) {
-
     IntArray ar = new IntArray(50);
     ar.add(3);
     ar.add(7);
