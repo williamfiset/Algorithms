@@ -1,10 +1,6 @@
 /**
  * Quicksort implementation using Hoare partitioning
  *
- * <p>Run with:
- *
- * <p>$ ./gradlew run -Palgorithm=sorting.QuickSort
- *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.sorting;

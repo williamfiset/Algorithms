@@ -3,10 +3,6 @@
  * improved partitioning algorithm. QuickSort is quite slow in the case where very few unique
  * elements exist in the array so the QuickSort3 algorithm is used at that time.
  *
- * <p>Run with:
- *
- * <p>$ ./gradlew run -Palgorithm=sorting.QuickSort3
- *
  * @author Atharva Thorve, aaathorve@gmail.com
  */
 package com.williamfiset.algorithms.sorting;
