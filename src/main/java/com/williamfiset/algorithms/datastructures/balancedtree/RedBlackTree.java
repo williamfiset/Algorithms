@@ -17,9 +17,9 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
   public static final boolean BLACK = false;
 
   public class Node {
-    private boolean color = RED;
-    private T value;
-    private Node left, right, parent;
+    public boolean color = RED;
+    public T value;
+    public Node left, right, parent;
 
     public Node(T value, boolean color, Node parent, Node left, Node right) {
       this.value = value;
@@ -28,12 +28,6 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
       this.left = left;
       this.right = right;
     }
-
-    public boolean getColor() { return color; }
-    public T getValue() { return value; }
-    public Node getLeft() { return left; }
-    public Node getRight() { return right; }
-    public Node getParent() { return parent; }
   }
 
   public Node root;
@@ -212,15 +206,5 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
   }
   private void pushLeft(Node node, Stack<Node> stack) {
     while (node != NIL) { stack.push(node); node = node.left; }
-  }
-
-  public static void main(String[] args) {
-    int[] values = {5, 8, 1, -4, 6, -2, 0, 7};
-    RedBlackTree<Integer> rbTree = new RedBlackTree<>();
-    for (int v : values) rbTree.insert(v);
-    System.out.printf("RB tree contains %d: %s\n", 6, rbTree.contains(6));
-    System.out.printf("RB tree contains %d: %s\n", -5, rbTree.contains(-5));
-    System.out.printf("RB tree contains %d: %s\n", 1, rbTree.contains(1));
-    System.out.printf("RB tree contains %d: %s\n", 99, rbTree.contains(99));
   }
 }
