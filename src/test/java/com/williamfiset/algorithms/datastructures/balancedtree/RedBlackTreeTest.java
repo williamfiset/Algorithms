@@ -50,6 +50,7 @@ public class RedBlackTreeTest {
 
     assertNullChildren(tree, tree.root.left, tree.root.right);
     assertCorrectParentLinks(tree, tree.root, tree.NIL);
+    verifyProperties(tree);
   }
 
   @Test
@@ -72,6 +73,7 @@ public class RedBlackTreeTest {
 
     assertNullChildren(tree, tree.root.left, tree.root.right);
     assertCorrectParentLinks(tree, tree.root, tree.NIL);
+    verifyProperties(tree);
   }
 
   @Test
@@ -94,6 +96,7 @@ public class RedBlackTreeTest {
 
     assertNullChildren(tree, tree.root.left, tree.root.right);
     assertCorrectParentLinks(tree, tree.root, tree.NIL);
+    verifyProperties(tree);
   }
 
   @Test
@@ -116,6 +119,7 @@ public class RedBlackTreeTest {
 
     assertNullChildren(tree, tree.root.left, tree.root.right);
     assertCorrectParentLinks(tree, tree.root, tree.NIL);
+    verifyProperties(tree);
   }
 
   @Test
@@ -141,6 +145,7 @@ public class RedBlackTreeTest {
     assertThat(tree.root.right.left).isEqualTo(tree.NIL);
     assertNullChildren(tree, tree.root.left, tree.root.right.right);
     assertCorrectParentLinks(tree, tree.root, tree.NIL);
+    verifyProperties(tree);
 
     /* Black left uncle case. */
 
@@ -158,6 +163,7 @@ public class RedBlackTreeTest {
     assertThat(tree.root.right.left.color).isEqualTo(RedBlackTree.RED);
     assertThat(tree.root.right.right.color).isEqualTo(RedBlackTree.RED);
     assertCorrectParentLinks(tree, tree.root, tree.NIL);
+    verifyProperties(tree);
   }
 
   @Test
@@ -184,6 +190,7 @@ public class RedBlackTreeTest {
     assertThat(tree.root.left.right).isEqualTo(tree.NIL);
     assertNullChildren(tree, tree.root.right, tree.root.left.left);
     assertCorrectParentLinks(tree, tree.root, tree.NIL);
+    verifyProperties(tree);
 
     /* Black right uncle case. */
 
@@ -201,6 +208,7 @@ public class RedBlackTreeTest {
     assertThat(tree.root.left.left.color).isEqualTo(RedBlackTree.RED);
     assertThat(tree.root.left.right.color).isEqualTo(RedBlackTree.RED);
     assertCorrectParentLinks(tree, tree.root, tree.NIL);
+    verifyProperties(tree);
   }
 
   @Test
@@ -231,6 +239,7 @@ public class RedBlackTreeTest {
     assertThat(tree.root.right.left.right.color).isEqualTo(RedBlackTree.RED);
     assertThat(tree.root.right.right.left.color).isEqualTo(RedBlackTree.RED);
     assertThat(tree.root.right.right.right.color).isEqualTo(RedBlackTree.RED);
+    verifyProperties(tree);
   }
 
   @Test
@@ -240,10 +249,12 @@ public class RedBlackTreeTest {
     for (int i = 0; i < TEST_SZ; i++) {
       int v = randValue();
       assertThat(tree.insert(v)).isEqualTo(set.add(v));
-      assertThat(tree.size()).isEqualTo(tree.size());
+      assertThat(tree.size()).isEqualTo(set.size());
       assertThat(tree.contains(v)).isTrue();
       assertBinarySearchTreeInvariant(tree, tree.root);
+      if (i % 100 == 0) verifyProperties(tree);
     }
+    verifyProperties(tree);
   }
 
   @Test
@@ -254,12 +265,15 @@ public class RedBlackTreeTest {
 
     tree.delete(5);
     assertThat(tree.contains(5)).isFalse();
+    verifyProperties(tree);
 
     tree.delete(7);
     assertThat(tree.contains(7)).isFalse();
+    verifyProperties(tree);
 
     tree.delete(9);
     assertThat(tree.contains(9)).isFalse();
+    verifyProperties(tree);
   }
 
   @Test
@@ -275,7 +289,7 @@ public class RedBlackTreeTest {
   @Test
   public void randomRemoveTests() {
     TreeSet<Integer> ts = new TreeSet<>();
-    for (int i = 0; i < TEST_SZ; i++) {
+    for (int i = 0; i < 100; i++) { // Reduced TEST_SZ for faster property verification
 
       List<Integer> lst = genRandList(i);
       for (Integer value : lst) {
@@ -292,6 +306,7 @@ public class RedBlackTreeTest {
         assertThat(treeSetRemove).isEqualTo(treeRemove);
         assertThat(tree.contains(value)).isFalse();
         assertThat(tree.size()).isEqualTo(i - j - 1);
+        verifyProperties(tree);
       }
       assertThat(ts.isEmpty()).isEqualTo(tree.isEmpty());
     }
@@ -338,7 +353,8 @@ public class RedBlackTreeTest {
     if (node == tree.NIL) return true;
     boolean isValid = true;
     if (node.left != tree.NIL) isValid = node.left.value.compareTo(node.value) < 0;
-    if (node.right != tree.NIL) isValid = isValid && node.right.value.compareTo(node.value) > 0;
+    if (node.right != tree.NIL)
+      isValid = isValid && node.right.value.compareTo(node.value) > 0;
     return isValid
         && assertBinarySearchTreeInvariant(tree, node.left)
         && assertBinarySearchTreeInvariant(tree, node.right);
@@ -350,6 +366,44 @@ public class RedBlackTreeTest {
     if (node.parent != parent) return false;
     return validateParentLinksAreCorrect(node.left, node)
         && validateParentLinksAreCorrect(node.right, node);
+  }
+
+  // Verify RB tree properties
+  private void verifyProperties(RedBlackTree<Integer> tree) {
+    if (tree.root == tree.NIL) return;
+
+    // 1. Every node is either red or black (Implicit)
+
+    // 2. The root is black
+    assertThat(tree.root.color).isEqualTo(RedBlackTree.BLACK);
+
+    // 3. Every leaf (NIL) is black
+    assertThat(tree.NIL.color).isEqualTo(RedBlackTree.BLACK);
+
+    verifyRedNodeProperty(tree, tree.root);
+    verifyBlackHeightProperty(tree, tree.root);
+  }
+
+  private void verifyRedNodeProperty(RedBlackTree<Integer> tree, RedBlackTree<Integer>.Node node) {
+    if (node == tree.NIL) return;
+    if (node.color == RedBlackTree.RED) {
+      assertThat(node.left.color).isEqualTo(RedBlackTree.BLACK);
+      assertThat(node.right.color).isEqualTo(RedBlackTree.BLACK);
+    }
+    verifyRedNodeProperty(tree, node.left);
+    verifyRedNodeProperty(tree, node.right);
+  }
+
+  private int verifyBlackHeightProperty(
+      RedBlackTree<Integer> tree, RedBlackTree<Integer>.Node node) {
+    if (node == tree.NIL) return 1;
+
+    int leftHeight = verifyBlackHeightProperty(tree, node.left);
+    int rightHeight = verifyBlackHeightProperty(tree, node.right);
+
+    assertThat(leftHeight).isEqualTo(rightHeight);
+
+    return leftHeight + (node.color == RedBlackTree.BLACK ? 1 : 0);
   }
 
   static List<Integer> genRandList(int sz) {
