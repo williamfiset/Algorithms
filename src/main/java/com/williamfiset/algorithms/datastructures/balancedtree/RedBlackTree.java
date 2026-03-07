@@ -17,8 +17,13 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
   public static final boolean BLACK = false;
 
   public class Node {
+    // The color of this node. By default all nodes start red.
     public boolean color = RED;
+
+    // The value/data contained within the node.
     public T value;
+
+    // The left, right and parent references of this node.
     public Node left, right, parent;
 
     public Node(T value, boolean color, Node parent, Node left, Node right) {
@@ -30,8 +35,12 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
     }
   }
 
+  // The root node of the RB tree.
   public Node root;
+
+  // Tracks the number of nodes inside the tree.
   private int nodeCount = 0;
+
   public final Node NIL;
 
   public RedBlackTree() {
@@ -40,24 +49,50 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
     root = NIL;
   }
 
-  public int size() { return nodeCount; }
-  public boolean isEmpty() { return nodeCount == 0; }
-  public boolean contains(T value) { return search(value) != NIL; }
+  // Returns the number of nodes in the tree.
+  public int size() {
+    return nodeCount;
+  }
+
+  // Returns whether or not the tree is empty.
+  public boolean isEmpty() {
+    return nodeCount == 0;
+  }
+
+  // Return true/false depending on whether a value exists in the tree.
+  public boolean contains(T value) {
+    return search(value) != NIL;
+  }
 
   public boolean insert(T val) {
-    if (val == null) throw new IllegalArgumentException("Null values not allowed.");
+    if (val == null) {
+      throw new IllegalArgumentException("Red-Black tree does not allow null values.");
+    }
+
     Node parent = NIL, current = root;
+
     while (current != NIL) {
       parent = current;
       int cmp = val.compareTo(current.value);
-      if (cmp < 0) current = current.left;
-      else if (cmp > 0) current = current.right;
-      else return false;
+      if (cmp < 0) {
+        current = current.left;
+      } else if (cmp > 0) {
+        current = current.right;
+      } else {
+        return false;
+      }
     }
+
     Node newNode = new Node(val, RED, parent, NIL, NIL);
-    if (parent == NIL) root = newNode;
-    else if (val.compareTo(parent.value) < 0) parent.left = newNode;
-    else parent.right = newNode;
+
+    if (parent == NIL) {
+      root = newNode;
+    } else if (val.compareTo(parent.value) < 0) {
+      parent.left = newNode;
+    } else {
+      parent.right = newNode;
+    }
+
     insertFix(newNode);
     nodeCount++;
     return true;
@@ -87,16 +122,23 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
   public boolean delete(T key) {
     Node nodeToDelete = search(key);
     if (nodeToDelete == NIL) return false;
+
     Node successor = nodeToDelete, replacement;
     boolean successorOriginalColor = successor.color;
-    if (nodeToDelete.left == NIL) transplant(nodeToDelete, replacement = nodeToDelete.right);
-    else if (nodeToDelete.right == NIL) transplant(nodeToDelete, replacement = nodeToDelete.left);
-    else {
+
+    if (nodeToDelete.left == NIL) {
+      replacement = nodeToDelete.right;
+      transplant(nodeToDelete, nodeToDelete.right);
+    } else if (nodeToDelete.right == NIL) {
+      replacement = nodeToDelete.left;
+      transplant(nodeToDelete, nodeToDelete.left);
+    } else {
       successor = findMin(nodeToDelete.right);
       successorOriginalColor = successor.color;
       replacement = successor.right;
-      if (successor.parent == nodeToDelete) replacement.parent = successor;
-      else {
+      if (successor.parent == nodeToDelete) {
+        replacement.parent = successor;
+      } else {
         transplant(successor, successor.right);
         successor.right = nodeToDelete.right;
         successor.right.parent = successor;
@@ -106,7 +148,11 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
       successor.left.parent = successor;
       successor.color = nodeToDelete.color;
     }
-    if (successorOriginalColor == BLACK) deleteFix(replacement);
+
+    if (successorOriginalColor == BLACK) {
+      deleteFix(replacement);
+    }
+
     nodeCount--;
     return true;
   }
@@ -141,6 +187,8 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
     node.color = BLACK;
   }
 
+  // Unified rotation method. If left is true, performs a left rotation on node x.
+  // Otherwise performs a right rotation.
   private void rotate(Node node, boolean left) {
     Node child = left ? node.right : node.left;
     if (left) {
@@ -151,20 +199,30 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
       if (child.right != NIL) child.right.parent = node;
     }
     child.parent = node.parent;
-    if (node.parent == NIL) root = child;
-    else if (node == node.parent.left) node.parent.left = child;
-    else node.parent.right = child;
-    if (left) child.left = node; else child.right = node;
+    if (node.parent == NIL) {
+      root = child;
+    } else if (node == node.parent.left) {
+      node.parent.left = child;
+    } else {
+      node.parent.right = child;
+    }
+    if (left) child.left = node;
+    else child.right = node;
     node.parent = child;
   }
 
   private void transplant(Node target, Node source) {
-    if (target.parent == NIL) root = source;
-    else if (target == target.parent.left) target.parent.left = source;
-    else target.parent.right = source;
+    if (target.parent == NIL) {
+      root = source;
+    } else if (target == target.parent.left) {
+      target.parent.left = source;
+    } else {
+      target.parent.right = source;
+    }
     source.parent = target.parent;
   }
 
+  // Helper method to find the leftmost node (which has the smallest value)
   private Node findMin(Node node) {
     while (node.left != NIL) node = node.left;
     return node;
@@ -174,28 +232,43 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
     Node current = root;
     while (current != NIL) {
       int cmp = val.compareTo(current.value);
-      if (cmp < 0) current = current.left;
-      else if (cmp > 0) current = current.right;
-      else return current;
+      if (cmp < 0) {
+        current = current.left;
+      } else if (cmp > 0) {
+        current = current.right;
+      } else {
+        return current;
+      }
     }
     return NIL;
   }
 
-  public int height() { return height(root); }
+  // The height of a rooted tree is the number of edges between the tree's
+  // root and its furthest leaf. This means that a tree containing a single
+  // node has a height of 0.
+  public int height() {
+    return height(root);
+  }
+
   private int height(Node node) {
     return node == NIL ? 0 : 1 + Math.max(height(node.left), height(node.right));
   }
 
+  // Returns as iterator to traverse the tree in order.
   @Override
   public Iterator<T> iterator() {
-    int expectedCount = nodeCount;
-    Stack<Node> stack = new Stack<>();
+    final int expectedCount = nodeCount;
+    final Stack<Node> stack = new Stack<>();
     pushLeft(root, stack);
+
     return new Iterator<T>() {
+      @Override
       public boolean hasNext() {
         if (expectedCount != nodeCount) throw new ConcurrentModificationException();
         return !stack.isEmpty();
       }
+
+      @Override
       public T next() {
         if (!hasNext()) throw new NoSuchElementException();
         Node node = stack.pop();
@@ -204,7 +277,11 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
       }
     };
   }
+
   private void pushLeft(Node node, Stack<Node> stack) {
-    while (node != NIL) { stack.push(node); node = node.left; }
+    while (node != NIL) {
+      stack.push(node);
+      node = node.left;
+    }
   }
 }
