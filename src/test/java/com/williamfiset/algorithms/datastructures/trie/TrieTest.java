@@ -3,11 +3,9 @@ package com.williamfiset.algorithms.datastructures.trie;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 
 public class TrieTest {
-
-  // @BeforeEach public void setup() { }
 
   @Test
   public void testBadTrieDelete1() {
