@@ -52,144 +52,144 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
 
   public boolean insert(T val) {
     if (val == null) throw new IllegalArgumentException("Null values not allowed.");
-    Node y = NIL, x = root;
-    while (x != NIL) {
-      y = x;
-      int cmp = val.compareTo(x.value);
-      if (cmp < 0) x = x.left;
-      else if (cmp > 0) x = x.right;
+    Node parent = NIL, current = root;
+    while (current != NIL) {
+      parent = current;
+      int cmp = val.compareTo(current.value);
+      if (cmp < 0) current = current.left;
+      else if (cmp > 0) current = current.right;
       else return false;
     }
-    Node z = new Node(val, RED, y, NIL, NIL);
-    if (y == NIL) root = z;
-    else if (val.compareTo(y.value) < 0) y.left = z;
-    else y.right = z;
-    insertFix(z);
+    Node newNode = new Node(val, RED, parent, NIL, NIL);
+    if (parent == NIL) root = newNode;
+    else if (val.compareTo(parent.value) < 0) parent.left = newNode;
+    else parent.right = newNode;
+    insertFix(newNode);
     nodeCount++;
     return true;
   }
 
-  private void insertFix(Node z) {
-    while (z.parent.color == RED) {
-      boolean isLeft = (z.parent == z.parent.parent.left);
-      Node u = isLeft ? z.parent.parent.right : z.parent.parent.left;
-      if (u.color == RED) {
-        z.parent.color = u.color = BLACK;
-        z.parent.parent.color = RED;
-        z = z.parent.parent;
+  private void insertFix(Node node) {
+    while (node.parent.color == RED) {
+      boolean isLeft = (node.parent == node.parent.parent.left);
+      Node uncle = isLeft ? node.parent.parent.right : node.parent.parent.left;
+      if (uncle.color == RED) {
+        node.parent.color = uncle.color = BLACK;
+        node.parent.parent.color = RED;
+        node = node.parent.parent;
       } else {
-        if (z == (isLeft ? z.parent.right : z.parent.left)) {
-          z = z.parent;
-          rotate(z, isLeft);
+        if (node == (isLeft ? node.parent.right : node.parent.left)) {
+          node = node.parent;
+          rotate(node, isLeft);
         }
-        z.parent.color = BLACK;
-        z.parent.parent.color = RED;
-        rotate(z.parent.parent, !isLeft);
+        node.parent.color = BLACK;
+        node.parent.parent.color = RED;
+        rotate(node.parent.parent, !isLeft);
       }
     }
     root.color = BLACK;
   }
 
   public boolean delete(T key) {
-    Node z = search(key);
-    if (z == NIL) return false;
-    Node y = z, x;
-    boolean yOriginalColor = y.color;
-    if (z.left == NIL) transplant(z, x = z.right);
-    else if (z.right == NIL) transplant(z, x = z.left);
+    Node nodeToDelete = search(key);
+    if (nodeToDelete == NIL) return false;
+    Node successor = nodeToDelete, replacement;
+    boolean successorOriginalColor = successor.color;
+    if (nodeToDelete.left == NIL) transplant(nodeToDelete, replacement = nodeToDelete.right);
+    else if (nodeToDelete.right == NIL) transplant(nodeToDelete, replacement = nodeToDelete.left);
     else {
-      y = successor(z.right);
-      yOriginalColor = y.color;
-      x = y.right;
-      if (y.parent == z) x.parent = y;
+      successor = findMin(nodeToDelete.right);
+      successorOriginalColor = successor.color;
+      replacement = successor.right;
+      if (successor.parent == nodeToDelete) replacement.parent = successor;
       else {
-        transplant(y, y.right);
-        y.right = z.right;
-        y.right.parent = y;
+        transplant(successor, successor.right);
+        successor.right = nodeToDelete.right;
+        successor.right.parent = successor;
       }
-      transplant(z, y);
-      y.left = z.left;
-      y.left.parent = y;
-      y.color = z.color;
+      transplant(nodeToDelete, successor);
+      successor.left = nodeToDelete.left;
+      successor.left.parent = successor;
+      successor.color = nodeToDelete.color;
     }
-    if (yOriginalColor == BLACK) deleteFix(x);
+    if (successorOriginalColor == BLACK) deleteFix(replacement);
     nodeCount--;
     return true;
   }
 
-  private void deleteFix(Node x) {
-    while (x != root && x.color == BLACK) {
-      boolean isLeft = (x == x.parent.left);
-      Node w = isLeft ? x.parent.right : x.parent.left;
-      if (w.color == RED) {
-        w.color = BLACK;
-        x.parent.color = RED;
-        rotate(x.parent, isLeft);
-        w = isLeft ? x.parent.right : x.parent.left;
+  private void deleteFix(Node node) {
+    while (node != root && node.color == BLACK) {
+      boolean isLeft = (node == node.parent.left);
+      Node sibling = isLeft ? node.parent.right : node.parent.left;
+      if (sibling.color == RED) {
+        sibling.color = BLACK;
+        node.parent.color = RED;
+        rotate(node.parent, isLeft);
+        sibling = isLeft ? node.parent.right : node.parent.left;
       }
-      if (w.left.color == BLACK && w.right.color == BLACK) {
-        w.color = RED;
-        x = x.parent;
+      if (sibling.left.color == BLACK && sibling.right.color == BLACK) {
+        sibling.color = RED;
+        node = node.parent;
       } else {
-        if ((isLeft ? w.right : w.left).color == BLACK) {
-          (isLeft ? w.left : w.right).color = BLACK;
-          w.color = RED;
-          rotate(w, !isLeft);
-          w = isLeft ? x.parent.right : x.parent.left;
+        if ((isLeft ? sibling.right : sibling.left).color == BLACK) {
+          (isLeft ? sibling.left : sibling.right).color = BLACK;
+          sibling.color = RED;
+          rotate(sibling, !isLeft);
+          sibling = isLeft ? node.parent.right : node.parent.left;
         }
-        w.color = x.parent.color;
-        x.parent.color = BLACK;
-        (isLeft ? w.right : w.left).color = BLACK;
-        rotate(x.parent, isLeft);
-        x = root;
+        sibling.color = node.parent.color;
+        node.parent.color = BLACK;
+        (isLeft ? sibling.right : sibling.left).color = BLACK;
+        rotate(node.parent, isLeft);
+        node = root;
       }
     }
-    x.color = BLACK;
+    node.color = BLACK;
   }
 
-  private void rotate(Node x, boolean left) {
-    Node y = left ? x.right : x.left;
+  private void rotate(Node node, boolean left) {
+    Node child = left ? node.right : node.left;
     if (left) {
-      x.right = y.left;
-      if (y.left != NIL) y.left.parent = x;
+      node.right = child.left;
+      if (child.left != NIL) child.left.parent = node;
     } else {
-      x.left = y.right;
-      if (y.right != NIL) y.right.parent = x;
+      node.left = child.right;
+      if (child.right != NIL) child.right.parent = node;
     }
-    y.parent = x.parent;
-    if (x.parent == NIL) root = y;
-    else if (x == x.parent.left) x.parent.left = y;
-    else x.parent.right = y;
-    if (left) y.left = x; else y.right = x;
-    x.parent = y;
+    child.parent = node.parent;
+    if (node.parent == NIL) root = child;
+    else if (node == node.parent.left) node.parent.left = child;
+    else node.parent.right = child;
+    if (left) child.left = node; else child.right = node;
+    node.parent = child;
   }
 
-  private void transplant(Node u, Node v) {
-    if (u.parent == NIL) root = v;
-    else if (u == u.parent.left) u.parent.left = v;
-    else u.parent.right = v;
-    v.parent = u.parent;
+  private void transplant(Node target, Node source) {
+    if (target.parent == NIL) root = source;
+    else if (target == target.parent.left) target.parent.left = source;
+    else target.parent.right = source;
+    source.parent = target.parent;
   }
 
-  private Node successor(Node n) {
-    while (n.left != NIL) n = n.left;
-    return n;
+  private Node findMin(Node node) {
+    while (node.left != NIL) node = node.left;
+    return node;
   }
 
   private Node search(T val) {
-    Node curr = root;
-    while (curr != NIL) {
-      int cmp = val.compareTo(curr.value);
-      if (cmp < 0) curr = curr.left;
-      else if (cmp > 0) curr = curr.right;
-      else return curr;
+    Node current = root;
+    while (current != NIL) {
+      int cmp = val.compareTo(current.value);
+      if (cmp < 0) current = current.left;
+      else if (cmp > 0) current = current.right;
+      else return current;
     }
     return NIL;
   }
 
   public int height() { return height(root); }
-  private int height(Node n) {
-    return n == NIL ? 0 : 1 + Math.max(height(n.left), height(n.right));
+  private int height(Node node) {
+    return node == NIL ? 0 : 1 + Math.max(height(node.left), height(node.right));
   }
 
   @Override
@@ -204,14 +204,14 @@ public class RedBlackTree<T extends Comparable<T>> implements Iterable<T> {
       }
       public T next() {
         if (!hasNext()) throw new NoSuchElementException();
-        Node n = stack.pop();
-        pushLeft(n.right, stack);
-        return n.value;
+        Node node = stack.pop();
+        pushLeft(node.right, stack);
+        return node.value;
       }
     };
   }
-  private void pushLeft(Node n, Stack<Node> s) {
-    while (n != NIL) { s.push(n); n = n.left; }
+  private void pushLeft(Node node, Stack<Node> stack) {
+    while (node != NIL) { stack.push(node); node = node.left; }
   }
 
   public static void main(String[] args) {
