@@ -13,7 +13,6 @@ import org.junit.jupiter.api.*;
 public class LinkedListTest {
   private static final int LOOPS = 10000;
   private static final int TEST_SZ = 40;
-  private static final int NUM_NULLS = TEST_SZ / 5;
   private static final int MAX_RAND_NUM = 250;
 
   DoublyLinkedList<Integer> list;
@@ -27,6 +26,13 @@ public class LinkedListTest {
   public void testEmptyList() {
     assertThat(list.isEmpty()).isTrue();
     assertThat(list.size()).isEqualTo(0);
+  }
+
+  @Test
+  public void testNullRejection() {
+    assertThrows(IllegalArgumentException.class, () -> list.add(null));
+    assertThrows(IllegalArgumentException.class, () -> list.addFirst(null));
+    assertThrows(IllegalArgumentException.class, () -> list.addLast(null));
   }
 
   @Test
@@ -206,16 +212,6 @@ public class LinkedListTest {
   }
 
   @Test
-  public void testRemoveNull() {
-    list.add(1);
-    list.add(null);
-    list.add(3);
-    assertThat(list.remove(null)).isTrue();
-    assertThat(list.size()).isEqualTo(2);
-    assertThat(list.contains(null)).isFalse();
-  }
-
-  @Test
   public void testRemoveAt() {
     list.add(1);
     list.add(2);
@@ -248,16 +244,6 @@ public class LinkedListTest {
   }
 
   @Test
-  public void testContainsNull() {
-    list.add(1);
-    list.add(null);
-    list.add(3);
-    assertThat(list.contains(null)).isTrue();
-    list.remove(null);
-    assertThat(list.contains(null)).isFalse();
-  }
-
-  @Test
   public void testIndexOf() {
     list.add(10);
     list.add(20);
@@ -266,14 +252,6 @@ public class LinkedListTest {
     assertThat(list.indexOf(20)).isEqualTo(1);
     assertThat(list.indexOf(30)).isEqualTo(2);
     assertThat(list.indexOf(99)).isEqualTo(-1);
-  }
-
-  @Test
-  public void testIndexOfNull() {
-    list.add(1);
-    list.add(null);
-    list.add(3);
-    assertThat(list.indexOf(null)).isEqualTo(1);
   }
 
   @Test
@@ -462,7 +440,6 @@ public class LinkedListTest {
   static List<Integer> genRandList(int sz) {
     List<Integer> lst = new ArrayList<>(sz);
     for (int i = 0; i < sz; i++) lst.add((int) (Math.random() * MAX_RAND_NUM));
-    for (int i = 0; i < NUM_NULLS; i++) lst.add(null);
     Collections.shuffle(lst);
     return lst;
   }
@@ -471,7 +448,6 @@ public class LinkedListTest {
   static List<Integer> genUniqueRandList(int sz) {
     List<Integer> lst = new ArrayList<>(sz);
     for (int i = 0; i < sz; i++) lst.add(i);
-    for (int i = 0; i < NUM_NULLS; i++) lst.add(null);
     Collections.shuffle(lst);
     return lst;
   }
