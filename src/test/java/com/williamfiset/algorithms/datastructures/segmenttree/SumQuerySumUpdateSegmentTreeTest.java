@@ -1,6 +1,5 @@
 /**
- * gradle test --info --tests
- * "com.williamfiset.algorithms.datastructures.segmenttree.SumQuerySumUpdateSegmentTreeTest"
+ * bazel test //src/test/java/com/williamfiset/algorithms/datastructures/segmenttree:SumQuerySumUpdateSegmentTreeTest
  */
 package com.williamfiset.algorithms.datastructures.segmenttree;
 

@@ -5,7 +5,7 @@
  * <p>Test against: https://open.kattis.com/problems/eulerianpath
  * http://codeforces.com/contest/508/problem/D
  *
- * <p>Run: ./gradlew run -Palgorithm=graphtheory.EulerianPathDirectedEdgesAdjacencyList
+ * <p>Run: bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:EulerianPathDirectedEdgesAdjacencyList
  *
  * <p>Time Complexity: O(E)
  *

@@ -1,7 +1,7 @@
 /**
  * Performs Boyer-Moore search on a given string with a given pattern
  *
- * <p>./gradlew run -Palgorithm=strings.BoyerMooreStringSearch
+ * <p>bazel run //src/main/java/com/williamfiset/algorithms/strings:BoyerMooreStringSearch
  */
 package com.williamfiset.algorithms.strings;
 

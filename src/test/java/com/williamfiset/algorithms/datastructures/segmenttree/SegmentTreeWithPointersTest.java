@@ -1,5 +1,4 @@
-// gradle test --info --tests
-// "com.williamfiset.algorithms.datastructures.segmenttree.SegmentTreeWithPointersTest"
+// bazel test //src/test/java/com/williamfiset/algorithms/datastructures/segmenttree:SegmentTreeWithPointersTest
 package com.williamfiset.algorithms.datastructures.segmenttree;
 
 import static com.google.common.truth.Truth.assertThat;

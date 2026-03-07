@@ -7,7 +7,7 @@
  *
  * <p>Run locally:
  *
- * <p>./gradlew run -Palgorithm=dp.CoinChange
+ * <p>bazel run //src/main/java/com/williamfiset/algorithms/dp:CoinChange
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */

@@ -5,7 +5,7 @@
  * $ git clone https://github.com/williamfiset/Algorithms
  *
  * <p>Run: <br>
- * $ ./gradlew run -Palgorithm=graphtheory.treealgorithms.examples.TreeSum
+ * $ bazel run //src/main/java/com/williamfiset/algorithms/graphtheory/treealgorithms/examples:TreeSum
  *
  * <p>Time Complexity: O(n)
  *

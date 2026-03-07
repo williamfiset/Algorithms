@@ -1,6 +1,5 @@
 /**
- * gradle test --info --tests
- * "com.williamfiset.algorithms.datastructures.segmenttree.MaxQuerySumUpdateSegmentTreeTest"
+ * bazel test //src/test/java/com/williamfiset/algorithms/datastructures/segmenttree:MaxQuerySumUpdateSegmentTreeTest
  */
 package com.williamfiset.algorithms.datastructures.segmenttree;
 

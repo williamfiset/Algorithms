@@ -1,7 +1,6 @@
 // To run this test in isolation from root folder:
 //
-// $ gradle test --tests
-// com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenterTest
+// $ bazel test //src/test/java/com/williamfiset/algorithms/graphtheory/treealgorithms:TreeCenterTest
 
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 

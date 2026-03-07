@@ -2,8 +2,8 @@
  * Simple segment tree implementation that supports a few range query operations (sum, min and max)
  * along with point updates on individual elements.
  *
- * <p>Run with: ./gradlew run
- * -Palgorithm=datastructures.segmenttree.RangeQueryPointUpdateSegmentTree
+ * <p>Run with: bazel run
+ * //src/main/java/com/williamfiset/algorithms/datastructures/segmenttree:RangeQueryPointUpdateSegmentTree
  *
  * <p>Several thanks to cp-algorithms for their great article on segment trees:
  * https://cp-algorithms.com/data_structures/segment_tree.html

@@ -8,7 +8,7 @@
  *   <li>https://open.kattis.com/problems/runningmom
  * </ul>
  *
- * <p>./gradlew run -Palgorithm=graphtheory.Kosaraju
+ * <p>bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:Kosaraju
  */
 package com.williamfiset.algorithms.graphtheory;
 

@@ -1,7 +1,7 @@
 /**
  * Tests for Kosaraju's algorithm
  *
- * <p>gradle test --info --tests "com.williamfiset.algorithms.graphtheory.KosarajuTest"
+ * <p>bazel test //src/test/java/com/williamfiset/algorithms/graphtheory:KosarajuTest
  */
 package com.williamfiset.algorithms.graphtheory;
 

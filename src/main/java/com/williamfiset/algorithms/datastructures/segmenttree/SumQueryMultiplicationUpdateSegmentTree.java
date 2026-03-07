@@ -1,5 +1,5 @@
 /**
- * Run with: ./gradlew run -Palgorithm=datastructures.segmenttree.SumQuerySumUpdateSegmentTree
+ * Run with: bazel run //src/main/java/com/williamfiset/algorithms/datastructures/segmenttree:SumQuerySumUpdateSegmentTree
  *
  * <p>Several thanks to cp-algorithms for their great article on segment trees:
  * https://cp-algorithms.com/data_structures/segment_tree.html

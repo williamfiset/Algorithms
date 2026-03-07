@@ -9,7 +9,7 @@
  *
  * <p>To run this file:
  *
- * <p>./gradlew run -Pmain=com.williamfiset.algorithms.datastructures.sparsetable.SparseTable
+ * <p>bazel run //src/main/java/com/williamfiset/algorithms/datastructures/sparsetable:SparseTable
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */

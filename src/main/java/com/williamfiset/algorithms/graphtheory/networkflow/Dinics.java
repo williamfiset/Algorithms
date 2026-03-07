@@ -4,7 +4,7 @@
  *
  * <p>Run script:
  *
- * <p>$ ./gradlew run -Palgorithm=graphtheory.networkflow.Dinics
+ * <p>$ bazel run //src/main/java/com/williamfiset/algorithms/graphtheory/networkflow:Dinics
  *
  * <p>Time Complexity: O(EV²)
  *
