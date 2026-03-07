@@ -1,60 +1,65 @@
+package com.williamfiset.algorithms.datastructures.stack;
+
+import java.util.EmptyStackException;
+import java.util.Iterator;
+import java.util.LinkedList;
+
 /**
- * A linked list implementation of a stack
+ * Linked List Stack
+ *
+ * A generic stack backed by a LinkedList. Supports iteration in LIFO order.
+ * All core operations (push, pop, peek) run in O(1) time.
+ *
+ * Time:  O(1) for push, pop, and peek
+ * Space: O(n)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
-package com.williamfiset.algorithms.datastructures.stack;
-
 public class ListStack<T> implements Iterable<T>, Stack<T> {
 
-  private java.util.LinkedList<T> list = new java.util.LinkedList<T>();
+  private LinkedList<T> list = new LinkedList<>();
 
-  // Create an empty stack
   public ListStack() {}
 
-  // Create a Stack with an initial element
   public ListStack(T firstElem) {
     push(firstElem);
   }
 
-  // Return the number of elements in the stack
+  @Override
   public int size() {
     return list.size();
   }
 
-  // Check if the stack is empty
+  @Override
   public boolean isEmpty() {
     return size() == 0;
   }
 
-  // Push an element on the stack
+  @Override
   public void push(T elem) {
     list.addLast(elem);
   }
 
-  // Pop an element off the stack
-  // Throws an error is the stack is empty
+  @Override
   public T pop() {
-    if (isEmpty()) throw new java.util.EmptyStackException();
+    if (isEmpty()) throw new EmptyStackException();
     return list.removeLast();
   }
 
-  // Peek the top of the stack without removing an element
-  // Throws an exception if the stack is empty
+  @Override
   public T peek() {
-    if (isEmpty()) throw new java.util.EmptyStackException();
+    if (isEmpty()) throw new EmptyStackException();
     return list.peekLast();
   }
 
-  // Searches for the element starting from top of the stack
-  // Returns -1 if the element is not present in the stack
+  // Searches for the element starting from top of the stack.
+  // Returns -1 if the element is not present in the stack.
   public int search(T elem) {
     return list.lastIndexOf(elem);
   }
 
-  // Allow users to iterate through the stack using an iterator
   @Override
-  public java.util.Iterator<T> iterator() {
+  public Iterator<T> iterator() {
     return list.descendingIterator();
   }
 }

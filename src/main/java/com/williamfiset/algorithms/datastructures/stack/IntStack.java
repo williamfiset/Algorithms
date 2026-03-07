@@ -1,56 +1,65 @@
+package com.williamfiset.algorithms.datastructures.stack;
+
+import java.util.ArrayDeque;
+import java.util.EmptyStackException;
+
 /**
- * This file contains an implementation of an integer only stack which is extremely quick and
- * lightweight. In terms of performance it can outperform java.util.ArrayDeque (Java's fastest stack
- * implementation) by a factor of 50! See the benchmark test below for proof. However, the downside
- * is you need to know an upper bound on the number of elements that will be inside the stack at any
- * given time for it to work correctly.
+ * Integer-only Stack (fixed capacity)
+ *
+ * An extremely fast and lightweight stack for primitive ints. Can outperform
+ * java.util.ArrayDeque by a large factor due to avoiding boxing/unboxing.
+ * The trade-off is you must know an upper bound on the number of elements
+ * at construction time.
+ *
+ * Time:  O(1) for push, pop, and peek
+ * Space: O(maxSize)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
-package com.williamfiset.algorithms.datastructures.stack;
-
 public class IntStack implements Stack<Integer> {
 
   private int[] ar;
   private int pos = 0;
 
-  // maxSize is the maximum number of items
-  // that can be in the queue at any given time
+  /**
+   * Creates a stack with the given maximum capacity.
+   *
+   * @param maxSize the maximum number of elements the stack can hold
+   */
   public IntStack(int maxSize) {
     ar = new int[maxSize];
   }
 
-  // Returns the number of elements insize the stack
+  @Override
   public int size() {
     return pos;
   }
 
-  // Returns true/false on whether the stack is empty
+  @Override
   public boolean isEmpty() {
     return pos == 0;
   }
 
-  // Returns the element at the top of the stack
   @Override
   public Integer peek() {
+    if (isEmpty()) throw new EmptyStackException();
     return ar[pos - 1];
   }
 
-  // Add an element to the top of the stack
   @Override
   public void push(Integer value) {
+    if (pos == ar.length) throw new RuntimeException("Stack overflow: capacity exceeded");
     ar[pos++] = value;
   }
 
-  // Make sure you check that the stack is not empty before calling pop!
   @Override
   public Integer pop() {
+    if (isEmpty()) throw new EmptyStackException();
     return ar[--pos];
   }
 
-  // Example usage
+  // Example usage and benchmark
   public static void main(String[] args) {
-
     IntStack s = new IntStack(5);
 
     s.push(1);
@@ -72,24 +81,17 @@ public class IntStack implements Stack<Integer> {
     benchMarkTest();
   }
 
-  // BenchMark IntStack vs ArrayDeque.
   private static void benchMarkTest() {
-
     int n = 10000000;
     IntStack intStack = new IntStack(n);
 
-    // IntStack times at around 0.0324 seconds
     long start = System.nanoTime();
     for (int i = 0; i < n; i++) intStack.push(i);
     for (int i = 0; i < n; i++) intStack.pop();
     long end = System.nanoTime();
     System.out.println("IntStack Time: " + (end - start) / 1e9);
 
-    // ArrayDeque times at around 1.438 seconds
-    //    java.util.ArrayDeque<Integer> arrayDeque = new java.util.ArrayDeque<>();
-    //    java.util.Stack<Integer> arrayDeque = new java.util.Stack<>();
-    java.util.ArrayDeque<Integer> arrayDeque = new java.util.ArrayDeque<>(n); // strangely the
-    // ArrayQueue is slower when you give it an initial capacity.
+    ArrayDeque<Integer> arrayDeque = new ArrayDeque<>(n);
     start = System.nanoTime();
     for (int i = 0; i < n; i++) arrayDeque.push(i);
     for (int i = 0; i < n; i++) arrayDeque.pop();
@@ -97,7 +99,6 @@ public class IntStack implements Stack<Integer> {
     System.out.println("ArrayDeque Time: " + (end - start) / 1e9);
 
     Stack<Integer> listStack = new ListStack<>();
-
     start = System.nanoTime();
     for (int i = 0; i < n; i++) listStack.push(i);
     for (int i = 0; i < n; i++) listStack.pop();
@@ -105,7 +106,6 @@ public class IntStack implements Stack<Integer> {
     System.out.println("ListStack Time: " + (end - start) / 1e9);
 
     Stack<Integer> arrayStack = new ArrayStack<>();
-
     start = System.nanoTime();
     for (int i = 0; i < n; i++) arrayStack.push(i);
     for (int i = 0; i < n; i++) arrayStack.pop();

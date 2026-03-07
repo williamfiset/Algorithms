@@ -4,6 +4,15 @@ import java.util.Arrays;
 import java.util.EmptyStackException;
 
 /**
+ * Array-based Stack
+ *
+ * A generic stack backed by a dynamically resizing array. Starts with
+ * capacity 16 and doubles when full. Push, pop, and peek are all O(1)
+ * amortized.
+ *
+ * Time:  O(1) amortized for push, O(1) for pop and peek
+ * Space: O(n)
+ *
  * @author liujingkun
  */
 public class ArrayStack<T> implements Stack<T> {
