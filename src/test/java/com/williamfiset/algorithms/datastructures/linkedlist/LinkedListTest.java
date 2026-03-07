@@ -5,13 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import org.junit.jupiter.api.*;
 
 public class LinkedListTest {
   private static final int LOOPS = 10000;
   private static final int TEST_SZ = 40;
-  private static final int NUM_NULLS = TEST_SZ / 5;
   private static final int MAX_RAND_NUM = 250;
 
   DoublyLinkedList<Integer> list;
@@ -28,43 +29,64 @@ public class LinkedListTest {
   }
 
   @Test
+  public void testNullRejection() {
+    assertThrows(IllegalArgumentException.class, () -> list.add(null));
+    assertThrows(IllegalArgumentException.class, () -> list.addFirst(null));
+    assertThrows(IllegalArgumentException.class, () -> list.addLast(null));
+  }
+
+  @Test
   public void testRemoveFirstOfEmpty() {
-    assertThrows(Exception.class, () -> list.removeFirst());
+    assertThrows(RuntimeException.class, () -> list.removeFirst());
   }
 
   @Test
   public void testRemoveLastOfEmpty() {
-    assertThrows(Exception.class, () -> list.removeLast());
+    assertThrows(RuntimeException.class, () -> list.removeLast());
   }
 
   @Test
   public void testPeekFirstOfEmpty() {
-    assertThrows(Exception.class, () -> list.peekFirst());
+    assertThrows(RuntimeException.class, () -> list.peekFirst());
   }
 
   @Test
   public void testPeekLastOfEmpty() {
-    assertThrows(Exception.class, () -> list.peekLast());
+    assertThrows(RuntimeException.class, () -> list.peekLast());
   }
 
   @Test
   public void testAddFirst() {
     list.addFirst(3);
     assertThat(list.size()).isEqualTo(1);
+    assertThat(list.peekFirst()).isEqualTo(3);
     list.addFirst(5);
     assertThat(list.size()).isEqualTo(2);
+    assertThat(list.peekFirst()).isEqualTo(5);
   }
 
   @Test
   public void testAddLast() {
     list.addLast(3);
     assertThat(list.size()).isEqualTo(1);
+    assertThat(list.peekLast()).isEqualTo(3);
     list.addLast(5);
     assertThat(list.size()).isEqualTo(2);
+    assertThat(list.peekLast()).isEqualTo(5);
   }
 
   @Test
-  public void testAddAt() throws Exception {
+  public void testAdd() {
+    list.add(1);
+    list.add(2);
+    list.add(3);
+    assertThat(list.size()).isEqualTo(3);
+    assertThat(list.peekFirst()).isEqualTo(1);
+    assertThat(list.peekLast()).isEqualTo(3);
+  }
+
+  @Test
+  public void testAddAt() {
     list.addAt(0, 1);
     assertThat(list.size()).isEqualTo(1);
     list.addAt(1, 2);
@@ -75,6 +97,25 @@ public class LinkedListTest {
     assertThat(list.size()).isEqualTo(4);
     list.addAt(1, 8);
     assertThat(list.size()).isEqualTo(5);
+  }
+
+  @Test
+  public void testAddAtValues() {
+    // Insert at various positions and verify order
+    list.addAt(0, 10);   // [10]
+    list.addAt(0, 20);   // [20, 10]
+    list.addAt(2, 30);   // [20, 10, 30]
+    list.addAt(1, 40);   // [20, 40, 10, 30]
+    assertThat(list.peekFirst()).isEqualTo(20);
+    assertThat(list.removeAt(1)).isEqualTo(40);
+    assertThat(list.removeAt(1)).isEqualTo(10);
+    assertThat(list.peekLast()).isEqualTo(30);
+  }
+
+  @Test
+  public void testAddAtInvalidIndex() {
+    assertThrows(IndexOutOfBoundsException.class, () -> list.addAt(-1, 1));
+    assertThrows(IndexOutOfBoundsException.class, () -> list.addAt(1, 1));
   }
 
   @Test
@@ -162,6 +203,15 @@ public class LinkedListTest {
   }
 
   @Test
+  public void testRemoveNonExistent() {
+    list.add(1);
+    list.add(2);
+    list.add(3);
+    assertThat(list.remove((Object) 99)).isFalse();
+    assertThat(list.size()).isEqualTo(3);
+  }
+
+  @Test
   public void testRemoveAt() {
     list.add(1);
     list.add(2);
@@ -177,6 +227,34 @@ public class LinkedListTest {
   }
 
   @Test
+  public void testRemoveAtInvalidIndex() {
+    list.add(1);
+    list.add(2);
+    assertThrows(IllegalArgumentException.class, () -> list.removeAt(-1));
+    assertThrows(IllegalArgumentException.class, () -> list.removeAt(2));
+  }
+
+  @Test
+  public void testContains() {
+    list.add(1);
+    list.add(2);
+    list.add(3);
+    assertThat(list.contains(2)).isTrue();
+    assertThat(list.contains(99)).isFalse();
+  }
+
+  @Test
+  public void testIndexOf() {
+    list.add(10);
+    list.add(20);
+    list.add(30);
+    assertThat(list.indexOf(10)).isEqualTo(0);
+    assertThat(list.indexOf(20)).isEqualTo(1);
+    assertThat(list.indexOf(30)).isEqualTo(2);
+    assertThat(list.indexOf(99)).isEqualTo(-1);
+  }
+
+  @Test
   public void testClear() {
     list.add(22);
     list.add(33);
@@ -184,6 +262,7 @@ public class LinkedListTest {
     assertThat(list.size()).isEqualTo(3);
     list.clear();
     assertThat(list.size()).isEqualTo(0);
+    assertThat(list.isEmpty()).isTrue();
     list.add(22);
     list.add(33);
     list.add(44);
@@ -193,8 +272,44 @@ public class LinkedListTest {
   }
 
   @Test
+  public void testIterator() {
+    list.add(1);
+    list.add(2);
+    list.add(3);
+    Iterator<Integer> it = list.iterator();
+    assertThat(it.hasNext()).isTrue();
+    assertThat(it.next()).isEqualTo(1);
+    assertThat(it.next()).isEqualTo(2);
+    assertThat(it.next()).isEqualTo(3);
+    assertThat(it.hasNext()).isFalse();
+  }
+
+  @Test
+  public void testIteratorOnEmptyList() {
+    Iterator<Integer> it = list.iterator();
+    assertThat(it.hasNext()).isFalse();
+  }
+
+  @Test
+  public void testIteratorRemoveUnsupported() {
+    list.add(1);
+    Iterator<Integer> it = list.iterator();
+    assertThrows(UnsupportedOperationException.class, it::remove);
+  }
+
+  @Test
+  public void testForEach() {
+    list.add(10);
+    list.add(20);
+    list.add(30);
+    List<Integer> result = new ArrayList<>();
+    for (int v : list) result.add(v);
+    assertThat(result).containsExactly(10, 20, 30).inOrder();
+  }
+
+  @Test
   public void testRandomizedRemoving() {
-    java.util.LinkedList<Integer> javaLinkedList = new java.util.LinkedList<>();
+    LinkedList<Integer> javaLinkedList = new LinkedList<>();
     for (int loops = 0; loops < LOOPS; loops++) {
 
       list.clear();
@@ -214,12 +329,8 @@ public class LinkedListTest {
         assertThat(javaLinkedList.remove(rm_val)).isEqualTo(list.remove(rm_val));
         assertThat(javaLinkedList.size()).isEqualTo(list.size());
 
-        java.util.Iterator<Integer> iter1 = javaLinkedList.iterator();
-        java.util.Iterator<Integer> iter2 = list.iterator();
-        while (iter1.hasNext()) assertThat(iter1.next()).isEqualTo(iter2.next());
-
-        iter1 = javaLinkedList.iterator();
-        iter2 = list.iterator();
+        Iterator<Integer> iter1 = javaLinkedList.iterator();
+        Iterator<Integer> iter2 = list.iterator();
         while (iter1.hasNext()) assertThat(iter1.next()).isEqualTo(iter2.next());
       }
 
@@ -238,8 +349,8 @@ public class LinkedListTest {
         assertThat(javaLinkedList.remove(rm_val)).isEqualTo(list.remove(rm_val));
         assertThat(javaLinkedList.size()).isEqualTo(list.size());
 
-        java.util.Iterator<Integer> iter1 = javaLinkedList.iterator();
-        java.util.Iterator<Integer> iter2 = list.iterator();
+        Iterator<Integer> iter1 = javaLinkedList.iterator();
+        Iterator<Integer> iter2 = list.iterator();
         while (iter1.hasNext()) assertThat(iter1.next()).isEqualTo(iter2.next());
       }
     }
@@ -247,7 +358,7 @@ public class LinkedListTest {
 
   @Test
   public void testRandomizedRemoveAt() {
-    java.util.LinkedList<Integer> javaLinkedList = new java.util.LinkedList<>();
+    LinkedList<Integer> javaLinkedList = new LinkedList<>();
 
     for (int loops = 0; loops < LOOPS; loops++) {
 
@@ -270,8 +381,8 @@ public class LinkedListTest {
         assertThat(num1).isEqualTo(num2);
         assertThat(javaLinkedList.size()).isEqualTo(list.size());
 
-        java.util.Iterator<Integer> iter1 = javaLinkedList.iterator();
-        java.util.Iterator<Integer> iter2 = list.iterator();
+        Iterator<Integer> iter1 = javaLinkedList.iterator();
+        Iterator<Integer> iter2 = list.iterator();
         while (iter1.hasNext()) assertThat(iter1.next()).isEqualTo(iter2.next());
       }
     }
@@ -279,7 +390,7 @@ public class LinkedListTest {
 
   @Test
   public void testRandomizedIndexOf() {
-    java.util.LinkedList<Integer> javaLinkedList = new java.util.LinkedList<>();
+    LinkedList<Integer> javaLinkedList = new LinkedList<>();
 
     for (int loops = 0; loops < LOOPS; loops++) {
 
@@ -303,8 +414,8 @@ public class LinkedListTest {
         assertThat(index1).isEqualTo(index2);
         assertThat(javaLinkedList.size()).isEqualTo(list.size());
 
-        java.util.Iterator<Integer> iter1 = javaLinkedList.iterator();
-        java.util.Iterator<Integer> iter2 = list.iterator();
+        Iterator<Integer> iter1 = javaLinkedList.iterator();
+        Iterator<Integer> iter2 = list.iterator();
         while (iter1.hasNext()) assertThat(iter1.next()).isEqualTo(iter2.next());
       }
     }
@@ -329,7 +440,6 @@ public class LinkedListTest {
   static List<Integer> genRandList(int sz) {
     List<Integer> lst = new ArrayList<>(sz);
     for (int i = 0; i < sz; i++) lst.add((int) (Math.random() * MAX_RAND_NUM));
-    for (int i = 0; i < NUM_NULLS; i++) lst.add(null);
     Collections.shuffle(lst);
     return lst;
   }
@@ -338,7 +448,6 @@ public class LinkedListTest {
   static List<Integer> genUniqueRandList(int sz) {
     List<Integer> lst = new ArrayList<>(sz);
     for (int i = 0; i < sz; i++) lst.add(i);
-    for (int i = 0; i < NUM_NULLS; i++) lst.add(null);
     Collections.shuffle(lst);
     return lst;
   }

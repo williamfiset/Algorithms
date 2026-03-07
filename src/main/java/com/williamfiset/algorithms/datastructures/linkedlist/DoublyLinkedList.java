@@ -5,6 +5,8 @@
  */
 package com.williamfiset.algorithms.datastructures.linkedlist;
 
+import java.util.Iterator;
+
 public class DoublyLinkedList<T> implements Iterable<T> {
   private int size = 0;
   private Node<T> head = null;
@@ -36,7 +38,7 @@ public class DoublyLinkedList<T> implements Iterable<T> {
       trav.data = null;
       trav = next;
     }
-    head = tail = trav = null;
+    head = tail = null;
     size = 0;
   }
 
@@ -57,6 +59,7 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
   // Add a node to the tail of the linked list, O(1)
   public void addLast(T elem) {
+    if (elem == null) throw new IllegalArgumentException("Null elements are not allowed");
     if (isEmpty()) {
       head = tail = new Node<T>(elem, null, null);
     } else {
@@ -68,6 +71,7 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
   // Add an element to the beginning of this linked list, O(1)
   public void addFirst(T elem) {
+    if (elem == null) throw new IllegalArgumentException("Null elements are not allowed");
     if (isEmpty()) {
       head = tail = new Node<T>(elem, null, null);
     } else {
@@ -78,9 +82,9 @@ public class DoublyLinkedList<T> implements Iterable<T> {
   }
 
   // Add an element at a specified index
-  public void addAt(int index, T data) throws Exception {
+  public void addAt(int index, T data) {
     if (index < 0 || index > size) {
-      throw new Exception("Illegal Index");
+      throw new IndexOutOfBoundsException("Illegal index: " + index);
     }
     if (index == 0) {
       addFirst(data);
@@ -173,7 +177,7 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
     // Memory cleanup
     node.data = null;
-    node = node.prev = node.next = null;
+    node.prev = node.next = null;
 
     --size;
 
@@ -207,23 +211,10 @@ public class DoublyLinkedList<T> implements Iterable<T> {
 
   // Remove a particular value in the linked list, O(n)
   public boolean remove(Object obj) {
-    Node<T> trav = head;
-
-    // Support searching for null
-    if (obj == null) {
-      for (trav = head; trav != null; trav = trav.next) {
-        if (trav.data == null) {
-          remove(trav);
-          return true;
-        }
-      }
-      // Search for non null object
-    } else {
-      for (trav = head; trav != null; trav = trav.next) {
-        if (obj.equals(trav.data)) {
-          remove(trav);
-          return true;
-        }
+    for (Node<T> trav = head; trav != null; trav = trav.next) {
+      if (obj.equals(trav.data)) {
+        remove(trav);
+        return true;
       }
     }
     return false;
@@ -232,21 +223,9 @@ public class DoublyLinkedList<T> implements Iterable<T> {
   // Find the index of a particular value in the linked list, O(n)
   public int indexOf(Object obj) {
     int index = 0;
-    Node<T> trav = head;
-
-    // Support searching for null
-    if (obj == null) {
-      for (; trav != null; trav = trav.next, index++) {
-        if (trav.data == null) {
-          return index;
-        }
-      }
-      // Search for non null object
-    } else {
-      for (; trav != null; trav = trav.next, index++) {
-        if (obj.equals(trav.data)) {
-          return index;
-        }
+    for (Node<T> trav = head; trav != null; trav = trav.next, index++) {
+      if (obj.equals(trav.data)) {
+        return index;
       }
     }
     return -1;
@@ -258,8 +237,8 @@ public class DoublyLinkedList<T> implements Iterable<T> {
   }
 
   @Override
-  public java.util.Iterator<T> iterator() {
-    return new java.util.Iterator<T>() {
+  public Iterator<T> iterator() {
+    return new Iterator<T>() {
       private Node<T> trav = head;
 
       @Override
