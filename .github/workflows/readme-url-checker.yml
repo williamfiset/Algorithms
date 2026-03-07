@@ -17,12 +17,19 @@ jobs:
             uses: ruby/setup-ruby@v1
             with:
               ruby-version: 3.2
-              # This replaces the entire "actions/cache" and "gem install" steps
-              bundler-cache: true 
+              # Disable bundler-cache since we aren't using a Gemfile
+              bundler-cache: false 
 
+          - name: Install Awesome Bot
+            # We install it globally so we don't need bundle exec
+            run: gem install awesome_bot
+
+            # TODO: Cache the result of awesome_bot requests, we don't need to check
+            # if a link is valid for every commit/PR all the time, we should be able
+            # to cache the result for a couple days.
           - name: Run Awesome Bot
             env:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             run: |
-              # Use 'bundle exec' to run the cached gem
-              bundle exec awesome_bot README.md --allow-dupe --allow-redirect --allow 429
+              # Call the command directly
+              awesome_bot README.md --allow-dupe --allow-redirect --allow 429
