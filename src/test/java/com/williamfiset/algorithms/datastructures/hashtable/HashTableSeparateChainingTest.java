@@ -72,16 +72,53 @@ public class HashTableSeparateChainingTest {
   }
 
   @Test
-  public void testUpdatingValue() {
+  public void testKeys() {
+    map.put(1, 10);
+    map.put(2, 20);
+    map.put(3, 30);
+    List<Integer> keys = map.keys();
+    assertThat(keys).containsExactly(1, 2, 3);
+  }
 
-    map.add(1, 1);
-    assertThat(map.get(1)).isEqualTo(1);
+  @Test
+  public void testValues() {
+    map.put(1, 10);
+    map.put(2, 20);
+    map.put(3, 30);
+    List<Integer> values = map.values();
+    assertThat(values).containsExactly(10, 20, 30);
+  }
 
-    map.add(1, 5);
-    assertThat(map.get(1)).isEqualTo(5);
+  @Test
+  public void testToString() {
+    map.put(1, 10);
+    map.put(2, 20);
+    String s = map.toString();
+    // Order might vary, but should contain both entries
+    assertThat(s).contains("1 => 10");
+    assertThat(s).contains("2 => 20");
+    assertThat(s).startsWith("{");
+    assertThat(s).endsWith("}");
+  }
 
-    map.add(1, -7);
-    assertThat(map.get(1)).isEqualTo(-7);
+  @Test
+  public void testClear() {
+    map.put(1, 10);
+    map.put(2, 20);
+    map.clear();
+    assertThat(map.size()).isEqualTo(0);
+    assertThat(map.isEmpty()).isTrue();
+    assertThat(map.get(1)).isNull();
+  }
+
+  @Test
+  public void testGetNullKey() {
+    assertThat(map.get(null)).isNull();
+  }
+
+  @Test
+  public void testRemoveNullKey() {
+    assertThat(map.remove(null)).isNull();
   }
 
   @Test

@@ -77,6 +77,33 @@ public class HashTableQuadraticProbingTest {
   }
 
   @Test
+  public void testKeys() {
+    map.put(1, 10);
+    map.put(2, 20);
+    map.put(3, 30);
+    List<Integer> keys = map.keys();
+    assertThat(keys).containsExactly(1, 2, 3);
+  }
+
+  @Test
+  public void testValues() {
+    map.put(1, 10);
+    map.put(2, 20);
+    map.put(3, 30);
+    List<Integer> values = map.values();
+    assertThat(values).containsExactly(10, 20, 30);
+  }
+
+  @Test
+  public void testToString() {
+    map.put(1, 10);
+    String s = map.toString();
+    assertThat(s).startsWith("{");
+    assertThat(s).endsWith("}");
+    assertThat(s).contains("1 => 10");
+  }
+
+  @Test
   public void testUpdatingValue() {
 
     map.add(1, 1);

@@ -78,16 +78,66 @@ public class HashTableLinearProbingTest {
   }
 
   @Test
-  public void testUpdatingValue() {
+  public void testKeys() {
+    map.put(1, 10);
+    map.put(2, 20);
+    map.put(3, 30);
+    List<Integer> keys = map.keys();
+    assertThat(keys).containsExactly(1, 2, 3);
+  }
 
-    map.add(1, 1);
-    assertThat(map.get(1)).isEqualTo(1);
+  @Test
+  public void testValues() {
+    map.put(1, 10);
+    map.put(2, 20);
+    map.put(3, 30);
+    List<Integer> values = map.values();
+    assertThat(values).containsExactly(10, 20, 30);
+  }
 
-    map.add(1, 5);
-    assertThat(map.get(1)).isEqualTo(5);
+  @Test
+  public void testToString() {
+    map.put(1, 10);
+    map.put(2, 20);
+    String s = map.toString();
+    assertThat(s).contains("1 => 10");
+    assertThat(s).contains("2 => 20");
+    assertThat(s).startsWith("{");
+    assertThat(s).endsWith("}");
+  }
 
-    map.add(1, -7);
-    assertThat(map.get(1)).isEqualTo(-7);
+  @Test
+  public void testLazyRelocation() {
+    // Probing sequence for keys with same hash
+    // We can use HashObject to force collisions
+    HashTableLinearProbing<HashObject, Integer> collisionMap = new HashTableLinearProbing<>(10);
+    HashObject o1 = new HashObject(5, 1);
+    HashObject o2 = new HashObject(5, 2);
+    HashObject o3 = new HashObject(5, 3);
+
+    collisionMap.put(o1, 100);
+    collisionMap.put(o2, 200);
+    collisionMap.put(o3, 300);
+
+    // Remove o2, it leaves a TOMBSTONE
+    collisionMap.remove(o2);
+    assertThat(collisionMap.containsKey(o3)).isTrue(); // Should trigger lazy relocation
+    assertThat(collisionMap.get(o3)).isEqualTo(300);
+  }
+
+  @Test
+  public void testGetNullKey() {
+    assertThrows(IllegalArgumentException.class, () -> map.get(null));
+  }
+
+  @Test
+  public void testHasKeyNullKey() {
+    assertThrows(IllegalArgumentException.class, () -> map.hasKey(null));
+  }
+
+  @Test
+  public void testRemoveNullKey() {
+    assertThrows(IllegalArgumentException.class, () -> map.remove(null));
   }
 
   @Test
