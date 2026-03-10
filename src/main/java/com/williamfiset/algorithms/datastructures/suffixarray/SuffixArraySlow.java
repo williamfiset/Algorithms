@@ -9,10 +9,10 @@ import java.util.Arrays;
  * a standard comparison sort, and extracting the sorted indices.
  * Simple to understand but slow for large inputs.
  *
- * Compare with SuffixArrayMed (O(n log^2 n)) and SuffixArrayFast (O(n log n))
+ * Compare with SuffixArrayMed (O(n*log^2(n))) and SuffixArrayFast (O(n*log(n)))
  * to see progressively more efficient construction algorithms.
  *
- * Time:  O(n^2 log n) — sorting is O(n log n) comparisons, each O(n)
+ * Time:  O(n^2*log(n)) — sorting is O(n*log(n)) comparisons, each O(n)
  * Space: O(n)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
