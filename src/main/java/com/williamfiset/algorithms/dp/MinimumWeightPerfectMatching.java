@@ -9,12 +9,19 @@ import java.util.List;
 /**
  * Minimum Weight Perfect Matching (MWPM)
  *
- * Given n nodes and a symmetric distance matrix, pairs up all nodes to minimize
- * total matching cost. Uses bitmask DP where each state represents a subset of
- * matched nodes. Two solvers are provided:
+ * Given n nodes and a symmetric n x n cost matrix, the goal is to find a
+ * perfect matching — a set of n/2 pairs that covers every node exactly once —
+ * such that the sum of the edge costs of the chosen pairs is minimized.
  *
- *   - Top-down (recursive with memoization): naturally skips unreachable states
- *   - Bottom-up (iterative): builds solutions from pairs upward
+ * For example, given 4 nodes with cost matrix:
+ *   cost = {{0,2,1,2}, {2,0,2,1}, {1,2,0,2}, {2,1,2,0}}
+ * the optimal matching is (0,2) and (1,3) with total cost 1 + 1 = 2.
+ *
+ * Uses bitmask DP where each bit in the state represents whether a node has
+ * been matched. Two solvers are provided:
+ *
+ *   - solveRecursive(): top-down with memoization, skips unreachable states
+ *   - solveIterative(): bottom-up, builds matchings from pairs upward
  *
  * Requires n to be even (otherwise no perfect matching exists) and n <= 32
  * (bitmask representation limit).
