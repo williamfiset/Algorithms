@@ -282,6 +282,28 @@ Common short names (use consistently across the repo):
 - Max line length: 100 characters (soft limit)
 - Imports: group by package, alphabetize within groups, no wildcard imports
 
+### Big-O Notation Convention
+
+Always use explicit multiplication and parentheses in Big-O expressions for clarity:
+
+```java
+// ✓ GOOD — explicit and unambiguous
+// Time:  O(n*log(n))
+// Time:  O(n*log^2(n))
+// Time:  O(n^2*log(n))
+
+// ✗ BAD — missing multiplication and parentheses
+// Time:  O(n log n)
+// Time:  O(n log^2 n)
+// Time:  O(n^2 log n)
+
+// Simple expressions without multiplication are fine as-is
+// Time:  O(n)
+// Time:  O(n^2)
+// Time:  O(log(n))
+// Space: O(n)
+```
+
 ### Avoid Java Streams
 
 Streams hurt readability for learners. Use plain loops instead:
