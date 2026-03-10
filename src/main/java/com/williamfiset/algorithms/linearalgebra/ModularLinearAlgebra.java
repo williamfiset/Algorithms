@@ -140,26 +140,40 @@ class ModularLinearAlgebra {
   }
 
   public static void main(String[] args) {
-    // Solve in Z_7: 5x + y - z = 0, 3x + 4z = 1, x - 2y + 2z = 4
-    // (negative values replaced with equivalents in Z_7)
+    // Suppose we want to solve the following system for
+    // the variables x, y, z, in Z_7:
+    //
+    // 5x +  y -  z = 0
+    // 3x + 0y + 4z = 1
+    //  x - 2y + 2z = 4
+    // Then we would setup the following augment matrix:
+
     int p = 7;
     int[][] augmentedMatrix = {
       {5, 1, 6, 0},
       {3, 0, 4, 1},
       {1, 5, 2, 4}
     };
+    // Note that negative values have been changed to their
+    // corresponding values in Z_p
 
+    // Compute the multiplicative inverse for each element in Z_p
     int[] inv = new int[p];
-    for (int i = 1; i < p; i++)
+    for (int i = 1; i < p; i++) {
       inv[i] = modInv(i, p);
+    }
 
+    // Put the matrix in reduced row echelon form
     rref(augmentedMatrix, p, inv);
 
     if (!isInconsistent(augmentedMatrix) && !hasMultipleSolutions(augmentedMatrix)) {
+
       int x = augmentedMatrix[0][3];
       int y = augmentedMatrix[1][3];
       int z = augmentedMatrix[2][3];
-      System.out.printf("x = %d, y = %d, z = %d\n", x, y, z); // x = 1, y = 5, z = 3
+
+      // Prints: x = 1, y = 5, z = 3
+      System.out.printf("x = %d, y = %d, z = %d\n", x, y, z);
     }
   }
 }

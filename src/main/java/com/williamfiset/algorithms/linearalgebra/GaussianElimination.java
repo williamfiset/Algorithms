@@ -99,7 +99,13 @@ class GaussianElimination {
   }
 
   public static void main(String[] args) {
-    // Solve: 2x - 3y + 5z = 10, x + 2y - z = 18, 6x - y = 12
+    // Suppose we want to solve the following system for
+    // the variables x, y, z:
+    //
+    // 2x - 3y + 5z = 10
+    // x  + 2y - z  = 18
+    // 6x -  y + 0  = 12
+    // Then we would setup the following augment matrix:
     double[][] augmentedMatrix = {
       {2, -3, 5, 10},
       {1, 2, -1, 18},

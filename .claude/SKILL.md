@@ -304,6 +304,26 @@ Always use explicit multiplication and parentheses in Big-O expressions for clar
 // Space: O(n)
 ```
 
+### For Loop Body on Its Own Line
+
+Always place the body of a `for` loop on its own line, even for single statements.
+This improves readability, especially in nested loops:
+
+```java
+// ✗ BAD — body on same line as for
+for (int j = 0; j < n; j++) augmented[i][j] = matrix[i][j];
+
+// ✓ GOOD — body on its own line
+for (int j = 0; j < n; j++)
+  augmented[i][j] = matrix[i][j];
+
+// ✓ GOOD — nested for loops, each level on its own line
+for (int i = 0; i < n; i++)
+  for (int j = 0; j < n; j++)
+    for (int k = 0; k < n; k++)
+      result[i][j] += m1[i][k] * m2[k][j];
+```
+
 ### Avoid Java Streams
 
 Streams hurt readability for learners. Use plain loops instead:

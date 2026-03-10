@@ -34,12 +34,13 @@ public class FreivaldsAlgorithm {
    * Time: O(k*n^2)
    */
   public static boolean freivalds(int[][] A, int[][] B, int[][] C, int k) {
+    if (k <= 0) throw new IllegalArgumentException("k must be positive");
     final int n = A.length;
     if (A[0].length != n || B.length != n || B[0].length != n || C.length != n || C[0].length != n)
       throw new IllegalArgumentException("Input must be three nxn matrices");
 
     int[] v = new int[n];
-    do {
+    for (int trial = 0; trial < k; trial++) {
       randomizeVector(v);
 
       // Compare C*v against A*(B*v) — both are O(n^2) matrix-vector products
@@ -47,7 +48,7 @@ public class FreivaldsAlgorithm {
       int[] result = product(product(v, B), A);
 
       if (!Arrays.equals(expected, result)) return false;
-    } while (--k > 0);
+    }
 
     return true;
   }

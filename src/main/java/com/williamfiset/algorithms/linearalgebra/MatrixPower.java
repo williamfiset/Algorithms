@@ -79,14 +79,57 @@ public class MatrixPower {
   }
 
   public static void main(String[] args) {
-    long[][] matrix = {{2}};
-    for (int p = 0; p <= 6; p++)
-      System.out.println(matrixPower(matrix, p)[0][0]); // 1, 2, 4, 8, 16, 32, 64
 
-    long[][] matrix2 = {{1, 2}, {3, 4}};
+    long[][] matrix = {{2}};
+
+    System.out.println(matrixPower(matrix, 0)[0][0]); // 1
+    System.out.println(matrixPower(matrix, 1)[0][0]); // 2
+    System.out.println(matrixPower(matrix, 2)[0][0]); // 4
+    System.out.println(matrixPower(matrix, 3)[0][0]); // 8
+    System.out.println(matrixPower(matrix, 4)[0][0]); // 16
+    System.out.println(matrixPower(matrix, 5)[0][0]); // 32
+    System.out.println(matrixPower(matrix, 6)[0][0]); // 64
+
+    long[][] matrix2 = {
+      {1, 2},
+      {3, 4}
+    };
+
     long[][] result = matrixPower(matrix2, 5);
-    for (long[] row : result) System.out.println(Arrays.toString(row));
+    print2DMatrix(result);
+    // prints:
     // [1069, 1558]
     // [2337, 3406]
+
+    result = matrixPower(matrix2, 23);
+    print2DMatrix(result);
+    // prints:
+    // [14853792659417413, 21648320074827046]
+    // [32472480112240569, 47326272771657982]
+
+    long[][] identity = {
+      {1, 0, 0, 0, 0, 0},
+      {0, 1, 0, 0, 0, 0},
+      {0, 0, 1, 0, 0, 0},
+      {0, 0, 0, 1, 0, 0},
+      {0, 0, 0, 0, 1, 0},
+      {0, 0, 0, 0, 0, 1}
+    };
+
+    result = matrixPower(identity, 987654321987654321L);
+    print2DMatrix(result);
+    // prints:
+    // [1, 0, 0, 0, 0, 0]
+    // [0, 1, 0, 0, 0, 0]
+    // [0, 0, 1, 0, 0, 0]
+    // [0, 0, 0, 1, 0, 0]
+    // [0, 0, 0, 0, 1, 0]
+    // [0, 0, 0, 0, 0, 1]
+  }
+
+  static void print2DMatrix(long[][] M) {
+    for (long[] m : M)
+      System.out.println(Arrays.toString(m));
+    System.out.println();
   }
 }

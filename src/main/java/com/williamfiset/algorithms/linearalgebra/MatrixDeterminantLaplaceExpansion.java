@@ -81,13 +81,137 @@ public class MatrixDeterminantLaplaceExpansion {
   }
 
   public static void main(String[] args) {
-    System.out.println(determinant(new double[][] {{6}})); // 6
-    System.out.println(determinant(new double[][] {{1, 2}, {3, 4}})); // -2
-    System.out.println(determinant(new double[][] {
-      {1, -2, 3}, {4, -5, 6}, {7, -8, 10}
-    })); // 3
-    System.out.println(determinant(new double[][] {
-      {1, -2, 3, 7}, {4, -5, 6, 2}, {7, -8, 10, 3}, {-8, 10, 3, 2}
-    })); // -252
+
+    double[][] m = {{6}};
+    System.out.println(determinant(m)); // 6
+
+    m =
+        new double[][] {
+          {1, 2},
+          {3, 4}
+        };
+    System.out.println(determinant(m)); // -2
+
+    m =
+        new double[][] {
+          {1, -2, 3},
+          {4, -5, 6},
+          {7, -8, 10}
+        };
+    System.out.println(determinant(m)); // 3
+
+    m =
+        new double[][] {
+          {1, -2, 3, 7},
+          {4, -5, 6, 2},
+          {7, -8, 10, 3},
+          {-8, 10, 3, 2}
+        };
+    System.out.println(determinant(m)); // -252
+
+    m =
+        new double[][] {
+          {1, -2, 3, 7},
+          {4, -5, 6, 2},
+          {7, -8, 10, 3},
+          {-8, 10, 3, 2}
+        };
+    System.out.println(determinant(m)); // -252
+
+    m =
+        new double[][] {
+          {1, -2, 3, 7, 12},
+          {4, -5, 6, 2, 4},
+          {7, -8, 10, 3, 1},
+          {-8, 10, 8, 3, 2},
+          {5, 5, 5, 5, 5}
+        };
+    System.out.println(determinant(m)); // -27435
+
+    m =
+        new double[][] {
+          {1, 3, 5, 9},
+          {1, 3, 1, 7},
+          {4, 3, 9, 7},
+          {5, 2, 0, 9},
+        }; // determinant(mat1) = -376 , mat(4 * 4)
+    System.out.println(determinant(m));
+
+    m =
+        new double[][] {
+          {1, 3, 5, 4},
+          {2, 3, 1, 3},
+          {4, 3, 9, 7},
+          {5, 2, 6, 9},
+        }; // determinant(mat2) = -152 , mat(4 * 4)
+    System.out.println(determinant(m));
+    m =
+        new double[][] {
+          {4, 7, 2, 3},
+          {1, 3, 1, 2},
+          {2, 5, 3, 4},
+          {1, 4, 2, 3},
+        }; // determinant(mat3) = -3 , mat(4 * 4)
+    System.out.println(determinant(m));
+    m =
+        new double[][] {
+          {1, 0, 0, 0, 0, 2},
+          {0, 1, 0, 0, 2, 0},
+          {0, 0, 1, 2, 0, 0},
+          {0, 0, 2, 1, 0, 0},
+          {0, 2, 0, 0, 1, 0},
+          {2, 0, 0, 0, 0, 1},
+        }; // determinant(mat4) = -27 , mat(6 * 6)
+    System.out.println(determinant(m));
+    m =
+        new double[][] {
+          {1, 1, 9, 3, 1, 2, 3},
+          {9, 1, 8, 4, 2, 3, 1},
+          {3, 2, 7, 2, 9, 5, 5},
+          {4, 6, 2, 1, 7, 9, 6},
+          {5, 3, 1, 3, 1, 5, 3},
+          {2, 7, 9, 5, 0, 1, 2},
+          {2, 1, 3, 8, 9, 1, 4}
+        }; // determinant(mat5) = 66704 mat(7 * 7)
+    System.out.println(determinant(m));
+    m =
+        new double[][] {
+          {1, 1, 9, 3, 1, 2, 3, 9},
+          {9, 1, 8, 4, 2, 3, 1, 8},
+          {3, 2, 7, 2, 9, 5, 5, 7},
+          {4, 6, 2, 1, 7, 9, 6, 6},
+          {5, 3, 1, 3, 1, 5, 3, 5},
+          {2, 7, 9, 5, 0, 1, 2, 4},
+          {2, 1, 3, 8, 9, 1, 4, 3},
+          {6, 1, 6, 7, 9, 1, 4, 2}
+        }; // determinant(mat6) = -39240 , mat(8 * 8)
+    System.out.println(determinant(m));
+    m =
+        new double[][] {
+          {1, 1, 9, 3, 1, 2, 3, 9, 1},
+          {9, 1, 8, 4, 2, 3, 1, 8, 2},
+          {3, 2, 7, 2, 9, 5, 5, 7, 3},
+          {4, 6, 2, 1, 7, 9, 6, 6, 4},
+          {5, 3, 1, 3, 1, 5, 3, 5, 5},
+          {2, 7, 9, 5, 0, 1, 2, 4, 6},
+          {2, 1, 3, 8, 9, 1, 4, 3, 7},
+          {6, 1, 6, 7, 9, 1, 4, 2, 8},
+          {9, 8, 7, 4, 3, 3, 4, 2, 9}
+        }; // determinant(mat7) = 1910870 , mat( 9 * 9)
+    System.out.println(determinant(m));
+    m =
+        new double[][] {
+          {1, 2, 4, 8, 6, 3, 4, 8, 0, 2},
+          {2, 2, 3, 4, 5, 6, 7, 8, 9, 1},
+          {5, 2, 3, 4, 8, 9, 1, 9, 8, 3},
+          {1, 1, 1, 6, 4, 2, 5, 9, 8, 7},
+          {9, 5, 0, 1, 2, 0, 6, 0, 0, 0},
+          {8, 4, 0, 1, 2, 3, 4, 5, 8, 4},
+          {7, 3, 3, 6, 7, 8, 9, 1, 7, 3},
+          {1, 2, 4, 0, 0, 0, 0, 3, 5, 2},
+          {1, 1, 0, 4, 5, 0, 0, 4, 2, 1},
+          {1, 0, 0, 0, 9, 0, 0, 1, 1, 6}
+        }; // determinant(mat0) = 17265530 (1.726553E7)
+    System.out.println(determinant(m));
   }
 }

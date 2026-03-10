@@ -77,6 +77,38 @@ class MatrixInverse {
     }
   }
 
+  /**
+   * Checks if the reduced matrix represents an inconsistent system
+   * (a row of all zeros on the left with a non-zero constant on the right).
+   */
+  static boolean isInconsistent(double[][] arr) {
+    int nCols = arr[0].length;
+    outer:
+    for (int y = 0; y < arr.length; y++) {
+      if (Math.abs(arr[y][nCols - 1]) > EPS) {
+        for (int x = 0; x < nCols - 1; x++)
+          if (Math.abs(arr[y][x]) > EPS) continue outer;
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Checks if the reduced matrix has more unknowns than non-empty rows,
+   * indicating infinitely many solutions. Call after verifying consistency.
+   */
+  static boolean hasMultipleSolutions(double[][] arr) {
+    int nCols = arr[0].length, nEmptyRows = 0;
+    outer:
+    for (int y = 0; y < arr.length; y++) {
+      for (int x = 0; x < nCols; x++)
+        if (Math.abs(arr[y][x]) > EPS) continue outer;
+      nEmptyRows++;
+    }
+    return nCols - 1 > arr.length - nEmptyRows;
+  }
+
   public static void main(String[] args) {
     double[][] matrix = {
       {2, -4, 0},
