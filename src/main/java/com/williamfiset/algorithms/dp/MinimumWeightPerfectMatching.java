@@ -1,26 +1,36 @@
+package com.williamfiset.algorithms.dp;
+
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
- * Implementation of the Minimum Weight Perfect Matching (MWPM) problem. In this problem you are
- * given a distance matrix which gives the distance from each node to every other node, and you want
- * to pair up all the nodes to one another minimizing the overall cost.
+ * Minimum Weight Perfect Matching (MWPM)
  *
- * <p>Tested against: UVA 10911 - Forming Quiz Teams
+ * Given n nodes and a symmetric distance matrix, pairs up all nodes to minimize
+ * total matching cost. Uses bitmask DP where each state represents a subset of
+ * matched nodes. Two solvers are provided:
  *
- * <p>To Run: bazel run //src/main/java/com/williamfiset/algorithms/dp:MinimumWeightPerfectMatching
+ *   - Top-down (recursive with memoization): naturally skips unreachable states
+ *   - Bottom-up (iterative): builds solutions from pairs upward
  *
- * <p>Time Complexity: O(n * 2^n)
+ * Requires n to be even (otherwise no perfect matching exists) and n <= 32
+ * (bitmask representation limit).
+ *
+ * Tested against: UVA 10911 - Forming Quiz Teams
+ *
+ * Time:  O(n^2*2^n)
+ * Space: O(2^n)
  *
  * @author William Fiset
  */
-package com.williamfiset.algorithms.dp;
-
-import java.awt.geom.*;
-import java.util.*;
-
 public class MinimumWeightPerfectMatching {
 
   // Inputs
   private final int n;
-  private double[][] cost;
+  private final double[][] cost;
 
   // Internal
   private final int END_STATE;
@@ -30,7 +40,13 @@ public class MinimumWeightPerfectMatching {
   private double minWeightCost;
   private int[] matching;
 
-  // The cost matrix should be a symmetric (i.e cost[i][j] = cost[j][i])
+  /**
+   * Creates a MWPM solver for the given cost matrix.
+   *
+   * @param cost symmetric n x n distance matrix (cost[i][j] = cost[j][i])
+   *
+   * @throws IllegalArgumentException if matrix is null, empty, odd-sized, or too large
+   */
   public MinimumWeightPerfectMatching(double[][] cost) {
     if (cost == null) throw new IllegalArgumentException("Input cannot be null");
     n = cost.length;
@@ -45,8 +61,12 @@ public class MinimumWeightPerfectMatching {
     this.cost = cost;
   }
 
+  /**
+   * Returns the minimum total cost of a perfect matching.
+   * Lazily solves using the recursive solver if neither solver has run yet.
+   */
   public double getMinWeightCost() {
-    solveRecursive();
+    if (!solved) solveRecursive();
     return minWeightCost;
   }
 
@@ -68,11 +88,21 @@ public class MinimumWeightPerfectMatching {
    * }</pre>
    */
   public int[] getMinWeightCostMatching() {
-    solveRecursive();
+    if (!solved) solveRecursive();
     return matching;
   }
 
-  // Recursive impl
+  // ==================== Solver 1: Top-down (recursive with memoization) ====================
+
+  /**
+   * Solves using top-down recursion with memoization. Starting from the full set
+   * of nodes, it finds the lowest-numbered unmatched node and tries pairing it
+   * with every other unmatched node, recursing on the reduced state.
+   *
+   * This approach naturally skips unreachable states (states that can't be formed
+   * by removing pairs from the full set), so it often visits fewer states than
+   * the iterative solver.
+   */
   public void solveRecursive() {
     if (solved) return;
     Double[] dp = new Double[1 << n];
@@ -83,24 +113,17 @@ public class MinimumWeightPerfectMatching {
   }
 
   private double f(int state, Double[] dp, int[] history) {
-    if (dp[state] != null) {
-      return dp[state];
-    }
-    if (state == 0) {
-      return 0;
-    }
-    int p1, p2;
-    // Seek to find active bit position (p1)
-    for (p1 = 0; p1 < n; p1++) {
-      if ((state & (1 << p1)) > 0) {
-        break;
-      }
-    }
+    if (dp[state] != null) return dp[state];
+    if (state == 0) return 0;
+
+    // Find the lowest set bit position (p1) — always pair this node first
+    int p1 = Integer.numberOfTrailingZeros(state);
+
     int bestState = -1;
     double minimum = Double.MAX_VALUE;
 
-    for (p2 = p1 + 1; p2 < n; p2++) {
-      // Position `p2` is on. Try matching the pair (p1, p2) together.
+    // Try pairing p1 with every other set bit
+    for (int p2 = p1 + 1; p2 < n; p2++) {
       if ((state & (1 << p2)) > 0) {
         int reducedState = state ^ (1 << p1) ^ (1 << p2);
         double matchCost = f(reducedState, dp, history) + cost[p1][p2];
@@ -114,7 +137,17 @@ public class MinimumWeightPerfectMatching {
     return dp[state] = minimum;
   }
 
-  public void solve() {
+  // ==================== Solver 2: Bottom-up (iterative) ====================
+
+  /**
+   * Solves using bottom-up iterative DP. Pre-computes all n*(n-1)/2 pair states,
+   * then iterates over all bitmask states in ascending order, extending each
+   * valid matching by adding a non-overlapping pair.
+   *
+   * This approach visits all 2^n states systematically. It avoids recursion
+   * overhead and stack depth limits, making it better suited for larger n.
+   */
+  public void solveIterative() {
     if (solved) return;
 
     // The DP state is encoded as a bitmask where the i'th bit is flipped on if the i'th node is
@@ -152,9 +185,8 @@ public class MinimumWeightPerfectMatching {
     for (int state = 0b11; state < (1 << n); state++) { // O(2^n)
       // Skip states with an odd number of bits (nodes). It's easier (and faster) to
       // check dp[state] instead of calling `Integer.bitCount` for the bit count.
-      if (dp[state] == null) {
-        continue;
-      }
+      if (dp[state] == null) continue;
+
       for (int i = 0; i < numPairs; i++) { // O(n^2)
         int pair = pairStates[i];
         // Ignore states which overlap
@@ -178,65 +210,46 @@ public class MinimumWeightPerfectMatching {
     solved = true;
   }
 
-  // Populates the `matching` array with a sorted deterministic matching sorted by lowest node
-  // index. For example, if the perfect matching consists of the pairs (3, 4), (1, 5), (0, 2).
-  // The matching is sorted such that the pairs appear in the ordering: (0, 2), (1, 5), (3, 4).
-  // Furthermore, it is guaranteed that for any pair (a, b) that a < b.
+  /**
+   * Populates the {@code matching} array with a sorted deterministic matching.
+   * For example, if the perfect matching consists of the pairs (3, 4), (1, 5), (0, 2),
+   * the output is sorted as: (0, 2), (1, 5), (3, 4).
+   * For any pair (a, b), it is guaranteed that a < b.
+   */
   private void reconstructMatching(int[] history) {
-    // A map between pairs of nodes that were matched together.
     int[] map = new int[n];
     int[] leftNodes = new int[n / 2];
 
-    // Reconstruct the matching of pairs of nodes working backwards through computed states.
+    // Walk backwards through computed states to recover matched pairs
     for (int i = 0, state = END_STATE; state != 0; state = history[state]) {
-      // Isolate the pair used by xoring the state with the state used to generate it.
       int pairUsed = state ^ history[state];
 
-      int leftNode = getBitPosition(Integer.lowestOneBit(pairUsed));
-      int rightNode = getBitPosition(Integer.highestOneBit(pairUsed));
+      int leftNode = Integer.numberOfTrailingZeros(Integer.lowestOneBit(pairUsed));
+      int rightNode = Integer.numberOfTrailingZeros(Integer.highestOneBit(pairUsed));
 
       leftNodes[i++] = leftNode;
       map[leftNode] = rightNode;
     }
 
-    // Sort the left nodes in ascending order.
-    java.util.Arrays.sort(leftNodes);
+    Arrays.sort(leftNodes);
 
     matching = new int[n];
     for (int i = 0; i < n / 2; i++) {
       matching[2 * i] = leftNodes[i];
-      int rightNode = map[leftNodes[i]];
-      matching[2 * i + 1] = rightNode;
+      matching[2 * i + 1] = map[leftNodes[i]];
     }
   }
-
-  // Gets the zero base index position of the 1 bit in `k`. `k` must be a power of 2, so there is
-  // only ever 1 bit in the binary representation of k.
-  private int getBitPosition(int k) {
-    int count = -1;
-    while (k > 0) {
-      count++;
-      k >>= 1;
-    }
-    return count;
-  }
-
-  /* Example */
 
   public static void main(String[] args) {
-    // test1();
-    // for (int i = 0; i < 50; i++) {
-    //   if (include(i)) System.out.printf("%2d %7s\n", i, Integer.toBinaryString(i));
-    // }
+    test1();
+    test2();
   }
 
-  private static boolean include(int i) {
-    boolean toInclude = Integer.bitCount(i) >= 2 && Integer.bitCount(i) % 2 == 0;
-    return toInclude;
-  }
-
+  // Example 1: Uses the RECURSIVE solver.
+  // Generates 2D points that form vertical pairs, shuffles them, and verifies
+  // the MWPM correctly matches each pair (cost = 1 per pair, total = n/2).
   private static void test1() {
-    // int n = 18;
+    System.out.println("=== Recursive solver ===");
     int n = 6;
     List<Point2D> pts = new ArrayList<>();
 
@@ -248,13 +261,13 @@ public class MinimumWeightPerfectMatching {
     Collections.shuffle(pts);
 
     double[][] cost = new double[n][n];
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < n; j++) {
+    for (int i = 0; i < n; i++)
+      for (int j = 0; j < n; j++)
         cost[i][j] = pts.get(i).distance(pts.get(j));
-      }
-    }
 
     MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(cost);
+    mwpm.solveRecursive();
+
     double minCost = mwpm.getMinWeightCost();
     if (minCost != n / 2) {
       System.out.printf("MWPM cost is wrong! Got: %.5f But wanted: %d\n", minCost, n / 2);
@@ -275,7 +288,10 @@ public class MinimumWeightPerfectMatching {
     }
   }
 
+  // Example 2: Uses the ITERATIVE solver.
+  // Simple 4-node symmetric matrix where the optimal matching costs 2.0.
   private static void test2() {
+    System.out.println("=== Iterative solver ===");
     double[][] costMatrix = {
       {0, 2, 1, 2},
       {2, 0, 2, 1},
@@ -284,12 +300,12 @@ public class MinimumWeightPerfectMatching {
     };
 
     MinimumWeightPerfectMatching mwpm = new MinimumWeightPerfectMatching(costMatrix);
+    mwpm.solveIterative();
+
     double cost = mwpm.getMinWeightCost();
     if (cost != 2.0) {
       System.out.println("error cost not 2");
     }
-    System.out.println(cost);
-    // System.out.println(mwpm.solve2());
-
+    System.out.println(cost); // 2.0
   }
 }
