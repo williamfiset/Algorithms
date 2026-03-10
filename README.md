@@ -144,7 +144,6 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 # Geometry
 
 - [Angle between 2D vectors](src/main/java/com/williamfiset/algorithms/geometry/AngleBetweenVectors2D.java) **- O(1)**
-- [Angle between 3D vectors](src/main/java/com/williamfiset/algorithms/geometry/AngleBetweenVectors3D.java) **- O(1)**
 - [Circle-circle intersection point(s)](src/main/java/com/williamfiset/algorithms/geometry/CircleCircleIntersectionPoints.js) **- O(1)**
 - [Circle-line intersection point(s)](src/main/java/com/williamfiset/algorithms/geometry/LineCircleIntersection.js) **- O(1)**
 - [Circle-line segment intersection point(s)](src/main/java/com/williamfiset/algorithms/geometry/LineSegmentCircleIntersection.js) **- O(1)**
@@ -154,20 +153,27 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 - [Convex hull (Graham Scan algorithm)](src/main/java/com/williamfiset/algorithms/geometry/ConvexHullGrahamScan.java) **- O(nlog(n))**
 - [Convex hull (Monotone chain algorithm)](src/main/java/com/williamfiset/algorithms/geometry/ConvexHullMonotoneChainsAlgorithm.java) **- O(nlog(n))**
 - [Convex polygon area](src/main/java/com/williamfiset/algorithms/geometry/ConvexPolygonArea.java) **- O(n)**
-- [Convex polygon cut](src/main/java/com/williamfiset/algorithms/geometry/ConvexPolygonCutWithLineSegment.java) **- O(n)**
 - [Convex polygon contains points](src/main/java/com/williamfiset/algorithms/geometry/ConvexPolygonContainsPoint.java) **- O(log(n))**
+- [Triangle area algorithms](src/main/java/com/williamfiset/algorithms/geometry/TriangleArea.java) **- O(1)**
+- [Line segment-circle intersection point(s)](src/main/java/com/williamfiset/algorithms/geometry/LineSegmentCircleIntersection.js) **- O(1)**
+- [Line segment-line segment intersection](src/main/java/com/williamfiset/algorithms/geometry/LineSegmentLineSegmentIntersection.java) **- O(1)**
+
+<details>
+<summary>More geometry algorithms</summary>
+
+- [Angle between 3D vectors](src/main/java/com/williamfiset/algorithms/geometry/AngleBetweenVectors3D.java) **- O(1)**
+- [Convex polygon cut](src/main/java/com/williamfiset/algorithms/geometry/ConvexPolygonCutWithLineSegment.java) **- O(n)**
 - [Coplanar points test (are four 3D points on the same plane)](src/main/java/com/williamfiset/algorithms/geometry/CoplanarPoints.java) **- O(1)**
 - [Line class (handy infinite line class)](src/main/java/com/williamfiset/algorithms/geometry/Line.java) **- O(1)**
 - [Line-circle intersection point(s)](src/main/java/com/williamfiset/algorithms/geometry/LineCircleIntersection.js) **- O(1)**
-- [Line segment-circle intersection point(s)](src/main/java/com/williamfiset/algorithms/geometry/LineSegmentCircleIntersection.js) **- O(1)**
 - [Line segment to general form (ax + by = c)](src/main/java/com/williamfiset/algorithms/geometry/LineSegmentToGeneralForm.java) **- O(1)**
-- [Line segment-line segment intersection](src/main/java/com/williamfiset/algorithms/geometry/LineSegmentLineSegmentIntersection.java) **- O(1)**
 - [Longitude-Latitude geographic distance](src/main/java/com/williamfiset/algorithms/geometry/LongitudeLatitudeGeographicDistance.java) **- O(1)**
 - [Point is inside triangle check](src/main/java/com/williamfiset/algorithms/geometry/PointInsideTriangle.java) **- O(1)**
 - [Point rotation about point](src/main/java/com/williamfiset/algorithms/geometry/PointRotation.java) **- O(1)**
-- [Triangle area algorithms](src/main/java/com/williamfiset/algorithms/geometry/TriangleArea.java) **- O(1)**
 - [[UNTESTED] Circle-circle intersection area](src/main/java/com/williamfiset/algorithms/geometry/CircleCircleIntersectionArea.java) **- O(1)**
 - [[UNTESTED] Circular segment area](src/main/java/com/williamfiset/algorithms/geometry/CircularSegmentArea.java) **- O(1)**
+
+</details>
 
 # Graph theory
 
