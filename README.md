@@ -7,6 +7,8 @@
 
 Algorithms and data structures are fundamental to efficient code and good software design. Creating and designing excellent algorithms is required for being an exemplary programmer. This repository's goal is to demonstrate how to correctly implement common data structures and algorithms in the simplest and most elegant ways.
 
+🎬 Many of the algorithms and data structures in this repo have companion video explanations on the [William Fiset YouTube channel](https://www.youtube.com/@WilliamFiset-videos) — so if the code alone doesn't click, grab some popcorn and watch the videos!
+
 # Running an algorithm implementation
 
 To compile and run any of the algorithms here, you need at least JDK version 8 and [Bazel](https://bazel.build/)
