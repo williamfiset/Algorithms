@@ -1,23 +1,49 @@
+package com.williamfiset.algorithms.datastructures.segmenttree;
+
 /**
- * Segment Trees are an extremely useful data structure when dealing with ranges or intervals. They
- * take O(n) time and space to construct, but they can do range updates or queries in O(log(n))
- * time. This data structure is quite flexible; although the code below supports minimum and sum
- * queries, these could be modified to perform other types of queries. This implementation uses lazy
- * propagation (which allows for O(log(n)) range updates instead of O(n)). It should also be noted
- * that this implementation could easily be modified to support coordinate compression (you should
- * only have to change a few lines in the constructor).
+ * Pointer-Based Segment Tree with Lazy Propagation
+ *
+ * A segment tree built with explicit left/right child pointers (rather than
+ * a flat array). Supports range sum queries, range min queries, and range
+ * updates (add a value to every element in an interval), all in O(log(n)).
+ *
+ * Lazy propagation defers updates to child nodes until they are actually
+ * needed, keeping range updates at O(log(n)) instead of O(n).
+ *
+ * Each node covers a half-open interval [minPos, maxPos). Leaves cover a
+ * single element [i, i+1). The combine function computes both sum and min
+ * simultaneously as values propagate up.
+ *
+ * Use cases:
+ *   - Range sum / min queries with range add updates
+ *   - Problems requiring coordinate compression (easy to adapt constructor)
+ *
+ * Time:  O(n) construction, O(log(n)) per query and update
+ * Space: O(n)
  *
  * @author Micah Stairs
  */
-package com.williamfiset.algorithms.datastructures.segmenttree;
-
 public class Node {
 
-  static final int INF = Integer.MAX_VALUE;
+  private static final int INF = Integer.MAX_VALUE;
 
-  Node left, right;
-  int minPos, maxPos, min = 0, sum = 0, lazy = 0;
+  private Node left, right;
 
+  // This node covers the half-open interval [minPos, maxPos)
+  private int minPos, maxPos;
+
+  // Aggregate values for this node's range
+  private int min = 0, sum = 0;
+
+  // Pending update that hasn't been pushed to children yet
+  private int lazy = 0;
+
+  /**
+   * Creates a segment tree from an array of values.
+   *
+   * @param values the initial values for the leaves
+   * @throws IllegalArgumentException if values is null
+   */
   public Node(int[] values) {
     if (values == null) throw new IllegalArgumentException("Null input to segment tree.");
     buildTree(0, values.length);
@@ -26,113 +52,110 @@ public class Node {
     }
   }
 
+  /**
+   * Creates an empty segment tree of the given size, with all values at 0.
+   *
+   * @param sz the number of elements
+   */
   public Node(int sz) {
     buildTree(0, sz);
   }
 
-  private Node(int l, int r) {
-    buildTree(l, r);
-  }
-
-  // Recursive method that builds the segment tree
+  // Recursively builds the tree structure for the range [l, r).
+  // Leaves cover [i, i+1); internal nodes split at the midpoint.
   private void buildTree(int l, int r) {
-
     if (l < 0 || r < 0 || r < l)
       throw new IllegalArgumentException("Illegal range: (" + l + "," + r + ")");
 
     minPos = l;
     maxPos = r;
 
-    // Reached leaf
-    if (l == r - 1) {
-      left = right = null;
-
-      // Add children
-    } else {
+    // Internal node — split at midpoint
+    if (r - l > 1) {
       int mid = (l + r) / 2;
       left = new Node(l, mid);
       right = new Node(mid, r);
     }
   }
 
-  // Adjust all values in the interval [l, r) by a particular amount
-  public void update(int l, int r, int change) {
+  private Node(int l, int r) {
+    buildTree(l, r);
+  }
 
-    // Do lazy updates to children
+  /**
+   * Adds {@code change} to every element in the half-open interval [l, r).
+   *
+   * @param l      left endpoint (inclusive)
+   * @param r      right endpoint (exclusive)
+   * @param change the value to add to each element in [l, r)
+   *
+   * Time: O(log(n))
+   */
+  public void update(int l, int r, int change) {
     propagate();
 
-    // Node's range fits inside query range
     if (l <= minPos && maxPos <= r) {
-
+      // Fully inside — apply update directly
       sum += change * (maxPos - minPos);
       min += change;
-
-      // Lazily propagate update to children
+      // Lazily defer to children
       if (left != null) left.lazy += change;
       if (right != null) right.lazy += change;
-
-      // Ranges do not overlap
     } else if (r <= minPos || l >= maxPos) {
-
-      // Do nothing
-
-      // Ranges partially overlap
+      // No overlap
     } else {
-
-      if (left != null) left.update(l, r, change);
-      if (right != null) right.update(l, r, change);
-      sum = (left == null ? 0 : left.sum) + (right == null ? 0 : right.sum);
-      min = Math.min((left == null ? INF : left.min), (right == null ? INF : right.min));
+      // Partial overlap — recurse into children.
+      // Partial overlap only happens at internal nodes (leaves always
+      // fully match or fully miss), so left and right are never null here.
+      left.update(l, r, change);
+      right.update(l, r, change);
+      sum = left.sum + right.sum;
+      min = Math.min(left.min, right.min);
     }
   }
 
-  // Get the sum in the interval [l, r)
+  /**
+   * Returns the sum of elements in the half-open interval [l, r).
+   *
+   * @param l left endpoint (inclusive)
+   * @param r right endpoint (exclusive)
+   * @return the sum of all elements in [l, r)
+   *
+   * Time: O(log(n))
+   */
   public int sum(int l, int r) {
-
-    // Do lazy updates to children
     propagate();
-
-    // Node's range fits inside query range
     if (l <= minPos && maxPos <= r) return sum;
-
-    // Ranges do not overlap
-    else if (r <= minPos || l >= maxPos) return 0;
-
-    // Ranges partially overlap
-    else return (left == null ? 0 : left.sum(l, r)) + (right == null ? 0 : right.sum(l, r));
+    if (r <= minPos || l >= maxPos) return 0;
+    return left.sum(l, r) + right.sum(l, r);
   }
 
-  // Get the minimum value in the interval [l, r)
+  /**
+   * Returns the minimum element in the half-open interval [l, r).
+   *
+   * @param l left endpoint (inclusive)
+   * @param r right endpoint (exclusive)
+   * @return the minimum value in [l, r)
+   *
+   * Time: O(log(n))
+   */
   public int min(int l, int r) {
-
-    // Do lazy updates to children
     propagate();
-
-    // Node's range fits inside query range
     if (l <= minPos && maxPos <= r) return min;
-
-    // Ranges do not overlap
-    else if (r <= minPos || l >= maxPos) return INF;
-
-    // Ranges partially overlap
-    else
-      return Math.min(
-          (left == null ? INF : left.min(l, r)), (right == null ? INF : right.min(l, r)));
+    if (r <= minPos || l >= maxPos) return INF;
+    return Math.min(left.min(l, r), right.min(l, r));
   }
 
-  // Does any updates to this node that haven't been done yet, and lazily updates its children
-  // NOTE: This method must be called before updating or accessing a node
+  /**
+   * Applies any pending lazy update to this node and defers it to children.
+   * Must be called before reading or modifying a node's values.
+   */
   private void propagate() {
-
     if (lazy != 0) {
-
       sum += lazy * (maxPos - minPos);
       min += lazy;
-
-      // Lazily propagate updates to children
       if (left != null) left.lazy += lazy;
       if (right != null) right.lazy += lazy;
-
       lazy = 0;
     }
   }
