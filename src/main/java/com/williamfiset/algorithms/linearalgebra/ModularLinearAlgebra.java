@@ -1,19 +1,39 @@
-/** Solve a system of linear equations in a finite field Time Complexity: O(r^2c) */
 package com.williamfiset.algorithms.linearalgebra;
 
+/**
+ * Linear Algebra in Finite Fields (Modular Arithmetic)
+ *
+ * Solves systems of linear equations and computes matrix inverses in
+ * Z_p (the integers modulo a prime p). All arithmetic is performed
+ * modulo p, using precomputed multiplicative inverses.
+ *
+ * Includes:
+ *   - Reduced row echelon form (RREF) in Z_p
+ *   - Matrix inverse in Z_p
+ *   - Consistency and uniqueness checks
+ *   - Extended GCD for computing modular inverses
+ *
+ * Time:  O(r^2*c) for RREF, O(n^3) for matrix inverse
+ * Space: O(n^2)
+ *
+ * @author William Fiset, william.alexandre.fiset@gmail.com
+ */
 class ModularLinearAlgebra {
 
-  // Takes an augmented matrix as input along with a prime
-  // number as the order of the finite field on which the
-  // calculations are being performed. The inv[] array is
-  // the multiplicative inverse of each element in this
-  // finite field. After running this method, the input
-  // matrix arr[] will be in reduced row echelon form
-  // Time Complexity: O(r^2c)
+  /**
+   * Reduces an augmented matrix to RREF in the finite field Z_p.
+   *
+   * @param arr   the augmented matrix [A | b]
+   * @param prime the prime modulus p
+   * @param inv   precomputed multiplicative inverses in Z_p (inv[i] = i^(-1) mod p)
+   *
+   * Time: O(r^2*c)
+   */
   static void rref(int[][] arr, int prime, int[] inv) {
     int n = arr.length, m = arr[0].length;
     int r = 0;
     for (int i = 0; i < m - 1 && r < n; i++) {
+      // Find pivot row
       if (arr[r][i] == 0) {
         for (int k = r + 1; k < n; k++) {
           if (arr[k][i] != 0) {
@@ -24,34 +44,49 @@ class ModularLinearAlgebra {
           }
         }
       }
-      if (arr[r][i] == 0) {
-        continue;
-      }
+      if (arr[r][i] == 0) continue;
+
+      // Scale pivot row so leading entry becomes 1
       int inverse = inv[arr[r][i]];
-      for (int k = i; k < m; k++) arr[r][k] = (arr[r][k] * inverse) % prime;
+      for (int k = i; k < m; k++)
+        arr[r][k] = (arr[r][k] * inverse) % prime;
+
+      // Eliminate all other rows in this column
       for (int j = 0; j < n; j++) {
         int c = arr[j][i];
         if (j == r || c == 0) continue;
         arr[j][i] = 0;
-        for (int k = i + 1; k < m; k++) arr[j][k] = (arr[j][k] - c * arr[r][k] + c * prime) % prime;
+        for (int k = i + 1; k < m; k++)
+          arr[j][k] = (arr[j][k] - c * arr[r][k] + c * prime) % prime;
       }
       r++;
     }
   }
 
-  // Finds the inverse of a non-augmented matrix in the finite field
-  // with order equal to the given prime.
+  /**
+   * Computes the inverse of a matrix in Z_p.
+   *
+   * @param arr    the n x n matrix to invert
+   * @param prime  the prime modulus p
+   * @param modInv precomputed multiplicative inverses in Z_p
+   * @return the inverse matrix, or null if not invertible
+   *
+   * Time: O(n^3)
+   */
   static int[][] inverse(int[][] arr, int prime, int[] modInv) {
     if (arr.length != arr[0].length) return null;
     int n = arr.length;
+
+    // Build augmented matrix [A | I]
     int[][] augmented = new int[n][n * 2];
     for (int i = 0; i < n; i++) {
-      for (int j = 0; j < n; j++) {
+      for (int j = 0; j < n; j++)
         augmented[i][j] = arr[i][j];
-      }
       augmented[i][i + n] = 1;
     }
     rref(augmented, prime, modInv);
+
+    // Verify left half is identity; extract right half
     int[][] inv = new int[n][n];
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < n; j++) {
@@ -63,39 +98,33 @@ class ModularLinearAlgebra {
     return inv;
   }
 
-  // To be checked after the augmented matrix has been
-  // row reduced to reduced row echelon form
+  /** Checks if the reduced matrix is inconsistent (no solution). */
   static boolean isInconsistent(int[][] arr) {
     int nCols = arr[0].length;
     outer:
     for (int y = 0; y < arr.length; y++) {
       if (arr[y][nCols - 1] != 0) {
-        for (int x = 0; x < nCols - 1; x++) {
+        for (int x = 0; x < nCols - 1; x++)
           if (arr[y][x] != 0) continue outer;
-        }
         return true;
       }
     }
     return false;
   }
 
-  // To be checked after the augmented matrix has been
-  // row reduced to reduced row echelon form and checked
-  // for consistency
+  /** Checks if the system has multiple solutions (underdetermined). */
   static boolean hasMultipleSolutions(int[][] arr) {
-    int nCols = arr[0].length;
-    int nEmptyRows = 0;
+    int nCols = arr[0].length, nEmptyRows = 0;
     outer:
     for (int y = 0; y < arr.length; y++) {
-      for (int x = 0; x < nCols; x++) {
+      for (int x = 0; x < nCols; x++)
         if (arr[y][x] != 0) continue outer;
-      }
       nEmptyRows++;
     }
     return nCols - 1 > arr.length - nEmptyRows;
   }
 
-  // Returns {gcd(a,b), x, y} such that ax+by=gcd(a,b)
+  /** Returns {gcd(a,b), x, y} such that a*x + b*y = gcd(a,b). */
   static int[] egcd(int a, int b) {
     if (b == 0) return new int[] {a, 1, 0};
     int[] ret = egcd(b, a % b);
@@ -105,7 +134,7 @@ class ModularLinearAlgebra {
     return ret;
   }
 
-  // Returns the inverse of x mod m
+  /** Returns the multiplicative inverse of x mod m. */
   static int modInv(int x, int m) {
     return (egcd(x, m)[1] + m) % m;
   }

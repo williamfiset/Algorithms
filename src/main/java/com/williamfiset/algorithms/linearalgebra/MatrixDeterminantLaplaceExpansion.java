@@ -1,18 +1,84 @@
+package com.williamfiset.algorithms.linearalgebra;
+
 /**
- * This is an implementation of finding the determinant of an nxn matrix using Laplace/cofactor
- * expansion. Although this method is mathematically beautiful, it is computationally intensive and
- * not practical for matrices beyond the size of 7-8.
+ * Matrix Determinant via Laplace (Cofactor) Expansion
  *
- * <p>Time Complexity: ~O((n+2)!)
+ * Computes the determinant of an n x n matrix by recursively expanding
+ * along the first row. Each expansion reduces the matrix size by 1,
+ * creating n subproblems of size (n-1) x (n-1).
+ *
+ * Mathematically elegant but computationally expensive — not practical
+ * for matrices larger than about 7-8. For larger matrices, use
+ * Gaussian elimination (O(n^3)) instead.
+ *
+ * Includes optimized closed-form formulas for 1x1, 2x2, and 3x3 bases.
+ *
+ * Time:  ~O((n+2)!)
+ * Space: O(n^2*n!) due to recursive submatrix allocation
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
-package com.williamfiset.algorithms.linearalgebra;
-
 public class MatrixDeterminantLaplaceExpansion {
 
-  // Define a small value of epsilon to compare double values
-  static final double EPS = 0.00000001;
+  private static final double EPS = 0.00000001;
+
+  /**
+   * Computes the determinant of an n x n matrix.
+   *
+   * @param matrix the square matrix
+   * @return the determinant value
+   *
+   * Time: ~O((n+2)!)
+   */
+  public static double determinant(double[][] matrix) {
+    final int n = matrix.length;
+    if (n == 1) return matrix[0][0];
+    if (n == 2) return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+    return laplace(matrix);
+  }
+
+  /**
+   * Recursive cofactor expansion along the first row.
+   * Base case is the 3x3 Sarrus formula.
+   */
+  private static double laplace(double[][] m) {
+    final int n = m.length;
+    if (n == 3) {
+      double a = m[0][0], b = m[0][1], c = m[0][2];
+      double d = m[1][0], e = m[1][1], f = m[1][2];
+      double g = m[2][0], h = m[2][1], i = m[2][2];
+      return a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
+    }
+    int det = 0;
+    for (int i = 0; i < n; i++) {
+      double c = m[0][i];
+      if (c > EPS) {
+        int sign = ((i & 1) == 0) ? +1 : -1;
+        det += sign * m[0][i] * laplace(constructMinor(m, 0, i));
+      }
+    }
+    return det;
+  }
+
+  /**
+   * Constructs the (n-1) x (n-1) minor matrix by excluding the
+   * specified row and column from the input matrix.
+   */
+  private static double[][] constructMinor(double[][] mat, int excludingRow, int excludingCol) {
+    int n = mat.length;
+    double[][] minor = new double[n - 1][n - 1];
+    int rPtr = -1;
+    for (int i = 0; i < n; i++) {
+      if (i == excludingRow) continue;
+      ++rPtr;
+      int cPtr = -1;
+      for (int j = 0; j < n; j++) {
+        if (j == excludingCol) continue;
+        minor[rPtr][++cPtr] = mat[i][j];
+      }
+    }
+    return minor;
+  }
 
   public static void main(String[] args) {
 
@@ -148,71 +214,4 @@ public class MatrixDeterminantLaplaceExpansion {
         }; // determinant(mat0) = 17265530 (1.726553E7)
     System.out.println(determinant(m));
   }
-
-  // Given an n*n matrix, this method finds the determinant using Laplace/cofactor expansion.
-  // Time Complexity: ~O((n+2)!)
-  public static double determinant(double[][] matrix) {
-
-    final int n = matrix.length;
-
-    // Use closed form for 1x1 determinant
-    if (n == 1) return matrix[0][0];
-
-    // Use closed form for 2x2 determinant
-    if (n == 2) return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
-
-    // For 3x3 matrices and up use Laplace/cofactor expansion
-    return laplace(matrix);
-  }
-
-  // This method uses cofactor expansion to compute the determinant
-  // of a matrix. Unfortunately, this method is very slow and uses
-  // A LOT of memory, hence it is not too practical for large matrices.
-  private static double laplace(double[][] m) {
-
-    final int n = m.length;
-
-    // Base case is 3x3 determinant
-    if (n == 3) {
-      /*
-       * Used as a temporary variables to make calculation easy
-       * | a  b  c |
-       * | d  e  f |
-       * | g  h  i |
-       */
-      double a = m[0][0], b = m[0][1], c = m[0][2];
-      double d = m[1][0], e = m[1][1], f = m[1][2];
-      double g = m[2][0], h = m[2][1], i = m[2][2];
-      return a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
-    }
-    int det = 0;
-    for (int i = 0; i < n; i++) {
-      double c = m[0][i];
-      if (c > EPS) {
-        int sign = ((i & 1) == 0) ? +1 : -1;
-        det += sign * m[0][i] * laplace(constructMatrix(m, 0, i));
-      }
-    }
-    return det;
-  }
-
-  // Constructs a matrix one dimension smaller than the last by
-  // excluding the top row and some selected column. This
-  // method ends up consuming a lot of space we called recursively multiple times
-  // since it allocates memory for a new matrix.
-  private static double[][] constructMatrix(double[][] mat, int excludingRow, int excludingCol) {
-    int n = mat.length;
-    double[][] newMatrix = new double[n - 1][n - 1];
-    int rPtr = -1;
-    for (int i = 0; i < n; i++) {
-      if (i == excludingRow) continue;
-      ++rPtr;
-      int cPtr = -1;
-      for (int j = 0; j < n; j++) {
-        if (j == excludingCol) continue;
-        newMatrix[rPtr][++cPtr] = mat[i][j];
-      } // end of inner loop
-    } // end of outer loop
-    return newMatrix;
-  } // end of createSubMatrix
 }

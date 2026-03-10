@@ -1,34 +1,44 @@
+package com.williamfiset.algorithms.linearalgebra;
+
 /**
- * This simplex algorithm maximizes an expression subject to a set of constraints
+ * Simplex Algorithm for Linear Programming
  *
- * <p>Time complexity: O(n^3)
+ * Maximizes a linear objective function subject to linear inequality
+ * constraints. Uses the standard tableau simplex method with Bland's-like
+ * pivot selection (most negative coefficient in the objective row).
+ *
+ * Input format (tableau matrix m):
+ *   - m[0] = objective row: m[0][0] is the current objective value,
+ *     m[0][j] (j >= 1) are the negated coefficients of the objective function
+ *   - m[i] (i >= 1) = constraint rows: m[i][0] is the RHS constant,
+ *     m[i][j] (j >= 1) are the constraint coefficients
+ *
+ * Before calling, normalize the problem:
+ *   1) RHS must be non-negative (multiply by -1 if needed)
+ *   2) Add slack variables for <= inequalities
+ *   3) Add surplus + artificial variables for >= inequalities
+ *   4) For artificial variables, first maximize -(sum of artificials);
+ *      if optimum is 0, remove artificial columns and re-run
+ *
+ * Time:  O(n^3) per pivot, exponential worst case (rare in practice)
+ * Space: O(1) (in-place)
  *
  * @author Thomas Finn Lidbetter
  */
-package com.williamfiset.algorithms.linearalgebra;
-
 public class Simplex {
 
-  static final double EPS = 1e-9;
+  private static final double EPS = 1e-9;
 
-  // The matrix given as an argument represents the function to be maximized
-  // and each of the constraints. Constraints and objective function must be
-  // normalized first through the following steps:
-  // 1) RHS must be non-negative so multiply any inequalities failing this by -1
-  // 2) Add positive coefficient slack variable on LHS of any <= inequality
-  // 3) Add negative coefficient surplus variable on LHS of any >= inequality
-  // 4) Add positive coefficient artificial variable on LHS of any >= inequality and any = equality.
-  //
-  // If any artificial variables were added, perform simplex once, maximizing the
-  // negated sum of the artificial variables. If the maximum value is 0, take the
-  // resulting matrix and remove the artificial variable columns and replace function
-  // to maximise with original and run simplex again. If maximum value of simplex with
-  // artificial variables is non-zero there is no solution. First column of m is the constants
-  // on the RHS of all constraints. First row is the expression to maximise with all
-  // coefficients negated. M[i][j] is the coefficient of the (j-1)th term in the
-  // (i-1)th constraint (0 based).
+  /**
+   * Runs the simplex algorithm on the given tableau and returns the
+   * maximum value of the objective function.
+   *
+   * @param m the simplex tableau (modified in-place)
+   * @return the maximum objective value (m[0][0] after termination)
+   */
   public static double simplex(double[][] m) {
     while (true) {
+      // Find the most negative coefficient in the objective row (pivot column)
       double min = -EPS;
       int c = -1;
       for (int j = 1; j < m[0].length; j++) {
@@ -37,7 +47,9 @@ public class Simplex {
           c = j;
         }
       }
-      if (c < 0) break;
+      if (c < 0) break; // All coefficients non-negative → optimal
+
+      // Find the pivot row using the minimum ratio test
       min = Double.MAX_VALUE;
       int r = -1;
       for (int i = 1; i < m.length; i++) {
@@ -49,12 +61,16 @@ public class Simplex {
           }
         }
       }
+
+      // Pivot: scale pivot row, then eliminate pivot column from all other rows
       double v = m[r][c];
-      for (int j = 0; j < m[r].length; j++) m[r][j] /= v;
+      for (int j = 0; j < m[r].length; j++)
+        m[r][j] /= v;
       for (int i = 0; i < m.length; i++) {
         if (i != r) {
           v = m[i][c];
-          for (int j = 0; j < m[i].length; j++) m[i][j] -= m[r][j] * v;
+          for (int j = 0; j < m[i].length; j++)
+            m[i][j] -= m[r][j] * v;
         }
       }
     }
