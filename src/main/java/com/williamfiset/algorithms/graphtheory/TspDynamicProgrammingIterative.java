@@ -187,10 +187,10 @@ public class TspDynamicProgrammingIterative {
       subsets.add(set);
     } else {
       for (int i = at; i < n; i++) {
-        // Include bit i
+        // Try including this element
         set ^= (1 << i);
         combinations(set, i + 1, r - 1, n, subsets);
-        // Exclude bit i (backtrack)
+        // Backtrack and try the instance where we did not include this element
         set ^= (1 << i);
       }
     }
