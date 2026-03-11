@@ -66,7 +66,11 @@ public class LongestCommonSubsequence {
       }
     }
 
-    // Backtrack to reconstruct the LCS string
+    // Backtrack from dp[n][m] to reconstruct the LCS string.
+    // At each cell, if the characters match, that character is part of
+    // the LCS — take it and move diagonally. Otherwise, move toward
+    // the neighbor with the larger value (up or left) to stay on the
+    // path that produced the optimal length.
     StringBuilder sb = new StringBuilder();
     int i = n, j = m;
 
