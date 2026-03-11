@@ -69,13 +69,6 @@ java_binary(
     runtime_deps = [":dp"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/dp:LongestCommonSubstring
-java_binary(
-    name = "LongestCommonSubstring",
-    main_class = "com.williamfiset.algorithms.dp.LongestCommonSubstring",
-    runtime_deps = [":dp"],
-)
-
 # bazel run //src/main/java/com/williamfiset/algorithms/dp:LongestIncreasingSubsequence
 java_binary(
     name = "LongestIncreasingSubsequence",

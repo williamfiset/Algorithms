@@ -61,6 +61,39 @@ java_test(
     deps = TEST_DEPS,
 )
 
+# bazel test //src/test/java/com/williamfiset/algorithms/dp:MaximumSubarrayTest
+java_test(
+    name = "MaximumSubarrayTest",
+    srcs = ["MaximumSubarrayTest.java"],
+    main_class = "org.junit.platform.console.ConsoleLauncher",
+    use_testrunner = False,
+    args = ["--select-class=com.williamfiset.algorithms.dp.MaximumSubarrayTest"],
+    runtime_deps = JUNIT5_RUNTIME_DEPS,
+    deps = TEST_DEPS,
+)
+
+# bazel test //src/test/java/com/williamfiset/algorithms/dp:LongestCommonSubsequenceTest
+java_test(
+    name = "LongestCommonSubsequenceTest",
+    srcs = ["LongestCommonSubsequenceTest.java"],
+    main_class = "org.junit.platform.console.ConsoleLauncher",
+    use_testrunner = False,
+    args = ["--select-class=com.williamfiset.algorithms.dp.LongestCommonSubsequenceTest"],
+    runtime_deps = JUNIT5_RUNTIME_DEPS,
+    deps = TEST_DEPS,
+)
+
+# bazel test //src/test/java/com/williamfiset/algorithms/dp:KnapsackTest
+java_test(
+    name = "KnapsackTest",
+    srcs = ["KnapsackTest.java"],
+    main_class = "org.junit.platform.console.ConsoleLauncher",
+    use_testrunner = False,
+    args = ["--select-class=com.williamfiset.algorithms.dp.KnapsackTest"],
+    runtime_deps = JUNIT5_RUNTIME_DEPS,
+    deps = TEST_DEPS,
+)
+
 # bazel test //src/test/java/com/williamfiset/algorithms/dp:LongestPalindromeSubsequenceTest
 java_test(
     name = "LongestPalindromeSubsequenceTest",

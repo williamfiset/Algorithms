@@ -1,75 +1,101 @@
+package com.williamfiset.algorithms.dp;
+
 /**
- * This file contains an implementation of finding the Longest Common Subsequence (LCS) between two
- * strings using dynamic programming.
+ * Longest Common Subsequence (LCS)
  *
- * <p>Time Complexity: O(nm)
+ * Given two strings A and B, find the longest subsequence present in both.
+ * A subsequence is a sequence that appears in the same relative order but
+ * not necessarily contiguously (unlike a substring).
+ *
+ * Builds an (n+1) x (m+1) DP table where dp[i][j] = length of the LCS of
+ * A[0..i-1] and B[0..j-1], then backtracks to recover one LCS string.
+ *
+ * Tested against: https://leetcode.com/problems/longest-common-subsequence
+ *
+ * Time:  O(n*m)
+ * Space: O(n*m)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
-package com.williamfiset.algorithms.dp;
-
 public class LongestCommonSubsequence {
 
-  // Returns a non unique Longest Common Subsequence
-  // between the strings str1 and str2 in O(nm)
-  public static String lcs(char[] A, char[] B) {
+  /**
+   * Finds one Longest Common Subsequence between A and B.
+   *
+   * @param A - first string
+   * @param B - second string
+   * @return one LCS string, or null if either input is null
+   */
+  public static String lcs(String A, String B) {
+    if (A == null || B == null) return null;
+    return lcs(A.toCharArray(), B.toCharArray());
+  }
 
+  /**
+   * Finds one Longest Common Subsequence between A and B using bottom-up DP.
+   *
+   * Builds a table dp[i][j] = length of LCS of A[0..i-1] and B[0..j-1],
+   * then backtracks through the table to reconstruct the actual subsequence.
+   *
+   * @param A - first character array
+   * @param B - second character array
+   * @return one LCS string, or null if either input is null
+   *
+   * Time:  O(n*m)
+   * Space: O(n*m)
+   */
+  public static String lcs(char[] A, char[] B) {
     if (A == null || B == null) return null;
 
     final int n = A.length;
     final int m = B.length;
 
-    if (n == 0 || m == 0) return null;
+    if (n == 0 || m == 0) return "";
 
     int[][] dp = new int[n + 1][m + 1];
 
-    // Suppose A = a1a2..an-1an and B = b1b2..bn-1bn
+    // Fill the DP table
     for (int i = 1; i <= n; i++) {
       for (int j = 1; j <= m; j++) {
-
-        // If ends match the LCS(a1a2..an-1an, b1b2..bn-1bn) = LCS(a1a2..an-1, b1b2..bn-1) + 1
-        if (A[i - 1] == B[j - 1]) dp[i][j] = dp[i - 1][j - 1] + 1;
-
-        // If the ends do not match the LCS of a1a2..an-1an and b1b2..bn-1bn is
-        // max( LCS(a1a2..an-1, b1b2..bn-1bn), LCS(a1a2..an-1an, b1b2..bn-1) )
-        else dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+        // If characters match, extend the LCS from the diagonal
+        if (A[i - 1] == B[j - 1])
+          dp[i][j] = dp[i - 1][j - 1] + 1;
+        // Otherwise take the best LCS excluding one character from either string
+        else
+          dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
       }
     }
 
-    int lcsLen = dp[n][m];
-    char[] lcs = new char[lcsLen];
-    int index = 0;
-
-    // Backtrack to find a LCS. We search for the cells
-    // where we included an element which are those with
-    // dp[i][j] != dp[i-1][j] and dp[i][j] != dp[i][j-1])
+    // Backtrack from dp[n][m] to reconstruct the LCS string.
+    // At each cell, if the characters match, that character is part of
+    // the LCS — take it and move diagonally. Otherwise, move toward
+    // the neighbor with the larger value (up or left) to stay on the
+    // path that produced the optimal length.
+    StringBuilder sb = new StringBuilder();
     int i = n, j = m;
-    while (i >= 1 && j >= 1) {
 
-      int v = dp[i][j];
-
-      // The order of these may output different LCSs
-      while (i > 1 && dp[i - 1][j] == v) i--;
-      while (j > 1 && dp[i][j - 1] == v) j--;
-
-      // Make sure there is a match before adding
-      if (v > 0) lcs[lcsLen - index++ - 1] = A[i - 1]; // or B[j-1];
-
-      i--;
-      j--;
+    while (i > 0 && j > 0) {
+      if (A[i - 1] == B[j - 1]) {
+        sb.append(A[i - 1]);
+        i--;
+        j--;
+      } else if (dp[i - 1][j] >= dp[i][j - 1]) {
+        i--;
+      } else {
+        j--;
+      }
     }
 
-    return new String(lcs, 0, lcsLen);
+    return sb.reverse().toString();
   }
 
+  // ==================== Main ====================
+
   public static void main(String[] args) {
+    // LCS: ABC
+    System.out.println("LCS: " + lcs("AXBCY", "ZAYWBC"));
 
-    char[] A = {'A', 'X', 'B', 'C', 'Y'};
-    char[] B = {'Z', 'A', 'Y', 'W', 'B', 'C'};
-    System.out.println(lcs(A, B)); // ABC
-
-    A = new char[] {'3', '9', '8', '3', '9', '7', '9', '7', '0'};
-    B = new char[] {'3', '3', '9', '9', '9', '1', '7', '2', '0', '6'};
-    System.out.println(lcs(A, B)); // 339970
+    // LCS: 339970
+    System.out.println("LCS: " + lcs("398397970", "3399917206"));
   }
 }
