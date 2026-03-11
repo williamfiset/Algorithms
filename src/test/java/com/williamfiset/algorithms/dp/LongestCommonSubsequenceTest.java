@@ -15,7 +15,6 @@ public class LongestCommonSubsequenceTest {
     assertThat(LongestCommonSubsequence.lcs((char[]) null, "abc".toCharArray())).isNull();
     assertThat(LongestCommonSubsequence.lcsIterative(null, "abc".toCharArray())).isNull();
     assertThat(LongestCommonSubsequence.lcsRecursive(null, "abc".toCharArray())).isNull();
-    assertThat(LongestCommonSubsequence.lcsLength(null, "abc".toCharArray())).isEqualTo(0);
   }
 
   @Test
@@ -25,7 +24,6 @@ public class LongestCommonSubsequenceTest {
     assertThat(LongestCommonSubsequence.lcs("", "")).isEmpty();
     assertThat(LongestCommonSubsequence.lcsIterative("".toCharArray(), "abc".toCharArray())).isEmpty();
     assertThat(LongestCommonSubsequence.lcsRecursive("".toCharArray(), "abc".toCharArray())).isEmpty();
-    assertThat(LongestCommonSubsequence.lcsLength("".toCharArray(), "abc".toCharArray())).isEqualTo(0);
   }
 
   // ==================== Single character tests ====================
@@ -33,13 +31,11 @@ public class LongestCommonSubsequenceTest {
   @Test
   public void testSingleCharMatch() {
     assertThat(LongestCommonSubsequence.lcs("X", "X")).isEqualTo("X");
-    assertThat(LongestCommonSubsequence.lcsLength("X".toCharArray(), "X".toCharArray())).isEqualTo(1);
   }
 
   @Test
   public void testSingleCharNoMatch() {
     assertThat(LongestCommonSubsequence.lcs("X", "Y")).isEmpty();
-    assertThat(LongestCommonSubsequence.lcsLength("X".toCharArray(), "Y".toCharArray())).isEqualTo(0);
   }
 
   // ==================== Standard cases ====================
@@ -74,19 +70,16 @@ public class LongestCommonSubsequenceTest {
     // LCS length is 6, though the exact LCS may vary (not unique)
     assertThat(LongestCommonSubsequence.lcsIterative(A, B).length()).isEqualTo(6);
     assertThat(LongestCommonSubsequence.lcsRecursive(A, B).length()).isEqualTo(6);
-    assertThat(LongestCommonSubsequence.lcsLength(A, B)).isEqualTo(6);
   }
 
   @Test
   public void testNoCommonSubsequence() {
     assertThat(LongestCommonSubsequence.lcs("ABC", "XYZ")).isEmpty();
-    assertThat(LongestCommonSubsequence.lcsLength("ABC".toCharArray(), "XYZ".toCharArray())).isEqualTo(0);
   }
 
   @Test
   public void testIdenticalStrings() {
     assertThat(LongestCommonSubsequence.lcs("ABCDE", "ABCDE")).isEqualTo("ABCDE");
-    assertThat(LongestCommonSubsequence.lcsLength("ABCDE".toCharArray(), "ABCDE".toCharArray())).isEqualTo(5);
   }
 
   /** One string is a subsequence of the other. */
@@ -107,10 +100,10 @@ public class LongestCommonSubsequenceTest {
     assertThat(LongestCommonSubsequence.lcs("XYZABC", "ABC")).isEqualTo("ABC");
   }
 
-  // ==================== Cross-validation: all implementations agree on length ====================
+  // ==================== Cross-validation: iterative vs recursive lengths agree ====================
 
   @Test
-  public void testAllImplementationsAgreeOnLength() {
+  public void testIterativeAndRecursiveAgreeOnLength() {
     String[][] pairs = {
         {"AGGTAB", "GXTXAYB"},
         {"ABCBDAB", "BDCAB"},
@@ -120,29 +113,9 @@ public class LongestCommonSubsequenceTest {
     for (String[] pair : pairs) {
       char[] A = pair[0].toCharArray();
       char[] B = pair[1].toCharArray();
-      int lenOnly = LongestCommonSubsequence.lcsLength(A, B);
-      assertThat(LongestCommonSubsequence.lcsIterative(A, B).length()).isEqualTo(lenOnly);
-      assertThat(LongestCommonSubsequence.lcsRecursive(A, B).length()).isEqualTo(lenOnly);
+      int iterLen = LongestCommonSubsequence.lcsIterative(A, B).length();
+      int recLen = LongestCommonSubsequence.lcsRecursive(A, B).length();
+      assertThat(iterLen).isEqualTo(recLen);
     }
-  }
-
-  @Test
-  public void testLcsLengthSpaceOptimized() {
-    assertThat(LongestCommonSubsequence.lcsLength("AXBCY".toCharArray(), "ZAYWBC".toCharArray()))
-        .isEqualTo(3);
-    assertThat(LongestCommonSubsequence.lcsLength("abc".toCharArray(), "def".toCharArray()))
-        .isEqualTo(0);
-    assertThat(LongestCommonSubsequence.lcsLength("AAAA".toCharArray(), "AA".toCharArray()))
-        .isEqualTo(2);
-  }
-
-  /** Verifies lcsLength swaps arrays when A is shorter than B. */
-  @Test
-  public void testLcsLengthSwapsForSpace() {
-    char[] shorter = "AB".toCharArray();
-    char[] longer = "XAXBX".toCharArray();
-    // Should work the same regardless of argument order
-    assertThat(LongestCommonSubsequence.lcsLength(shorter, longer)).isEqualTo(2);
-    assertThat(LongestCommonSubsequence.lcsLength(longer, shorter)).isEqualTo(2);
   }
 }

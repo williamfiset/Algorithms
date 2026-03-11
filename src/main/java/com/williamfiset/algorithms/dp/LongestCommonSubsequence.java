@@ -7,13 +7,11 @@ package com.williamfiset.algorithms.dp;
  * A subsequence is a sequence that appears in the same relative order but
  * not necessarily contiguously (unlike a substring).
  *
- * Three implementations are provided:
+ * Two implementations are provided:
  *   1. Iterative (bottom-up DP) — builds an (n+1) x (m+1) table, then
  *      backtracks to recover one LCS. See {@link #lcsIterative(char[], char[])}.
  *   2. Recursive (top-down DP with memoization) — explores subproblems on
  *      demand and caches results. See {@link #lcsRecursive(char[], char[])}.
- *   3. Space-optimized length-only — computes just the LCS length using
- *      O(min(n, m)) space. See {@link #lcsLength(char[], char[])}.
  *
  * Tested against: https://leetcode.com/problems/longest-common-subsequence
  *
@@ -183,51 +181,6 @@ public class LongestCommonSubsequence {
     return memo[i][j] != null ? memo[i][j] : 0;
   }
 
-  // ==================== Implementation 3: Space-optimized LCS Length ====================
-
-  /**
-   * Computes the length of the Longest Common Subsequence between A and B.
-   * This implementation uses only O(min(n, m)) space by keeping a single
-   * row of the DP table at a time.
-   *
-   * Note: this only returns the length, not the actual subsequence.
-   *
-   * @param A - first character array
-   * @param B - second character array
-   * @return the length of the LCS, or 0 if either input is null or empty
-   *
-   * Time:  O(n*m)
-   * Space: O(min(n, m))
-   */
-  public static int lcsLength(char[] A, char[] B) {
-    if (A == null || B == null || A.length == 0 || B.length == 0) return 0;
-
-    // Ensure B is the shorter array to minimize space usage
-    if (A.length < B.length) {
-      char[] temp = A;
-      A = B;
-      B = temp;
-    }
-
-    final int n = A.length;
-    final int m = B.length;
-    int[] dp = new int[m + 1];
-
-    for (int i = 1; i <= n; i++) {
-      int prev = 0; // equivalent to dp[i-1][j-1] from the 2D table
-      for (int j = 1; j <= m; j++) {
-        int temp = dp[j];
-        if (A[i - 1] == B[j - 1])
-          dp[j] = prev + 1;
-        else
-          dp[j] = Math.max(dp[j], dp[j - 1]);
-        prev = temp;
-      }
-    }
-
-    return dp[m];
-  }
-
   // ==================== Main ====================
 
   public static void main(String[] args) {
@@ -236,7 +189,6 @@ public class LongestCommonSubsequence {
 
     // LCS: ABC
     System.out.println("LCS: " + lcs(s1, s2));
-    System.out.println("LCS Length: " + lcsLength(s1.toCharArray(), s2.toCharArray()));
 
     s1 = "398397970";
     s2 = "3399917206";
