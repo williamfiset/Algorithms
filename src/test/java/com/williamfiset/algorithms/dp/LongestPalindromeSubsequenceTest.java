@@ -8,32 +8,30 @@ public class LongestPalindromeSubsequenceTest {
   @Test
   public void testLps() {
     String s1 = "bbbab";
-    assertThat(LongestPalindromeSubsequence.lps(s1)).isEqualTo(4);
     assertThat(LongestPalindromeSubsequence.lpsRecursive(s1)).isEqualTo(4);
     assertThat(LongestPalindromeSubsequence.lpsIterative(s1)).isEqualTo(4);
 
     String s2 = "bccd";
-    assertThat(LongestPalindromeSubsequence.lps(s2)).isEqualTo(2);
     assertThat(LongestPalindromeSubsequence.lpsRecursive(s2)).isEqualTo(2);
     assertThat(LongestPalindromeSubsequence.lpsIterative(s2)).isEqualTo(2);
 
     String s3 = "abcde";
-    assertThat(LongestPalindromeSubsequence.lps(s3)).isEqualTo(1);
+    assertThat(LongestPalindromeSubsequence.lpsRecursive(s3)).isEqualTo(1);
+    assertThat(LongestPalindromeSubsequence.lpsIterative(s3)).isEqualTo(1);
 
     String s4 = "aaaaa";
-    assertThat(LongestPalindromeSubsequence.lps(s4)).isEqualTo(5);
+    assertThat(LongestPalindromeSubsequence.lpsRecursive(s4)).isEqualTo(5);
+    assertThat(LongestPalindromeSubsequence.lpsIterative(s4)).isEqualTo(5);
   }
 
   @Test
   public void testEmptyStrings() {
-    assertThat(LongestPalindromeSubsequence.lps("")).isEqualTo(0);
     assertThat(LongestPalindromeSubsequence.lpsRecursive("")).isEqualTo(0);
     assertThat(LongestPalindromeSubsequence.lpsIterative("")).isEqualTo(0);
   }
 
   @Test
   public void testNullInputs() {
-    assertThat(LongestPalindromeSubsequence.lps(null)).isEqualTo(0);
     assertThat(LongestPalindromeSubsequence.lpsRecursive(null)).isEqualTo(0);
     assertThat(LongestPalindromeSubsequence.lpsIterative(null)).isEqualTo(0);
   }

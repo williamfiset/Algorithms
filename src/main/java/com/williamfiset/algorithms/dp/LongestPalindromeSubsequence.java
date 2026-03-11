@@ -1,24 +1,19 @@
 /**
  * Longest Palindrome Subsequence (LPS)
  *
- * Given a string S, find the length of the longest subsequence in S
- * that is also a palindrome.
+ * <p>Given a string S, find the length of the longest subsequence in S that is also a palindrome.
  *
- * Time Complexity: O(n^2)
+ * <p>Important: A subsequence is different from a substring. Subsequences do not need to be
+ * contiguous. For example, in the string "BBBAB", the longest palindrome subsequence is "BBBB" with
+ * length 4, whereas the longest palindrome substring is "BBB" with length 3.
+ *
+ * <p>Time Complexity: O(n^2)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.dp;
 
 public class LongestPalindromeSubsequence {
-
-  /**
-   * Returns the length of the longest palindrome subsequence.
-   * Defaults to the recursive implementation with memoization.
-   */
-  public static int lps(String s) {
-    return lpsRecursive(s);
-  }
 
   /**
    * Recursive implementation with memoization to find the length of
@@ -39,8 +34,13 @@ public class LongestPalindromeSubsequence {
     if (dp[i][j] != null) return dp[i][j];
 
     if (s.charAt(i) == s.charAt(j)) {
+      // If characters at both ends match, they form part of the palindrome.
+      // We add 2 to the result and shrink the window from both sides (i+1, j-1).
       return dp[i][j] = lpsRecursive(s, dp, i + 1, j - 1) + 2;
     }
+    // If characters don't match, we take the maximum by either:
+    // 1. Skipping the left character (i+1)
+    // 2. Skipping the right character (j-1)
     return dp[i][j] = Math.max(lpsRecursive(s, dp, i + 1, j), lpsRecursive(s, dp, i, j - 1));
   }
 
@@ -63,8 +63,11 @@ public class LongestPalindromeSubsequence {
       for (int i = 0; i <= n - len; i++) {
         int j = i + len - 1;
         if (s.charAt(i) == s.charAt(j)) {
+          // Characters match: use the result from the inner substring (i+1, j-1) and add 2.
           dp[i][j] = dp[i + 1][j - 1] + 2;
         } else {
+          // Characters don't match: take the best result from either skipping the 
+          // left character (i+1) or the right character (j-1).
           dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
         }
       }
@@ -74,11 +77,11 @@ public class LongestPalindromeSubsequence {
 
   public static void main(String[] args) {
     String s1 = "bbbab";
-    System.out.println(lps(s1)); // 4
+    System.out.println(lpsRecursive(s1)); // 4
     System.out.println(lpsIterative(s1)); // 4
 
     String s2 = "bccd";
-    System.out.println(lps(s2)); // 2
+    System.out.println(lpsRecursive(s2)); // 2
     System.out.println(lpsIterative(s2)); // 2
   }
 }
