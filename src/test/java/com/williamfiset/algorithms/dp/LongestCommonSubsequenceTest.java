@@ -41,9 +41,10 @@ public class LongestCommonSubsequenceTest {
         .isEqualTo("ABC");
   }
 
+  /** The LCS is not unique for this input; just verify the length. */
   @Test
   public void testNumericSequence() {
-    assertThat(LongestCommonSubsequence.lcs("398397970", "3399917206")).isEqualTo("339970");
+    assertThat(LongestCommonSubsequence.lcs("398397970", "3399917206").length()).isEqualTo(6);
   }
 
   @Test

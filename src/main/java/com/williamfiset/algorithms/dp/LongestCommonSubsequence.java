@@ -67,29 +67,22 @@ public class LongestCommonSubsequence {
     }
 
     // Backtrack to reconstruct the LCS string
-    int lcsLen = dp[n][m];
-    char[] lcs = new char[lcsLen];
-    int index = 0;
+    StringBuilder sb = new StringBuilder();
     int i = n, j = m;
 
-    while (i >= 1 && j >= 1) {
-      int v = dp[i][j];
-
-      // Walk up/left while the value doesn't change — these cells
-      // did not contribute a character to the LCS
-      while (i > 1 && dp[i - 1][j] == v)
+    while (i > 0 && j > 0) {
+      if (A[i - 1] == B[j - 1]) {
+        sb.append(A[i - 1]);
         i--;
-      while (j > 1 && dp[i][j - 1] == v)
         j--;
-
-      if (v > 0)
-        lcs[lcsLen - index++ - 1] = A[i - 1];
-
-      i--;
-      j--;
+      } else if (dp[i - 1][j] >= dp[i][j - 1]) {
+        i--;
+      } else {
+        j--;
+      }
     }
 
-    return new String(lcs, 0, lcsLen);
+    return sb.reverse().toString();
   }
 
   // ==================== Main ====================
