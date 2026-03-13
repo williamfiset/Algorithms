@@ -1,21 +1,26 @@
 /**
- * Often when working with trees we are given them as a graph with undirected edges, however
- * sometimes a better representation is a rooted tree.
+ * Rooting an Undirected Tree
  *
- * <p>Time Complexity: O(V+E)
+ * Given an undirected tree as an adjacency list, this algorithm converts it
+ * into a rooted tree by performing a DFS from a chosen root node. Each node
+ * in the resulting tree stores its parent and children.
+ *
+ * Time:  O(V + E)
+ * Space: O(V)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RootingTree {
 
   public static class TreeNode {
-    private int id;
-    private TreeNode parent;
-    private List<TreeNode> children;
+    private final int id;
+    private final TreeNode parent;
+    private final List<TreeNode> children;
 
     // Useful constructor for root node.
     public TreeNode(int id) {
@@ -25,7 +30,7 @@ public class RootingTree {
     public TreeNode(int id, TreeNode parent) {
       this.id = id;
       this.parent = parent;
-      children = new LinkedList<>();
+      this.children = new ArrayList<>();
     }
 
     public void addChildren(TreeNode... nodes) {
@@ -66,42 +71,62 @@ public class RootingTree {
     }
   }
 
+  /**
+   * Roots the undirected tree at the given node and returns the root TreeNode.
+   */
   public static TreeNode rootTree(List<List<Integer>> graph, int rootId) {
     TreeNode root = new TreeNode(rootId);
     return buildTree(graph, root);
   }
 
-  // Do dfs to construct rooted tree.
+  /**
+   * Recursively builds the rooted tree via DFS. Skips the edge back to the
+   * parent to avoid cycles.
+   */
   private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node) {
     for (int childId : graph.get(node.id())) {
-      // Ignore adding an edge pointing back to parent.
+      // Ignore the edge pointing back to parent.
       if (node.parent() != null && childId == node.parent().id()) {
         continue;
       }
-
       TreeNode child = new TreeNode(childId, node);
       node.addChildren(child);
-
       buildTree(graph, child);
     }
     return node;
   }
 
-  /** ********** TESTING ********* */
+  /* Graph helpers */
 
-  // Create a graph as a adjacency list
-  private static List<List<Integer>> createGraph(int n) {
+  public static List<List<Integer>> createGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>(n);
-    for (int i = 0; i < n; i++) graph.add(new LinkedList<>());
+    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
     return graph;
   }
 
-  private static void addUndirectedEdge(List<List<Integer>> graph, int from, int to) {
+  public static void addUndirectedEdge(List<List<Integer>> graph, int from, int to) {
     graph.get(from).add(to);
     graph.get(to).add(from);
   }
 
+  // ==================== Main ====================
+
   public static void main(String[] args) {
+
+    //  Undirected tree:
+    //
+    //  0 - 1 - 2 - 3 - 4
+    //          |    |
+    //          6    5
+    //         / \
+    //        7   8
+    //
+    //  Rooted at 6:
+    //
+    //           6
+    //      2    7     8
+    //    1   3
+    //  0    4 5
 
     List<List<Integer>> graph = createGraph(9);
     addUndirectedEdge(graph, 0, 1);
@@ -112,12 +137,6 @@ public class RootingTree {
     addUndirectedEdge(graph, 2, 6);
     addUndirectedEdge(graph, 6, 7);
     addUndirectedEdge(graph, 6, 8);
-
-    // Rooted at 6 the tree should look like:
-    //           6
-    //      2    7     8
-    //    1   3
-    //  0    4 5
 
     TreeNode root = rootTree(graph, 6);
 
@@ -136,7 +155,8 @@ public class RootingTree {
             + ", "
             + root.children.get(0).children.get(1).children);
 
-    // Rooted at 3 the tree should look like:
+    //  Rooted at 3:
+    //
     //               3
     //     2         4        5
     //  6     1
