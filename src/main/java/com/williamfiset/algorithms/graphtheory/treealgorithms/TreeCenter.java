@@ -40,9 +40,11 @@ public class TreeCenter {
     int processed = leaves.size();
     while (processed < n) {
       List<Integer> newLeaves = new ArrayList<>();
-      for (int node : leaves)
-        for (int neighbor : tree.get(node))
+      for (int node : leaves) {
+        for (int neighbor : tree.get(node)) {
           if (--degree[neighbor] == 1) newLeaves.add(neighbor);
+        }
+      }
       processed += newLeaves.size();
       leaves = newLeaves;
     }
