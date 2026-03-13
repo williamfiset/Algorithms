@@ -25,9 +25,9 @@ import java.util.List;
 
 public class BipartiteGraphCheckAdjacencyList {
 
-  // Color constants. 0 means unvisited; RED and BLACK are the two colors.
-  // XOR with 0b01 toggles between them: RED ^ 1 = BLACK, BLACK ^ 1 = RED.
-  public static final int RED = 0b10, BLACK = 0b11;
+  // Color constants. XOR with 0b01 toggles between RED and BLACK:
+  // RED ^ 1 = BLACK, BLACK ^ 1 = RED.
+  public static final int UNVISITED = 0, RED = 0b10, BLACK = 0b11;
 
   private final int n;
   private final List<List<Integer>> graph;
@@ -58,31 +58,26 @@ public class BipartiteGraphCheckAdjacencyList {
   private void solve() {
     if (n <= 1) return;
     colors = new int[n];
-    int nodesVisited = colorGraph(0, RED);
-    isBipartite = (nodesVisited == n);
+    isBipartite = colorGraph(0, RED) && allNodesVisited();
     solved = true;
   }
 
-  /**
-   * DFS that colors nodes alternately. Returns the number of nodes visited,
-   * or -1 if a coloring contradiction is found.
-   */
-  private int colorGraph(int i, int color) {
+  private boolean allNodesVisited() {
+    for (int c : colors)
+      if (c == UNVISITED) return false;
+    return true;
+  }
+
+  /** DFS that colors nodes alternately. Returns false if a contradiction is found. */
+  private boolean colorGraph(int i, int color) {
     colors[i] = color;
     int nextColor = color ^ 1;
-
-    int visitCount = 1;
     for (int to : graph.get(i)) {
-      // Same color as current node → odd cycle → not bipartite.
-      if (colors[to] == color) return -1;
+      if (colors[to] == color) return false;
       if (colors[to] == nextColor) continue;
-
-      int count = colorGraph(to, nextColor);
-      if (count == -1) return -1;
-      visitCount += count;
+      if (!colorGraph(to, nextColor)) return false;
     }
-
-    return visitCount;
+    return true;
   }
 
   /* Graph helpers */
