@@ -1,79 +1,82 @@
 /**
- * This file shows you how to determine if a graph is bipartite or not. This can be achieved in
- * linear time by coloring the visited nodes.
+ * Bipartite Graph Check — Adjacency List (DFS coloring)
  *
- * <p>Time Complexity: O(V + E)
+ * Determines if an undirected graph is bipartite (2-colorable) by attempting
+ * to color it with two colors via DFS. A graph is bipartite if and only if
+ * it contains no odd-length cycles.
+ *
+ * The algorithm starts a DFS from node 0, alternating colors RED and BLACK.
+ * If a neighbor already has the same color as the current node, the graph
+ * is not bipartite.
+ *
+ * Note: this implementation only checks the connected component containing
+ * node 0. Disconnected graphs with multiple components are reported as
+ * not bipartite.
+ *
+ * Time:  O(V + E)
+ * Space: O(V)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.graphtheory.networkflow;
 
-import com.williamfiset.algorithms.utils.graphutils.Utils;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BipartiteGraphCheckAdjacencyList {
 
-  private int n;
+  // Color constants. 0 means unvisited; RED and BLACK are the two colors.
+  // XOR with 0b01 toggles between them: RED ^ 1 = BLACK, BLACK ^ 1 = RED.
+  public static final int RED = 0b10, BLACK = 0b11;
+
+  private final int n;
+  private final List<List<Integer>> graph;
   private int[] colors;
   private boolean solved;
   private boolean isBipartite;
-  private List<List<Integer>> graph;
-
-  @SuppressWarnings("XorPower")
-  public static final int RED = 0b10, BLACK = (RED ^ 1);
 
   public BipartiteGraphCheckAdjacencyList(List<List<Integer>> graph) {
     if (graph == null) throw new IllegalArgumentException("Graph cannot be null.");
-    n = graph.size();
+    this.n = graph.size();
     this.graph = graph;
   }
 
-  // Checks whether the input graph is bipartite.
+  /** Returns true if the graph is bipartite (2-colorable). */
   public boolean isBipartite() {
     if (!solved) solve();
     return isBipartite;
   }
 
-  // If the input graph is bipartite it has a two coloring which can be obtained
-  // through this method. Each index in the returned array is either RED or BLACK
-  // indicating which color node i was colored.
+  /**
+   * Returns the two-coloring array if the graph is bipartite, null otherwise.
+   * Each entry is either RED or BLACK.
+   */
   public int[] getTwoColoring() {
     return isBipartite() ? colors : null;
   }
 
   private void solve() {
     if (n <= 1) return;
-
     colors = new int[n];
     int nodesVisited = colorGraph(0, RED);
-
-    // The graph is not bipartite. Either not all the nodes were visited or the
-    // colorGraph method returned -1 meaning the graph is not 2-colorable.
     isBipartite = (nodesVisited == n);
     solved = true;
   }
 
-  // Do a depth first search coloring the nodes of the graph as we go.
-  // This method returns the count of the number of nodes visited while
-  // coloring the graph or -1 if this graph is not bipartite.
+  /**
+   * DFS that colors nodes alternately. Returns the number of nodes visited,
+   * or -1 if a coloring contradiction is found.
+   */
   private int colorGraph(int i, int color) {
     colors[i] = color;
-
-    // Toggles the color between RED and BLACK by exploiting the binary representation
-    // of the constants and flipping the least significant bit on and off.
-    int nextColor = (color ^ 1);
+    int nextColor = color ^ 1;
 
     int visitCount = 1;
-    List<Integer> edges = graph.get(i);
-
-    for (int to : edges) {
-      // Contradiction found. In a bipartite graph no two
-      // nodes of the same color can be next to each other!
+    for (int to : graph.get(i)) {
+      // Same color as current node → odd cycle → not bipartite.
       if (colors[to] == color) return -1;
       if (colors[to] == nextColor) continue;
 
-      // If a contradiction is found propagate return -1
-      // otherwise keep track of the number of visited nodes.
       int count = colorGraph(to, nextColor);
       if (count == -1) return -1;
       visitCount += count;
@@ -82,124 +85,120 @@ public class BipartiteGraphCheckAdjacencyList {
     return visitCount;
   }
 
-  /* Example usage */
+  /* Graph helpers */
 
-  public static void main(String[] args) {
-
-    // Singleton (not bipartite)
-    int n = 1;
-    List<List<Integer>> graph = Utils.createEmptyAdjacencyList(n);
-    Utils.addUndirectedEdge(graph, 0, 0);
-    displayGraph(graph);
-
-    // Prints:
-    // Graph has 1 node(s) and the following edges:
-    // 0 -> 0
-    // 0 -> 0
-    // This graph is bipartite: false
-
-    // Two nodes one edge between them (bipartite)
-    n = 2;
-    graph = Utils.createEmptyAdjacencyList(n);
-    Utils.addUndirectedEdge(graph, 0, 1);
-    displayGraph(graph);
-
-    // Prints:
-    // Graph has 2 node(s) and the following edges:
-    // 0 -> 1
-    // 1 -> 0
-    // This graph is bipartite: true
-
-    // Triangle graph (not bipartite)
-    n = 3;
-    graph = Utils.createEmptyAdjacencyList(n);
-    Utils.addUndirectedEdge(graph, 0, 1);
-    Utils.addUndirectedEdge(graph, 1, 2);
-    Utils.addUndirectedEdge(graph, 2, 0);
-    displayGraph(graph);
-
-    // Prints:
-    // Graph has 3 node(s) and the following edges:
-    // 0 -> 1
-    // 0 -> 2
-    // 1 -> 0
-    // 1 -> 2
-    // 2 -> 1
-    // 2 -> 0
-    // This graph is bipartite: false
-
-    // Disjoint graph is bipartite connected components (altogether not bipartite)
-    n = 4;
-    graph = Utils.createEmptyAdjacencyList(n);
-    Utils.addUndirectedEdge(graph, 0, 1);
-    Utils.addUndirectedEdge(graph, 2, 3);
-    displayGraph(graph);
-
-    // Prints:
-    // Graph has 4 node(s) and the following edges:
-    // 0 -> 1
-    // 1 -> 0
-    // 2 -> 3
-    // 3 -> 2
-    // This graph is bipartite: false
-
-    // Square graph (bipartite)
-    n = 4;
-    graph = Utils.createEmptyAdjacencyList(n);
-    Utils.addUndirectedEdge(graph, 0, 1);
-    Utils.addUndirectedEdge(graph, 1, 2);
-    Utils.addUndirectedEdge(graph, 2, 3);
-    Utils.addUndirectedEdge(graph, 3, 0);
-    displayGraph(graph);
-
-    // Prints:
-    // Graph has 4 node(s) and the following edges:
-    // 0 -> 1
-    // 0 -> 3
-    // 1 -> 0
-    // 1 -> 2
-    // 2 -> 1
-    // 2 -> 3
-    // 3 -> 2
-    // 3 -> 0
-    // This graph is bipartite: true
-
-    // Square graph with additional edge (not bipartite)
-    n = 4;
-    graph = Utils.createEmptyAdjacencyList(n);
-    Utils.addUndirectedEdge(graph, 0, 1);
-    Utils.addUndirectedEdge(graph, 1, 2);
-    Utils.addUndirectedEdge(graph, 2, 3);
-    Utils.addUndirectedEdge(graph, 3, 0);
-    Utils.addUndirectedEdge(graph, 0, 2);
-    displayGraph(graph);
-
-    // Prints:
-    // Graph has 4 node(s) and the following edges:
-    // 0 -> 1
-    // 0 -> 3
-    // 0 -> 2
-    // 1 -> 0
-    // 1 -> 2
-    // 2 -> 1
-    // 2 -> 3
-    // 2 -> 0
-    // 3 -> 2
-    // 3 -> 0
-    // This graph is bipartite: false
-
+  public static List<List<Integer>> createGraph(int n) {
+    List<List<Integer>> graph = new ArrayList<>(n);
+    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
+    return graph;
   }
 
-  private static void displayGraph(List<List<Integer>> graph) {
-    final int n = graph.size();
+  public static void addUndirectedEdge(List<List<Integer>> graph, int from, int to) {
+    graph.get(from).add(to);
+    graph.get(to).add(from);
+  }
 
-    System.out.println("Graph has " + n + " node(s) and the following edges:");
-    for (int f = 0; f < n; f++) for (int t : graph.get(f)) System.out.println(f + " -> " + t);
+  // ==================== Main ====================
 
-    BipartiteGraphCheckAdjacencyList solver;
-    solver = new BipartiteGraphCheckAdjacencyList(graph);
+  public static void main(String[] args) {
+    testSelfLoop();
+    testTwoNodes();
+    testTriangle();
+    testDisjoint();
+    testSquare();
+    testSquareWithDiagonal();
+  }
 
-    System.out.println("This graph is bipartite: " + (solver.isBipartite()));
-    System.out.println();
+  //
+  //  +-+
+  //  |0| (self-loop)
+  //  +-+
+  //
+  // Not bipartite: node 0 is adjacent to itself.
+  //
+  private static void testSelfLoop() {
+    List<List<Integer>> g = createGraph(1);
+    addUndirectedEdge(g, 0, 0);
+    System.out.println(new BipartiteGraphCheckAdjacencyList(g).isBipartite()); // false
+  }
+
+  //
+  //  R --- B
+  //  0     1
+  //
+  // Bipartite: {0=RED, 1=BLACK}
+  //
+  private static void testTwoNodes() {
+    List<List<Integer>> g = createGraph(2);
+    addUndirectedEdge(g, 0, 1);
+    System.out.println(new BipartiteGraphCheckAdjacencyList(g).isBipartite()); // true
+  }
+
+  //
+  //  R --- B
+  //  0     1
+  //   \   /
+  //     2
+  //     ?  ← must be both R and B
+  //
+  // Not bipartite: odd cycle (0-1-2).
+  //
+  private static void testTriangle() {
+    List<List<Integer>> g = createGraph(3);
+    addUndirectedEdge(g, 0, 1);
+    addUndirectedEdge(g, 1, 2);
+    addUndirectedEdge(g, 2, 0);
+    System.out.println(new BipartiteGraphCheckAdjacencyList(g).isBipartite()); // false
+  }
+
+  //
+  //  R --- B        ? --- ?
+  //  0     1        2     3
+  //
+  // Not bipartite: nodes 2,3 unreachable from node 0.
+  //
+  private static void testDisjoint() {
+    List<List<Integer>> g = createGraph(4);
+    addUndirectedEdge(g, 0, 1);
+    addUndirectedEdge(g, 2, 3);
+    System.out.println(new BipartiteGraphCheckAdjacencyList(g).isBipartite()); // false
+  }
+
+  //
+  //  R --- B
+  //  0     1
+  //  |     |
+  //  3     2
+  //  B --- R
+  //
+  // Bipartite: {0=RED, 1=BLACK, 2=RED, 3=BLACK}
+  //
+  private static void testSquare() {
+    List<List<Integer>> g = createGraph(4);
+    addUndirectedEdge(g, 0, 1);
+    addUndirectedEdge(g, 1, 2);
+    addUndirectedEdge(g, 2, 3);
+    addUndirectedEdge(g, 3, 0);
+    System.out.println(new BipartiteGraphCheckAdjacencyList(g).isBipartite()); // true
+  }
+
+  //
+  //  R --- B
+  //  0     1
+  //  | \   |
+  //  |   \ |
+  //  3     2
+  //  B     ?  ← must be both R and B
+  //
+  // Not bipartite: diagonal 0-2 creates odd cycle (0-1-2).
+  //
+  private static void testSquareWithDiagonal() {
+    List<List<Integer>> g = createGraph(4);
+    addUndirectedEdge(g, 0, 1);
+    addUndirectedEdge(g, 1, 2);
+    addUndirectedEdge(g, 2, 3);
+    addUndirectedEdge(g, 3, 0);
+    addUndirectedEdge(g, 0, 2);
+    System.out.println(new BipartiteGraphCheckAdjacencyList(g).isBipartite()); // false
   }
 }
