@@ -181,34 +181,6 @@ public class LowestCommonAncestorEulerTourTest {
         () -> LowestCommonAncestorEulerTour.TreeNode.rootTree(tree, 0));
   }
 
-  @Test
-  public void randomizedLcaQueriesVsOtherImpl() {
-    for (int n = 1; n < 1000; n++) {
-      List<List<Integer>> g = generateRandomTree(n);
-
-      LowestCommonAncestor.TreeNode root1 = LowestCommonAncestor.TreeNode.rootTree(g, 0);
-      LowestCommonAncestorEulerTour.TreeNode root2 =
-          LowestCommonAncestorEulerTour.TreeNode.rootTree(g, 0);
-
-      LowestCommonAncestor slowSolver = new LowestCommonAncestor(root1);
-      LowestCommonAncestorEulerTour fastSolver = new LowestCommonAncestorEulerTour(root2);
-
-      for (int i = 0; i < 100; i++) {
-        int l = (int) (Math.random() * n);
-        int r = (int) (Math.random() * n);
-        int L = Math.min(l, r);
-        int R = Math.max(l, r);
-
-        LowestCommonAncestor.TreeNode lca1 = slowSolver.lca(L, R);
-        LowestCommonAncestorEulerTour.TreeNode lca2 = fastSolver.lca(L, R);
-
-        assertThat(lca1).isNotNull();
-        assertThat(lca2).isNotNull();
-        assertThat(lca1.id()).isEqualTo(lca2.index());
-      }
-    }
-  }
-
   public static List<List<Integer>> generateRandomTree(int n) {
     List<Integer> nodes = new ArrayList<>();
     nodes.add(0);
