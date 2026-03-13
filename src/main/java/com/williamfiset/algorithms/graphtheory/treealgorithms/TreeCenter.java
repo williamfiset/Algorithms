@@ -42,7 +42,8 @@ public class TreeCenter {
       List<Integer> newLeaves = new ArrayList<>();
       for (int node : leaves) {
         for (int neighbor : tree.get(node)) {
-          if (--degree[neighbor] == 1) newLeaves.add(neighbor);
+          if (--degree[neighbor] == 1)
+            newLeaves.add(neighbor);
         }
       }
       processed += newLeaves.size();
