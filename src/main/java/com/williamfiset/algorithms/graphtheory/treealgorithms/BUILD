@@ -53,10 +53,3 @@ java_binary(
     main_class = "com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphism",
     runtime_deps = [":treealgorithms"],
 )
-
-# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory/treealgorithms:TreeIsomorphismWithBfs
-java_binary(
-    name = "TreeIsomorphismWithBfs",
-    main_class = "com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs",
-    runtime_deps = [":treealgorithms"],
-)
