@@ -1,61 +1,60 @@
 /**
- * This algorithm finds the center(s) of a tree.
+ * Tree Center(s)
  *
- * <p>Time complexity: O(V+E)
+ * The center of a tree is the set of nodes that minimizes the maximum
+ * distance (eccentricity) to any other node. A tree has either 1 center
+ * (odd diameter) or 2 adjacent centers (even diameter).
  *
- * @author Original author: Jeffrey Xiao, https://github.com/jeffrey-xiao
- * @author Modifications by: William Fiset, william.alexandre.fiset@gmail.com
+ * The algorithm works by iteratively peeling leaf nodes layer by layer
+ * (like peeling an onion) until only the center node(s) remain. Each
+ * round removes all current leaves and decrements the degree of their
+ * neighbors, creating a new set of leaves for the next round.
+ *
+ * Time:  O(V + E)
+ * Space: O(V)
+ *
+ * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class TreeCenter {
 
+  /**
+   * Returns the center node(s) of the tree. The result contains either
+   * 1 node (odd diameter) or 2 adjacent nodes (even diameter).
+   */
   public static List<Integer> findTreeCenters(List<List<Integer>> tree) {
     final int n = tree.size();
     int[] degree = new int[n];
-
-    // Find all leaf nodes
     List<Integer> leaves = new ArrayList<>();
+
     for (int i = 0; i < n; i++) {
-      List<Integer> edges = tree.get(i);
-      degree[i] = edges.size();
-      if (degree[i] <= 1) {
-        leaves.add(i);
-        degree[i] = 0;
-      }
+      degree[i] = tree.get(i).size();
+      if (degree[i] <= 1) leaves.add(i);
     }
 
-    int processedLeafs = leaves.size();
-
-    // Remove leaf nodes and decrease the degree of each node adding new leaf nodes progressively
-    // until only the centers remain.
-    while (processedLeafs < n) {
+    // Iteratively peel leaf layers until only the center(s) remain.
+    int processed = leaves.size();
+    while (processed < n) {
       List<Integer> newLeaves = new ArrayList<>();
-      for (int node : leaves) {
-        for (int neighbor : tree.get(node)) {
-          if (--degree[neighbor] == 1) {
-            newLeaves.add(neighbor);
-          }
-        }
-        degree[node] = 0;
-      }
-      processedLeafs += newLeaves.size();
+      for (int node : leaves)
+        for (int neighbor : tree.get(node))
+          if (--degree[neighbor] == 1) newLeaves.add(neighbor);
+      processed += newLeaves.size();
       leaves = newLeaves;
     }
 
     return leaves;
   }
 
-  /** ********** TESTING ********* */
+  /* Graph helpers */
 
-  // Create an empty tree as a adjacency list.
   public static List<List<Integer>> createEmptyTree(int n) {
     List<List<Integer>> tree = new ArrayList<>(n);
-    for (int i = 0; i < n; i++) tree.add(new LinkedList<>());
+    for (int i = 0; i < n; i++) tree.add(new ArrayList<>());
     return tree;
   }
 
@@ -64,7 +63,17 @@ public class TreeCenter {
     tree.get(to).add(from);
   }
 
+  // ==================== Main ====================
+
   public static void main(String[] args) {
+
+    //  0 - 1 - 2 - 3 - 4
+    //          |    |
+    //          6    5
+    //         / \
+    //        7   8
+    //
+    //  Center: [2]
 
     List<List<Integer>> graph = createEmptyTree(9);
     addUndirectedEdge(graph, 0, 1);
@@ -76,39 +85,6 @@ public class TreeCenter {
     addUndirectedEdge(graph, 6, 7);
     addUndirectedEdge(graph, 6, 8);
 
-    // Centers are 2
-    System.out.println(findTreeCenters(graph));
-
-    // Centers are 0
-    List<List<Integer>> graph2 = createEmptyTree(1);
-    System.out.println(findTreeCenters(graph2));
-
-    // Centers are 0,1
-    List<List<Integer>> graph3 = createEmptyTree(2);
-    addUndirectedEdge(graph3, 0, 1);
-    System.out.println(findTreeCenters(graph3));
-
-    // Centers are 1
-    List<List<Integer>> graph4 = createEmptyTree(3);
-    addUndirectedEdge(graph4, 0, 1);
-    addUndirectedEdge(graph4, 1, 2);
-    System.out.println(findTreeCenters(graph4));
-
-    // Centers are 1,2
-    List<List<Integer>> graph5 = createEmptyTree(4);
-    addUndirectedEdge(graph5, 0, 1);
-    addUndirectedEdge(graph5, 1, 2);
-    addUndirectedEdge(graph5, 2, 3);
-    System.out.println(findTreeCenters(graph5));
-
-    // Centers are 2,3
-    List<List<Integer>> graph6 = createEmptyTree(7);
-    addUndirectedEdge(graph6, 0, 1);
-    addUndirectedEdge(graph6, 1, 2);
-    addUndirectedEdge(graph6, 2, 3);
-    addUndirectedEdge(graph6, 3, 4);
-    addUndirectedEdge(graph6, 4, 5);
-    addUndirectedEdge(graph6, 4, 6);
-    System.out.println(findTreeCenters(graph6));
+    System.out.println(findTreeCenters(graph)); // [2]
   }
 }
