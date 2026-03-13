@@ -13,7 +13,7 @@
  * Time:  O(V + E)
  * Space: O(V)
  *
- * @author William Fiset, william.alexandre.fiset@gmail.com
+ * @author Original author: Jeffrey Xiao, https://github.com/jeffrey-xiao
  */
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
