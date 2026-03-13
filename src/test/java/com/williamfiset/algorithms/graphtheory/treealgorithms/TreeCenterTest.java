@@ -1,7 +1,3 @@
-// To run this test in isolation from root folder:
-//
-// $ bazel test //src/test/java/com/williamfiset/algorithms/graphtheory/treealgorithms:TreeCenterTest
-
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -9,8 +5,9 @@ import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenter.
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenter.createEmptyTree;
 import static com.williamfiset.algorithms.graphtheory.treealgorithms.TreeCenter.findTreeCenters;
 
-import java.util.*;
-import org.junit.jupiter.api.*;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 public class TreeCenterTest {
 
@@ -59,6 +56,36 @@ public class TreeCenterTest {
 
   @Test
   public void simpleTest4() {
+    List<List<Integer>> graph = createEmptyTree(7);
+    addUndirectedEdge(graph, 0, 1);
+    addUndirectedEdge(graph, 1, 2);
+    addUndirectedEdge(graph, 2, 3);
+    addUndirectedEdge(graph, 3, 4);
+    addUndirectedEdge(graph, 4, 5);
+    addUndirectedEdge(graph, 4, 6);
+    assertThat(findTreeCenters(graph)).containsExactly(2, 3);
+  }
+
+  @Test
+  public void starGraph() {
+    //    1
+    //    |
+    // 2--0--3
+    //    |
+    //    4
+    List<List<Integer>> graph = createEmptyTree(5);
+    addUndirectedEdge(graph, 0, 1);
+    addUndirectedEdge(graph, 0, 2);
+    addUndirectedEdge(graph, 0, 3);
+    addUndirectedEdge(graph, 0, 4);
+    assertThat(findTreeCenters(graph)).containsExactly(0);
+  }
+
+  @Test
+  public void asymmetricTree() {
+    //  0 - 1 - 2 - 3 - 4 - 5
+    //                   |
+    //                   6
     List<List<Integer>> graph = createEmptyTree(7);
     addUndirectedEdge(graph, 0, 1);
     addUndirectedEdge(graph, 1, 2);
