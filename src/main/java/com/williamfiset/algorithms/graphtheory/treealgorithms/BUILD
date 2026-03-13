@@ -12,13 +12,6 @@ java_library(
 # Binary targets for tree algorithms
 ################################################################################
 
-# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory/treealgorithms:LowestCommonAncestor
-java_binary(
-    name = "LowestCommonAncestor",
-    main_class = "com.williamfiset.algorithms.graphtheory.treealgorithms.LowestCommonAncestor",
-    runtime_deps = [":treealgorithms"],
-)
-
 # bazel run //src/main/java/com/williamfiset/algorithms/graphtheory/treealgorithms:LowestCommonAncestorEulerTour
 java_binary(
     name = "LowestCommonAncestorEulerTour",
