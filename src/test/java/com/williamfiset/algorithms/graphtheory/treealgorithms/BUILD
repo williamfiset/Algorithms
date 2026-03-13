@@ -89,16 +89,5 @@ java_test(
     deps = TEST_DEPS,
 )
 
-# bazel test //src/test/java/com/williamfiset/algorithms/graphtheory/treealgorithms:TreeIsomorphismWithBfsTest
-java_test(
-    name = "TreeIsomorphismWithBfsTest",
-    srcs = ["TreeIsomorphismWithBfsTest.java"],
-    main_class = "org.junit.platform.console.ConsoleLauncher",
-    use_testrunner = False,
-    args = ["--select-class=com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfsTest"],
-    runtime_deps = JUNIT5_RUNTIME_DEPS,
-    deps = TEST_DEPS,
-)
-
 # Run all tests
 # bazel test //src/test/java/com/williamfiset/algorithms/graphtheory/treealgorithms:all

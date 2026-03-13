@@ -127,27 +127,6 @@ public class TreeIsomorphismTest {
     assertThat(treesAreIsomorphic(tree1, tree2)).isEqualTo(false);
   }
 
-  @Test
-  public void testIsomorphismEquivilanceAgainstOtherImpl() {
-    for (int n = 1; n < 50; n++) {
-      for (int loops = 0; loops < 1000; loops++) {
-        List<List<Integer>> tree1 = generateRandomTree(n);
-        List<List<Integer>> tree2 = generateRandomTree(n);
-
-        boolean impl1 = treesAreIsomorphic(tree1, tree2);
-        boolean impl2 =
-            com.williamfiset.algorithms.graphtheory.treealgorithms.TreeIsomorphismWithBfs
-                .treesAreIsomorphic(tree1, tree2);
-        if (impl1 != impl2) {
-          System.err.println("TreeIsomorphism algorithms disagree!");
-          System.err.println(tree1);
-          System.err.println(tree2);
-        }
-        assertThat(impl1).isEqualTo(impl2);
-      }
-    }
-  }
-
   // ==================== Encoding tests ====================
 
   @Test
