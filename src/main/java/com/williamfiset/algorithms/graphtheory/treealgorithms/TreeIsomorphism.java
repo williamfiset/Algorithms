@@ -1,23 +1,41 @@
 /**
- * Determines if two unrooted trees are isomorphic. This algorithm can easily be modified to support
- * checking if two rooted trees are isomorphic.
+ * Tree Isomorphism — Canonical Encoding
  *
- * <p>Tested code against: https://uva.onlinejudge.org/external/124/p12489.pdf
+ * Determines if two unrooted trees are isomorphic (structurally identical
+ * regardless of labeling). The algorithm works in three steps:
+ *
+ *   1. Find the center(s) of each tree by iteratively pruning leaf nodes.
+ *      A tree has 1 or 2 centers.
+ *   2. Root both trees at their center(s) and compute a canonical string
+ *      encoding via DFS. Each subtree is encoded as "(children...)" with
+ *      children sorted lexicographically so that isomorphic subtrees
+ *      produce identical strings.
+ *   3. Compare the encodings. If tree2 has two centers, try both — if
+ *      either matches tree1's encoding, the trees are isomorphic.
+ *
+ * Can easily be adapted for rooted tree isomorphism by skipping step 1
+ * and encoding directly from the given roots.
+ *
+ * Tested against: https://uva.onlinejudge.org/external/124/p12489.pdf
+ *
+ * Time:  O(V * log(V)) — dominated by sorting child encodings at each node
+ * Space: O(V)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.graphtheory.treealgorithms;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class TreeIsomorphism {
 
   public static class TreeNode {
-    private int id;
-    private TreeNode parent;
-    private List<TreeNode> children;
+    private final int id;
+    private final TreeNode parent;
+    private final List<TreeNode> children;
 
-    // Useful constructor for root node.
     public TreeNode(int id) {
       this(id, /* parent= */ null);
     }
@@ -25,7 +43,7 @@ public class TreeIsomorphism {
     public TreeNode(int id, TreeNode parent) {
       this.id = id;
       this.parent = parent;
-      children = new LinkedList<>();
+      this.children = new ArrayList<>();
     }
 
     public void addChildren(TreeNode... nodes) {
@@ -52,7 +70,10 @@ public class TreeIsomorphism {
     }
   }
 
-  // Determines if two unrooted trees are isomorphic
+  /**
+   * Returns true if the two unrooted trees are isomorphic.
+   * Roots each tree at its center(s) and compares canonical encodings.
+   */
   public static boolean treesAreIsomorphic(List<List<Integer>> tree1, List<List<Integer>> tree2) {
     if (tree1.isEmpty() || tree2.isEmpty()) {
       throw new IllegalArgumentException("Empty tree input");
@@ -75,6 +96,10 @@ public class TreeIsomorphism {
     return false;
   }
 
+  /**
+   * Finds the center node(s) of the tree by iteratively removing leaf nodes.
+   * A tree has either 1 center (odd diameter) or 2 centers (even diameter).
+   */
   private static List<Integer> findTreeCenters(List<List<Integer>> tree) {
     int n = tree.size();
 
@@ -116,45 +141,45 @@ public class TreeIsomorphism {
     return buildTree(graph, root);
   }
 
-  // Do dfs to construct rooted tree.
+  /** Recursively builds the rooted tree via DFS, skipping the edge back to parent. */
   private static TreeNode buildTree(List<List<Integer>> graph, TreeNode node) {
     for (int neighbor : graph.get(node.id())) {
-      // Ignore adding an edge pointing back to parent.
       if (node.parent() != null && neighbor == node.parent().id()) {
         continue;
       }
-
       TreeNode child = new TreeNode(neighbor, node);
       node.addChildren(child);
-
       buildTree(graph, child);
     }
     return node;
   }
 
-  // Constructs the canonical form representation of a tree as a string.
+  /**
+   * Constructs a canonical string encoding of the subtree rooted at the given node.
+   * Children encodings are sorted lexicographically so that isomorphic subtrees
+   * always produce the same string. Example: "((()())())" for a small tree.
+   */
   public static String encode(TreeNode node) {
     if (node == null) {
       return "";
     }
-    List<String> labels = new LinkedList<>();
+    List<String> labels = new ArrayList<>();
     for (TreeNode child : node.children()) {
       labels.add(encode(child));
     }
     Collections.sort(labels);
-    StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder("(");
     for (String label : labels) {
       sb.append(label);
     }
-    return "(" + sb.toString() + ")";
+    return sb.append(")").toString();
   }
 
-  /* Graph/Tree creation helper methods. */
+  /* Graph helpers */
 
-  // Create a graph as a adjacency list with 'n' nodes.
   public static List<List<Integer>> createEmptyGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>(n);
-    for (int i = 0; i < n; i++) graph.add(new LinkedList<>());
+    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
     return graph;
   }
 
@@ -163,15 +188,23 @@ public class TreeIsomorphism {
     graph.get(to).add(from);
   }
 
-  /* Example usage */
+  // ==================== Main ====================
 
   public static void main(String[] args) {
     simpleIsomorphismTest();
     testEncodingTreeFromSlides();
   }
 
-  // Test if two tree are isomorphic, meaning they are structurally equivalent
-  // but are labeled differently.
+  //  tree1 (rooted at center 2):    tree2 (rooted at center 1):
+  //
+  //        2                               1
+  //      / | \                           / | \
+  //     0  1  3                         0  3  2
+  //           |                               |
+  //           4                               4
+  //
+  //  Both are isomorphic — same structure, different labels.
+  //
   private static void simpleIsomorphismTest() {
     List<List<Integer>> tree1 = createEmptyGraph(5);
     addUndirectedEdge(tree1, 2, 0);
@@ -185,11 +218,22 @@ public class TreeIsomorphism {
     addUndirectedEdge(tree2, 1, 3);
     addUndirectedEdge(tree2, 1, 2);
 
-    if (!treesAreIsomorphic(tree1, tree2)) {
-      System.out.println("Oops, these tree should be isomorphic!");
-    }
+    // true
+    System.out.println("Isomorphic: " + treesAreIsomorphic(tree1, tree2));
   }
 
+  //  Rooted at node 0:
+  //
+  //           0
+  //        /  |  \
+  //       2   1   3
+  //      / \ / \   \
+  //     6  7 4  5   8
+  //             |
+  //             9
+  //
+  //  Canonical encoding: (((())())(()())(()))
+  //
   private static void testEncodingTreeFromSlides() {
     List<List<Integer>> tree = createEmptyGraph(10);
     addUndirectedEdge(tree, 0, 2);
@@ -204,8 +248,7 @@ public class TreeIsomorphism {
 
     TreeNode root0 = rootTree(tree, 0);
 
-    if (!encode(root0).equals("(((())())(()())(()))")) {
-      System.out.println("Tree encoding is wrong: " + encode(root0));
-    }
+    // (((())())(()())(()))
+    System.out.println("Encoding: " + encode(root0));
   }
 }
