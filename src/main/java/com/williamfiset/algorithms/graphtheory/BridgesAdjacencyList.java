@@ -37,7 +37,7 @@ public class BridgesAdjacencyList {
   private int id;
   private int[] low, ids;
   private boolean[] visited;
-  private List<Integer> bridges;
+  private List<int[]> bridges;
 
   public BridgesAdjacencyList(List<List<Integer>> graph, int n) {
     if (graph == null || n <= 0 || graph.size() != n) {
@@ -48,11 +48,10 @@ public class BridgesAdjacencyList {
   }
 
   /**
-   * Returns a flat list of bridge endpoints. Indices (2*i, 2*i+1) form
-   * a pair — for example, bridges.get(0) and bridges.get(1) are the two
-   * endpoints of the first bridge edge.
+   * Returns a list of bridge edges. Each bridge is an {@code int[2]} array
+   * containing the two endpoint node indices.
    */
-  public List<Integer> findBridges() {
+  public List<int[]> findBridges() {
     if (solved) {
       return bridges;
     }
@@ -88,8 +87,7 @@ public class BridgesAdjacencyList {
         // If no vertex in the subtree rooted at 'to' can reach 'at' or above,
         // then removing edge (at, to) would disconnect the graph.
         if (ids[at] < low[to]) {
-          bridges.add(at);
-          bridges.add(to);
+          bridges.add(new int[] {at, to});
         }
       } else {
         // Back edge: update low-link to the earliest reachable ancestor.
@@ -140,10 +138,10 @@ public class BridgesAdjacencyList {
     addEdge(graph, 8, 5);
 
     BridgesAdjacencyList solver = new BridgesAdjacencyList(graph, n);
-    List<Integer> bridges = solver.findBridges();
+    List<int[]> bridges = solver.findBridges();
 
-    for (int i = 0; i < bridges.size(); i += 2) {
-      System.out.printf("Bridge between nodes: %d and %d\n", bridges.get(i), bridges.get(i + 1));
+    for (int[] bridge : bridges) {
+      System.out.printf("Bridge between nodes: %d and %d\n", bridge[0], bridge[1]);
     }
   }
 }
