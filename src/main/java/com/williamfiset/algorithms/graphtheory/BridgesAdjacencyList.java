@@ -10,6 +10,14 @@
  *
  * <pre>   ids[u] &lt; low[v]</pre>
  *
+ * <p><strong>Limitation:</strong> This implementation assumes a simple graph (no
+ * parallel/multi-edges between the same pair of nodes). If parallel edges exist,
+ * the algorithm may incorrectly report an edge as a bridge even though a second
+ * edge still connects the two nodes. This is because the parent-skip logic
+ * ({@code to == parent}) skips <em>all</em> occurrences of the parent in the
+ * adjacency list, rather than only the single tree edge used to arrive at the
+ * current node.
+ *
  * <p>Works on disconnected graphs by running DFS from every unvisited node.
  *
  * <p>See also: {@link ArticulationPointsAdjacencyList} for finding cut vertices.
