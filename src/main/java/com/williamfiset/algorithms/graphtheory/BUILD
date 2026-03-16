@@ -76,10 +76,10 @@ java_binary(
     runtime_deps = [":graphtheory"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:ConnectedComponentsAdjacencyList
+# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:ConnectedComponentsUnionFind
 java_binary(
-    name = "ConnectedComponentsAdjacencyList",
-    main_class = "com.williamfiset.algorithms.graphtheory.ConnectedComponentsAdjacencyList",
+    name = "ConnectedComponentsUnionFind",
+    main_class = "com.williamfiset.algorithms.graphtheory.ConnectedComponentsUnionFind",
     runtime_deps = [":graphtheory"],
 )
 
