@@ -1,8 +1,24 @@
 /**
- * Finds all the bridges on an undirected graph.
+ * Bridge Edges (Cut Edges) — Adjacency List
  *
- * <p>Test against HackerEarth online judge at:
+ * <p>A bridge is an edge whose removal disconnects the graph (or increases
+ * the number of connected components). This implementation uses Tarjan's
+ * DFS-based algorithm with low-link values.
+ *
+ * <p>An edge (u, v) is a bridge if no vertex in the subtree rooted at v
+ * (in the DFS tree) has a back edge to u or any ancestor of u:
+ *
+ * <pre>   ids[u] &lt; low[v]</pre>
+ *
+ * <p>Works on disconnected graphs by running DFS from every unvisited node.
+ *
+ * <p>See also: {@link ArticulationPointsAdjacencyList} for finding cut vertices.
+ *
+ * <p>Tested against HackerEarth online judge at:
  * https://www.hackerearth.com/practice/algorithms/graphs/articulation-points-and-bridges/tutorial
+ *
+ * <p>Time:  O(V + E)
+ * <p>Space: O(V)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
@@ -15,64 +31,100 @@ import java.util.List;
 
 public class BridgesAdjacencyList {
 
-  private int n, id;
-  private int[] low, ids;
+  private final int n;
+  private final List<List<Integer>> graph;
   private boolean solved;
+  private int id;
+  private int[] low, ids;
   private boolean[] visited;
-  private List<List<Integer>> graph;
   private List<Integer> bridges;
 
   public BridgesAdjacencyList(List<List<Integer>> graph, int n) {
-    if (graph == null || n <= 0 || graph.size() != n) throw new IllegalArgumentException();
+    if (graph == null || n <= 0 || graph.size() != n) {
+      throw new IllegalArgumentException();
+    }
     this.graph = graph;
     this.n = n;
   }
 
-  // Returns a list of pairs of nodes indicating which nodes form bridges.
-  // The returned list is always of even length and indexes (2*i, 2*i+1) form a
-  // pair. For example, nodes at indexes (0, 1) are a pair, (2, 3) are another
-  // pair, etc...
+  /**
+   * Returns a flat list of bridge endpoints. Indices (2*i, 2*i+1) form
+   * a pair — for example, bridges.get(0) and bridges.get(1) are the two
+   * endpoints of the first bridge edge.
+   */
   public List<Integer> findBridges() {
-    if (solved) return bridges;
+    if (solved) {
+      return bridges;
+    }
 
     id = 0;
-    low = new int[n]; // Low link values
-    ids = new int[n]; // Nodes ids
+    low = new int[n];
+    ids = new int[n];
     visited = new boolean[n];
-
     bridges = new ArrayList<>();
 
-    // Finds all bridges in the graph across various connected components.
-    for (int i = 0; i < n; i++) if (!visited[i]) dfs(i, -1, bridges);
+    // Run DFS from each unvisited node to handle disconnected components.
+    for (int i = 0; i < n; i++) {
+      if (!visited[i]) {
+        dfs(i, -1);
+      }
+    }
 
     solved = true;
     return bridges;
   }
 
-  private void dfs(int at, int parent, List<Integer> bridges) {
-
+  private void dfs(int at, int parent) {
     visited[at] = true;
     low[at] = ids[at] = ++id;
 
-    for (Integer to : graph.get(at)) {
-      if (to == parent) continue;
+    for (int to : graph.get(at)) {
+      if (to == parent) {
+        continue;
+      }
       if (!visited[to]) {
-        dfs(to, at, bridges);
+        dfs(to, at);
         low[at] = min(low[at], low[to]);
+        // If no vertex in the subtree rooted at 'to' can reach 'at' or above,
+        // then removing edge (at, to) would disconnect the graph.
         if (ids[at] < low[to]) {
           bridges.add(at);
           bridges.add(to);
         }
       } else {
+        // Back edge: update low-link to the earliest reachable ancestor.
         low[at] = min(low[at], ids[to]);
       }
     }
   }
 
-  /* Example usage: */
+  /* Graph helpers */
 
+  public static List<List<Integer>> createGraph(int n) {
+    List<List<Integer>> graph = new ArrayList<>(n);
+    for (int i = 0; i < n; i++) {
+      graph.add(new ArrayList<>());
+    }
+    return graph;
+  }
+
+  public static void addEdge(List<List<Integer>> graph, int from, int to) {
+    graph.get(from).add(to);
+    graph.get(to).add(from);
+  }
+
+  // ==================== Main ====================
+
+  //
+  //   0 --- 1
+  //   |   /
+  //   2 -------- 5 --- 6
+  //   |          |     |
+  //   3 --- 4    8 --- 7
+  //
+  // Bridges: (2,3), (3,4), (2,5)
+  //
   public static void main(String[] args) {
-
     int n = 9;
     List<List<Integer>> graph = createGraph(n);
 
@@ -90,27 +142,8 @@ public class BridgesAdjacencyList {
     BridgesAdjacencyList solver = new BridgesAdjacencyList(graph, n);
     List<Integer> bridges = solver.findBridges();
 
-    // Prints:
-    // Bridge between nodes: 3 and 4
-    // Bridge between nodes: 2 and 3
-    // Bridge between nodes: 2 and 5
-    for (int i = 0; i < bridges.size() / 2; i++) {
-      int node1 = bridges.get(2 * i);
-      int node2 = bridges.get(2 * i + 1);
-      System.out.printf("Bridge between nodes: %d and %d\n", node1, node2);
+    for (int i = 0; i < bridges.size(); i += 2) {
+      System.out.printf("Bridge between nodes: %d and %d\n", bridges.get(i), bridges.get(i + 1));
     }
-  }
-
-  // Initialize graph with 'n' nodes.
-  public static List<List<Integer>> createGraph(int n) {
-    List<List<Integer>> graph = new ArrayList<>();
-    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
-    return graph;
-  }
-
-  // Add undirected edge to graph.
-  public static void addEdge(List<List<Integer>> graph, int from, int to) {
-    graph.get(from).add(to);
-    graph.get(to).add(from);
   }
 }
