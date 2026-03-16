@@ -63,7 +63,7 @@ public class BreadthFirstSearchAdjacencyList {
     for (Integer at = end; at != null; at = prev[at]) {
       path.addFirst(at);
     }
-    if (path.isEmpty() || path.getFirst() != start) {
+    if (path.isEmpty() || path.getFirst().intValue() != start) {
       return List.of();
     }
     return path;
