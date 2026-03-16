@@ -144,18 +144,14 @@ public class BridgesAdjacencyListTest {
     assertThat(sortedBridges).containsExactlyElementsIn(expected);
   }
 
-  private static List<Pair<Integer, Integer>> getSortedBridges(List<Integer> bridgeNodes) {
+  private static List<Pair<Integer, Integer>> getSortedBridges(List<int[]> bridgeEdges) {
     List<Pair<Integer, Integer>> bridges = new ArrayList<>();
-    for (int i = 0; i < bridgeNodes.size(); i += 2) {
-      int node1 = bridgeNodes.get(i);
-      int node2 = bridgeNodes.get(i + 1);
-      Pair<Integer, Integer> pair;
-      if (node1 < node2) {
-        pair = Pair.of(node1, node2);
+    for (int[] edge : bridgeEdges) {
+      if (edge[0] < edge[1]) {
+        bridges.add(Pair.of(edge[0], edge[1]));
       } else {
-        pair = Pair.of(node2, node1);
+        bridges.add(Pair.of(edge[1], edge[0]));
       }
-      bridges.add(pair);
     }
     return bridges;
   }

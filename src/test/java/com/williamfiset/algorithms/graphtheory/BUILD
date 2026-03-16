@@ -57,17 +57,6 @@ java_test(
     deps = TEST_DEPS,
 )
 
-# bazel test //src/test/java/com/williamfiset/algorithms/graphtheory:BridgesAdjacencyListIterativeTest
-java_test(
-    name = "BridgesAdjacencyListIterativeTest",
-    srcs = ["BridgesAdjacencyListIterativeTest.java"],
-    main_class = "org.junit.platform.console.ConsoleLauncher",
-    use_testrunner = False,
-    args = ["--select-class=com.williamfiset.algorithms.graphtheory.BridgesAdjacencyListIterativeTest"],
-    runtime_deps = JUNIT5_RUNTIME_DEPS,
-    deps = TEST_DEPS,
-)
-
 # bazel test //src/test/java/com/williamfiset/algorithms/graphtheory:BridgesAdjacencyListTest
 java_test(
     name = "BridgesAdjacencyListTest",
