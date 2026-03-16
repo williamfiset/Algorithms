@@ -26,31 +26,13 @@ import java.util.List;
 
 public class Boruvkas {
 
-  static class Edge implements Comparable<Edge> {
+  static class Edge {
     int u, v, cost;
 
     public Edge(int u, int v, int cost) {
       this.u = u;
       this.v = v;
       this.cost = cost;
-    }
-
-    @Override
-    public String toString() {
-      return String.format("%d %d, cost: %d", u, v, cost);
-    }
-
-    @Override
-    public int compareTo(Edge other) {
-      int cmp = Integer.compare(cost, other.cost);
-      if (cmp != 0) {
-        return cmp;
-      }
-      cmp = Integer.compare(u, other.u);
-      if (cmp != 0) {
-        return cmp;
-      }
-      return Integer.compare(v, other.v);
     }
   }
 
@@ -140,48 +122,39 @@ public class Boruvkas {
   // ==================== Main ====================
 
   //
-  //       5       4
-  //   0 ----- 1 ----- 2
-  //   |  \  2 |       |\ 2
-  //  1|   3   |2      | 9
-  //   |  / 2  |  1    |/
-  //   4 ----- 3 --- 7 --- 8
-  //    \  1  / 5   /    0 |
-  //     5   /   \ 1      \|
-  //      \ / 7   6 -- 4   9
-  //       5       8
+  //                  1                 7                 2
+  //      0 ---------------  1 ---------------  2 ---------------  3
+  //      |                  |                  |                  |
+  //      |                  |                  |                  |
+  //    4 |                3 |                5 |                6 |
+  //      |                  |                  |                  |
+  //      |                  |                  |                  |
+  //      4 ---------------  5 ---------------  6 ---------------  7
+  //                  8                 2                 9
   //
-  // MST cost: 14
+  //  MST cost: 23
   //
   public static void main(String[] args) {
     Edge[] g = {
-      new Edge(0, 1, 5),
-      new Edge(0, 3, 4),
-      new Edge(0, 4, 1),
-      new Edge(1, 2, 4),
-      new Edge(1, 3, 2),
-      new Edge(2, 7, 4),
-      new Edge(2, 8, 1),
-      new Edge(2, 9, 2),
-      new Edge(3, 6, 11),
-      new Edge(3, 7, 2),
-      new Edge(4, 3, 2),
-      new Edge(4, 5, 1),
-      new Edge(5, 3, 5),
-      new Edge(5, 6, 7),
-      new Edge(6, 7, 1),
-      new Edge(6, 8, 4),
-      new Edge(7, 8, 6),
-      new Edge(9, 8, 0),
+      new Edge(0, 1, 1),
+      new Edge(1, 2, 7),
+      new Edge(2, 3, 2),
+      new Edge(0, 4, 4),
+      new Edge(1, 5, 3),
+      new Edge(2, 6, 5),
+      new Edge(3, 7, 6),
+      new Edge(4, 5, 8),
+      new Edge(5, 6, 2),
+      new Edge(6, 7, 9),
     };
 
-    Boruvkas solver = new Boruvkas(10, g);
+    Boruvkas solver = new Boruvkas(8, g);
 
     Long cost = solver.getMstCost();
     if (cost != null) {
-      System.out.println("MST cost: " + cost); // 14
+      System.out.println("MST cost: " + cost); // 23
       for (Edge e : solver.getMst()) {
-        System.out.println(e);
+        System.out.printf("Edge %d-%d, cost: %d%n", e.u, e.v, e.cost);
       }
     } else {
       System.out.println("No MST exists");

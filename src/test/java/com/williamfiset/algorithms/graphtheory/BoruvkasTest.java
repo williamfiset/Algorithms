@@ -58,32 +58,23 @@ public class BoruvkasTest {
 
   @Test
   public void testExampleFromMainMethod() {
-    int n = 10, m = 18, i = 0;
-    Edge[] g = new Edge[m];
+    Edge[] g = {
+      new Edge(0, 1, 1),
+      new Edge(1, 2, 7),
+      new Edge(2, 3, 2),
+      new Edge(0, 4, 4),
+      new Edge(1, 5, 3),
+      new Edge(2, 6, 5),
+      new Edge(3, 7, 6),
+      new Edge(4, 5, 8),
+      new Edge(5, 6, 2),
+      new Edge(6, 7, 9),
+    };
 
-    g[i++] = new Edge(0, 1, 5);
-    g[i++] = new Edge(0, 3, 4);
-    g[i++] = new Edge(0, 4, 1);
-    g[i++] = new Edge(1, 2, 4);
-    g[i++] = new Edge(1, 3, 2);
-    g[i++] = new Edge(2, 7, 4);
-    g[i++] = new Edge(2, 8, 1);
-    g[i++] = new Edge(2, 9, 2);
-    g[i++] = new Edge(3, 6, 11);
-    g[i++] = new Edge(3, 7, 2);
-    g[i++] = new Edge(4, 3, 2);
-    g[i++] = new Edge(4, 5, 1);
-    g[i++] = new Edge(5, 3, 5);
-    g[i++] = new Edge(5, 6, 7);
-    g[i++] = new Edge(6, 7, 1);
-    g[i++] = new Edge(6, 8, 4);
-    g[i++] = new Edge(7, 8, 6);
-    g[i++] = new Edge(9, 8, 0);
+    Boruvkas solver = new Boruvkas(8, g);
 
-    Boruvkas solver = new Boruvkas(n, g);
-
-    assertThat(solver.getMstCost()).isEqualTo(14L);
-    assertThat(solver.getMst()).hasSize(n - 1);
+    assertThat(solver.getMstCost()).isEqualTo(23L);
+    assertThat(solver.getMst()).hasSize(7);
   }
 
   @Test
