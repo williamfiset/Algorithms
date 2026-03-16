@@ -48,8 +48,9 @@ public class BridgesAdjacencyList {
   }
 
   /**
-   * Returns a list of bridge edges. Each bridge is an {@code int[2]} array
-   * containing the two endpoint node indices.
+   * Returns a list of bridge edges. Each element is an {@code int[]} of length 2
+   * where {@code [0]} and {@code [1]} are the node indices on either side of the bridge.
+   * For example, if node 2 and node 5 are connected by a bridge, the entry is {@code {2, 5}}.
    */
   public List<int[]> findBridges() {
     if (solved) {
