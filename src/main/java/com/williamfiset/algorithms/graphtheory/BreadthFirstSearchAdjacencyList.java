@@ -25,8 +25,8 @@ package com.williamfiset.algorithms.graphtheory;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 public class BreadthFirstSearchAdjacencyList {
@@ -59,15 +59,13 @@ public class BreadthFirstSearchAdjacencyList {
    */
   public List<Integer> reconstructPath(int start, int end) {
     bfs(start);
-    List<Integer> path = new ArrayList<>();
+    LinkedList<Integer> path = new LinkedList<>();
     for (Integer at = end; at != null; at = prev[at]) {
-      path.add(at);
+      path.addFirst(at);
     }
-    Collections.reverse(path);
-    if (path.get(0) == start) {
-      return path;
+    if (path.isEmpty() || path.getFirst() != start) {
+      return List.of();
     }
-    path.clear();
     return path;
   }
 
