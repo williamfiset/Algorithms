@@ -83,13 +83,6 @@ java_binary(
     runtime_deps = [":graphtheory"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:BridgesAdjacencyListIterative
-java_binary(
-    name = "BridgesAdjacencyListIterative",
-    main_class = "com.williamfiset.algorithms.graphtheory.BridgesAdjacencyListIterative",
-    runtime_deps = [":graphtheory"],
-)
-
 # bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:ChinesePostmanProblem
 java_binary(
     name = "ChinesePostmanProblem",
