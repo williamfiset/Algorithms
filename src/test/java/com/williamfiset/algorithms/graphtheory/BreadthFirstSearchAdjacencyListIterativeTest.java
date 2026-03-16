@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.*;
 
+import com.williamfiset.algorithms.graphtheory.BellmanFordEdgeList;
+
 public class BreadthFirstSearchAdjacencyListIterativeTest {
 
   BreadthFirstSearchAdjacencyListIterative solver;
@@ -82,11 +84,23 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
       int s = (int) (random() * n);
       int e = (int) (random() * n);
       solver = new BreadthFirstSearchAdjacencyListIterative(graph);
-      BellmanFordAdjacencyMatrix bfSolver = new BellmanFordAdjacencyMatrix(s, graph2);
+
+      // Convert adjacency matrix to edge list for BellmanFord
+      List<BellmanFordEdgeList.Edge> edgeList = new ArrayList<>();
+      for (int u = 0; u < n; u++) {
+        for (int v = 0; v < n; v++) {
+          if (u != v && graph2[u][v] != Double.POSITIVE_INFINITY) {
+            edgeList.add(new BellmanFordEdgeList.Edge(u, v, graph2[u][v]));
+          }
+        }
+      }
+      BellmanFordEdgeList.Edge[] edges = edgeList.toArray(new BellmanFordEdgeList.Edge[0]);
+      double[] dist = BellmanFordEdgeList.bellmanFord(edges, n, s);
 
       List<Integer> p1 = solver.reconstructPath(s, e);
-      List<Integer> p2 = bfSolver.reconstructShortestPath(e);
-      assertThat(p1.size()).isEqualTo(p2.size());
+      // All edges have weight 1, so BF distance equals number of edges = path size - 1
+      int expectedPathSize = (dist[e] == Double.POSITIVE_INFINITY) ? 0 : (int) dist[e] + 1;
+      assertThat(p1.size()).isEqualTo(expectedPathSize);
     }
   }
 

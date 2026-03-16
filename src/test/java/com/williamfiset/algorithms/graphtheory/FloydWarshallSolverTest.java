@@ -2,6 +2,7 @@ package com.williamfiset.algorithms.graphtheory;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.williamfiset.algorithms.graphtheory.BellmanFordEdgeList.Edge;
 import java.util.*;
 import org.junit.jupiter.api.*;
 
@@ -49,6 +50,20 @@ public class FloydWarshallSolverTest {
       }
     }
     return m;
+  }
+
+  /** Converts an adjacency matrix to an array of BellmanFordEdgeList edges. */
+  private static Edge[] matrixToEdges(double[][] matrix) {
+    int n = matrix.length;
+    List<Edge> edges = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        if (i != j && matrix[i][j] != Double.POSITIVE_INFINITY) {
+          edges.add(new Edge(i, j, matrix[i][j]));
+        }
+      }
+    }
+    return edges.toArray(new Edge[0]);
   }
 
   private static void addRandomEdges(double[][] matrix, int count, boolean allowNegativeEdges) {
@@ -125,7 +140,7 @@ public class FloydWarshallSolverTest {
         double[][] fw = new FloydWarshallSolver(m).getApspMatrix();
 
         for (int s = 0; s < n; s++) {
-          double[] bf = new BellmanFordAdjacencyMatrix(s, m).getShortestPaths();
+          double[] bf = BellmanFordEdgeList.bellmanFord(matrixToEdges(m), n, s);
           assertThat(bf).isEqualTo(fw[s]);
         }
       }
@@ -144,7 +159,7 @@ public class FloydWarshallSolverTest {
         double[][] fw = new FloydWarshallSolver(m).getApspMatrix();
 
         for (int s = 0; s < n; s++) {
-          double[] bf = new BellmanFordAdjacencyMatrix(s, m).getShortestPaths();
+          double[] bf = BellmanFordEdgeList.bellmanFord(matrixToEdges(m), n, s);
           assertThat(bf).isEqualTo(fw[s]);
         }
       }
@@ -165,15 +180,16 @@ public class FloydWarshallSolverTest {
         FloydWarshallSolver fwSolver = new FloydWarshallSolver(m);
         fwSolver.solve();
 
+        Edge[] edges = matrixToEdges(m);
         for (int s = 0; s < n; s++) {
-          BellmanFordAdjacencyMatrix bfSolver = new BellmanFordAdjacencyMatrix(s, m);
+          double[] bf = BellmanFordEdgeList.bellmanFord(edges, n, s);
           for (int e = 0; e < n; e++) {
 
-            // Make sure that if 'fwp' returns null that 'bfp' also returns null or
-            // that if 'fwp' is not null that 'bfp' is also not null.
+            // FW returns null path when a negative cycle exists on the shortest path.
+            // BF marks such nodes with -Infinity. Verify they agree.
             List<Integer> fwp = fwSolver.reconstructShortestPath(s, e);
-            List<Integer> bfp = bfSolver.reconstructShortestPath(e);
-            if ((fwp == null) ^ (bfp == null)) {
+            boolean bfNegCycle = (bf[e] == Double.NEGATIVE_INFINITY);
+            if ((fwp == null) != bfNegCycle) {
               org.junit.Assert.fail("Mismatch.");
             }
           }
