@@ -204,16 +204,10 @@ public class Boruvkas {
     }
 
     public int find(int p) {
-      int root = p;
-      while (root != id[root]) {
-        root = id[root];
+      if (id[p] != p) {
+        id[p] = find(id[p]);
       }
-      while (p != root) {
-        int next = id[p];
-        id[p] = root;
-        p = next;
-      }
-      return root;
+      return id[p];
     }
 
     public void union(int p, int q) {
