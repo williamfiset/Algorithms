@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
-public class BreadthFirstSearchAdjacencyListIterative {
+public class BreadthFirstSearchAdjacencyList {
 
   public static class Edge {
     int from, to, cost;
@@ -45,7 +45,7 @@ public class BreadthFirstSearchAdjacencyListIterative {
   private final List<List<Edge>> graph;
   private Integer[] prev;
 
-  public BreadthFirstSearchAdjacencyListIterative(List<List<Edge>> graph) {
+  public BreadthFirstSearchAdjacencyList(List<List<Edge>> graph) {
     if (graph == null) {
       throw new IllegalArgumentException("Graph can not be null");
     }
@@ -117,32 +117,33 @@ public class BreadthFirstSearchAdjacencyListIterative {
 
   // ==================== Main ====================
 
+  //
+  //   0 --- 1 --- 2
+  //   |     |     |
+  //   3     4     5
+  //    \   / \   /
+  //      6 --- 7
+  //
+  // Shortest path from 0 to 7: [0, 1, 4, 7]
+  //
   public static void main(String[] args) {
-    final int n = 13;
+    int n = 8;
     List<List<Edge>> graph = createEmptyGraph(n);
 
-    addUnweightedUndirectedEdge(graph, 0, 7);
-    addUnweightedUndirectedEdge(graph, 0, 9);
-    addUnweightedUndirectedEdge(graph, 0, 11);
-    addUnweightedUndirectedEdge(graph, 7, 11);
-    addUnweightedUndirectedEdge(graph, 7, 6);
-    addUnweightedUndirectedEdge(graph, 7, 3);
-    addUnweightedUndirectedEdge(graph, 6, 5);
-    addUnweightedUndirectedEdge(graph, 3, 4);
-    addUnweightedUndirectedEdge(graph, 2, 3);
-    addUnweightedUndirectedEdge(graph, 2, 12);
-    addUnweightedUndirectedEdge(graph, 12, 8);
-    addUnweightedUndirectedEdge(graph, 8, 1);
-    addUnweightedUndirectedEdge(graph, 1, 10);
-    addUnweightedUndirectedEdge(graph, 10, 9);
-    addUnweightedUndirectedEdge(graph, 9, 8);
+    addUnweightedUndirectedEdge(graph, 0, 1);
+    addUnweightedUndirectedEdge(graph, 1, 2);
+    addUnweightedUndirectedEdge(graph, 0, 3);
+    addUnweightedUndirectedEdge(graph, 1, 4);
+    addUnweightedUndirectedEdge(graph, 2, 5);
+    addUnweightedUndirectedEdge(graph, 3, 6);
+    addUnweightedUndirectedEdge(graph, 4, 6);
+    addUnweightedUndirectedEdge(graph, 4, 7);
+    addUnweightedUndirectedEdge(graph, 5, 7);
+    addUnweightedUndirectedEdge(graph, 6, 7);
 
-    BreadthFirstSearchAdjacencyListIterative solver =
-        new BreadthFirstSearchAdjacencyListIterative(graph);
+    BreadthFirstSearchAdjacencyList solver = new BreadthFirstSearchAdjacencyList(graph);
 
-    int start = 10, end = 5;
-    List<Integer> path = solver.reconstructPath(start, end);
-    System.out.printf("The shortest path from %d to %d is: %s\n", start, end, path);
-    // Prints: The shortest path from 10 to 5 is: [10, 9, 0, 7, 6, 5]
+    System.out.println(solver.reconstructPath(0, 7)); // [0, 1, 4, 7]
+    System.out.println(solver.reconstructPath(3, 5)); // [3, 6, 7, 5]
   }
 }

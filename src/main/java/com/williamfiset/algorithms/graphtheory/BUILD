@@ -55,10 +55,10 @@ java_binary(
     runtime_deps = [":graphtheory"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:BreadthFirstSearchAdjacencyListIterative
+# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:BreadthFirstSearchAdjacencyList
 java_binary(
-    name = "BreadthFirstSearchAdjacencyListIterative",
-    main_class = "com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative",
+    name = "BreadthFirstSearchAdjacencyList",
+    main_class = "com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyList",
     runtime_deps = [":graphtheory"],
 )
 

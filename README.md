@@ -204,7 +204,7 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 - [Articulation points/cut vertices (adjacency list)](src/main/java/com/williamfiset/algorithms/graphtheory/ArticulationPointsAdjacencyList.java) **- O(V+E)**
 - [Bellman-Ford (edge list, negative cycles, fast & optimized)](src/main/java/com/williamfiset/algorithms/graphtheory/BellmanFordEdgeList.java) **- O(VE)**
 - [:movie_camera:](https://www.youtube.com/watch?v=lyw4FaxrwHg) [Bellman-Ford (adjacency list, negative cycles)](src/main/java/com/williamfiset/algorithms/graphtheory/BellmanFordAdjacencyList.java) **- O(VE)**
-- [:movie_camera:](https://www.youtube.com/watch?v=oDqjPvD54Ss) [Breadth first search (adjacency list)](src/main/java/com/williamfiset/algorithms/graphtheory/BreadthFirstSearchAdjacencyListIterative.java) **- O(V+E)**
+- [:movie_camera:](https://www.youtube.com/watch?v=oDqjPvD54Ss) [Breadth first search (adjacency list)](src/main/java/com/williamfiset/algorithms/graphtheory/BreadthFirstSearchAdjacencyList.java) **- O(V+E)**
 - [Bridges/cut edges (adjacency list)](src/main/java/com/williamfiset/algorithms/graphtheory/BridgesAdjacencyList.java) **- O(V+E)**
 - [Boruvkas (adjacency list, min spanning tree algorithm)](src/main/java/com/williamfiset/algorithms/graphtheory/Boruvkas.java) **- O(Elog(V))**
 - [Find connected components (adjacency list, union find)](src/main/java/com/williamfiset/algorithms/graphtheory/ConnectedComponentsAdjacencyList.java) **- O(Elog(E))**

@@ -1,9 +1,9 @@
 package com.williamfiset.algorithms.graphtheory;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.Edge;
-import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.addUnweightedUndirectedEdge;
-import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyListIterative.createEmptyGraph;
+import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyList.Edge;
+import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyList.addUnweightedUndirectedEdge;
+import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyList.createEmptyGraph;
 import static java.lang.Math.max;
 import static java.lang.Math.random;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -15,9 +15,9 @@ import org.junit.jupiter.api.*;
 
 import com.williamfiset.algorithms.graphtheory.BellmanFordEdgeList;
 
-public class BreadthFirstSearchAdjacencyListIterativeTest {
+public class BreadthFirstSearchAdjacencyListTest {
 
-  BreadthFirstSearchAdjacencyListIterative solver;
+  BreadthFirstSearchAdjacencyList solver;
 
   @BeforeEach
   public void setup() {
@@ -27,7 +27,7 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
   @Test
   public void testNullGraphInput() {
     assertThrows(
-        IllegalArgumentException.class, () -> new BreadthFirstSearchAdjacencyListIterative(null));
+        IllegalArgumentException.class, () -> new BreadthFirstSearchAdjacencyList(null));
   }
 
   @Test
@@ -35,7 +35,7 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
     int n = 1;
     List<List<Edge>> graph = createEmptyGraph(n);
 
-    solver = new BreadthFirstSearchAdjacencyListIterative(graph);
+    solver = new BreadthFirstSearchAdjacencyList(graph);
     List<Integer> path = solver.reconstructPath(0, 0);
     List<Integer> expected = new ArrayList<>();
     expected.add(0);
@@ -47,7 +47,7 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
     int n = 2;
     List<List<Edge>> graph = createEmptyGraph(n);
     addUnweightedUndirectedEdge(graph, 0, 1);
-    solver = new BreadthFirstSearchAdjacencyListIterative(graph);
+    solver = new BreadthFirstSearchAdjacencyList(graph);
 
     List<Integer> expected = new ArrayList<>();
     expected.add(0);
@@ -60,10 +60,10 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
   @Test
   public void testThreeNodeGraph() {
     int n = 3;
-    List<List<Edge>> graph = BreadthFirstSearchAdjacencyListIterative.createEmptyGraph(n);
+    List<List<Edge>> graph = BreadthFirstSearchAdjacencyList.createEmptyGraph(n);
     addUnweightedUndirectedEdge(graph, 0, 1);
     addUnweightedUndirectedEdge(graph, 2, 1);
-    solver = new BreadthFirstSearchAdjacencyListIterative(graph);
+    solver = new BreadthFirstSearchAdjacencyList(graph);
 
     List<Integer> expected = new ArrayList<>();
     expected.add(0);
@@ -83,7 +83,7 @@ public class BreadthFirstSearchAdjacencyListIterativeTest {
 
       int s = (int) (random() * n);
       int e = (int) (random() * n);
-      solver = new BreadthFirstSearchAdjacencyListIterative(graph);
+      solver = new BreadthFirstSearchAdjacencyList(graph);
 
       // Convert adjacency matrix to edge list for BellmanFord
       List<BellmanFordEdgeList.Edge> edgeList = new ArrayList<>();
