@@ -2,7 +2,7 @@ package com.williamfiset.algorithms.graphtheory;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyList.Edge;
-import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyList.addUnweightedUndirectedEdge;
+import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyList.addUndirectedEdge;
 import static com.williamfiset.algorithms.graphtheory.BreadthFirstSearchAdjacencyList.createEmptyGraph;
 import static java.lang.Math.max;
 import static java.lang.Math.random;
@@ -46,7 +46,7 @@ public class BreadthFirstSearchAdjacencyListTest {
   public void testTwoNodeGraph() {
     int n = 2;
     List<List<Edge>> graph = createEmptyGraph(n);
-    addUnweightedUndirectedEdge(graph, 0, 1);
+    addUndirectedEdge(graph, 0, 1);
     solver = new BreadthFirstSearchAdjacencyList(graph);
 
     List<Integer> expected = new ArrayList<>();
@@ -61,8 +61,8 @@ public class BreadthFirstSearchAdjacencyListTest {
   public void testThreeNodeGraph() {
     int n = 3;
     List<List<Edge>> graph = BreadthFirstSearchAdjacencyList.createEmptyGraph(n);
-    addUnweightedUndirectedEdge(graph, 0, 1);
-    addUnweightedUndirectedEdge(graph, 2, 1);
+    addUndirectedEdge(graph, 0, 1);
+    addUndirectedEdge(graph, 2, 1);
     solver = new BreadthFirstSearchAdjacencyList(graph);
 
     List<Integer> expected = new ArrayList<>();
@@ -114,7 +114,7 @@ public class BreadthFirstSearchAdjacencyListTest {
       int u = (int) (random() * n);
       int v = (int) (random() * n);
       if (!edgeMatrix[u][v]) {
-        addUnweightedUndirectedEdge(graph1, u, v);
+        addUndirectedEdge(graph1, u, v);
         graph2[u][v] = graph2[v][u] = 1;
         edgeMatrix[u][v] = edgeMatrix[v][u] = true;
       }

@@ -32,12 +32,11 @@ import java.util.List;
 public class BreadthFirstSearchAdjacencyList {
 
   public static class Edge {
-    int from, to, cost;
+    int from, to;
 
-    public Edge(int from, int to, int cost) {
+    public Edge(int from, int to) {
       this.from = from;
       this.to = to;
-      this.cost = cost;
     }
   }
 
@@ -102,17 +101,13 @@ public class BreadthFirstSearchAdjacencyList {
     return graph;
   }
 
-  public static void addDirectedEdge(List<List<Edge>> graph, int u, int v, int cost) {
-    graph.get(u).add(new Edge(u, v, cost));
+  public static void addDirectedEdge(List<List<Edge>> graph, int u, int v) {
+    graph.get(u).add(new Edge(u, v));
   }
 
-  public static void addUndirectedEdge(List<List<Edge>> graph, int u, int v, int cost) {
-    addDirectedEdge(graph, u, v, cost);
-    addDirectedEdge(graph, v, u, cost);
-  }
-
-  public static void addUnweightedUndirectedEdge(List<List<Edge>> graph, int u, int v) {
-    addUndirectedEdge(graph, u, v, 1);
+  public static void addUndirectedEdge(List<List<Edge>> graph, int u, int v) {
+    addDirectedEdge(graph, u, v);
+    addDirectedEdge(graph, v, u);
   }
 
   // ==================== Main ====================
@@ -130,16 +125,16 @@ public class BreadthFirstSearchAdjacencyList {
     int n = 8;
     List<List<Edge>> graph = createEmptyGraph(n);
 
-    addUnweightedUndirectedEdge(graph, 0, 1);
-    addUnweightedUndirectedEdge(graph, 1, 2);
-    addUnweightedUndirectedEdge(graph, 0, 3);
-    addUnweightedUndirectedEdge(graph, 1, 4);
-    addUnweightedUndirectedEdge(graph, 2, 5);
-    addUnweightedUndirectedEdge(graph, 3, 6);
-    addUnweightedUndirectedEdge(graph, 4, 6);
-    addUnweightedUndirectedEdge(graph, 4, 7);
-    addUnweightedUndirectedEdge(graph, 5, 7);
-    addUnweightedUndirectedEdge(graph, 6, 7);
+    addUndirectedEdge(graph, 0, 1);
+    addUndirectedEdge(graph, 1, 2);
+    addUndirectedEdge(graph, 0, 3);
+    addUndirectedEdge(graph, 1, 4);
+    addUndirectedEdge(graph, 2, 5);
+    addUndirectedEdge(graph, 3, 6);
+    addUndirectedEdge(graph, 4, 6);
+    addUndirectedEdge(graph, 4, 7);
+    addUndirectedEdge(graph, 5, 7);
+    addUndirectedEdge(graph, 6, 7);
 
     BreadthFirstSearchAdjacencyList solver = new BreadthFirstSearchAdjacencyList(graph);
 
