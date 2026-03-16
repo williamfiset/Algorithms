@@ -216,13 +216,6 @@ java_binary(
     runtime_deps = [":graphtheory"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:LazyPrimsAdjacencyMatrix
-java_binary(
-    name = "LazyPrimsAdjacencyMatrix",
-    main_class = "com.williamfiset.algorithms.graphtheory.LazyPrimsAdjacencyMatrix",
-    runtime_deps = [":graphtheory"],
-)
-
 # bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:SteinerTree
 java_binary(
     name = "SteinerTree",
@@ -248,13 +241,6 @@ java_binary(
 java_binary(
     name = "TopologicalSortAdjacencyList",
     main_class = "com.williamfiset.algorithms.graphtheory.TopologicalSortAdjacencyList",
-    runtime_deps = [":graphtheory"],
-)
-
-# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:TopologicalSortAdjacencyMatrix
-java_binary(
-    name = "TopologicalSortAdjacencyMatrix",
-    main_class = "com.williamfiset.algorithms.graphtheory.TopologicalSortAdjacencyMatrix",
     runtime_deps = [":graphtheory"],
 )
 
