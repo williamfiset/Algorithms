@@ -1,6 +1,28 @@
+/**
+ * Boruvka's Minimum Spanning Tree Algorithm — Edge List
+ *
+ * <p>Finds the MST of a weighted undirected graph by repeatedly selecting the
+ * cheapest outgoing edge from each connected component and merging components.
+ *
+ * <p>Algorithm:
+ * <ol>
+ *   <li>Start with each node as its own component (using Union-Find).</li>
+ *   <li>For each component, find the minimum-weight edge crossing to another component.</li>
+ *   <li>Add all such cheapest edges to the MST and merge the components.</li>
+ *   <li>Repeat until only one component remains, or no more merges are possible.</li>
+ * </ol>
+ *
+ * <p>If the graph is disconnected, no MST exists and the solver returns null.
+ *
+ * <p>Time:  O(E log V)
+ * <p>Space: O(V + E)
+ *
+ * @author William Fiset, william.alexandre.fiset@gmail.com
+ */
 package com.williamfiset.algorithms.graphtheory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Boruvkas {
 
@@ -20,79 +42,77 @@ public class Boruvkas {
 
     @Override
     public int compareTo(Edge other) {
-      int cmp = cost - other.cost;
-      // Break ties by picking lexicographically smallest edge pair.
-      if (cmp == 0) {
-        cmp = u - other.u;
-        if (cmp == 0) return v - other.v;
+      int cmp = Integer.compare(cost, other.cost);
+      if (cmp != 0) {
         return cmp;
       }
-      return cmp;
+      cmp = Integer.compare(u, other.u);
+      if (cmp != 0) {
+        return cmp;
+      }
+      return Integer.compare(v, other.v);
     }
   }
 
-  // Inputs
-  private final int n; // Number of nodes
-  private final Edge[] graph; // Edge list
-
-  // Internal
+  private final int n;
+  private final Edge[] graph;
   private boolean solved;
   private boolean mstExists;
-
-  // Outputs
   private long minCostSum;
   private List<Edge> mst;
 
   public Boruvkas(int n, Edge[] graph) {
-    if (graph == null) throw new IllegalArgumentException();
+    if (graph == null) {
+      throw new IllegalArgumentException();
+    }
     this.graph = graph;
     this.n = n;
   }
 
-  // Returns the edges used in finding the minimum spanning tree, or returns
-  // null if no MST exists.
+  /**
+   * Returns the edges in the MST, or null if the graph is disconnected.
+   */
   public List<Edge> getMst() {
     solve();
     return mstExists ? mst : null;
   }
 
+  /**
+   * Returns the total cost of the MST, or null if the graph is disconnected.
+   */
   public Long getMstCost() {
     solve();
     return mstExists ? minCostSum : null;
   }
 
-  // Given a graph represented as an edge list this method finds
-  // the Minimum Spanning Tree (MST) cost if there exists
-  // a MST, otherwise it returns null.
   private void solve() {
-    if (solved) return;
+    if (solved) {
+      return;
+    }
 
     mst = new ArrayList<>();
     UnionFind uf = new UnionFind(n);
 
     while (uf.components > 1) {
-      boolean stop = true;
       Edge[] cheapest = new Edge[n];
+      boolean merged = false;
 
-      // Find the cheapest edge for each component
+      // For each edge, track the cheapest crossing edge for each component.
       for (Edge e : graph) {
         int root1 = uf.find(e.u);
         int root2 = uf.find(e.v);
-        if (root1 == root2) continue;
-
+        if (root1 == root2) {
+          continue;
+        }
         if (cheapest[root1] == null || e.cost < cheapest[root1].cost) {
           cheapest[root1] = e;
-          stop = false;
         }
         if (cheapest[root2] == null || e.cost < cheapest[root2].cost) {
           cheapest[root2] = e;
-          stop = false;
         }
       }
 
-      if (stop) break;
-
-      // Add the cheapest edges to the MST
+      // Merge components using their cheapest crossing edges.
       for (int i = 0; i < n; i++) {
         Edge e = cheapest[i];
         if (e == null) {
@@ -104,7 +124,12 @@ public class Boruvkas {
           uf.union(root1, root2);
           mst.add(e);
           minCostSum += e.cost;
+          merged = true;
         }
+      }
+
+      if (!merged) {
+        break;
       }
     }
 
@@ -112,36 +137,49 @@ public class Boruvkas {
     solved = true;
   }
 
+  // ==================== Main ====================
+
+  //
+  //       5       4
+  //   0 ----- 1 ----- 2
+  //   |  \  2 |       |\ 2
+  //  1|   3   |2      | 9
+  //   |  / 2  |  1    |/
+  //   4 ----- 3 --- 7 --- 8
+  //    \  1  / 5   /    0 |
+  //     5   /   \ 1      \|
+  //      \ / 7   6 -- 4   9
+  //       5       8
+  //
+  // MST cost: 14
+  //
   public static void main(String[] args) {
+    Edge[] g = {
+      new Edge(0, 1, 5),
+      new Edge(0, 3, 4),
+      new Edge(0, 4, 1),
+      new Edge(1, 2, 4),
+      new Edge(1, 3, 2),
+      new Edge(2, 7, 4),
+      new Edge(2, 8, 1),
+      new Edge(2, 9, 2),
+      new Edge(3, 6, 11),
+      new Edge(3, 7, 2),
+      new Edge(4, 3, 2),
+      new Edge(4, 5, 1),
+      new Edge(5, 3, 5),
+      new Edge(5, 6, 7),
+      new Edge(6, 7, 1),
+      new Edge(6, 8, 4),
+      new Edge(7, 8, 6),
+      new Edge(9, 8, 0),
+    };
 
-    int n = 10, m = 18, i = 0;
-    Edge[] g = new Edge[m];
+    Boruvkas solver = new Boruvkas(10, g);
 
-    // Edges are treated as undirected
-    g[i++] = new Edge(0, 1, 5);
-    g[i++] = new Edge(0, 3, 4);
-    g[i++] = new Edge(0, 4, 1);
-    g[i++] = new Edge(1, 2, 4);
-    g[i++] = new Edge(1, 3, 2);
-    g[i++] = new Edge(2, 7, 4);
-    g[i++] = new Edge(2, 8, 1);
-    g[i++] = new Edge(2, 9, 2);
-    g[i++] = new Edge(3, 6, 11);
-    g[i++] = new Edge(3, 7, 2);
-    g[i++] = new Edge(4, 3, 2);
-    g[i++] = new Edge(4, 5, 1);
-    g[i++] = new Edge(5, 3, 5);
-    g[i++] = new Edge(5, 6, 7);
-    g[i++] = new Edge(6, 7, 1);
-    g[i++] = new Edge(6, 8, 4);
-    g[i++] = new Edge(7, 8, 6);
-    g[i++] = new Edge(9, 8, 0);
-
-    Boruvkas solver = new Boruvkas(n, g);
-
-    Long ans = solver.getMstCost();
-    if (ans != null) {
-      System.out.println("MST cost: " + ans);
+    Long cost = solver.getMstCost();
+    if (cost != null) {
+      System.out.println("MST cost: " + cost); // 14
       for (Edge e : solver.getMst()) {
         System.out.println(e);
       }
@@ -150,7 +188,7 @@ public class Boruvkas {
     }
   }
 
-  // Union find data structure
+  // Union-Find with path compression and union by size.
   private static class UnionFind {
     int components;
     int[] id, sz;
@@ -167,8 +205,10 @@ public class Boruvkas {
 
     public int find(int p) {
       int root = p;
-      while (root != id[root]) root = id[root];
-      while (p != root) { // Do path compression
+      while (root != id[root]) {
+        root = id[root];
+      }
+      while (p != root) {
         int next = id[p];
         id[p] = root;
         p = next;
@@ -176,17 +216,11 @@ public class Boruvkas {
       return root;
     }
 
-    public boolean connected(int p, int q) {
-      return find(p) == find(q);
-    }
-
-    public int size(int p) {
-      return sz[find(p)];
-    }
-
     public void union(int p, int q) {
       int root1 = find(p), root2 = find(q);
-      if (root1 == root2) return;
+      if (root1 == root2) {
+        return;
+      }
       if (sz[root1] < sz[root2]) {
         sz[root2] += sz[root1];
         id[root1] = root2;
