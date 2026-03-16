@@ -18,24 +18,24 @@ public class BoruvkasTest {
   public void testSingleNode() {
     Edge[] graph = new Edge[0];
     Boruvkas solver = new Boruvkas(1, graph);
-    assertThat(solver.getMstCost()).isEqualTo(0L);
-    assertThat(solver.getMst()).isEmpty();
+    assertThat(solver.getMstCost().getAsLong()).isEqualTo(0L);
+    assertThat(solver.getMst().get()).isEmpty();
   }
 
   @Test
   public void testTwoNodesConnected() {
     Edge[] graph = new Edge[] {new Edge(0, 1, 5)};
     Boruvkas solver = new Boruvkas(2, graph);
-    assertThat(solver.getMstCost()).isEqualTo(5L);
-    assertThat(solver.getMst()).hasSize(1);
+    assertThat(solver.getMstCost().getAsLong()).isEqualTo(5L);
+    assertThat(solver.getMst().get()).hasSize(1);
   }
 
   @Test
   public void testTwoNodesDisconnected() {
     Edge[] graph = new Edge[0];
     Boruvkas solver = new Boruvkas(2, graph);
-    assertThat(solver.getMstCost()).isNull();
-    assertThat(solver.getMst()).isNull();
+    assertThat(solver.getMstCost().isEmpty()).isTrue();
+    assertThat(solver.getMst().isEmpty()).isTrue();
   }
 
   @Test
@@ -43,8 +43,8 @@ public class BoruvkasTest {
     Edge[] graph =
         new Edge[] {new Edge(0, 1, 1), new Edge(1, 2, 2), new Edge(0, 2, 3)};
     Boruvkas solver = new Boruvkas(3, graph);
-    assertThat(solver.getMstCost()).isEqualTo(3L);
-    assertThat(solver.getMst()).hasSize(2);
+    assertThat(solver.getMstCost().getAsLong()).isEqualTo(3L);
+    assertThat(solver.getMst().get()).hasSize(2);
   }
 
   @Test
@@ -52,8 +52,8 @@ public class BoruvkasTest {
     // Two separate components: {0,1} and {2,3}
     Edge[] graph = new Edge[] {new Edge(0, 1, 1), new Edge(2, 3, 2)};
     Boruvkas solver = new Boruvkas(4, graph);
-    assertThat(solver.getMstCost()).isNull();
-    assertThat(solver.getMst()).isNull();
+    assertThat(solver.getMstCost().isEmpty()).isTrue();
+    assertThat(solver.getMst().isEmpty()).isTrue();
   }
 
   @Test
@@ -73,8 +73,8 @@ public class BoruvkasTest {
 
     Boruvkas solver = new Boruvkas(8, g);
 
-    assertThat(solver.getMstCost()).isEqualTo(23L);
-    assertThat(solver.getMst()).hasSize(7);
+    assertThat(solver.getMstCost().getAsLong()).isEqualTo(23L);
+    assertThat(solver.getMst().get()).hasSize(7);
   }
 
   @Test
@@ -85,8 +85,8 @@ public class BoruvkasTest {
           new Edge(0, 1, 1), new Edge(1, 2, 2), new Edge(2, 3, 3), new Edge(3, 4, 4)
         };
     Boruvkas solver = new Boruvkas(5, graph);
-    assertThat(solver.getMstCost()).isEqualTo(10L);
-    assertThat(solver.getMst()).hasSize(4);
+    assertThat(solver.getMstCost().getAsLong()).isEqualTo(10L);
+    assertThat(solver.getMst().get()).hasSize(4);
   }
 
   @Test
@@ -103,8 +103,8 @@ public class BoruvkasTest {
         };
     Boruvkas solver = new Boruvkas(4, graph);
     // MST should be: 0-1 (1), 1-2 (2), 0-3 (3) = 6
-    assertThat(solver.getMstCost()).isEqualTo(6L);
-    assertThat(solver.getMst()).hasSize(3);
+    assertThat(solver.getMstCost().getAsLong()).isEqualTo(6L);
+    assertThat(solver.getMst().get()).hasSize(3);
   }
 
   @Test
@@ -112,8 +112,8 @@ public class BoruvkasTest {
     Edge[] graph =
         new Edge[] {new Edge(0, 1, 0), new Edge(1, 2, 0), new Edge(2, 3, 0)};
     Boruvkas solver = new Boruvkas(4, graph);
-    assertThat(solver.getMstCost()).isEqualTo(0L);
-    assertThat(solver.getMst()).hasSize(3);
+    assertThat(solver.getMstCost().getAsLong()).isEqualTo(0L);
+    assertThat(solver.getMst().get()).hasSize(3);
   }
 
   @Test
@@ -121,8 +121,8 @@ public class BoruvkasTest {
     Edge[] graph =
         new Edge[] {new Edge(0, 1, -5), new Edge(1, 2, -3), new Edge(0, 2, 10)};
     Boruvkas solver = new Boruvkas(3, graph);
-    assertThat(solver.getMstCost()).isEqualTo(-8L);
-    assertThat(solver.getMst()).hasSize(2);
+    assertThat(solver.getMstCost().getAsLong()).isEqualTo(-8L);
+    assertThat(solver.getMst().get()).hasSize(2);
   }
 
   @Test
@@ -137,8 +137,8 @@ public class BoruvkasTest {
           new Edge(0, 2, 5)
         };
     Boruvkas solver = new Boruvkas(4, graph);
-    assertThat(solver.getMstCost()).isEqualTo(15L);
-    assertThat(solver.getMst()).hasSize(3);
+    assertThat(solver.getMstCost().getAsLong()).isEqualTo(15L);
+    assertThat(solver.getMst().get()).hasSize(3);
   }
 
   @Test
@@ -149,8 +149,8 @@ public class BoruvkasTest {
           new Edge(0, 1, 1), new Edge(0, 2, 2), new Edge(0, 3, 3), new Edge(0, 4, 4)
         };
     Boruvkas solver = new Boruvkas(5, graph);
-    assertThat(solver.getMstCost()).isEqualTo(10L);
-    assertThat(solver.getMst()).hasSize(4);
+    assertThat(solver.getMstCost().getAsLong()).isEqualTo(10L);
+    assertThat(solver.getMst().get()).hasSize(4);
   }
 
   @Test
@@ -160,10 +160,10 @@ public class BoruvkasTest {
     Boruvkas solver = new Boruvkas(3, graph);
 
     // Call multiple times to verify idempotency
-    Long cost1 = solver.getMstCost();
-    Long cost2 = solver.getMstCost();
-    List<Edge> mst1 = solver.getMst();
-    List<Edge> mst2 = solver.getMst();
+    long cost1 = solver.getMstCost().getAsLong();
+    long cost2 = solver.getMstCost().getAsLong();
+    List<Edge> mst1 = solver.getMst().get();
+    List<Edge> mst2 = solver.getMst().get();
 
     assertThat(cost1).isEqualTo(cost2);
     assertThat(mst1).isEqualTo(mst2);
@@ -191,8 +191,8 @@ public class BoruvkasTest {
         };
     Boruvkas solver = new Boruvkas(9, graph);
     // Known MST cost for this classic graph
-    assertThat(solver.getMstCost()).isEqualTo(37L);
-    assertThat(solver.getMst()).hasSize(8);
+    assertThat(solver.getMstCost().getAsLong()).isEqualTo(37L);
+    assertThat(solver.getMst().get()).hasSize(8);
   }
 
   @Test
@@ -206,9 +206,8 @@ public class BoruvkasTest {
           new Edge(0, 2, 5)
         };
     Boruvkas solver = new Boruvkas(4, graph);
-    List<Edge> mst = solver.getMst();
+    List<Edge> mst = solver.getMst().get();
 
-    assertThat(mst).isNotNull();
     assertThat(mst).hasSize(3);
 
     // Verify MST connects all nodes (using simple connectivity check)
@@ -244,7 +243,7 @@ public class BoruvkasTest {
         };
     Boruvkas solver = new Boruvkas(3, graph);
     // Should pick the minimum weight edge between 0 and 1
-    assertThat(solver.getMstCost()).isEqualTo(5L);
-    assertThat(solver.getMst()).hasSize(2);
+    assertThat(solver.getMstCost().getAsLong()).isEqualTo(5L);
+    assertThat(solver.getMst().get()).hasSize(2);
   }
 }

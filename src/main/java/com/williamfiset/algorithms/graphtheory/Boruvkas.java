@@ -23,6 +23,8 @@ package com.williamfiset.algorithms.graphtheory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalLong;
 
 public class Boruvkas {
 
@@ -53,19 +55,19 @@ public class Boruvkas {
   }
 
   /**
-   * Returns the edges in the MST, or null if the graph is disconnected.
+   * Returns the edges in the MST, or empty if the graph is disconnected.
    */
-  public List<Edge> getMst() {
+  public Optional<List<Edge>> getMst() {
     solve();
-    return mstExists ? mst : null;
+    return mstExists ? Optional.of(mst) : Optional.empty();
   }
 
   /**
-   * Returns the total cost of the MST, or null if the graph is disconnected.
+   * Returns the total cost of the MST, or empty if the graph is disconnected.
    */
-  public Long getMstCost() {
+  public OptionalLong getMstCost() {
     solve();
-    return mstExists ? minCostSum : null;
+    return mstExists ? OptionalLong.of(minCostSum) : OptionalLong.empty();
   }
 
   private void solve() {
@@ -143,10 +145,10 @@ public class Boruvkas {
 
     Boruvkas solver = new Boruvkas(8, g);
 
-    Long cost = solver.getMstCost();
-    if (cost != null) {
-      System.out.println("MST cost: " + cost); // 23
-      for (Edge e : solver.getMst()) {
+    OptionalLong cost = solver.getMstCost();
+    if (cost.isPresent()) {
+      System.out.println("MST cost: " + cost.getAsLong()); // 23
+      for (Edge e : solver.getMst().get()) {
         System.out.printf("Edge %d-%d, cost: %d%n", e.u, e.v, e.cost);
       }
     } else {
