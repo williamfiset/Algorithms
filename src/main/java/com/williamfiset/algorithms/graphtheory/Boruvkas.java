@@ -49,6 +49,7 @@ public class Boruvkas {
     }
     this.graph = graph;
     this.n = n;
+    this.mst = new ArrayList<>();
   }
 
   /**
@@ -72,12 +73,10 @@ public class Boruvkas {
       return;
     }
 
-    mst = new ArrayList<>();
     UnionFind uf = new UnionFind(n);
 
     while (uf.components > 1) {
       Edge[] cheapest = new Edge[n];
-      boolean merged = false;
 
       // For each edge, track the cheapest crossing edge for each component.
       for (Edge e : graph) {
@@ -95,22 +94,16 @@ public class Boruvkas {
       }
 
       // Merge components using their cheapest crossing edges.
-      for (int i = 0; i < n; i++) {
-        Edge e = cheapest[i];
-        if (e == null) {
-          continue;
-        }
-        int root1 = uf.find(e.u);
-        int root2 = uf.find(e.v);
-        if (root1 != root2) {
-          uf.union(root1, root2);
+      int prevComponents = uf.components;
+      for (Edge e : cheapest) {
+        if (e != null && uf.find(e.u) != uf.find(e.v)) {
+          uf.union(e.u, e.v);
           mst.add(e);
           minCostSum += e.cost;
-          merged = true;
         }
       }
 
-      if (!merged) {
+      if (uf.components == prevComponents) {
         break;
       }
     }
