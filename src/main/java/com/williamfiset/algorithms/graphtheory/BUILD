@@ -41,13 +41,6 @@ java_binary(
     runtime_deps = [":graphtheory"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:BellmanFordAdjacencyMatrix
-java_binary(
-    name = "BellmanFordAdjacencyMatrix",
-    main_class = "com.williamfiset.algorithms.graphtheory.BellmanFordAdjacencyMatrix",
-    runtime_deps = [":graphtheory"],
-)
-
 # bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:BellmanFordEdgeList
 java_binary(
     name = "BellmanFordEdgeList",
