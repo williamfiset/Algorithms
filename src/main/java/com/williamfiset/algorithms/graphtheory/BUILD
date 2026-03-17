@@ -90,20 +90,6 @@ java_binary(
     runtime_deps = [":graphtheory"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:DepthFirstSearchAdjacencyListIterative
-java_binary(
-    name = "DepthFirstSearchAdjacencyListIterative",
-    main_class = "com.williamfiset.algorithms.graphtheory.DepthFirstSearchAdjacencyListIterative",
-    runtime_deps = [":graphtheory"],
-)
-
-# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:DepthFirstSearchAdjacencyListIterativeFastStack
-java_binary(
-    name = "DepthFirstSearchAdjacencyListIterativeFastStack",
-    main_class = "com.williamfiset.algorithms.graphtheory.DepthFirstSearchAdjacencyListIterativeFastStack",
-    runtime_deps = [":graphtheory"],
-)
-
 # bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:DepthFirstSearchAdjacencyListRecursive
 java_binary(
     name = "DepthFirstSearchAdjacencyListRecursive",
