@@ -172,10 +172,10 @@ public class Boruvkas {
     }
 
     public int find(int p) {
-      if (id[p] != p) {
-        id[p] = find(id[p]);
+      if (id[p] == p) {
+        return p;
       }
-      return id[p];
+      return id[p] = find(id[p]);
     }
 
     public void union(int p, int q) {
