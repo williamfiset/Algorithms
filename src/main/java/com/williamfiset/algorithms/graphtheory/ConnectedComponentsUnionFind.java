@@ -49,6 +49,14 @@ public class ConnectedComponentsUnionFind {
     return uf.find(node);
   }
 
+  /**
+   * Returns the size of the component that the given node belongs to.
+   */
+  public int componentSize(int node) {
+    solve();
+    return uf.sz[uf.find(node)];
+  }
+
   private void solve() {
     if (solved) {
       return;
