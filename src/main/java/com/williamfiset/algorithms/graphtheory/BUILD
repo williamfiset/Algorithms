@@ -83,10 +83,10 @@ java_binary(
     runtime_deps = [":graphtheory"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:ConnectedComponentsDfsSolverAdjacencyList
+# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:ConnectedComponentsDfs
 java_binary(
-    name = "ConnectedComponentsDfsSolverAdjacencyList",
-    main_class = "com.williamfiset.algorithms.graphtheory.ConnectedComponentsDfsSolverAdjacencyList",
+    name = "ConnectedComponentsDfs",
+    main_class = "com.williamfiset.algorithms.graphtheory.ConnectedComponentsDfs",
     runtime_deps = [":graphtheory"],
 )
 
