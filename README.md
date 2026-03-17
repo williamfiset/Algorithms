@@ -208,7 +208,7 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 - [Bridges/cut edges (adjacency list)](src/main/java/com/williamfiset/algorithms/graphtheory/BridgesAdjacencyList.java) **- O(V+E)**
 - [Boruvkas (adjacency list, min spanning tree algorithm)](src/main/java/com/williamfiset/algorithms/graphtheory/Boruvkas.java) **- O(Elog(V))**
 - [Find connected components (adjacency list, union find)](src/main/java/com/williamfiset/algorithms/graphtheory/ConnectedComponentsUnionFind.java) **- O(V+E)**
-- [Find connected components (adjacency list, DFS)](src/main/java/com/williamfiset/algorithms/graphtheory/ConnectedComponentsDfsSolverAdjacencyList.java) **- O(V+E)**
+- [Find connected components (adjacency list, DFS)](src/main/java/com/williamfiset/algorithms/graphtheory/ConnectedComponentsDfs.java) **- O(V+E)**
 - [Depth first search (adjacency list, iterative)](src/main/java/com/williamfiset/algorithms/graphtheory/DepthFirstSearchAdjacencyListIterative.java) **- O(V+E)**
 - [Depth first search (adjacency list, iterative, fast stack)](src/main/java/com/williamfiset/algorithms/graphtheory/DepthFirstSearchAdjacencyListIterativeFastStack.java) **- O(V+E)**
 - [:movie_camera:](https://www.youtube.com/watch?v=7fujbpJ0LB4) [Depth first search (adjacency list, recursive)](src/main/java/com/williamfiset/algorithms/graphtheory/DepthFirstSearchAdjacencyListRecursive.java) **- O(V+E)**
