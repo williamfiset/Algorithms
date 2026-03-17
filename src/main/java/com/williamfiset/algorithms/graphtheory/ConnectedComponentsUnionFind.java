@@ -16,7 +16,6 @@
 package com.williamfiset.algorithms.graphtheory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ConnectedComponentsUnionFind {
@@ -24,8 +23,7 @@ public class ConnectedComponentsUnionFind {
   private final int n;
   private final List<List<Integer>> graph;
   private boolean solved;
-  private int componentCount;
-  private int[] componentIds;
+  private UnionFind uf;
 
   public ConnectedComponentsUnionFind(List<List<Integer>> graph) {
     if (graph == null) {
@@ -40,16 +38,15 @@ public class ConnectedComponentsUnionFind {
    */
   public int countComponents() {
     solve();
-    return componentCount;
+    return uf.components;
   }
 
   /**
-   * Returns an array where {@code componentIds[i]} is the component id of node i.
-   * Component ids are 0-indexed.
+   * Returns the component id (root node) of the given node.
    */
-  public int[] getComponentIds() {
+  public int componentId(int node) {
     solve();
-    return componentIds;
+    return uf.find(node);
   }
 
   private void solve() {
@@ -57,23 +54,11 @@ public class ConnectedComponentsUnionFind {
       return;
     }
 
-    UnionFind uf = new UnionFind(n);
+    uf = new UnionFind(n);
     for (int u = 0; u < n; u++) {
       for (int v : graph.get(u)) {
         uf.union(u, v);
       }
-    }
-
-    // Assign component ids: map each root to a sequential id.
-    componentIds = new int[n];
-    int[] rootToId = new int[n];
-    Arrays.fill(rootToId, -1);
-    for (int i = 0; i < n; i++) {
-      int root = uf.find(i);
-      if (rootToId[root] == -1) {
-        rootToId[root] = componentCount++;
-      }
-      componentIds[i] = rootToId[root];
     }
 
     solved = true;
@@ -109,9 +94,8 @@ public class ConnectedComponentsUnionFind {
 
     System.out.printf("Number of components: %d%n", solver.countComponents());
 
-    int[] ids = solver.getComponentIds();
     for (int i = 0; i < n; i++) {
-      System.out.printf("Node %d -> component %d%n", i, ids[i]);
+      System.out.printf("Node %d -> component %d%n", i, solver.componentId(i));
     }
   }
 
@@ -130,10 +114,12 @@ public class ConnectedComponentsUnionFind {
 
   // Union-Find with path compression and union by size.
   private static class UnionFind {
+    int components;
     private final int[] id;
     private final int[] sz;
 
     UnionFind(int n) {
+      components = n;
       id = new int[n];
       sz = new int[n];
       for (int i = 0; i < n; i++) {
@@ -162,6 +148,7 @@ public class ConnectedComponentsUnionFind {
         sz[root1] += sz[root2];
         id[root2] = root1;
       }
+      components--;
     }
   }
 }
