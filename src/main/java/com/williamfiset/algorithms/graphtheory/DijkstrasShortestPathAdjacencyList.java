@@ -106,7 +106,7 @@ public class DijkstrasShortestPathAdjacencyList {
     dist[start] = 0;
 
     // Keep a priority queue of the next most promising node to visit.
-    PriorityQueue<Node> pq = new PriorityQueue<>(2 * n);
+    PriorityQueue<Node> pq = new PriorityQueue<>();
     pq.offer(new Node(start, 0));
 
     // Array used to track which nodes have already been visited.
