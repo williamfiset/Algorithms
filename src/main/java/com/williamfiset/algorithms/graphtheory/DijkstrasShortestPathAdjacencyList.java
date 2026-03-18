@@ -11,15 +11,11 @@ package com.williamfiset.algorithms.graphtheory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
 public class DijkstrasShortestPathAdjacencyList {
-
-  // Small epsilon value to comparing double values.
-  private static final double EPS = 1e-6;
 
   // An edge class to represent a directed edge
   // between two nodes with a certain cost.
@@ -35,7 +31,7 @@ public class DijkstrasShortestPathAdjacencyList {
   }
 
   // Node class to track the nodes to visit while running Dijkstra's
-  public static class Node {
+  public static class Node implements Comparable<Node> {
     int id;
     double value;
 
@@ -43,21 +39,17 @@ public class DijkstrasShortestPathAdjacencyList {
       this.id = id;
       this.value = value;
     }
+
+    @Override
+    public int compareTo(Node other) {
+      return Double.compare(this.value, other.value);
+    }
   }
 
   private int n;
   private double[] dist;
   private Integer[] prev;
   private List<List<Edge>> graph;
-
-  private Comparator<Node> comparator =
-      new Comparator<Node>() {
-        @Override
-        public int compare(Node node1, Node node2) {
-          if (Math.abs(node1.value - node2.value) < EPS) return 0;
-          return (node1.value - node2.value) > 0 ? +1 : -1;
-        }
-      };
 
   /**
    * Initialize the solver by providing the graph size and a starting node. Use the {@link #addEdge}
@@ -68,12 +60,6 @@ public class DijkstrasShortestPathAdjacencyList {
   public DijkstrasShortestPathAdjacencyList(int n) {
     this.n = n;
     createEmptyGraph();
-  }
-
-  public DijkstrasShortestPathAdjacencyList(int n, Comparator<Node> comparator) {
-    this(n);
-    if (comparator == null) throw new IllegalArgumentException("Comparator cannot be null");
-    this.comparator = comparator;
   }
 
   /**
@@ -100,13 +86,12 @@ public class DijkstrasShortestPathAdjacencyList {
    *     'end' are not connected then an empty array is returned.
    */
   public List<Integer> reconstructPath(int start, int end) {
-    if (end < 0 || end >= n) throw new IllegalArgumentException("Invalid node index");
-    if (start < 0 || start >= n) throw new IllegalArgumentException("Invalid node index");
-    double dist = dijkstra(start, end);
-    List<Integer> path = new ArrayList<>();
-    if (dist == Double.POSITIVE_INFINITY) return path;
-    for (Integer at = end; at != null; at = prev[at]) path.add(at);
-    Collections.reverse(path);
+    dijkstra(start, end);
+    LinkedList<Integer> path = new LinkedList<>();
+    if (dist[end] == Double.POSITIVE_INFINITY) return path;
+    for (int at = end; at != start; at = prev[at])
+      path.addFirst(at);
+    path.addFirst(start);
     return path;
   }
 
@@ -121,7 +106,7 @@ public class DijkstrasShortestPathAdjacencyList {
     dist[start] = 0;
 
     // Keep a priority queue of the next most promising node to visit.
-    PriorityQueue<Node> pq = new PriorityQueue<>(2 * n, comparator);
+    PriorityQueue<Node> pq = new PriorityQueue<>(2 * n);
     pq.offer(new Node(start, 0));
 
     // Array used to track which nodes have already been visited.
