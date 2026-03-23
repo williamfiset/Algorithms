@@ -27,8 +27,8 @@ public class UnionFind {
   // Used to track the size of each component
   private int[] sz;
 
-  // id[i] points to the parent of i, if id[i] = i then i is a root node
-  private int[] id;
+  // parent[i] points to the parent of i, if parent[i] = i then i is a root node
+  private int[] parent;
 
   // Tracks the number of components in the union find
   private int numComponents;
@@ -43,10 +43,10 @@ public class UnionFind {
 
     this.size = numComponents = size;
     sz = new int[size];
-    id = new int[size];
+    parent = new int[size];
 
     for (int i = 0; i < size; i++) {
-      id[i] = i; // Link to itself (self root)
+      parent[i] = i; // Link to itself (self root)
       sz[i] = 1; // Each component is originally of size one
     }
   }
@@ -59,24 +59,9 @@ public class UnionFind {
    * @return the root of the component containing p
    */
   public int find(int p) {
-    int root = p;
-    while (root != id[root]) root = id[root];
-
-    // Path compression: point every node along the path directly to root
-    while (p != root) {
-      int next = id[p];
-      id[p] = root;
-      p = next;
-    }
-
-    return root;
+    if (p == parent[p]) return p;
+    return parent[p] = find(parent[p]);
   }
-
-  // Alternative recursive formulation for find with path compression:
-  // public int find(int p) {
-  //   if (p == id[p]) return p;
-  //   return id[p] = find(id[p]);
-  // }
 
   /** Returns true if elements p and q are in the same component. */
   public boolean connected(int p, int q) {
@@ -114,11 +99,11 @@ public class UnionFind {
     // Merge smaller component into the larger one
     if (sz[root1] < sz[root2]) {
       sz[root2] += sz[root1];
-      id[root1] = root2;
+      parent[root1] = root2;
       sz[root1] = 0;
     } else {
       sz[root1] += sz[root2];
-      id[root2] = root1;
+      parent[root2] = root1;
       sz[root2] = 0;
     }
 
