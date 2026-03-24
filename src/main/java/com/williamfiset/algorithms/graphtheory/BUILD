@@ -139,13 +139,6 @@ java_binary(
     runtime_deps = [":graphtheory"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:GraphDiameter
-java_binary(
-    name = "GraphDiameter",
-    main_class = "com.williamfiset.algorithms.graphtheory.GraphDiameter",
-    runtime_deps = [":graphtheory"],
-)
-
 # bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:Kahns
 java_binary(
     name = "Kahns",

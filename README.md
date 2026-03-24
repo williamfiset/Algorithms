@@ -214,7 +214,6 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 - [:movie_camera:](https://www.youtube.com/watch?v=pSqmAO-m7Lk) [Dijkstra's shortest path (adjacency list, eager implementation + D-ary heap)](src/main/java/com/williamfiset/algorithms/graphtheory/DijkstrasShortestPathAdjacencyListWithDHeap.java) **- O(Elog<sub>E/V</sub>(V))**
 - [:movie_camera:](https://www.youtube.com/watch?v=8MpoO2zA2l4) [Eulerian Path (directed edges)](src/main/java/com/williamfiset/algorithms/graphtheory/EulerianPathDirectedEdgesAdjacencyList.java) **- O(E+V)**
 - [:movie_camera:](https://www.youtube.com/watch?v=4NQ3HnhyNfQ) [Floyd Warshall algorithm (adjacency matrix, negative cycle check)](src/main/java/com/williamfiset/algorithms/graphtheory/FloydWarshallSolver.java) **- O(V<sup>3</sup>)**
-- [Graph diameter (adjacency list)](src/main/java/com/williamfiset/algorithms/graphtheory/GraphDiameter.java) **- O(VE)**
 - [:movie_camera:](https://www.youtube.com/watch?v=cIBFEhD77b4) [Kahn's algorithm (topological sort, adjacency list)](src/main/java/com/williamfiset/algorithms/graphtheory/Kahns.java) **- O(E+V)**
 - [Kruskal's min spanning tree algorithm (edge list, union find)](src/main/java/com/williamfiset/algorithms/graphtheory/KruskalsEdgeList.java) **- O(Elog(E))**
 - [:movie_camera:](https://www.youtube.com/watch?v=JZBQLXgSGfs) [Kruskal's min spanning tree algorithm (edge list, union find, lazy sorting)](src/main/java/com/williamfiset/algorithms/graphtheory/KruskalsEdgeListPartialSortSolver.java) **- O(Elog(E))**
