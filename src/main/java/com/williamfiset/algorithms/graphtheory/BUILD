@@ -160,13 +160,6 @@ java_binary(
     runtime_deps = [":graphtheory"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:KruskalsEdgeListPartialSortSolver
-java_binary(
-    name = "KruskalsEdgeListPartialSortSolver",
-    main_class = "com.williamfiset.algorithms.graphtheory.KruskalsEdgeListPartialSortSolver",
-    runtime_deps = [":graphtheory"],
-)
-
 # bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:LazyPrimsAdjacencyList
 java_binary(
     name = "LazyPrimsAdjacencyList",
