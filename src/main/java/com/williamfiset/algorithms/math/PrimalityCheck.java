@@ -55,18 +55,13 @@ public class PrimalityCheck {
       return true;
     if (n % 2 == 0 || n % 3 == 0 || n % 5 == 0)
       return false;
+    // Gaps between consecutive residues coprime to 30: 7,11,13,17,19,23,29,31 (i.e. +4,+2,+4,+2,+4,+6,+2,+6).
+    int[] gaps = {4, 2, 4, 2, 4, 6, 2, 6};
     long limit = (long) Math.sqrt(n);
-    int[] offsets = {1, 7, 11, 13, 17, 19, 23, 29};
-    for (long base = 0; base <= limit; base += 30)
-      for (int offset : offsets) {
-        long d = base + offset;
-        if (d < 7)
-          continue;
-        if (d > limit)
-          break;
-        if (n % d == 0)
-          return false;
-      }
+    int gi = 0;
+    for (long d = 7; d <= limit; d += gaps[gi++ % 8])
+      if (n % d == 0)
+        return false;
     return true;
   }
 

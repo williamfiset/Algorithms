@@ -21,13 +21,6 @@ java_binary(
     runtime_deps = [":math"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/math:EulerTotientFunctionWithSieve
-java_binary(
-    name = "EulerTotientFunctionWithSieve",
-    main_class = "com.williamfiset.algorithms.math.EulerTotientFunctionWithSieve",
-    runtime_deps = [":math"],
-)
-
 # bazel run //src/main/java/com/williamfiset/algorithms/math:FastFourierTransform
 java_binary(
     name = "FastFourierTransform",
