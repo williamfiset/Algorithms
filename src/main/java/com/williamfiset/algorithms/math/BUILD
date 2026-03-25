@@ -42,10 +42,10 @@ java_binary(
     runtime_deps = [":math"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/math:IsPrime
+# bazel run //src/main/java/com/williamfiset/algorithms/math:PrimalityCheck
 java_binary(
-    name = "IsPrime",
-    main_class = "com.williamfiset.algorithms.math.IsPrime",
+    name = "PrimalityCheck",
+    main_class = "com.williamfiset.algorithms.math.PrimalityCheck",
     runtime_deps = [":math"],
 )
 
