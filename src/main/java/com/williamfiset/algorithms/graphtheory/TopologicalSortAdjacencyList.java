@@ -5,6 +5,9 @@
  *
  * <p>Also includes a method to find shortest paths in a DAG using the topological ordering.
  *
+ * <p>NOTE: An arguably simpler approach to topological sorting is Kahn's algorithm, which uses
+ * in-degree counting and BFS instead of DFS. See {@link Kahns}.
+ *
  * <p>Time: O(V + E)
  *
  * <p>Space: O(V + E)
