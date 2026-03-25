@@ -25,3 +25,14 @@ java_test(
     runtime_deps = JUNIT5_RUNTIME_DEPS,
     deps = TEST_DEPS,
 )
+
+# bazel test //src/test/java/com/williamfiset/algorithms/math:EulerTotientFunctionTest
+java_test(
+    name = "EulerTotientFunctionTest",
+    srcs = ["EulerTotientFunctionTest.java"],
+    main_class = "org.junit.platform.console.ConsoleLauncher",
+    use_testrunner = False,
+    args = ["--select-class=com.williamfiset.algorithms.math.EulerTotientFunctionTest"],
+    runtime_deps = JUNIT5_RUNTIME_DEPS,
+    deps = TEST_DEPS,
+)
