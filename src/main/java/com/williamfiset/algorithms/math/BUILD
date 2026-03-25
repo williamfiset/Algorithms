@@ -49,10 +49,10 @@ java_binary(
     runtime_deps = [":math"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/math:LCM
+# bazel run //src/main/java/com/williamfiset/algorithms/math:Lcm
 java_binary(
-    name = "LCM",
-    main_class = "com.williamfiset.algorithms.math.LCM",
+    name = "Lcm",
+    main_class = "com.williamfiset.algorithms.math.Lcm",
     runtime_deps = [":math"],
 )
 
