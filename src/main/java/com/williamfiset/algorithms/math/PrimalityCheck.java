@@ -39,6 +39,37 @@ public class PrimalityCheck {
     return true;
   }
 
+  /**
+   * Optimized primality check using a mod 30 wheel. This is a balanced generalization of the mod 6
+   * approach above — by also eliminating multiples of 5, we only test 8 out of every 30 candidates
+   * (27%) instead of 2 out of every 6 (33%).
+   *
+   * <p>The 8 residues coprime to 30 (= 2·3·5) are: 1, 7, 11, 13, 17, 19, 23, 29. Larger wheels
+   * (mod 210 = 2·3·5·7 with 48 offsets) exist but offer diminishing returns for the added code
+   * complexity.
+   */
+  public static boolean isPrimeWheel30(long n) {
+    if (n < 2)
+      return false;
+    if (n == 2 || n == 3 || n == 5)
+      return true;
+    if (n % 2 == 0 || n % 3 == 0 || n % 5 == 0)
+      return false;
+    long limit = (long) Math.sqrt(n);
+    int[] offsets = {1, 7, 11, 13, 17, 19, 23, 29};
+    for (long base = 0; base <= limit; base += 30)
+      for (int offset : offsets) {
+        long d = base + offset;
+        if (d < 7)
+          continue;
+        if (d > limit)
+          break;
+        if (n % d == 0)
+          return false;
+      }
+    return true;
+  }
+
   public static void main(String[] args) {
     System.out.println(isPrime(5));    // true
     System.out.println(isPrime(31));   // true
@@ -46,5 +77,14 @@ public class PrimalityCheck {
     System.out.println(isPrime(8763857775536878331L)); // true
     System.out.println(isPrime(4));    // false
     System.out.println(isPrime(15));   // false
+
+    System.out.println();
+
+    System.out.println(isPrimeWheel30(5));    // true
+    System.out.println(isPrimeWheel30(31));   // true
+    System.out.println(isPrimeWheel30(1433)); // true
+    System.out.println(isPrimeWheel30(8763857775536878331L)); // true
+    System.out.println(isPrimeWheel30(4));    // false
+    System.out.println(isPrimeWheel30(15));   // false
   }
 }
