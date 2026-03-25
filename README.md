@@ -245,7 +245,7 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 - [Totient function (phi function, relatively prime number count)](src/main/java/com/williamfiset/algorithms/math/EulerTotientFunction.java) **- O(n<sup>1/4</sup>)**
 - [Totient function using sieve (phi function, relatively prime number count)](src/main/java/com/williamfiset/algorithms/math/EulerTotientFunctionWithSieve.java) **- O(nlog(log(n)))**
 - [Extended euclidean algorithm](src/main/java/com/williamfiset/algorithms/math/ExtendedEuclideanAlgorithm.java) **- ~O(log(a + b))**
-- [Greatest Common Divisor (GCD)](src/main/java/com/williamfiset/algorithms/math/GCD.java) **- ~O(log(a + b))**
+- [Greatest Common Divisor (GCD)](src/main/java/com/williamfiset/algorithms/math/Gcd.java) **- ~O(log(a + b))**
 - [Fast Fourier transform (quick polynomial multiplication)](src/main/java/com/williamfiset/algorithms/math/FastFourierTransform.java) **- O(nlog(n))**
 - [Fast Fourier transform (quick polynomial multiplication, complex numbers)](src/main/java/com/williamfiset/algorithms/math/FastFourierTransformComplexNumbers.java) **- O(nlog(n))**
 - [Primality check](src/main/java/com/williamfiset/algorithms/math/IsPrime.java) **- O(√n)**

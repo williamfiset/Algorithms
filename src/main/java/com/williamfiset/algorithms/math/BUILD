@@ -35,10 +35,10 @@ java_binary(
     runtime_deps = [":math"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/math:GCD
+# bazel run //src/main/java/com/williamfiset/algorithms/math:Gcd
 java_binary(
-    name = "GCD",
-    main_class = "com.williamfiset.algorithms.math.GCD",
+    name = "Gcd",
+    main_class = "com.williamfiset.algorithms.math.Gcd",
     runtime_deps = [":math"],
 )
 
