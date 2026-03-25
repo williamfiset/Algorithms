@@ -181,12 +181,6 @@ java_binary(
     runtime_deps = [":graphtheory"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:TarjanAdjacencyMatrix
-java_binary(
-    name = "TarjanAdjacencyMatrix",
-    main_class = "com.williamfiset.algorithms.graphtheory.TarjanAdjacencyMatrix",
-    runtime_deps = [":graphtheory"],
-)
 
 # bazel run //src/main/java/com/williamfiset/algorithms/graphtheory:TarjanSccSolverAdjacencyList
 java_binary(

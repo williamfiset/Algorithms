@@ -1,5 +1,5 @@
 /**
- * An implementation of Tarjan's Strongly Connected Components algorithm using an adjacency list.
+ * Implementation of Tarjan's Strongly Connected Components algorithm using an adjacency list.
  *
  * <p>Verified against:
  *
@@ -9,7 +9,9 @@
  *   <li>https://www.hackerearth.com/practice/algorithms/graphs/strongly-connected-components/tutorial
  * </ul>
  *
- * <p>Time complexity: O(V+E)
+ * <p>Time: O(V + E)
+ *
+ * <p>Space: O(V)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
@@ -21,51 +23,62 @@ import java.util.*;
 
 public class TarjanSccSolverAdjacencyList {
 
-  private int n;
-  private List<List<Integer>> graph;
+  private final int n;
+  private final List<List<Integer>> graph;
 
   private boolean solved;
   private int sccCount, id;
-  private boolean[] visited;
+  private boolean[] onStack;
   private int[] ids, low, sccs;
   private Deque<Integer> stack;
 
   private static final int UNVISITED = -1;
 
+  /**
+   * Creates a Tarjan SCC solver for the given directed graph.
+   *
+   * @param graph adjacency list representation of a directed graph.
+   * @throws IllegalArgumentException if the graph is null.
+   */
   public TarjanSccSolverAdjacencyList(List<List<Integer>> graph) {
-    if (graph == null) throw new IllegalArgumentException("Graph cannot be null.");
+    if (graph == null)
+      throw new IllegalArgumentException("Graph cannot be null.");
     n = graph.size();
     this.graph = graph;
   }
 
-  // Returns the number of strongly connected components in the graph.
+  /** Returns the number of strongly connected components in the graph. */
   public int sccCount() {
-    if (!solved) solve();
+    if (!solved)
+      solve();
     return sccCount;
   }
 
-  // Get the connected components of this graph. If two indexes
-  // have the same value then they're in the same SCC.
+  /**
+   * Returns the SCC id for each node. If two nodes have the same value, they belong to the same
+   * SCC.
+   */
   public int[] getSccs() {
-    if (!solved) solve();
+    if (!solved)
+      solve();
     return sccs;
   }
 
+  /** Runs Tarjan's algorithm. */
   public void solve() {
-    if (solved) return;
+    if (solved)
+      return;
 
     ids = new int[n];
     low = new int[n];
     sccs = new int[n];
-    visited = new boolean[n];
+    onStack = new boolean[n];
     stack = new ArrayDeque<>();
     Arrays.fill(ids, UNVISITED);
 
-    for (int i = 0; i < n; i++) {
-      if (ids[i] == UNVISITED) {
+    for (int i = 0; i < n; i++)
+      if (ids[i] == UNVISITED)
         dfs(i);
-      }
-    }
 
     solved = true;
   }
@@ -73,59 +86,41 @@ public class TarjanSccSolverAdjacencyList {
   private void dfs(int at) {
     ids[at] = low[at] = id++;
     stack.push(at);
-    visited[at] = true;
+    onStack[at] = true;
 
     for (int to : graph.get(at)) {
-      if (ids[to] == UNVISITED) {
+      if (ids[to] == UNVISITED)
         dfs(to);
-      }
-      if (visited[to]) {
+      if (onStack[to])
         low[at] = min(low[at], low[to]);
-      }
-      /*
-       TODO(william): investigate whether the proper way to update the lowlinks
-       is the following bit of code. From my experience this doesn't seem to
-       matter if the output is placed in a separate output array, but this needs
-       further investigation.
-
-       if (ids[to] == UNVISITED) {
-         dfs(to);
-         low[at] = min(low[at], low[to]);
-       }
-       if (visited[to]) {
-         low[at] = min(low[at], ids[to]);
-       }
-      */
-
     }
 
-    // On recursive callback, if we're at the root node (start of SCC)
-    // empty the seen stack until back to root.
+    // If we're at the root of an SCC, pop all nodes in this component off the stack.
     if (ids[at] == low[at]) {
       for (int node = stack.pop(); ; node = stack.pop()) {
-        visited[node] = false;
+        onStack[node] = false;
         sccs[node] = sccCount;
-        if (node == at) break;
+        if (node == at)
+          break;
       }
       sccCount++;
     }
   }
 
-  // Initializes adjacency list with n nodes.
+  /** Creates an adjacency list with n nodes. */
   public static List<List<Integer>> createGraph(int n) {
     List<List<Integer>> graph = new ArrayList<>(n);
-    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
+    for (int i = 0; i < n; i++)
+      graph.add(new ArrayList<>());
     return graph;
   }
 
-  // Adds a directed edge from node 'from' to node 'to'
+  /** Adds a directed edge from node 'from' to node 'to'. */
   public static void addEdge(List<List<Integer>> graph, int from, int to) {
     graph.get(from).add(to);
   }
 
-  /* Example usage: */
-
-  public static void main(String[] arg) {
+  public static void main(String[] args) {
     int n = 8;
     List<List<Integer>> graph = createGraph(n);
 
@@ -148,15 +143,9 @@ public class TarjanSccSolverAdjacencyList {
     int[] sccs = solver.getSccs();
     Map<Integer, List<Integer>> multimap = new HashMap<>();
     for (int i = 0; i < n; i++) {
-      if (!multimap.containsKey(sccs[i])) multimap.put(sccs[i], new ArrayList<>());
-      multimap.get(sccs[i]).add(i);
+      multimap.computeIfAbsent(sccs[i], k -> new ArrayList<>()).add(i);
     }
 
-    // Prints:
-    // Number of Strongly Connected Components: 3
-    // Nodes: [0, 1, 2] form a Strongly Connected Component.
-    // Nodes: [3, 7] form a Strongly Connected Component.
-    // Nodes: [4, 5, 6] form a Strongly Connected Component.
     System.out.printf("Number of Strongly Connected Components: %d\n", solver.sccCount());
     for (List<Integer> scc : multimap.values()) {
       System.out.println("Nodes: " + scc + " form a Strongly Connected Component.");
