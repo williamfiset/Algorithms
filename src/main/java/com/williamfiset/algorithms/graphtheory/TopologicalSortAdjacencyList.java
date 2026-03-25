@@ -83,17 +83,12 @@ public class TopologicalSortAdjacencyList {
 
     for (int i = 0; i < numNodes; i++) {
       int nodeIndex = topsort[i];
-      if (dist[nodeIndex] != null) {
-        List<Edge> adjacentEdges = graph.get(nodeIndex);
-        if (adjacentEdges != null) {
-          for (Edge edge : adjacentEdges) {
-            int newDist = dist[nodeIndex] + edge.weight;
-            if (dist[edge.to] == null)
-              dist[edge.to] = newDist;
-            else
-              dist[edge.to] = Math.min(dist[edge.to], newDist);
-          }
-        }
+      if (dist[nodeIndex] == null)
+        continue;
+      for (Edge edge : graph.getOrDefault(nodeIndex, Collections.emptyList())) {
+        int newDist = dist[nodeIndex] + edge.weight;
+        if (dist[edge.to] == null || newDist < dist[edge.to])
+          dist[edge.to] = newDist;
       }
     }
 
