@@ -27,7 +27,8 @@ public class Heapsort implements InplaceSort {
     for (int i = n / 2 - 1; i >= 0; i--)
       sink(ar, n, i);
 
-    // Repeatedly swap the max to the end and restore the heap.
+    // Extract elements one by one: move the root (max element) to the end of the unsorted
+    // region, shrink the heap by one, and sink the new root to restore the heap property.
     for (int i = n - 1; i >= 0; i--) {
       swap(ar, 0, i);
       sink(ar, i, 0);
@@ -36,11 +37,12 @@ public class Heapsort implements InplaceSort {
 
   // Sinks element at index i down to its correct position in a max-heap of size n.
   private static void sink(int[] ar, int n, int i) {
-    for (int left = 2 * i + 1; left < n; left = 2 * i + 1) {
-      int right = left + 1;
+    while (true) {
+      int left = 2 * i + 1;
+      int right = 2 * i + 2;
       int largest = i;
 
-      if (ar[left] > ar[largest])
+      if (left < n && ar[left] > ar[largest])
         largest = left;
       if (right < n && ar[right] > ar[largest])
         largest = right;
