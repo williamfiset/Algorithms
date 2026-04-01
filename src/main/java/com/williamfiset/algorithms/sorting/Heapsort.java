@@ -1,11 +1,15 @@
 /**
- * Implementation of heapsort
+ * In-place heapsort. Builds a max-heap in O(n), then repeatedly extracts the maximum.
+ *
+ * <p>Time: O(n log(n))
+ *
+ * <p>Space: O(1)
  *
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.sorting;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class Heapsort implements InplaceSort {
 
@@ -15,39 +19,36 @@ public class Heapsort implements InplaceSort {
   }
 
   private static void heapsort(int[] ar) {
-    if (ar == null) return;
+    if (ar == null)
+      return;
     int n = ar.length;
 
-    // Heapify, converts array into binary heap O(n), see:
-    // http://www.cs.umd.edu/~meesh/351/mount/lectures/lect14-heapsort-analysis-part.pdf
-    for (int i = Math.max(0, (n / 2) - 1); i >= 0; i--) {
+    // Build max-heap from the array bottom-up in O(n).
+    for (int i = n / 2 - 1; i >= 0; i--)
       sink(ar, n, i);
-    }
 
-    // Sorting bit
+    // Repeatedly swap the max to the end and restore the heap.
     for (int i = n - 1; i >= 0; i--) {
       swap(ar, 0, i);
       sink(ar, i, 0);
     }
   }
 
+  // Sinks element at index i down to its correct position in a max-heap of size n.
   private static void sink(int[] ar, int n, int i) {
-    while (true) {
-      int left = 2 * i + 1; // Left  node
-      int right = 2 * i + 2; // Right node
+    for (int left = 2 * i + 1; left < n; left = 2 * i + 1) {
+      int right = left + 1;
       int largest = i;
 
-      // Right child is larger than parent
-      if (right < n && ar[right] > ar[largest]) largest = right;
+      if (ar[left] > ar[largest])
+        largest = left;
+      if (right < n && ar[right] > ar[largest])
+        largest = right;
+      if (largest == i)
+        return;
 
-      // Left child is larger than parent
-      if (left < n && ar[left] > ar[largest]) largest = left;
-
-      // Move down the tree following the largest node
-      if (largest != i) {
-        swap(ar, largest, i);
-        i = largest;
-      } else break;
+      swap(ar, largest, i);
+      i = largest;
     }
   }
 
@@ -57,14 +58,10 @@ public class Heapsort implements InplaceSort {
     ar[j] = tmp;
   }
 
-  /* TESTING */
-
   public static void main(String[] args) {
     Heapsort sorter = new Heapsort();
     int[] array = {10, 4, 6, 4, 8, -13, 2, 3};
     sorter.sort(array);
-    // Prints:
-    // [-13, 2, 3, 4, 4, 6, 8, 10]
-    System.out.println(java.util.Arrays.toString(array));
+    System.out.println(Arrays.toString(array)); // [-13, 2, 3, 4, 4, 6, 8, 10]
   }
 }
