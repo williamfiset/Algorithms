@@ -251,6 +251,7 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 - [Primality check (Rabin-Miller)](src/main/java/com/williamfiset/algorithms/math/RabinMillerPrimalityTest.py) **- O(k)**
 - [Least Common Multiple (LCM)](src/main/java/com/williamfiset/algorithms/math/Lcm.java) **- ~O(log(a + b))**
 - [Modular inverse](src/main/java/com/williamfiset/algorithms/math/ModularInverse.java) **- ~O(log(a + b))**
+- [Modular exponentiation](src/main/java/com/williamfiset/algorithms/math/ModPow.java) **- O(log(n))**
 - [Prime factorization (pollard rho)](src/main/java/com/williamfiset/algorithms/math/PrimeFactorization.java) **- O(n<sup>1/4</sup>)**
 - [Relatively prime check (coprimality check)](src/main/java/com/williamfiset/algorithms/math/RelativelyPrime.java) **- ~O(log(a + b))**
 
