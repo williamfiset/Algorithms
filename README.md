@@ -248,7 +248,6 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 - [Fast Fourier transform (quick polynomial multiplication)](src/main/java/com/williamfiset/algorithms/math/FastFourierTransform.java) **- O(nlog(n))**
 - [Fast Fourier transform (quick polynomial multiplication, complex numbers)](src/main/java/com/williamfiset/algorithms/math/FastFourierTransformComplexNumbers.java) **- O(nlog(n))**
 - [Primality check](src/main/java/com/williamfiset/algorithms/math/PrimalityCheck.java) **- O(√n)**
-- [Primality check (Rabin-Miller)](src/main/java/com/williamfiset/algorithms/math/RabinMillerPrimalityTest.py) **- O(k)**
 - [Least Common Multiple (LCM)](src/main/java/com/williamfiset/algorithms/math/Lcm.java) **- ~O(log(a + b))**
 - [Modular inverse](src/main/java/com/williamfiset/algorithms/math/ModularInverse.java) **- ~O(log(a + b))**
 - [Modular exponentiation](src/main/java/com/williamfiset/algorithms/math/ModPow.java) **- O(log(n))**
