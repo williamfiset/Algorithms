@@ -1,15 +1,6 @@
 /**
  * Solve a set of congruence equations using the Chinese Remainder Theorem.
  *
- * <p>{@link #eliminateCoefficient(long, long, long)} reduces cx ≡ a (mod m) to x ≡ a' (mod m'),
- * removing the coefficient. Returns null if unsolvable.
- *
- * <p>{@link #reduce(long[], long[])} rewrites a system so that moduli become pairwise coprime,
- * enabling CRT. The number of equations may change. Returns null if the system is inconsistent.
- *
- * <p>{@link #crt(long[], long[])} is the core CRT step. It assumes all moduli are pairwise coprime
- * and returns x ≡ a' (mod M) where M is the product of all moduli.
- *
  * @author Micah Stairs
  */
 package com.williamfiset.algorithms.math;
