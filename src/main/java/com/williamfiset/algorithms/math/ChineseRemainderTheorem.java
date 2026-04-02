@@ -1,5 +1,29 @@
 /**
- * Solve a set of congruence equations using the Chinese Remainder Theorem.
+ * Solve a set of congruence equations using the Chinese Remainder Theorem (CRT).
+ *
+ * Given a system of simultaneous congruences:
+ *
+ *   x ≡ a_0 (mod m_0)
+ *   x ≡ a_1 (mod m_1)
+ *   ...
+ *   x ≡ a_{n-1} (mod m_{n-1})
+ *
+ * where all moduli m_i are pairwise coprime (gcd(m_i, m_j) = 1 for i ≠ j), the CRT guarantees a
+ * unique solution x modulo M = m_0 * m_1 * ... * m_{n-1}.
+ *
+ * The solution is constructed as x = sum of a_i * M_i * y_i (mod M), where M_i = M / m_i and y_i
+ * is the modular inverse of M_i modulo m_i (found via the extended Euclidean algorithm). Each term
+ * contributes a_i for the i-th congruence and vanishes (mod m_j) for all j ≠ i, so the sum
+ * satisfies every equation simultaneously.
+ *
+ * When moduli are not pairwise coprime, the system must first be reduced. Each modulus is split
+ * into prime-power factors (e.g. 12 = 4 * 3), converting one equation into several with
+ * prime-power moduli. Redundant equations are removed and conflicting ones detected. After
+ * reduction, the moduli are pairwise coprime and the standard CRT applies.
+ *
+ * The eliminateCoefficient method handles equations of the form cx ≡ a (mod m) by dividing through
+ * by gcd(c, m) — which is only possible when gcd(c, m) divides a — and then multiplying by the
+ * modular inverse of the reduced coefficient.
  *
  * @author Micah Stairs
  */
