@@ -47,3 +47,14 @@ java_test(
     runtime_deps = JUNIT5_RUNTIME_DEPS,
     deps = TEST_DEPS,
 )
+
+# bazel test //src/test/java/com/williamfiset/algorithms/math:ChineseRemainderTheoremTest
+java_test(
+    name = "ChineseRemainderTheoremTest",
+    srcs = ["ChineseRemainderTheoremTest.java"],
+    main_class = "org.junit.platform.console.ConsoleLauncher",
+    use_testrunner = False,
+    args = ["--select-class=com.williamfiset.algorithms.math.ChineseRemainderTheoremTest"],
+    runtime_deps = JUNIT5_RUNTIME_DEPS,
+    deps = TEST_DEPS,
+)
