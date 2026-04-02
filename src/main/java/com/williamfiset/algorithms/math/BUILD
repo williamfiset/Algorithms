@@ -63,13 +63,6 @@ java_binary(
     runtime_deps = [":math"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/math:NChooseRModPrime
-java_binary(
-    name = "NChooseRModPrime",
-    main_class = "com.williamfiset.algorithms.math.NChooseRModPrime",
-    runtime_deps = [":math"],
-)
-
 # bazel run //src/main/java/com/williamfiset/algorithms/math:PrimeFactorization
 java_binary(
     name = "PrimeFactorization",
