@@ -51,7 +51,7 @@ public class ChineseRemainderTheorem {
 
     // Split each modulus into prime-power factors
     for (int i = 0; i < a.length; i++) {
-      List<Long> factors = PrimeFactorization.primeFactorization(m[i]);
+      List<Long> factors = primeFactorization(m[i]);
       Collections.sort(factors);
 
       int j = 0;
@@ -131,5 +131,108 @@ public class ChineseRemainderTheorem {
     ret[1] = ret[2];
     ret[2] = tmp;
     return ret;
+  }
+
+  private static List<Long> primeFactorization(long n) {
+    if (n <= 0)
+      throw new IllegalArgumentException();
+    List<Long> factors = new ArrayList<>();
+    factor(n, factors);
+    return factors;
+  }
+
+  private static void factor(long n, List<Long> factors) {
+    if (n == 1)
+      return;
+    if (isPrime(n)) {
+      factors.add(n);
+      return;
+    }
+    long d = pollardRho(n);
+    factor(d, factors);
+    factor(n / d, factors);
+  }
+
+  private static long pollardRho(long n) {
+    if (n % 2 == 0)
+      return 2;
+    long x = 2 + (long) (999999 * Math.random());
+    long c = 2 + (long) (999999 * Math.random());
+    long y = x;
+    long d = 1;
+    while (d == 1) {
+      x = mulMod(x, x, n) + c;
+      if (x >= n)
+        x -= n;
+      y = mulMod(y, y, n) + c;
+      if (y >= n)
+        y -= n;
+      y = mulMod(y, y, n) + c;
+      if (y >= n)
+        y -= n;
+      d = gcd(Math.abs(x - y), n);
+      if (d == n)
+        break;
+    }
+    return d;
+  }
+
+  /**
+   * Deterministic Miller-Rabin primality test, correct for all long values. Uses 12 witnesses
+   * guaranteed correct for n < 3.317 × 10^24.
+   */
+  private static boolean isPrime(long n) {
+    if (n < 2)
+      return false;
+    if (n < 4)
+      return true;
+    if (n % 2 == 0 || n % 3 == 0)
+      return false;
+
+    long d = n - 1;
+    int r = Long.numberOfTrailingZeros(d);
+    d >>= r;
+
+    for (long a : new long[] {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}) {
+      if (a >= n)
+        continue;
+      long x = powMod(a, d, n);
+      if (x == 1 || x == n - 1)
+        continue;
+      boolean composite = true;
+      for (int i = 0; i < r - 1; i++) {
+        x = mulMod(x, x, n);
+        if (x == n - 1) {
+          composite = false;
+          break;
+        }
+      }
+      if (composite)
+        return false;
+    }
+    return true;
+  }
+
+  private static long powMod(long base, long exp, long mod) {
+    long result = 1;
+    base %= mod;
+    while (exp > 0) {
+      if ((exp & 1) == 1)
+        result = mulMod(result, base, mod);
+      exp >>= 1;
+      base = mulMod(base, base, mod);
+    }
+    return result;
+  }
+
+  private static long mulMod(long a, long b, long mod) {
+    return java.math.BigInteger.valueOf(a)
+        .multiply(java.math.BigInteger.valueOf(b))
+        .mod(java.math.BigInteger.valueOf(mod))
+        .longValue();
+  }
+
+  private static long gcd(long a, long b) {
+    return b == 0 ? a : gcd(b, a % b);
   }
 }
