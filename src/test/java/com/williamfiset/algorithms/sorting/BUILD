@@ -128,6 +128,16 @@ java_test(
 )
 
 java_test(
+    name = "TimSortTest",
+    srcs = ["TimSortTest.java"],
+    main_class = "org.junit.platform.console.ConsoleLauncher",
+    use_testrunner = False,
+    args = ["--select-class=com.williamfiset.algorithms.sorting.TimSortTest"],
+    runtime_deps = JUNIT5_RUNTIME_DEPS,
+    deps = TEST_DEPS,
+)
+
+java_test(
     name = "SortingTest",
     srcs = ["SortingTest.java"],
     main_class = "org.junit.platform.console.ConsoleLauncher",

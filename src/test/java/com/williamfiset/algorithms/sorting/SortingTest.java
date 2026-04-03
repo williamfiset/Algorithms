@@ -25,7 +25,8 @@ public class SortingTest {
     QUICK_SORT(new QuickSort()),
     QUICK_SORT3(new QuickSort3()),
     RADIX_SORT(new RadixSort()),
-    SELECTION_SORT(new SelectionSort());
+    SELECTION_SORT(new SelectionSort()),
+    TIM_SORT(new TimSort());
 
     private InplaceSort algorithm;
 
@@ -49,7 +50,8 @@ public class SortingTest {
           SortingAlgorithm.QUICK_SORT,
           SortingAlgorithm.QUICK_SORT3,
           SortingAlgorithm.RADIX_SORT,
-          SortingAlgorithm.SELECTION_SORT);
+          SortingAlgorithm.SELECTION_SORT,
+          SortingAlgorithm.TIM_SORT);
 
   @Test
   public void verifySortingAlgorithms_smallPositiveIntegersOnly() {

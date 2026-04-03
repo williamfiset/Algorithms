@@ -77,6 +77,13 @@ java_binary(
     runtime_deps = [":sorting"],
 )
 
+# bazel run //src/main/java/com/williamfiset/algorithms/sorting:TimSort
+java_binary(
+    name = "TimSort",
+    main_class = "com.williamfiset.algorithms.sorting.TimSort",
+    runtime_deps = [":sorting"],
+)
+
 # bazel run //src/main/java/com/williamfiset/algorithms/sorting:SelectionSort
 java_binary(
     name = "SelectionSort",
