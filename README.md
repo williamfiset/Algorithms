@@ -264,7 +264,6 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 - [Sliding Window Minimum/Maximum](src/main/java/com/williamfiset/algorithms/other/SlidingWindowMaximum.java) **- O(1)**
 - [Square Root Decomposition](src/main/java/com/williamfiset/algorithms/other/SquareRootDecomposition.java) **- O(1) point updates, O(√n) range queries**
 - [Unique set combinations](src/main/java/com/williamfiset/algorithms/other/UniqueCombinations.java) **- O(n choose r)**
-- [Lazy Range Adder](src/main/java/com/williamfiset/algorithms/other/LazyRangeAdder.java) **- O(1) range updates, O(n) to finalize all updates**
 
 # Search algorithms
 

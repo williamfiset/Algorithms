@@ -18,16 +18,6 @@ TEST_DEPS = [
 ] + JUNIT5_DEPS
 
 java_test(
-    name = "LazyRangeAdderTest",
-    srcs = ["LazyRangeAdderTest.java"],
-    main_class = "org.junit.platform.console.ConsoleLauncher",
-    use_testrunner = False,
-    args = ["--select-class=com.williamfiset.algorithms.other.LazyRangeAdderTest"],
-    runtime_deps = JUNIT5_RUNTIME_DEPS,
-    deps = TEST_DEPS,
-)
-
-java_test(
     name = "SlidingWindowMaximumTest",
     srcs = ["SlidingWindowMaximumTest.java"],
     main_class = "org.junit.platform.console.ConsoleLauncher",

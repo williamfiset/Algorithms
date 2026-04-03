@@ -21,13 +21,6 @@ java_binary(
     runtime_deps = [":other"],
 )
 
-# bazel run //src/main/java/com/williamfiset/algorithms/other:LazyRangeAdder
-java_binary(
-    name = "LazyRangeAdder",
-    main_class = "com.williamfiset.algorithms.other.LazyRangeAdder",
-    runtime_deps = [":other"],
-)
-
 # bazel run //src/main/java/com/williamfiset/algorithms/other:Permutations
 java_binary(
     name = "Permutations",
