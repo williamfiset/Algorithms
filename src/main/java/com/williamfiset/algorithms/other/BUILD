@@ -35,6 +35,13 @@ java_binary(
     runtime_deps = [":other"],
 )
 
+# bazel run //src/main/java/com/williamfiset/algorithms/other:PowerSet
+java_binary(
+    name = "PowerSet",
+    main_class = "com.williamfiset.algorithms.other.PowerSet",
+    runtime_deps = [":other"],
+)
+
 # bazel run //src/main/java/com/williamfiset/algorithms/other:SquareRootDecomposition
 java_binary(
     name = "SquareRootDecomposition",

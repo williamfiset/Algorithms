@@ -60,4 +60,16 @@ public class PowerSet {
     current.remove(current.size() - 1);
     recurse(at + 1, set, current, result);
   }
+
+  public static void main(String[] args) {
+    List<Integer> set = List.of(1, 2, 3);
+
+    System.out.println("Binary method:");
+    for (List<Integer> subset : powerSetBinary(set))
+      System.out.println(subset);
+
+    System.out.println("\nRecursive method:");
+    for (List<Integer> subset : powerSetRecursive(set))
+      System.out.println(subset);
+  }
 }
