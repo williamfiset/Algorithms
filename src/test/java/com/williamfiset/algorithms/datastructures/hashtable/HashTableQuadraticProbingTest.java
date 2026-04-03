@@ -106,13 +106,13 @@ public class HashTableQuadraticProbingTest {
   @Test
   public void testUpdatingValue() {
 
-    map.add(1, 1);
+    map.put(1, 1);
     assertThat(map.get(1)).isEqualTo(1);
 
-    map.add(1, 5);
+    map.put(1, 5);
     assertThat(map.get(1)).isEqualTo(5);
 
-    map.add(1, -7);
+    map.put(1, -7);
     assertThat(map.get(1)).isEqualTo(-7);
   }
 
@@ -132,7 +132,7 @@ public class HashTableQuadraticProbingTest {
       ht = new HashTableQuadraticProbing<>(sz);
       for (int i = 0; i < loops; i++) {
         assertCapacityIsPowerOfTwo(ht);
-        ht.add(i, i);
+        ht.put(i, i);
       }
     }
   }
@@ -151,13 +151,13 @@ public class HashTableQuadraticProbingTest {
       map = new HashTableQuadraticProbing<>();
 
       List<Integer> rand_nums = genRandList(MAX_SIZE);
-      for (Integer key : rand_nums) assertThat(map.add(key, key)).isEqualTo(map2.put(key, key));
+      for (Integer key : rand_nums) assertThat(map.put(key, key)).isEqualTo(map2.put(key, key));
 
       int count = 0;
       for (Integer key : map) {
         assertThat(map.get(key)).isEqualTo(key);
         assertThat(map.get(key)).isEqualTo(map2.get(key));
-        assertThat(map.hasKey(key)).isTrue();
+        assertThat(map.containsKey(key)).isTrue();
         assertThat(rand_nums.contains(key)).isTrue();
         count++;
       }
@@ -179,10 +179,10 @@ public class HashTableQuadraticProbingTest {
     assertThrows(
         ConcurrentModificationException.class,
         () -> {
-          map.add(1, 1);
-          map.add(2, 1);
-          map.add(3, 1);
-          for (Integer key : map) map.add(4, 4);
+          map.put(1, 1);
+          map.put(2, 1);
+          map.put(3, 1);
+          for (Integer key : map) map.put(4, 4);
         });
   }
 
@@ -191,9 +191,9 @@ public class HashTableQuadraticProbingTest {
     assertThrows(
         ConcurrentModificationException.class,
         () -> {
-          map.add(1, 1);
-          map.add(2, 1);
-          map.add(3, 1);
+          map.put(1, 1);
+          map.put(2, 1);
+          map.put(3, 1);
           for (Integer key : map) map.remove(2);
         });
   }
@@ -261,10 +261,10 @@ public class HashTableQuadraticProbingTest {
     HashObject o3 = new HashObject(88, 3);
     HashObject o4 = new HashObject(88, 4);
 
-    map.add(o1, 111);
-    map.add(o2, 111);
-    map.add(o3, 111);
-    map.add(o4, 111);
+    map.put(o1, 111);
+    map.put(o2, 111);
+    map.put(o3, 111);
+    map.put(o4, 111);
 
     map.remove(o2);
     map.remove(o3);
