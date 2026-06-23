@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout Algorithms repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Bazel
         uses: bazelbuild/setup-bazelisk@v3
