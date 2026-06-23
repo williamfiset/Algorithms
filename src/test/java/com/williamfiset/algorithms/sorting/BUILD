@@ -138,6 +138,16 @@ java_test(
 )
 
 java_test(
+    name = "ShellSortTest",
+    srcs = ["ShellSortTest.java"],
+    main_class = "org.junit.platform.console.ConsoleLauncher",
+    use_testrunner = False,
+    args = ["--select-class=com.williamfiset.algorithms.sorting.ShellSortTest"],
+    runtime_deps = JUNIT5_RUNTIME_DEPS,
+    deps = TEST_DEPS,
+)
+
+java_test(
     name = "SortingTest",
     srcs = ["SortingTest.java"],
     main_class = "org.junit.platform.console.ConsoleLauncher",

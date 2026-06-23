@@ -90,3 +90,10 @@ java_binary(
     main_class = "com.williamfiset.algorithms.sorting.SelectionSort",
     runtime_deps = [":sorting"],
 )
+
+# bazel run //src/main/java/com/williamfiset/algorithms/sorting:ShellSort
+java_binary(
+    name = "ShellSort",
+    main_class = "com.williamfiset.algorithms.sorting.ShellSort",
+    runtime_deps = [":sorting"],
+)

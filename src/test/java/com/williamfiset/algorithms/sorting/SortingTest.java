@@ -26,6 +26,7 @@ public class SortingTest {
     QUICK_SORT3(new QuickSort3()),
     RADIX_SORT(new RadixSort()),
     SELECTION_SORT(new SelectionSort()),
+    SHELL_SORT(new ShellSort()),
     TIM_SORT(new TimSort());
 
     private InplaceSort algorithm;
@@ -51,6 +52,7 @@ public class SortingTest {
           SortingAlgorithm.QUICK_SORT3,
           SortingAlgorithm.RADIX_SORT,
           SortingAlgorithm.SELECTION_SORT,
+          SortingAlgorithm.SHELL_SORT,
           SortingAlgorithm.TIM_SORT);
 
   @Test

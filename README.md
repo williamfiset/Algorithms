@@ -283,6 +283,7 @@ $ java -cp classes com.williamfiset.algorithms.search.BinarySearch
 - [Quicksort (in-place, Hoare partitioning)](src/main/java/com/williamfiset/algorithms/sorting/QuickSort.java) **- Θ(nlog(n))**
 - [Quicksort3 (Dutch National Flag algorithm)](src/main/java/com/williamfiset/algorithms/sorting/QuickSort3.java) **- Θ(nlog(n))**
 - [Selection sort](src/main/java/com/williamfiset/algorithms/sorting/SelectionSort.java) **- O(n<sup>2</sup>)**
+- [Shell sort](src/main/java/com/williamfiset/algorithms/sorting/ShellSort.java) **- O(n<sup>2</sup>) worst, ~O(n<sup>1.5</sup>) average**
 - [Tim sort](src/main/java/com/williamfiset/algorithms/sorting/TimSort.java) **- O(nlog(n))**
 - [Radix sort](src/main/java/com/williamfiset/algorithms/sorting/RadixSort.java) **- O(n\*w)**
 
