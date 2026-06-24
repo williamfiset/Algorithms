@@ -21,7 +21,7 @@ public class BinaryHeap<T extends Comparable<T>> {
 
   // Construct a priority queue with an initial capacity
   public BinaryHeap(int sz) {
-    heap = new ArrayList<>(sz);
+    heap = new ArrayList<T>(sz);
   }
 
   // Construct a priority queue using heapify in O(n) time, a great explanation can be found at:
