@@ -115,6 +115,25 @@ public class BoyerMooreStringSearchTest {
         .toString();
   }
 
-  // TODO(william): Add a test that compares this implementation of Boyermoore
-  // with that of KMP.
+  @Test
+  public void shouldReturnSameResultAsKMP(){
+    int runLength = random.nextInt(MAX_ITERATION) + 1;
+    KMP kmp = new KMP();
+    for(int run = 0; run < runLength; run++){
+      int upperCharText = random.nextInt(3);
+      int upperCharPattern = random.nextInt(3);
+      int maxLengthText = random.nextInt(1000) + 100;
+
+      // ensure maxLengthPattern is at least 1
+      int maxLengthPattern = random.nextInt(10) + 1;
+
+      String text = generateRandomString(upperCharText, maxLengthText);
+      String pattern = generateRandomString(upperCharPattern, maxLengthPattern);
+
+      List<Integer> boyerMooreResult = underTest.findOccurrences(text, pattern);
+      List<Integer> kmpResult = KMP.kmp(text, pattern);
+
+      assertThat(boyerMooreResult).containsExactlyElementsIn(kmpResult);
+    }
+  }
 }
